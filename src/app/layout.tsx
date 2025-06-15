@@ -1,3 +1,5 @@
+import React from 'react';
+import Link from 'next/link';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,7 +29,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <header className="bg-green-800 text-white p-4">
+          <nav className="container mx-auto flex justify-between items-center">
+            <Link href="/" className="text-xl font-bold">GAA Trips</Link>
+            <div className="space-x-4">
+              <Link href="/events" className="hover:underline">Events</Link>
+              <Link href="/map" className="hover:underline">Map View</Link>
+              <Link href="/events/create" className="hover:underline">Create Event</Link>
+            </div>
+          </nav>
+        </header>
+        <main className="container mx-auto p-4">
+          {children}
+        </main>
       </body>
     </html>
   );
