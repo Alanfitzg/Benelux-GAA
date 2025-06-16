@@ -36,6 +36,7 @@ export default function RootLayout({
               <Link href="/events" className="hover:underline">Events</Link>
               <Link href="/map" className="hover:underline">Map View</Link>
               <Link href="/events/create" className="hover:underline">Create Event</Link>
+              <Link href="/clubs" className="hover:underline">Clubs</Link>
             </div>
           </nav>
         </header>

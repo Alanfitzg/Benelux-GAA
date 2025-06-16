@@ -38,3 +38,17 @@ model Interest {
   message     String?
   submittedAt DateTime @default(now())
 }
+
+model Club {
+  id         String   @id @default(cuid())
+  name       String
+  region     String?
+  subRegion  String?
+  map        String?
+  city       String?
+  country    String?
+  facebook   String?
+  instagram  String?
+  website    String?
+  codes      String?
+}
