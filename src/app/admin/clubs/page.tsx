@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import DeleteButton from './DeleteButton';
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminClubsPage() {
   async function deleteClub(formData: FormData) {
     'use server';
