@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import Link from "next/link";
+import { Prisma } from "@prisma/client";
 
 function getMonthOptions() {
   return [
@@ -21,7 +22,7 @@ async function getEvents({
   country?: string;
   month?: string;
 }) {
-  const where: any = {};
+  const where: Prisma.EventWhereInput = {};
   if (eventType) where.eventType = eventType;
   if (country && country !== "") {
     where.location = { contains: country };
