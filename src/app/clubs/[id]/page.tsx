@@ -2,12 +2,9 @@ import { prisma } from '@/lib/prisma';
 import React from 'react';
 import Link from 'next/link';
 
-interface ClubDetailsProps {
-  params: { id: string };
-}
-
-export default async function ClubDetailsPage({ params }: ClubDetailsProps) {
-  const club = await prisma.club.findUnique({ where: { id: params.id } });
+export default async function ClubDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const club = await prisma.club.findUnique({ where: { id } });
   if (!club) {
     return <div className="text-red-600">Club not found.</div>;
   }
