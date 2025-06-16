@@ -47,11 +47,12 @@ async function getEvents({
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams?: { [key: string]: string };
+  searchParams?: Promise<{ [key: string]: string }>;
 }) {
-  const eventType = searchParams?.eventType || "";
-  const country = searchParams?.country || "";
-  const month = searchParams?.month || "";
+  const params = searchParams ? await searchParams : {};
+  const eventType = params.eventType || "";
+  const country = params.country || "";
+  const month = params.month || "";
   const events = await getEvents({ eventType, country, month });
   const eventTypes = ["", "Match", "Tournament", "Youth", "Social"];
   const countries = Array.from(
