@@ -12,6 +12,8 @@ interface Event {
   description?: string;
 }
 
+export const dynamic = "force-dynamic";
+
 export default function EventDetail({
   params,
 }: {

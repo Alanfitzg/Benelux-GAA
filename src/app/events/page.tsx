@@ -13,6 +13,8 @@ function getMonthOptions() {
   ];
 }
 
+export const dynamic = "force-dynamic";
+
 async function getEvents({
   eventType,
   country,

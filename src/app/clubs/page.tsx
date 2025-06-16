@@ -8,6 +8,8 @@ async function getClubs() {
   });
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function ClubsPage() {
   const clubs = await getClubs();
   return (
