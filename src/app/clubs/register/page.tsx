@@ -2,6 +2,20 @@
 
 import { useState } from 'react';
 
+interface ClubFormData {
+  name: string;
+  region?: string;
+  subRegion?: string;
+  map?: string;
+  city?: string;
+  country?: string;
+  facebook?: string;
+  instagram?: string;
+  website?: string;
+  codes?: string;
+  imageUrl?: string;
+}
+
 export default function RegisterClubPage() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -36,11 +50,19 @@ export default function RegisterClubPage() {
       setImageUrl(uploadedImageUrl);
     }
     // Prepare club data
-    const data: any = Object.fromEntries(formData.entries());
-    if (uploadedImageUrl) {
-      data.imageUrl = uploadedImageUrl;
-    }
-    delete data.image; // Remove the file from the payload
+    const data: ClubFormData = {
+      name: formData.get('name') as string,
+      region: (formData.get('region') as string) || undefined,
+      subRegion: (formData.get('subRegion') as string) || undefined,
+      map: (formData.get('map') as string) || undefined,
+      city: (formData.get('city') as string) || undefined,
+      country: (formData.get('country') as string) || undefined,
+      facebook: (formData.get('facebook') as string) || undefined,
+      instagram: (formData.get('instagram') as string) || undefined,
+      website: (formData.get('website') as string) || undefined,
+      codes: (formData.get('codes') as string) || undefined,
+      imageUrl: uploadedImageUrl || undefined,
+    };
     const res = await fetch('/api/clubs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

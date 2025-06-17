@@ -1,10 +1,11 @@
 import { prisma } from '@/lib/prisma';
 import React from 'react';
 import Link from 'next/link';
+import { Club } from '@prisma/client';
 
 export default async function ClubDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const club = await prisma.club.findUnique({ where: { id } }) as (typeof prisma.club extends { findUnique: (args: any) => Promise<infer T> } ? T : any) & { imageUrl?: string };
+  const club: Club | null = await prisma.club.findUnique({ where: { id } });
   if (!club) {
     return <div className="text-red-600">Club not found.</div>;
   }

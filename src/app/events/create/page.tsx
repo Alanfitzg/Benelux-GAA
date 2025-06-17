@@ -5,6 +5,15 @@ import { useRouter } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
+interface EventFormData {
+  title: string;
+  eventType: string;
+  location: string;
+  startDate: string;
+  cost: number;
+  imageUrl?: string;
+}
+
 export default function CreateEvent() {
   const router = useRouter();
   const [uploading, setUploading] = useState(false);
@@ -37,16 +46,14 @@ export default function CreateEvent() {
       uploadedImageUrl = uploadJson.url;
       setImageUrl(uploadedImageUrl);
     }
-    const data: any = {
-      title: formData.get("title"),
-      eventType: formData.get("eventType"),
-      location: formData.get("location"),
+    const data: EventFormData = {
+      title: formData.get("title") as string,
+      eventType: formData.get("eventType") as string,
+      location: formData.get("location") as string,
       startDate: new Date(startDate).toISOString(),
       cost: parseFloat(formData.get("cost") as string),
+      imageUrl: uploadedImageUrl || undefined,
     };
-    if (uploadedImageUrl) {
-      data.imageUrl = uploadedImageUrl;
-    }
     const response = await fetch("/api/events", {
       method: "POST",
       headers: {
