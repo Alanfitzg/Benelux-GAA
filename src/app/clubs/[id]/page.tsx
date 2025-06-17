@@ -10,24 +10,44 @@ export default async function ClubDetailsPage({ params }: { params: Promise<{ id
     return <div className="text-red-600">Club not found.</div>;
   }
   return (
-    <div>
-      {club.imageUrl && (
-        <img src={club.imageUrl} alt={club.name} className="max-h-64 mb-4 rounded shadow" />
-      )}
-      <h1 className="text-2xl font-bold mb-4 text-green-800">{club.name}</h1>
-      <div className="bg-white p-4 rounded shadow mb-4">
-        <p className="text-gray-700"><strong>Region:</strong> {club.region || '-'}</p>
-        <p className="text-gray-700"><strong>Sub-region:</strong> {club.subRegion || '-'}</p>
-        <p className="text-gray-700"><strong>City:</strong> {club.city || '-'}</p>
-        <p className="text-gray-700"><strong>Country:</strong> {club.country || '-'}</p>
-        {club.codes && <p className="text-gray-700"><strong>Codes:</strong> {club.codes}</p>}
-        <div className="mt-4 space-x-4">
-          {club.facebook && <Link href={club.facebook} className="text-blue-600 underline" target="_blank">Facebook</Link>}
-          {club.instagram && <Link href={club.instagram} className="text-pink-600 underline" target="_blank">Instagram</Link>}
-          {club.website && <Link href={club.website} className="text-blue-800 underline" target="_blank">Website</Link>}
+    <div className="flex justify-center items-center min-h-[80vh] px-2">
+      <div className="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full">
+        {club.imageUrl && (
+          <div className="flex justify-center mb-6">
+            <img src={club.imageUrl} alt={club.name} className="max-h-48 rounded-lg shadow" />
+          </div>
+        )}
+        <h1 className="text-3xl font-extrabold text-center text-green-800 mb-2">{club.name}</h1>
+        <div className="flex justify-center mb-4">
+          <span className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wide">{club.country}</span>
+        </div>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <p className="text-gray-500 text-xs font-semibold">Region</p>
+            <p className="text-gray-800">{club.region || '-'}</p>
+          </div>
+          <div>
+            <p className="text-gray-500 text-xs font-semibold">Sub-region</p>
+            <p className="text-gray-800">{club.subRegion || '-'}</p>
+          </div>
+          <div>
+            <p className="text-gray-500 text-xs font-semibold">City</p>
+            <p className="text-gray-800">{club.city || '-'}</p>
+          </div>
+          <div>
+            <p className="text-gray-500 text-xs font-semibold">Codes</p>
+            <p className="text-gray-800">{club.codes || '-'}</p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 mb-4">
+          {club.facebook && <a href={club.facebook} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Facebook</a>}
+          {club.instagram && <a href={club.instagram} className="text-pink-600 underline" target="_blank" rel="noopener noreferrer">Instagram</a>}
+          {club.website && <a href={club.website} className="text-blue-800 underline" target="_blank" rel="noopener noreferrer">Website</a>}
+        </div>
+        <div className="flex justify-center">
+          <a href="/clubs" className="text-green-700 underline">Back to Clubs</a>
         </div>
       </div>
-      <Link href="/clubs" className="text-green-800 underline">Back to Clubs</Link>
     </div>
   );
 } 
