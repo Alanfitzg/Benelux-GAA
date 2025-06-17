@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -141,7 +142,15 @@ export default function CreateEvent() {
               className="w-full text-gray-900"
             />
             {uploading && <div className="text-blue-700">Uploading image...</div>}
-            {imageUrl && <img src={imageUrl} alt="Uploaded event" className="max-h-32 mt-2" />}
+            {imageUrl && (
+              <Image
+                src={imageUrl}
+                alt="Uploaded event"
+                width={128}
+                height={128}
+                className="max-h-32 mt-2 object-contain rounded"
+              />
+            )}
           </div>
           <button
             type="submit"

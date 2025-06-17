@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import { Club } from "@prisma/client";
+import Image from "next/image";
+import Link from "next/link";
 
 export default async function ClubDetailsPage({
   params,
@@ -17,10 +19,12 @@ export default async function ClubDetailsPage({
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full">
         {club.imageUrl && (
           <div className="flex justify-center mb-6">
-            <img
+            <Image
               src={club.imageUrl}
               alt={club.name}
-              className="max-h-48 rounded-lg shadow"
+              width={300}
+              height={192}
+              className="max-h-48 rounded-lg shadow object-contain"
             />
           </div>
         )}
@@ -83,9 +87,9 @@ export default async function ClubDetailsPage({
           )}
         </div>
         <div className="flex justify-center">
-          <a href="/clubs" className="text-green-700 underline">
+          <Link href="/clubs" className="text-green-700 underline">
             Back to Clubs
-          </a>
+          </Link>
         </div>
       </div>
     </div>

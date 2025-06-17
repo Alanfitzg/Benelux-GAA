@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import Image from "next/image";
 
 interface ClubFormData {
   name: string;
@@ -165,7 +166,15 @@ export default function RegisterClubPage() {
               <input name="image" type="file" accept="image/*" className="w-full text-gray-700" />
             </div>
             {uploading && <div className="text-blue-700">Uploading image...</div>}
-            {imageUrl && <img src={imageUrl} alt="Uploaded club" className="max-h-32 mt-2" />}
+            {imageUrl && (
+              <Image
+                src={imageUrl}
+                alt="Uploaded club"
+                width={128}
+                height={128}
+                className="max-h-32 mt-2 object-contain rounded"
+              />
+            )}
             <button type="submit" className="w-full bg-green-700 hover:bg-green-800 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest">Register Club</button>
           </form>
         </div>
