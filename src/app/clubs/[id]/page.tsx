@@ -4,12 +4,15 @@ import Link from 'next/link';
 
 export default async function ClubDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const club = await prisma.club.findUnique({ where: { id } });
+  const club = await prisma.club.findUnique({ where: { id } }) as (typeof prisma.club extends { findUnique: (args: any) => Promise<infer T> } ? T : any) & { imageUrl?: string };
   if (!club) {
     return <div className="text-red-600">Club not found.</div>;
   }
   return (
     <div>
+      {club.imageUrl && (
+        <img src={club.imageUrl} alt={club.name} className="max-h-64 mb-4 rounded shadow" />
+      )}
       <h1 className="text-2xl font-bold mb-4 text-green-800">{club.name}</h1>
       <div className="bg-white p-4 rounded shadow mb-4">
         <p className="text-gray-700"><strong>Region:</strong> {club.region || '-'}</p>

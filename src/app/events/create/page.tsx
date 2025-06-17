@@ -1,26 +1,52 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default function CreateEvent() {
   const router = useRouter();
+  const [uploading, setUploading] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError("");
+    setUploading(false);
+    setImageUrl(null);
     const formData = new FormData(event.currentTarget);
     const startDate = formData.get("startDate") as string;
-
-    const data = {
+    const file = formData.get("image") as File;
+    let uploadedImageUrl = "";
+    if (file && file.size > 0) {
+      setUploading(true);
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      const uploadRes = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadData,
+      });
+      setUploading(false);
+      if (!uploadRes.ok) {
+        setError("Image upload failed.");
+        return;
+      }
+      const uploadJson = await uploadRes.json();
+      uploadedImageUrl = uploadJson.url;
+      setImageUrl(uploadedImageUrl);
+    }
+    const data: any = {
       title: formData.get("title"),
       eventType: formData.get("eventType"),
       location: formData.get("location"),
       startDate: new Date(startDate).toISOString(),
       cost: parseFloat(formData.get("cost") as string),
     };
-
+    if (uploadedImageUrl) {
+      data.imageUrl = uploadedImageUrl;
+    }
     const response = await fetch("/api/events", {
       method: "POST",
       headers: {
@@ -28,17 +54,21 @@ export default function CreateEvent() {
       },
       body: JSON.stringify(data),
     });
-
     if (response.ok) {
       router.push("/events");
     } else {
-      alert("Failed to create event");
+      setError("Failed to create event");
     }
   };
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Create Event</h1>
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {error}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block mb-1">Event Type</label>
@@ -89,6 +119,17 @@ export default function CreateEvent() {
             className="w-full p-2 border rounded"
             required
           />
+        </div>
+        <div>
+          <label className="block mb-1">Event Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            className="w-full p-2 border rounded"
+          />
+          {uploading && <div className="text-blue-700">Uploading image...</div>}
+          {imageUrl && <img src={imageUrl} alt="Uploaded event" className="max-h-32 mt-2" />}
         </div>
         <button
           type="submit"

@@ -14,7 +14,10 @@ export default async function ClubsPage() {
   const clubs = await getClubs();
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4 text-gray-900">European GAA Clubs</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold text-gray-900">European GAA Clubs</h1>
+        <Link href="/clubs/register" className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 transition">Register a Club</Link>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {clubs.map((club: { id: string; name: string; region: string | null; city: string | null; country: string | null }) => (
           <Link key={club.id} href={`/clubs/${club.id}`} className="block">

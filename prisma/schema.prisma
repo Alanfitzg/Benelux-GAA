@@ -52,4 +52,5 @@ model Club {
   instagram  String?
   website    String?
   codes      String?
+  imageUrl   String? // S3 image URL
 }
