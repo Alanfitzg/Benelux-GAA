@@ -1,9 +1,12 @@
-import { prisma } from '@/lib/prisma';
-import React from 'react';
-import Link from 'next/link';
-import { Club } from '@prisma/client';
+import { prisma } from "@/lib/prisma";
+import React from "react";
+import { Club } from "@prisma/client";
 
-export default async function ClubDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ClubDetailsPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const club: Club | null = await prisma.club.findUnique({ where: { id } });
   if (!club) {
@@ -14,40 +17,77 @@ export default async function ClubDetailsPage({ params }: { params: Promise<{ id
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full">
         {club.imageUrl && (
           <div className="flex justify-center mb-6">
-            <img src={club.imageUrl} alt={club.name} className="max-h-48 rounded-lg shadow" />
+            <img
+              src={club.imageUrl}
+              alt={club.name}
+              className="max-h-48 rounded-lg shadow"
+            />
           </div>
         )}
-        <h1 className="text-3xl font-extrabold text-center text-green-800 mb-2">{club.name}</h1>
+        <h1 className="text-3xl font-extrabold text-center text-green-800 mb-2">
+          {club.name}
+        </h1>
         <div className="flex justify-center mb-4">
-          <span className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wide">{club.country}</span>
+          <span className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wide">
+            {club.country}
+          </span>
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
             <p className="text-gray-500 text-xs font-semibold">Region</p>
-            <p className="text-gray-800">{club.region || '-'}</p>
+            <p className="text-gray-800">{club.region || "-"}</p>
           </div>
           <div>
             <p className="text-gray-500 text-xs font-semibold">Sub-region</p>
-            <p className="text-gray-800">{club.subRegion || '-'}</p>
+            <p className="text-gray-800">{club.subRegion || "-"}</p>
           </div>
           <div>
             <p className="text-gray-500 text-xs font-semibold">City</p>
-            <p className="text-gray-800">{club.city || '-'}</p>
+            <p className="text-gray-800">{club.city || "-"}</p>
           </div>
           <div>
             <p className="text-gray-500 text-xs font-semibold">Codes</p>
-            <p className="text-gray-800">{club.codes || '-'}</p>
+            <p className="text-gray-800">{club.codes || "-"}</p>
           </div>
         </div>
         <div className="flex flex-col gap-2 mb-4">
-          {club.facebook && <a href={club.facebook} className="text-blue-600 underline" target="_blank" rel="noopener noreferrer">Facebook</a>}
-          {club.instagram && <a href={club.instagram} className="text-pink-600 underline" target="_blank" rel="noopener noreferrer">Instagram</a>}
-          {club.website && <a href={club.website} className="text-blue-800 underline" target="_blank" rel="noopener noreferrer">Website</a>}
+          {club.facebook && (
+            <a
+              href={club.facebook}
+              className="text-blue-600 underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook
+            </a>
+          )}
+          {club.instagram && (
+            <a
+              href={club.instagram}
+              className="text-pink-600 underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          )}
+          {club.website && (
+            <a
+              href={club.website}
+              className="text-blue-800 underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Website
+            </a>
+          )}
         </div>
         <div className="flex justify-center">
-          <a href="/clubs" className="text-green-700 underline">Back to Clubs</a>
+          <a href="/clubs" className="text-green-700 underline">
+            Back to Clubs
+          </a>
         </div>
       </div>
     </div>
   );
-} 
+}
