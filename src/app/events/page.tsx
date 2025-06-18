@@ -57,7 +57,20 @@ export default async function EventsPage({
     const country = params.country || "";
     const month = params.month || "";
     const events = await getEvents({ eventType, country, month });
-    const eventTypes = ["", "Match", "Tournament", "Youth", "Social"];
+    const eventTypes = [
+      "",
+      "Mens Gaelic Football",
+      "LGFA",
+      "Hurling",
+      "Camogie",
+      "Rounders",
+      "G4MO",
+      "Dads & Lads",
+      "Higher Education",
+      "Youth",
+      "Elite training camp",
+      "Beach GAA"
+    ];
     const countries = Array.from(
       new Set(
         (await prisma.event.findMany()).map((e) =>

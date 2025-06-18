@@ -23,7 +23,6 @@ export default async function ClubsPage() {
           <Link key={club.id} href={`/clubs/${club.id}`} className="block">
             <div className="bg-white p-4 rounded shadow hover:bg-gray-50 cursor-pointer">
               <h2 className="text-lg font-semibold mb-1 text-green-800">{club.name}</h2>
-              <p className="text-gray-700"><strong>Region:</strong> {club.region || '-'}</p>
               <p className="text-gray-700"><strong>City:</strong> {club.city || '-'}</p>
               <p className="text-gray-700"><strong>Country:</strong> {club.country || '-'}</p>
             </div>

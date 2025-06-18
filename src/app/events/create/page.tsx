@@ -88,10 +88,17 @@ export default function CreateEvent() {
               defaultValue=""
             >
               <option value="" disabled>Select Type</option>
-              <option value="Match">Match</option>
-              <option value="Tournament">Tournament</option>
+              <option value="Mens Gaelic Football">Mens Gaelic Football</option>
+              <option value="LGFA">LGFA</option>
+              <option value="Hurling">Hurling</option>
+              <option value="Camogie">Camogie</option>
+              <option value="Rounders">Rounders</option>
+              <option value="G4MO">G4MO</option>
+              <option value="Dads & Lads">Dads & Lads</option>
+              <option value="Higher Education">Higher Education</option>
               <option value="Youth">Youth</option>
-              <option value="Social">Social</option>
+              <option value="Elite training camp">Elite training camp</option>
+              <option value="Beach GAA">Beach GAA</option>
             </select>
           </div>
           <div>

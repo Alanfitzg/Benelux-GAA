@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from "next/image";
+import countryList from "./countryList";
 
 interface ClubFormData {
   name: string;
@@ -117,16 +118,6 @@ export default function RegisterClubPage() {
                 <input name="name" placeholder="Club Name" required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
               </div>
               <div className="w-1/2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Region</label>
-                <input name="region" placeholder="Region" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="w-1/2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Sub Region</label>
-                <input name="subRegion" placeholder="Sub Region" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
-              </div>
-              <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Map Link</label>
                 <input name="map" placeholder="Map Link" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
               </div>
@@ -138,7 +129,12 @@ export default function RegisterClubPage() {
               </div>
               <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Country</label>
-                <input name="country" placeholder="Country" required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
+                <select name="country" required defaultValue="" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 text-gray-900">
+                  <option value="" disabled>Select Country</option>
+                  {countryList.map((country) => (
+                    <option key={country} value={country}>{country}</option>
+                  ))}
+                </select>
               </div>
             </div>
             <div className="flex gap-4">

@@ -17,17 +17,15 @@ export default async function ClubDetailsPage({
   return (
     <div className="flex justify-center items-center min-h-[80vh] px-2">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full">
-        {club.imageUrl && (
-          <div className="flex justify-center mb-6">
-            <Image
-              src={club.imageUrl}
-              alt={club.name}
-              width={300}
-              height={192}
-              className="max-h-48 rounded-lg shadow object-contain"
-            />
-          </div>
-        )}
+        <div className="flex justify-center mb-6">
+          <Image
+            src={club.imageUrl || "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"}
+            alt={club.name}
+            width={300}
+            height={192}
+            className="max-h-48 rounded-lg shadow object-contain"
+          />
+        </div>
         <h1 className="text-3xl font-extrabold text-center text-green-800 mb-2">
           {club.name}
         </h1>
@@ -37,14 +35,6 @@ export default async function ClubDetailsPage({
           </span>
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <p className="text-gray-500 text-xs font-semibold">Region</p>
-            <p className="text-gray-800">{club.region || "-"}</p>
-          </div>
-          <div>
-            <p className="text-gray-500 text-xs font-semibold">Sub-region</p>
-            <p className="text-gray-800">{club.subRegion || "-"}</p>
-          </div>
           <div>
             <p className="text-gray-500 text-xs font-semibold">City</p>
             <p className="text-gray-800">{club.city || "-"}</p>
