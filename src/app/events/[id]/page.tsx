@@ -23,14 +23,12 @@ export default function EventDetail({
 }) {
   const { id } = React.use(params);
   const [event, setEvent] = useState<Event | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`/api/events/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setEvent(data);
-        setLoading(false);
       });
   }, [id]);
 
@@ -110,7 +108,7 @@ export default function EventDetail({
           </div>
           {/* What's Included */}
           <div className="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200">
-            <h2 className="text-lg font-bold text-[#032572] mb-2">What's Included</h2>
+            <h2 className="text-lg font-bold text-[#032572] mb-2">What&apos;s Included</h2>
             <ul className="list-disc list-inside text-gray-700">
               <li>3 nights in a centrally located hotel</li>
               <li>Breakfast each morning</li>

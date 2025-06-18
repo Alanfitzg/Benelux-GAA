@@ -3,12 +3,16 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import countryList from "../../../../clubs/register/countryList";
+import { Club } from "@prisma/client";
+import Image from "next/image";
+
+type ClubWithImage = Club & { imageUrl?: string };
 
 export default function EditClubPage() {
   const router = useRouter();
   const params = useParams();
   const clubId = params?.id as string;
-  const [club, setClub] = useState<any>(null);
+  const [club, setClub] = useState<ClubWithImage | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -144,7 +148,13 @@ export default function EditClubPage() {
             <input name="image" type="file" accept="image/*" className="w-full text-gray-900" />
             {uploading && <div className="text-blue-700">Uploading image...</div>}
             {imageUrl && (
-              <img src={imageUrl} alt="Club" className="max-h-32 mt-2 object-contain rounded" />
+              <Image
+                src={imageUrl}
+                alt="Club"
+                width={128}
+                height={128}
+                className="max-h-32 mt-2 object-contain rounded"
+              />
             )}
           </div>
           <button type="submit" className="w-full bg-[#032572] hover:bg-blue-900 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest">Update Club</button>

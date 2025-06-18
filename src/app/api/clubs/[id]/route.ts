@@ -9,7 +9,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
       return NextResponse.json({ error: 'Club not found' }, { status: 404 });
     }
     return NextResponse.json(club);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error fetching club' }, { status: 400 });
   }
 }
@@ -33,7 +33,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
       },
     });
     return NextResponse.json(club);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Error updating club' }, { status: 400 });
   }
 } 
