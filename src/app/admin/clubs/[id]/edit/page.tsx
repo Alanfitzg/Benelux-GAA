@@ -6,7 +6,7 @@ import countryList from "../../../../clubs/register/countryList";
 import { Club } from "@prisma/client";
 import Image from "next/image";
 import ImageUpload from '../../../../components/ImageUpload';
-import LocationAutocomplete from '../../events/create/LocationAutocomplete';
+import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
 
 type ClubWithImage = Club & { imageUrl?: string };
 
