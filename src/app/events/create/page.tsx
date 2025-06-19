@@ -24,7 +24,6 @@ export default function CreateEvent() {
     setUploading(false);
     setImageUrl(null);
     const form = event.currentTarget;
-    const formData = new FormData(form);
     const file = imageFile;
     let uploadedImageUrl = "";
     if (file && file.size > 0) {
