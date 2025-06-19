@@ -5,21 +5,9 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import ImageUpload from '../../components/ImageUpload';
 import LocationAutocomplete from '../../events/create/LocationAutocomplete';
+import type { Club } from '@/types';
 
-interface ClubFormData {
-  name: string;
-  location?: string;
-  region?: string;
-  subRegion?: string;
-  map?: string;
-  city?: string;
-  country?: string;
-  facebook?: string;
-  instagram?: string;
-  website?: string;
-  codes?: string;
-  imageUrl?: string;
-}
+type ClubFormData = Omit<Club, 'id' | 'latitude' | 'longitude'>;
 
 export default function RegisterClubPage() {
   const [success, setSuccess] = useState(false);
@@ -60,13 +48,14 @@ export default function RegisterClubPage() {
     const data: ClubFormData = {
       name: (form.elements.namedItem('name') as HTMLInputElement)?.value || '',
       location,
-      region: (form.elements.namedItem('region') as HTMLInputElement)?.value || undefined,
-      subRegion: (form.elements.namedItem('subRegion') as HTMLInputElement)?.value || undefined,
-      facebook: (form.elements.namedItem('facebook') as HTMLInputElement)?.value || undefined,
-      instagram: (form.elements.namedItem('instagram') as HTMLInputElement)?.value || undefined,
-      website: (form.elements.namedItem('website') as HTMLInputElement)?.value || undefined,
-      codes: (form.elements.namedItem('codes') as HTMLInputElement)?.value || undefined,
-      imageUrl: uploadedImageUrl || undefined,
+      region: (form.elements.namedItem('region') as HTMLInputElement)?.value || null,
+      subRegion: (form.elements.namedItem('subRegion') as HTMLInputElement)?.value || null,
+      facebook: (form.elements.namedItem('facebook') as HTMLInputElement)?.value || null,
+      instagram: (form.elements.namedItem('instagram') as HTMLInputElement)?.value || null,
+      website: (form.elements.namedItem('website') as HTMLInputElement)?.value || null,
+      codes: (form.elements.namedItem('codes') as HTMLInputElement)?.value || null,
+      imageUrl: uploadedImageUrl || null,
+      map: null
     };
     const res = await fetch('/api/clubs', {
       method: 'POST',

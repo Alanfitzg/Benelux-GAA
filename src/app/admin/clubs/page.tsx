@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import DeleteButton from './DeleteButton';
+import type { Club } from '@/types';
 
 export const dynamic = "force-dynamic";
 
@@ -18,7 +19,7 @@ export default async function AdminClubsPage() {
     <div>
       <h1 className="text-2xl font-bold mb-6 text-green-800">Manage Clubs</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {clubs.map(club => (
+        {clubs.map((club: Club) => (
           <div key={club.id} className="bg-white p-4 rounded shadow">
             <h2 className="text-lg font-semibold mb-1 text-green-800">{club.name}</h2>
             <p className="text-gray-700"><strong>Region:</strong> {club.region || '-'}</p>

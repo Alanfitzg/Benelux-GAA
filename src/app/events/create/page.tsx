@@ -4,17 +4,11 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import LocationAutocomplete from './LocationAutocomplete';
 import ImageUpload from '../../components/ImageUpload';
+import type { Event } from "@/types";
+
+type EventFormData = Omit<Event, 'id'>;
 
 export const dynamic = "force-dynamic";
-
-interface EventFormData {
-  title: string;
-  eventType: string;
-  location: string;
-  startDate: string;
-  cost: number;
-  imageUrl?: string;
-}
 
 export default function CreateEvent() {
   const router = useRouter();
@@ -29,7 +23,8 @@ export default function CreateEvent() {
     setError("");
     setUploading(false);
     setImageUrl(null);
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const startDate = formData.get("startDate") as string;
     const file = imageFile;
     let uploadedImageUrl = "";
@@ -51,11 +46,10 @@ export default function CreateEvent() {
       setImageUrl(uploadedImageUrl);
     }
     const data: EventFormData = {
-      title: formData.get("title") as string,
-      eventType: formData.get("eventType") as string,
+      title: (form.elements.namedItem('title') as HTMLInputElement)?.value || '',
+      eventType: (form.elements.namedItem('eventType') as HTMLSelectElement)?.value || '',
       location,
-      startDate: new Date(startDate).toISOString(),
-      cost: parseFloat(formData.get("cost") as string),
+      startDate: (form.elements.namedItem('startDate') as HTMLInputElement)?.value || '',
       imageUrl: uploadedImageUrl || undefined,
     };
     const response = await fetch("/api/events", {

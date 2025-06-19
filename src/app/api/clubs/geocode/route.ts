@@ -40,7 +40,7 @@ export async function POST() {
     console.log(`Found ${clubs.length} clubs to process`);
 
     // Update each club with coordinates
-    const updates = clubs.map(async (club) => {
+    const updates = clubs.map(async (club: { id: string; location: string | null; name: string }) => {
       if (!club.location) return null;
       
       const coords = await geocodeLocation(club.location);

@@ -2,17 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-
-interface Event {
-  id: string;
-  title: string;
-  eventType: string;
-  location: string;
-  startDate: string;
-  cost: number;
-  description?: string;
-  imageUrl?: string;
-}
+import type { Event } from "@/types";
 
 export const dynamic = "force-dynamic";
 

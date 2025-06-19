@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import Link from "next/link";
-import { Prisma } from "@prisma/client";
 
 function getMonthOptions() {
   return [
@@ -24,7 +23,11 @@ async function getEvents({
   country?: string;
   month?: string;
 }) {
-  const where: Prisma.EventWhereInput = {};
+  const where: {
+    eventType?: string;
+    location?: { contains: string };
+    startDate?: { gte: Date; lt: Date };
+  } = {};
   if (eventType) where.eventType = eventType;
   if (country && country !== "") {
     where.location = { contains: country };
@@ -73,13 +76,13 @@ export default async function EventsPage({
     ];
     const countries = Array.from(
       new Set(
-        (await prisma.event.findMany()).map((e) =>
+        (await prisma.event.findMany()).map((e: { location: string }) =>
           (e.location?.split(",").pop() || "").trim()
         )
       )
     )
       .filter(Boolean)
-      .sort();
+      .sort() as string[];
     const months = getMonthOptions();
 
     return (
@@ -104,9 +107,9 @@ export default async function EventsPage({
             className="p-2 border rounded"
           >
             <option value="">All Countries</option>
-            {countries.map((c) => (
-              <option key={c} value={c}>
-                {c}
+            {countries.map((country: string) => (
+              <option key={country} value={country}>
+                {country}
               </option>
             ))}
           </select>
