@@ -29,7 +29,6 @@ export default function EditEventPage() {
     startDate: string;
     cost: number;
     imageUrl?: string;
-    [key: string]: any; // Add this if there are additional dynamic fields
   }
 
   const [event, setEvent] = useState<EventData | null>(null);
