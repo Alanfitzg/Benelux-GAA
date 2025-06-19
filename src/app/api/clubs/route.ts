@@ -26,4 +26,31 @@ export async function POST(req: NextRequest) {
     console.error('Error creating club:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
+}
+
+export async function GET() {
+  try {
+    const clubs = await prisma.club.findMany({
+      orderBy: { name: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        imageUrl: true,
+        region: true,
+        subRegion: true,
+        map: true,
+        location: true,
+        latitude: true,
+        longitude: true,
+        facebook: true,
+        instagram: true,
+        website: true,
+        codes: true,
+      },
+    });
+    return NextResponse.json(clubs);
+  } catch (error) {
+    console.error('Error fetching clubs:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
 } 

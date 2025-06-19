@@ -1,55 +1,53 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   directUrl = env("DATABASE_URL")
 }
 
 model Event {
-  id             String   @id @default(cuid())
-  title          String
-  eventType      String
-  location       String       // e.g. "Boston, USA"
-  latitude       Float?       // for mapping
-  longitude      Float?       // for mapping
-  startDate      DateTime
-  endDate        DateTime?    // optional, for multi-day events
-  cost           Float?
-  description    String?
-  isRecurring    Boolean       @default(false)
-  imageUrl       String?       // stored in AWS S3
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  interests      Interest[]
+  id          String     @id @default(cuid())
+  title       String
+  eventType   String
+  location    String
+  latitude    Float?
+  longitude   Float?
+  startDate   DateTime
+  endDate     DateTime?
+  cost        Float?
+  description String?
+  isRecurring Boolean    @default(false)
+  imageUrl    String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  interests   Interest[]
 }
 
 model Interest {
   id          String   @id @default(cuid())
   eventId     String
-  event       Event    @relation(fields: [eventId], references: [id])
   name        String
   email       String
   message     String?
   submittedAt DateTime @default(now())
+  event       Event    @relation(fields: [eventId], references: [id])
 }
 
 model Club {
-  id         String   @id @default(cuid())
-  name       String
-  region     String?
-  subRegion  String?
-  map        String?
-  location   String?
-  facebook   String?
-  instagram  String?
-  website    String?
-  codes      String?
-  imageUrl   String? // S3 image URL
+  id        String  @id @default(cuid())
+  name      String
+  region    String?
+  subRegion String?
+  map       String?
+  facebook  String?
+  instagram String?
+  website   String?
+  codes     String?
+  imageUrl  String?
+  location  String?
+  latitude  Float?
+  longitude Float?
 }
