@@ -4,13 +4,29 @@ import Map, { Marker, Popup, ViewStateChangeEvent } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Link from "next/link";
 import Image from "next/image";
-import type { Club, Event } from "@/types";
+import type { Event } from "@/types";
+
+type ClubMapItem = {
+  id: string;
+  name: string;
+  map: string | null;
+  imageUrl: string | null;
+  region: string | null;
+  subRegion: string | null;
+  location: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  facebook: string | null;
+  instagram: string | null;
+  website: string | null;
+  codes: string | null;
+};
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
 export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
-  const [clubs, setClubs] = useState<Club[]>([]);
+  const [clubs, setClubs] = useState<ClubMapItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
@@ -58,7 +74,7 @@ export default function Home() {
     }
   };
 
-  const handleClubClick = (club: Club) => {
+  const handleClubClick = (club: ClubMapItem) => {
     if (typeof club.latitude === 'number' && typeof club.longitude === 'number') {
       setViewState({
         longitude: club.longitude,

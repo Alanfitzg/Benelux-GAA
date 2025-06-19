@@ -1,7 +1,20 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import Link from "next/link";
-import type { Club } from "@/types";
+
+type ClubListItem = {
+  id: string;
+  name: string;
+  map: string | null;
+  imageUrl: string | null;
+  region: string | null;
+  subRegion: string | null;
+  location: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  website: string | null;
+  codes: string | null;
+};
 
 async function getClubs() {
   return await prisma.club.findMany({
@@ -38,7 +51,7 @@ export default async function ClubsPage() {
         </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {clubs.map((club: Club) => (
+        {clubs.map((club: ClubListItem) => (
           <Link key={club.id} href={`/clubs/${club.id}`} className="block">
             <div className="bg-white p-4 rounded shadow hover:bg-gray-50 cursor-pointer">
               <h2 className="text-lg font-semibold mb-1 text-green-800">

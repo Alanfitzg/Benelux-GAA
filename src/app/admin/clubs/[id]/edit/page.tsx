@@ -2,17 +2,28 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import type { Club } from "@/types";
 import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
 
-type ClubWithImage = Club & { imageUrl?: string };
+type ClubDetails = {
+  id: string;
+  name: string;
+  location: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  website: string | null;
+  codes: string | null;
+  region: string | null;
+  subRegion: string | null;
+  map: string | null;
+  imageUrl: string | null;
+};
 
 export default function EditClubPage() {
   const router = useRouter();
   const params = useParams();
   const clubId = params?.id as string;
-  const [club, setClub] = useState<ClubWithImage | null>(null);
+  const [club, setClub] = useState<ClubDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
