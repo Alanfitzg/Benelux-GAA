@@ -15,14 +15,24 @@ const eventTypes = [
   "Higher Education",
   "Youth",
   "Elite training camp",
-  "Beach GAA"
+  "Beach GAA",
 ];
 
 export default function EditEventPage() {
   const router = useRouter();
   const params = useParams();
   const eventId = params?.id as string;
-  const [event, setEvent] = useState<any>(null);
+  interface EventData {
+    title: string;
+    eventType: string;
+    location: string;
+    startDate: string;
+    cost: number;
+    imageUrl?: string;
+    [key: string]: any; // Add this if there are additional dynamic fields
+  }
+
+  const [event, setEvent] = useState<EventData | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -89,7 +99,9 @@ export default function EditEventPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-2">
       <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl p-8">
-        <h1 className="text-2xl font-bold mb-6 text-[#032572] text-center">Edit Event</h1>
+        <h1 className="text-2xl font-bold mb-6 text-[#032572] text-center">
+          Edit Event
+        </h1>
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
             Event updated successfully!
@@ -102,21 +114,29 @@ export default function EditEventPage() {
         )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Event Type</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Event Type
+            </label>
             <select
               name="eventType"
               className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-900 focus:border-[#032572] focus:ring-2 focus:ring-blue-200 placeholder-gray-400"
               required
               defaultValue={event.eventType}
             >
-              <option value="" disabled>Select Type</option>
+              <option value="" disabled>
+                Select Type
+              </option>
               {eventTypes.map((type) => (
-                <option key={type} value={type}>{type}</option>
+                <option key={type} value={type}>
+                  {type}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Event Title</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Event Title
+            </label>
             <input
               type="text"
               name="title"
@@ -127,7 +147,9 @@ export default function EditEventPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Location</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Location
+            </label>
             <input
               type="text"
               name="location"
@@ -138,7 +160,9 @@ export default function EditEventPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Start Date</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Start Date
+            </label>
             <input
               type="date"
               name="startDate"
@@ -148,7 +172,9 @@ export default function EditEventPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Cost</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Cost
+            </label>
             <input
               type="number"
               name="cost"
@@ -159,14 +185,18 @@ export default function EditEventPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-600 mb-1">Event Image</label>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Event Image
+            </label>
             <input
               type="file"
               name="image"
               accept="image/*"
               className="w-full text-gray-900"
             />
-            {uploading && <div className="text-blue-700">Uploading image...</div>}
+            {uploading && (
+              <div className="text-blue-700">Uploading image...</div>
+            )}
             {imageUrl && (
               <Image
                 src={imageUrl}
@@ -177,9 +207,14 @@ export default function EditEventPage() {
               />
             )}
           </div>
-          <button type="submit" className="w-full bg-[#032572] hover:bg-blue-900 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest">Update Event</button>
+          <button
+            type="submit"
+            className="w-full bg-[#032572] hover:bg-blue-900 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest"
+          >
+            Update Event
+          </button>
         </form>
       </div>
     </div>
   );
-} 
+}
