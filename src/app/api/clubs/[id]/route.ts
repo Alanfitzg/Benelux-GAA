@@ -23,8 +23,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
       data: {
         name: data.name,
         map: data.map,
-        city: data.city,
-        country: data.country,
+        location: data.location,
         facebook: data.facebook,
         instagram: data.instagram,
         website: data.website,

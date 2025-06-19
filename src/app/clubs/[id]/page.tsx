@@ -10,7 +10,7 @@ export default async function ClubDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const club: Club | null = await prisma.club.findUnique({ where: { id } });
+  const club = (await prisma.club.findUnique({ where: { id } })) as Club & { location?: string };
   if (!club) {
     return <div className="text-red-600">Club not found.</div>;
   }
@@ -31,13 +31,13 @@ export default async function ClubDetailsPage({
         </h1>
         <div className="flex justify-center mb-4">
           <span className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wide">
-            {club.country}
+            {club.location || '-'}
           </span>
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4">
           <div>
-            <p className="text-gray-500 text-xs font-semibold">City</p>
-            <p className="text-gray-800">{club.city || "-"}</p>
+            <p className="text-gray-500 text-xs font-semibold">Location</p>
+            <p className="text-gray-800">{club.location || "-"}</p>
           </div>
           <div>
             <p className="text-gray-500 text-xs font-semibold">Codes</p>

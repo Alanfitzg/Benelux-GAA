@@ -1,0 +1,1 @@
+- Added latitude and longitude fields to Event model for geocoding support. 

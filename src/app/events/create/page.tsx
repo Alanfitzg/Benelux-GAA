@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import LocationAutocomplete from './LocationAutocomplete';
+import ImageUpload from '../../components/ImageUpload';
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +22,8 @@ export default function CreateEvent() {
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [location, setLocation] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,7 +32,7 @@ export default function CreateEvent() {
     setImageUrl(null);
     const formData = new FormData(event.currentTarget);
     const startDate = formData.get("startDate") as string;
-    const file = formData.get("image") as File;
+    const file = imageFile;
     let uploadedImageUrl = "";
     if (file && file.size > 0) {
       setUploading(true);
@@ -50,7 +54,7 @@ export default function CreateEvent() {
     const data: EventFormData = {
       title: formData.get("title") as string,
       eventType: formData.get("eventType") as string,
-      location: formData.get("location") as string,
+      location,
       startDate: new Date(startDate).toISOString(),
       cost: parseFloat(formData.get("cost") as string),
       imageUrl: uploadedImageUrl || undefined,
@@ -113,13 +117,7 @@ export default function CreateEvent() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">Location</label>
-            <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-900 focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400"
-              required
-            />
+            <LocationAutocomplete value={location} onChange={setLocation} />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">Start Date</label>
@@ -142,22 +140,12 @@ export default function CreateEvent() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">Event Image</label>
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              className="w-full text-gray-900"
+            <ImageUpload
+              value={imageUrl}
+              onChange={file => setImageFile(file)}
+              uploading={uploading}
+              error={error}
             />
-            {uploading && <div className="text-blue-700">Uploading image...</div>}
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt="Uploaded event"
-                width={128}
-                height={128}
-                className="max-h-32 mt-2 object-contain rounded"
-              />
-            )}
           </div>
           <button
             type="submit"

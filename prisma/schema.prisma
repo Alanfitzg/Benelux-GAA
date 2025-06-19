@@ -46,8 +46,7 @@ model Club {
   region     String?
   subRegion  String?
   map        String?
-  city       String?
-  country    String?
+  location   String?
   facebook   String?
   instagram  String?
   website    String?

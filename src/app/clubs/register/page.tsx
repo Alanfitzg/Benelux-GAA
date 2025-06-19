@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
-import countryList from "./countryList";
+import ImageUpload from '../../components/ImageUpload';
+import LocationAutocomplete from '../../events/create/LocationAutocomplete';
 
 interface ClubFormData {
   name: string;
+  location?: string;
   region?: string;
   subRegion?: string;
   map?: string;
@@ -23,6 +26,9 @@ export default function RegisterClubPage() {
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [location, setLocation] = useState('');
+  const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -31,8 +37,7 @@ export default function RegisterClubPage() {
     setUploading(false);
     setImageUrl(null);
     const form = event.currentTarget;
-    const formData = new FormData(form);
-    const file = formData.get('image') as File;
+    const file = imageFile;
     let uploadedImageUrl = '';
     if (file && file.size > 0) {
       setUploading(true);
@@ -53,16 +58,14 @@ export default function RegisterClubPage() {
     }
     // Prepare club data
     const data: ClubFormData = {
-      name: formData.get('name') as string,
-      region: (formData.get('region') as string) || undefined,
-      subRegion: (formData.get('subRegion') as string) || undefined,
-      map: (formData.get('map') as string) || undefined,
-      city: (formData.get('city') as string) || undefined,
-      country: (formData.get('country') as string) || undefined,
-      facebook: (formData.get('facebook') as string) || undefined,
-      instagram: (formData.get('instagram') as string) || undefined,
-      website: (formData.get('website') as string) || undefined,
-      codes: (formData.get('codes') as string) || undefined,
+      name: (form.elements.namedItem('name') as HTMLInputElement)?.value || '',
+      location,
+      region: (form.elements.namedItem('region') as HTMLInputElement)?.value || undefined,
+      subRegion: (form.elements.namedItem('subRegion') as HTMLInputElement)?.value || undefined,
+      facebook: (form.elements.namedItem('facebook') as HTMLInputElement)?.value || undefined,
+      instagram: (form.elements.namedItem('instagram') as HTMLInputElement)?.value || undefined,
+      website: (form.elements.namedItem('website') as HTMLInputElement)?.value || undefined,
+      codes: (form.elements.namedItem('codes') as HTMLInputElement)?.value || undefined,
       imageUrl: uploadedImageUrl || undefined,
     };
     const res = await fetch('/api/clubs', {
@@ -74,6 +77,7 @@ export default function RegisterClubPage() {
       setSuccess(true);
       form.reset();
       setImageUrl(null);
+      router.push('/clubs');
     } else {
       setError('Failed to register club.');
     }
@@ -115,53 +119,42 @@ export default function RegisterClubPage() {
             <div className="flex gap-4">
               <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Club Name</label>
-                <input name="name" placeholder="Club Name" required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
-              </div>
-              <div className="w-1/2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Map Link</label>
-                <input name="map" placeholder="Map Link" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
+                <input name="name" placeholder="Club Name" required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400 text-gray-900" />
               </div>
             </div>
-            <div className="flex gap-4">
-              <div className="w-1/2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">City</label>
-                <input name="city" placeholder="City" required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
-              </div>
-              <div className="w-1/2">
-                <label className="block text-xs font-medium text-gray-600 mb-1">Country</label>
-                <select name="country" required defaultValue="" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 text-gray-900">
-                  <option value="" disabled>Select Country</option>
-                  {countryList.map((country) => (
-                    <option key={country} value={country}>{country}</option>
-                  ))}
-                </select>
-              </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Location</label>
+              <LocationAutocomplete value={location} onChange={setLocation} />
             </div>
             <div className="flex gap-4">
               <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Facebook URL</label>
-                <input name="facebook" placeholder="Facebook URL" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
+                <input name="facebook" placeholder="Facebook URL" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400 text-gray-900" />
               </div>
               <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Instagram URL</label>
-                <input name="instagram" placeholder="Instagram URL" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
+                <input name="instagram" placeholder="Instagram URL" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400 text-gray-900" />
               </div>
             </div>
             <div className="flex gap-4">
               <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Website</label>
-                <input name="website" placeholder="Website" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
+                <input name="website" placeholder="Website" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400 text-gray-900" />
               </div>
               <div className="w-1/2">
                 <label className="block text-xs font-medium text-gray-600 mb-1">Codes</label>
-                <input name="codes" placeholder="Codes" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400::placeholder" />
+                <input name="codes" placeholder="Codes" className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400 text-gray-900" />
               </div>
             </div>
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Image</label>
-              <input name="image" type="file" accept="image/*" className="w-full text-gray-700" />
+              <ImageUpload
+                value={imageUrl}
+                onChange={file => setImageFile(file)}
+                uploading={uploading}
+                error={error}
+              />
             </div>
-            {uploading && <div className="text-blue-700">Uploading image...</div>}
             {imageUrl && (
               <Image
                 src={imageUrl}

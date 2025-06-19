@@ -5,6 +5,8 @@ import { useRouter, useParams } from "next/navigation";
 import countryList from "../../../../clubs/register/countryList";
 import { Club } from "@prisma/client";
 import Image from "next/image";
+import ImageUpload from '../../../../components/ImageUpload';
+import LocationAutocomplete from '../../../../components/LocationAutocomplete';
 
 type ClubWithImage = Club & { imageUrl?: string };
 
@@ -18,6 +20,7 @@ export default function EditClubPage() {
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetch(`/api/clubs/${clubId}`)
@@ -36,8 +39,7 @@ export default function EditClubPage() {
     setSuccess(false);
     setUploading(false);
     const form = event.currentTarget;
-    const formData = new FormData(form);
-    const file = formData.get("image") as File;
+    const file = imageFile;
     let uploadedImageUrl = imageUrl || "";
     if (file && file.size > 0) {
       setUploading(true);
@@ -57,14 +59,12 @@ export default function EditClubPage() {
       setImageUrl(uploadedImageUrl);
     }
     const data = {
-      name: formData.get("name"),
-      map: formData.get("map"),
-      city: formData.get("city"),
-      country: formData.get("country"),
-      facebook: formData.get("facebook"),
-      instagram: formData.get("instagram"),
-      website: formData.get("website"),
-      codes: formData.get("codes"),
+      name: form.name,
+      location: club.location,
+      facebook: form.facebook,
+      instagram: form.instagram,
+      website: form.website,
+      codes: form.codes,
       imageUrl: uploadedImageUrl || undefined,
     };
     const res = await fetch(`/api/clubs/${clubId}`, {
@@ -104,23 +104,8 @@ export default function EditClubPage() {
               <input name="name" defaultValue={club.name} required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-[#032572] focus:ring-2 focus:ring-blue-200 placeholder-gray-400::placeholder" />
             </div>
             <div className="w-1/2">
-              <label className="block text-xs font-medium text-gray-600 mb-1">Map Link</label>
-              <input name="map" defaultValue={club.map || ""} className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-[#032572] focus:ring-2 focus:ring-blue-200 placeholder-gray-400::placeholder" />
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <div className="w-1/2">
-              <label className="block text-xs font-medium text-gray-600 mb-1">City</label>
-              <input name="city" defaultValue={club.city || ""} required className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-[#032572] focus:ring-2 focus:ring-blue-200 placeholder-gray-400::placeholder" />
-            </div>
-            <div className="w-1/2">
-              <label className="block text-xs font-medium text-gray-600 mb-1">Country</label>
-              <select name="country" required defaultValue={club.country || ""} className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white focus:border-[#032572] focus:ring-2 focus:ring-blue-200 text-gray-900">
-                <option value="" disabled>Select Country</option>
-                {countryList.map((country: string) => (
-                  <option key={country} value={country}>{country}</option>
-                ))}
-              </select>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Location</label>
+              <LocationAutocomplete value={club.location || ""} onChange={val => setClub({ ...club, location: val })} />
             </div>
           </div>
           <div className="flex gap-4">
@@ -145,17 +130,12 @@ export default function EditClubPage() {
           </div>
           <div>
             <label className="block text-xs font-medium text-gray-600 mb-1">Image</label>
-            <input name="image" type="file" accept="image/*" className="w-full text-gray-900" />
-            {uploading && <div className="text-blue-700">Uploading image...</div>}
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt="Club"
-                width={128}
-                height={128}
-                className="max-h-32 mt-2 object-contain rounded"
-              />
-            )}
+            <ImageUpload
+              value={imageUrl}
+              onChange={file => setImageFile(file)}
+              uploading={uploading}
+              error={error}
+            />
           </div>
           <button type="submit" className="w-full bg-[#032572] hover:bg-blue-900 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest">Update Club</button>
         </form>

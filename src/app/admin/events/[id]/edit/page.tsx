@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
+import ImageUpload from '../../../../components/ImageUpload';
 
 const eventTypes = [
   "Mens Gaelic Football",
@@ -36,6 +37,7 @@ export default function EditEventPage() {
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetch(`/api/events/${eventId}`)
@@ -52,8 +54,7 @@ export default function EditEventPage() {
     setSuccess(false);
     setUploading(false);
     const form = eventForm.currentTarget;
-    const formData = new FormData(form);
-    const file = formData.get("image") as File;
+    const file = imageFile;
     let uploadedImageUrl = imageUrl || "";
     if (file && file.size > 0) {
       setUploading(true);
@@ -73,11 +74,11 @@ export default function EditEventPage() {
       setImageUrl(uploadedImageUrl);
     }
     const data = {
-      title: formData.get("title"),
-      eventType: formData.get("eventType"),
-      location: formData.get("location"),
-      startDate: formData.get("startDate"),
-      cost: parseFloat(formData.get("cost") as string),
+      title: (form.title as unknown as HTMLInputElement).value,
+      eventType: (form.eventType as unknown as HTMLSelectElement).value,
+      location: (form.location as unknown as HTMLInputElement).value,
+      startDate: (form.startDate as unknown as HTMLInputElement).value,
+      cost: parseFloat((form.cost as unknown as HTMLInputElement).value),
       imageUrl: uploadedImageUrl || undefined,
     };
     const res = await fetch(`/api/events/${eventId}`, {
@@ -187,24 +188,12 @@ export default function EditEventPage() {
             <label className="block text-sm font-medium text-gray-600 mb-1">
               Event Image
             </label>
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              className="w-full text-gray-900"
+            <ImageUpload
+              value={imageUrl}
+              onChange={file => setImageFile(file)}
+              uploading={uploading}
+              error={error}
             />
-            {uploading && (
-              <div className="text-blue-700">Uploading image...</div>
-            )}
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt="Event"
-                width={128}
-                height={128}
-                className="max-h-32 mt-2 object-contain rounded"
-              />
-            )}
           </div>
           <button
             type="submit"

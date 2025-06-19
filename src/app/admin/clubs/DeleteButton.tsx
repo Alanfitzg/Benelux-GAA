@@ -10,7 +10,7 @@ export default function DeleteButton({ id, onDelete }: { id: string; onDelete: (
   };
 
   return (
-    <form action={onDelete} method="post" style={{ display: 'inline' }} onSubmit={handleDelete}>
+    <form action={onDelete} style={{ display: 'inline' }} onSubmit={handleDelete}>
       <input type="hidden" name="id" value={id} />
       <button type="submit" className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">Delete</button>
     </form>
