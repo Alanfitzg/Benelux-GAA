@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import countryList from "../../../../clubs/register/countryList";
 import { Club } from "@prisma/client";
-import Image from "next/image";
 import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
 
@@ -60,7 +58,7 @@ export default function EditClubPage() {
     }
     const data = {
       name: form.name,
-      location: club.location,
+      location: club?.location || "",
       facebook: form.facebook,
       instagram: form.instagram,
       website: form.website,

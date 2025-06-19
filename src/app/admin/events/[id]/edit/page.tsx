@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import Image from "next/image";
 import ImageUpload from '../../../../components/ImageUpload';
 
 const eventTypes = [

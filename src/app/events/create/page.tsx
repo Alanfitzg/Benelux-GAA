@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import LocationAutocomplete from './LocationAutocomplete';
 import ImageUpload from '../../components/ImageUpload';
 
