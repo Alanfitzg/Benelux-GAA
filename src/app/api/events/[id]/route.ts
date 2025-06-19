@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { NextRequest } from 'next/server';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -12,14 +13,25 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
   return NextResponse.json(event);
 }
 
-export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-  const body = await request.json();
-  const event = await prisma.event.update({
-    where: { id },
-    data: body,
-  });
-  return NextResponse.json(event);
+  try {
+    const body = await request.json();
+    let startDate = body.startDate;
+    if (startDate && typeof startDate === 'string' && !startDate.includes('T')) {
+      startDate = new Date(startDate).toISOString();
+    }
+    const event = await prisma.event.update({
+      where: { id },
+      data: {
+        ...body,
+        startDate,
+      },
+    });
+    return NextResponse.json(event);
+  } catch {
+    return NextResponse.json({ error: 'Error updating event' }, { status: 400 });
+  }
 }
 
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
