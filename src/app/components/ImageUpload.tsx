@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useRef, useState } from "react";
 
 export default function ImageUpload({
@@ -42,10 +43,10 @@ export default function ImageUpload({
         }`}
         onClick={() => fileInputRef.current?.click()}
         onDrop={handleDrop}
-        onDragOver={e => e.preventDefault()}
+        onDragOver={(e) => e.preventDefault()}
       >
         {preview ? (
-          <img
+          <Image
             src={preview}
             alt="Preview"
             className="max-h-40 mb-2 rounded object-contain"
@@ -89,8 +90,10 @@ export default function ImageUpload({
           Remove image
         </button>
       )}
-      {uploading && <div className="text-blue-700 mt-2">Uploading image...</div>}
+      {uploading && (
+        <div className="text-blue-700 mt-2">Uploading image...</div>
+      )}
       {error && <div className="text-red-600 mt-2">{error}</div>}
     </div>
   );
-} 
+}

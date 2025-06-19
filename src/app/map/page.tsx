@@ -1,25 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Map, { Marker, Popup } from "react-map-gl";
+import Map, { Marker, Popup, ViewStateChangeEvent } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Link from "next/link";
+import Image from "next/image";
 
 // const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN!;
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
-
-const cityCoordinates: Record<string, [number, number]> = {
-  Dublin: [53.3498, -6.2603],
-  London: [51.5074, -0.1278],
-  Edinburgh: [55.9533, -3.1883],
-  Paris: [48.8566, 2.3522],
-  Berlin: [52.52, 13.405],
-  Madrid: [40.4168, -3.7038],
-  Rome: [41.9028, 12.4964],
-  Amsterdam: [52.3676, 4.9041],
-  Glasgow: [55.8642, -4.2518],
-  Munich: [48.1351, 11.582],
-  // Add more as needed
-};
 
 interface Event {
   id: string;
@@ -51,11 +38,8 @@ export default function MapPage() {
   }, []);
 
   const handleSidebarClick = (event: Event) => {
-    const coords = event.latitude && event.longitude
-      ? [event.latitude, event.longitude]
-      : cityCoordinates[event.location.split(",")[0].trim()];
-    if (coords) {
-      setViewState({ longitude: coords[1], latitude: coords[0], zoom: 8 });
+    if (event.latitude !== undefined && event.longitude !== undefined) {
+      setViewState({ longitude: event.longitude, latitude: event.latitude, zoom: 8 });
       setSelectedEventId(event.id);
     }
   };
@@ -84,10 +68,13 @@ export default function MapPage() {
                 onClick={() => handleSidebarClick(event)}
               >
                 {/* Avatar/Icon */}
-                <img
+                <Image
                   src="https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/tournament-icon.jpg"
                   alt="Event"
+                  width={40}
+                  height={40}
                   className="w-10 h-10 rounded-full object-contain bg-white border"
+                  priority
                 />
                 <div className="flex-1">
                   <div className="font-semibold text-lg text-gray-900">
@@ -115,43 +102,40 @@ export default function MapPage() {
       <div className="flex-1 relative">
         <Map
           {...viewState}
-          onMove={(evt: any) => setViewState(evt.viewState)}
+          onMove={(evt: ViewStateChangeEvent) => setViewState(evt.viewState)}
           style={{ width: "100%", height: "100%" }}
           mapStyle="mapbox://styles/mapbox/light-v11"
           mapboxAccessToken={MAPBOX_TOKEN}
         >
           {events.map((event) => {
-            const coords = event.latitude && event.longitude
-              ? [event.latitude, event.longitude]
-              : cityCoordinates[event.location.split(",")[0].trim()];
-            if (!coords) return null;
+            if (event.latitude === undefined || event.longitude === undefined) return null;
             return (
               <Marker
                 key={event.id}
-                longitude={coords[1]}
-                latitude={coords[0]}
+                longitude={event.longitude}
+                latitude={event.latitude}
                 anchor="bottom"
                 onClick={() => setSelectedEventId(event.id)}
               >
-                <img
+                <Image
                   src="https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/tournament-icon.jpg"
                   alt="Event"
+                  width={32}
+                  height={32}
                   className="w-8 h-8 drop-shadow"
+                  priority
                 />
               </Marker>
             );
           })}
           {events.map((event) => {
             if (event.id !== selectedEventId) return null;
-            const coords = event.latitude && event.longitude
-              ? [event.latitude, event.longitude]
-              : cityCoordinates[event.location.split(",")[0].trim()];
-            if (!coords) return null;
+            if (event.latitude === undefined || event.longitude === undefined) return null;
             return (
               <Popup
                 key={event.id}
-                longitude={coords[1]}
-                latitude={coords[0]}
+                longitude={event.longitude}
+                latitude={event.latitude}
                 anchor="top"
                 closeOnClick={false}
                 onClose={() => setSelectedEventId(null)}
