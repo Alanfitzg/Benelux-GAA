@@ -60,7 +60,8 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     return NextResponse.json(event);
   } catch (error) {
     console.error('Error updating event:', error);
-    return NextResponse.json({ error: MESSAGES.ERROR.GENERIC, details: error.message }, { status: 400 });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    return NextResponse.json({ error: MESSAGES.ERROR.GENERIC, details: errorMessage }, { status: 400 });
   }
 }
 
