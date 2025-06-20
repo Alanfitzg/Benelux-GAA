@@ -17,21 +17,69 @@ export default async function AdminEventsPage() {
 
   const events = await prisma.event.findMany({ orderBy: { startDate: 'asc' } });
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6 text-green-800">Manage Events</h1>
-      <div className={`grid ${UI.GRID_LAYOUTS.RESPONSIVE} gap-4`}>
-        {events.map(event => (
-          <div key={event.id} className={UI.CARD_STYLES.DEFAULT}>
-            <h2 className="text-lg font-semibold mb-1 text-green-800">{event.title}</h2>
-            <p className="text-gray-700"><strong>Type:</strong> {event.eventType}</p>
-            <p className="text-gray-700"><strong>Location:</strong> {event.location}</p>
-            <p className="text-gray-700"><strong>Start Date:</strong> {formatShortDate(event.startDate)}</p>
-            <div className="mt-2 space-x-2">
-              <Link href={`/admin/events/${event.id}/edit`} className={UI.BUTTON_STYLES.INFO}>{MESSAGES.BUTTONS.EDIT}</Link>
-              <DeleteButton id={event.id} onDelete={deleteEvent} itemType="event" />
-            </div>
-          </div>
-        ))}
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">Manage Events</h1>
+        <div className="space-x-3">
+          <Link 
+            href="/events/create" 
+            className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
+          >
+            Create Event
+          </Link>
+          <Link 
+            href="/admin" 
+            className="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-300 transition"
+          >
+            Back to Dashboard
+          </Link>
+        </div>
+      </div>
+      
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50 border-b border-gray-200">
+              <tr>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {events.map(event => (
+                <tr key={event.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">{event.title}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-secondary/10 text-secondary">
+                      {event.eventType}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    📍 {event.location}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    📅 {formatShortDate(event.startDate)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                    <Link 
+                      href={`/admin/events/${event.id}/edit`} 
+                      className="text-primary hover:text-primary/80 transition"
+                    >
+                      Edit
+                    </Link>
+                    <span className="text-gray-300">|</span>
+                    <DeleteButton id={event.id} onDelete={deleteEvent} itemType="event" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

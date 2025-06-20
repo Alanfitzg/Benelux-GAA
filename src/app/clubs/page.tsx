@@ -43,20 +43,20 @@ export const dynamic = "force-dynamic";
 export default async function ClubsPage() {
   const clubs = await getClubs();
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-gray-900">European Gaelic Clubs</h1>
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold text-gray-900">European Gaelic Clubs</h1>
         <Link
           href="/clubs/register"
-          className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90 transition"
+          className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
         >
           Register a Club
         </Link>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {clubs.map((club: ClubListItem) => (
           <Link key={club.id} href={`/clubs/${club.id}`} className="block">
-            <div className="bg-white p-4 rounded shadow hover:bg-gray-50 cursor-pointer flex items-center gap-4">
+            <div className="bg-white p-5 rounded-lg shadow hover:shadow-lg transition-shadow hover:bg-gray-50 cursor-pointer flex items-center gap-4">
               <Image
                 src={club.imageUrl || "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"}
                 alt={`${club.name} crest`}

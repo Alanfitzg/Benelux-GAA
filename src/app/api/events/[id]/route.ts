@@ -18,20 +18,49 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
   const { id } = await context.params;
   try {
     const body = await request.json();
+    console.log('Update event body:', body);
+    
     let startDate = body.startDate;
     if (startDate && typeof startDate === 'string' && !startDate.includes('T')) {
       startDate = new Date(startDate).toISOString();
     }
+    
+    let endDate = body.endDate;
+    if (endDate && typeof endDate === 'string' && !endDate.includes('T')) {
+      endDate = new Date(endDate).toISOString();
+    }
+    
+    // Clean the data to only include valid fields
+    const cost = body.cost !== undefined && body.cost !== null && body.cost !== '' 
+      ? (typeof body.cost === 'number' ? body.cost : parseFloat(body.cost))
+      : null;
+    
+    // Validate cost is not NaN
+    if (cost !== null && isNaN(cost)) {
+      throw new Error('Invalid cost value');
+    }
+    
+    const cleanData = {
+      title: body.title,
+      eventType: body.eventType,
+      location: body.location,
+      startDate,
+      endDate: endDate || null,
+      cost,
+      description: body.description || null,
+      imageUrl: body.imageUrl || null,
+    };
+    
+    console.log('Clean data:', cleanData);
+    
     const event = await prisma.event.update({
       where: { id },
-      data: {
-        ...body,
-        startDate,
-      },
+      data: cleanData,
     });
     return NextResponse.json(event);
-  } catch {
-    return NextResponse.json({ error: MESSAGES.ERROR.GENERIC }, { status: 400 });
+  } catch (error) {
+    console.error('Error updating event:', error);
+    return NextResponse.json({ error: MESSAGES.ERROR.GENERIC, details: error.message }, { status: 400 });
   }
 }
 

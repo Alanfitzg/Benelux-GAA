@@ -33,7 +33,7 @@ export default function RootLayout({
         className={`${inter.variable} ${poppins.variable} font-inter antialiased bg-gray-50 min-h-screen`}
       >
         <ProfessionalHeader />
-        <main className="pt-20">
+        <main className="pt-16">
           {children}
         </main>
       </body>

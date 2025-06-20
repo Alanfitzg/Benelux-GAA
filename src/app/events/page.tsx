@@ -76,13 +76,21 @@ export default async function EventsPage({
     const months = getMonthOptions();
 
     return (
-      <div>
-        <h1 className="text-2xl font-bold mb-4">Events</h1>
-        <form className="flex flex-wrap gap-4 mb-6" method="get">
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-900">Upcoming Events</h1>
+          <Link
+            href="/events/create"
+            className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
+          >
+            Create Event
+          </Link>
+        </div>
+        <form className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4" method="get">
           <select
             name="eventType"
             defaultValue={eventType}
-            className="p-2 border rounded"
+            className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
           >
             <option value="">All Types</option>
             {eventTypes.filter(Boolean).map((type) => (
@@ -94,7 +102,7 @@ export default async function EventsPage({
           <select
             name="country"
             defaultValue={country}
-            className="p-2 border rounded"
+            className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
           >
             <option value="">All Countries</option>
             {countries.map((country: string) => (
@@ -106,7 +114,7 @@ export default async function EventsPage({
           <select
             name="month"
             defaultValue={month}
-            className="p-2 border rounded"
+            className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
           >
             {months.map((m) => (
               <option key={m.value} value={m.value}>
@@ -116,12 +124,12 @@ export default async function EventsPage({
           </select>
           <button
             type="submit"
-            className={UI.BUTTON_STYLES.PRIMARY}
+            className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
           >
-            Filter
+            Apply Filters
           </button>
         </form>
-        <div className={`grid ${UI.GRID_LAYOUTS.RESPONSIVE} gap-4`}>
+        <div className={`grid ${UI.GRID_LAYOUTS.RESPONSIVE} gap-6`}>
           {events.map(
             (event: {
               id: string;
@@ -131,28 +139,29 @@ export default async function EventsPage({
               startDate: Date;
               cost: number | null;
             }) => (
-              <div key={event.id} className={UI.CARD_STYLES.DEFAULT}>
-                <h2 className="text-xl font-semibold mb-2 text-primary">
+              <div key={event.id} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                <h2 className="text-xl font-semibold mb-3 text-primary">
                   {event.title}
                 </h2>
-                <p className="text-gray-700">
-                  <strong>Type:</strong> {event.eventType}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Location:</strong> {event.location}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Start Date:</strong>{" "}
-                  {formatShortDate(event.startDate)}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Cost:</strong> €{event.cost ?? MESSAGES.DEFAULTS.PLACEHOLDER}
-                </p>
+                <div className="space-y-2 text-gray-700">
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">Type:</span> {event.eventType}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">📍 Location:</span> {event.location}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">📅 Date:</span> {formatShortDate(event.startDate)}
+                  </p>
+                  <p className="flex items-center">
+                    <span className="font-medium mr-2">💰 Cost:</span> €{event.cost ?? "TBD"}
+                  </p>
+                </div>
                 <Link
                   href={`/events/${event.id}`}
-                  className={`mt-2 inline-block ${UI.BUTTON_STYLES.PRIMARY}`}
+                  className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
                 >
-                  {MESSAGES.BUTTONS.VIEW_DETAILS}
+                  View Details →
                 </Link>
               </div>
             )

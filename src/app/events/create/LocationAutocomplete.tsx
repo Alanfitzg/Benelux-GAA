@@ -37,16 +37,16 @@ export default function LocationAutocomplete({ value, onChange }: { value: strin
         onBlur={() => setTimeout(() => setShowSuggestions(false), UI.AUTOCOMPLETE_BLUR_TIMEOUT)}
         onFocus={() => setShowSuggestions(true)}
         placeholder={MESSAGES.DEFAULTS.LOCATION_PLACEHOLDER}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
+        className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
         autoComplete="off"
         required
       />
       {showSuggestions && suggestions.length > 0 && (
-        <ul className="absolute z-10 bg-white border border-gray-300 rounded w-full mt-1 max-h-48 overflow-y-auto shadow">
+        <ul className="absolute z-20 bg-white border-2 border-gray-200 rounded-xl w-full mt-2 max-h-48 overflow-y-auto shadow-professional">
           {suggestions.map((s, i) => (
             <li
               key={i}
-              className="px-3 py-2 hover:bg-blue-100 cursor-pointer text-gray-900"
+              className="px-4 py-3 hover:bg-primary/5 cursor-pointer text-gray-900 transition-colors duration-200 border-b border-gray-100 last:border-b-0"
               onMouseDown={() => handleSelect(s.place_name)}
             >
               {s.place_name}

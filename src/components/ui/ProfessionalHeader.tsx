@@ -18,10 +18,10 @@ const ProfessionalHeader = () => {
   }, []);
 
   const navItems = [
-    { href: '/events', label: 'Events', icon: '🎯' },
-    { href: '/clubs', label: 'Clubs', icon: '🏛️' },
-    { href: '/events/create', label: 'Create Event', icon: '🚀' },
-    { href: '/about', label: 'About Us', icon: 'ℹ️' },
+    { href: '/events', label: 'Events' },
+    { href: '/clubs', label: 'Clubs' },
+    { href: '/events/create', label: 'Create Event' },
+    { href: '/about', label: 'About Us' },
   ];
 
   return (
@@ -34,7 +34,7 @@ const ProfessionalHeader = () => {
           : 'bg-gradient-to-r from-primary via-primary-light to-secondary shadow-lg'
       }`}
     >
-      <nav className="container mx-auto px-6 py-4">
+      <nav className="container mx-auto px-6 py-3">
         <div className="flex justify-between items-center">
           {/* Logo Section */}
           <Link href="/" className="flex items-center group">
@@ -47,9 +47,9 @@ const ProfessionalHeader = () => {
                 <Image
                   src="/logo.png"
                   alt="Gaelic Trips Logo"
-                  width={64}
-                  height={64}
-                  className="w-16 h-16 object-contain"
+                  width={56}
+                  height={56}
+                  className="w-14 h-14 object-contain"
                   priority
                 />
               </motion.div>
@@ -84,15 +84,12 @@ const ProfessionalHeader = () => {
               >
                 <Link
                   href={item.href}
-                  className={`group relative px-4 py-2 rounded-xl transition-all duration-300 flex items-center space-x-2 ${
+                  className={`group relative px-4 py-2 rounded-xl transition-all duration-300 ${
                     scrolled
                       ? 'text-gray-700 hover:text-primary hover:bg-primary/10'
                       : 'text-white/90 hover:text-white hover:bg-white/10'
                   }`}
                 >
-                  <span className="text-sm opacity-70 group-hover:opacity-100 transition-opacity">
-                    {item.icon}
-                  </span>
                   <span className="font-medium text-sm">{item.label}</span>
                   <motion.div
                     className={`absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-primary to-secondary group-hover:w-full transition-all duration-300 transform -translate-x-1/2`}
@@ -111,10 +108,7 @@ const ProfessionalHeader = () => {
                 href="/events/create"
                 className="ml-4 px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 hover:from-orange-600 hover:to-red-600"
               >
-                <span className="flex items-center space-x-2">
-                  <span>🚀</span>
-                  <span>Create Trip</span>
-                </span>
+                <span>Create Trip</span>
               </Link>
             </motion.div>
           </div>
@@ -164,13 +158,12 @@ const ProfessionalHeader = () => {
                     <Link
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                      className={`px-4 py-3 rounded-xl transition-all duration-300 ${
                         scrolled
                           ? 'text-gray-700 hover:bg-emerald-50'
                           : 'text-white hover:bg-white/10'
                       }`}
                     >
-                      <span className="text-lg">{item.icon}</span>
                       <span className="font-medium">{item.label}</span>
                     </Link>
                   </motion.div>
