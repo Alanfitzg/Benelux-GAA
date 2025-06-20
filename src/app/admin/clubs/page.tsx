@@ -1,7 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
-import DeleteButton from "./DeleteButton";
+import DeleteButton from "@/components/ui/DeleteButton";
+import { MESSAGES, UI } from "@/lib/constants";
 
 type ClubListItem = {
   id: string;
@@ -15,6 +16,7 @@ type ClubListItem = {
   instagram: string | null;
   website: string | null;
   codes: string | null;
+  teamTypes: string[];
 };
 
 export const dynamic = "force-dynamic";
@@ -41,31 +43,35 @@ export default async function AdminClubsPage() {
       instagram: true,
       website: true,
       codes: true,
+      teamTypes: true,
     },
   });
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6 text-green-800">Manage Clubs</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className={`grid ${UI.GRID_LAYOUTS.RESPONSIVE} gap-4`}>
         {clubs.map((club: ClubListItem) => (
-          <div key={club.id} className="bg-white p-4 rounded shadow">
+          <div key={club.id} className={UI.CARD_STYLES.DEFAULT}>
             <h2 className="text-lg font-semibold mb-1 text-green-800">
               {club.name}
             </h2>
             <p className="text-gray-700">
-              <strong>Region:</strong> {club.region || "-"}
+              <strong>Region:</strong> {club.region || MESSAGES.DEFAULTS.PLACEHOLDER}
             </p>
             <p className="text-gray-700">
-              <strong>Location:</strong> {club.location || "-"}
+              <strong>Location:</strong> {club.location || MESSAGES.DEFAULTS.PLACEHOLDER}
+            </p>
+            <p className="text-gray-700">
+              <strong>Team Types:</strong> {club.teamTypes.length > 0 ? club.teamTypes.join(", ") : MESSAGES.DEFAULTS.PLACEHOLDER}
             </p>
             <div className="mt-2 space-x-2">
               <Link
                 href={`/admin/clubs/${club.id}/edit`}
-                className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className={UI.BUTTON_STYLES.INFO}
               >
-                Edit
+                {MESSAGES.BUTTONS.EDIT}
               </Link>
-              <DeleteButton id={club.id} onDelete={deleteClub} />
+              <DeleteButton id={club.id} onDelete={deleteClub} itemType="club" />
             </div>
           </div>
         ))}

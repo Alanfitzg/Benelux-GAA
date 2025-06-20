@@ -3,20 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import ImageUpload from '../../../../components/ImageUpload';
+import { EVENT_TYPES } from "@/lib/constants/events";
+import { URLS, MESSAGES } from "@/lib/constants";
 
-const eventTypes = [
-  "Mens Gaelic Football",
-  "LGFA",
-  "Hurling",
-  "Camogie",
-  "Rounders",
-  "G4MO",
-  "Dads & Lads",
-  "Higher Education",
-  "Youth",
-  "Elite training camp",
-  "Beach GAA",
-];
+// Use EVENT_TYPES from constants
 
 export default function EditEventPage() {
   const router = useRouter();
@@ -39,7 +29,7 @@ export default function EditEventPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
-    fetch(`/api/events/${eventId}`)
+    fetch(`${URLS.API.EVENTS}/${eventId}`)
       .then((res) => res.json())
       .then((data) => {
         setEvent(data);
@@ -59,13 +49,13 @@ export default function EditEventPage() {
       setUploading(true);
       const uploadData = new FormData();
       uploadData.append("file", file);
-      const uploadRes = await fetch("/api/upload", {
+      const uploadRes = await fetch(URLS.API.UPLOAD, {
         method: "POST",
         body: uploadData,
       });
       setUploading(false);
       if (!uploadRes.ok) {
-        setError("Image upload failed.");
+        setError(MESSAGES.ERROR.UPLOAD_FAILED);
         return;
       }
       const uploadJson = await uploadRes.json();
@@ -80,7 +70,7 @@ export default function EditEventPage() {
       cost: parseFloat((form.cost as unknown as HTMLInputElement).value),
       imageUrl: uploadedImageUrl || undefined,
     };
-    const res = await fetch(`/api/events/${eventId}`, {
+    const res = await fetch(`${URLS.API.EVENTS}/${eventId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -89,11 +79,11 @@ export default function EditEventPage() {
       setSuccess(true);
       router.refresh();
     } else {
-      setError("Failed to update event.");
+      setError(MESSAGES.ERROR.GENERIC);
     }
   }
 
-  if (!event) return <div className="p-8">Loading...</div>;
+  if (!event) return <div className="p-8">{MESSAGES.LOADING.EVENTS}</div>;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-2">
@@ -103,7 +93,7 @@ export default function EditEventPage() {
         </h1>
         {success && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-            Event updated successfully!
+            {MESSAGES.SUCCESS.EVENT_UPDATED}
           </div>
         )}
         {error && (
@@ -125,7 +115,8 @@ export default function EditEventPage() {
               <option value="" disabled>
                 Select Type
               </option>
-              {eventTypes.map((type) => (
+              {/* EVENT_TYPES contains ["Tournament", "Individual Team Trip"] */}
+              {EVENT_TYPES.map((type) => (
                 <option key={type} value={type}>
                   {type}
                 </option>

@@ -37,7 +37,7 @@ model Interest {
 }
 
 model Club {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   region    String?
   subRegion String?
@@ -50,4 +50,5 @@ model Club {
   location  String?
   latitude  Float?
   longitude Float?
+  teamTypes String[] @default([])
 }

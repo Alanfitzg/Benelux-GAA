@@ -15,6 +15,7 @@ type ClubListItem = {
   instagram: string | null;
   website: string | null;
   codes: string | null;
+  teamTypes: string[];
 };
 
 async function getClubs() {
@@ -32,6 +33,7 @@ async function getClubs() {
       instagram: true,
       website: true,
       codes: true,
+      teamTypes: true,
     },
   });
 }
@@ -43,7 +45,7 @@ export default async function ClubsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-2xl font-bold text-gray-900">European GAA Clubs</h1>
+        <h1 className="text-2xl font-bold text-gray-900">European Gaelic Clubs</h1>
         <Link
           href="/clubs/register"
           className="bg-primary text-primary-foreground px-4 py-2 rounded hover:bg-primary/90 transition"
@@ -69,6 +71,11 @@ export default async function ClubsPage() {
                 <p className="text-gray-700">
                   <strong>Location:</strong> {club.location || "-"}
                 </p>
+                {club.teamTypes.length > 0 && (
+                  <p className="text-gray-600 text-sm">
+                    {club.teamTypes.join(", ")}
+                  </p>
+                )}
               </div>
             </div>
           </Link>

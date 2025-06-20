@@ -1,24 +1,11 @@
-import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { geocodeLocation } from '@/lib/utils';
+import { createErrorResponse, createSuccessResponse } from '@/lib/utils';
+import { MESSAGES } from '@/lib/constants';
 
 // Specify Node.js runtime
 export const runtime = 'nodejs';
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-
-async function geocodeLocation(location: string) {
-  if (!location) return { latitude: null, longitude: null };
-  
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(location)}.json?access_token=${MAPBOX_TOKEN}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  
-  if (data.features && data.features.length > 0) {
-    const [lng, lat] = data.features[0].center;
-    return { latitude: lat, longitude: lng };
-  }
-  return { latitude: null, longitude: null };
-}
 
 export async function POST() {
   try {
@@ -68,11 +55,10 @@ export async function POST() {
     
     await prisma.$disconnect();
     
-    return NextResponse.json({ 
-      message: 'Clubs updated successfully',
+    return createSuccessResponse({ 
       total: clubs.length,
       updated: results.length 
-    });
+    }, MESSAGES.SUCCESS.CLUBS_UPDATED);
   } catch (error) {
     console.error('Error updating club coordinates:', error);
     
@@ -83,9 +69,10 @@ export async function POST() {
       console.error('Error disconnecting from database:', disconnectError);
     }
     
-    return NextResponse.json({ 
-      error: 'Failed to update clubs',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 });
+    return createErrorResponse(
+      MESSAGES.ERROR.CLUBS_UPDATE_FAILED,
+      500,
+      error instanceof Error ? error.message : 'Unknown error'
+    );
   }
 } 

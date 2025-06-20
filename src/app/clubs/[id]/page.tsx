@@ -44,6 +44,21 @@ export default async function ClubDetailsPage({
             <p className="text-gray-800">{club.codes || "-"}</p>
           </div>
         </div>
+        {club.teamTypes && club.teamTypes.length > 0 && (
+          <div className="mb-4">
+            <p className="text-gray-500 text-xs font-semibold mb-2">Team Types</p>
+            <div className="flex flex-wrap gap-2">
+              {club.teamTypes.map((teamType) => (
+                <span
+                  key={teamType}
+                  className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium"
+                >
+                  {teamType}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex flex-col gap-2 mb-4">
           {club.facebook && (
             <a

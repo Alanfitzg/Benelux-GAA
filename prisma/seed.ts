@@ -5,7 +5,7 @@ async function main() {
   await prisma.event.createMany({
     data: [
       {
-        title: "Amsterdam GAA Spring Festival",
+        title: "Amsterdam Gaelic Spring Festival",
         eventType: "Tournament",
         location: "Amsterdam, Netherlands",
         latitude: 52.3676,
@@ -19,7 +19,7 @@ async function main() {
       },
       {
         title: "Berlin City Match Day",
-        eventType: "Match",
+        eventType: "Tournament",
         location: "Berlin, Germany",
         latitude: 52.52,
         longitude: 13.405,
@@ -31,7 +31,7 @@ async function main() {
       },
       {
         title: "Munich Summer Youth Camp",
-        eventType: "Youth",
+        eventType: "Individual Team Trip",
         location: "Munich, Germany",
         latitude: 48.1351,
         longitude: 11.5820,
@@ -56,7 +56,7 @@ async function main() {
       },
       {
         title: "Madrid Autumn Social",
-        eventType: "Social",
+        eventType: "Individual Team Trip",
         location: "Madrid, Spain",
         latitude: 40.4168,
         longitude: -3.7038,
@@ -67,8 +67,8 @@ async function main() {
         imageUrl: null,
       },
       {
-        title: "Paris GAA Interclub Challenge",
-        eventType: "Match",
+        title: "Paris Gaelic Interclub Challenge",
+        eventType: "Tournament",
         location: "Paris, France",
         latitude: 48.8566,
         longitude: 2.3522,

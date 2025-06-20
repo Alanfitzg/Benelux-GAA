@@ -29,6 +29,7 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
         website: data.website,
         codes: data.codes,
         imageUrl: data.imageUrl,
+        teamTypes: data.teamTypes || [],
       },
     });
     return NextResponse.json(club);

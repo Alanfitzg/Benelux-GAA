@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import ImageUpload from '../../components/ImageUpload';
 import LocationAutocomplete from '../../events/create/LocationAutocomplete';
+import TeamTypeMultiSelect from '@/components/forms/TeamTypeMultiSelect';
 import type { Club } from '@/types';
 
 type ClubFormData = Omit<Club, 'id' | 'latitude' | 'longitude'>;
@@ -16,6 +17,7 @@ export default function RegisterClubPage() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [location, setLocation] = useState('');
+  const [teamTypes, setTeamTypes] = useState<string[]>([]);
   const router = useRouter();
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -55,7 +57,8 @@ export default function RegisterClubPage() {
       website: (form.elements.namedItem('website') as HTMLInputElement)?.value || null,
       codes: (form.elements.namedItem('codes') as HTMLInputElement)?.value || null,
       imageUrl: uploadedImageUrl || null,
-      map: null
+      map: null,
+      teamTypes
     };
     const res = await fetch('/api/clubs', {
       method: 'POST',
@@ -78,7 +81,7 @@ export default function RegisterClubPage() {
         {/* Left Side */}
         <div className="md:w-1/2 flex flex-col items-center justify-center p-8 border-b md:border-b-0 md:border-r border-gray-200 bg-white">
           <div className="mb-6">
-            {/* GAA/Club Shield Icon */}
+            {/* Gaelic/Club Shield Icon */}
             <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="15" y="10" width="70" height="80" rx="16" fill="#166534" stroke="#14532d" strokeWidth="4" />
               <circle cx="50" cy="50" r="18" fill="#fff" stroke="#14532d" strokeWidth="3" />
@@ -114,6 +117,10 @@ export default function RegisterClubPage() {
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Location</label>
               <LocationAutocomplete value={location} onChange={setLocation} />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Team Types</label>
+              <TeamTypeMultiSelect value={teamTypes} onChange={setTeamTypes} />
             </div>
             <div className="flex gap-4">
               <div className="w-1/2">

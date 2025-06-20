@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import Link from "next/link";
+import { EVENT_TYPES } from "@/lib/constants/events";
+import { MESSAGES, UI } from "@/lib/constants";
+import { formatShortDate } from "@/lib/utils";
 
 function getMonthOptions() {
   return [
@@ -60,20 +63,7 @@ export default async function EventsPage({
     const country = params.country || "";
     const month = params.month || "";
     const events = await getEvents({ eventType, country, month });
-    const eventTypes = [
-      "",
-      "Mens Gaelic Football",
-      "LGFA",
-      "Hurling",
-      "Camogie",
-      "Rounders",
-      "G4MO",
-      "Dads & Lads",
-      "Higher Education",
-      "Youth",
-      "Elite training camp",
-      "Beach GAA"
-    ];
+    const eventTypes = ["", ...EVENT_TYPES];
     const countries = Array.from(
       new Set(
         (await prisma.event.findMany()).map((e: { location: string }) =>
@@ -87,7 +77,7 @@ export default async function EventsPage({
 
     return (
       <div>
-        <h1 className="text-2xl font-bold mb-4">Event Grid View</h1>
+        <h1 className="text-2xl font-bold mb-4">Events</h1>
         <form className="flex flex-wrap gap-4 mb-6" method="get">
           <select
             name="eventType"
@@ -126,12 +116,12 @@ export default async function EventsPage({
           </select>
           <button
             type="submit"
-            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
+            className={UI.BUTTON_STYLES.PRIMARY}
           >
             Filter
           </button>
         </form>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className={`grid ${UI.GRID_LAYOUTS.RESPONSIVE} gap-4`}>
           {events.map(
             (event: {
               id: string;
@@ -141,7 +131,7 @@ export default async function EventsPage({
               startDate: Date;
               cost: number | null;
             }) => (
-              <div key={event.id} className="bg-white p-4 rounded shadow">
+              <div key={event.id} className={UI.CARD_STYLES.DEFAULT}>
                 <h2 className="text-xl font-semibold mb-2 text-primary">
                   {event.title}
                 </h2>
@@ -153,16 +143,16 @@ export default async function EventsPage({
                 </p>
                 <p className="text-gray-700">
                   <strong>Start Date:</strong>{" "}
-                  {new Date(event.startDate).toLocaleDateString()}
+                  {formatShortDate(event.startDate)}
                 </p>
                 <p className="text-gray-700">
-                  <strong>Cost:</strong> ${event.cost ?? "-"}
+                  <strong>Cost:</strong> €{event.cost ?? MESSAGES.DEFAULTS.PLACEHOLDER}
                 </p>
                 <Link
                   href={`/events/${event.id}`}
-                  className="mt-2 inline-block px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
+                  className={`mt-2 inline-block ${UI.BUTTON_STYLES.PRIMARY}`}
                 >
-                  View Details
+                  {MESSAGES.BUTTONS.VIEW_DETAILS}
                 </Link>
               </div>
             )
@@ -176,7 +166,7 @@ export default async function EventsPage({
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Events</h1>
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          <p>Unable to load events at this time. Please try again later.</p>
+          <p>{MESSAGES.ERROR.GENERIC}</p>
         </div>
       </div>
     );

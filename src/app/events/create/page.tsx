@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import LocationAutocomplete from "./LocationAutocomplete";
 import ImageUpload from "../../components/ImageUpload";
 import type { Event } from "@/types";
+import { EVENT_TYPES } from "@/lib/constants/events";
+import { URLS, MESSAGES } from "@/lib/constants";
 
 type EventFormData = Omit<Event, "id">;
 
@@ -30,13 +32,13 @@ export default function CreateEvent() {
       setUploading(true);
       const uploadData = new FormData();
       uploadData.append("file", file);
-      const uploadRes = await fetch("/api/upload", {
+      const uploadRes = await fetch(URLS.API.UPLOAD, {
         method: "POST",
         body: uploadData,
       });
       setUploading(false);
       if (!uploadRes.ok) {
-        setError("Image upload failed.");
+        setError(MESSAGES.ERROR.UPLOAD_FAILED);
         return;
       }
       const uploadJson = await uploadRes.json();
@@ -60,7 +62,7 @@ export default function CreateEvent() {
         (form.elements.namedItem("description") as HTMLTextAreaElement)?.value || undefined,
       imageUrl: uploadedImageUrl || undefined,
     };
-    const response = await fetch("/api/events", {
+    const response = await fetch(URLS.API.EVENTS, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,7 +72,7 @@ export default function CreateEvent() {
     if (response.ok) {
       router.push("/events");
     } else {
-      setError("Failed to create event");
+      setError(MESSAGES.ERROR.GENERIC);
     }
   };
 
@@ -99,17 +101,10 @@ export default function CreateEvent() {
               <option value="" disabled>
                 Select Type
               </option>
-              <option value="Mens Gaelic Football">Mens Gaelic Football</option>
-              <option value="LGFA">LGFA</option>
-              <option value="Hurling">Hurling</option>
-              <option value="Camogie">Camogie</option>
-              <option value="Rounders">Rounders</option>
-              <option value="G4MO">G4MO</option>
-              <option value="Dads & Lads">Dads & Lads</option>
-              <option value="Higher Education">Higher Education</option>
-              <option value="Youth">Youth</option>
-              <option value="Elite training camp">Elite training camp</option>
-              <option value="Beach GAA">Beach GAA</option>
+              {/* EVENT_TYPES contains ["Tournament", "Individual Team Trip"] */}
+              {EVENT_TYPES.map((type) => (
+                <option key={type} value={type}>{type}</option>
+              ))}
             </select>
           </div>
           <div>

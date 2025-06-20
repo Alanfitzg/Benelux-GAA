@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
         website: data.website || null,
         codes: data.codes || null,
         imageUrl: data.imageUrl || null,
+        teamTypes: data.teamTypes || [],
       },
     });
     return NextResponse.json({ club }, { status: 201 });
@@ -46,6 +47,7 @@ export async function GET() {
         instagram: true,
         website: true,
         codes: true,
+        teamTypes: true,
       },
     });
     return NextResponse.json(clubs);

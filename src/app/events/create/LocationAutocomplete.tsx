@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { URLS, MESSAGES, UI } from "@/lib/constants";
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
@@ -9,12 +10,12 @@ export default function LocationAutocomplete({ value, onChange }: { value: strin
   async function handleInput(e: React.ChangeEvent<HTMLInputElement>) {
     const val = e.target.value;
     onChange(val);
-    if (val.length < 2) {
+    if (val.length < UI.AUTOCOMPLETE_MIN_LENGTH) {
       setSuggestions([]);
       return;
     }
     const res = await fetch(
-      `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(val)}.json?types=place&access_token=${MAPBOX_TOKEN}`
+      `${URLS.MAPBOX_GEOCODING}/${encodeURIComponent(val)}.json?types=place&access_token=${MAPBOX_TOKEN}`
     );
     const data = await res.json();
     setSuggestions(data.features || []);
@@ -33,9 +34,9 @@ export default function LocationAutocomplete({ value, onChange }: { value: strin
         type="text"
         value={value}
         onChange={handleInput}
-        onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+        onBlur={() => setTimeout(() => setShowSuggestions(false), UI.AUTOCOMPLETE_BLUR_TIMEOUT)}
         onFocus={() => setShowSuggestions(true)}
-        placeholder="City, Country"
+        placeholder={MESSAGES.DEFAULTS.LOCATION_PLACEHOLDER}
         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-gray-900"
         autoComplete="off"
         required

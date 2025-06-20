@@ -1,38 +1,37 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
-
-async function geocodeLocation(location: string) {
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(location)}.json?access_token=${MAPBOX_TOKEN}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  if (data.features && data.features.length > 0) {
-    const [lng, lat] = data.features[0].center;
-    return { latitude: lat, longitude: lng };
-  }
-  return { latitude: null, longitude: null };
-}
+import { geocodeLocation } from '@/lib/utils';
+import { withErrorHandling, parseJsonBody } from '@/lib/utils';
 
 export async function GET() {
-  const events = await prisma.event.findMany();
-  return NextResponse.json(events);
+  try {
+    const events = await prisma.event.findMany();
+    return NextResponse.json(events);
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch events' }, 
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(request: Request) {
-  const body = await request.json();
-  const { latitude, longitude } = await geocodeLocation(body.location);
+  return withErrorHandling(async () => {
+    const body = await parseJsonBody(request);
+    const { latitude, longitude } = await geocodeLocation(body.location);
 
-  const eventData = {
-    ...body,
-    startDate: new Date(body.startDate),
-    endDate: body.endDate ? new Date(body.endDate) : null,
-    latitude,
-    longitude,
-  };
+    const eventData = {
+      ...body,
+      startDate: new Date(body.startDate),
+      endDate: body.endDate ? new Date(body.endDate) : null,
+      latitude,
+      longitude,
+    };
 
-  const event = await prisma.event.create({
-    data: eventData,
+    const event = await prisma.event.create({
+      data: eventData,
+    });
+    return event;
   });
-  return NextResponse.json(event);
 } 

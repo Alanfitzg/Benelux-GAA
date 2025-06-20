@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
+import TeamTypeMultiSelect from '@/components/forms/TeamTypeMultiSelect';
 
 type ClubDetails = {
   id: string;
@@ -17,6 +18,7 @@ type ClubDetails = {
   subRegion: string | null;
   map: string | null;
   imageUrl: string | null;
+  teamTypes: string[];
 };
 
 export default function EditClubPage() {
@@ -30,6 +32,7 @@ export default function EditClubPage() {
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [teamTypes, setTeamTypes] = useState<string[]>([]);
 
   useEffect(() => {
     fetch(`/api/clubs/${clubId}`)
@@ -37,6 +40,7 @@ export default function EditClubPage() {
       .then((data) => {
         setClub(data);
         setImageUrl(data.imageUrl || null);
+        setTeamTypes(data.teamTypes || []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -75,6 +79,7 @@ export default function EditClubPage() {
       website: form.website,
       codes: form.codes,
       imageUrl: uploadedImageUrl || undefined,
+      teamTypes,
     };
     const res = await fetch(`/api/clubs/${clubId}`, {
       method: "PUT",
@@ -116,6 +121,10 @@ export default function EditClubPage() {
               <label className="block text-xs font-medium text-gray-600 mb-1">Location</label>
               <LocationAutocomplete value={club.location || ""} onChange={val => setClub({ ...club, location: val })} />
             </div>
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-600 mb-1">Team Types</label>
+            <TeamTypeMultiSelect value={teamTypes} onChange={setTeamTypes} />
           </div>
           <div className="flex gap-4">
             <div className="w-1/2">

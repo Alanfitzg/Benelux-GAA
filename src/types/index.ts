@@ -12,6 +12,7 @@ export interface Club {
   subRegion: string | null;
   map: string | null;
   imageUrl: string | null;
+  teamTypes: string[];
 }
 
 export interface Event {

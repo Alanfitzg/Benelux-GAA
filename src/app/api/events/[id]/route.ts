@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
+import { MESSAGES } from '@/lib/constants';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -8,7 +9,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     where: { id },
   });
   if (!event) {
-    return NextResponse.json({ error: 'Event not found' }, { status: 404 });
+    return NextResponse.json({ error: MESSAGES.ERROR.EVENT_NOT_FOUND }, { status: 404 });
   }
   return NextResponse.json(event);
 }
@@ -30,7 +31,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     });
     return NextResponse.json(event);
   } catch {
-    return NextResponse.json({ error: 'Error updating event' }, { status: 400 });
+    return NextResponse.json({ error: MESSAGES.ERROR.GENERIC }, { status: 400 });
   }
 }
 
@@ -39,5 +40,5 @@ export async function DELETE(request: Request, context: { params: Promise<{ id: 
   await prisma.event.delete({
     where: { id },
   });
-  return NextResponse.json({ message: 'Event deleted' });
+  return NextResponse.json({ message: MESSAGES.SUCCESS.EVENT_DELETED });
 } 
