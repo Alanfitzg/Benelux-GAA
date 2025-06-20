@@ -1,8 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import Image from "next/image";
 import { revalidatePath } from "next/cache";
 import DeleteButton from "@/components/ui/DeleteButton";
-import { MESSAGES, UI } from "@/lib/constants";
 
 type ClubListItem = {
   id: string;
@@ -84,9 +84,11 @@ export default async function AdminClubsPage() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       {club.imageUrl && (
-                        <img 
+                        <Image 
                           src={club.imageUrl} 
                           alt={club.name}
+                          width={40}
+                          height={40}
                           className="w-10 h-10 rounded-lg object-contain bg-gray-100 mr-3"
                         />
                       )}

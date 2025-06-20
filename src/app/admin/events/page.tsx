@@ -2,7 +2,6 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { revalidatePath } from 'next/cache';
 import DeleteButton from '@/components/ui/DeleteButton';
-import { MESSAGES, UI } from '@/lib/constants';
 import { formatShortDate } from '@/lib/utils';
 
 export const dynamic = "force-dynamic";
