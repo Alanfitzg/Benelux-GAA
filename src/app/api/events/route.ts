@@ -3,6 +3,18 @@ import { prisma } from '@/lib/prisma';
 import { geocodeLocation } from '@/lib/utils';
 import { withErrorHandling, parseJsonBody } from '@/lib/utils';
 
+type CreateEventBody = {
+  title: string;
+  eventType: string;
+  location: string;
+  startDate: string;
+  endDate?: string;
+  cost?: number;
+  description?: string;
+  isRecurring?: boolean;
+  imageUrl?: string;
+};
+
 export async function GET() {
   try {
     const events = await prisma.event.findMany();
@@ -18,7 +30,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   return withErrorHandling(async () => {
-    const body = await parseJsonBody(request);
+    const body = await parseJsonBody<CreateEventBody>(request);
     const { latitude, longitude } = await geocodeLocation(body.location);
 
     const eventData = {

@@ -51,9 +51,9 @@ export default function Home() {
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
   const [viewState, setViewState] = useState({
-    longitude: MAP_CONFIG.DEFAULT_CENTER.longitude,
-    latitude: MAP_CONFIG.DEFAULT_CENTER.latitude,
-    zoom: MAP_CONFIG.DEFAULT_ZOOM,
+    longitude: MAP_CONFIG.DEFAULT_CENTER.longitude as number,
+    latitude: MAP_CONFIG.DEFAULT_CENTER.latitude as number,
+    zoom: MAP_CONFIG.DEFAULT_ZOOM as number,
   });
   const [viewMode, setViewMode] = useState<"tournaments" | "clubs">("clubs");
   
@@ -132,8 +132,8 @@ export default function Home() {
   const handleSidebarClick = (event: Event) => {
     if (hasValidCoordinates(event)) {
       setViewState({
-        longitude: event.longitude!,
-        latitude: event.latitude!,
+        longitude: event.longitude! as number,
+        latitude: event.latitude! as number,
         zoom: MAP_CONFIG.SELECTED_ITEM_ZOOM,
       });
       setSelectedEventId(event.id);
@@ -143,8 +143,8 @@ export default function Home() {
   const handleClubClick = (club: ClubMapItem) => {
     if (hasValidCoordinates(club)) {
       setViewState({
-        longitude: club.longitude!,
-        latitude: club.latitude!,
+        longitude: club.longitude! as number,
+        latitude: club.latitude! as number,
         zoom: MAP_CONFIG.SELECTED_ITEM_ZOOM,
       });
       setSelectedClubId(club.id);
