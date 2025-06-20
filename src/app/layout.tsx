@@ -44,8 +44,9 @@ export default function RootLayout({
             </Link>
             <div className="space-x-4">
               <Link href="/events" className="hover:underline">Events</Link>
-              <Link href="/events/create" className="hover:underline">Create Event</Link>
               <Link href="/clubs" className="hover:underline">Clubs</Link>
+              <Link href="/events/create" className="hover:underline">Create Event</Link>
+              <Link href="/about" className="hover:underline">About Us</Link>
             </div>
           </nav>
         </header>
