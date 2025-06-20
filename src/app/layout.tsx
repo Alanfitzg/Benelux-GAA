@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -29,12 +30,20 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-green-800 text-white p-4">
+        <header className="bg-primary text-primary-foreground py-2 px-4">
           <nav className="container mx-auto flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold">Gaelic Trips</Link>
+            <Link href="/" className="flex items-center gap-4">
+                <Image
+                  src="/logo.png"
+                  alt="Gaelic Trips Logo"
+                  width={120}
+                  height={32}
+                  priority
+                />
+                <span className="text-xl font-bold">Gaelic Trips</span>
+            </Link>
             <div className="space-x-4">
               <Link href="/events" className="hover:underline">Events</Link>
-              <Link href="/map" className="hover:underline">Map View</Link>
               <Link href="/events/create" className="hover:underline">Create Event</Link>
               <Link href="/clubs" className="hover:underline">Clubs</Link>
             </div>

@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
-import { Club } from "@prisma/client";
+import type { Club } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,11 +26,11 @@ export default async function ClubDetailsPage({
             className="max-h-48 rounded-lg shadow object-contain"
           />
         </div>
-        <h1 className="text-3xl font-extrabold text-center text-green-800 mb-2">
+        <h1 className="text-3xl font-extrabold text-center text-primary mb-2">
           {club.name}
         </h1>
         <div className="flex justify-center mb-4">
-          <span className="inline-block bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wide">
+          <span className="inline-block bg-primary/10 text-primary text-xs px-3 py-1 rounded-full font-semibold uppercase tracking-wide">
             {club.location || '-'}
           </span>
         </div>
@@ -77,7 +77,7 @@ export default async function ClubDetailsPage({
           )}
         </div>
         <div className="flex justify-center">
-          <Link href="/clubs" className="text-green-700 underline">
+          <Link href="/clubs" className="text-primary underline">
             Back to Clubs
           </Link>
         </div>

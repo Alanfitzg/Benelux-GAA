@@ -126,7 +126,7 @@ export default async function EventsPage({
           </select>
           <button
             type="submit"
-            className="px-4 py-2 bg-green-800 text-white rounded hover:bg-green-700"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
           >
             Filter
           </button>
@@ -142,7 +142,7 @@ export default async function EventsPage({
               cost: number | null;
             }) => (
               <div key={event.id} className="bg-white p-4 rounded shadow">
-                <h2 className="text-xl font-semibold mb-2 text-green-800">
+                <h2 className="text-xl font-semibold mb-2 text-primary">
                   {event.title}
                 </h2>
                 <p className="text-gray-700">
@@ -160,7 +160,7 @@ export default async function EventsPage({
                 </p>
                 <Link
                   href={`/events/${event.id}`}
-                  className="mt-2 inline-block px-4 py-2 bg-green-800 text-white rounded hover:bg-green-700"
+                  className="mt-2 inline-block px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90"
                 >
                   View Details
                 </Link>

@@ -52,6 +52,12 @@ export default function CreateEvent() {
       location,
       startDate:
         (form.elements.namedItem("startDate") as HTMLInputElement)?.value || "",
+      endDate:
+        (form.elements.namedItem("endDate") as HTMLInputElement)?.value || undefined,
+      cost:
+        parseFloat((form.elements.namedItem("cost") as HTMLInputElement)?.value) || undefined,
+      description:
+        (form.elements.namedItem("description") as HTMLTextAreaElement)?.value || undefined,
       imageUrl: uploadedImageUrl || undefined,
     };
     const response = await fetch("/api/events", {
@@ -137,15 +143,36 @@ export default function CreateEvent() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">
-              Cost
+              End Date (Optional)
+            </label>
+            <input
+              type="date"
+              name="endDate"
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-900 focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Cost (Optional)
             </label>
             <input
               type="number"
               name="cost"
-              placeholder="Cost"
+              placeholder="0.00"
+              step="0.01"
               className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-900 focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400"
-              required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-600 mb-1">
+              Description (Optional)
+            </label>
+            <textarea
+              name="description"
+              rows={4}
+              placeholder="Provide a brief description of the event..."
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-900 focus:border-green-700 focus:ring-2 focus:ring-green-200 placeholder-gray-400"
+            ></textarea>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-600 mb-1">

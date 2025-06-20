@@ -63,7 +63,7 @@ export default function EventDetail({
           />
         </div>
         {/* Hero Section */}
-        <div className="bg-[#032572] rounded-t-xl p-8 text-white shadow-lg">
+        <div className="bg-primary rounded-t-xl p-8 text-primary-foreground shadow-lg">
           <h1 className="text-4xl font-extrabold mb-2">{event?.title || 'Event Title'}</h1>
           <p className="text-lg mb-1">{event?.location || 'Event Location'}</p>
           <p className="text-md">{event ? new Date(event.startDate).toLocaleDateString() : 'Event Date'}</p>
@@ -73,7 +73,7 @@ export default function EventDetail({
           {/* Quick Facts */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-2">
-              <h2 className="text-lg font-bold text-[#032572] mb-2">Quick Facts</h2>
+              <h2 className="text-lg font-bold text-primary mb-2">Quick Facts</h2>
               <div className="flex justify-between text-gray-700"><span className="font-semibold">Type:</span> <span>{event?.eventType || '-'}</span></div>
               <div className="flex justify-between text-gray-700"><span className="font-semibold">Location:</span> <span>{event?.location || '-'}</span></div>
               <div className="flex justify-between text-gray-700"><span className="font-semibold">Date:</span> <span>{event ? new Date(event.startDate).toLocaleDateString() : '-'}</span></div>
@@ -81,7 +81,7 @@ export default function EventDetail({
             </div>
             {/* Highlights/Itinerary */}
             <div className="bg-gray-100 rounded-lg p-4 flex flex-col gap-2">
-              <h2 className="text-lg font-bold text-[#032572] mb-2">Event Highlights</h2>
+              <h2 className="text-lg font-bold text-primary mb-2">Event Highlights</h2>
               <ul className="list-disc list-inside text-gray-700">
                 {event?.description ? (
                   event.description.split('\n').map((line, idx) => <li key={idx}>{line}</li>)
@@ -98,7 +98,7 @@ export default function EventDetail({
           </div>
           {/* What's Included */}
           <div className="bg-gray-50 rounded-lg p-4 mb-8 border border-gray-200">
-            <h2 className="text-lg font-bold text-[#032572] mb-2">What&apos;s Included</h2>
+            <h2 className="text-lg font-bold text-primary mb-2">What&apos;s Included</h2>
             <ul className="list-disc list-inside text-gray-700">
               <li>3 nights in a centrally located hotel</li>
               <li>Breakfast each morning</li>
@@ -109,11 +109,11 @@ export default function EventDetail({
           </div>
           {/* Call to Action */}
           <div className="flex justify-center mb-8">
-            <a href="#interest" className="bg-[#032572] hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-lg text-lg shadow transition">Register Interest</a>
+            <a href="#interest" className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg text-lg shadow transition">Register Interest</a>
           </div>
           {/* Express Interest Form */}
           <div id="interest">
-            <h2 className="text-2xl font-bold mb-4 text-[#032572]">Express Interest</h2>
+            <h2 className="text-2xl font-bold mb-4 text-primary">Express Interest</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block mb-1">Name</label>
@@ -142,7 +142,7 @@ export default function EventDetail({
               </div>
               <button
                 type="submit"
-                className="w-full bg-[#032572] hover:bg-blue-900 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest"
+                className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2 rounded-lg transition mt-2 tracking-widest"
               >
                 Submit
               </button>

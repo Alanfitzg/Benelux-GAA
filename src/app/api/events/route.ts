@@ -23,12 +23,16 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { latitude, longitude } = await geocodeLocation(body.location);
 
+  const eventData = {
+    ...body,
+    startDate: new Date(body.startDate),
+    endDate: body.endDate ? new Date(body.endDate) : null,
+    latitude,
+    longitude,
+  };
+
   const event = await prisma.event.create({
-    data: {
-      ...body,
-      latitude,
-      longitude,
-    },
+    data: eventData,
   });
   return NextResponse.json(event);
 } 

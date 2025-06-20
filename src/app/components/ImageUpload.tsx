@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useRef, useState } from "react";
 
 export default function ImageUpload({
@@ -46,7 +45,7 @@ export default function ImageUpload({
         onDragOver={(e) => e.preventDefault()}
       >
         {preview ? (
-          <Image
+          <img
             src={preview}
             alt="Preview"
             className="max-h-40 mb-2 rounded object-contain"
