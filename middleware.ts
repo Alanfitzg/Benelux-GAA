@@ -1,7 +1,21 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
+import { createRateLimitMiddleware, RATE_LIMITS } from "@/lib/rate-limit"
+
+// Create rate limiters for different route types
+const authRateLimit = createRateLimitMiddleware(RATE_LIMITS.AUTH)
 
 export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname
+  
+  // Apply rate limiting to auth routes
+  if (path.startsWith("/api/auth")) {
+    const rateLimitResponse = authRateLimit(request)
+    if (rateLimitResponse) {
+      return rateLimitResponse
+    }
+  }
+  
   // Allow public routes
   const publicPaths = [
     "/",
@@ -12,8 +26,6 @@ export async function middleware(request: NextRequest) {
     "/api/events",
     "/api/interest",
   ]
-  
-  const path = request.nextUrl.pathname
   
   // Check if the path is public
   const isPublicPath = publicPaths.some(publicPath => 

@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { geocodeLocation } from '@/lib/utils';
 import { withErrorHandling, parseJsonBody } from '@/lib/utils';
 import { requireClubAdmin } from '@/lib/auth-helpers';
+import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
 type CreateEventBody = {
   title: string;
@@ -16,7 +17,7 @@ type CreateEventBody = {
   imageUrl?: string;
 };
 
-export async function GET() {
+async function getEventsHandler() {
   try {
     const events = await prisma.event.findMany();
     return NextResponse.json(events);
@@ -29,7 +30,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+async function createEventHandler(request: NextRequest) {
   const authResult = await requireClubAdmin();
   if (authResult instanceof NextResponse) {
     return authResult;
@@ -52,4 +53,8 @@ export async function POST(request: Request) {
     });
     return event;
   });
-} 
+}
+
+// Apply rate limiting to endpoints
+export const GET = withRateLimit(RATE_LIMITS.PUBLIC_API, getEventsHandler);
+export const POST = withRateLimit(RATE_LIMITS.ADMIN, createEventHandler); 

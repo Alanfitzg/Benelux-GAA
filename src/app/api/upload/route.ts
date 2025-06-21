@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { requireAuth } from "@/lib/auth-helpers";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 const s3 = new S3Client({
   region: process.env.AWS_REGION,
@@ -12,7 +13,7 @@ const s3 = new S3Client({
 
 export const runtime = "nodejs"; // Ensure Node.js runtime for file uploads
 
-export async function POST(req: NextRequest) {
+async function uploadHandler(req: NextRequest) {
   const authResult = await requireAuth();
   if (authResult instanceof NextResponse) {
     return authResult;
@@ -42,3 +43,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
+
+// Apply rate limiting to upload endpoint
+export const POST = withRateLimit(RATE_LIMITS.UPLOAD, uploadHandler);

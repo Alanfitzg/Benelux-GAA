@@ -3,8 +3,9 @@ import { prisma } from "@/lib/prisma"
 import { requireSuperAdmin } from "@/lib/auth-helpers"
 import { createUser } from "@/lib/user"
 import { UserRole } from "@prisma/client"
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit"
 
-export async function GET() {
+async function getUsersHandler() {
   try {
     const authResult = await requireSuperAdmin()
     if (authResult instanceof NextResponse) {
@@ -35,7 +36,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextRequest) {
+async function createUserHandler(request: NextRequest) {
   try {
     const authResult = await requireSuperAdmin()
     if (authResult instanceof NextResponse) {
@@ -115,3 +116,7 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+// Apply rate limiting to admin user endpoints
+export const GET = withRateLimit(RATE_LIMITS.ADMIN, getUsersHandler);
+export const POST = withRateLimit(RATE_LIMITS.ADMIN, createUserHandler);

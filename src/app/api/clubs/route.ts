@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireClubAdmin } from '@/lib/auth-helpers';
+import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
-export async function POST(req: NextRequest) {
+async function createClubHandler(req: NextRequest) {
   try {
     const authResult = await requireClubAdmin();
     if (authResult instanceof NextResponse) {
@@ -35,7 +36,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-export async function GET() {
+async function getClubsHandler() {
   try {
     const clubs = await prisma.club.findMany({
       orderBy: { name: 'asc' },
@@ -61,4 +62,8 @@ export async function GET() {
     console.error('Error fetching clubs:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
-} 
+}
+
+// Apply rate limiting to endpoints
+export const POST = withRateLimit(RATE_LIMITS.ADMIN, createClubHandler);
+export const GET = withRateLimit(RATE_LIMITS.PUBLIC_API, getClubsHandler); 

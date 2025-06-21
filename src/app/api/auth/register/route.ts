@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import { createUser, getUserByEmail, getUserByUsername } from "@/lib/user"
 import { createUserSchema, sanitizeInput, validateRequest } from "@/lib/validation"
 import { ConflictError, handleApiError } from "@/lib/error-handling"
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit"
 
-export async function POST(request: NextRequest) {
+async function registrationHandler(request: NextRequest) {
   try {
     // Get and validate request body
     const body = await request.json()
@@ -56,3 +57,6 @@ export async function POST(request: NextRequest) {
     return handleApiError(error, "User registration")
   }
 }
+
+// Apply rate limiting to registration endpoint
+export const POST = withRateLimit(RATE_LIMITS.REGISTRATION, registrationHandler)
