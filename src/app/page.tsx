@@ -32,10 +32,10 @@ const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 // Extract unique countries from clubs
 const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
   const countries = new Set<string>();
-  clubs.forEach(club => {
+  clubs.forEach((club) => {
     if (club.location) {
       // Extract country from location (assuming format: "City, Country")
-      const parts = club.location.split(',');
+      const parts = club.location.split(",");
       if (parts.length > 1) {
         const country = parts[parts.length - 1].trim();
         countries.add(country);
@@ -46,6 +46,7 @@ const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
 };
 
 export default function Home() {
+  // eslint ignore-next-line no-unused-vars
   const { data: session, status } = useSession();
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<ClubMapItem[]>([]);
@@ -58,7 +59,7 @@ export default function Home() {
     zoom: MAP_CONFIG.DEFAULT_ZOOM as number,
   });
   const [viewMode, setViewMode] = useState<"tournaments" | "clubs">("clubs");
-  
+
   // Filter states
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [selectedEventType, setSelectedEventType] = useState<string>("all");
@@ -66,7 +67,7 @@ export default function Home() {
 
   useEffect(() => {
     // Only fetch when session loading is complete
-    if (status !== 'loading') {
+    if (status !== "loading") {
       fetch(URLS.API.EVENTS)
         .then((res) => {
           console.log("Events API response status:", res.status);
@@ -91,7 +92,7 @@ export default function Home() {
   }, [status]);
 
   useEffect(() => {
-    if (viewMode === "clubs" && status !== 'loading') {
+    if (viewMode === "clubs" && status !== "loading") {
       setLoading(true);
       fetch(URLS.API.CLUBS)
         .then((res) => {
@@ -118,9 +119,11 @@ export default function Home() {
 
   // Memoized filtered data
   const filteredEvents = useMemo(() => {
-    return events.filter(event => {
-      const matchesType = selectedEventType === "all" || event.eventType === selectedEventType;
-      const matchesSearch = searchTerm === "" || 
+    return events.filter((event) => {
+      const matchesType =
+        selectedEventType === "all" || event.eventType === selectedEventType;
+      const matchesSearch =
+        searchTerm === "" ||
         event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         event.location.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesType && matchesSearch;
@@ -128,12 +131,16 @@ export default function Home() {
   }, [events, selectedEventType, searchTerm]);
 
   const filteredClubs = useMemo(() => {
-    return clubs.filter(club => {
-      const matchesCountry = selectedCountry === "all" || 
-        (club.location && club.location.toLowerCase().includes(selectedCountry.toLowerCase()));
-      const matchesSearch = searchTerm === "" || 
+    return clubs.filter((club) => {
+      const matchesCountry =
+        selectedCountry === "all" ||
+        (club.location &&
+          club.location.toLowerCase().includes(selectedCountry.toLowerCase()));
+      const matchesSearch =
+        searchTerm === "" ||
         club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (club.location && club.location.toLowerCase().includes(searchTerm.toLowerCase()));
+        (club.location &&
+          club.location.toLowerCase().includes(searchTerm.toLowerCase()));
       return matchesCountry && matchesSearch;
     });
   }, [clubs, selectedCountry, searchTerm]);
@@ -187,8 +194,8 @@ export default function Home() {
               <span className="block text-gradient-warm">Around the World</span>
             </h1>
             <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">
-              Connect with Gaelic Athletic clubs and tournaments across the globe. 
-              Join the worldwide Gaelic community.
+              Connect with Gaelic Athletic clubs and tournaments across the
+              globe. Join the worldwide Gaelic community.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <motion.button
@@ -245,7 +252,9 @@ export default function Home() {
                 <button
                   onClick={() => setViewMode("tournaments")}
                   className={`flex-1 px-6 py-3 text-sm font-semibold rounded-xl transition-colors duration-200 ${
-                    viewMode === "tournaments" ? "text-primary" : "text-gray-600"
+                    viewMode === "tournaments"
+                      ? "text-primary"
+                      : "text-gray-600"
                   }`}
                 >
                   🎯 Tournaments
@@ -290,7 +299,7 @@ export default function Home() {
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white"
                     >
                       <option value="all">All Countries</option>
-                      {countries.map(country => (
+                      {countries.map((country) => (
                         <option key={country} value={country}>
                           {country}
                         </option>
@@ -316,7 +325,7 @@ export default function Home() {
                       className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 bg-white"
                     >
                       <option value="all">All Types</option>
-                      {EVENT_TYPES.map(type => (
+                      {EVENT_TYPES.map((type) => (
                         <option key={type} value={type}>
                           {type}
                         </option>
@@ -336,7 +345,10 @@ export default function Home() {
                   {viewMode === "clubs" ? "Gaelic Clubs" : "Tournaments"}
                 </h3>
                 <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                  {viewMode === "clubs" ? filteredClubs.length : filteredEvents.length} found
+                  {viewMode === "clubs"
+                    ? filteredClubs.length
+                    : filteredEvents.length}{" "}
+                  found
                 </span>
               </div>
 
@@ -400,79 +412,80 @@ export default function Home() {
                                 <p className="text-sm text-gray-600 truncate">
                                   📍 {club.location || "Location not specified"}
                                 </p>
-                                {club.teamTypes && club.teamTypes.length > 0 && (
-                                  <div className="flex flex-wrap gap-1 mt-2">
-                                    {club.teamTypes.slice(0, 2).map((type, i) => (
-                                      <span
-                                        key={i}
-                                        className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md"
-                                      >
-                                        {type}
-                                      </span>
-                                    ))}
-                                    {club.teamTypes.length > 2 && (
-                                      <span className="text-xs text-gray-500">
-                                        +{club.teamTypes.length - 2} more
-                                      </span>
-                                    )}
-                                  </div>
-                                )}
+                                {club.teamTypes &&
+                                  club.teamTypes.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-2">
+                                      {club.teamTypes
+                                        .slice(0, 2)
+                                        .map((type, i) => (
+                                          <span
+                                            key={i}
+                                            className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md"
+                                          >
+                                            {type}
+                                          </span>
+                                        ))}
+                                      {club.teamTypes.length > 2 && (
+                                        <span className="text-xs text-gray-500">
+                                          +{club.teamTypes.length - 2} more
+                                        </span>
+                                      )}
+                                    </div>
+                                  )}
                               </div>
                             </div>
                           </motion.div>
                         ))
                       )
+                    ) : filteredEvents.length === 0 ? (
+                      <div className="text-center py-12 text-gray-500">
+                        <div className="text-4xl mb-4">🎯</div>
+                        <p>No tournaments found</p>
+                      </div>
                     ) : (
-                      filteredEvents.length === 0 ? (
-                        <div className="text-center py-12 text-gray-500">
-                          <div className="text-4xl mb-4">🎯</div>
-                          <p>No tournaments found</p>
-                        </div>
-                      ) : (
-                        filteredEvents.map((event, index) => (
-                          <motion.div
-                            key={event.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.05 }}
-                            onClick={() => handleSidebarClick(event)}
-                            className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                              selectedEventId === event.id
-                                ? "bg-secondary/10 border-secondary/30 shadow-md"
-                                : "bg-white border-gray-200 hover:border-secondary/30"
-                            }`}
-                          >
-                            <div className="flex items-start space-x-3">
-                              <div className="w-12 h-12 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <span className="text-secondary text-lg">🎯</span>
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <h4 className="font-semibold text-gray-900 truncate">
-                                  {event.title}
-                                </h4>
-                                <p className="text-sm text-gray-600">
-                                  📅 {formatShortDate(event.startDate)}
-                                </p>
-                                <p className="text-sm text-gray-600 truncate">
-                                  📍 {event.location}
-                                </p>
-                                <span className="inline-block text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-md mt-2">
-                                  {event.eventType}
-                                </span>
-                              </div>
-                              {selectedEventId === event.id && (
-                                <Link
-                                  href={`/events/${event.id}`}
-                                  className="px-3 py-1 bg-secondary text-white text-xs rounded-lg hover:bg-secondary/90 transition-colors"
-                                  onClick={(e) => e.stopPropagation()}
-                                >
-                                  View
-                                </Link>
-                              )}
+                      filteredEvents.map((event, index) => (
+                        <motion.div
+                          key={event.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          onClick={() => handleSidebarClick(event)}
+                          className={`p-4 rounded-xl border cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                            selectedEventId === event.id
+                              ? "bg-secondary/10 border-secondary/30 shadow-md"
+                              : "bg-white border-gray-200 hover:border-secondary/30"
+                          }`}
+                        >
+                          <div className="flex items-start space-x-3">
+                            <div className="w-12 h-12 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                              <span className="text-secondary text-lg">🎯</span>
                             </div>
-                          </motion.div>
-                        ))
-                      )
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-semibold text-gray-900 truncate">
+                                {event.title}
+                              </h4>
+                              <p className="text-sm text-gray-600">
+                                📅 {formatShortDate(event.startDate)}
+                              </p>
+                              <p className="text-sm text-gray-600 truncate">
+                                📍 {event.location}
+                              </p>
+                              <span className="inline-block text-xs bg-secondary/10 text-secondary px-2 py-1 rounded-md mt-2">
+                                {event.eventType}
+                              </span>
+                            </div>
+                            {selectedEventId === event.id && (
+                              <Link
+                                href={`/events/${event.id}`}
+                                className="px-3 py-1 bg-secondary text-white text-xs rounded-lg hover:bg-secondary/90 transition-colors"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                View
+                              </Link>
+                            )}
+                          </div>
+                        </motion.div>
+                      ))
                     )}
                   </motion.div>
                 </AnimatePresence>
@@ -551,18 +564,24 @@ export default function Home() {
             {/* Enhanced Popups */}
             {selectedEventId && viewMode === "tournaments" && (
               <Popup
-                longitude={events.find(e => e.id === selectedEventId)?.longitude || 0}
-                latitude={events.find(e => e.id === selectedEventId)?.latitude || 0}
+                longitude={
+                  events.find((e) => e.id === selectedEventId)?.longitude || 0
+                }
+                latitude={
+                  events.find((e) => e.id === selectedEventId)?.latitude || 0
+                }
                 anchor={MAP_CONFIG.POPUP_ANCHOR}
                 onClose={() => setSelectedEventId(null)}
                 className="min-w-64"
               >
                 {(() => {
-                  const event = events.find(e => e.id === selectedEventId);
+                  const event = events.find((e) => e.id === selectedEventId);
                   if (!event) return null;
                   return (
                     <div className="p-4">
-                      <h3 className="font-bold text-lg text-gray-900 mb-2">{event.title}</h3>
+                      <h3 className="font-bold text-lg text-gray-900 mb-2">
+                        {event.title}
+                      </h3>
                       <div className="space-y-2 text-sm text-gray-600">
                         <p>📅 {formatShortDate(event.startDate)}</p>
                         <p>📍 {event.location}</p>
@@ -583,14 +602,18 @@ export default function Home() {
 
             {selectedClubId && viewMode === "clubs" && (
               <Popup
-                longitude={clubs.find(c => c.id === selectedClubId)?.longitude || 0}
-                latitude={clubs.find(c => c.id === selectedClubId)?.latitude || 0}
+                longitude={
+                  clubs.find((c) => c.id === selectedClubId)?.longitude || 0
+                }
+                latitude={
+                  clubs.find((c) => c.id === selectedClubId)?.latitude || 0
+                }
                 anchor={MAP_CONFIG.POPUP_ANCHOR}
                 onClose={() => setSelectedClubId(null)}
                 className="min-w-64"
               >
                 {(() => {
-                  const club = clubs.find(c => c.id === selectedClubId);
+                  const club = clubs.find((c) => c.id === selectedClubId);
                   if (!club) return null;
                   return (
                     <div className="p-4">
@@ -610,14 +633,18 @@ export default function Home() {
                             </span>
                           </div>
                         )}
-                        <h3 className="font-bold text-lg text-gray-900">{club.name}</h3>
+                        <h3 className="font-bold text-lg text-gray-900">
+                          {club.name}
+                        </h3>
                       </div>
                       <div className="space-y-2 text-sm text-gray-600">
                         <p>📍 {club.location || "Location not specified"}</p>
                         {club.region && <p>🏴 {club.region}</p>}
                         {club.teamTypes && club.teamTypes.length > 0 && (
                           <div>
-                            <p className="font-medium text-gray-700 mb-1">Teams:</p>
+                            <p className="font-medium text-gray-700 mb-1">
+                              Teams:
+                            </p>
                             <div className="flex flex-wrap gap-1">
                               {club.teamTypes.map((type, i) => (
                                 <span
@@ -655,15 +682,21 @@ export default function Home() {
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">🏛️ Clubs</span>
-                <span className="font-semibold text-primary">{clubs.length}</span>
+                <span className="font-semibold text-primary">
+                  {clubs.length}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">🎯 Tournaments</span>
-                <span className="font-semibold text-secondary">{events.length}</span>
+                <span className="font-semibold text-secondary">
+                  {events.length}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">🌍 Countries</span>
-                <span className="font-semibold text-primary-light">{countries.length}</span>
+                <span className="font-semibold text-primary-light">
+                  {countries.length}
+                </span>
               </div>
             </div>
           </motion.div>
