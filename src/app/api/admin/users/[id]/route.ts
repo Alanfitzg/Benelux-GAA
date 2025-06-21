@@ -5,7 +5,7 @@ import { UserRole } from "@prisma/client"
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authResult = await requireSuperAdmin()
@@ -13,7 +13,7 @@ export async function DELETE(
       return authResult
     }
 
-    const userId = params.id
+    const { id: userId } = await params
 
     // Check if user exists
     const user = await prisma.user.findUnique({

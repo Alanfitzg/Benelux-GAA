@@ -4,7 +4,7 @@ import { requireSuperAdmin } from "@/lib/auth-helpers"
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authResult = await requireSuperAdmin()
@@ -12,7 +12,7 @@ export async function PUT(
       return authResult
     }
 
-    const clubId = params.id
+    const { id: clubId } = await params
     const body = await request.json()
     const { imageUrl } = body
 

@@ -25,13 +25,20 @@ export default function UsersManagement() {
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [error, setError] = useState("")
 
-  const [newUser, setNewUser] = useState({
+  const [newUser, setNewUser] = useState<{
+    email: string
+    username: string
+    password: string
+    name: string
+    role: UserRole
+    clubIds: string[]
+  }>({
     email: "",
     username: "",
     password: "",
     name: "",
     role: UserRole.USER,
-    clubIds: [] as string[],
+    clubIds: [],
   })
 
   useEffect(() => {
