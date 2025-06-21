@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { UserRole } from "@prisma/client"
-import { TableSkeleton, FormSkeleton } from "@/components/ui/Skeleton"
+import { TableSkeleton } from "@/components/ui/Skeleton"
 
 interface User {
   id: string
