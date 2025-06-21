@@ -10,6 +10,12 @@ import type { Event } from "@/types";
 import { MAP_CONFIG, URLS, EVENT_TYPES } from "@/lib/constants";
 import { formatShortDate, hasValidCoordinates } from "@/lib/utils";
 import { MapErrorBoundary, DataErrorBoundary } from "@/components/ErrorBoundary";
+import { 
+  SidebarSkeleton, 
+  MapSkeleton, 
+  StatsCardSkeleton, 
+  SkeletonCard 
+} from "@/components/ui/Skeleton";
 
 type ClubMapItem = {
   id: string;
@@ -51,6 +57,7 @@ export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<ClubMapItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [mapLoading, setMapLoading] = useState(true);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
   const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
   const [viewState, setViewState] = useState({
@@ -81,11 +88,14 @@ export default function Home() {
             console.error("Events data is not an array:", data);
             setEvents([]);
           }
+          // Simulate map loading delay for better UX
+          setTimeout(() => setMapLoading(false), 500);
           setLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching events:", error);
           setEvents([]);
+          setMapLoading(false);
           setLoading(false);
         });
     }
@@ -112,6 +122,7 @@ export default function Home() {
         .catch((error) => {
           console.error("Error fetching clubs:", error);
           setClubs([]);
+          setMapLoading(false);
           setLoading(false);
         });
     }
@@ -224,13 +235,16 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="flex h-screen relative">
-        {/* Professional Sidebar */}
-        <motion.div
-          initial={{ x: -400 }}
-          animate={{ x: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="w-96 bg-white shadow-professional-lg border-r border-gray-200/50 overflow-hidden"
-        >
+        {/* Sidebar with loading state */}
+        {loading && status !== "loading" ? (
+          <SidebarSkeleton />
+        ) : (
+          <motion.div
+            initial={{ x: -400 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="w-96 bg-white shadow-professional-lg border-r border-gray-200/50 overflow-hidden"
+          >
           {/* Mode Toggle */}
           <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-b border-gray-200/50">
             <div className="relative bg-gray-100 rounded-2xl p-1">
@@ -354,11 +368,9 @@ export default function Home() {
               </div>
 
               {loading ? (
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="bg-gray-200 h-20 rounded-xl"></div>
-                    </div>
+                    <SkeletonCard key={i} />
                   ))}
                 </div>
               ) : (
@@ -494,12 +506,16 @@ export default function Home() {
               </div>
             </DataErrorBoundary>
           </div>
-        </motion.div>
+          </motion.div>
+        )}
 
         {/* Enhanced Map */}
         <div className="flex-1 relative">
           <MapErrorBoundary>
-            <Map
+            {mapLoading || status === "loading" ? (
+              <MapSkeleton />
+            ) : (
+              <Map
             {...viewState}
             onMove={(evt: ViewStateChangeEvent) => setViewState(evt.viewState)}
             style={{ width: "100%", height: "100%" }}
@@ -690,38 +706,50 @@ export default function Home() {
                 })()}
               </Popup>
             )}
-          </Map>
+              </Map>
+            )}
           </MapErrorBoundary>
 
           {/* Floating Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1 }}
-            className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-professional p-6 min-w-48"
-          >
-            <h4 className="font-semibold text-gray-800 mb-3">Platform Stats</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-600">🏛️ Clubs</span>
-                <span className="font-semibold text-primary">
-                  {clubs.length}
-                </span>
+          {loading || status === "loading" ? (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              className="absolute bottom-6 right-6"
+            >
+              <StatsCardSkeleton />
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1 }}
+              className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-professional p-6 min-w-48"
+            >
+              <h4 className="font-semibold text-gray-800 mb-3">Platform Stats</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">🏛️ Clubs</span>
+                  <span className="font-semibold text-primary">
+                    {clubs.length}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">🎯 Tournaments</span>
+                  <span className="font-semibold text-secondary">
+                    {events.length}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">🌍 Countries</span>
+                  <span className="font-semibold text-primary-light">
+                    {countries.length}
+                  </span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">🎯 Tournaments</span>
-                <span className="font-semibold text-secondary">
-                  {events.length}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">🌍 Countries</span>
-                <span className="font-semibold text-primary-light">
-                  {countries.length}
-                </span>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>

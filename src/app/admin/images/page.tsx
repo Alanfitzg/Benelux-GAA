@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { Skeleton } from "@/components/ui/Skeleton"
 
 interface Club {
   id: string
@@ -86,7 +87,40 @@ export default function ImageManagement() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-6">
-        <div className="text-center">Loading...</div>
+        <Skeleton className="h-8 w-64 mb-8" />
+        
+        {/* Statistics skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="bg-white p-4 rounded-lg shadow">
+              <Skeleton className="h-6 w-20 mb-2" />
+              <Skeleton className="h-8 w-12" />
+            </div>
+          ))}
+        </div>
+        
+        {/* Form skeleton */}
+        <div className="bg-white p-6 rounded-lg shadow mb-8">
+          <Skeleton className="h-6 w-32 mb-4" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <Skeleton className="h-4 w-16 mb-2" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div>
+              <Skeleton className="h-4 w-16 mb-2" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
+          <Skeleton className="h-10 w-24" />
+        </div>
+        
+        {/* Images grid skeleton */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {[...Array(12)].map((_, i) => (
+            <Skeleton key={i} className="aspect-square rounded-lg" />
+          ))}
+        </div>
       </div>
     )
   }

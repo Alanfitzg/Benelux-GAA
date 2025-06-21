@@ -5,6 +5,7 @@ import Image from "next/image";
 import type { Event } from "@/types";
 import { URLS, MESSAGES, UI, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
+import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 
 export const dynamic = "force-dynamic";
 
@@ -15,12 +16,17 @@ export default function EventDetail({
 }) {
   const { id } = React.use(params);
   const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch(`${URLS.API.EVENTS}/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setEvent(data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
       });
   }, [id]);
 
@@ -50,6 +56,10 @@ export default function EventDetail({
       alert(MESSAGES.ERROR.INTEREST_FAILED);
     }
   };
+
+  if (loading) {
+    return <DetailPageSkeleton />;
+  }
 
   return (
     <div className={`${UI.MIN_HEIGHT_DETAIL} flex flex-col items-center py-8 px-2`}>

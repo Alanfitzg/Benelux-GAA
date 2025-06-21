@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { UserRole } from "@prisma/client"
+import { TableSkeleton, FormSkeleton } from "@/components/ui/Skeleton"
 
 interface User {
   id: string
@@ -142,7 +143,13 @@ export default function UsersManagement() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-6">
-        <div className="text-center">Loading...</div>
+        <div className="flex justify-between items-center mb-8">
+          <div className="h-8 w-48 bg-gray-200 rounded animate-pulse"></div>
+          <div className="h-10 w-40 bg-gray-200 rounded animate-pulse"></div>
+        </div>
+        <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+          <TableSkeleton rows={6} columns={5} />
+        </div>
       </div>
     )
   }

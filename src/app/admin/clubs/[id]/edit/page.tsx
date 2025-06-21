@@ -8,6 +8,7 @@ import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
 import { TEAM_TYPES } from "@/lib/constants/teams";
 import { URLS, MESSAGES } from "@/lib/constants";
+import { FormSkeleton } from "@/components/ui/Skeleton";
 
 interface ClubData {
   name: string;
@@ -152,8 +153,18 @@ export default function EditClubPage() {
   }
 
   if (!club) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      <div className="container mx-auto px-4 py-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <div className="h-6 w-24 bg-gray-200 rounded animate-pulse mb-4"></div>
+            <div className="h-8 w-64 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg p-8">
+            <FormSkeleton />
+          </div>
+        </div>
+      </div>
     </div>
   );
 
