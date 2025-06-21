@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { geocodeLocation } from '@/lib/utils';
 import { withErrorHandling, parseJsonBody } from '@/lib/utils';
+import { requireClubAdmin } from '@/lib/auth-helpers';
 
 type CreateEventBody = {
   title: string;
@@ -29,6 +30,11 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const authResult = await requireClubAdmin();
+  if (authResult instanceof NextResponse) {
+    return authResult;
+  }
+  
   return withErrorHandling(async () => {
     const body = await parseJsonBody<CreateEventBody>(request);
     const { latitude, longitude } = await geocodeLocation(body.location);

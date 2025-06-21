@@ -1,0 +1,57 @@
+Legal Compliance
+Gaelic Trips Ltd operates with full awareness and respect for the legal frameworks that govern travel services and consumer protection across Europe. Below is a summary of our legal obligations and compliance position regarding the current version of our platform.
+
+1. Legal Status of Gaelic Trips Products
+Our core offerings—Team Tickets and Day Passes—are classified as Linked Travel Arrangements (LTAs) under Directive (EU) 2015/2302. They do not meet the criteria of a "package holiday" because they exclude accommodation, flights, or transport. This ensures reduced regulatory burden while still providing protections to consumers in case of insolvency by the primary service provider.
+
+We avoid packaging multiple services together in a single price or transaction unless verified to remain within LTA definitions .
+
+2. EU Legal Compliance
+Directive (EU) 2015/2302 on Package Travel and Linked Travel Arrangements:
+
+Gaelic Trips ensures that customers are clearly informed when they are booking an LTA, not a package.
+
+Required standardised pre-contractual information is provided to all travellers.
+
+Insolvency protection is in place where applicable, as per the directive.
+
+General Data Protection Regulation (GDPR):
+
+Gaelic Trips collects only the minimum necessary data.
+
+All user data is handled in accordance with GDPR, with secure processing and storage using Stripe and Wix Velo infrastructure.
+
+Consumer Rights Directive (2011/83/EU):
+
+Gaelic Trips provides transparent pricing, clear cancellation terms, and customer service channels compliant with EU consumer standards.
+
+3. Irish Law Compliance
+As a company registered in Ireland:
+
+Gaelic Trips complies with the Consumer Protection Act 2007, including fair marketing and advertising standards.
+
+The platform operates under the Electronic Commerce Act 2000, ensuring valid electronic contracts and secure payment processing.
+
+Our terms and conditions, cancellation rights, and refund policies meet the requirements of Irish contract and consumer law.
+
+4. Platform Terms & Conditions
+All transactions processed through the Gaelic Trips platform:
+
+Are governed by a written agreement (available in full at checkout).
+
+Include terms regarding cancellation, payment, refunds, and dispute resolution.
+
+Require user acknowledgment of the product classification (LTA vs. package) before purchase.
+
+5. Liability and Risk Management
+Organisers (clubs) are responsible for delivering the services outlined in the Day Pass description.
+
+Gaelic Trips Ltd provides the booking infrastructure and retains a portion of platform fees for administrative and legal coverage.
+
+In the event of disputes or underperformance, Gaelic Trips reserves the right to withhold club payouts pending resolution.
+
+Transparency, Always
+Our pricing model is deliberately minimal: Gaelic Trips earns less than the price of a pint per player. But behind the scenes, we operate with professional-grade systems and legal diligence to support clubs and travellers across Europe.
+
+If you have legal questions about our services, please contact: legal@gaelictrips.com
+

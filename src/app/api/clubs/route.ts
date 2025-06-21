@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireClubAdmin } from '@/lib/auth-helpers';
 
 export async function POST(req: NextRequest) {
   try {
+    const authResult = await requireClubAdmin();
+    if (authResult instanceof NextResponse) {
+      return authResult;
+    }
+    
     const data = await req.json();
     if (!data.name) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });

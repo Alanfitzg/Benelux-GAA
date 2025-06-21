@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import ProfessionalHeader from '@/components/ui/ProfessionalHeader';
+import Footer from '@/components/ui/Footer';
+import { AuthSessionProvider } from '@/components/providers/session-provider';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -32,10 +34,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} font-inter antialiased bg-gray-50 min-h-screen`}
       >
-        <ProfessionalHeader />
-        <main className="pt-16">
-          {children}
-        </main>
+        <AuthSessionProvider>
+          <ProfessionalHeader />
+          <main className="pt-16">
+            {children}
+          </main>
+          <Footer />
+        </AuthSessionProvider>
       </body>
     </html>
   );

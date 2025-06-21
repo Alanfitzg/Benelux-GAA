@@ -5,7 +5,7 @@ export default function AdminDashboard() {
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Link 
           href="/admin/events" 
           className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
@@ -36,6 +36,57 @@ export default function AdminDashboard() {
                 Manage Clubs
               </h2>
               <p className="text-gray-600 mt-1">Create, edit, and delete club information</p>
+            </div>
+          </div>
+        </Link>
+        
+        <Link 
+          href="/admin/users" 
+          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-green-400/20 to-blue-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">👥</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                Manage Users
+              </h2>
+              <p className="text-gray-600 mt-1">Create and manage user accounts</p>
+            </div>
+          </div>
+        </Link>
+        
+        <Link 
+          href="/admin/images" 
+          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🖼️</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                Manage Images
+              </h2>
+              <p className="text-gray-600 mt-1">Link club photos from S3 storage</p>
+            </div>
+          </div>
+        </Link>
+        
+        <Link 
+          href="/admin/backups" 
+          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-400/20 to-red-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">💾</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                Database Backups
+              </h2>
+              <p className="text-gray-600 mt-1">Create and manage database backups</p>
             </div>
           </div>
         </Link>

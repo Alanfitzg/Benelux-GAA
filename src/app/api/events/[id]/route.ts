@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { NextRequest } from 'next/server';
 import { MESSAGES } from '@/lib/constants';
+import { requireClubAdmin } from '@/lib/auth-helpers';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -15,6 +16,11 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
 }
 
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const authResult = await requireClubAdmin();
+  if (authResult instanceof NextResponse) {
+    return authResult;
+  }
+  
   const { id } = await context.params;
   try {
     const body = await request.json();
@@ -66,6 +72,11 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
 }
 
 export async function DELETE(request: Request, context: { params: Promise<{ id: string }> }) {
+  const authResult = await requireClubAdmin();
+  if (authResult instanceof NextResponse) {
+    return authResult;
+  }
+  
   const { id } = await context.params;
   await prisma.event.delete({
     where: { id },

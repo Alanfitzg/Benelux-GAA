@@ -5,6 +5,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import type { Event } from "@/types";
 import { MAP_CONFIG, URLS, EVENT_TYPES } from "@/lib/constants";
 import { formatShortDate, hasValidCoordinates } from "@/lib/utils";
@@ -45,6 +46,7 @@ const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
 };
 
 export default function Home() {
+  const { data: session, status } = useSession();
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<ClubMapItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,32 +65,43 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch(URLS.API.EVENTS)
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("Fetched events:", data);
-        if (Array.isArray(data)) {
-          setEvents(data);
-        } else {
-          console.error("Events data is not an array:", data);
+    console.log("Events useEffect - Session status:", status, "User:", session?.user?.username);
+    // Only fetch when session loading is complete
+    if (status !== 'loading') {
+      fetch(URLS.API.EVENTS)
+        .then((res) => {
+          console.log("Events API response status:", res.status);
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Fetched events:", data?.length, "events");
+          if (Array.isArray(data)) {
+            setEvents(data);
+          } else {
+            console.error("Events data is not an array:", data);
+            setEvents([]);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching events:", error);
           setEvents([]);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching events:", error);
-        setEvents([]);
-        setLoading(false);
-      });
-  }, []);
+          setLoading(false);
+        });
+    }
+  }, [status]);
 
   useEffect(() => {
-    if (viewMode === "clubs") {
+    if (viewMode === "clubs" && status !== 'loading') {
+      console.log("Clubs useEffect - Session status:", status, "User:", session?.user?.username);
       setLoading(true);
       fetch(URLS.API.CLUBS)
-        .then((res) => res.json())
+        .then((res) => {
+          console.log("Clubs API response status:", res.status);
+          return res.json();
+        })
         .then((data) => {
-          console.log("Fetched clubs:", data);
+          console.log("Fetched clubs:", data?.length, "clubs");
           if (Array.isArray(data)) {
             setClubs(data);
           } else {
@@ -103,7 +116,7 @@ export default function Home() {
           setLoading(false);
         });
     }
-  }, [viewMode]);
+  }, [viewMode, status]);
 
   // Memoized filtered data
   const filteredEvents = useMemo(() => {
@@ -164,27 +177,27 @@ export default function Home() {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-primary-light to-secondary text-white">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative container mx-auto px-6 py-16">
+        <div className="relative container mx-auto px-6 py-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center max-w-4xl mx-auto"
           >
-            <h1 className="text-5xl md:text-6xl font-bold font-poppins mb-6">
+            <h1 className="text-3xl md:text-4xl font-bold font-poppins mb-4">
               Discover Gaelic
               <span className="block text-gradient-warm">Around the World</span>
             </h1>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">
               Connect with Gaelic Athletic clubs and tournaments across the globe. 
               Join the worldwide Gaelic community.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("clubs")}
-                className="px-8 py-4 bg-white text-primary font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="px-6 py-3 bg-white text-primary font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 🏛️ Explore Clubs
               </motion.button>
@@ -192,7 +205,7 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setViewMode("tournaments")}
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-primary transition-all duration-300"
+                className="px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-primary transition-all duration-300"
               >
                 🎯 View Tournaments
               </motion.button>

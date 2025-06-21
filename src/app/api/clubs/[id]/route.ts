@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
+import { requireClubAdmin } from '@/lib/auth-helpers';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -15,6 +16,11 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 }
 
 export async function PUT(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const authResult = await requireClubAdmin();
+  if (authResult instanceof NextResponse) {
+    return authResult;
+  }
+  
   const { id } = await context.params;
   try {
     const data = await req.json();
@@ -35,5 +41,20 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
     return NextResponse.json(club);
   } catch {
     return NextResponse.json({ error: 'Error updating club' }, { status: 400 });
+  }
+}
+
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const authResult = await requireClubAdmin();
+  if (authResult instanceof NextResponse) {
+    return authResult;
+  }
+  
+  const { id } = await context.params;
+  try {
+    await prisma.club.delete({ where: { id } });
+    return NextResponse.json({ message: 'Club deleted successfully' });
+  } catch {
+    return NextResponse.json({ error: 'Error deleting club' }, { status: 400 });
   }
 } 
