@@ -65,7 +65,6 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    console.log("Events useEffect - Session status:", status, "User:", session?.user?.username);
     // Only fetch when session loading is complete
     if (status !== 'loading') {
       fetch(URLS.API.EVENTS)
@@ -93,7 +92,6 @@ export default function Home() {
 
   useEffect(() => {
     if (viewMode === "clubs" && status !== 'loading') {
-      console.log("Clubs useEffect - Session status:", status, "User:", session?.user?.username);
       setLoading(true);
       fetch(URLS.API.CLUBS)
         .then((res) => {

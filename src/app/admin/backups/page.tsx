@@ -66,7 +66,7 @@ export default function BackupsManagement() {
       } else {
         setMessage(`❌ Backup failed: ${data.error}`)
       }
-    } catch (error) {
+    } catch {
       setMessage("❌ An error occurred while creating backup")
     } finally {
       setCreating(false)
@@ -90,7 +90,7 @@ export default function BackupsManagement() {
       } else {
         setMessage("❌ Failed to download backup")
       }
-    } catch (error) {
+    } catch {
       setMessage("❌ An error occurred while downloading backup")
     }
   }
@@ -110,7 +110,7 @@ export default function BackupsManagement() {
         const data = await response.json()
         setMessage(`❌ Failed to delete backup: ${data.error}`)
       }
-    } catch (error) {
+    } catch {
       setMessage("❌ An error occurred while deleting backup")
     }
   }
