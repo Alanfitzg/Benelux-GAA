@@ -112,10 +112,51 @@ export default function PrivacyPolicy() {
               </ul>
             </section>
 
+            {/* Cookies */}
+            <section>
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
+                3. Cookies and Tracking Technologies
+              </h2>
+              <p className="text-gray-700 leading-relaxed mb-4">
+                We use cookies and similar technologies to enhance your experience on our website. 
+                You can manage your cookie preferences at any time.
+              </p>
+              
+              <div className="space-y-4">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">🔒 Necessary Cookies</h3>
+                  <p className="text-gray-700 text-sm">
+                    Essential for website functionality, security, and user authentication. These cannot be disabled.
+                  </p>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">📊 Analytics Cookies</h3>
+                  <p className="text-gray-700 text-sm">
+                    Help us understand website usage and improve our services. These are optional and require your consent.
+                  </p>
+                </div>
+                
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">🎯 Marketing Cookies</h3>
+                  <p className="text-gray-700 text-sm">
+                    Used for advertising and remarketing purposes. These are optional and require your consent.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-blue-800 text-sm">
+                  <strong>Manage Your Preferences:</strong> You can update your cookie settings at any time by visiting our{" "}
+                  <a href="/cookies" className="text-blue-600 hover:underline font-medium">Cookie Settings page</a>.
+                </p>
+              </div>
+            </section>
+
             {/* Legal Basis */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                3. Legal Basis for Processing
+                4. Legal Basis for Processing
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Under GDPR, we process your personal data based on:
@@ -143,7 +184,7 @@ export default function PrivacyPolicy() {
             {/* Data Sharing */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                4. Data Sharing and Disclosure
+                5. Data Sharing and Disclosure
               </h2>
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                 <p className="text-gray-700 leading-relaxed">
@@ -172,7 +213,7 @@ export default function PrivacyPolicy() {
             {/* Data Security */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                5. Data Security
+                6. Data Security
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 We implement appropriate technical and organizational measures to protect your personal information:
@@ -200,7 +241,7 @@ export default function PrivacyPolicy() {
             {/* Your Rights */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                6. Your Data Protection Rights
+                7. Your Data Protection Rights
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Under GDPR, you have the following rights:
@@ -248,7 +289,7 @@ export default function PrivacyPolicy() {
             {/* Data Retention */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                7. Data Retention
+                8. Data Retention
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 We retain your personal information only as long as necessary for:
@@ -272,7 +313,7 @@ export default function PrivacyPolicy() {
             {/* Cookies */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                8. Cookies and Tracking
+                9. Cookies and Tracking
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 We use cookies and similar technologies to:
@@ -299,7 +340,7 @@ export default function PrivacyPolicy() {
             {/* Updates */}
             <section>
               <h2 className="text-2xl font-semibold text-gray-900 mb-4 border-b border-gray-200 pb-2">
-                9. Policy Updates
+                10. Policy Updates
               </h2>
               <p className="text-gray-700 leading-relaxed">
                 We may update this Privacy Policy from time to time. We will notify you of any 
@@ -310,7 +351,7 @@ export default function PrivacyPolicy() {
             {/* Contact Information */}
             <section className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
               <h2 className="text-2xl font-semibold text-gray-900 mb-4">
-                10. Contact Information
+                11. Contact Information
               </h2>
               <p className="text-gray-700 leading-relaxed mb-4">
                 For any privacy-related questions or to exercise your data protection rights, please contact us:

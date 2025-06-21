@@ -5,6 +5,7 @@ import "./globals.css";
 import ProfessionalHeader from '@/components/ui/ProfessionalHeader';
 import Footer from '@/components/ui/Footer';
 import { AuthSessionProvider } from '@/components/providers/session-provider';
+import CookieConsent from '@/components/CookieConsent';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -40,6 +41,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <CookieConsent />
         </AuthSessionProvider>
       </body>
     </html>

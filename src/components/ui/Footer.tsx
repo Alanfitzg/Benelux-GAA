@@ -67,6 +67,11 @@ export default function Footer() {
                   Legal Compliance
                 </Link>
               </li>
+              <li>
+                <Link href="/cookies" className="text-gray-400 hover:text-white transition-colors">
+                  Cookie Settings
+                </Link>
+              </li>
             </ul>
           </div>
 
