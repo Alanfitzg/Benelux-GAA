@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import type { Event } from "@/types";
 import { MAP_CONFIG, URLS, EVENT_TYPES } from "@/lib/constants";
 import { formatShortDate, hasValidCoordinates } from "@/lib/utils";
+import { MapErrorBoundary, DataErrorBoundary } from "@/components/ErrorBoundary";
 
 type ClubMapItem = {
   id: string;
@@ -338,7 +339,8 @@ export default function Home() {
 
           {/* Results */}
           <div className="flex-1 overflow-y-auto">
-            <div className="p-4">
+            <DataErrorBoundary>
+              <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-gray-800">
                   {viewMode === "clubs" ? "Gaelic Clubs" : "Tournaments"}
@@ -489,13 +491,15 @@ export default function Home() {
                   </motion.div>
                 </AnimatePresence>
               )}
-            </div>
+              </div>
+            </DataErrorBoundary>
           </div>
         </motion.div>
 
         {/* Enhanced Map */}
         <div className="flex-1 relative">
-          <Map
+          <MapErrorBoundary>
+            <Map
             {...viewState}
             onMove={(evt: ViewStateChangeEvent) => setViewState(evt.viewState)}
             style={{ width: "100%", height: "100%" }}
@@ -511,7 +515,16 @@ export default function Home() {
                       longitude={event.longitude!}
                       latitude={event.latitude!}
                       anchor={MAP_CONFIG.MARKER_ANCHOR}
-                      onClick={() => setSelectedEventId(event.id)}
+                      onClick={(e) => {
+                        e.originalEvent.stopPropagation();
+                        console.log('Tournament marker clicked:', event.id);
+                        setViewState({
+                          longitude: event.longitude!,
+                          latitude: event.latitude!,
+                          zoom: MAP_CONFIG.SELECTED_ITEM_ZOOM,
+                        });
+                        setSelectedEventId(event.id);
+                      }}
                     >
                       <motion.div
                         whileHover={{ scale: 1.2 }}
@@ -533,7 +546,16 @@ export default function Home() {
                       longitude={club.longitude!}
                       latitude={club.latitude!}
                       anchor={MAP_CONFIG.MARKER_ANCHOR}
-                      onClick={() => setSelectedClubId(club.id)}
+                      onClick={(e) => {
+                        e.originalEvent.stopPropagation();
+                        console.log('Club marker clicked:', club.id);
+                        setViewState({
+                          longitude: club.longitude!,
+                          latitude: club.latitude!,
+                          zoom: MAP_CONFIG.SELECTED_ITEM_ZOOM,
+                        });
+                        setSelectedClubId(club.id);
+                      }}
                     >
                       <motion.div
                         whileHover={{ scale: 1.2 }}
@@ -669,6 +691,7 @@ export default function Home() {
               </Popup>
             )}
           </Map>
+          </MapErrorBoundary>
 
           {/* Floating Stats */}
           <motion.div

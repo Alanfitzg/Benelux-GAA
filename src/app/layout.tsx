@@ -6,6 +6,8 @@ import ProfessionalHeader from '@/components/ui/ProfessionalHeader';
 import Footer from '@/components/ui/Footer';
 import { AuthSessionProvider } from '@/components/providers/session-provider';
 import CookieConsent from '@/components/CookieConsent';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { ErrorNotificationProvider } from '@/components/ErrorNotification';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,14 +37,18 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} font-inter antialiased bg-gray-50 min-h-screen`}
       >
-        <AuthSessionProvider>
-          <ProfessionalHeader />
-          <main className="pt-16">
-            {children}
-          </main>
-          <Footer />
-          <CookieConsent />
-        </AuthSessionProvider>
+        <ErrorBoundary>
+          <ErrorNotificationProvider>
+            <AuthSessionProvider>
+              <ProfessionalHeader />
+              <main className="pt-16">
+                {children}
+              </main>
+              <Footer />
+              <CookieConsent />
+            </AuthSessionProvider>
+          </ErrorNotificationProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

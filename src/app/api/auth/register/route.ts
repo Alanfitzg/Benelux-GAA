@@ -1,44 +1,47 @@
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 import { createUser, getUserByEmail, getUserByUsername } from "@/lib/user"
+import { createUserSchema, sanitizeInput, validateRequest } from "@/lib/validation"
+import { ConflictError, handleApiError } from "@/lib/error-handling"
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    // Get and validate request body
     const body = await request.json()
-    const { email, username, password, name } = body
-
-    if (!email || !username || !password) {
+    const validation = validateRequest(createUserSchema, body)
+    
+    if (!validation.success) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: { type: "VALIDATION_ERROR", message: validation.error } },
         { status: 400 }
       )
     }
 
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters long" },
-        { status: 400 }
-      )
-    }
+    const { email, username, password, name } = validation.data
 
-    const existingUserByEmail = await getUserByEmail(email)
+    // Sanitize input data
+    const sanitizedEmail = sanitizeInput(email.toLowerCase())
+    const sanitizedUsername = sanitizeInput(username.toLowerCase())
+    const sanitizedName = name ? sanitizeInput(name) : undefined
+
+    // Check for existing users
+    const [existingUserByEmail, existingUserByUsername] = await Promise.all([
+      getUserByEmail(sanitizedEmail),
+      getUserByUsername(sanitizedUsername)
+    ])
+
     if (existingUserByEmail) {
-      return NextResponse.json(
-        { error: "Email already registered" },
-        { status: 400 }
-      )
+      throw new ConflictError("An account with this email already exists")
     }
 
-    const existingUserByUsername = await getUserByUsername(username)
     if (existingUserByUsername) {
-      return NextResponse.json(
-        { error: "Username already taken" },
-        { status: 400 }
-      )
+      throw new ConflictError("This username is already taken")
     }
 
-    const user = await createUser(email, username, password, name)
+    // Create user
+    const user = await createUser(sanitizedEmail, sanitizedUsername, password, sanitizedName)
 
     return NextResponse.json({
+      success: true,
       user: {
         id: user.id,
         email: user.email,
@@ -46,12 +49,10 @@ export async function POST(request: Request) {
         name: user.name,
         role: user.role,
       },
-    })
+      message: "Account created successfully"
+    }, { status: 201 })
+
   } catch (error) {
-    console.error("Registration error:", error)
-    return NextResponse.json(
-      { error: "Failed to create account" },
-      { status: 500 }
-    )
+    return handleApiError(error, "User registration")
   }
 }
