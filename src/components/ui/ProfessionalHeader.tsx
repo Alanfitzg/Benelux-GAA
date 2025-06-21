@@ -23,6 +23,7 @@ const ProfessionalHeader = () => {
     { href: "/events", label: "Events" },
     { href: "/clubs", label: "Clubs" },
     { href: "/events/create", label: "Create Event" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
