@@ -4,6 +4,27 @@ import Link from "next/link";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { MESSAGES, UI } from "@/lib/constants";
 import { formatShortDate } from "@/lib/utils";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "GAA Tournaments & Events",
+  description: "Discover Gaelic Athletic Association tournaments and events worldwide. Find Gaelic football, hurling, camogie, and handball competitions near you.",
+  keywords: [
+    "GAA tournaments", "Gaelic football events", "hurling competitions", 
+    "camogie tournaments", "handball events", "Irish sports events", 
+    "GAA competitions", "Gaelic games calendar", "Irish sports calendar"
+  ],
+  openGraph: {
+    title: "GAA Tournaments & Events | GAA Trips",
+    description: "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
+    url: "https://gaa-trips.vercel.app/events",
+    type: "website",
+  },
+  twitter: {
+    title: "GAA Tournaments & Events | GAA Trips",
+    description: "Discover Gaelic Athletic Association tournaments and events worldwide.",
+  },
+};
 
 function getMonthOptions() {
   return [

@@ -1,8 +1,79 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import type { Club } from "@/types";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { StructuredData, generateClubStructuredData } from "@/components/StructuredData";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  
+  try {
+    const club = await prisma.club.findUnique({
+      where: { id },
+    });
+
+    if (!club) {
+      return {
+        title: "Club Not Found",
+        description: "The requested GAA club could not be found.",
+      };
+    }
+
+    const title = `${club.name} - GAA Club`;
+    const description = `${club.name} is a Gaelic Athletic Association club located in ${club.location || 'Ireland'}. Join our GAA community and discover Irish sports including ${club.teamTypes?.join(', ') || 'Gaelic football, hurling, and camogie'}.`;
+
+    return {
+      title,
+      description,
+      keywords: [
+        club.name,
+        "GAA club",
+        "Gaelic Athletic Association",
+        club.location || "",
+        club.region || "",
+        ...club.teamTypes || [],
+        "Irish sports club",
+        "Gaelic football",
+        "hurling",
+        "camogie"
+      ].filter(Boolean),
+      openGraph: {
+        title: `${title} | GAA Trips`,
+        description,
+        url: `https://gaa-trips.vercel.app/clubs/${id}`,
+        type: "website",
+        images: club.imageUrl ? [
+          {
+            url: club.imageUrl,
+            width: 1200,
+            height: 630,
+            alt: `${club.name} - GAA Club`,
+          }
+        ] : [],
+      },
+      twitter: {
+        title: `${title} | GAA Trips`,
+        description,
+        images: club.imageUrl ? [club.imageUrl] : [],
+      },
+      alternates: {
+        canonical: `https://gaa-trips.vercel.app/clubs/${id}`,
+      },
+    };
+  } catch (error) {
+    console.error("Error generating club metadata:", error);
+    return {
+      title: "GAA Club | GAA Trips",
+      description: "Discover GAA clubs worldwide.",
+    };
+  }
+}
 
 export default async function ClubDetailsPage({
   params,
@@ -15,7 +86,16 @@ export default async function ClubDetailsPage({
     return <div className="text-red-600">Club not found.</div>;
   }
   return (
-    <div className="flex justify-center items-center min-h-[80vh] px-2">
+    <>
+      <StructuredData data={generateClubStructuredData({
+        ...club,
+        region: club.region || undefined,
+        website: club.website || undefined,
+        facebook: club.facebook || undefined,
+        instagram: club.instagram || undefined,
+        imageUrl: club.imageUrl || undefined,
+      })} />
+      <div className="flex justify-center items-center min-h-[80vh] px-2">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full">
         <div className="flex justify-center mb-6">
           <Image
@@ -97,6 +177,7 @@ export default async function ClubDetailsPage({
           </Link>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

@@ -352,7 +352,7 @@ export default function Home() {
           </div>
 
           {/* Results */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto max-h-[calc(100vh-380px)]">
             <DataErrorBoundary>
               <div className="p-4">
               <div className="flex items-center justify-between mb-4">
