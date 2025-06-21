@@ -46,8 +46,7 @@ const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
 };
 
 export default function Home() {
-  // eslint ignore-next-line no-unused-vars
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<ClubMapItem[]>([]);
   const [loading, setLoading] = useState(true);
