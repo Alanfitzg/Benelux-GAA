@@ -11,7 +11,7 @@ interface User {
   username: string;
   name: string | null;
   role: UserRole;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 interface ProfileClientProps {
@@ -143,11 +143,14 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                       Member Since
                     </label>
                     <p className="text-gray-900 font-medium">
-                      {new Date(user.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+                      {user.createdAt 
+                        ? new Date(user.createdAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })
+                        : "Not available"
+                      }
                     </p>
                   </div>
                 </div>
