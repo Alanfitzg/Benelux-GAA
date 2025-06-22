@@ -9,7 +9,7 @@ interface User {
   id: string;
   email: string;
   username: string;
-  name: string | null;
+  name?: string | null;
   role: UserRole;
   createdAt?: Date;
 }
