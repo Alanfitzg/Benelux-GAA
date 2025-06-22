@@ -1,9 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { EVENT_TYPES } from "@/lib/constants/events";
-import { MESSAGES, UI } from "@/lib/constants";
-import { formatShortDate } from "@/lib/utils";
+import { MESSAGES } from "@/lib/constants";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -97,14 +97,17 @@ export default async function EventsPage({
     const months = getMonthOptions();
 
     return (
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Upcoming Events</h1>
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">GAA TOURNAMENTS & EVENTS</h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Discover upcoming Gaelic Athletic Association tournaments and events worldwide. Join competitions and connect with the global GAA community.
+          </p>
           <Link
             href="/events/create"
-            className="bg-primary text-primary-foreground px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
+            className="inline-block mt-6 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-semibold"
           >
-            Create Event
+            CREATE EVENT
           </Link>
         </div>
         <form className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4" method="get">
@@ -150,7 +153,7 @@ export default async function EventsPage({
             Apply Filters
           </button>
         </form>
-        <div className={`grid ${UI.GRID_LAYOUTS.RESPONSIVE} gap-6`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map(
             (event: {
               id: string;
@@ -158,34 +161,54 @@ export default async function EventsPage({
               eventType: string;
               location: string;
               startDate: Date;
+              endDate: Date | null;
               cost: number | null;
-            }) => (
-              <div key={event.id} className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
-                <h2 className="text-xl font-semibold mb-3 text-primary">
-                  {event.title}
-                </h2>
-                <div className="space-y-2 text-gray-700">
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">Type:</span> {event.eventType}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">📍 Location:</span> {event.location}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">📅 Date:</span> {formatShortDate(event.startDate)}
-                  </p>
-                  <p className="flex items-center">
-                    <span className="font-medium mr-2">💰 Cost:</span> €{event.cost ?? "TBD"}
-                  </p>
+              imageUrl: string | null;
+            }) => {
+              return (
+                <div key={event.id} className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                  {/* Event Image */}
+                  <div className="relative h-64 overflow-hidden">
+                    {event.imageUrl ? (
+                      <Image
+                        src={event.imageUrl}
+                        alt={event.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                        <div className="text-center text-white">
+                          <div className="text-6xl mb-4">🏆</div>
+                          <div className="text-xl font-bold">{event.eventType}</div>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    
+                    {/* Event Title */}
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <h2 className="text-white text-2xl font-bold mb-2 leading-tight">
+                        {event.title.toUpperCase()}
+                      </h2>
+                      <p className="text-white/90 text-sm">
+                        {event.location}
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* View Package Button */}
+                  <Link
+                    href={`/events/${event.id}`}
+                    className="absolute bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded font-semibold text-sm hover:bg-red-700 transition-colors"
+                  >
+                    VIEW PACKAGE
+                  </Link>
                 </div>
-                <Link
-                  href={`/events/${event.id}`}
-                  className="mt-4 inline-block bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition"
-                >
-                  View Details →
-                </Link>
-              </div>
-            )
+              );
+            }
           )}
         </div>
       </div>

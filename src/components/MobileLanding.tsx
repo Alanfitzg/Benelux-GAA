@@ -83,9 +83,9 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-3xl font-bold text-white text-center mb-3"
+          className="text-2xl font-bold text-white text-center mb-3"
         >
-          Gaelic Trips
+          Your Gateway to Gaelic Games Abroad
         </motion.h1>
 
         <motion.p
@@ -94,8 +94,7 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           transition={{ delay: 0.5 }}
           className="text-white/90 text-center text-lg leading-relaxed max-w-sm"
         >
-          Welcome to the global Gaelic community. Connect with clubs and
-          tournaments worldwide.
+          Bringing GAA communities together through trusted, club-first travel experiences
         </motion.p>
       </motion.div>
 
