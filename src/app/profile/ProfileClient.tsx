@@ -1,0 +1,253 @@
+"use client";
+
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import type { UserRole } from "@prisma/client";
+
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  name: string | null;
+  role: UserRole;
+  createdAt: Date;
+}
+
+interface ProfileClientProps {
+  user: User;
+}
+
+export default function ProfileClient({ user }: ProfileClientProps) {
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    name: user.name || "",
+    email: user.email,
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const response = await fetch(`/api/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      setMessage("Profile updated successfully!");
+      setIsEditing(false);
+      router.refresh();
+    } catch {
+      setMessage("Error updating profile. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getRoleBadge = (role: UserRole) => {
+    const roleConfig = {
+      SUPER_ADMIN: { label: "Super Admin", color: "bg-purple-100 text-purple-800" },
+      CLUB_ADMIN: { label: "Club Admin", color: "bg-blue-100 text-blue-800" },
+      USER: { label: "User", color: "bg-gray-100 text-gray-800" },
+    };
+
+    const config = roleConfig[role];
+    return (
+      <span className={`px-3 py-1 rounded-full text-sm font-medium ${config.color}`}>
+        {config.label}
+      </span>
+    );
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">My Profile</h1>
+
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-r from-primary to-secondary p-8">
+            <div className="flex items-center space-x-6">
+              <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl font-bold text-primary">
+                {user.username.charAt(0).toUpperCase()}
+              </div>
+              <div className="text-white">
+                <h2 className="text-2xl font-bold">{user.username}</h2>
+                <p className="text-white/80 mt-1">{user.email}</p>
+                <div className="mt-3">{getRoleBadge(user.role)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-8">
+            {message && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={`mb-6 p-4 rounded-lg ${
+                  message.includes("Error") 
+                    ? "bg-red-50 text-red-800" 
+                    : "bg-green-50 text-green-800"
+                }`}
+              >
+                {message}
+              </motion.div>
+            )}
+
+            {!isEditing ? (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Username
+                    </label>
+                    <p className="text-gray-900 font-medium">{user.username}</p>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Email
+                    </label>
+                    <p className="text-gray-900 font-medium">{user.email}</p>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Full Name
+                    </label>
+                    <p className="text-gray-900 font-medium">
+                      {user.name || "Not provided"}
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Member Since
+                    </label>
+                    <p className="text-gray-900 font-medium">
+                      {new Date(user.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="px-6 py-2.5 bg-primary text-white font-medium rounded-xl hover:bg-primary/90 transition-colors"
+                  >
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Username (cannot be changed)
+                    </label>
+                    <input
+                      type="text"
+                      value={user.username}
+                      disabled
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-600 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="Enter your full name"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsEditing(false);
+                      setFormData({ name: user.name || "", email: user.email });
+                      setMessage("");
+                    }}
+                    className="px-6 py-2.5 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="px-6 py-2.5 bg-primary text-white font-medium rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  >
+                    {loading ? "Saving..." : "Save Changes"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+
+        {user.role === "CLUB_ADMIN" && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-8 bg-white rounded-xl shadow-lg p-8"
+          >
+            <h3 className="text-xl font-bold text-gray-900 mb-4">Club Administration</h3>
+            <p className="text-gray-600 mb-6">
+              As a Club Admin, you have access to manage clubs assigned to you.
+            </p>
+            <button
+              onClick={() => router.push("/admin/clubs")}
+              className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
+            >
+              Manage My Clubs
+            </button>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,7 +9,9 @@ import { useSession, signOut } from "next-auth/react";
 const ProfessionalHeader = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { data: session, status } = useSession();
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +19,16 @@ const ProfessionalHeader = () => {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const navItems = [
@@ -112,39 +124,86 @@ const ProfessionalHeader = () => {
                   Loading...
                 </div>
               ) : session?.user ? (
-                <>
-                  <div
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
-                      scrolled
-                        ? "text-gray-700 bg-gray-100"
-                        : "text-white bg-white/10"
-                    }`}
-                  >
-                    {session.user.username}
-                  </div>
-                  {session.user.role === "SUPER_ADMIN" && (
-                    <Link
-                      href="/admin"
-                      className={`px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 ${
-                        scrolled
-                          ? "text-gray-700 hover:text-primary hover:bg-primary/10"
-                          : "text-white/90 hover:text-white hover:bg-white/10"
-                      }`}
-                    >
-                      Admin
-                    </Link>
-                  )}
+                <div className="relative" ref={dropdownRef}>
                   <button
-                    onClick={() => signOut()}
-                    className={`px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 ${
+                    onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 ${
                       scrolled
-                        ? "text-gray-700 hover:text-primary hover:bg-primary/10"
-                        : "text-white/90 hover:text-white hover:bg-white/10"
+                        ? "text-gray-700 hover:bg-gray-100"
+                        : "text-white hover:bg-white/10"
                     }`}
                   >
-                    Sign Out
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-medium text-sm">{session.user.username}</span>
+                    <svg
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        profileDropdownOpen ? "rotate-180" : ""
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
                   </button>
-                </>
+                  
+                  <AnimatePresence>
+                    {profileDropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
+                      >
+                        <div className="py-2">
+                          <Link
+                            href="/profile"
+                            onClick={() => setProfileDropdownOpen(false)}
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            My Profile
+                          </Link>
+                          
+                          {session.user.role === "SUPER_ADMIN" && (
+                            <>
+                              <div className="border-t border-gray-100 my-1" />
+                              <Link
+                                href="/admin"
+                                onClick={() => setProfileDropdownOpen(false)}
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                              >
+                                <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                                </svg>
+                                Admin Panel
+                              </Link>
+                            </>
+                          )}
+                          
+                          <div className="border-t border-gray-100 my-1" />
+                          <button
+                            onClick={() => {
+                              setProfileDropdownOpen(false);
+                              signOut();
+                            }}
+                            className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors text-left"
+                          >
+                            <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Sign Out
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               ) : (
                 <>
                   <Link
@@ -241,41 +300,70 @@ const ProfessionalHeader = () => {
                       Loading...
                     </div>
                   ) : session?.user ? (
-                    <>
+                    <div className="space-y-2">
                       <div
-                        className={`px-4 py-2 mb-2 text-sm font-medium ${
+                        className={`flex items-center gap-3 px-4 py-2 ${
                           scrolled ? "text-gray-700" : "text-white"
                         }`}
                       >
-                        Signed in as {session.user.username}
+                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                          <div className="font-medium">{session.user.username}</div>
+                          <div className="text-xs opacity-75">Signed in</div>
+                        </div>
                       </div>
+                      
+                      <Link
+                        href="/profile"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                          scrolled
+                            ? "text-gray-700 hover:bg-gray-100"
+                            : "text-white hover:bg-white/10"
+                        }`}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span className="font-medium">My Profile</span>
+                      </Link>
+                      
                       {session.user.role === "SUPER_ADMIN" && (
                         <Link
                           href="/admin"
                           onClick={() => setMobileMenuOpen(false)}
-                          className={`block px-4 py-3 rounded-xl transition-all duration-300 ${
+                          className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                             scrolled
-                              ? "text-gray-700 hover:bg-emerald-50"
+                              ? "text-gray-700 hover:bg-gray-100"
                               : "text-white hover:bg-white/10"
                           }`}
                         >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                          </svg>
                           <span className="font-medium">Admin Panel</span>
                         </Link>
                       )}
+                      
                       <button
                         onClick={() => {
                           setMobileMenuOpen(false);
                           signOut();
                         }}
-                        className={`block w-full text-left px-4 py-3 rounded-xl transition-all duration-300 ${
+                        className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-300 text-left ${
                           scrolled
-                            ? "text-gray-700 hover:bg-emerald-50"
+                            ? "text-gray-700 hover:bg-gray-100"
                             : "text-white hover:bg-white/10"
                         }`}
                       >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
                         <span className="font-medium">Sign Out</span>
                       </button>
-                    </>
+                    </div>
                   ) : (
                     <>
                       <Link
@@ -283,7 +371,7 @@ const ProfessionalHeader = () => {
                         onClick={() => setMobileMenuOpen(false)}
                         className={`block px-4 py-3 rounded-xl transition-all duration-300 ${
                           scrolled
-                            ? "text-gray-700 hover:bg-emerald-50"
+                            ? "text-gray-700 hover:bg-gray-100"
                             : "text-white hover:bg-white/10"
                         }`}
                       >
