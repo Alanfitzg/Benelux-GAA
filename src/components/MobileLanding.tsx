@@ -94,7 +94,8 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           transition={{ delay: 0.5 }}
           className="text-white/90 text-center text-lg leading-relaxed max-w-sm"
         >
-          Bringing GAA communities together through trusted, club-first travel experiences
+          Bringing GAA communities together through trusted, club-first travel
+          experiences
         </motion.p>
       </motion.div>
 
@@ -154,15 +155,15 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           </h4>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">500+</div>
+              <div className="text-2xl font-bold text-white">80+</div>
               <div className="text-white/80 text-sm">Clubs</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">50+</div>
+              <div className="text-2xl font-bold text-white">20+</div>
               <div className="text-white/80 text-sm">Countries</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-white">100+</div>
+              <div className="text-2xl font-bold text-white">25+</div>
               <div className="text-white/80 text-sm">Events</div>
             </div>
           </div>
