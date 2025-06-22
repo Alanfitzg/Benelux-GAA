@@ -8,21 +8,30 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "GAA Tournaments & Events",
-  description: "Discover Gaelic Athletic Association tournaments and events worldwide. Find Gaelic football, hurling, camogie, and handball competitions near you.",
+  description:
+    "Discover Gaelic Athletic Association tournaments and events worldwide. Find Gaelic football, hurling, camogie, and handball competitions near you.",
   keywords: [
-    "GAA tournaments", "Gaelic football events", "hurling competitions", 
-    "camogie tournaments", "handball events", "Irish sports events", 
-    "GAA competitions", "Gaelic games calendar", "Irish sports calendar"
+    "GAA tournaments",
+    "Gaelic football events",
+    "hurling competitions",
+    "camogie tournaments",
+    "handball events",
+    "Irish sports events",
+    "GAA competitions",
+    "Gaelic games calendar",
+    "Irish sports calendar",
   ],
   openGraph: {
     title: "GAA Tournaments & Events | GAA Trips",
-    description: "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
+    description:
+      "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
     url: "https://gaa-trips.vercel.app/events",
     type: "website",
   },
   twitter: {
     title: "GAA Tournaments & Events | GAA Trips",
-    description: "Discover Gaelic Athletic Association tournaments and events worldwide.",
+    description:
+      "Discover Gaelic Athletic Association tournaments and events worldwide.",
   },
 };
 
@@ -99,9 +108,13 @@ export default async function EventsPage({
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">GAA TOURNAMENTS & EVENTS</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            GAA TOURNAMENTS & EVENTS
+          </h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover upcoming Gaelic Athletic Association tournaments and events worldwide. Join competitions and connect with the global GAA community.
+            Discover upcoming Gaelic Athletic Association tournaments and events
+            worldwide. Join competitions and connect with the global GAA
+            community.
           </p>
           <Link
             href="/events/create"
@@ -110,7 +123,10 @@ export default async function EventsPage({
             CREATE EVENT
           </Link>
         </div>
-        <form className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4" method="get">
+        <form
+          className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4"
+          method="get"
+        >
           <select
             name="eventType"
             defaultValue={eventType}
@@ -166,7 +182,10 @@ export default async function EventsPage({
               imageUrl: string | null;
             }) => {
               return (
-                <div key={event.id} className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                <div
+                  key={event.id}
+                  className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   {/* Event Image */}
                   <div className="relative h-64 overflow-hidden">
                     {event.imageUrl ? (
@@ -180,31 +199,31 @@ export default async function EventsPage({
                       <div className="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
                         <div className="text-center text-white">
                           <div className="text-6xl mb-4">🏆</div>
-                          <div className="text-xl font-bold">{event.eventType}</div>
+                          <div className="text-xl font-bold">
+                            {event.eventType}
+                          </div>
                         </div>
                       </div>
                     )}
-                    
+
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                    
+
                     {/* Event Title */}
                     <div className="absolute bottom-4 left-4 right-4">
                       <h2 className="text-white text-2xl font-bold mb-2 leading-tight">
                         {event.title.toUpperCase()}
                       </h2>
-                      <p className="text-white/90 text-sm">
-                        {event.location}
-                      </p>
+                      <p className="text-white/90 text-sm">{event.location}</p>
                     </div>
                   </div>
-                  
-                  {/* View Package Button */}
+
+                  {/* View Details Button */}
                   <Link
                     href={`/events/${event.id}`}
                     className="absolute bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded font-semibold text-sm hover:bg-red-700 transition-colors"
                   >
-                    VIEW PACKAGE
+                    VIEW DETAILS
                   </Link>
                 </div>
               );
@@ -214,7 +233,7 @@ export default async function EventsPage({
       </div>
     );
   } catch (error) {
-    console.error('Database connection error:', error);
+    console.error("Database connection error:", error);
     return (
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Events</h1>
