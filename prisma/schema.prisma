@@ -37,41 +37,61 @@ model Interest {
 }
 
 model Club {
-  id        String   @id @default(cuid())
-  name      String
-  region    String?
-  subRegion String?
-  map       String?
-  facebook  String?
-  instagram String?
-  website   String?
-  codes     String?
-  imageUrl  String?
-  location  String?
-  latitude  Float?
-  longitude Float?
-  teamTypes String[] @default([])
-  admins    User[]   @relation("ClubAdmins")
+  id                  String   @id @default(cuid())
+  name                String
+  region              String?
+  subRegion           String?
+  map                 String?
+  facebook            String?
+  instagram           String?
+  website             String?
+  codes               String?
+  imageUrl            String?
+  location            String?
+  latitude            Float?
+  longitude           Float?
+  teamTypes           String[] @default([])
+  contactFirstName    String?
+  contactLastName     String?
+  contactEmail        String?
+  contactPhone        String?
+  contactCountryCode  String?
+  isContactWilling    Boolean  @default(false)
+  members             User[]   @relation("ClubMembers")
+  admins              User[]   @relation("ClubAdmins")
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  username      String    @unique
-  password      String
-  name          String?
-  role          UserRole  @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  adminOfClubs  Club[]    @relation("ClubAdmins")
-  accounts      Account[]
-  sessions      Session[]
+  id              String        @id @default(cuid())
+  email           String        @unique
+  username        String        @unique
+  password        String
+  name            String?
+  role            UserRole      @default(USER)
+  accountStatus   AccountStatus @default(PENDING)
+  clubId          String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  approvedAt      DateTime?
+  approvedBy      String?
+  rejectionReason String?
+  club            Club?         @relation("ClubMembers", fields: [clubId], references: [id])
+  adminOfClubs    Club[]        @relation("ClubAdmins")
+  accounts        Account[]
+  sessions        Session[]
 }
 
 enum UserRole {
   SUPER_ADMIN
   CLUB_ADMIN
   USER
+}
+
+enum AccountStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SUSPENDED
 }
 
 model Account {

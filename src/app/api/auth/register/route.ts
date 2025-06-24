@@ -12,12 +12,12 @@ async function registrationHandler(request: NextRequest) {
     
     if (!validation.success) {
       return NextResponse.json(
-        { error: { type: "VALIDATION_ERROR", message: validation.error } },
+        { error: validation.error },
         { status: 400 }
       )
     }
 
-    const { email, username, password, name } = validation.data
+    const { email, username, password, name, clubId } = validation.data
 
     // Sanitize input data
     const sanitizedEmail = sanitizeInput(email.toLowerCase())
@@ -39,7 +39,7 @@ async function registrationHandler(request: NextRequest) {
     }
 
     // Create user
-    const user = await createUser(sanitizedEmail, sanitizedUsername, password, sanitizedName)
+    const user = await createUser(sanitizedEmail, sanitizedUsername, password, sanitizedName, undefined, clubId)
 
     return NextResponse.json({
       success: true,
@@ -49,8 +49,9 @@ async function registrationHandler(request: NextRequest) {
         username: user.username,
         name: user.name,
         role: user.role,
+        accountStatus: user.accountStatus,
       },
-      message: "Account created successfully"
+      message: "Account created successfully! Your account is pending approval from an administrator. You will receive an email notification once approved."
     }, { status: 201 })
 
   } catch (error) {

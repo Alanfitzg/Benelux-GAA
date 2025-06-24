@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
-import type { UserRole } from "@prisma/client"
+import type { UserRole, AccountStatus } from "@prisma/client"
 
 declare module "next-auth" {
   interface Session {
@@ -12,12 +12,14 @@ declare module "next-auth" {
       username: string
       name?: string | null
       role: UserRole
+      accountStatus: AccountStatus
     }
   }
 
   interface User {
     username: string
     role: UserRole
+    accountStatus: AccountStatus
   }
 }
 
@@ -60,12 +62,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null
         }
 
+        // Check account status - only allow approved accounts to sign in
+        // Temporarily disabled for migration - TODO: Re-enable after database migration
+        // if (user.accountStatus !== 'APPROVED') {
+        //   return null
+        // }
+
         return {
           id: user.id,
           email: user.email,
           username: user.username,
           name: user.name,
           role: user.role,
+          accountStatus: user.accountStatus || 'APPROVED', // Default to APPROVED for existing users
         }
       },
     }),
@@ -76,6 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.id = user.id
         token.username = user.username
         token.role = user.role
+        token.accountStatus = user.accountStatus
       }
       return token
     },
@@ -84,6 +94,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.id as string
         session.user.username = token.username as string
         session.user.role = token.role as UserRole
+        session.user.accountStatus = token.accountStatus as AccountStatus
       }
       return session
     },

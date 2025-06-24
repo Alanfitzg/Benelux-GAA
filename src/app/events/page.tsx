@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { MESSAGES } from "@/lib/constants";
+import CreateEventButton from "@/components/CreateEventButton";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -116,12 +117,7 @@ export default async function EventsPage({
             worldwide. Join competitions and connect with the global GAA
             community.
           </p>
-          <Link
-            href="/events/create"
-            className="inline-block mt-6 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-semibold"
-          >
-            CREATE EVENT
-          </Link>
+          <CreateEventButton />
         </div>
         <form
           className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4"

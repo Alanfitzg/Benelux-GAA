@@ -30,8 +30,9 @@ export const createUserSchema = z.object({
   email: emailSchema,
   username: usernameSchema,
   password: passwordSchema,
-  name: z.string().min(1, "Name is required").max(100, "Name must not exceed 100 characters"),
-  role: z.nativeEnum(UserRole),
+  name: z.string().min(1, "Name is required").max(100, "Name must not exceed 100 characters").optional(),
+  role: z.nativeEnum(UserRole).optional().default(UserRole.USER),
+  clubId: z.string().cuid("Invalid club ID").optional().nullable(),
   clubIds: z.array(z.string().cuid("Invalid club ID")).optional().default([]),
 })
 

@@ -13,6 +13,12 @@ export interface Club {
   map: string | null;
   imageUrl: string | null;
   teamTypes: string[];
+  contactFirstName?: string | null;
+  contactLastName?: string | null;
+  contactEmail?: string | null;
+  contactPhone?: string | null;
+  contactCountryCode?: string | null;
+  isContactWilling?: boolean;
 }
 
 export interface Event {

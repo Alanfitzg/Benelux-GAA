@@ -27,6 +27,12 @@ async function createClubHandler(req: NextRequest) {
         codes: data.codes || null,
         imageUrl: data.imageUrl || null,
         teamTypes: data.teamTypes || [],
+        contactFirstName: data.contactFirstName || null,
+        contactLastName: data.contactLastName || null,
+        contactEmail: data.contactEmail || null,
+        contactPhone: data.contactPhone || null,
+        contactCountryCode: data.contactCountryCode || null,
+        isContactWilling: data.isContactWilling || false,
       },
     });
     return NextResponse.json({ club }, { status: 201 });
@@ -55,6 +61,12 @@ async function getClubsHandler() {
         website: true,
         codes: true,
         teamTypes: true,
+        contactFirstName: true,
+        contactLastName: true,
+        contactEmail: true,
+        contactPhone: true,
+        contactCountryCode: true,
+        isContactWilling: true,
       },
     });
     return NextResponse.json(clubs);

@@ -7,6 +7,7 @@ import Image from "next/image";
 import ImageUpload from '../../components/ImageUpload';
 import LocationAutocomplete from '../../events/create/LocationAutocomplete';
 import TeamTypeMultiSelect from '@/components/forms/TeamTypeMultiSelect';
+import CountryCodeSelector from '@/components/CountryCodeSelector';
 import type { Club } from '@/types';
 
 type ClubFormData = Omit<Club, 'id' | 'latitude' | 'longitude'>;
@@ -36,6 +37,12 @@ export default function RegisterClubPage() {
   const [teamTypes, setTeamTypes] = useState<string[]>([]);
   const [socialMedia, setSocialMedia] = useState<{[key: string]: string}>({});
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
+  const [contactFirstName, setContactFirstName] = useState('');
+  const [contactLastName, setContactLastName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactPhone, setContactPhone] = useState('');
+  const [contactCountryCode, setContactCountryCode] = useState('+353');
+  const [isContactWilling, setIsContactWilling] = useState(false);
   const router = useRouter();
 
   const addSocialPlatform = (platformId: string) => {
@@ -93,10 +100,16 @@ export default function RegisterClubPage() {
       facebook: socialMedia.facebook || null,
       instagram: socialMedia.instagram || null,
       website: socialMedia.website || null,
-      codes: (form.elements.namedItem('codes') as HTMLInputElement)?.value || null,
+      codes: null,
       imageUrl: uploadedImageUrl || null,
       map: null,
-      teamTypes
+      teamTypes,
+      contactFirstName: contactFirstName || null,
+      contactLastName: contactLastName || null,
+      contactEmail: contactEmail || null,
+      contactPhone: contactPhone || null,
+      contactCountryCode: contactCountryCode || null,
+      isContactWilling
     };
     
     const res = await fetch('/api/clubs', {
@@ -250,28 +263,11 @@ export default function RegisterClubPage() {
                     />
                   </motion.div>
 
-                  {/* Codes */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8 }}
-                    className="md:col-span-2"
-                  >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Club Codes <span className="text-gray-400">(Optional)</span>
-                    </label>
-                    <input
-                      name="codes"
-                      placeholder="Enter any club identification codes"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
-                    />
-                  </motion.div>
-
                   {/* Social Media Section */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.9 }}
+                    transition={{ delay: 0.8 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -337,7 +333,7 @@ export default function RegisterClubPage() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.0 }}
+                    transition={{ delay: 0.9 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -363,12 +359,120 @@ export default function RegisterClubPage() {
                   </motion.div>
                 </div>
 
+                {/* Contact Person Section - Separate Section */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.0 }}
+                  className="mt-12 pt-12 border-t-2 border-gray-300"
+                >
+                  <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">
+                    <div className="flex items-center mb-6">
+                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center mr-4">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-gray-800">
+                          Contact Person Information
+                        </h3>
+                        <p className="text-sm text-gray-600 mt-1">
+                          Please provide details of the person we can contact about this club
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {/* First Name */}
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                          First Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          value={contactFirstName}
+                          onChange={(e) => setContactFirstName(e.target.value)}
+                          placeholder="Enter first name"
+                          required
+                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-white text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                        />
+                      </div>
+
+                      {/* Last Name */}
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                          Last Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          value={contactLastName}
+                          onChange={(e) => setContactLastName(e.target.value)}
+                          placeholder="Enter last name"
+                          required
+                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-white text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                        />
+                      </div>
+
+                      {/* Email */}
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                          Email Address <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="email"
+                          value={contactEmail}
+                          onChange={(e) => setContactEmail(e.target.value)}
+                          placeholder="Enter email address"
+                          required
+                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-white text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                        />
+                      </div>
+
+                      {/* Phone */}
+                      <div className="md:col-span-2">
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                          Phone Number <span className="text-gray-400">(Optional)</span>
+                        </label>
+                        <div className="flex space-x-3">
+                          <CountryCodeSelector
+                            value={contactCountryCode}
+                            onChange={setContactCountryCode}
+                          />
+                          <input
+                            type="tel"
+                            value={contactPhone}
+                            onChange={(e) => setContactPhone(e.target.value)}
+                            placeholder="Enter phone number"
+                            className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-4 bg-white text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Contact Willing Checkbox */}
+                      <div className="md:col-span-2">
+                        <div className="bg-blue-100 rounded-xl p-4">
+                          <label className="flex items-start space-x-3 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={isContactWilling}
+                              onChange={(e) => setIsContactWilling(e.target.checked)}
+                              className="mt-1 w-5 h-5 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-offset-2"
+                            />
+                            <span className="text-sm text-gray-700 leading-relaxed">
+                              <strong>I am willing to be the Point of Contact</strong> for this club and consent to being contacted about club-related matters, tournament opportunities, and platform updates.
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
                 {/* Submit Button */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 }}
-                  className="pt-8 border-t border-gray-200"
+                  transition={{ delay: 1.2 }}
+                  className="pt-8 mt-8"
                 >
                   <button
                     type="submit"
