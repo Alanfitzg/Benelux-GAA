@@ -4,11 +4,13 @@ import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import ProfessionalHeader from '@/components/ui/ProfessionalHeader';
 import Footer from '@/components/ui/Footer';
+import FloatingContactButton from '@/components/ui/FloatingContactButton';
 import { AuthSessionProvider } from '@/components/providers/session-provider';
 import CookieConsent from '@/components/CookieConsent';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorNotificationProvider } from '@/components/ErrorNotification';
 import { StructuredData, organizationStructuredData, websiteStructuredData } from '@/components/StructuredData';
+import { ErrorLoggerInitializer } from '@/components/ErrorLoggerInitializer';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -122,11 +124,13 @@ export default function RootLayout({
         <ErrorBoundary>
           <ErrorNotificationProvider>
             <AuthSessionProvider>
+              <ErrorLoggerInitializer />
               <ProfessionalHeader />
               <main className="pt-16">
                 {children}
               </main>
               <Footer />
+              <FloatingContactButton />
               <CookieConsent />
             </AuthSessionProvider>
           </ErrorNotificationProvider>

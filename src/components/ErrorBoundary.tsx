@@ -32,19 +32,15 @@ export class ErrorBoundary extends Component<Props, State> {
     
     // Log to external service in production
     if (process.env.NODE_ENV === "production") {
-      this.logErrorToService(error, errorInfo)
+      this.logErrorToService(error)
     }
   }
 
-  private logErrorToService(error: Error, errorInfo: ErrorInfo) {
-    // Integration point for error tracking services like Sentry
-    console.error("Production error:", {
-      error: error.message,
-      stack: error.stack,
-      componentStack: errorInfo.componentStack,
-      timestamp: new Date().toISOString(),
-      userAgent: navigator.userAgent,
-      url: window.location.href,
+  private logErrorToService(error: Error) {
+    // Use centralized error logging
+    import("@/lib/error-handlers").then(({ logError, handleClientError }) => {
+      handleClientError(error)
+      logError(error, "React Error Boundary")
     })
   }
 

@@ -80,6 +80,11 @@ export default function Footer() {
             <h3 className="text-lg font-semibold">Contact</h3>
             <ul className="space-y-2 text-sm">
               <li>
+                <Link href="/contact" className="text-gray-400 hover:text-white transition-colors">
+                  Contact Form
+                </Link>
+              </li>
+              <li>
                 <a 
                   href="mailto:info@gaelictrips.com" 
                   className="text-gray-400 hover:text-white transition-colors"
