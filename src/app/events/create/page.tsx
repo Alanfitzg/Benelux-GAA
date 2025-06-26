@@ -6,11 +6,12 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import LocationAutocomplete from "./LocationAutocomplete";
 import ImageUpload from "../../components/ImageUpload";
+import ClubSelectorOptional from "@/components/ClubSelectorOptional";
 import type { Event } from "@/types";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { URLS, MESSAGES } from "@/lib/constants";
 
-type EventFormData = Omit<Event, "id">;
+type EventFormData = Omit<Event, "id" | "club"> & { clubId?: string };
 
 export const dynamic = "force-dynamic";
 
@@ -22,6 +23,8 @@ export default function CreateEvent() {
   const [error, setError] = useState("");
   const [location, setLocation] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
+  const [selectedClubId, setSelectedClubId] = useState<string>("");
+  const [isIndependentEvent, setIsIndependentEvent] = useState<boolean>(false);
 
   // Redirect to signin if not authenticated
   useEffect(() => {
@@ -76,6 +79,8 @@ export default function CreateEvent() {
       setImageUrl(uploadedImageUrl);
     }
     
+    // Club is now optional - no validation needed
+
     const data: EventFormData = {
       title: (form.elements.namedItem("title") as HTMLInputElement)?.value || "",
       eventType: (form.elements.namedItem("eventType") as HTMLSelectElement)?.value || "",
@@ -85,6 +90,7 @@ export default function CreateEvent() {
       cost: parseFloat((form.elements.namedItem("cost") as HTMLInputElement)?.value) || undefined,
       description: (form.elements.namedItem("description") as HTMLTextAreaElement)?.value || undefined,
       imageUrl: uploadedImageUrl || undefined,
+      clubId: isIndependentEvent ? undefined : selectedClubId || undefined,
     };
     
     const response = await fetch(URLS.API.EVENTS, {
@@ -262,11 +268,51 @@ export default function CreateEvent() {
                     </div>
                   </motion.div>
 
-                  {/* Description */}
+                  {/* Club Association */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.9 }}
+                    className="md:col-span-2"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          id="independentEvent"
+                          checked={isIndependentEvent}
+                          onChange={(e) => {
+                            setIsIndependentEvent(e.target.checked);
+                            if (e.target.checked) {
+                              setSelectedClubId("");
+                            }
+                          }}
+                          className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                        />
+                        <label htmlFor="independentEvent" className="text-sm font-medium text-gray-700">
+                          This is an independent event (not associated with a specific club)
+                        </label>
+                      </div>
+                      
+                      {!isIndependentEvent && (
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-3">
+                            Club Association <span className="text-gray-400">(Optional)</span>
+                          </label>
+                          <ClubSelectorOptional
+                            value={selectedClubId}
+                            onChange={setSelectedClubId}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+
+                  {/* Description */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 1.0 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -284,7 +330,7 @@ export default function CreateEvent() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.0 }}
+                    transition={{ delay: 1.1 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -303,7 +349,7 @@ export default function CreateEvent() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.1 }}
+                  transition={{ delay: 1.2 }}
                   className="pt-8 border-t border-gray-200"
                 >
                   <button

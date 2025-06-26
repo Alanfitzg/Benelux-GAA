@@ -1,7 +1,7 @@
-import { Organization, WebSite, Event, SportsClub, WithContext } from 'schema-dts';
+import type { Event, Club } from "@/types";
 
 interface StructuredDataProps {
-  data: WithContext<Organization | WebSite | Event | SportsClub>;
+  data: object;
 }
 
 export function StructuredData({ data }: StructuredDataProps) {
@@ -13,107 +13,95 @@ export function StructuredData({ data }: StructuredDataProps) {
   );
 }
 
-// Predefined structured data for common pages
-export const organizationStructuredData: WithContext<Organization> = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "GAA Trips",
-  "description": "Discover Gaelic Athletic Association clubs and tournaments worldwide. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
-  "url": "https://gaa-trips.vercel.app",
-  "logo": "https://gaa-trips.vercel.app/logo.png",
-  "sameAs": [
-    "https://twitter.com/gaatrips",
-    "https://facebook.com/gaatrips",
-    "https://instagram.com/gaatrips"
-  ],
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "contactType": "customer service",
-    "email": "info@gaa-trips.com"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "IE"
-  }
-};
-
-export const websiteStructuredData: WithContext<WebSite> = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "GAA Trips",
-  "description": "Discover Gaelic Athletic Association clubs and tournaments worldwide",
-  "url": "https://gaa-trips.vercel.app",
-};
-
-export function generateEventStructuredData(event: {
-  id: string;
-  title: string;
-  description?: string;
-  startDate: Date;
-  endDate?: Date;
-  location: string;
-  eventType: string;
-  imageUrl?: string;
-  cost?: number;
-}): WithContext<Event> {
+export function generateEventStructuredData(event: Event) {
   return {
     "@context": "https://schema.org",
     "@type": "Event",
     "name": event.title,
-    "description": event.description || `${event.title} - ${event.eventType} event`,
-    "startDate": event.startDate.toISOString(),
-    "endDate": event.endDate?.toISOString(),
+    "description": event.description || `${event.eventType} event in ${event.location}`,
+    "startDate": event.startDate,
+    "endDate": event.endDate || event.startDate,
     "location": {
       "@type": "Place",
       "name": event.location,
-      "address": event.location
+      ...(event.latitude && event.longitude && {
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": event.latitude,
+          "longitude": event.longitude
+        }
+      })
     },
-    "image": event.imageUrl ? [event.imageUrl] : [],
-    "url": `https://gaa-trips.vercel.app/events/${event.id}`,
-    "organizer": {
+    "organizer": event.club ? {
       "@type": "Organization",
-      "name": "GAA Trips",
-      "url": "https://gaa-trips.vercel.app"
+      "name": event.club.name,
+      ...(event.club.imageUrl && { "logo": event.club.imageUrl })
+    } : {
+      "@type": "Organization",
+      "name": "GAA Trips"
     },
+    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+    "eventStatus": "https://schema.org/EventScheduled",
+    ...(event.imageUrl && { "image": event.imageUrl }),
     ...(event.cost && {
       "offers": {
         "@type": "Offer",
         "price": event.cost,
-        "priceCurrency": "EUR",
-        "availability": "https://schema.org/InStock"
+        "priceCurrency": "EUR"
       }
     })
   };
 }
 
-export function generateClubStructuredData(club: {
-  id: string;
-  name: string;
-  location?: string;
-  region?: string;
-  imageUrl?: string;
-  website?: string;
-  facebook?: string;
-  instagram?: string;
-  teamTypes?: string[];
-}): WithContext<SportsClub> {
+export const organizationStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "GAA Trips",
+  "description": "Your gateway to Gaelic games abroad. Explore GAA clubs, tournaments, and events worldwide.",
+  "url": "https://gaa-trips.vercel.app",
+  "logo": "https://gaa-trips.vercel.app/logo.png",
+  "foundingDate": "2024",
+  "sameAs": [
+    "https://facebook.com/gaatrips",
+    "https://instagram.com/gaatrips",
+    "https://twitter.com/gaatrips"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service",
+    "email": "info@gaa-trips.com"
+  }
+};
+
+export const websiteStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "GAA Trips",
+  "description": "Discover Gaelic Athletic Clubs & Tournaments Worldwide",
+  "url": "https://gaa-trips.vercel.app",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://gaa-trips.vercel.app/events?search={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
+export function generateClubStructuredData(club: Club) {
   return {
     "@context": "https://schema.org",
-    "@type": "SportsClub",
+    "@type": "SportsOrganization",
     "name": club.name,
-    "description": `${club.name} is a Gaelic Athletic Association club specializing in Irish sports including ${club.teamTypes?.join(', ') || 'Gaelic football, hurling, and camogie'}.`,
-    "url": `https://gaa-trips.vercel.app/clubs/${club.id}`,
-    "image": club.imageUrl ? [club.imageUrl] : [],
-    "address": club.location ? {
+    "description": `GAA club based in ${club.location || "Ireland"}`,
+    "address": {
       "@type": "PostalAddress",
-      "addressLocality": club.location,
-      "addressRegion": club.region
-    } : undefined,
-    "sameAs": [
-      club.website,
-      club.facebook,
-      club.instagram
-    ].filter((url): url is string => Boolean(url)),
+      "addressLocality": club.location
+    },
+    ...(club.imageUrl && { "logo": club.imageUrl }),
+    ...(club.website && { "url": club.website }),
+    "sport": "Gaelic games",
     "memberOf": {
       "@type": "Organization",
       "name": "Gaelic Athletic Association"

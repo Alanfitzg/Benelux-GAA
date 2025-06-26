@@ -48,7 +48,7 @@ export default function ImageUpload({
         {preview ? (
           <Image
             src={preview}
-            alt="Preview"
+            alt="Image upload preview"
             width={160}
             height={160}
             className="max-h-40 mb-2 rounded object-contain"

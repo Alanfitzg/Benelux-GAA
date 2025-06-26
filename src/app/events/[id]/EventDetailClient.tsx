@@ -63,8 +63,8 @@ export default function EventDetailClient({
     <>
       {event && <StructuredData data={generateEventStructuredData({
         ...event,
-        startDate: new Date(event.startDate),
-        endDate: event.endDate ? new Date(event.endDate) : undefined,
+        startDate: event.startDate,
+        endDate: event.endDate || event.startDate,
         imageUrl: event.imageUrl || undefined,
       })} />}
       <div className={`${UI.MIN_HEIGHT_DETAIL} flex flex-col items-center py-8 px-2`}>

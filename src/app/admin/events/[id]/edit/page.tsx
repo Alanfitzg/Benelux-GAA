@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
+import ClubSelectorOptional from '@/components/ClubSelectorOptional';
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { URLS, MESSAGES } from "@/lib/constants";
 
@@ -18,6 +19,7 @@ interface EventData {
   cost: number;
   description?: string;
   imageUrl?: string;
+  clubId?: string;
 }
 
 export default function EditEventPage() {
@@ -32,6 +34,7 @@ export default function EditEventPage() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [location, setLocation] = useState("");
+  const [selectedClubId, setSelectedClubId] = useState<string>("");
 
   useEffect(() => {
     fetch(`${URLS.API.EVENTS}/${eventId}`)
@@ -40,6 +43,7 @@ export default function EditEventPage() {
         setEvent(data);
         setLocation(data.location || "");
         setImageUrl(data.imageUrl || null);
+        setSelectedClubId(data.clubId || "");
       });
   }, [eventId]);
 
@@ -88,6 +92,7 @@ export default function EditEventPage() {
       cost: parsedCost,
       description: formData.get("description") as string || null,
       imageUrl: uploadedImageUrl || imageUrl || null,
+      clubId: selectedClubId || null,
     };
     
     console.log('Sending data:', data);
@@ -159,6 +164,17 @@ export default function EditEventPage() {
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Club Selection */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Club Association
+                    </label>
+                    <ClubSelectorOptional
+                      value={selectedClubId}
+                      onChange={setSelectedClubId}
+                    />
+                  </div>
+
                   {/* Event Type */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">

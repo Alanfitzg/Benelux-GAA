@@ -15,11 +15,23 @@ type CreateEventBody = {
   description?: string;
   isRecurring?: boolean;
   imageUrl?: string;
+  clubId: string;
 };
 
 async function getEventsHandler() {
   try {
-    const events = await prisma.event.findMany();
+    const events = await prisma.event.findMany({
+      include: {
+        club: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+            location: true,
+          }
+        }
+      }
+    });
     return NextResponse.json(events);
   } catch (error) {
     console.error('Error fetching events:', error);

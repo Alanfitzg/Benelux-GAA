@@ -36,4 +36,6 @@ export interface Event {
   imageUrl?: string;
   createdAt?: string;
   updatedAt?: string;
+  clubId?: string;
+  club?: Club;
 } 

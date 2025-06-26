@@ -8,6 +8,15 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
   const { id } = await context.params;
   const event = await prisma.event.findUnique({
     where: { id },
+    include: {
+      club: {
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+        }
+      }
+    },
   });
   if (!event) {
     return NextResponse.json({ error: MESSAGES.ERROR.EVENT_NOT_FOUND }, { status: 404 });
@@ -55,6 +64,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       cost,
       description: body.description || null,
       imageUrl: body.imageUrl || null,
+      clubId: body.clubId || null,
     };
     
     console.log('Clean data:', cleanData);

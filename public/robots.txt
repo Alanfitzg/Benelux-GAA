@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Block admin routes from crawling
+Disallow: /admin/
+Disallow: /api/
+
+# Allow important pages
+Allow: /events
+Allow: /clubs
+Allow: /about
+Allow: /how-it-works
+Allow: /contact
+
+# Sitemap
+Sitemap: https://gaa-trips.vercel.app/sitemap.xml

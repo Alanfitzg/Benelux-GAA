@@ -5,6 +5,7 @@ import Image from "next/image";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { MESSAGES } from "@/lib/constants";
 import CreateEventButton from "@/components/CreateEventButton";
+import { StructuredData } from "@/components/StructuredData";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -28,6 +29,9 @@ export const metadata: Metadata = {
       "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
     url: "https://gaa-trips.vercel.app/events",
     type: "website",
+  },
+  alternates: {
+    canonical: "https://gaa-trips.vercel.app/events",
   },
   twitter: {
     title: "GAA Tournaments & Events | GAA Trips",
@@ -80,6 +84,15 @@ async function getEvents({
   return await prisma.event.findMany({
     where,
     orderBy: { startDate: "asc" },
+    include: {
+      club: {
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+        }
+      }
+    },
   });
 }
 
@@ -106,8 +119,57 @@ export default async function EventsPage({
       .sort() as string[];
     const months = getMonthOptions();
 
+    // Generate structured data for events
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "GAA Tournaments & Events",
+      "description": "Discover upcoming Gaelic Athletic Association tournaments and events worldwide",
+      "numberOfItems": events.length,
+      "itemListElement": events.map((event, index) => ({
+        "@type": "Event",
+        "position": index + 1,
+        "name": event.title,
+        "description": event.description || `${event.eventType} event in ${event.location}`,
+        "startDate": event.startDate,
+        "endDate": event.endDate || event.startDate,
+        "location": {
+          "@type": "Place",
+          "name": event.location,
+          ...(event.latitude && event.longitude && {
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": event.latitude,
+              "longitude": event.longitude
+            }
+          })
+        },
+        "organizer": event.club ? {
+          "@type": "Organization",
+          "name": event.club.name,
+          ...(event.club.imageUrl && { "logo": event.club.imageUrl })
+        } : {
+          "@type": "Organization",
+          "name": "GAA Trips"
+        },
+        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "eventStatus": "https://schema.org/EventScheduled",
+        ...(event.imageUrl && { "image": event.imageUrl }),
+        ...(event.cost && {
+          "offers": {
+            "@type": "Offer",
+            "price": event.cost,
+            "priceCurrency": "EUR"
+          }
+        }),
+        "url": `https://gaa-trips.vercel.app/events/${event.id}`
+      }))
+    };
+
     return (
-      <div className="container mx-auto px-4 py-8">
+      <>
+        <StructuredData data={structuredData} />
+        <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             GAA TOURNAMENTS & EVENTS
@@ -176,7 +238,12 @@ export default async function EventsPage({
               endDate: Date | null;
               cost: number | null;
               imageUrl: string | null;
-            }) => {
+              club: {
+                id: string;
+                name: string;
+                imageUrl: string | null;
+              } | null;
+            }, index) => {
               return (
                 <div
                   key={event.id}
@@ -189,6 +256,8 @@ export default async function EventsPage({
                         src={event.imageUrl}
                         alt={event.title}
                         fill
+                        priority={index < 6}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (
@@ -204,6 +273,19 @@ export default async function EventsPage({
 
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+                    {/* Club Logo Badge */}
+                    {event.club?.imageUrl && (
+                      <div className="absolute top-2 left-2 w-14 h-14 bg-white rounded-full shadow-lg overflow-hidden border-2 border-white">
+                        <Image
+                          src={event.club.imageUrl}
+                          alt={event.club.name}
+                          fill
+                          sizes="56px"
+                          className="object-cover"
+                        />
+                      </div>
+                    )}
 
                     {/* Event Title */}
                     <div className="absolute bottom-4 left-4 right-4">
@@ -226,7 +308,8 @@ export default async function EventsPage({
             }
           )}
         </div>
-      </div>
+        </div>
+      </>
     );
   } catch (error) {
     console.error("Database connection error:", error);

@@ -208,7 +208,7 @@ export default function ImageManagement() {
             <div className="w-24 h-24 relative border rounded-lg overflow-hidden">
               <Image
                 src={selectedImage}
-                alt="Preview"
+                alt="Selected club logo preview"
                 fill
                 className="object-cover"
               />
@@ -259,7 +259,7 @@ export default function ImageManagement() {
                 <div className="w-full h-20 relative border rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary">
                   <Image
                     src={image.url}
-                    alt={image.key}
+                    alt={`Club logo: ${image.key.replace(/^\d{4}-\d{2}-\d{2}-/, "")}`}
                     fill
                     className="object-cover"
                     onClick={() => setSelectedImage(image.url)}

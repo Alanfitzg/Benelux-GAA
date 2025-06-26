@@ -89,11 +89,11 @@ export default async function ClubDetailsPage({
     <>
       <StructuredData data={generateClubStructuredData({
         ...club,
-        region: club.region || undefined,
-        website: club.website || undefined,
-        facebook: club.facebook || undefined,
-        instagram: club.instagram || undefined,
-        imageUrl: club.imageUrl || undefined,
+        region: club.region || null,
+        website: club.website || null,
+        facebook: club.facebook || null,
+        instagram: club.instagram || null,
+        imageUrl: club.imageUrl || null,
       })} />
       <div className="flex justify-center items-center min-h-[80vh] px-2">
       <div className="bg-white rounded-xl shadow-lg p-8 max-w-xl w-full">
