@@ -84,30 +84,6 @@ export default function Footer() {
                   Contact Form
                 </Link>
               </li>
-              <li>
-                <a 
-                  href="mailto:info@gaelictrips.com" 
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  info@gaelictrips.com
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="mailto:legal@gaelictrips.com" 
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  legal@gaelictrips.com
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="mailto:privacy@gaelictrips.com" 
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  privacy@gaelictrips.com
-                </a>
-              </li>
             </ul>
           </div>
 

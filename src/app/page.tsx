@@ -142,9 +142,13 @@ export default function Home() {
           return res.json();
         })
         .then((data) => {
-          console.log("Fetched clubs:", data?.length, "clubs");
+          console.log("Fetched clubs:", data?.clubs?.length || data?.length, "clubs");
           if (Array.isArray(data)) {
+            // Handle old API format (direct array)
             setClubs(data);
+          } else if (data && Array.isArray(data.clubs)) {
+            // Handle new API format (object with clubs array)
+            setClubs(data.clubs);
           } else {
             console.error("Clubs data is not an array:", data);
             setClubs([]);
@@ -682,12 +686,22 @@ export default function Home() {
                             whileTap={{ scale: 0.95 }}
                             className="cursor-pointer"
                           >
-                            <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 border-secondary relative">
-                              <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
-                                <span className="text-white font-bold text-sm">
-                                  T
-                                </span>
-                              </div>
+                            <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 border-secondary relative overflow-hidden">
+                              {event.club?.imageUrl ? (
+                                <Image
+                                  src={event.club.imageUrl}
+                                  alt={event.club.name}
+                                  width={40}
+                                  height={40}
+                                  className="w-10 h-10 rounded-full object-cover"
+                                />
+                              ) : (
+                                <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                                  <span className="text-white font-bold text-sm">
+                                    {event.eventType === "Tournament" ? "T" : "F"}
+                                  </span>
+                                </div>
+                              )}
                               {/* Selection ring */}
                               {selectedEventId === event.id && (
                                 <div className="absolute inset-0 rounded-full border-2 border-secondary animate-pulse"></div>

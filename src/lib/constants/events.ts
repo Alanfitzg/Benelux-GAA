@@ -1,6 +1,6 @@
 export const EVENT_TYPES = [
   "Tournament",
-  "Individual Team Trip"
+  "Friendly"
 ] as const;
 
 export type EventType = typeof EVENT_TYPES[number];

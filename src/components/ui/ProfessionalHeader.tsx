@@ -268,7 +268,11 @@ const ProfessionalHeader = () => {
                   </Link>
                   <Link
                     href="/signup"
-                    className="px-6 py-2.5 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-105 hover:from-orange-600 hover:to-red-600"
+                    className={`px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 border ${
+                      scrolled
+                        ? "text-primary border-primary/30 hover:bg-primary/5"
+                        : "text-white border-white/30 hover:bg-white/10"
+                    }`}
                   >
                     <span>Sign Up</span>
                   </Link>
@@ -472,9 +476,13 @@ const ProfessionalHeader = () => {
                       <Link
                         href="/signup"
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block mx-4 mt-2 px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold rounded-xl text-center"
+                        className={`block px-4 py-3 rounded-xl transition-all duration-300 border text-center ${
+                          scrolled
+                            ? "text-primary border-primary/30 hover:bg-primary/5"
+                            : "text-white border-white/30 hover:bg-white/10"
+                        }`}
                       >
-                        Sign Up
+                        <span className="font-medium">Sign Up</span>
                       </Link>
                     </>
                   )}

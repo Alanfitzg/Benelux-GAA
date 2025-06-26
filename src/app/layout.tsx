@@ -11,6 +11,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorNotificationProvider } from '@/components/ErrorNotification';
 import { StructuredData, organizationStructuredData, websiteStructuredData } from '@/components/StructuredData';
 import { ErrorLoggerInitializer } from '@/components/ErrorLoggerInitializer';
+import ExampleDataPopup from '@/components/ExampleDataBanner';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -125,6 +126,7 @@ export default function RootLayout({
           <ErrorNotificationProvider>
             <AuthSessionProvider>
               <ErrorLoggerInitializer />
+              <ExampleDataPopup />
               <ProfessionalHeader />
               <main className="pt-16">
                 {children}

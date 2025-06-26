@@ -42,10 +42,39 @@ async function createClubHandler(req: NextRequest) {
   }
 }
 
-async function getClubsHandler() {
+async function getClubsHandler(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const country = searchParams.get('country') || '';
+    const teamType = searchParams.get('teamType') || '';
+    const search = searchParams.get('search') || '';
+
+    // Build filter conditions
+    const where: {
+      location?: { contains: string; mode: 'insensitive' };
+      teamTypes?: { has: string };
+      OR?: Array<{ name: { contains: string; mode: 'insensitive' } } | { location: { contains: string; mode: 'insensitive' } }>;
+    } = {};
+    
+    if (country && country !== "") {
+      where.location = { contains: country, mode: 'insensitive' };
+    }
+    
+    if (teamType && teamType !== "") {
+      where.teamTypes = { has: teamType };
+    }
+    
+    if (search && search !== "") {
+      where.OR = [
+        { name: { contains: search, mode: 'insensitive' } },
+        { location: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Get filtered clubs
     const clubs = await prisma.club.findMany({
-      orderBy: { name: 'asc' },
+      where,
+      orderBy: [{ location: "asc" }, { name: "asc" }],
       select: {
         id: true,
         name: true,
@@ -54,22 +83,36 @@ async function getClubsHandler() {
         subRegion: true,
         map: true,
         location: true,
-        latitude: true,
-        longitude: true,
         facebook: true,
         instagram: true,
         website: true,
         codes: true,
         teamTypes: true,
-        contactFirstName: true,
-        contactLastName: true,
-        contactEmail: true,
-        contactPhone: true,
-        contactCountryCode: true,
-        isContactWilling: true,
       },
     });
-    return NextResponse.json(clubs);
+
+    // Get unique countries and team types for filter options
+    const allClubs = await prisma.club.findMany({
+      select: { location: true, teamTypes: true },
+    });
+    
+    const countries = Array.from(
+      new Set(
+        allClubs
+          .map((club) => club.location?.split(",").pop()?.trim())
+          .filter(Boolean)
+      )
+    ).sort() as string[];
+    
+    const teamTypes = Array.from(
+      new Set(allClubs.flatMap((club) => club.teamTypes))
+    ).sort();
+
+    return NextResponse.json({
+      clubs,
+      countries,
+      teamTypes
+    });
   } catch (error) {
     console.error('Error fetching clubs:', error);
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
