@@ -320,7 +320,7 @@ export default async function SurveyResponseDetailPage({ params }: PageProps) {
   );
 }
 
-function generateResponseSummary(response: { contactName: string; contactEmail: string; role: string; city?: string; country: string; clubName?: string; hasTraveledAbroad: string; travelFrequency?: string; preferredTravelTime: string; destinationsVisited: string[]; teamSize: string; budgetPerPerson: string; biggestChallenge: string; interestedServices: string[]; wouldHost: string; wouldPayForPlatform: string; improvementSuggestion?: string; additionalFeedback?: string; submittedAt: Date; event?: { title: string } }): string {
+function generateResponseSummary(response: { contactName: string; contactEmail: string; role: string; city: string | null; country: string; clubName: string | null; hasTraveledAbroad: string; travelFrequency: string | null; preferredTravelTime: string; destinationsVisited: string[]; teamSize: string; budgetPerPerson: string; biggestChallenge: string; interestedServices: string[]; wouldHost: string; wouldPayForPlatform: string; improvementSuggestion: string | null; additionalFeedback: string | null; submittedAt: Date; event?: { title: string } | null }): string {
   return `Custom Trip Request Summary
 
 Contact: ${response.contactName} (${response.contactEmail})
