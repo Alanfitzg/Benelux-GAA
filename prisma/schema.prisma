@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Event {
-  id          String     @id @default(cuid())
+  id          String           @id @default(cuid())
   title       String
   eventType   String
   location    String
@@ -19,13 +19,14 @@ model Event {
   endDate     DateTime?
   cost        Float?
   description String?
-  isRecurring Boolean    @default(false)
+  isRecurring Boolean          @default(false)
   imageUrl    String?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
   interests   Interest[]
   clubId      String?
-  club        Club?      @relation(fields: [clubId], references: [id])
+  club        Club?            @relation(fields: [clubId], references: [id])
+  surveyResponses SurveyResponse[]
 }
 
 model Interest {
@@ -123,4 +124,48 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SurveyResponse {
+  id                    String   @id @default(cuid())
+  eventId               String?
+  
+  // Respondent Info
+  role                  String
+  clubName              String?
+  country               String
+  city                  String?
+  
+  // Travel History & Intent
+  hasTraveledAbroad     String
+  travelFrequency       String?
+  destinationsVisited   String[] @default([])
+  preferredTravelTime   String
+  
+  // Budgets & Pain Points
+  teamSize              String
+  budgetPerPerson       String
+  biggestChallenge      String
+  
+  // Product Fit & Interest
+  interestedServices    String[] @default([])
+  wouldHost             String
+  wouldPayForPlatform   String
+  
+  // Open-Ended Insight
+  improvementSuggestion String?
+  additionalFeedback    String?
+  
+  // Contact Information
+  contactName           String
+  contactEmail          String
+  contactPhone          String?
+  
+  // Metadata
+  submittedAt           DateTime @default(now())
+  ipAddress             String?
+  userAgent             String?
+  referrer              String?
+  
+  event                 Event?   @relation(fields: [eventId], references: [id])
 }

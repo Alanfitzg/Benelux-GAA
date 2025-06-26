@@ -120,8 +120,20 @@ export default function EventDetailClient({
             </ul>
           </div>
           {/* Call to Action */}
-          <div className="flex justify-center mb-8">
+          <div className="flex flex-col items-center gap-4 mb-8">
             <a href="#interest" className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg text-lg shadow transition">{MESSAGES.BUTTONS.REGISTER_INTEREST}</a>
+            <div className="text-center">
+              <p className="text-gray-600 text-sm mb-2">Want a custom trip for your club?</p>
+              <a 
+                href={`/survey?eventId=${eventId}`}
+                className="inline-flex items-center text-primary hover:text-primary/80 text-sm font-medium transition-colors"
+              >
+                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Plan your custom GAA trip
+              </a>
+            </div>
           </div>
           {/* Express Interest Form */}
           <div id="interest">

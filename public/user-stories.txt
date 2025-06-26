@@ -1,0 +1,178 @@
+Manual Testing User Journeys
+
+  Journey 1: New User Registration & Event Discovery
+
+  Persona: Sarah, a GAA player living in Berlin looking for local events
+
+  1. Landing Page
+    - Visit homepage, verify map loads with club markers
+    - Check responsive design on mobile/desktop
+    - Click on a club marker, verify popup shows club info
+  2. User Registration
+    - Click "Sign Up" button
+    - Fill registration form with valid details
+    - Select a club from dropdown (test club selector loading)
+    - Submit form and verify success message
+    - Check that account status shows "PENDING"
+  3. Event Discovery
+    - Navigate to Events page
+    - Verify events display with club logos in top-left corners
+    - Test event filters (type, country, month)
+    - Click on an event to view details
+    - Verify structured data appears in page source
+
+  Expected Outcome: User successfully registers and can browse events
+
+  ---
+  Journey 2: Club Admin Event Management
+
+  Persona: Michael, admin of Munich GAA club
+
+  1. Admin Login
+    - Sign in with club admin credentials
+    - Verify admin navigation appears
+  2. Create New Event
+    - Navigate to "Create Event"
+    - Test club selector (should be required for new events)
+    - Fill all required fields (title, type, location, date)
+    - Test location autocomplete functionality
+    - Upload event image
+    - Test "independent event" checkbox functionality
+    - Submit and verify event creation
+  3. Edit Existing Event
+    - Go to Admin → Events
+    - Click edit on an existing event
+    - Change club association using club selector
+    - Update event details
+    - Save changes and verify updates
+
+  Expected Outcome: Admin can create and manage events with proper club associations
+
+  ---
+  Journey 3: Event Interest & Contact
+
+  Persona: James, looking to join a tournament in Barcelona
+
+  1. Event Search
+    - Go to Events page
+    - Filter by location "Barcelona"
+    - Click on "G4MO Barcelona" event
+  2. Express Interest
+    - Scroll to interest form
+    - Fill out name, email, and message
+    - Submit interest form
+    - Verify success confirmation
+  3. Contact Form
+    - Navigate to Contact page
+    - Fill contact form with inquiry
+    - Submit and verify confirmation
+
+  Expected Outcome: User can express interest in events and contact organizers
+
+  ---
+  Journey 4: Club Discovery & Information
+
+  Persona: Emma, moving to Amsterdam and looking for a GAA club
+
+  1. Club Search
+    - Navigate to Clubs page
+    - Browse available clubs
+    - Test search/filter functionality
+    - Click on "Amsterdam GAA" club
+  2. Club Details
+    - View club information page
+    - Check contact details display
+    - Verify club logo and location info
+    - Test social media links (if available)
+  3. Club Registration
+    - Navigate to "Register Club" page
+    - Fill out club registration form
+    - Upload club logo
+    - Submit registration
+
+  Expected Outcome: User can discover clubs and register new ones
+
+  ---
+  Journey 5: Admin User Management
+
+  Persona: System admin managing user approvals
+
+  1. Admin Dashboard
+    - Login as super admin
+    - Navigate to Admin → Users
+    - View pending user registrations
+  2. User Approval Process
+    - Review pending user details
+    - Approve a user registration
+    - Verify user status changes to "APPROVED"
+    - Test rejecting a user with reason
+  3. Club Management
+    - Navigate to Admin → Clubs
+    - Edit club information
+    - Update club logo via image manager
+    - Test club geocoding functionality
+
+  Expected Outcome: Admin can manage users and clubs effectively
+
+  ---
+  Journey 6: Mobile User Experience
+
+  Persona: Test on mobile device/responsive design
+
+  1. Mobile Navigation
+    - Test hamburger menu functionality
+    - Verify all pages are mobile-responsive
+    - Check touch interactions work properly
+  2. Forms on Mobile
+    - Test event creation form on mobile
+    - Verify club selector works on touch devices
+    - Test image upload on mobile
+    - Check form validation messages
+  3. Map Interaction
+    - Test map zoom/pan on mobile
+    - Verify club markers are touchable
+    - Check popup readability on small screens
+
+  Expected Outcome: Full functionality works smoothly on mobile devices
+
+  ---
+  Journey 7: Error Handling & Edge Cases
+
+  Persona: Test system resilience
+
+  1. Network Issues
+    - Test club selector when API is slow
+    - Verify loading states appear correctly
+    - Check error messages for failed requests
+  2. Invalid Data
+    - Try submitting forms with missing required fields
+    - Test invalid email formats
+    - Attempt to access admin pages without permissions
+  3. Browser Compatibility
+    - Test in Chrome, Firefox, Safari
+    - Verify JavaScript functionality
+    - Check CSS rendering across browsers
+
+  Expected Outcome: Application handles errors gracefully with helpful messages
+
+  ---
+  📝 Testing Checklist Template
+
+  For each journey, verify:
+  - Performance: Pages load within 2-3 seconds
+  - Accessibility: Alt text present, keyboard navigation works
+  - SEO: Page titles and meta descriptions are appropriate
+  - Visual: No layout breaks, images display correctly
+  - Functionality: All buttons and forms work as expected
+  - Security: No sensitive data exposed, proper validation
+
+  🐛 Bug Report Template
+
+  When you find issues:
+  **Journey**: [Journey Name]
+  **Step**: [Specific step number]
+  **Expected**: [What should happen]
+  **Actual**: [What actually happened]
+  **Browser**: [Chrome/Firefox/Safari + version]
+  **Device**: [Desktop/Mobile/Tablet]
+  **Screenshots**: [If applicable]

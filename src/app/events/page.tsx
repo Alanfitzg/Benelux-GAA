@@ -179,54 +179,72 @@ export default async function EventsPage({
             worldwide. Join competitions and connect with the global GAA
             community.
           </p>
+          
+          {/* Custom Trip CTA */}
+          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-blue-900 mb-2">Plan Your Custom GAA Trip</h3>
+              <p className="text-blue-700 text-sm mb-3">
+                Tell us your travel preferences and we&apos;ll help create the perfect GAA experience for your club
+              </p>
+              <a
+                href="/survey"
+                className="inline-flex items-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                Plan Custom Trip
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4 items-center justify-between">
+          <form className="flex flex-wrap gap-4" method="get">
+            <select
+              name="eventType"
+              defaultValue={eventType}
+              className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+            >
+              <option value="">All Types</option>
+              {eventTypes.filter(Boolean).map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            <select
+              name="country"
+              defaultValue={country}
+              className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+            >
+              <option value="">All Countries</option>
+              {countries.map((country: string) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+            <select
+              name="month"
+              defaultValue={month}
+              className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+            >
+              {months.map((m) => (
+                <option key={m.value} value={m.value}>
+                  {m.label}
+                </option>
+              ))}
+            </select>
+            <button
+              type="submit"
+              className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
+            >
+              Apply Filters
+            </button>
+          </form>
           <CreateEventButton />
         </div>
-        <form
-          className="bg-white p-4 rounded-lg shadow-sm mb-6 flex flex-wrap gap-4"
-          method="get"
-        >
-          <select
-            name="eventType"
-            defaultValue={eventType}
-            className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
-          >
-            <option value="">All Types</option>
-            {eventTypes.filter(Boolean).map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-          <select
-            name="country"
-            defaultValue={country}
-            className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
-          >
-            <option value="">All Countries</option>
-            {countries.map((country: string) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
-          <select
-            name="month"
-            defaultValue={month}
-            className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
-          >
-            {months.map((m) => (
-              <option key={m.value} value={m.value}>
-                {m.label}
-              </option>
-            ))}
-          </select>
-          <button
-            type="submit"
-            className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
-          >
-            Apply Filters
-          </button>
-        </form>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {events.map(
             (event: {
@@ -299,7 +317,7 @@ export default async function EventsPage({
                   {/* View Details Button */}
                   <Link
                     href={`/events/${event.id}`}
-                    className="absolute bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded font-semibold text-sm hover:bg-red-700 transition-colors"
+                    className="absolute bottom-4 right-4 bg-primary text-white px-4 py-2 rounded font-semibold text-sm hover:bg-primary/90 transition-colors"
                   >
                     VIEW DETAILS
                   </Link>

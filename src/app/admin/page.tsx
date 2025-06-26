@@ -75,6 +75,23 @@ export default function AdminDashboard() {
         </Link>
         
         <Link 
+          href="/admin/survey-responses" 
+          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-400/20 to-indigo-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">📊</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                Trip Requests
+              </h2>
+              <p className="text-gray-600 mt-1">View and analyze custom trip requests</p>
+            </div>
+          </div>
+        </Link>
+        
+        <Link 
           href="/admin/backups" 
           className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
         >
