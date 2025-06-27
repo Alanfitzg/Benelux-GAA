@@ -52,7 +52,7 @@ export default function AdminDashboard() {
               <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                 Manage Users
               </h2>
-              <p className="text-gray-600 mt-1">Create and manage user accounts</p>
+              <p className="text-gray-600 mt-1">Edit users, assign roles, and manage club memberships</p>
             </div>
           </div>
         </Link>

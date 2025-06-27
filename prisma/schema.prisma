@@ -63,6 +63,9 @@ model Club {
   members             User[]   @relation("ClubMembers")
   admins              User[]   @relation("ClubAdmins")
   events              Event[]
+  clubInterests       ClubInterest[]
+  hostingPackages     HostingPackage[]
+  bookings            Booking[]
 }
 
 model User {
@@ -168,4 +171,91 @@ model SurveyResponse {
   referrer              String?
   
   event                 Event?   @relation(fields: [eventId], references: [id])
+}
+
+model ClubInterest {
+  id          String   @id @default(cuid())
+  clubId      String
+  name        String
+  email       String
+  message     String?
+  type        String   // 'contact' or 'interest'
+  submittedAt DateTime @default(now())
+  club        Club     @relation(fields: [clubId], references: [id])
+}
+
+model HostingPackage {
+  id              String   @id @default(cuid())
+  clubId          String
+  name            String
+  description     String?
+  basePrice       Float    // Base price per team
+  dayPassPrice    Float?   // Price per person for day passes
+  maxTeams        Int      @default(1)
+  maxParticipants Int?
+  services        String[] @default([]) // accommodation, meals, transport, activities, training
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  club            Club     @relation(fields: [clubId], references: [id])
+  bookings        Booking[]
+}
+
+model Booking {
+  id                String          @id @default(cuid())
+  clubId            String
+  packageId         String?
+  contactName       String
+  contactEmail      String
+  contactPhone      String?
+  teamName          String
+  teamSize          Int
+  arrivalDate       DateTime
+  departureDate     DateTime
+  totalAmount       Float
+  platformFee       Float
+  clubEarnings      Float
+  status            BookingStatus   @default(INQUIRY)
+  notes             String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  club              Club            @relation(fields: [clubId], references: [id])
+  package           HostingPackage? @relation(fields: [packageId], references: [id])
+  payments          Payment[]
+}
+
+model Payment {
+  id               String        @id @default(cuid())
+  bookingId        String
+  amount           Float
+  type             PaymentType
+  status           PaymentStatus @default(PENDING)
+  stripePaymentId  String?
+  processedAt      DateTime?
+  createdAt        DateTime      @default(now())
+  booking          Booking       @relation(fields: [bookingId], references: [id])
+}
+
+enum BookingStatus {
+  INQUIRY
+  QUOTE_SENT
+  CONFIRMED
+  DEPOSIT_PAID
+  FULL_PAID
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentType {
+  DEPOSIT
+  FULL_PAYMENT
+  REFUND
+}
+
+enum PaymentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  REFUNDED
 }

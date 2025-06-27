@@ -807,17 +807,17 @@ export default function Home() {
                 {selectedClubId && viewMode === "clubs" && (
                   <Popup
                     longitude={
-                      clubs.find((c) => c.id === selectedClubId)?.longitude || 0
+                      Array.isArray(clubs) ? clubs.find((c) => c.id === selectedClubId)?.longitude || 0 : 0
                     }
                     latitude={
-                      clubs.find((c) => c.id === selectedClubId)?.latitude || 0
+                      Array.isArray(clubs) ? clubs.find((c) => c.id === selectedClubId)?.latitude || 0 : 0
                     }
                     anchor={MAP_CONFIG.POPUP_ANCHOR}
                     onClose={() => setSelectedClubId(null)}
                     className="min-w-64"
                   >
                     {(() => {
-                      const club = clubs.find((c) => c.id === selectedClubId);
+                      const club = Array.isArray(clubs) ? clubs.find((c) => c.id === selectedClubId) : null;
                       if (!club) return null;
                       return (
                         <div className="p-4">

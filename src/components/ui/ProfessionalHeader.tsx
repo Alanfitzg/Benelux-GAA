@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
+import ClubAdminLinks from "@/components/ClubAdminLinks";
 
 const ProfessionalHeader = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -200,9 +201,12 @@ const ProfessionalHeader = () => {
                             My Profile
                           </Link>
 
+                          {(session.user.role === "SUPER_ADMIN" || session.user.role === "CLUB_ADMIN") && (
+                            <div className="border-t border-gray-100 my-1" />
+                          )}
+
                           {session.user.role === "SUPER_ADMIN" && (
                             <>
-                              <div className="border-t border-gray-100 my-1" />
                               <Link
                                 href="/admin"
                                 onClick={() => setProfileDropdownOpen(false)}
@@ -223,8 +227,34 @@ const ProfessionalHeader = () => {
                                 </svg>
                                 Admin Panel
                               </Link>
+                              <Link
+                                href="/dashboard/host"
+                                onClick={() => setProfileDropdownOpen(false)}
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                              >
+                                <svg
+                                  className="w-4 h-4 mr-3"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                  />
+                                </svg>
+                                Host Dashboard
+                              </Link>
                             </>
                           )}
+
+                          <ClubAdminLinks 
+                            className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                            onClick={() => setProfileDropdownOpen(false)}
+                          />
+
 
                           <div className="border-t border-gray-100 my-1" />
                           <button
@@ -432,6 +462,15 @@ const ProfessionalHeader = () => {
                           <span className="font-medium">Admin Panel</span>
                         </Link>
                       )}
+
+                      <ClubAdminLinks 
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                          scrolled
+                            ? "text-gray-700 hover:bg-gray-100"
+                            : "text-white hover:bg-white/10"
+                        }`}
+                        onClick={() => setMobileMenuOpen(false)}
+                      />
 
                       <button
                         onClick={() => {

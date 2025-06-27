@@ -23,13 +23,13 @@ export default function ClubSelector({ value, onChange, disabled = false }: Club
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const selectedClub = clubs.find(c => c.id === value);
+  const selectedClub = Array.isArray(clubs) ? clubs.find(c => c.id === value) : undefined;
 
-  const filteredClubs = clubs.filter(club =>
+  const filteredClubs = Array.isArray(clubs) ? clubs.filter(club =>
     club.name.toLowerCase().includes(search.toLowerCase()) ||
     (club.location && club.location.toLowerCase().includes(search.toLowerCase())) ||
     (club.region && club.region.toLowerCase().includes(search.toLowerCase()))
-  );
+  ) : [];
 
   useEffect(() => {
     const fetchClubs = async () => {

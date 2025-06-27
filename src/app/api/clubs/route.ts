@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireClubAdmin } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import { geocodeLocation } from '@/lib/utils/geocoding';
 
 async function createClubHandler(req: NextRequest) {
   try {
@@ -14,6 +15,17 @@ async function createClubHandler(req: NextRequest) {
     if (!data.name) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
+    
+    // Geocode location if provided
+    let geocodeData: { latitude?: number | null; longitude?: number | null } = {};
+    if (data.location) {
+      const coords = await geocodeLocation(data.location);
+      geocodeData = {
+        latitude: coords.latitude,
+        longitude: coords.longitude
+      };
+    }
+    
     const club = await prisma.club.create({
       data: {
         name: data.name,
@@ -33,6 +45,7 @@ async function createClubHandler(req: NextRequest) {
         contactPhone: data.contactPhone || null,
         contactCountryCode: data.contactCountryCode || null,
         isContactWilling: data.isContactWilling || false,
+        ...geocodeData
       },
     });
     return NextResponse.json({ club }, { status: 201 });
@@ -71,10 +84,14 @@ async function getClubsHandler(req: NextRequest) {
       ];
     }
 
-    // Get filtered clubs
-    const clubs = await prisma.club.findMany({
-      where,
-      orderBy: [{ location: "asc" }, { name: "asc" }],
+    // Get filtered clubs with retry logic
+    let clubs;
+    let retries = 3;
+    while (retries > 0) {
+      try {
+        clubs = await prisma.club.findMany({
+          where,
+          orderBy: [{ location: "asc" }, { name: "asc" }],
       select: {
         id: true,
         name: true,
@@ -83,6 +100,8 @@ async function getClubsHandler(req: NextRequest) {
         subRegion: true,
         map: true,
         location: true,
+        latitude: true,
+        longitude: true,
         facebook: true,
         instagram: true,
         website: true,
@@ -90,11 +109,33 @@ async function getClubsHandler(req: NextRequest) {
         teamTypes: true,
       },
     });
+        break; // Success, exit retry loop
+      } catch (error) {
+        retries--;
+        if (retries === 0) {
+          console.error("Failed to fetch clubs after retries:", error);
+          throw error;
+        }
+        console.warn(`Database connection failed, retrying... (${retries} attempts left)`);
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+      }
+    }
 
     // Get unique countries and team types for filter options
-    const allClubs = await prisma.club.findMany({
-      select: { location: true, teamTypes: true },
-    });
+    let allClubs;
+    try {
+      allClubs = await prisma.club.findMany({
+        select: { location: true, teamTypes: true },
+      });
+    } catch (error) {
+      console.error("Failed to fetch club filters:", error);
+      // Return clubs without filters if this fails
+      return NextResponse.json({
+        clubs,
+        countries: [],
+        teamTypes: []
+      });
+    }
     
     const countries = Array.from(
       new Set(

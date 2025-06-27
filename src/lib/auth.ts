@@ -23,9 +23,9 @@ declare module "next-auth" {
   }
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions = {
   session: {
-    strategy: "jwt",
+    strategy: "jwt" as const,
   },
   pages: {
     signIn: "/signin",
@@ -80,7 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: Record<string, unknown>; user?: Record<string, unknown> }) {
       if (user) {
         token.id = user.id
         token.username = user.username
@@ -89,7 +89,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Record<string, unknown>; token: Record<string, unknown> }) {
       if (session.user) {
         session.user.id = token.id as string
         session.user.username = token.username as string
@@ -99,4 +99,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session
     },
   },
-})
+}
+
+export const { handlers, signIn, signOut, auth } = NextAuth(authOptions)

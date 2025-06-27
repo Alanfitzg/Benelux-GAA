@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { revalidatePath } from "next/cache";
 import DeleteButton from "@/components/ui/DeleteButton";
+import GeocodeClubsButton from "@/components/admin/GeocodeClubsButton";
 
 type ClubListItem = {
   id: string;
@@ -50,7 +51,8 @@ export default async function AdminClubsPage() {
     <div className="container mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-gray-900">Manage Clubs</h1>
-        <div className="space-x-3">
+        <div className="flex items-center space-x-3">
+          <GeocodeClubsButton />
           <Link 
             href="/clubs/register" 
             className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"

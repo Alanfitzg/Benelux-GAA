@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { UserRole } from "@prisma/client"
+import { UserRole, AccountStatus } from "@prisma/client"
 import { TableSkeleton } from "@/components/ui/Skeleton"
+import UserEditModal from "@/components/admin/UserEditModal"
 
 interface User {
   id: string
@@ -10,7 +11,13 @@ interface User {
   username: string
   name: string | null
   role: UserRole
+  accountStatus: AccountStatus
   createdAt: string
+  clubId?: string | null
+  club?: {
+    id: string;
+    name: string;
+  } | null
   adminOfClubs: { id: string; name: string }[]
 }
 
@@ -25,6 +32,10 @@ export default function UsersManagement() {
   const [loading, setLoading] = useState(true)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [error, setError] = useState("")
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [showEditModal, setShowEditModal] = useState(false)
+
+  // Ensure clubs is always an array
 
   const [newUser, setNewUser] = useState<{
     email: string
@@ -64,10 +75,16 @@ export default function UsersManagement() {
       const response = await fetch("/api/clubs")
       if (response.ok) {
         const data = await response.json()
-        setClubs(data)
+        console.log("Clubs API response:", data)
+        console.log("Clubs array:", data.clubs)
+        setClubs(data.clubs || [])
+      } else {
+        console.error("Failed to fetch clubs, status:", response.status)
+        setClubs([])
       }
-    } catch {
-      console.error("Failed to load clubs")
+    } catch (error) {
+      console.error("Failed to load clubs:", error)
+      setClubs([])
     } finally {
       setLoading(false)
     }
@@ -138,6 +155,19 @@ export default function UsersManagement() {
         ? prev.clubIds.filter(id => id !== clubId)
         : [...prev.clubIds, clubId]
     }))
+  }
+
+  const handleEditUser = (user: User) => {
+    setSelectedUser(user)
+    setShowEditModal(true)
+  }
+
+  const handleUserUpdated = (updatedUser: User) => {
+    setUsers(users.map(user => 
+      user.id === updatedUser.id ? updatedUser : user
+    ))
+    setShowEditModal(false)
+    setSelectedUser(null)
   }
 
   if (loading) {
@@ -247,7 +277,7 @@ export default function UsersManagement() {
                   Assign to Clubs
                 </label>
                 <div className="max-h-48 overflow-y-auto border border-gray-300 rounded-md p-3 space-y-2">
-                  {clubs.map(club => (
+                  {Array.isArray(clubs) ? clubs.map(club => (
                     <label key={club.id} className="flex items-center">
                       <input
                         type="checkbox"
@@ -257,7 +287,9 @@ export default function UsersManagement() {
                       />
                       {club.name}
                     </label>
-                  ))}
+                  )) : (
+                    <p className="text-sm text-gray-500">Loading clubs...</p>
+                  )}
                 </div>
               </div>
             )}
@@ -291,6 +323,9 @@ export default function UsersManagement() {
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Role
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Clubs
@@ -328,32 +363,76 @@ export default function UsersManagement() {
                     {user.role.replace('_', ' ')}
                   </span>
                 </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    user.accountStatus === AccountStatus.APPROVED
+                      ? 'bg-green-100 text-green-800'
+                      : user.accountStatus === AccountStatus.PENDING
+                      ? 'bg-yellow-100 text-yellow-800'
+                      : user.accountStatus === AccountStatus.REJECTED
+                      ? 'bg-red-100 text-red-800'
+                      : 'bg-orange-100 text-orange-800'
+                  }`}>
+                    {user.accountStatus}
+                  </span>
+                </td>
                 <td className="px-6 py-4">
-                  {user.adminOfClubs.length > 0 ? (
-                    <div className="text-sm text-gray-900">
-                      {user.adminOfClubs.map(club => club.name).join(', ')}
-                    </div>
-                  ) : (
-                    <span className="text-sm text-gray-500">None</span>
-                  )}
+                  <div className="text-sm text-gray-900">
+                    {user.club && (
+                      <div className="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded mb-1">
+                        Member: {user.club.name}
+                      </div>
+                    )}
+                    {user.adminOfClubs.length > 0 && (
+                      user.adminOfClubs.map(club => (
+                        <div key={club.id} className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded mb-1">
+                          Admin: {club.name}
+                        </div>
+                      ))
+                    )}
+                    {!user.club && user.adminOfClubs.length === 0 && (
+                      <span className="text-sm text-gray-500">None</span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {new Date(user.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => handleDeleteUser(user.id)}
-                    className="text-red-600 hover:text-red-900"
-                    disabled={user.role === UserRole.SUPER_ADMIN}
-                  >
-                    Delete
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEditUser(user)}
+                      className="text-primary hover:text-primary/80"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteUser(user.id)}
+                      className="text-red-600 hover:text-red-900"
+                      disabled={user.role === UserRole.SUPER_ADMIN}
+                    >
+                      Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      {/* Edit User Modal */}
+      {showEditModal && selectedUser && (
+        <UserEditModal
+          user={selectedUser}
+          clubs={clubs}
+          onClose={() => {
+            setShowEditModal(false)
+            setSelectedUser(null)
+          }}
+          onUserUpdated={handleUserUpdated}
+        />
+      )}
     </div>
   )
 }

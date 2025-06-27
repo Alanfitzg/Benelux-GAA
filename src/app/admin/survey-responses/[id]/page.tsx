@@ -1,49 +1,129 @@
-import { prisma } from '@/lib/prisma';
+'use client';
+
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import type { Metadata } from 'next';
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 
-interface PageProps {
-  params: Promise<{ id: string }>;
+interface SurveyResponse {
+  id: string;
+  eventId?: string | null;
+  role: string;
+  clubName?: string | null;
+  country: string;
+  city?: string | null;
+  hasTraveledAbroad: string;
+  travelFrequency?: string | null;
+  destinationsVisited: string[];
+  preferredTravelTime: string;
+  teamSize: string;
+  budgetPerPerson: string;
+  biggestChallenge: string;
+  interestedServices: string[];
+  wouldHost: string;
+  wouldPayForPlatform: string;
+  improvementSuggestion?: string | null;
+  additionalFeedback?: string | null;
+  contactName: string;
+  contactEmail: string;
+  contactPhone?: string | null;
+  submittedAt: string;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  referrer?: string | null;
+  event?: {
+    id: string;
+    title: string;
+    location: string;
+    startDate: string;
+  } | null;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
-  return {
-    title: `Trip Request ${id} | Admin Dashboard`,
-    description: 'Detailed view of custom trip request for GAA travel preferences.',
+export default function SurveyResponseDetailPage() {
+  const params = useParams();
+  const id = params.id as string;
+  const [response, setResponse] = useState<SurveyResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchSurveyResponse = async () => {
+    try {
+      const res = await fetch(`/api/admin/survey-responses/${id}`);
+      if (!res.ok) {
+        if (res.status === 404) {
+          setError('Survey response not found');
+        } else {
+          setError('Failed to fetch survey response');
+        }
+        return;
+      }
+      const data = await res.json();
+      setResponse(data);
+    } catch (error) {
+      console.error('Failed to fetch survey response:', error);
+      setError('Failed to fetch survey response');
+    } finally {
+      setLoading(false);
+    }
   };
-}
 
-async function getSurveyResponse(id: string) {
-  try {
-    const response = await prisma.surveyResponse.findUnique({
-      where: { id },
-      include: {
-        event: {
-          select: {
-            id: true,
-            title: true,
-            location: true,
-            startDate: true,
-          },
-        },
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error('Failed to fetch survey response:', error);
-    return null;
+  useEffect(() => {
+    if (id) {
+      fetchSurveyResponse();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-center items-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
   }
-}
 
-export default async function SurveyResponseDetailPage({ params }: PageProps) {
-  const { id } = await params;
-  const response = await getSurveyResponse(id);
-
-  if (!response) {
-    notFound();
+  if (error || !response) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center py-8">
+          <p className="text-red-600">{error || 'Survey response not found'}</p>
+          <Link href="/admin/survey-responses" className="text-primary underline mt-4 inline-block">
+            Back to Survey Responses
+          </Link>
+        </div>
+      </div>
+    );
   }
+
+  const generateResponseSummary = (response: SurveyResponse): string => {
+    return `Custom Trip Request Summary
+
+Contact: ${response.contactName} (${response.contactEmail})
+Role: ${response.role}
+Location: ${response.city ? `${response.city}, ` : ''}${response.country}
+${response.clubName ? `Club: ${response.clubName}` : ''}
+
+Travel History: ${response.hasTraveledAbroad}
+${response.travelFrequency ? `Frequency: ${response.travelFrequency}` : ''}
+Preferred Time: ${response.preferredTravelTime}
+Destinations: ${response.destinationsVisited.join(', ')}
+
+Team Size: ${response.teamSize}
+Budget: ${response.budgetPerPerson}
+Main Challenge: ${response.biggestChallenge}
+
+Interested Services: ${response.interestedServices.join(', ')}
+Would Host: ${response.wouldHost}
+Would Pay for Platform: ${response.wouldPayForPlatform}
+
+${response.improvementSuggestion ? `Improvement Suggestions: ${response.improvementSuggestion}` : ''}
+${response.additionalFeedback ? `Additional Feedback: ${response.additionalFeedback}` : ''}
+
+Submitted: ${new Date(response.submittedAt).toLocaleString()}
+${response.event ? `Related Event: ${response.event.title}` : 'General Trip Request'}`;
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -318,32 +398,4 @@ export default async function SurveyResponseDetailPage({ params }: PageProps) {
       </div>
     </div>
   );
-}
-
-function generateResponseSummary(response: { contactName: string; contactEmail: string; role: string; city: string | null; country: string; clubName: string | null; hasTraveledAbroad: string; travelFrequency: string | null; preferredTravelTime: string; destinationsVisited: string[]; teamSize: string; budgetPerPerson: string; biggestChallenge: string; interestedServices: string[]; wouldHost: string; wouldPayForPlatform: string; improvementSuggestion: string | null; additionalFeedback: string | null; submittedAt: Date; event?: { title: string } | null }): string {
-  return `Custom Trip Request Summary
-
-Contact: ${response.contactName} (${response.contactEmail})
-Role: ${response.role}
-Location: ${response.city ? `${response.city}, ` : ''}${response.country}
-${response.clubName ? `Club: ${response.clubName}` : ''}
-
-Travel History: ${response.hasTraveledAbroad}
-${response.travelFrequency ? `Frequency: ${response.travelFrequency}` : ''}
-Preferred Time: ${response.preferredTravelTime}
-Destinations: ${response.destinationsVisited.join(', ')}
-
-Team Size: ${response.teamSize}
-Budget: ${response.budgetPerPerson}
-Main Challenge: ${response.biggestChallenge}
-
-Interested Services: ${response.interestedServices.join(', ')}
-Would Host: ${response.wouldHost}
-Would Pay for Platform: ${response.wouldPayForPlatform}
-
-${response.improvementSuggestion ? `Improvement Suggestions: ${response.improvementSuggestion}` : ''}
-${response.additionalFeedback ? `Additional Feedback: ${response.additionalFeedback}` : ''}
-
-Submitted: ${new Date(response.submittedAt).toLocaleString()}
-${response.event ? `Related Event: ${response.event.title}` : 'General Trip Request'}`;
 }
