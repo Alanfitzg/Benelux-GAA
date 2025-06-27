@@ -48,10 +48,6 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchStats();
-  }, [clubId, fetchStats]);
-
   const fetchStats = useCallback(async () => {
     try {
       const response = await fetch(`/api/clubs/${clubId}/stats`);
@@ -66,6 +62,10 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
       setLoading(false);
     }
   }, [clubId]);
+
+  useEffect(() => {
+    fetchStats();
+  }, [fetchStats]);
 
   if (loading) {
     return (

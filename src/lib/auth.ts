@@ -80,7 +80,7 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: Record<string, unknown>; user?: Record<string, unknown> }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id
         token.username = user.username
@@ -89,7 +89,7 @@ export const authOptions = {
       }
       return token
     },
-    async session({ session, token }: { session: Record<string, unknown>; token: Record<string, unknown> }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string
         session.user.username = token.username as string

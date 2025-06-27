@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState } from 'react';
+import { UserRole, AccountStatus } from '@prisma/client';
 
 interface User {
   id: string;
   email: string;
   username: string;
-  name?: string | null;
-  role: string;
-  accountStatus: string;
+  name: string | null;
+  role: UserRole;
+  accountStatus: AccountStatus;
+  createdAt: string;
   clubId?: string | null;
   club?: {
     id: string;
@@ -200,7 +202,7 @@ export default function UserEditModal({ user, clubs, onClose, onUserUpdated }: U
                   onChange={(e) => {
                     setFormData({ 
                       ...formData, 
-                      role: e.target.value,
+                      role: e.target.value as UserRole,
                       // Clear admin clubs if not club admin
                       adminOfClubIds: e.target.value === 'CLUB_ADMIN' ? formData.adminOfClubIds : []
                     });
@@ -218,7 +220,7 @@ export default function UserEditModal({ user, clubs, onClose, onUserUpdated }: U
                 </label>
                 <select
                   value={formData.accountStatus}
-                  onChange={(e) => setFormData({ ...formData, accountStatus: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, accountStatus: e.target.value as AccountStatus })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="PENDING">Pending</option>
