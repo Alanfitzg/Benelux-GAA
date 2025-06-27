@@ -270,6 +270,8 @@ describe('Rate Limiting', () => {
         'X-RateLimit-Reset': new Date(result.resetTime).toISOString(),
       };
 
+      // Verify headers would be set correctly
+      expect(expectedHeaders['X-RateLimit-Limit']).toBe('10');
       expect(result.remaining).toBeLessThan(10);
       expect(result.resetTime).toBeGreaterThan(Date.now());
     });

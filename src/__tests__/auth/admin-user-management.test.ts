@@ -69,7 +69,7 @@ describe('Admin User Management', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockRequireSuperAdmin.mockResolvedValue(mockAdminSession as any);
+    mockRequireSuperAdmin.mockResolvedValue(mockAdminSession as Record<string, unknown>);
   });
 
   describe('List Users (GET /api/admin/users)', () => {
@@ -99,7 +99,7 @@ describe('Admin User Management', () => {
         },
       ];
       
-      mockPrisma.user.findMany.mockResolvedValue(mockUsers as any);
+      mockPrisma.user.findMany.mockResolvedValue(mockUsers as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users');
       const response = await getUsersHandler(request);
@@ -123,7 +123,7 @@ describe('Admin User Management', () => {
         },
       ];
       
-      mockPrisma.user.findMany.mockResolvedValue(mockPendingUsers as any);
+      mockPrisma.user.findMany.mockResolvedValue(mockPendingUsers as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users?status=PENDING');
       const response = await getUsersHandler(request);
@@ -142,7 +142,7 @@ describe('Admin User Management', () => {
       mockRequireSuperAdmin.mockResolvedValue({
         status: 401,
         json: () => Promise.resolve({ error: 'Authentication required' }),
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users');
       const response = await getUsersHandler(request);
@@ -171,7 +171,7 @@ describe('Admin User Management', () => {
         createdAt: new Date(),
         club: null,
         adminOfClubs: [],
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users', {
         method: 'POST',
@@ -239,7 +239,7 @@ describe('Admin User Management', () => {
         adminOfClubs: [],
       };
       
-      mockPrisma.user.findUnique.mockResolvedValue(mockUser as any);
+      mockPrisma.user.findUnique.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123');
       const response = await getUserHandler(request, { 
@@ -279,7 +279,7 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'user-123',
         email: 'old@example.com',
-      } as any);
+      } as Record<string, unknown>);
 
       mockPrisma.user.update.mockResolvedValue({
         id: 'user-123',
@@ -290,7 +290,7 @@ describe('Admin User Management', () => {
           { id: 'club-1', name: 'Club One' },
           { id: 'club-2', name: 'Club Two' },
         ],
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123', {
         method: 'PUT',
@@ -330,9 +330,9 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'user-123',
         role: UserRole.USER,
-      } as any);
+      } as Record<string, unknown>);
 
-      mockPrisma.user.delete.mockResolvedValue({} as any);
+      mockPrisma.user.delete.mockResolvedValue({} as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123', {
         method: 'DELETE',
@@ -354,7 +354,7 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'admin-123',
         role: UserRole.SUPER_ADMIN,
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/admin-123', {
         method: 'DELETE',
@@ -392,14 +392,14 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'user-123',
         accountStatus: AccountStatus.PENDING,
-      } as any);
+      } as Record<string, unknown>);
 
       mockPrisma.user.update.mockResolvedValue({
         id: 'user-123',
         accountStatus: AccountStatus.APPROVED,
         approvedAt: new Date(),
         approvedBy: 'admin-123',
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123/approve', {
         method: 'POST',
@@ -419,7 +419,7 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'user-123',
         accountStatus: AccountStatus.APPROVED,
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123/approve', {
         method: 'POST',
@@ -440,13 +440,13 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'user-123',
         accountStatus: AccountStatus.PENDING,
-      } as any);
+      } as Record<string, unknown>);
 
       mockPrisma.user.update.mockResolvedValue({
         id: 'user-123',
         accountStatus: AccountStatus.REJECTED,
         rejectionReason: 'Invalid documentation',
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123/reject', {
         method: 'POST',
@@ -485,13 +485,13 @@ describe('Admin User Management', () => {
       mockPrisma.user.findUnique.mockResolvedValue({
         id: 'user-123',
         email: 'user@example.com',
-      } as any);
+      } as Record<string, unknown>);
 
       mockBcrypt.hash.mockResolvedValue('newHashedPassword' as never);
       mockPrisma.user.update.mockResolvedValue({
         id: 'user-123',
         password: 'newHashedPassword',
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users/user-123/reset-password', {
         method: 'POST',
@@ -546,7 +546,7 @@ describe('Admin User Management', () => {
       mockRequireSuperAdmin.mockResolvedValue({
         status: 403,
         json: () => Promise.resolve({ error: 'Insufficient permissions' }),
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/admin/users');
       const response = await getUsersHandler(request);

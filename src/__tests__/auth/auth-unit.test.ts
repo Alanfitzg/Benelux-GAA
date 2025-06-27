@@ -323,10 +323,11 @@ describe('Authentication Unit Tests', () => {
       };
     };
 
-    const isSessionValid = (session: any): boolean => {
-      if (!session) return false;
-      if (Date.now() > session.expiresAt) return false;
-      if (!session.userId || !session.role) return false;
+    const isSessionValid = (session: unknown): boolean => {
+      if (!session || typeof session !== 'object') return false;
+      const sessionObj = session as Record<string, unknown>;
+      if (typeof sessionObj.expiresAt !== 'number' || Date.now() > sessionObj.expiresAt) return false;
+      if (!sessionObj.userId || !sessionObj.role) return false;
       return true;
     };
 

@@ -6,7 +6,7 @@
 
 import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { NextRequest } from 'next/server';
-import { prisma } from '@/lib/prisma';
+// import { prisma } from '@/lib/prisma'; // Mocked below
 import { UserRole, AccountStatus } from '@prisma/client';
 
 // Mock the entire Prisma client
@@ -24,7 +24,7 @@ const mockPrisma = {
     findMany: jest.fn(),
   },
   $transaction: jest.fn(),
-} as any;
+} as Record<string, unknown>;
 
 jest.mock('@/lib/prisma', () => ({
   prisma: mockPrisma,
@@ -40,8 +40,14 @@ jest.mock('@/lib/auth-helpers', () => ({
   requireSuperAdmin: jest.fn(),
 }));
 
-const bcrypt = require('bcryptjs');
-const { getServerSession, requireSuperAdmin } = require('@/lib/auth-helpers');
+import bcryptImport from 'bcryptjs';
+import { getServerSession as getServerSessionImport, requireSuperAdmin as requireSuperAdminImport } from '@/lib/auth-helpers';
+
+const bcrypt = bcryptImport as jest.Mocked<typeof bcryptImport>;
+const { getServerSession, requireSuperAdmin } = {
+  getServerSession: getServerSessionImport as jest.MockedFunction<typeof getServerSessionImport>,
+  requireSuperAdmin: requireSuperAdminImport as jest.MockedFunction<typeof requireSuperAdminImport>,
+};
 
 describe('Authentication Integration Tests', () => {
   beforeEach(() => {
@@ -224,18 +230,18 @@ describe('Authentication Integration Tests', () => {
       expect(requireSuperAdmin).toHaveBeenCalled();
 
       // Test Club Admin access (should be denied for super admin endpoints)
-      const clubAdminSession = {
-        user: {
-          id: 'club-admin-123',
-          role: UserRole.CLUB_ADMIN,
-          accountStatus: AccountStatus.APPROVED,
-        },
-      };
+      // const clubAdminSession = {
+      //   user: {
+      //     id: 'club-admin-123',
+      //     role: UserRole.CLUB_ADMIN,
+      //     accountStatus: AccountStatus.APPROVED,
+      //   },
+      // };
 
       requireSuperAdmin.mockResolvedValue({
         status: 403,
         json: () => Promise.resolve({ error: 'Insufficient permissions' }),
-      } as any);
+      } as Record<string, unknown>);
 
       const clubAdminRequest = new NextRequest('http://localhost:3000/api/admin/users');
       const clubAdminResponse = await getUsersHandler(clubAdminRequest);
@@ -243,18 +249,18 @@ describe('Authentication Integration Tests', () => {
       expect(clubAdminResponse.status).toBe(403);
 
       // Test Regular User access (should be denied)
-      const userSession = {
-        user: {
-          id: 'user-123',
-          role: UserRole.USER,
-          accountStatus: AccountStatus.APPROVED,
-        },
-      };
+      // const userSession = {
+      //   user: {
+      //     id: 'user-123',
+      //     role: UserRole.USER,
+      //     accountStatus: AccountStatus.APPROVED,
+      //   },
+      // };
 
       requireSuperAdmin.mockResolvedValue({
         status: 403,
         json: () => Promise.resolve({ error: 'Insufficient permissions' }),
-      } as any);
+      } as Record<string, unknown>);
 
       const userRequest = new NextRequest('http://localhost:3000/api/admin/users');
       const userResponse = await getUsersHandler(userRequest);
@@ -484,7 +490,7 @@ describe('Authentication Integration Tests', () => {
       mockPrisma.user.create.mockResolvedValueOnce({
         id: 'user-1',
         ...registrationData,
-      } as any);
+      } as Record<string, unknown>);
 
       // Second call fails due to unique constraint
       mockPrisma.user.findFirst.mockResolvedValueOnce(null);

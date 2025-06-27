@@ -28,7 +28,8 @@ jest.mock('@/lib/user', () => ({
   getUserByUsername: jest.fn(),
 }));
 
-const mockAuth = require('@/lib/auth').auth as jest.MockedFunction<any>;
+import { auth as authImport } from '@/lib/auth';
+const mockAuth = authImport as jest.MockedFunction<typeof authImport>;
 const mockGetUserByUsername = getUserByUsername as jest.MockedFunction<typeof getUserByUsername>;
 
 describe('Authentication Helpers', () => {
@@ -246,7 +247,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedUser();
 
@@ -269,7 +270,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedUser();
 
@@ -297,7 +298,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedUser();
 
@@ -325,7 +326,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedUser();
 
@@ -385,7 +386,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedRole([UserRole.CLUB_ADMIN, UserRole.SUPER_ADMIN]);
 
@@ -407,7 +408,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedRole([UserRole.CLUB_ADMIN, UserRole.SUPER_ADMIN]);
 
@@ -433,7 +434,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedRole([UserRole.CLUB_ADMIN]);
 
@@ -461,7 +462,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedSuperAdmin();
 
@@ -483,7 +484,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedSuperAdmin();
 
@@ -509,7 +510,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedClubAdmin();
 
@@ -531,7 +532,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedClubAdmin();
 
@@ -553,7 +554,7 @@ describe('Authentication Helpers', () => {
       };
       
       mockAuth.mockResolvedValue(mockSession);
-      mockGetUserByUsername.mockResolvedValue(mockUser as any);
+      mockGetUserByUsername.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const result = await requireApprovedClubAdmin();
 

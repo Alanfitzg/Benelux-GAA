@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { POST as registerHandler } from '@/app/api/auth/register/route';
@@ -53,7 +53,7 @@ describe('Authentication Flows', () => {
       mockPrisma.club.findUnique.mockResolvedValue({
         id: 'club-123',
         name: 'Test Club',
-      } as any);
+      } as Record<string, unknown>);
       
       // Mock password hashing
       mockBcrypt.hash.mockResolvedValue('hashedPassword123' as never);
@@ -69,7 +69,7 @@ describe('Authentication Flows', () => {
         clubId: 'club-123',
         createdAt: new Date(),
       };
-      mockPrisma.user.create.mockResolvedValue(mockCreatedUser as any);
+      mockPrisma.user.create.mockResolvedValue(mockCreatedUser as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/auth/register', {
         method: 'POST',
@@ -90,7 +90,7 @@ describe('Authentication Flows', () => {
       mockPrisma.user.findFirst.mockResolvedValue({
         id: 'existing-user',
         email: 'test@example.com',
-      } as any);
+      } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/auth/register', {
         method: 'POST',
@@ -110,7 +110,7 @@ describe('Authentication Flows', () => {
         .mockResolvedValueOnce({ // Username conflict
           id: 'existing-user',
           username: 'testuser',
-        } as any);
+        } as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/auth/register', {
         method: 'POST',
@@ -203,7 +203,7 @@ describe('Authentication Flows', () => {
         accountStatus: AccountStatus.PENDING,
         rejectionReason: null,
       };
-      mockPrisma.user.findUnique.mockResolvedValue(mockUser as any);
+      mockPrisma.user.findUnique.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/auth/account-status', {
         method: 'POST',
@@ -225,7 +225,7 @@ describe('Authentication Flows', () => {
         accountStatus: AccountStatus.REJECTED,
         rejectionReason: 'Invalid documentation provided',
       };
-      mockPrisma.user.findUnique.mockResolvedValue(mockUser as any);
+      mockPrisma.user.findUnique.mockResolvedValue(mockUser as Record<string, unknown>);
 
       const request = new NextRequest('http://localhost:3000/api/auth/account-status', {
         method: 'POST',

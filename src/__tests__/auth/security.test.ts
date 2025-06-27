@@ -5,8 +5,6 @@
  */
 
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import bcrypt from 'bcryptjs';
-import { NextRequest } from 'next/server';
 import { 
   UserRegistrationSchema,
   passwordSchema,
@@ -14,14 +12,7 @@ import {
   emailSchema
 } from '@/lib/validation/schemas';
 
-// Mock bcrypt
-jest.mock('bcryptjs', () => ({
-  hash: jest.fn(),
-  compare: jest.fn(),
-  genSalt: jest.fn(),
-}));
 
-const mockBcrypt = bcrypt as jest.Mocked<typeof bcrypt>;
 
 describe('Security Features', () => {
   beforeEach(() => {
