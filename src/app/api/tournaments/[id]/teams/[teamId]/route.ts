@@ -5,8 +5,9 @@ import { prisma } from '@/lib/prisma';
 // PATCH /api/tournaments/[id]/teams/[teamId] - Update team status
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string; teamId: string } }
+  { params }: { params: Promise<{ id: string; teamId: string }> }
 ) {
+  const { teamId } = await params;
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
@@ -21,7 +22,7 @@ export async function PATCH(
 
     // Get the team to check authorization
     const team = await prisma.tournamentTeam.findUnique({
-      where: { id: params.teamId },
+      where: { id: teamId },
       include: { club: true },
     });
 
@@ -48,7 +49,7 @@ export async function PATCH(
 
     // Update team status
     const updatedTeam = await prisma.tournamentTeam.update({
-      where: { id: params.teamId },
+      where: { id: teamId },
       data: { status },
       include: { club: true },
     });
@@ -66,8 +67,9 @@ export async function PATCH(
 // DELETE /api/tournaments/[id]/teams/[teamId] - Withdraw a team
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; teamId: string } }
+  { params }: { params: Promise<{ id: string; teamId: string }> }
 ) {
+  const { teamId } = await params;
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
@@ -79,7 +81,7 @@ export async function DELETE(
 
     // Get the team to check authorization
     const team = await prisma.tournamentTeam.findUnique({
-      where: { id: params.teamId },
+      where: { id: teamId },
       include: { club: true },
     });
 
@@ -108,8 +110,8 @@ export async function DELETE(
     const matches = await prisma.match.count({
       where: {
         OR: [
-          { homeTeamId: params.teamId },
-          { awayTeamId: params.teamId },
+          { homeTeamId: teamId },
+          { awayTeamId: teamId },
         ],
         status: { not: 'CANCELLED' },
       },
@@ -118,7 +120,7 @@ export async function DELETE(
     if (matches > 0) {
       // Mark as withdrawn instead of deleting
       const withdrawnTeam = await prisma.tournamentTeam.update({
-        where: { id: params.teamId },
+        where: { id: teamId },
         data: { status: 'WITHDRAWN' },
         include: { club: true },
       });
@@ -127,7 +129,7 @@ export async function DELETE(
 
     // If no matches, safe to delete
     await prisma.tournamentTeam.delete({
-      where: { id: params.teamId },
+      where: { id: teamId },
     });
 
     return NextResponse.json({ success: true });

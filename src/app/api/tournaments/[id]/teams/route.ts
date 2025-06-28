@@ -5,14 +5,15 @@ import { prisma } from '@/lib/prisma';
 // GET /api/tournaments/[id]/teams - Get all teams registered for a tournament
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    console.log('Fetching teams for tournament:', params.id);
+    console.log('Fetching teams for tournament:', id);
     
     // First verify the event exists and is a tournament
     const event = await prisma.event.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!event) {
@@ -31,7 +32,7 @@ export async function GET(
 
     const teams = await prisma.tournamentTeam.findMany({
       where: {
-        eventId: params.id,
+        eventId: id,
       },
       include: {
         club: true,
@@ -41,7 +42,7 @@ export async function GET(
       },
     });
 
-    console.log(`Found ${teams.length} teams for tournament ${params.id}`);
+    console.log(`Found ${teams.length} teams for tournament ${id}`);
     return NextResponse.json(teams);
   } catch (error) {
     console.error('Error fetching tournament teams:', error);
@@ -55,8 +56,9 @@ export async function GET(
 // POST /api/tournaments/[id]/teams - Register a team for a tournament
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
@@ -85,7 +87,7 @@ export async function POST(
 
     // Check tournament exists and validate team limits
     const tournament = await prisma.event.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: {
         teams: true,
       },
@@ -105,10 +107,10 @@ export async function POST(
       );
     }
 
-    // Check team type matches
-    if (tournament.teamType && tournament.teamType !== teamType) {
+    // Check team type matches accepted types
+    if (tournament.acceptedTeamTypes && tournament.acceptedTeamTypes.length > 0 && !tournament.acceptedTeamTypes.includes(teamType)) {
       return NextResponse.json(
-        { error: `Tournament only accepts ${tournament.teamType} teams` },
+        { error: `Tournament only accepts these team types: ${tournament.acceptedTeamTypes.join(', ')}` },
         { status: 400 }
       );
     }
@@ -124,7 +126,7 @@ export async function POST(
     // Create the team registration
     const team = await prisma.tournamentTeam.create({
       data: {
-        eventId: params.id,
+        eventId: id,
         clubId,
         teamName,
         teamType,

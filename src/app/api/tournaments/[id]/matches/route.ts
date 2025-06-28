@@ -5,14 +5,15 @@ import { prisma } from '@/lib/prisma';
 // GET /api/tournaments/[id]/matches - Get all matches for a tournament
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
-    console.log('Fetching matches for tournament:', params.id);
+    console.log('Fetching matches for tournament:', id);
     
     // First verify the event exists and is a tournament
     const event = await prisma.event.findUnique({
-      where: { id: params.id },
+      where: { id: id },
     });
 
     if (!event) {
@@ -31,7 +32,7 @@ export async function GET(
 
     const matches = await prisma.match.findMany({
       where: {
-        eventId: params.id,
+        eventId: id,
       },
       include: {
         homeTeam: {
@@ -47,7 +48,7 @@ export async function GET(
       ],
     });
 
-    console.log(`Found ${matches.length} matches for tournament ${params.id}`);
+    console.log(`Found ${matches.length} matches for tournament ${id}`);
     return NextResponse.json(matches);
   } catch (error) {
     console.error('Error fetching matches:', error);
@@ -61,8 +62,9 @@ export async function GET(
 // POST /api/tournaments/[id]/matches - Create a new match
 export async function POST(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
@@ -77,7 +79,7 @@ export async function POST(
 
     // Check if user has permission (tournament organizer or super admin)
     const tournament = await prisma.event.findUnique({
-      where: { id: params.id },
+      where: { id: id },
       include: { club: true },
     });
 
@@ -107,7 +109,7 @@ export async function POST(
     // Create the match
     const match = await prisma.match.create({
       data: {
-        eventId: params.id,
+        eventId: id,
         homeTeamId,
         awayTeamId,
         matchDate: matchDate ? new Date(matchDate) : null,

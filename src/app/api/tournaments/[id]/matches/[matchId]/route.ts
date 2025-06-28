@@ -1,12 +1,14 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from '@/lib/auth-helpers';
 import { prisma } from '@/lib/prisma';
+import type { MatchStatus } from '@prisma/client';
 
 // PATCH /api/tournaments/[id]/matches/[matchId] - Update match details or results
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string; matchId: string } }
+  { params }: { params: Promise<{ id: string; matchId: string }> }
 ) {
+  const { matchId } = await params;
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
@@ -21,7 +23,7 @@ export async function PATCH(
 
     // Get the match to check authorization
     const match = await prisma.match.findUnique({
-      where: { id: params.matchId },
+      where: { id: matchId },
       include: {
         event: { include: { club: true } },
         homeTeam: { include: { club: true } },
@@ -63,7 +65,7 @@ export async function PATCH(
       matchDate?: Date | null;
       venue?: string;
       round?: string;
-      status?: string;
+      status?: MatchStatus;
       homeScore?: number;
       awayScore?: number;
     } = {};
@@ -73,7 +75,7 @@ export async function PATCH(
       if (matchDate !== undefined) updateData.matchDate = matchDate ? new Date(matchDate) : null;
       if (venue !== undefined) updateData.venue = venue;
       if (round !== undefined) updateData.round = round;
-      if (status !== undefined) updateData.status = status;
+      if (status !== undefined) updateData.status = status as MatchStatus;
     }
 
     // Both organizers and team admins can update scores
@@ -87,7 +89,7 @@ export async function PATCH(
 
     // Update the match
     const updatedMatch = await prisma.match.update({
-      where: { id: params.matchId },
+      where: { id: matchId },
       data: updateData,
       include: {
         homeTeam: {
@@ -112,8 +114,9 @@ export async function PATCH(
 // DELETE /api/tournaments/[id]/matches/[matchId] - Cancel a match
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string; matchId: string } }
+  { params }: { params: Promise<{ id: string; matchId: string }> }
 ) {
+  const { matchId } = await params;
   try {
     const session = await getServerSession();
     if (!session?.user?.email) {
@@ -125,7 +128,7 @@ export async function DELETE(
 
     // Get the match to check authorization
     const match = await prisma.match.findUnique({
-      where: { id: params.matchId },
+      where: { id: matchId },
       include: {
         event: { include: { club: true } },
       },
@@ -157,7 +160,7 @@ export async function DELETE(
 
     // Mark match as cancelled instead of deleting
     const cancelledMatch = await prisma.match.update({
-      where: { id: params.matchId },
+      where: { id: matchId },
       data: { status: 'CANCELLED' },
       include: {
         homeTeam: {

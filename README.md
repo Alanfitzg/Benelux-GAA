@@ -29,7 +29,7 @@ GAA Trips is a comprehensive platform that makes Gaelic games more accessible an
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - PostgreSQL database
 - AWS S3 bucket (for file uploads)
 - Mapbox API token
@@ -37,54 +37,60 @@ GAA Trips is a comprehensive platform that makes Gaelic games more accessible an
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd gaa-trips
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    cp .env.example .env
    ```
-   
+
    Configure the following variables in `.env`:
+
    ```env
    # Database
    DATABASE_URL="postgresql://username:password@localhost:5432/gaa_trips"
    DIRECT_URL="postgresql://username:password@localhost:5432/gaa_trips"
-   
+
    # NextAuth
    NEXTAUTH_URL="http://localhost:3000"
    NEXTAUTH_SECRET="your-secret-key"
-   
+
    # AWS S3
    AWS_ACCESS_KEY_ID="your-access-key"
    AWS_SECRET_ACCESS_KEY="your-secret-key"
    AWS_REGION="eu-west-1"
    S3_BUCKET_NAME="your-bucket-name"
-   
+
    # Mapbox
    NEXT_PUBLIC_MAPBOX_TOKEN="your-mapbox-token"
    ```
 
 4. **Set up the database**
+
    ```bash
    npx prisma migrate dev
    npx prisma db seed
    ```
 
 5. **Run the development server**
+
    ```bash
    npm run dev
    ```
 
 6. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 🧪 Testing
@@ -244,17 +250,11 @@ This project is private and confidential.
 
 ## 🆘 Support
 
-For support and questions:
-
-- **Email**: info@gaelictrips.com
-- **Legal**: legal@gaelictrips.com
-- **Privacy**: privacy@gaelictrips.com
-
 ## 📚 Documentation
 
 - [Testing Guide](./TESTING.md)
-- [API Documentation](./docs/api.md) *(coming soon)*
-- [Deployment Guide](./docs/deployment.md) *(coming soon)*
+- [API Documentation](./docs/api.md) _(coming soon)_
+- [Deployment Guide](./docs/deployment.md) _(coming soon)_
 
 ---
 
