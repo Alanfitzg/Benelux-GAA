@@ -127,7 +127,7 @@ export default function CreateEvent() {
         const errorData = await response.json();
         console.error('Error details:', errorData);
         setError(errorData.error || MESSAGES.ERROR.GENERIC);
-      } catch (e) {
+      } catch {
         console.error('Could not parse error response');
         setError(MESSAGES.ERROR.GENERIC);
       }

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import type { Event, TournamentTeam, Match } from "@/types";
-import { URLS, MESSAGES, UI, EVENT_CONSTANTS } from "@/lib/constants";
+import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
@@ -145,7 +145,7 @@ export default function EventDetailClient({
                 <a href="#matches" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Matches</a>
               </>
             )}
-            <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What's Included</a>
+            <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
             <a href="#interest" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Register Interest</a>
           </nav>
         </div>

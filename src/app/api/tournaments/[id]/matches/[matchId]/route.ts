@@ -59,7 +59,14 @@ export async function PATCH(
     }
 
     // Prepare update data
-    const updateData: any = {};
+    const updateData: {
+      matchDate?: Date | null;
+      venue?: string;
+      round?: string;
+      status?: string;
+      homeScore?: number;
+      awayScore?: number;
+    } = {};
     
     if (isTournamentOrganizer || user?.role === 'SUPER_ADMIN') {
       // Organizers can update all fields
