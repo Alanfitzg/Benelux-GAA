@@ -21,12 +21,22 @@ model Event {
   description String?
   isRecurring Boolean          @default(false)
   imageUrl    String?
+  
+  // Tournament-specific fields
+  minTeams           Int?      // Minimum teams required
+  maxTeams           Int?      // Maximum teams allowed
+  acceptedTeamTypes  String[]  @default([]) // Types of teams accepted (e.g., ["Mens Gaelic Football", "LGFA"])
+  
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   interests   Interest[]
   clubId      String?
   club        Club?            @relation(fields: [clubId], references: [id])
   surveyResponses SurveyResponse[]
+  
+  // Tournament relations
+  teams       TournamentTeam[]
+  matches     Match[]
 }
 
 model Interest {
@@ -66,6 +76,7 @@ model Club {
   clubInterests       ClubInterest[]
   hostingPackages     HostingPackage[]
   bookings            Booking[]
+  tournamentTeams     TournamentTeam[]
 }
 
 model User {
@@ -258,4 +269,60 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+}
+
+// Tournament-specific models
+model TournamentTeam {
+  id            String   @id @default(cuid())
+  eventId       String
+  clubId        String
+  teamName      String   // e.g., "St. Patrick's Senior Men"
+  teamType      String   // Must match event's teamType
+  registeredAt  DateTime @default(now())
+  status        TeamStatus @default(REGISTERED)
+  
+  event         Event    @relation(fields: [eventId], references: [id])
+  club          Club     @relation(fields: [clubId], references: [id])
+  
+  // Match relations
+  homeMatches   Match[]  @relation("HomeTeam")
+  awayMatches   Match[]  @relation("AwayTeam")
+  
+  @@unique([eventId, clubId, teamName])
+}
+
+model Match {
+  id            String   @id @default(cuid())
+  eventId       String
+  homeTeamId    String
+  awayTeamId    String
+  matchDate     DateTime?
+  venue         String?
+  round         String?  // e.g., "Group A", "Quarter-Final", "Final"
+  
+  // Results
+  homeScore     Int?
+  awayScore     Int?
+  status        MatchStatus @default(SCHEDULED)
+  
+  event         Event    @relation(fields: [eventId], references: [id])
+  homeTeam      TournamentTeam @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam      TournamentTeam @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+enum TeamStatus {
+  REGISTERED
+  CONFIRMED
+  WITHDRAWN
+}
+
+enum MatchStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  POSTPONED
 }

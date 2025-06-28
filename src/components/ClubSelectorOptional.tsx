@@ -51,8 +51,10 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
         setError(null);
         const response = await fetch('/api/clubs');
         if (response.ok) {
-          const clubsData = await response.json();
-          setClubs(clubsData);
+          const responseData = await response.json();
+          // Handle both response formats - object with clubs property or direct array
+          const clubsData = responseData.clubs || responseData;
+          setClubs(Array.isArray(clubsData) ? clubsData : []);
         } else {
           throw new Error('Failed to load clubs');
         }

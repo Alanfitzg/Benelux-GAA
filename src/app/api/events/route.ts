@@ -15,7 +15,11 @@ type CreateEventBody = {
   description?: string;
   isRecurring?: boolean;
   imageUrl?: string;
-  clubId: string;
+  clubId?: string;
+  // Tournament-specific fields
+  minTeams?: number;
+  maxTeams?: number;
+  acceptedTeamTypes?: string[];
 };
 
 async function getEventsHandler() {
@@ -50,6 +54,8 @@ async function createEventHandler(request: NextRequest) {
   
   return withErrorHandling(async () => {
     const body = await parseJsonBody<CreateEventBody>(request);
+    console.log('Creating event with data:', JSON.stringify(body, null, 2));
+    
     const { latitude, longitude } = await geocodeLocation(body.location);
 
     const eventData = {
@@ -58,12 +64,22 @@ async function createEventHandler(request: NextRequest) {
       endDate: body.endDate ? new Date(body.endDate) : null,
       latitude,
       longitude,
+      // Ensure acceptedTeamTypes is always an array (empty if not provided)
+      acceptedTeamTypes: body.acceptedTeamTypes || [],
     };
 
-    const event = await prisma.event.create({
-      data: eventData,
-    });
-    return event;
+    console.log('Event data for database:', JSON.stringify(eventData, null, 2));
+
+    try {
+      const event = await prisma.event.create({
+        data: eventData,
+      });
+      console.log('Event created successfully:', event.id);
+      return event;
+    } catch (dbError) {
+      console.error('Database error creating event:', dbError);
+      throw dbError;
+    }
   });
 }
 

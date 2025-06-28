@@ -34,8 +34,50 @@ export interface Event {
   description?: string;
   isRecurring?: boolean;
   imageUrl?: string;
+  
+  // Tournament-specific fields
+  minTeams?: number;
+  maxTeams?: number;
+  acceptedTeamTypes?: string[];
+  
   createdAt?: string;
   updatedAt?: string;
   clubId?: string;
   club?: Club;
-} 
+  
+  // Tournament relations
+  teams?: TournamentTeam[];
+  matches?: Match[];
+}
+
+export interface TournamentTeam {
+  id: string;
+  eventId: string;
+  clubId: string;
+  teamName: string;
+  teamType: string;
+  registeredAt: string;
+  status: TeamStatus;
+  club?: Club;
+  event?: Event;
+}
+
+export interface Match {
+  id: string;
+  eventId: string;
+  homeTeamId: string;
+  awayTeamId: string;
+  matchDate?: string;
+  venue?: string;
+  round?: string;
+  homeScore?: number;
+  awayScore?: number;
+  status: MatchStatus;
+  homeTeam?: TournamentTeam;
+  awayTeam?: TournamentTeam;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type TeamStatus = 'REGISTERED' | 'CONFIRMED' | 'WITHDRAWN';
+export type MatchStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'POSTPONED'; 
