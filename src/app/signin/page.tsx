@@ -101,6 +101,11 @@ function SignInForm() {
                   </h3>
                   <div className="mt-1 text-sm text-green-700">
                     <p>Your account has been created and is pending approval from an administrator. You will receive an email notification once your account is approved and you can sign in.</p>
+                    <p className="mt-2">
+                      <Link href="/account/status" className="font-semibold underline hover:text-green-600 transition-colors">
+                        Check your account status anytime
+                      </Link>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -148,6 +153,13 @@ function SignInForm() {
                     <p>{accountStatus.message}</p>
                     {accountStatus.rejectionReason && (
                       <p className="mt-2"><strong>Reason:</strong> {accountStatus.rejectionReason}</p>
+                    )}
+                    {accountStatus.status === 'PENDING' && (
+                      <p className="mt-2">
+                        <Link href="/account/status" className="font-semibold underline hover:text-yellow-600 transition-colors">
+                          Check your account status here
+                        </Link>
+                      </p>
                     )}
                     {accountStatus.status === 'REJECTED' && (
                       <p className="mt-2">

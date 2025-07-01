@@ -4,7 +4,16 @@ import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
 async function checkAccountStatusHandler(req: NextRequest) {
   try {
-    const { username } = await req.json();
+    let username: string;
+
+    // Support both GET (query params) and POST (JSON body)
+    if (req.method === 'GET') {
+      const { searchParams } = new URL(req.url);
+      username = searchParams.get('username') || '';
+    } else {
+      const body = await req.json();
+      username = body.username || '';
+    }
 
     if (!username) {
       return NextResponse.json(
@@ -23,8 +32,10 @@ async function checkAccountStatusHandler(req: NextRequest) {
     }
 
     return NextResponse.json({
-      accountStatus: user.accountStatus,
+      status: user.accountStatus,
       rejectionReason: user.rejectionReason,
+      createdAt: user.createdAt?.toISOString(),
+      approvedAt: user.approvedAt?.toISOString(),
     });
   } catch (error) {
     console.error('Error checking account status:', error);
@@ -35,4 +46,5 @@ async function checkAccountStatusHandler(req: NextRequest) {
   }
 }
 
+export const GET = withRateLimit(RATE_LIMITS.AUTH, checkAccountStatusHandler);
 export const POST = withRateLimit(RATE_LIMITS.AUTH, checkAccountStatusHandler);

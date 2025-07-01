@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { requireSuperAdmin } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import { sendEmail } from '@/lib/email';
+import { generateUserApprovalNotificationEmail } from '@/lib/email-templates';
 
 async function approveUserHandler(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
@@ -31,6 +33,27 @@ async function approveUserHandler(req: NextRequest, context: { params: Promise<{
         accountStatus: true,
         approvedAt: true,
       }
+    });
+
+    // Send approval notification email (don't wait for it to complete)
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000';
+    const emailData = {
+      userName: updatedUser.name || updatedUser.username,
+      userEmail: updatedUser.email,
+      approved: true,
+      adminName: authResult.user.name,
+      loginUrl: `${baseUrl}/signin`
+    };
+
+    const { subject, html, text } = generateUserApprovalNotificationEmail(emailData);
+    
+    sendEmail({
+      to: updatedUser.email,
+      subject,
+      html,
+      text
+    }).catch(error => {
+      console.error('Failed to send approval notification email:', error);
     });
 
     return NextResponse.json({ 

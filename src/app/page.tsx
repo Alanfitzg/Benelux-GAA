@@ -516,51 +516,77 @@ export default function Home() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Hero Section - Hide on mobile when navigated from landing */}
       {(!isMobile || !mobileSection) && (
-        <div className="relative overflow-hidden bg-gradient-to-r from-primary via-primary-light to-secondary text-white">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="relative container mx-auto px-6 py-8">
+        <div className="relative h-[500px] md:h-[600px] overflow-hidden text-white">
+          {/* Team huddle background image - full visibility */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              backgroundImage: 'url(/team-huddle.png)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          />
+          
+          {/* Blue tint overlay - lighter on mobile */}
+          <div className="absolute inset-0 bg-blue-900/25 md:bg-blue-900/40"></div>
+          {/* Additional dark overlay for text readability - lighter on mobile */}
+          <div className="absolute inset-0 bg-black/10 md:bg-black/20"></div>
+          
+          {/* Content positioned at top of the hero */}
+          <div className="relative h-full flex items-start justify-center pt-16 md:pt-20">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center max-w-4xl mx-auto"
+              className="text-center px-6"
             >
-              <h1 className="text-3xl md:text-4xl font-bold font-poppins mb-4">
-                Your Gateway to <br />
-                Gaelic Games Abroad
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
+                Team Travel Made Easy
               </h1>
-              <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">
-                Bringing GAA communities together through trusted, club-first
-                travel experiences
+              <p className="text-lg md:text-xl text-white mb-8 font-light max-w-3xl">
+                Bringing GAA communities together through trusted, club-first travel experiences
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              
+              {/* Three buttons in a row */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setViewMode("clubs")}
-                  className="px-6 py-3 bg-white text-primary font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  className="px-8 py-3 bg-white/90 backdrop-blur-sm text-gray-900 font-semibold rounded-full shadow-lg hover:bg-white transition-all duration-300 min-w-[150px]"
                 >
-                  Explore Clubs
+                  Find Clubs
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setViewMode("tournaments")}
-                  className="px-6 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-primary transition-all duration-300"
+                  className="px-8 py-3 bg-white/90 backdrop-blur-sm text-gray-900 font-semibold rounded-full shadow-lg hover:bg-white transition-all duration-300 min-w-[150px]"
                 >
-                  View Tournaments
+                  Tournaments
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    // Scroll to map section
+                    const mapSection = document.getElementById('map-section');
+                    mapSection?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300 min-w-[150px]"
+                >
+                  See map
                 </motion.button>
               </div>
             </motion.div>
           </div>
-          {/* Animated background shapes */}
-          <div className="absolute -top-24 -right-24 w-96 h-96 bg-primary-light/20 rounded-full blur-3xl animate-pulse-slow"></div>
-          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-float"></div>
         </div>
       )}
 
       {/* Main Content */}
       <div
+        id="map-section"
         className={`flex relative ${
           isMobile && mobileSection ? "h-screen" : "h-screen"
         }`}

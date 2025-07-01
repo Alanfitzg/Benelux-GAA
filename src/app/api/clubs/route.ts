@@ -156,6 +156,18 @@ async function getClubsHandler(req: NextRequest) {
     });
   } catch (error) {
     console.error('Error fetching clubs:', error);
+    
+    // Check if it's a database connection error
+    if (error instanceof Error && error.message.includes("Can't reach database server")) {
+      console.warn('Database connection failed, returning empty data');
+      // Return empty data structure to allow the app to function
+      return NextResponse.json({
+        clubs: [],
+        countries: [],
+        teamTypes: []
+      });
+    }
+    
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }

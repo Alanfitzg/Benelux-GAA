@@ -6,8 +6,8 @@ GAA Trips is a comprehensive platform that makes Gaelic games more accessible an
 
 ## 🏆 Features
 
-- **Club Discovery**: Browse and search GAA clubs across Europe
-- **Event Management**: Find and create GAA tournaments and events
+- **Club Discovery**: Browse and search Gaelic clubs across Europe
+- **Event Management**: Find and create Gaelic tournaments and events
 - **Interactive Maps**: Explore clubs and events with integrated mapping
 - **User Authentication**: Secure user registration and management
 - **Admin Dashboard**: Comprehensive admin tools for managing clubs, events, and users

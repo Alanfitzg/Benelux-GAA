@@ -36,7 +36,7 @@ const ProfessionalHeader = () => {
   }, []);
 
   const navItems = [
-    { href: "/events", label: "Events" },
+    { href: "/events", label: "Tournaments" },
     { href: "/clubs", label: "Clubs" },
     { href: "/survey", label: "Custom Trip" },
     { href: "/how-it-works", label: "How It Works" },
@@ -201,7 +201,8 @@ const ProfessionalHeader = () => {
                             My Profile
                           </Link>
 
-                          {(session.user.role === "SUPER_ADMIN" || session.user.role === "CLUB_ADMIN") && (
+                          {(session.user.role === "SUPER_ADMIN" ||
+                            session.user.role === "CLUB_ADMIN") && (
                             <div className="border-t border-gray-100 my-1" />
                           )}
 
@@ -250,11 +251,10 @@ const ProfessionalHeader = () => {
                             </>
                           )}
 
-                          <ClubAdminLinks 
+                          <ClubAdminLinks
                             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                             onClick={() => setProfileDropdownOpen(false)}
                           />
-
 
                           <div className="border-t border-gray-100 my-1" />
                           <button
@@ -463,7 +463,7 @@ const ProfessionalHeader = () => {
                         </Link>
                       )}
 
-                      <ClubAdminLinks 
+                      <ClubAdminLinks
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
                           scrolled
                             ? "text-gray-700 hover:bg-gray-100"

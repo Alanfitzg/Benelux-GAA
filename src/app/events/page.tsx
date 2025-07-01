@@ -9,11 +9,11 @@ import { StructuredData } from "@/components/StructuredData";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GAA Tournaments & Events",
+  title: "Gaelic Tournaments & Events",
   description:
-    "Discover Gaelic Athletic Association tournaments and events worldwide. Find Gaelic football, hurling, camogie, and handball competitions near you.",
+    "Discover Gaelic tournaments and events worldwide. Find Gaelic football, hurling, camogie, and handball competitions near you.",
   keywords: [
-    "GAA tournaments",
+    "Gaelic tournaments",
     "Gaelic football events",
     "hurling competitions",
     "camogie tournaments",
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     "Irish sports calendar",
   ],
   openGraph: {
-    title: "GAA Tournaments & Events | GAA Trips",
+    title: "Gaelic Tournaments & Events | GAA Trips",
     description:
       "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
     url: "https://gaa-trips.vercel.app/events",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     canonical: "https://gaa-trips.vercel.app/events",
   },
   twitter: {
-    title: "GAA Tournaments & Events | GAA Trips",
+    title: "Gaelic Tournaments & Events | GAA Trips",
     description:
       "Discover Gaelic Athletic Association tournaments and events worldwide.",
   },
@@ -90,8 +90,8 @@ async function getEvents({
           id: true,
           name: true,
           imageUrl: true,
-        }
-      }
+        },
+      },
     },
   });
 }
@@ -123,47 +123,52 @@ export default async function EventsPage({
     const structuredData = {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      "name": "GAA Tournaments & Events",
-      "description": "Discover upcoming Gaelic Athletic Association tournaments and events worldwide",
-      "numberOfItems": events.length,
-      "itemListElement": events.map((event, index) => ({
+      name: "Gaelic Tournaments & Events",
+      description:
+        "Discover upcoming Gaelic Athletic Association tournaments and events worldwide",
+      numberOfItems: events.length,
+      itemListElement: events.map((event, index) => ({
         "@type": "Event",
-        "position": index + 1,
-        "name": event.title,
-        "description": event.description || `${event.eventType} event in ${event.location}`,
-        "startDate": event.startDate,
-        "endDate": event.endDate || event.startDate,
-        "location": {
+        position: index + 1,
+        name: event.title,
+        description:
+          event.description || `${event.eventType} event in ${event.location}`,
+        startDate: event.startDate,
+        endDate: event.endDate || event.startDate,
+        location: {
           "@type": "Place",
-          "name": event.location,
-          ...(event.latitude && event.longitude && {
-            "geo": {
-              "@type": "GeoCoordinates",
-              "latitude": event.latitude,
-              "longitude": event.longitude
+          name: event.location,
+          ...(event.latitude &&
+            event.longitude && {
+              geo: {
+                "@type": "GeoCoordinates",
+                latitude: event.latitude,
+                longitude: event.longitude,
+              },
+            }),
+        },
+        organizer: event.club
+          ? {
+              "@type": "Organization",
+              name: event.club.name,
+              ...(event.club.imageUrl && { logo: event.club.imageUrl }),
             }
-          })
-        },
-        "organizer": event.club ? {
-          "@type": "Organization",
-          "name": event.club.name,
-          ...(event.club.imageUrl && { "logo": event.club.imageUrl })
-        } : {
-          "@type": "Organization",
-          "name": "GAA Trips"
-        },
-        "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-        "eventStatus": "https://schema.org/EventScheduled",
-        ...(event.imageUrl && { "image": event.imageUrl }),
+          : {
+              "@type": "Organization",
+              name: "GAA Trips",
+            },
+        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+        eventStatus: "https://schema.org/EventScheduled",
+        ...(event.imageUrl && { image: event.imageUrl }),
         ...(event.cost && {
-          "offers": {
+          offers: {
             "@type": "Offer",
-            "price": event.cost,
-            "priceCurrency": "EUR"
-          }
+            price: event.cost,
+            priceCurrency: "EUR",
+          },
         }),
-        "url": `https://gaa-trips.vercel.app/events/${event.id}`
-      }))
+        url: `https://gaa-trips.vercel.app/events/${event.id}`,
+      })),
     };
 
     return (
@@ -173,27 +178,43 @@ export default async function EventsPage({
           {/* Hero Section */}
           <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-16">
             <div className="container mx-auto px-4 text-center">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">GAA Tournaments & Events</h1>
+              <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                Gaelic Tournaments & Events
+              </h1>
               <p className="text-xl md:text-2xl mb-2">
-                Discover upcoming Gaelic Athletic Association tournaments and events worldwide
+                Discover upcoming Gaelic Athletic Association tournaments and
+                events worldwide
               </p>
               <p className="text-lg opacity-90">
                 Join competitions and connect with the global GAA community
               </p>
-              
+
               {/* Custom Trip CTA */}
               <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">Plan Your Custom GAA Trip</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    Plan Your Custom GAA Trip
+                  </h3>
                   <p className="text-white/90 text-sm mb-3">
-                    Tell us your travel preferences and we&apos;ll help create the perfect GAA experience for your club
+                    Tell us your travel preferences and we&apos;ll help create
+                    the perfect GAA experience for your club
                   </p>
                   <a
                     href="/survey"
                     className="inline-flex items-center bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                      />
                     </svg>
                     Plan Custom Trip
                   </a>
@@ -251,21 +272,24 @@ export default async function EventsPage({
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {events.map(
-                (event: {
-                  id: string;
-                  title: string;
-                  eventType: string;
-                  location: string;
-                  startDate: Date;
-                  endDate: Date | null;
-                  cost: number | null;
-                  imageUrl: string | null;
-                  club: {
+                (
+                  event: {
                     id: string;
-                    name: string;
+                    title: string;
+                    eventType: string;
+                    location: string;
+                    startDate: Date;
+                    endDate: Date | null;
+                    cost: number | null;
                     imageUrl: string | null;
-                  } | null;
-                }, index) => {
+                    club: {
+                      id: string;
+                      name: string;
+                      imageUrl: string | null;
+                    } | null;
+                  },
+                  index
+                ) => {
                   return (
                     <div
                       key={event.id}
@@ -314,7 +338,9 @@ export default async function EventsPage({
                           <h2 className="text-white text-2xl font-bold mb-2 leading-tight">
                             {event.title}
                           </h2>
-                          <p className="text-white/90 text-sm">{event.location}</p>
+                          <p className="text-white/90 text-sm">
+                            {event.location}
+                          </p>
                         </div>
                       </div>
 

@@ -14,35 +14,35 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
 
   const actionButtons = [
     {
-      title: "View All Clubs",
-      description: "Browse international Gaelic clubs",
+      title: "Find Host Clubs",
+      description: "Browse clubs that can assist your team",
       action: () => router.push("/clubs"),
-      color: "from-white/20 to-white/10",
-      borderColor: "border-white/30",
+      color: "from-primary to-primary-light",
+      borderColor: "border-primary/30",
       textColor: "text-white",
     },
     {
-      title: "International Club Map",
-      description: "Explore clubs on interactive map",
+      title: "View Club Locations",
+      description: "See where clubs can host your team",
       action: () => onNavigate("clubs-map"),
-      color: "from-white/20 to-white/10",
-      borderColor: "border-white/30",
+      color: "from-primary to-primary-light",
+      borderColor: "border-primary/30",
       textColor: "text-white",
     },
     {
-      title: "Upcoming Tournaments",
-      description: "Find tournaments near you",
+      title: "Browse Tournaments",
+      description: "Find tournaments to participate in",
       action: () => router.push("/events"),
-      color: "from-white/20 to-white/10",
-      borderColor: "border-white/30",
+      color: "from-primary to-primary-light",
+      borderColor: "border-primary/30",
       textColor: "text-white",
     },
     {
-      title: "Register Account",
-      description: "Join the Gaelic community",
+      title: "Join the Network",
+      description: "Register your team or club",
       action: () => setShowRegistrationModal(true),
-      color: "from-white/30 to-white/20",
-      borderColor: "border-white/40",
+      color: "from-secondary to-secondary-light",
+      borderColor: "border-secondary/30",
       textColor: "text-white",
     },
   ];
@@ -65,7 +65,9 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary via-primary-light to-primary flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex flex-col relative">
+      {/* Subtle overlay for brand color */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5"></div>
       {/* Header without Logo */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
@@ -77,19 +79,19 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-3xl font-bold text-white text-center mb-4"
+          className="text-3xl font-bold text-gray-900 text-center mb-4"
         >
-          Your Gateway to Gaelic Games Abroad
+          Team Travel with Local GAA Support
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="text-white/90 text-center text-lg leading-relaxed max-w-sm"
+          className="text-gray-700 text-center text-lg leading-relaxed max-w-sm"
         >
-          Bringing GAA communities together through trusted, club-first travel
-          experiences
+          Connect your travelling team with local clubs for pitches, accommodation help, 
+          and on-the-ground assistance
         </motion.p>
       </motion.div>
 
@@ -100,19 +102,19 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
         transition={{ delay: 0.7 }}
         className="mx-6 mb-8"
       >
-        <div className="border-t border-b border-white/20 py-6">
+        <div className="border-t border-b border-gray-200 py-6">
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-white">80+</div>
-              <div className="text-white/70 text-xs uppercase tracking-wider">Clubs</div>
+              <div className="text-3xl font-bold text-primary">80+</div>
+              <div className="text-gray-600 text-xs uppercase tracking-wider">Clubs</div>
             </div>
-            <div className="text-center border-l border-r border-white/20">
-              <div className="text-3xl font-bold text-white">20+</div>
-              <div className="text-white/70 text-xs uppercase tracking-wider">Countries</div>
+            <div className="text-center border-l border-r border-gray-200">
+              <div className="text-3xl font-bold text-secondary">20+</div>
+              <div className="text-gray-600 text-xs uppercase tracking-wider">Countries</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-white">25+</div>
-              <div className="text-white/70 text-xs uppercase tracking-wider">Events</div>
+              <div className="text-3xl font-bold text-primary-light">25+</div>
+              <div className="text-gray-600 text-xs uppercase tracking-wider">Events</div>
             </div>
           </div>
         </div>
@@ -135,7 +137,7 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={button.action}
-              className={`w-full p-6 rounded-2xl bg-gradient-to-r ${button.color} backdrop-blur-sm border-2 ${button.borderColor} shadow-lg hover:shadow-xl ${button.textColor} transition-all duration-300`}
+              className={`w-full p-6 rounded-2xl bg-gradient-to-r ${button.color} border-2 ${button.borderColor} shadow-lg hover:shadow-xl ${button.textColor} transition-all duration-300 hover:scale-105`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1 text-left">
@@ -145,7 +147,7 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
                   </p>
                 </div>
                 <svg
-                  className="w-6 h-6 opacity-70 ml-4"
+                  className="w-6 h-6 opacity-80 ml-4"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -236,8 +238,8 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
       </AnimatePresence>
 
       {/* Decorative elements */}
-      <div className="absolute top-20 right-4 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
-      <div className="absolute bottom-20 left-4 w-24 h-24 bg-secondary/20 rounded-full blur-xl"></div>
+      <div className="absolute top-20 right-4 w-32 h-32 bg-primary/5 rounded-full blur-2xl"></div>
+      <div className="absolute bottom-20 left-4 w-24 h-24 bg-secondary/10 rounded-full blur-xl"></div>
     </div>
   );
 }

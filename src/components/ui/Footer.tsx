@@ -45,6 +45,11 @@ export default function Footer() {
                   Create Event
                 </Link>
               </li>
+              <li>
+                <Link href="/account/status" className="text-gray-400 hover:text-white transition-colors">
+                  Check Account Status
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -113,6 +113,10 @@ export default function ClubsPage() {
     router.push(`/clubs?${params.toString()}`);
   };
 
+  const handleReset = () => {
+    router.push('/clubs');
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -205,12 +209,21 @@ export default function ClubsPage() {
                 </option>
               ))}
             </select>
-            <button
-              type="submit"
-              className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md font-semibold"
-            >
-              Apply Filters
-            </button>
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md font-semibold"
+              >
+                Search
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-300 transition shadow-sm hover:shadow-md font-semibold"
+              >
+                Reset
+              </button>
+            </div>
           </form>
         </div>
       ) : (
@@ -256,12 +269,21 @@ export default function ClubsPage() {
                     </option>
                   ))}
                 </select>
-                <button
-                  type="submit"
-                  className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md font-semibold"
-                >
-                  Apply Filters
-                </button>
+                <div className="flex gap-2 w-full">
+                  <button
+                    type="submit"
+                    className="flex-1 bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md font-semibold"
+                  >
+                    Search
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="flex-1 bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-300 transition shadow-sm hover:shadow-md font-semibold"
+                  >
+                    Reset
+                  </button>
+                </div>
               </form>
             </motion.div>
           )}

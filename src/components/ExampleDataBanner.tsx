@@ -50,63 +50,26 @@ export default function ExampleDataPopup() {
           >
             <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
               {/* Header */}
-              <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6">
-                <div className="flex items-center gap-3">
-                  <div className="bg-white/20 rounded-full p-2">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold">Welcome to GAA Trips</h3>
-                    <p className="text-orange-100 text-sm">Thanks for exploring our platform</p>
-                  </div>
+              <div className="bg-gradient-to-r from-primary to-primary-light text-white p-6">
+                <div className="text-center">
+                  <h3 className="text-xl font-bold">Welcome to Gaelic Trips!</h3>
+                  <p className="text-blue-100 text-sm">Explore our Gaelic travel community</p>
                 </div>
               </div>
 
               {/* Content */}
               <div className="p-6">
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-orange-100 rounded-full p-2 flex-shrink-0">
-                      <svg className="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.996-.833-2.464 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Example Data Only</h4>
-                      <p className="text-gray-600 text-sm">
-                        This site currently displays sample clubs, events, and trips for demonstration purposes.
-                      </p>
-                    </div>
-                  </div>
+                <div className="text-center">
+                  <p className="text-gray-700 text-base leading-relaxed mb-6">
+                    You&apos;re exploring a preview of our Gaelic travel platform! Feel free to browse through our 
+                    <span className="font-semibold text-primary"> demo clubs, events, and features</span> to see how we connect Gaelic communities across Europe.
+                  </p>
                   
-                  <div className="flex items-start gap-3">
-                    <div className="bg-red-100 rounded-full p-2 flex-shrink-0">
-                      <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">No Real Bookings</h4>
-                      <p className="text-gray-600 text-sm">
-                        Forms and registration processes are functional but won&apos;t create actual bookings yet.
-                      </p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 rounded-full p-2 flex-shrink-0">
-                      <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Coming Soon</h4>
-                      <p className="text-gray-600 text-sm">
-                        Real functionality and live data will be available soon. Thanks for your patience!
-                      </p>
-                    </div>
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h4 className="font-semibold text-gray-900 mb-2">Explore Sample Data</h4>
+                    <p className="text-gray-600 text-sm">
+                      Browse real Gaelic clubs across Europe, sample tournaments, and see how teams connect with local hosts.
+                    </p>
                   </div>
                 </div>
               </div>
@@ -116,13 +79,13 @@ export default function ExampleDataPopup() {
                 <div className="flex gap-3">
                   <button
                     onClick={handleUnderstood}
-                    className="flex-1 bg-primary text-white px-4 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+                    className="flex-1 bg-gradient-to-r from-primary to-primary-light text-white px-4 py-3 rounded-lg font-semibold hover:from-primary-dark hover:to-primary transition-all duration-300 shadow-lg"
                   >
-                    I Understand
+                    Start Exploring
                   </button>
                   <button
                     onClick={handleDismiss}
-                    className="px-4 py-3 text-gray-600 hover:text-gray-800 transition-colors"
+                    className="px-4 py-3 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
                     title="Close"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
