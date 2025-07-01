@@ -41,7 +41,7 @@ async function approveUserHandler(req: NextRequest, context: { params: Promise<{
       userName: updatedUser.name || updatedUser.username,
       userEmail: updatedUser.email,
       approved: true,
-      adminName: authResult.user.name,
+      adminName: authResult.user.name || undefined,
       loginUrl: `${baseUrl}/signin`
     };
 
