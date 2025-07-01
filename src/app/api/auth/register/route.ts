@@ -52,7 +52,13 @@ async function registrationHandler(request: NextRequest) {
 }
 
 // Helper function to send admin notifications
-async function sendAdminNotification(user: any) {
+async function sendAdminNotification(user: {
+  id: string;
+  email: string;
+  name?: string;
+  username: string;
+  clubId?: string | null;
+}) {
   try {
     const adminEmails = await getAdminEmails()
     

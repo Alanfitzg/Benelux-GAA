@@ -275,7 +275,7 @@ export default function AccountStatusPage() {
                 href="/signup"
                 className="text-primary font-semibold hover:text-primary-dark transition-colors"
               >
-                Don't have an account? Sign up →
+                Don&apos;t have an account? Sign up →
               </Link>
               <Link
                 href="/signin"
