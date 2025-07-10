@@ -37,6 +37,15 @@ model Event {
   // Tournament relations
   teams       TournamentTeam[]
   matches     Match[]
+
+  // Performance indexes for common queries
+  @@index([startDate])                    // For date filtering/sorting (highest impact)
+  @@index([eventType])                    // For event type filtering
+  @@index([location])                     // For location-based searches
+  @@index([clubId])                       // For club events lookup
+  @@index([startDate, eventType])         // Composite for date + type filtering
+  @@index([latitude, longitude])          // For geographic proximity searches
+  @@index([acceptedTeamTypes])            // For tournament team type filtering
 }
 
 model Interest {
@@ -47,6 +56,10 @@ model Interest {
   message     String?
   submittedAt DateTime @default(now())
   event       Event    @relation(fields: [eventId], references: [id])
+
+  // Performance indexes for common queries
+  @@index([eventId])        // For event interest lookups
+  @@index([submittedAt])    // For chronological queries
 }
 
 model Club {
@@ -77,6 +90,13 @@ model Club {
   hostingPackages     HostingPackage[]
   bookings            Booking[]
   tournamentTeams     TournamentTeam[]
+
+  // Performance indexes for common queries
+  @@index([location])              // For country/location filtering (highest impact)
+  @@index([teamTypes])             // For team type filtering
+  @@index([name])                  // For name-based searches
+  @@index([latitude, longitude])   // For geographic proximity/mapping
+  @@index([region, subRegion])     // For geographic grouping
 }
 
 model User {
@@ -97,6 +117,13 @@ model User {
   adminOfClubs    Club[]        @relation("ClubAdmins")
   accounts        Account[]
   sessions        Session[]
+
+  // Performance indexes for common queries
+  @@index([accountStatus])      // For admin pending user queries (critical for admin)
+  @@index([role])               // For role-based filtering
+  @@index([clubId])             // For club member lookups
+  @@index([createdAt])          // For chronological sorting
+  @@index([email])              // For login performance (additional to unique)
 }
 
 enum UserRole {

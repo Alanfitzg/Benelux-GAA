@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import { requireSuperAdmin } from "@/lib/auth-helpers"
+import { revalidateTag } from 'next/cache'
 
 export async function PUT(
   request: NextRequest,
@@ -40,6 +41,10 @@ export async function PUT(
       where: { id: clubId },
       data: { imageUrl },
     })
+
+    // Invalidate club caches when club image is updated
+    console.log('Club image updated, invalidating club caches');
+    revalidateTag('clubs');
 
     return NextResponse.json({
       club: {

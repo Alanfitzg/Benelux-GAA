@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { geocodeLocation } from '@/lib/utils';
 import { createErrorResponse, createSuccessResponse } from '@/lib/utils';
 import { MESSAGES } from '@/lib/constants';
+import { revalidateTag } from 'next/cache';
 
 // Specify Node.js runtime
 export const runtime = 'nodejs';
@@ -52,6 +53,10 @@ export async function POST() {
     });
 
     const results = await Promise.all(updates.filter(Boolean));
+    
+    // Invalidate club caches after bulk geocoding update
+    console.log('Bulk geocoding completed, invalidating club caches');
+    revalidateTag('clubs');
     
     await prisma.$disconnect();
     

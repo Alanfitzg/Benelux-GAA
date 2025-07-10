@@ -3,6 +3,36 @@ import { prisma } from '@/lib/prisma';
 import { requireClubAdmin } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 import { geocodeLocation } from '@/lib/utils/geocoding';
+import { unstable_cache, revalidateTag } from 'next/cache';
+
+// Cached function for club filter options (countries and team types)
+const getCachedFilterOptions = unstable_cache(
+  async () => {
+    console.log('Cache miss: Computing club filter options from database');
+    const allClubs = await prisma.club.findMany({
+      select: { location: true, teamTypes: true },
+    });
+    
+    const countries = Array.from(
+      new Set(
+        allClubs
+          .map((club) => club.location?.split(",").pop()?.trim())
+          .filter(Boolean)
+      )
+    ).sort() as string[];
+    
+    const teamTypes = Array.from(
+      new Set(allClubs.flatMap((club) => club.teamTypes))
+    ).sort();
+
+    return { countries, teamTypes };
+  },
+  ['club-filter-options'], // Cache key
+  { 
+    revalidate: 21600, // 6 hours (filter options change rarely)
+    tags: ['clubs', 'filters']
+  }
+);
 
 async function createClubHandler(req: NextRequest) {
   try {
@@ -48,6 +78,12 @@ async function createClubHandler(req: NextRequest) {
         ...geocodeData
       },
     });
+    
+    // Invalidate club caches when a new club is created
+    console.log('New club created, invalidating club caches');
+    revalidateTag('clubs');
+    revalidateTag('filters');
+    
     return NextResponse.json({ club }, { status: 201 });
   } catch (error) {
     console.error('Error creating club:', error);
@@ -121,12 +157,11 @@ async function getClubsHandler(req: NextRequest) {
       }
     }
 
-    // Get unique countries and team types for filter options
-    let allClubs;
+    // Get cached filter options
+    let filterOptions;
     try {
-      allClubs = await prisma.club.findMany({
-        select: { location: true, teamTypes: true },
-      });
+      console.log('Clubs API: Getting filter options from cache');
+      filterOptions = await getCachedFilterOptions();
     } catch (error) {
       console.error("Failed to fetch club filters:", error);
       // Return clubs without filters if this fails
@@ -136,23 +171,11 @@ async function getClubsHandler(req: NextRequest) {
         teamTypes: []
       });
     }
-    
-    const countries = Array.from(
-      new Set(
-        allClubs
-          .map((club) => club.location?.split(",").pop()?.trim())
-          .filter(Boolean)
-      )
-    ).sort() as string[];
-    
-    const teamTypes = Array.from(
-      new Set(allClubs.flatMap((club) => club.teamTypes))
-    ).sort();
 
     return NextResponse.json({
       clubs,
-      countries,
-      teamTypes
+      countries: filterOptions.countries,
+      teamTypes: filterOptions.teamTypes
     });
   } catch (error) {
     console.error('Error fetching clubs:', error);

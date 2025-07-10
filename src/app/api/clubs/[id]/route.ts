@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireClubAdmin } from '@/lib/auth-helpers';
 import { geocodeLocation } from '@/lib/utils/geocoding';
+import { revalidateTag } from 'next/cache';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -60,6 +61,12 @@ export async function PUT(req: NextRequest, context: { params: Promise<{ id: str
         ...geocodeData
       },
     });
+    
+    // Invalidate club caches when club is updated
+    console.log('Club updated, invalidating club caches');
+    revalidateTag('clubs');
+    revalidateTag('filters');
+    
     return NextResponse.json(club);
   } catch {
     return NextResponse.json({ error: 'Error updating club' }, { status: 400 });
@@ -75,6 +82,12 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
   const { id } = await context.params;
   try {
     await prisma.club.delete({ where: { id } });
+    
+    // Invalidate club caches when club is deleted
+    console.log('Club deleted, invalidating club caches');
+    revalidateTag('clubs');
+    revalidateTag('filters');
+    
     return NextResponse.json({ message: 'Club deleted successfully' });
   } catch {
     return NextResponse.json({ error: 'Error deleting club' }, { status: 400 });
