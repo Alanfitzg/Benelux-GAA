@@ -86,7 +86,6 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [bottomSheetOpen, setBottomSheetOpen] = useState(true);
   const [showMobileLanding, setShowMobileLanding] = useState(false);
-  const [mobileSection, setMobileSection] = useState<string | null>(null);
 
   // Detect mobile screen
   useEffect(() => {
@@ -94,7 +93,7 @@ export default function Home() {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       // Show mobile landing for first-time mobile users
-      if (mobile && !mobileSection) {
+      if (mobile) {
         setShowMobileLanding(true);
       }
     };
@@ -102,7 +101,7 @@ export default function Home() {
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, [mobileSection]);
+  }, []);
 
   useEffect(() => {
     // Only fetch when session loading is complete
@@ -224,26 +223,6 @@ export default function Home() {
     }
   }, [viewMode]);
 
-  // Handle mobile navigation
-  const handleMobileNavigation = (section: string) => {
-    setMobileSection(section);
-    setShowMobileLanding(false);
-
-    switch (section) {
-      case "clubs-list":
-        setViewMode("clubs");
-        setBottomSheetOpen(true);
-        break;
-      case "clubs-map":
-        setViewMode("clubs");
-        setBottomSheetOpen(false);
-        break;
-      case "tournaments":
-        setViewMode("tournaments");
-        setBottomSheetOpen(true);
-        break;
-    }
-  };
 
   // Sidebar content component that works for both desktop and mobile
   const SidebarContent = () => (
@@ -509,13 +488,13 @@ export default function Home() {
 
   // Show mobile landing if mobile and not navigated yet
   if (isMobile && showMobileLanding) {
-    return <MobileLanding onNavigate={handleMobileNavigation} />;
+    return <MobileLanding />;
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
       {/* Hero Section - Hide on mobile when navigated from landing */}
-      {(!isMobile || !mobileSection) && (
+      {!isMobile && (
         <div className="relative h-[500px] md:h-[600px] overflow-hidden text-white">
           {/* Team huddle background image - full visibility */}
           <div 
@@ -587,9 +566,7 @@ export default function Home() {
       {/* Main Content */}
       <div
         id="map-section"
-        className={`flex relative ${
-          isMobile && mobileSection ? "h-screen" : "h-screen"
-        }`}
+        className="flex relative h-screen"
       >
         {/* Desktop Sidebar */}
         {!isMobile &&

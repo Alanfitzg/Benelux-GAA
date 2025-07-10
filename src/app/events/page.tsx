@@ -179,25 +179,20 @@ export default async function EventsPage({
           <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-16">
             <div className="container mx-auto px-4 text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Gaelic Tournaments & Events
+                Tournaments
               </h1>
               <p className="text-xl md:text-2xl mb-2">
-                Discover upcoming Gaelic Athletic Association tournaments and
-                events worldwide
-              </p>
-              <p className="text-lg opacity-90">
-                Join competitions and connect with the global GAA community
+                See all available tournaments below
               </p>
 
               {/* Custom Trip CTA */}
               <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
                 <div className="text-center">
                   <h3 className="text-lg font-semibold text-white mb-2">
-                    Plan Your Custom GAA Trip
+                    Plan Your Custom Trip
                   </h3>
                   <p className="text-white/90 text-sm mb-3">
-                    Tell us your travel preferences and we&apos;ll help create
-                    the perfect GAA experience for your club
+                    Complete this form to build a trip from scratch
                   </p>
                   <a
                     href="/survey"

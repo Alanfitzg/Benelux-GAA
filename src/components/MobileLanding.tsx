@@ -4,11 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
-interface MobileLandingProps {
-  onNavigate: (section: string) => void;
-}
-
-export default function MobileLanding({ onNavigate }: MobileLandingProps) {
+export default function MobileLanding() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const router = useRouter();
 
@@ -17,14 +13,6 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
       title: "Find Host Clubs",
       description: "Browse clubs that can assist your team",
       action: () => router.push("/clubs"),
-      color: "from-primary to-primary-light",
-      borderColor: "border-primary/30",
-      textColor: "text-white",
-    },
-    {
-      title: "View Club Locations",
-      description: "See where clubs can host your team",
-      action: () => onNavigate("clubs-map"),
       color: "from-primary to-primary-light",
       borderColor: "border-primary/30",
       textColor: "text-white",
@@ -90,8 +78,7 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           transition={{ delay: 0.5 }}
           className="text-gray-700 text-center text-lg leading-relaxed max-w-sm"
         >
-          Connect your travelling team with local clubs for pitches, accommodation help, 
-          and on-the-ground assistance
+          Connect with Europes Gaelic games community
         </motion.p>
       </motion.div>
 
@@ -106,15 +93,21 @@ export default function MobileLanding({ onNavigate }: MobileLandingProps) {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center">
               <div className="text-3xl font-bold text-primary">80+</div>
-              <div className="text-gray-600 text-xs uppercase tracking-wider">Clubs</div>
+              <div className="text-gray-600 text-xs uppercase tracking-wider">
+                Clubs
+              </div>
             </div>
             <div className="text-center border-l border-r border-gray-200">
               <div className="text-3xl font-bold text-secondary">20+</div>
-              <div className="text-gray-600 text-xs uppercase tracking-wider">Countries</div>
+              <div className="text-gray-600 text-xs uppercase tracking-wider">
+                Countries
+              </div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-primary-light">25+</div>
-              <div className="text-gray-600 text-xs uppercase tracking-wider">Events</div>
+              <div className="text-gray-600 text-xs uppercase tracking-wider">
+                Events
+              </div>
             </div>
           </div>
         </div>

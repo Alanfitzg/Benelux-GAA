@@ -3,18 +3,20 @@ import ContactForm from "./ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us",
-  description: "Get in touch with GAA Trips. We're here to help you connect with the global Gaelic Athletic Association community.",
+  description:
+    "Get in touch. We're here to help you connect with the global Gaelic Athletic Association community.",
   keywords: [
     "contact GAA Trips",
     "support",
     "help",
     "Gaelic Athletic Association",
     "GAA support",
-    "customer service"
+    "customer service",
   ],
   openGraph: {
-    title: "Contact Us | GAA Trips",
-    description: "Get in touch with GAA Trips. We're here to help you connect with the global Gaelic Athletic Association community.",
+    title: "Contact Us",
+    description:
+      "Get in touch. We're here to help you connect with the global Gaelic Athletic Association community.",
     url: "https://gaa-trips.vercel.app/contact",
     type: "website",
   },
@@ -33,8 +35,9 @@ export default function ContactPage() {
             Get in Touch
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have a question about GAA Trips? Want to suggest a club or event? 
-            We&apos;d love to hear from you and help you connect with the global GAA community.
+            Have a question about GAA Trips? Want to suggest a club or event?
+            We&apos;d love to hear from you and help you connect with the global
+            GAA community.
           </p>
         </div>
 
@@ -73,8 +76,12 @@ export default function ContactPage() {
                     <span className="text-primary">🌍</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Global Community</h3>
-                    <p className="text-gray-600">Connecting GAA clubs worldwide</p>
+                    <h3 className="font-semibold text-gray-900">
+                      Global Community
+                    </h3>
+                    <p className="text-gray-600">
+                      Connecting GAA clubs worldwide
+                    </p>
                     <p className="text-sm text-gray-500 mt-1">
                       From Ireland to Australia, USA to Canada
                     </p>
@@ -86,7 +93,9 @@ export default function ContactPage() {
                     <span className="text-primary">⏰</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">Response Time</h3>
+                    <h3 className="font-semibold text-gray-900">
+                      Response Time
+                    </h3>
                     <p className="text-gray-600">Monday - Friday</p>
                     <p className="text-sm text-gray-500 mt-1">
                       9:00 AM - 6:00 PM GMT
@@ -107,7 +116,7 @@ export default function ContactPage() {
                     How do I add my club to GAA Trips?
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    You can register your club using our club registration form, 
+                    You can register your club using our club registration form,
                     or contact us directly with your club details.
                   </p>
                 </div>
@@ -117,8 +126,8 @@ export default function ContactPage() {
                     Can I submit tournament information?
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    Yes! We welcome tournament submissions. Use our event creation 
-                    form or reach out to us with event details.
+                    Yes! We welcome tournament submissions. Use our event
+                    creation form or reach out to us with event details.
                   </p>
                 </div>
 
@@ -127,8 +136,8 @@ export default function ContactPage() {
                     Is GAA Trips free to use?
                   </h3>
                   <p className="text-gray-600 text-sm">
-                    Absolutely! GAA Trips is completely free for clubs, 
-                    players, and fans to use.
+                    Absolutely! GAA Trips is completely free for clubs, players,
+                    and fans to use.
                   </p>
                 </div>
               </div>

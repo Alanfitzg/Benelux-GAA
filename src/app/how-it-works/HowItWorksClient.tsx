@@ -22,10 +22,6 @@ export default function HowItWorksClient() {
               A community platform that helps clubs host and attend GAA events
               across Europe
             </p>
-            <p className="text-lg opacity-90 max-w-3xl mx-auto">
-              We&apos;re not a travel agency — we&apos;re here to support
-              grassroots GAA clubs directly
-            </p>
           </motion.div>
         </div>
       </div>
@@ -83,7 +79,7 @@ export default function HowItWorksClient() {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-green-800 mb-2">
-                  🟩 Team Tickets – €50 per Team
+                  Team Tickets – €50 per Team
                 </h3>
                 <p className="text-gray-700 text-lg leading-relaxed">
                   When your club registers for a tournament, you pay a flat €50
@@ -116,15 +112,16 @@ export default function HowItWorksClient() {
             </div>
 
             <div className="bg-green-600/10 rounded-xl p-6">
-              <h4 className="font-bold text-green-800 mb-3">
-                🟢 Why it matters:
-              </h4>
+              <h4 className="font-bold text-green-800 mb-3">Why it matters:</h4>
               <div className="space-y-2 text-gray-700">
                 <p>
                   • Team tickets help clubs plan better and prevent last-minute
                   dropouts
                 </p>
-                <p>• Split across a squad, it&apos;s just over €3 per player</p>
+                <p>
+                  • Split across a squad of 15, it&apos;s just over €3 per
+                  player
+                </p>
               </div>
             </div>
           </div>
@@ -144,7 +141,7 @@ export default function HowItWorksClient() {
               </div>
               <div>
                 <h3 className="text-2xl font-bold text-blue-800 mb-2">
-                  🟦 Player Day-Passes – Around €45 per Person
+                  Player Day-Passes
                 </h3>
                 <p className="text-gray-700 text-lg leading-relaxed">
                   Each travelling player pays a Day-Pass that covers their share
@@ -198,7 +195,8 @@ export default function HowItWorksClient() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center justify-between">
                     <span className="text-gray-700">
-                      €2.50 goes back to the host club (extra profit)
+                      €2.50 goes back to the host club (supporting club
+                      finances)
                     </span>
                     <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
                       €2.50
@@ -218,7 +216,7 @@ export default function HowItWorksClient() {
 
             <div className="bg-blue-600/10 rounded-xl p-6">
               <h4 className="font-bold text-blue-800 mb-2">
-                🟦 Total example cost for a player:
+                Total example cost for a player:
               </h4>
               <div className="text-xl font-bold text-gray-800">
                 €40 (Day-Pass) + €5 (Platform fee) = €45
