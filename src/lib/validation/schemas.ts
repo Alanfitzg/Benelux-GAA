@@ -33,7 +33,7 @@ export const coordinateSchema = z
   .optional()
 
 // Enum schemas
-export const UserRoleSchema = z.enum(['SUPER_ADMIN', 'CLUB_ADMIN', 'USER'])
+export const UserRoleSchema = z.enum(['SUPER_ADMIN', 'CLUB_ADMIN', 'GUEST_ADMIN', 'USER'])
 export const AccountStatusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED', 'SUSPENDED'])
 
 // Team types validation

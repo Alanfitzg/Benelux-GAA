@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
-import { requireSuperAdmin } from "@/lib/auth-helpers"
+import { requireGuestAdmin } from "@/lib/auth-helpers"
 import { createUser } from "@/lib/user"
 import { UserRole } from "@prisma/client"
 import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit"
 
 async function getUsersHandler() {
   try {
-    const authResult = await requireSuperAdmin()
+    const authResult = await requireGuestAdmin()
     if (authResult instanceof NextResponse) {
       return authResult
     }
@@ -38,7 +38,7 @@ async function getUsersHandler() {
 
 async function createUserHandler(request: NextRequest) {
   try {
-    const authResult = await requireSuperAdmin()
+    const authResult = await requireGuestAdmin()
     if (authResult instanceof NextResponse) {
       return authResult
     }

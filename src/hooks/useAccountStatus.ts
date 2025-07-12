@@ -21,9 +21,9 @@ export function useAccountStatus() {
 
       if (response.ok) {
         const data = await response.json();
-        return data.accountStatus ? {
-          status: data.accountStatus,
-          message: getStatusMessage(data.accountStatus),
+        return data.status ? {
+          status: data.status,
+          message: getStatusMessage(data.status),
           rejectionReason: data.rejectionReason,
         } : null;
       }

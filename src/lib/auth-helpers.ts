@@ -44,6 +44,14 @@ export async function requireSuperAdmin() {
   return requireRole([UserRole.SUPER_ADMIN])
 }
 
+export async function requireGuestAdmin() {
+  return requireRole([UserRole.SUPER_ADMIN, UserRole.GUEST_ADMIN])
+}
+
+export async function requireAnyAdmin() {
+  return requireRole([UserRole.SUPER_ADMIN, UserRole.CLUB_ADMIN, UserRole.GUEST_ADMIN])
+}
+
 export async function requireClubAdmin() {
   return requireRole([UserRole.SUPER_ADMIN, UserRole.CLUB_ADMIN])
 }
@@ -102,6 +110,14 @@ export async function requireApprovedRole(allowedRoles: UserRole[]) {
 
 export async function requireApprovedSuperAdmin() {
   return requireApprovedRole([UserRole.SUPER_ADMIN])
+}
+
+export async function requireApprovedGuestAdmin() {
+  return requireApprovedRole([UserRole.SUPER_ADMIN, UserRole.GUEST_ADMIN])
+}
+
+export async function requireApprovedAnyAdmin() {
+  return requireApprovedRole([UserRole.SUPER_ADMIN, UserRole.CLUB_ADMIN, UserRole.GUEST_ADMIN])
 }
 
 export async function requireApprovedClubAdmin() {

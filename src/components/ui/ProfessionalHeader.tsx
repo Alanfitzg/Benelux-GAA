@@ -202,11 +202,13 @@ const ProfessionalHeader = () => {
                           </Link>
 
                           {(session.user.role === "SUPER_ADMIN" ||
-                            session.user.role === "CLUB_ADMIN") && (
+                            session.user.role === "CLUB_ADMIN" ||
+                            session.user.role === "GUEST_ADMIN") && (
                             <div className="border-t border-gray-100 my-1" />
                           )}
 
-                          {session.user.role === "SUPER_ADMIN" && (
+                          {(session.user.role === "SUPER_ADMIN" ||
+                            session.user.role === "GUEST_ADMIN") && (
                             <>
                               <Link
                                 href="/admin"
@@ -436,7 +438,8 @@ const ProfessionalHeader = () => {
                         <span className="font-medium">My Profile</span>
                       </Link>
 
-                      {session.user.role === "SUPER_ADMIN" && (
+                      {(session.user.role === "SUPER_ADMIN" ||
+                        session.user.role === "GUEST_ADMIN") && (
                         <Link
                           href="/admin"
                           onClick={() => setMobileMenuOpen(false)}

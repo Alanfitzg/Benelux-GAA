@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireSuperAdmin } from '@/lib/auth-helpers';
+import { requireGuestAdmin } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 import { sendEmail } from '@/lib/email';
 import { generateUserApprovalNotificationEmail } from '@/lib/email-templates';
 
 async function rejectUserHandler(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
-    const authResult = await requireSuperAdmin();
+    const authResult = await requireGuestAdmin();
     if (authResult instanceof NextResponse) {
       return authResult;
     }
