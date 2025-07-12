@@ -6,6 +6,7 @@ import Link from "next/link";
 import { StructuredData, generateClubStructuredData } from "@/components/StructuredData";
 import ClubEvents from "@/components/ClubEvents";
 import ClubContactForm from "@/components/ClubContactForm";
+import ClubCalendar from "@/components/club/ClubCalendar";
 
 export async function generateMetadata({
   params,
@@ -303,6 +304,15 @@ export default async function ClubDetailsPage({
                 Back to All Clubs
               </Link>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Calendar Section */}
+      <div className="py-12">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <ClubCalendar clubId={club.id} clubName={club.name} />
           </div>
         </div>
       </div>

@@ -54,6 +54,16 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
 - Team status management (REGISTERED → CONFIRMED → WITHDRAWN)
 - Match status tracking (SCHEDULED → IN_PROGRESS → COMPLETED)
 
+#### **Calendar & Tournament Interest System** ⭐ *NEW*
+- `AvailabilitySlot`: Clubs can set available hosting dates with capacity and time slots
+- `TournamentInterest`: Flexible interest tracking supporting:
+  - **SPECIFIC_DATE**: Interest in exact dates
+  - **ENTIRE_MONTH**: Interest in any time during a month
+  - **MULTIPLE_MONTHS**: Interest spanning multiple months  
+  - **DATE_RANGE**: Interest in a specific date range
+- Team size requirements, flexibility levels, and messaging
+- Club response system with suggested alternative dates
+
 #### **Additional Features**
 - `Interest`: Individual interest registration for events
 - `SurveyResponse`: Feedback and requirements gathering
@@ -115,15 +125,17 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
 - **USER**: Basic access, event viewing, interest registration
 
 ### Account Status Flow
-1. **PENDING**: New registrations await approval
-2. **APPROVED**: Active users with full access
+1. **PENDING**: Club-associated users await approval
+2. **APPROVED**: Active users with full access (auto-approved for non-club users)
 3. **REJECTED**: Denied access with reason
 4. **SUSPENDED**: Temporarily restricted access
 
 ### Security Features
 - Rate limiting on API endpoints
 - Role-based access control
-- Account approval workflow
+- Streamlined account approval workflow with auto-approval for non-club users
+- Real-time password validation with security requirements
+- Automatic sign-in after registration
 - Secure session management with NextAuth.js v5
 
 ## 🚀 API Architecture
@@ -134,7 +146,10 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
 ├── auth/                      # NextAuth.js authentication
 ├── events/                    # Event CRUD operations
 ├── clubs/                     # Club management
-├── tournaments/[id]/          # Tournament-specific endpoints ⭐ NEW
+│   └── [id]/
+│       ├── availability/      # Club hosting availability ⭐ NEW
+│       └── tournament-interest/ # Tournament interest tracking ⭐ NEW
+├── tournaments/[id]/          # Tournament-specific endpoints
 │   ├── teams/                 # Team registration management
 │   └── matches/               # Match and results management
 ├── admin/                     # Administrative functions
@@ -143,8 +158,10 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
 ```
 
 ### Recent API Additions ⭐
+- **Calendar APIs**: Club availability management and tournament interest tracking
 - **Tournament Teams API**: Register, update, and withdraw teams
 - **Tournament Matches API**: Create fixtures, update results
+- **Enhanced Registration API**: Auto-approval logic and improved validation
 - **Authorization**: Club admins can manage their teams, organizers control tournaments
 - **Validation**: Team limits, team type restrictions, status workflows
 
@@ -161,11 +178,27 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
 - **Match Management**: Fixture creation and live results tracking
 - **Tournament Display**: Dedicated sections for teams and matches on event pages
 
+### Calendar & Interest System ⭐ *NEW - January 2025*
+- **Club Availability**: Clubs can set hosting dates with capacity and time slot information
+- **Flexible Interest Expression**: Users can express interest in:
+  - Specific dates for tournaments
+  - Entire months (e.g., "anytime in July")
+  - Date ranges with flexibility preferences
+- **Anonymous User Flow**: Non-signed-in users prompted to create accounts
+- **Smart Redirects**: Seamless flow from interest → registration → back to calendar
+
 ### Club Network
 - **Club Directory**: 70+ European GAA clubs with detailed profiles
 - **Interactive Map**: Geographic visualization of club locations
 - **Club Admin System**: Self-service club profile management
 - **Hosting Packages**: Accommodation offerings from clubs
+
+### Enhanced User Experience ⭐ *NEW - January 2025*
+- **Automatic Sign-in**: Users signed in immediately after successful registration
+- **Password Security**: Real-time validation with visual requirements and strength meter
+- **Progressive Registration**: Club association hidden behind optional checkbox
+- **Welcome Flow**: New users see personalized welcome messaging
+- **Smart Account Approval**: Non-club users auto-approved, streamlined workflow
 
 ### Additional Systems
 - **Survey System**: Gathering requirements for trip planning
@@ -203,7 +236,22 @@ npm run dev                  # Start development server
 
 ### Recently Completed ✅
 
-#### **1. Performance Optimizations** (High Impact)
+#### **1. Calendar & Tournament Interest System** (January 2025) ⭐ *NEW*
+   - **Calendar UI**: Interactive calendar showing available hosting dates and tournament requests
+   - **Flexible Interest Types**: Users can express interest in specific dates, entire months, or date ranges
+   - **Anonymous Access**: Non-signed-in users can express interest and are prompted to create accounts
+   - **Smart Redirects**: Seamless flow from interest expression → registration → back to calendar
+   - **Database Models**: AvailabilitySlot and TournamentInterest with flexible date handling
+
+#### **2. Enhanced Authentication & User Experience** (January 2025) ⭐ *NEW*
+   - **Auto Sign-in**: Users automatically signed in after successful registration
+   - **Password Security**: Real-time validation with visual requirements checklist and strength meter
+   - **Smart Account Approval**: Non-club users auto-approved, club users require manual approval
+   - **Welcome Flow**: Welcome banner for new users with automatic dismissal
+   - **Progressive Disclosure**: Club association hidden behind checkbox in signup form
+   - **Optional Fields**: Full name field made truly optional
+
+#### **3. Performance Optimizations** (High Impact)
    - **Database Indexes**: Added 17 critical indexes for 10-50x query performance improvement
      - Club location/teamTypes indexes (country filtering: 200ms → 5ms)
      - Event startDate index (date filtering: 150ms → 3ms)  
@@ -267,8 +315,9 @@ npm run dev                  # Start development server
 ### Current Content
 - **Clubs**: 70+ GAA clubs across Europe (Netherlands, Germany, France, Spain, Belgium, etc.)
 - **Events**: Mix of tournaments and friendly events
-- **Users**: Multi-role user base with approval workflow
+- **Users**: Multi-role user base with streamlined approval workflow
 - **Geographic Coverage**: Major European cities with GAA presence
+- **Calendar System**: Tournament interest tracking with flexible date options
 
 ### Team Types Supported
 - Mens Gaelic Football, LGFA (Ladies Gaelic Football)

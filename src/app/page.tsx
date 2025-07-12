@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, Suspense } from "react";
 import Map, {
   Marker,
   Popup,
@@ -11,6 +11,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import type { Event } from "@/types";
 import { MAP_CONFIG, URLS, EVENT_TYPES } from "@/lib/constants";
 import { formatShortDate, hasValidCoordinates } from "@/lib/utils";
@@ -62,10 +63,12 @@ const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
   return Array.from(countries).sort();
 };
 
-export default function Home() {
+function HomeContent() {
   const { status } = useSession();
+  const searchParams = useSearchParams();
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<ClubMapItem[]>([]);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [loading, setLoading] = useState(true);
   const [mapLoading, setMapLoading] = useState(true);
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
@@ -223,6 +226,24 @@ export default function Home() {
     }
   }, [viewMode]);
 
+  // Handle welcome message for new users
+  useEffect(() => {
+    const welcome = searchParams.get('welcome');
+    if (welcome === 'true') {
+      setShowWelcome(true);
+      // Auto-hide after 5 seconds
+      const timer = setTimeout(() => {
+        setShowWelcome(false);
+      }, 5000);
+      
+      // Clean up URL parameter
+      const url = new URL(window.location.href);
+      url.searchParams.delete('welcome');
+      window.history.replaceState({}, '', url.toString());
+      
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
   // Sidebar content component that works for both desktop and mobile
   const SidebarContent = () => (
@@ -493,6 +514,42 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+      {/* Welcome Banner for New Users */}
+      <AnimatePresence>
+        {showWelcome && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg"
+          >
+            <div className="container mx-auto px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-lg">Welcome to GAA Trips!</h3>
+                    <p className="text-green-100 text-sm">Your account has been created successfully. Start exploring clubs and tournaments worldwide.</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setShowWelcome(false)}
+                  className="text-white/80 hover:text-white transition-colors p-2"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Hero Section - Hide on mobile when navigated from landing */}
       {!isMobile && (
         <div className="relative h-[500px] md:h-[600px] overflow-hidden text-white">
@@ -927,5 +984,13 @@ export default function Home() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }

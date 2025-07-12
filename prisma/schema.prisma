@@ -90,6 +90,8 @@ model Club {
   hostingPackages     HostingPackage[]
   bookings            Booking[]
   tournamentTeams     TournamentTeam[]
+  availabilitySlots   AvailabilitySlot[]
+  tournamentInterests TournamentInterest[]
 
   // Performance indexes for common queries
   @@index([location])              // For country/location filtering (highest impact)
@@ -117,6 +119,7 @@ model User {
   adminOfClubs    Club[]        @relation("ClubAdmins")
   accounts        Account[]
   sessions        Session[]
+  tournamentInterests TournamentInterest[]
 
   // Performance indexes for common queries
   @@index([accountStatus])      // For admin pending user queries (critical for admin)
@@ -353,4 +356,74 @@ enum MatchStatus {
   COMPLETED
   CANCELLED
   POSTPONED
+}
+
+// Calendar-specific models
+model AvailabilitySlot {
+  id          String   @id @default(cuid())
+  clubId      String
+  club        Club     @relation(fields: [clubId], references: [id])
+  date        DateTime
+  isRecurring Boolean  @default(false)
+  dayOfWeek   Int?     // 0-6 for recurring slots
+  timeSlots   String[] // e.g., ["morning", "afternoon", "evening"]
+  capacity    Int?     // Max teams/events
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([clubId, date])
+  @@index([date])
+}
+
+model TournamentInterest {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  clubId          String
+  club            Club     @relation(fields: [clubId], references: [id])
+  
+  // Flexible date options
+  interestType    InterestType
+  specificDate    DateTime?    // For specific date requests
+  monthYear       DateTime?    // For month-based interest (store as 1st of month)
+  dateRangeStart  DateTime?    // For custom date ranges
+  dateRangeEnd    DateTime?    
+  
+  teamSize        Int
+  flexibility     FlexibilityLevel @default(FLEXIBLE)
+  message         String?
+  status          InterestStatus @default(PENDING)
+  
+  // Response from club
+  suggestedDates  DateTime[]   // Club can suggest specific dates
+  clubResponse    String?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([clubId, status])
+  @@index([userId])
+  @@index([monthYear])
+  @@index([status])
+}
+
+enum InterestType {
+  SPECIFIC_DATE    // "We want to come on July 15th"
+  ENTIRE_MONTH     // "We're interested in any time in July"
+  DATE_RANGE       // "We can come between July 10-20"
+  MULTIPLE_MONTHS  // "Any time in July or August"
+}
+
+enum FlexibilityLevel {
+  FIXED            // Must be these dates
+  FLEXIBLE         // Preferred but open to alternatives
+  VERY_FLEXIBLE    // Just exploring options
+}
+
+enum InterestStatus {
+  PENDING
+  IN_DISCUSSION
+  APPROVED
+  REJECTED
+  CANCELLED
 }

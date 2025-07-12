@@ -1,0 +1,381 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import { Calendar, X, Plus, MessageSquare } from 'lucide-react';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface TournamentInterest {
+  id: string;
+  interestType: string;
+  specificDate?: string;
+  monthYear?: string;
+  dateRangeStart?: string;
+  dateRangeEnd?: string;
+  teamSize: number;
+  flexibility: string;
+  status: string;
+  message?: string;
+  suggestedDates: string[];
+  clubResponse?: string;
+  user: {
+    name: string;
+    email: string;
+  };
+  createdAt: string;
+}
+
+interface AvailabilitySlot {
+  id: string;
+  date: string;
+  timeSlots: string[];
+  capacity?: number;
+}
+
+interface ClubCalendarManagementProps {
+  clubId: string;
+  clubName: string;
+}
+
+export default function ClubCalendarManagement({ clubId, clubName }: ClubCalendarManagementProps) {
+  const [interests, setInterests] = useState<TournamentInterest[]>([]);
+  const [, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState<'interests' | 'availability'>('interests');
+  const [selectedInterest, setSelectedInterest] = useState<TournamentInterest | null>(null);
+  const [suggestDatesForm, setSuggestDatesForm] = useState({
+    suggestedDates: [''],
+    message: '',
+  });
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [interestsRes, availabilityRes] = await Promise.all([
+        fetch(`/api/clubs/${clubId}/tournament-interest?year=${currentDate.getFullYear()}&month=${currentDate.getMonth() + 1}`),
+        fetch(`/api/clubs/${clubId}/availability?startDate=${startOfMonth(currentDate).toISOString()}&endDate=${endOfMonth(currentDate).toISOString()}`),
+      ]);
+
+      if (interestsRes.ok) {
+        const data = await interestsRes.json();
+        setInterests(data);
+      }
+
+      if (availabilityRes.ok) {
+        const data = await availabilityRes.json();
+        setAvailabilitySlots(data);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [clubId, currentDate]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const getInterestTypeDisplay = (interest: TournamentInterest) => {
+    switch (interest.interestType) {
+      case 'SPECIFIC_DATE':
+        return interest.specificDate ? format(new Date(interest.specificDate), 'PPP') : 'Specific date';
+      case 'ENTIRE_MONTH':
+        return interest.monthYear ? format(new Date(interest.monthYear), 'MMMM yyyy') : 'Entire month';
+      case 'DATE_RANGE':
+        if (interest.dateRangeStart && interest.dateRangeEnd) {
+          return `${format(new Date(interest.dateRangeStart), 'MMM d')} - ${format(new Date(interest.dateRangeEnd), 'MMM d, yyyy')}`;
+        }
+        return 'Date range';
+      default:
+        return interest.interestType;
+    }
+  };
+
+  const handleSuggestDates = async (interestId: string) => {
+    try {
+      const response = await fetch(`/api/tournament-interest/${interestId}/suggest-dates`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          suggestedDates: suggestDatesForm.suggestedDates.filter(date => date),
+          message: suggestDatesForm.message,
+        }),
+      });
+
+      if (response.ok) {
+        setSelectedInterest(null);
+        setSuggestDatesForm({ suggestedDates: [''], message: '' });
+        fetchData();
+      } else {
+        console.error('Failed to suggest dates');
+      }
+    } catch (error) {
+      console.error('Error suggesting dates:', error);
+    }
+  };
+
+  const addDateField = () => {
+    setSuggestDatesForm(prev => ({
+      ...prev,
+      suggestedDates: [...prev.suggestedDates, '']
+    }));
+  };
+
+  const updateDate = (index: number, value: string) => {
+    setSuggestDatesForm(prev => ({
+      ...prev,
+      suggestedDates: prev.suggestedDates.map((date, i) => i === index ? value : date)
+    }));
+  };
+
+  const removeDate = (index: number) => {
+    setSuggestDatesForm(prev => ({
+      ...prev,
+      suggestedDates: prev.suggestedDates.filter((_, i) => i !== index)
+    }));
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'PENDING':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'IN_DISCUSSION':
+        return 'bg-blue-100 text-blue-800';
+      case 'APPROVED':
+        return 'bg-green-100 text-green-800';
+      case 'REJECTED':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        <div className="p-12 text-center text-gray-500">Loading calendar management...</div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div className="p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-gray-600" />
+            Calendar Management - {clubName}
+          </h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setView('interests')}
+              className={`px-3 py-1 text-sm border rounded-lg ${
+                view === 'interests' ? 'bg-green-50 border-green-500 text-green-700' : 'hover:bg-gray-50'
+              }`}
+            >
+              Tournament Interests ({interests.length})
+            </button>
+            <button
+              onClick={() => setView('availability')}
+              className={`px-3 py-1 text-sm border rounded-lg ${
+                view === 'availability' ? 'bg-green-50 border-green-500 text-green-700' : 'hover:bg-gray-50'
+              }`}
+            >
+              Availability
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <button
+            onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
+            className="p-2 hover:bg-gray-100 rounded"
+          >
+            ←
+          </button>
+          <h3 className="text-lg font-medium">
+            {format(currentDate, 'MMMM yyyy')}
+          </h3>
+          <button
+            onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
+            className="p-2 hover:bg-gray-100 rounded"
+          >
+            →
+          </button>
+        </div>
+      </div>
+
+      {view === 'interests' ? (
+        <div className="p-6">
+          {interests.length === 0 ? (
+            <div className="text-center py-12 text-gray-500">
+              No tournament interests for this month
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {interests.map(interest => (
+                <motion.div
+                  key={interest.id}
+                  layout
+                  className="p-4 border rounded-lg hover:bg-gray-50"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h4 className="font-medium">{interest.user.name}</h4>
+                        <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(interest.status)}`}>
+                          {interest.status}
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-1">
+                        <strong>Email:</strong> {interest.user.email}
+                      </p>
+                      <p className="text-sm text-gray-600 mb-1">
+                        <strong>Dates:</strong> {getInterestTypeDisplay(interest)}
+                      </p>
+                      <p className="text-sm text-gray-600 mb-1">
+                        <strong>Team Size:</strong> {interest.teamSize} | <strong>Flexibility:</strong> {interest.flexibility}
+                      </p>
+                      {interest.message && (
+                        <p className="text-sm text-gray-600 mb-2">
+                          <strong>Message:</strong> {interest.message}
+                        </p>
+                      )}
+                      {interest.suggestedDates.length > 0 && (
+                        <div className="text-sm text-gray-600 mb-2">
+                          <strong>Suggested Dates:</strong> {interest.suggestedDates.map(date => format(new Date(date), 'PPP')).join(', ')}
+                        </div>
+                      )}
+                      {interest.clubResponse && (
+                        <p className="text-sm text-green-700 bg-green-50 p-2 rounded">
+                          <strong>Your response:</strong> {interest.clubResponse}
+                        </p>
+                      )}
+                    </div>
+                    {interest.status === 'PENDING' && (
+                      <button
+                        onClick={() => setSelectedInterest(interest)}
+                        className="px-3 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700 flex items-center gap-1"
+                      >
+                        <MessageSquare className="w-3 h-3" />
+                        Respond
+                      </button>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="p-6">
+          <div className="text-center py-12 text-gray-500">
+            Availability management coming soon...
+          </div>
+        </div>
+      )}
+
+      {/* Suggest Dates Modal */}
+      <AnimatePresence>
+        {selectedInterest && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+            onClick={() => setSelectedInterest(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-lg max-w-md w-full"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold">Suggest Dates</h3>
+                  <button
+                    onClick={() => setSelectedInterest(null)}
+                    className="p-2 hover:bg-gray-100 rounded-full"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">
+                  Responding to {selectedInterest.user.name} for {getInterestTypeDisplay(selectedInterest)}
+                </p>
+              </div>
+
+              <div className="p-6 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Suggested Dates
+                  </label>
+                  {suggestDatesForm.suggestedDates.map((date, index) => (
+                    <div key={index} className="flex items-center gap-2 mb-2">
+                      <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => updateDate(index, e.target.value)}
+                        className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      />
+                      {suggestDatesForm.suggestedDates.length > 1 && (
+                        <button
+                          onClick={() => removeDate(index)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    onClick={addDateField}
+                    className="flex items-center gap-1 text-green-600 hover:text-green-700 text-sm"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add another date
+                  </button>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Message to team
+                  </label>
+                  <textarea
+                    value={suggestDatesForm.message}
+                    onChange={(e) => setSuggestDatesForm(prev => ({ ...prev, message: e.target.value }))}
+                    rows={3}
+                    placeholder="Let them know about these dates and any additional details..."
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setSelectedInterest(null)}
+                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => handleSuggestDates(selectedInterest.id)}
+                    disabled={!suggestDatesForm.suggestedDates.some(date => date)}
+                    className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Send Response
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

@@ -62,11 +62,11 @@ export const authOptions = {
           return null
         }
 
-        // Check account status - only allow approved accounts to sign in
-        // Temporarily disabled for migration - TODO: Re-enable after database migration
-        // if (user.accountStatus !== 'APPROVED') {
-        //   return null
-        // }
+        // Check account status - allow approved and pending accounts to sign in
+        // Rejected and suspended accounts cannot sign in
+        if (user.accountStatus === 'REJECTED' || user.accountStatus === 'SUSPENDED') {
+          return null
+        }
 
         return {
           id: user.id,

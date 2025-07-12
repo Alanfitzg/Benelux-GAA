@@ -4,6 +4,7 @@ import { geocodeLocation } from '@/lib/utils';
 import { withErrorHandling, parseJsonBody } from '@/lib/utils';
 import { requireClubAdmin } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import type { Prisma } from '@prisma/client';
 
 type CreateEventBody = {
   title: string;
@@ -22,9 +23,28 @@ type CreateEventBody = {
   acceptedTeamTypes?: string[];
 };
 
-async function getEventsHandler() {
+async function getEventsHandler(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const clubId = searchParams.get('clubId');
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
+    const where: Prisma.EventWhereInput = {};
+
+    if (clubId) {
+      where.clubId = clubId;
+    }
+
+    if (startDate && endDate) {
+      where.startDate = {
+        gte: new Date(startDate),
+        lte: new Date(endDate),
+      };
+    }
+
     const events = await prisma.event.findMany({
+      where,
       include: {
         club: {
           select: {
@@ -34,6 +54,9 @@ async function getEventsHandler() {
             location: true,
           }
         }
+      },
+      orderBy: {
+        startDate: 'asc'
       }
     });
     return NextResponse.json(events);
@@ -92,5 +115,5 @@ async function createEventHandler(request: NextRequest) {
 }
 
 // Apply rate limiting to endpoints
-export const GET = withRateLimit(RATE_LIMITS.PUBLIC_API, getEventsHandler);
+export const GET = withRateLimit(RATE_LIMITS.PUBLIC_API, (request: NextRequest) => getEventsHandler(request));
 export const POST = withRateLimit(RATE_LIMITS.ADMIN, createEventHandler); 

@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs"
 import { prisma } from "@/lib/prisma"
-import { UserRole } from "@prisma/client"
+import { UserRole, AccountStatus } from "@prisma/client"
 
 export async function createUser(
   email: string,
@@ -8,7 +8,8 @@ export async function createUser(
   password: string,
   name?: string,
   role: UserRole = UserRole.USER,
-  clubId?: string | null
+  clubId?: string | null,
+  accountStatus: AccountStatus = AccountStatus.PENDING
 ) {
   const hashedPassword = await bcrypt.hash(password, 10)
   
@@ -20,6 +21,8 @@ export async function createUser(
       name,
       role,
       clubId,
+      accountStatus,
+      approvedAt: accountStatus === AccountStatus.APPROVED ? new Date() : undefined,
     },
   })
 }

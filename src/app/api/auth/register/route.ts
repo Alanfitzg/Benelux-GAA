@@ -5,6 +5,7 @@ import { ConflictError, withErrorHandler } from "@/lib/error-handlers"
 import { validateBody } from "@/lib/validation/middleware"
 import { sendEmail, getAdminEmails } from "@/lib/email"
 import { generateNewUserNotificationEmail } from "@/lib/email-templates"
+import { AccountStatus } from "@prisma/client"
 
 async function registrationHandler(request: NextRequest) {
   // Validate request body using Zod schema
@@ -13,7 +14,7 @@ async function registrationHandler(request: NextRequest) {
   // Normalize input data
   const normalizedEmail = email.toLowerCase().trim()
   const normalizedUsername = username.toLowerCase().trim()
-  const normalizedName = name.trim()
+  const normalizedName = name?.trim() || undefined
 
   // Check for existing users
   const [existingUserByEmail, existingUserByUsername] = await Promise.all([
@@ -29,13 +30,18 @@ async function registrationHandler(request: NextRequest) {
     throw new ConflictError("This username is already taken")
   }
 
+  // Determine account status based on club association
+  const accountStatus = clubId ? AccountStatus.PENDING : AccountStatus.APPROVED
+  
   // Create user
-  const user = await createUser(normalizedEmail, normalizedUsername, password, normalizedName, undefined, clubId)
+  const user = await createUser(normalizedEmail, normalizedUsername, password, normalizedName, undefined, clubId, accountStatus)
 
-  // Send admin notification email (don't wait for it to complete)
-  sendAdminNotification(user).catch(error => {
-    console.error('Failed to send admin notification email:', error)
-  })
+  // Send admin notification email only for club-associated users requiring approval
+  if (accountStatus === AccountStatus.PENDING) {
+    sendAdminNotification(user).catch(error => {
+      console.error('Failed to send admin notification email:', error)
+    })
+  }
 
   return NextResponse.json({
     success: true,
@@ -47,7 +53,9 @@ async function registrationHandler(request: NextRequest) {
       role: user.role,
       accountStatus: user.accountStatus,
     },
-    message: "Account created successfully! Your account is pending approval from an administrator. You will receive an email notification once approved."
+    message: accountStatus === AccountStatus.APPROVED 
+      ? "Account created successfully! You can now sign in and start using GAA Trips."
+      : "Account created successfully! Your account is pending approval from an administrator. You will receive an email notification once approved."
   }, { status: 201 })
 }
 

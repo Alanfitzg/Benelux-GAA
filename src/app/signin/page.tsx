@@ -11,13 +11,19 @@ function SignInForm() {
   const searchParams = useSearchParams()
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
-  const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false)
+  const [registrationInfo, setRegistrationInfo] = useState<{show: boolean, status?: string, message?: string}>({show: false})
   const { accountStatus, setAccountStatus, checkAccountStatus } = useAccountStatus()
 
   useEffect(() => {
     const registered = searchParams.get('registered')
     if (registered === 'true') {
-      setShowRegistrationSuccess(true)
+      const status = searchParams.get('status')
+      const message = searchParams.get('message')
+      setRegistrationInfo({
+        show: true,
+        status: status || undefined,
+        message: message || undefined
+      })
     }
   }, [searchParams])
 
@@ -87,25 +93,42 @@ function SignInForm() {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {showRegistrationSuccess && (
-            <div className="rounded-lg bg-green-50 p-4 border border-green-200/50 shadow-sm">
+          {registrationInfo.show && (
+            <div className={`rounded-lg p-4 border shadow-sm ${
+              registrationInfo.status === 'APPROVED' 
+                ? 'bg-green-50 border-green-200/50' 
+                : 'bg-yellow-50 border-yellow-200/50'
+            }`}>
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <svg className={`h-5 w-5 ${
+                    registrationInfo.status === 'APPROVED' ? 'text-green-500' : 'text-yellow-500'
+                  }`} fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-semibold text-green-800">
+                  <h3 className={`text-sm font-semibold ${
+                    registrationInfo.status === 'APPROVED' ? 'text-green-800' : 'text-yellow-800'
+                  }`}>
                     Account Created Successfully!
                   </h3>
-                  <div className="mt-1 text-sm text-green-700">
-                    <p>Your account has been created and is pending approval from an administrator. You will receive an email notification once your account is approved and you can sign in.</p>
-                    <p className="mt-2">
-                      <Link href="/account/status" className="font-semibold underline hover:text-green-600 transition-colors">
-                        Check your account status anytime
-                      </Link>
-                    </p>
+                  <div className={`mt-1 text-sm ${
+                    registrationInfo.status === 'APPROVED' ? 'text-green-700' : 'text-yellow-700'
+                  }`}>
+                    <p>{registrationInfo.message}</p>
+                    {registrationInfo.status === 'PENDING' && (
+                      <p className="mt-2">
+                        <Link href="/account/status" className="font-semibold underline hover:text-yellow-600 transition-colors">
+                          Check your account status anytime
+                        </Link>
+                      </p>
+                    )}
+                    {registrationInfo.status === 'APPROVED' && (
+                      <p className="mt-2 font-medium">
+                        You can now sign in below!
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

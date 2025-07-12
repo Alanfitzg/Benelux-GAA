@@ -148,7 +148,7 @@ export const UserRegistrationSchema = z.object({
   email: emailSchema,
   username: usernameSchema,
   password: passwordSchema,
-  name: z.string().min(1, 'Name is required').max(100, 'Name must be no more than 100 characters'),
+  name: z.string().max(100, 'Name must be no more than 100 characters').optional(),
   clubId: z.string().cuid('Invalid club ID').optional().nullable(),
 })
 
