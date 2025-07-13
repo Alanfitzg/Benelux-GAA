@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { createPortal } from 'react-dom';
 
 interface Club {
   id: string;
@@ -22,26 +22,43 @@ export default function ClubSelector({ value, onChange, disabled = false }: Club
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const selectedClub = Array.isArray(clubs) ? clubs.find(c => c.id === value) : undefined;
 
-  const filteredClubs = Array.isArray(clubs) ? clubs.filter(club =>
-    club.name.toLowerCase().includes(search.toLowerCase()) ||
-    (club.location && club.location.toLowerCase().includes(search.toLowerCase())) ||
-    (club.region && club.region.toLowerCase().includes(search.toLowerCase()))
-  ) : [];
+  const filteredClubs = Array.isArray(clubs) ? clubs.filter(club => {
+    if (!club || typeof club !== 'object') return false;
+    const searchLower = search.toLowerCase();
+    return (
+      (club.name && club.name.toLowerCase().includes(searchLower)) ||
+      (club.location && club.location.toLowerCase().includes(searchLower)) ||
+      (club.region && club.region.toLowerCase().includes(searchLower))
+    );
+  }) : [];
 
   useEffect(() => {
-    const fetchClubs = async () => {
+    const fetchClubs = async (retryCount = 0) => {
       try {
         const response = await fetch('/api/clubs/simple');
         if (response.ok) {
           const clubsData = await response.json();
-          setClubs(clubsData);
+          if (Array.isArray(clubsData)) {
+            setClubs(clubsData);
+          } else {
+            setClubs([]);
+          }
+          setLoading(false);
+        } else {
+          // If rate limited and haven't retried yet, retry after delay
+          if (response.status === 429 && retryCount < 1) {
+            const retryAfter = response.headers.get('Retry-After');
+            const delay = retryAfter ? parseInt(retryAfter) * 1000 : 2000;
+            setTimeout(() => fetchClubs(retryCount + 1), delay);
+            return;
+          }
+          setLoading(false);
         }
-      } catch (error) {
-        console.error('Failed to fetch clubs:', error);
-      } finally {
+      } catch {
         setLoading(false);
       }
     };
@@ -51,14 +68,21 @@ export default function ClubSelector({ value, onChange, disabled = false }: Club
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current && 
+        buttonRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isOpen]);
 
   const handleClubSelect = (clubId: string) => {
     onChange(clubId);
@@ -83,8 +107,13 @@ export default function ClubSelector({ value, onChange, disabled = false }: Club
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        ref={buttonRef}
         type="button"
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!disabled) {
+            setIsOpen(!isOpen);
+          }
+        }}
         disabled={disabled}
         className={`w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-left focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 ${
           disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer'
@@ -114,14 +143,18 @@ export default function ClubSelector({ value, onChange, disabled = false }: Club
         </div>
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute z-50 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+      {isOpen && createPortal(
+          <div
+            ref={dropdownRef}
+            className="absolute mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden"
+            style={{ 
+              position: 'absolute',
+              top: buttonRef.current ? buttonRef.current.getBoundingClientRect().bottom + window.scrollY + 8 : 0,
+              left: buttonRef.current ? buttonRef.current.getBoundingClientRect().left + window.scrollX : 0,
+              width: buttonRef.current ? buttonRef.current.getBoundingClientRect().width : 'auto',
+              zIndex: 99999,
+              maxHeight: '300px'
+            }}
           >
             <div className="p-3 border-b border-gray-100">
               <input
@@ -151,26 +184,28 @@ export default function ClubSelector({ value, onChange, disabled = false }: Club
                   {search ? 'No clubs found matching your search' : 'No clubs available'}
                 </div>
               ) : (
-                filteredClubs.map((club) => (
-                  <button
-                    key={club.id}
-                    type="button"
-                    onClick={() => handleClubSelect(club.id)}
-                    className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150 ${
-                      club.id === value ? 'bg-primary/5 text-primary' : ''
-                    }`}
-                  >
-                    <div className="font-medium">{club.name}</div>
-                    {club.location && (
-                      <div className="text-sm text-gray-500">{club.location}</div>
-                    )}
-                  </button>
-                ))
+                <>
+                  {filteredClubs.map((club) => (
+                    <button
+                      key={club.id}
+                      type="button"
+                      onClick={() => handleClubSelect(club.id)}
+                      className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150 ${
+                        club.id === value ? 'bg-primary/5 text-primary' : ''
+                      }`}
+                    >
+                      <div className="font-medium">{club.name}</div>
+                      {club.location && (
+                        <div className="text-sm text-gray-500">{club.location}</div>
+                      )}
+                    </button>
+                  ))}
+                </>
               )}
             </div>
-          </motion.div>
+          </div>,
+        document.body
         )}
-      </AnimatePresence>
     </div>
   );
 }
