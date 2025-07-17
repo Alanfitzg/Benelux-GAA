@@ -3,6 +3,9 @@
  * Run with: npx ts-node scripts/test-email.ts
  */
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { sendEmail, testEmailConnection } from '../src/lib/email';
 import { generateNewUserNotificationEmail } from '../src/lib/email-templates';
 
@@ -41,10 +44,10 @@ async function testEmailSystem() {
   console.log(`📄 HTML length: ${html.length} characters`);
   console.log(`📝 Text length: ${text.length} characters`);
 
-  // Test 3: Send test email (if SendGrid is configured)
-  if (process.env.SENDGRID_API_KEY) {
+  // Test 3: Send test email (if Resend is configured)
+  if (process.env.RESEND_API_KEY) {
     console.log('\n3. Sending test email...');
-    const testEmail = process.env.TEST_EMAIL || process.env.SENDGRID_FROM_EMAIL || 'admin@example.com';
+    const testEmail = process.env.TEST_EMAIL || process.env.RESEND_FROM_EMAIL || 'admin@example.com';
     
     const success = await sendEmail({
       to: testEmail,
@@ -57,8 +60,8 @@ async function testEmailSystem() {
           <div style="background: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3>🔧 System Information:</h3>
             <ul>
-              <li><strong>Email Service:</strong> SendGrid</li>
-              <li><strong>From Email:</strong> ${process.env.SENDGRID_FROM_EMAIL}</li>
+              <li><strong>Email Service:</strong> Resend</li>
+              <li><strong>From Email:</strong> ${process.env.RESEND_FROM_EMAIL}</li>
               <li><strong>Test Time:</strong> ${new Date().toISOString()}</li>
             </ul>
           </div>
@@ -77,8 +80,8 @@ Email System Test Successful!
 This is a test email to verify that the Gaelic Trips admin notification system is working correctly.
 
 System Information:
-- Email Service: SendGrid
-- From Email: ${process.env.SENDGRID_FROM_EMAIL}
+- Email Service: Resend
+- From Email: ${process.env.RESEND_FROM_EMAIL}
 - Test Time: ${new Date().toISOString()}
 
 If you received this email, the admin notification system is ready to send notifications when new users register!
@@ -93,28 +96,28 @@ This is an automated test email from the Gaelic Trips development environment.
       console.log('❌ Failed to send test email');
     }
   } else {
-    console.log('\n3. ⚠️  SendGrid not configured - test email skipped');
-    console.log('   To test email sending, configure SendGrid in your .env file:');
+    console.log('\n3. ⚠️  Resend not configured - test email skipped');
+    console.log('   To test email sending, configure Resend in your .env file:');
     console.log(`
-📧 SendGrid Setup:
-   1. Create a SendGrid account at https://sendgrid.com
-   2. Generate an API Key in your SendGrid dashboard
+📧 Resend Setup:
+   1. Create a Resend account at https://resend.com
+   2. Generate an API Key in your Resend dashboard
    3. Verify your sender email/domain
    4. Update .env file:
-      SENDGRID_API_KEY="SG.your-api-key-here"
-      SENDGRID_FROM_EMAIL="noreply@yourdomain.com" 
-      SENDGRID_FROM_NAME="Gaelic Trips"
+      RESEND_API_KEY="re_your-api-key-here"
+      RESEND_FROM_EMAIL="noreply@yourdomain.com" 
+      RESEND_FROM_NAME="Gaelic Trips"
       
-📧 Benefits of SendGrid:
-   - Better deliverability than SMTP
-   - Built-in analytics and tracking
-   - No daily sending limits
-   - Professional email infrastructure`);
+📧 Benefits of Resend:
+   - Developer-friendly API
+   - Great React email integration
+   - Real-time webhooks
+   - Modern email infrastructure`);
   }
 
   console.log('\n🎉 Email system test completed!\n');
   console.log('📋 Next steps:');
-  console.log('   1. Configure SendGrid settings in your .env file (if not done)');
+  console.log('   1. Configure Resend settings in your .env file (if not done)');
   console.log('   2. Test user registration to trigger admin notifications');
   console.log('   3. Check admin approval/rejection email notifications');
 }

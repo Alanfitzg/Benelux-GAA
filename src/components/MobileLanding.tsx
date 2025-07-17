@@ -78,7 +78,7 @@ export default function MobileLanding() {
           transition={{ delay: 0.5 }}
           className="text-gray-700 text-center text-lg leading-relaxed max-w-sm"
         >
-          Connect with Europes Gaelic games community
+          Connect with Europe&apos;s Gaelic games community
         </motion.p>
       </motion.div>
 
