@@ -63,3 +63,23 @@ export async function testDatabaseConnection(): Promise<boolean> {
     return false;
   }
 }
+
+/**
+ * Ensure database connection is alive and retry if needed
+ */
+export async function ensureConnection(): Promise<void> {
+  await retryDatabaseOperation(async () => {
+    await prisma.$queryRaw`SELECT 1`
+  }, 2, 500) // Shorter retry for connection tests
+}
+
+/**
+ * Gracefully handle database operations with automatic retry for connection issues
+ */
+export async function safeDbOperation<T>(operation: () => Promise<T>): Promise<T> {
+  return retryDatabaseOperation(async () => {
+    // Ensure connection is alive first
+    await ensureConnection()
+    return await operation()
+  }, 3, 1000)
+}
