@@ -4,7 +4,7 @@ import { UserRegistrationSchema } from "@/lib/validation/schemas"
 import { ConflictError, withErrorHandler } from "@/lib/error-handlers"
 import { validateBody } from "@/lib/validation/middleware"
 import { sendEmail, getAdminEmails } from "@/lib/email"
-import { generateNewUserNotificationEmail } from "@/lib/email-templates"
+import { generateNewUserNotificationEmail, generateWelcomeEmail } from "@/lib/email-templates"
 import { AccountStatus } from "@prisma/client"
 
 async function registrationHandler(request: NextRequest) {
@@ -35,6 +35,11 @@ async function registrationHandler(request: NextRequest) {
   
   // Create user
   const user = await createUser(normalizedEmail, normalizedUsername, password, normalizedName, undefined, clubId, accountStatus)
+
+  // Send welcome email to the new user
+  sendWelcomeEmail(user, accountStatus === AccountStatus.APPROVED).catch(error => {
+    console.error('Failed to send welcome email:', error)
+  })
 
   // Send admin notification email only for club-associated users requiring approval
   if (accountStatus === AccountStatus.PENDING) {
@@ -125,6 +130,43 @@ async function sendAdminNotification(user: {
     }
   } catch (error) {
     console.error('Error in sendAdminNotification:', error)
+  }
+}
+
+// Helper function to send welcome email
+async function sendWelcomeEmail(user: {
+  id: string;
+  email: string;
+  name: string | null;
+  username: string;
+}, isApproved: boolean) {
+  try {
+    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
+    const loginUrl = `${baseUrl}/signin`
+
+    const emailData = {
+      userName: user.name || user.username,
+      userEmail: user.email,
+      loginUrl,
+      isApproved
+    }
+
+    const { subject, html, text } = generateWelcomeEmail(emailData)
+
+    const success = await sendEmail({
+      to: user.email,
+      subject,
+      html,
+      text
+    })
+
+    if (success) {
+      console.log(`✅ Welcome email sent to: ${user.email}`)
+    } else {
+      console.error('❌ Failed to send welcome email')
+    }
+  } catch (error) {
+    console.error('Error in sendWelcomeEmail:', error)
   }
 }
 

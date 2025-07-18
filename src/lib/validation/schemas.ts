@@ -14,6 +14,12 @@ export const usernameSchema = z
   .min(3, 'Username must be at least 3 characters')
   .max(30, 'Username must be no more than 30 characters')
   .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens')
+  .regex(/^[a-zA-Z]/, 'Username must start with a letter')
+  .regex(/[a-zA-Z0-9]$/, 'Username must end with a letter or number')
+  .refine((val) => !val.includes('__'), 'Username cannot contain consecutive underscores')
+  .refine((val) => !val.includes('--'), 'Username cannot contain consecutive hyphens')
+  .refine((val) => !val.includes('_-') && !val.includes('-_'), 'Username cannot contain underscore-hyphen combinations')
+  .transform((val) => val.toLowerCase())
 
 export const phoneSchema = z
   .string()

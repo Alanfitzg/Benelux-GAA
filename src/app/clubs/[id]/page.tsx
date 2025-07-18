@@ -7,6 +7,8 @@ import { StructuredData, generateClubStructuredData } from "@/components/Structu
 import ClubEvents from "@/components/ClubEvents";
 import ClubContactForm from "@/components/ClubContactForm";
 import ClubCalendar from "@/components/club/ClubCalendar";
+import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
+import { getServerSession } from "@/lib/auth-helpers";
 
 export async function generateMetadata({
   params,
@@ -84,6 +86,9 @@ export default async function ClubDetailsPage({
 }) {
   const { id } = await params;
   
+  // Get session and club data
+  const session = await getServerSession();
+  
   const club = await prisma.club.findUnique({ 
     where: { id },
     include: {
@@ -91,9 +96,37 @@ export default async function ClubDetailsPage({
         orderBy: {
           startDate: 'asc'
         }
+      },
+      admins: {
+        select: {
+          id: true,
+          name: true,
+          email: true
+        }
       }
     }
   });
+
+  // Get user's admin request if they're logged in
+  let adminRequest = null;
+  let isCurrentAdmin = false;
+  
+  if (session?.user && club) {
+    // Check if user is already an admin
+    isCurrentAdmin = club.admins.some(admin => admin.id === session.user.id);
+    
+    // Get user's admin request if they're not already an admin
+    if (!isCurrentAdmin) {
+      adminRequest = await prisma.clubAdminRequest.findUnique({
+        where: {
+          userId_clubId: {
+            userId: session.user.id,
+            clubId: id
+          }
+        }
+      });
+    }
+  }
   
   if (!club) {
     return <div className="text-red-600">Club not found.</div>;
@@ -157,6 +190,17 @@ export default async function ClubDetailsPage({
                 <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                   <ClubContactForm clubId={club.id} clubName={club.name} type="contact" />
                   <ClubContactForm clubId={club.id} clubName={club.name} type="interest" />
+                  <ClubAdminRequestButton
+                    clubId={club.id}
+                    clubName={club.name}
+                    existingRequest={adminRequest ? {
+                      id: adminRequest.id,
+                      status: adminRequest.status,
+                      requestedAt: adminRequest.requestedAt.toISOString(),
+                      rejectionReason: adminRequest.rejectionReason || undefined
+                    } : undefined}
+                    isCurrentAdmin={isCurrentAdmin}
+                  />
                 </div>
               </div>
             </div>
@@ -249,6 +293,35 @@ export default async function ClubDetailsPage({
                         Instagram
                       </a>
                     )}
+                  </div>
+                </div>
+              )}
+
+              {/* Club Admins */}
+              {club.admins && club.admins.length > 0 && (
+                <div className="bg-white rounded-lg shadow p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                    <svg className="w-5 h-5 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    Club Administrators
+                  </h3>
+                  <div className="space-y-3">
+                    {club.admins.map((admin) => (
+                      <div key={admin.id} className="flex items-center space-x-3">
+                        <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium">
+                            {admin.name ? admin.name.charAt(0).toUpperCase() : admin.email.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {admin.name || 'Club Admin'}
+                          </p>
+                          <p className="text-xs text-gray-500">{admin.email}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}

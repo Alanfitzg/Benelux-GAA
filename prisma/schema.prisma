@@ -92,6 +92,7 @@ model Club {
   tournamentTeams     TournamentTeam[]
   availabilitySlots   AvailabilitySlot[]
   tournamentInterests TournamentInterest[]
+  adminRequests       ClubAdminRequest[]
 
   // Performance indexes for common queries
   @@index([location])              // For country/location filtering (highest impact)
@@ -120,6 +121,8 @@ model User {
   accounts        Account[]
   sessions        Session[]
   tournamentInterests TournamentInterest[]
+  clubAdminRequests ClubAdminRequest[]
+  reviewedAdminRequests ClubAdminRequest[] @relation("AdminRequestReviewer")
 
   // Performance indexes for common queries
   @@index([accountStatus])      // For admin pending user queries (critical for admin)
@@ -224,6 +227,33 @@ model ClubInterest {
   type        String   // 'contact' or 'interest'
   submittedAt DateTime @default(now())
   club        Club     @relation(fields: [clubId], references: [id])
+}
+
+model ClubAdminRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  clubId      String
+  reason      String   // User's reason for requesting admin access
+  status      ClubAdminRequestStatus @default(PENDING)
+  requestedAt DateTime @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?  // User ID of the super admin who reviewed
+  rejectionReason String?
+  
+  user        User     @relation(fields: [userId], references: [id])
+  club        Club     @relation(fields: [clubId], references: [id])
+  reviewer    User?    @relation("AdminRequestReviewer", fields: [reviewedBy], references: [id])
+  
+  @@unique([userId, clubId]) // Prevent duplicate requests
+  @@index([status])
+  @@index([clubId])
+  @@index([requestedAt])
+}
+
+enum ClubAdminRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 model HostingPackage {

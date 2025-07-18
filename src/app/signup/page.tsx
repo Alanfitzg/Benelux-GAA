@@ -8,7 +8,8 @@ import { signIn } from "next-auth/react";
 import ClubSelector from "@/components/ClubSelector";
 import PasswordRequirements from "@/components/auth/PasswordRequirements";
 import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter";
-import { passwordSchema } from "@/lib/validation/schemas";
+import UsernameRequirements from "@/components/auth/UsernameRequirements";
+import { passwordSchema, usernameSchema } from "@/lib/validation/schemas";
 
 export default function SignUp() {
   const router = useRouter();
@@ -18,6 +19,8 @@ export default function SignUp() {
   const [isAssociatedWithClub, setIsAssociatedWithClub] = useState(false);
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
+  const [showUsernameRequirements, setShowUsernameRequirements] = useState(false);
+  const [usernameErrors, setUsernameErrors] = useState<string[]>([]);
 
   // Check if form is valid for submission
   const isFormValid = () => {
@@ -27,6 +30,7 @@ export default function SignUp() {
       formData.password &&
       formData.confirmPassword &&
       passwordErrors.length === 0 &&
+      usernameErrors.length === 0 &&
       formData.password === formData.confirmPassword
     );
   };
@@ -49,6 +53,11 @@ export default function SignUp() {
     if (name === 'password') {
       validatePassword(value);
     }
+    
+    // Real-time username validation
+    if (name === 'username') {
+      validateUsername(value);
+    }
   };
 
   const validatePassword = (password: string) => {
@@ -63,6 +72,18 @@ export default function SignUp() {
     }
   };
 
+  const validateUsername = (username: string) => {
+    try {
+      usernameSchema.parse(username);
+      setUsernameErrors([]);
+    } catch (error) {
+      if (error && typeof error === 'object' && 'errors' in error) {
+        const zodError = error as { errors: Array<{ message: string }> };
+        setUsernameErrors(zodError.errors.map((err) => err.message));
+      }
+    }
+  };
+
   const handlePasswordFocus = () => {
     setShowPasswordRequirements(true);
   };
@@ -71,6 +92,17 @@ export default function SignUp() {
     // Keep requirements visible if there are errors or password is not empty
     if (!formData.password || passwordErrors.length === 0) {
       setShowPasswordRequirements(false);
+    }
+  };
+
+  const handleUsernameFocus = () => {
+    setShowUsernameRequirements(true);
+  };
+
+  const handleUsernameBlur = () => {
+    // Keep requirements visible if there are errors or username is not empty
+    if (!formData.username || usernameErrors.length === 0) {
+      setShowUsernameRequirements(false);
     }
   };
 
@@ -92,6 +124,20 @@ export default function SignUp() {
       setError("Passwords do not match");
       setIsLoading(false);
       return;
+    }
+
+    // Validate username against schema
+    try {
+      usernameSchema.parse(formData.username);
+    } catch (error) {
+      if (error && typeof error === 'object' && 'errors' in error) {
+        const zodError = error as { errors: Array<{ message: string }> };
+        if (zodError.errors && zodError.errors.length > 0) {
+          setError(zodError.errors[0].message);
+          setIsLoading(false);
+          return;
+        }
+      }
     }
 
     // Validate password against schema
@@ -138,7 +184,7 @@ export default function SignUp() {
         // Registration successful - now automatically sign in the user
         try {
           const signInResult = await signIn("credentials", {
-            username: formData.username,
+            username: formData.username.toLowerCase().trim(),
             password: formData.password,
             redirect: false,
           });
@@ -279,9 +325,15 @@ export default function SignUp() {
                       type="text"
                       value={formData.username}
                       onChange={handleInputChange}
+                      onFocus={handleUsernameFocus}
+                      onBlur={handleUsernameBlur}
                       placeholder="Choose a username"
                       required
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                    />
+                    <UsernameRequirements 
+                      username={formData.username} 
+                      isVisible={showUsernameRequirements || (formData.username.length > 0 && usernameErrors.length > 0)}
                     />
                   </motion.div>
 
