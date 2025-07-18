@@ -38,7 +38,7 @@ function SignInForm() {
 
     try {
       const result = await signIn("credentials", {
-        username,
+        username: username.toLowerCase().trim(),
         password,
         redirect: false,
       })

@@ -373,3 +373,216 @@ Gaelic Trips - Connecting GAA communities worldwide`;
 
   return { subject, html, text };
 }
+
+// Welcome email template for new users
+export interface WelcomeEmailData {
+  userName: string;
+  userEmail: string;
+  loginUrl: string;
+  isApproved: boolean;
+}
+
+export function generateWelcomeEmail(data: WelcomeEmailData): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const subject = `🎉 Welcome to Gaelic Trips, ${data.userName}!`;
+  
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Welcome to Gaelic Trips</title>
+      <style>
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+          line-height: 1.6;
+          color: #333;
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+        .header {
+          background: linear-gradient(135deg, #1e40af, #3b82f6);
+          color: white;
+          padding: 40px 20px;
+          border-radius: 12px 12px 0 0;
+          text-align: center;
+        }
+        .header h1 {
+          margin: 0;
+          font-size: 28px;
+          font-weight: 600;
+        }
+        .logo {
+          font-size: 24px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+        .content {
+          background: #fff;
+          padding: 40px;
+          border: 1px solid #e5e7eb;
+          border-top: none;
+        }
+        .feature-list {
+          background: #f8fafc;
+          padding: 20px;
+          border-radius: 8px;
+          margin: 20px 0;
+        }
+        .feature-list ul {
+          margin: 10px 0;
+          padding-left: 20px;
+        }
+        .feature-list li {
+          margin-bottom: 8px;
+        }
+        .btn {
+          display: inline-block;
+          background: #1e40af;
+          color: white;
+          padding: 14px 32px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-weight: 600;
+          margin: 20px 0;
+          transition: all 0.3s ease;
+        }
+        .btn:hover {
+          background: #1e3a8a;
+        }
+        .status-note {
+          background: #fef3c7;
+          border: 1px solid #fbbf24;
+          padding: 15px;
+          border-radius: 8px;
+          margin: 20px 0;
+        }
+        .footer {
+          background: #f9fafb;
+          padding: 20px;
+          border-radius: 0 0 12px 12px;
+          border: 1px solid #e5e7eb;
+          border-top: none;
+          text-align: center;
+          font-size: 14px;
+          color: #6b7280;
+        }
+        .social-links {
+          margin: 15px 0;
+        }
+        .social-links a {
+          text-decoration: none;
+          margin: 0 10px;
+          color: #6b7280;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="logo">🏐 Gaelic Trips</div>
+        <h1>Welcome to Gaelic Trips!</h1>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">Your journey with the global GAA community starts here</p>
+      </div>
+      
+      <div class="content">
+        <p>Dear ${data.userName},</p>
+        
+        <p>Thank you for joining Gaelic Trips! We're thrilled to have you as part of our growing community of GAA enthusiasts from around the world.</p>
+        
+        ${data.isApproved ? `
+        <div class="feature-list">
+          <h3>🚀 What you can do now:</h3>
+          <ul>
+            <li>Browse and discover GAA clubs worldwide</li>
+            <li>Explore upcoming tournaments and events</li>
+            <li>Connect with teams and organizers</li>
+            <li>Plan your GAA trips and adventures</li>
+            <li>Join the global GAA community</li>
+          </ul>
+        </div>
+        
+        <div style="text-align: center;">
+          <a href="${data.loginUrl}" class="btn">Get Started</a>
+        </div>
+        ` : `
+        <div class="status-note">
+          <strong>⏳ Account Pending Approval</strong>
+          <p style="margin: 10px 0 0 0;">Your account is currently pending approval. This usually takes 24-48 hours. We'll send you an email as soon as your account is approved and you can start exploring!</p>
+        </div>
+        `}
+        
+        <h3>📚 Getting Started Tips:</h3>
+        <ul>
+          <li><strong>Complete your profile:</strong> Add information about your club and interests</li>
+          <li><strong>Explore tournaments:</strong> Check out upcoming events in your area</li>
+          <li><strong>Connect:</strong> Find and follow clubs you're interested in</li>
+        </ul>
+        
+        <p>If you have any questions or need assistance, our support team is here to help!</p>
+        
+        <p>Welcome aboard,<br>
+        The Gaelic Trips Team</p>
+      </div>
+      
+      <div class="footer">
+        <div class="logo">Gaelic Trips</div>
+        <p>Connecting GAA communities worldwide</p>
+        
+        <div class="social-links">
+          <a href="#">Facebook</a>
+          <a href="#">Twitter</a>
+          <a href="#">Instagram</a>
+        </div>
+        
+        <p style="margin-top: 15px; font-size: 12px;">
+          You received this email because you signed up for Gaelic Trips.<br>
+          © 2024 Gaelic Trips. All rights reserved.
+        </p>
+      </div>
+    </body>
+    </html>
+  `;
+
+  const text = `
+Welcome to Gaelic Trips!
+
+Dear ${data.userName},
+
+Thank you for joining Gaelic Trips! We're thrilled to have you as part of our growing community of GAA enthusiasts from around the world.
+
+${data.isApproved ? `
+What you can do now:
+- Browse and discover GAA clubs worldwide
+- Explore upcoming tournaments and events
+- Connect with teams and organizers
+- Plan your GAA trips and adventures
+- Join the global GAA community
+
+Get started: ${data.loginUrl}
+` : `
+⏳ Account Pending Approval
+Your account is currently pending approval. This usually takes 24-48 hours. We'll send you an email as soon as your account is approved and you can start exploring!
+`}
+
+Getting Started Tips:
+- Complete your profile: Add information about your club and interests
+- Explore tournaments: Check out upcoming events in your area
+- Connect: Find and follow clubs you're interested in
+
+If you have any questions or need assistance, our support team is here to help!
+
+Welcome aboard,
+The Gaelic Trips Team
+
+---
+Gaelic Trips - Connecting GAA communities worldwide
+© 2024 Gaelic Trips. All rights reserved.
+  `;
+
+  return { subject, html, text };
+}
