@@ -92,7 +92,7 @@ model Club {
   tournamentTeams     TournamentTeam[]
   availabilitySlots   AvailabilitySlot[]
   tournamentInterests TournamentInterest[]
-  adminRequests       ClubAdminRequest[]
+  clubAdminRequests   ClubAdminRequest[]
 
   // Performance indexes for common queries
   @@index([location])              // For country/location filtering (highest impact)
@@ -456,4 +456,31 @@ enum InterestStatus {
   APPROVED
   REJECTED
   CANCELLED
+}
+
+// Club Admin Request System
+model ClubAdminRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  clubId      String
+  reason      String
+  status      ClubAdminRequestStatus @default(PENDING)
+  requestedAt DateTime @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?
+  rejectionReason String?
+  
+  user        User     @relation(fields: [userId], references: [id])
+  club        Club     @relation(fields: [clubId], references: [id])
+  reviewer    User?    @relation("AdminRequestReviewer", fields: [reviewedBy], references: [id])
+  
+  @@unique([userId, clubId])
+  @@index([status])
+  @@index([clubId])
+}
+
+enum ClubAdminRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
