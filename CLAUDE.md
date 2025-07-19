@@ -33,6 +33,8 @@ When starting a new session, these files provide comprehensive context:
 - **Password security**: Real-time validation with visual requirements checklist
 - **Auto sign-in**: Seamless registration → sign-in flow with smart redirects
 - **User onboarding**: Instant approval for non-club users, welcome messaging
+- **Authentication UX**: Show/hide password toggles, email/username login flexibility
+- **Password reset**: Secure token-based password reset with email notifications
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -50,8 +52,11 @@ When starting a new session, these files provide comprehensive context:
 ## 🔐 Authentication & Security
 - **Auth**: Import from `@/lib/auth-helpers`, NOT directly from next-auth
 - **Roles**: SUPER_ADMIN, CLUB_ADMIN, USER
-- **Account Status**: Auto-approval for non-club users, manual approval for club users
-- **Password Requirements**: 8+ chars, uppercase, lowercase, number with real-time validation
+- **Account Status**: Auto-approval for all new users (simplified from manual approval)
+- **Login Flexibility**: Users can sign in with either email OR username
+- **Password Features**: Show/hide toggles, strength meter, real-time validation (8+ chars, uppercase, lowercase, number)
+- **Password Reset**: Secure token-based system with 1-hour expiration and email notifications
+- **Remember Me**: Extended session duration (30 days) with localStorage preference
 - **Auto Sign-in**: Users automatically signed in after successful registration
 - **Rate Limiting**: Currently in-memory (needs Redis for scaling)
 
@@ -61,7 +66,9 @@ When starting a new session, these files provide comprehensive context:
 - **Caching**: Next.js unstable_cache for club data (6hr TTL)
 - **Geocoding cache**: In-memory with 30-day TTL
 - **Calendar Models**: AvailabilitySlot, TournamentInterest with flexible date types
+- **Password Reset**: PasswordResetToken model with secure token hashing and expiration
 - **Optional Fields**: Full name field is optional in user registration
+- **Club Association**: Moved from registration to post-signup (users request access from club pages)
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (doesn't scale across instances)
@@ -108,11 +115,14 @@ npx prisma db push   # Apply schema changes
 - **SignInPromptModal**: For anonymous users to sign up/in for calendar features
 
 ## 🎯 User Experience Improvements
-- **Seamless Registration**: Auto sign-in after account creation
-- **Smart Redirects**: Welcome banner for approved users, status page for pending
-- **Password UX**: Visual feedback, strength meter, requirements checklist
+- **Seamless Registration**: Auto sign-in after account creation, instant approval for all users
+- **Smart Redirects**: Welcome banner for new users, intelligent post-login routing
+- **Enhanced Password UX**: Show/hide toggles, visual feedback, strength meter, requirements checklist
+- **Flexible Login**: Users can sign in with either email or username
+- **Password Recovery**: Self-service password reset with secure email links
+- **Remember Me**: Optional extended session duration
 - **Optional Fields**: Full name no longer mandatory
-- **Progressive Disclosure**: Club association hidden behind checkbox
+- **Simplified Onboarding**: Removed club association from signup (moved to post-registration)
 
 ---
-*Last Updated: January 2025 - Calendar & Auth Improvements*
+*Last Updated: January 2025 - Enhanced Authentication & UX Improvements*

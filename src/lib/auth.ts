@@ -26,6 +26,7 @@ declare module "next-auth" {
 export const authOptions = {
   session: {
     strategy: "jwt" as const,
+    maxAge: 30 * 24 * 60 * 60, // 30 days default
   },
   pages: {
     signIn: "/signin",
@@ -43,11 +44,22 @@ export const authOptions = {
           return null
         }
 
-        const user = await prisma.user.findUnique({
+        const loginInput = (credentials.username as string).toLowerCase().trim()
+        
+        // Try to find user by email first, then by username
+        let user = await prisma.user.findUnique({
           where: {
-            username: (credentials.username as string).toLowerCase().trim(),
+            email: loginInput,
           },
         })
+
+        if (!user) {
+          user = await prisma.user.findUnique({
+            where: {
+              username: loginInput,
+            },
+          })
+        }
 
         if (!user) {
           return null
