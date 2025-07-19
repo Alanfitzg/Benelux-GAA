@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { UserRole } from "@prisma/client";
 
 interface User {
@@ -18,6 +19,14 @@ interface ProfileClientProps {
   user: User;
 }
 
+interface AssociatedClub {
+  id: string;
+  name: string;
+  location?: string | null;
+  imageUrl?: string | null;
+  role: "member" | "admin";
+}
+
 export default function ProfileClient({ user }: ProfileClientProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
@@ -27,6 +36,26 @@ export default function ProfileClient({ user }: ProfileClientProps) {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [clubs, setClubs] = useState<AssociatedClub[]>([]);
+  const [loadingClubs, setLoadingClubs] = useState(true);
+
+  useEffect(() => {
+    fetchUserClubs();
+  }, []);
+
+  const fetchUserClubs = async () => {
+    try {
+      const response = await fetch("/api/user/clubs");
+      if (response.ok) {
+        const data = await response.json();
+        setClubs(data.clubs);
+      }
+    } catch (error) {
+      console.error("Error fetching user clubs:", error);
+    } finally {
+      setLoadingClubs(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -232,25 +261,99 @@ export default function ProfileClient({ user }: ProfileClientProps) {
           </div>
         </div>
 
-        {user.role === "CLUB_ADMIN" && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="mt-8 bg-white rounded-xl shadow-lg p-8"
-          >
-            <h3 className="text-xl font-bold text-gray-900 mb-4">Club Administration</h3>
-            <p className="text-gray-600 mb-6">
-              As a Club Admin, you have access to manage clubs assigned to you.
-            </p>
-            <button
-              onClick={() => router.push("/admin/clubs")}
-              className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
-            >
-              Manage My Clubs
-            </button>
-          </motion.div>
-        )}
+        {/* Associated Clubs Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-8 bg-white rounded-xl shadow-lg p-8"
+        >
+          <h3 className="text-xl font-bold text-gray-900 mb-4">Associated Clubs</h3>
+          
+          {loadingClubs ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : clubs.length > 0 ? (
+            <div className="space-y-4">
+              {clubs.map((club) => (
+                <motion.div
+                  key={club.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="flex items-center justify-between p-4 border border-gray-200 rounded-xl hover:border-primary/30 transition-colors"
+                >
+                  <div className="flex items-center space-x-4">
+                    {club.imageUrl ? (
+                      <img
+                        src={club.imageUrl}
+                        alt={club.name}
+                        className="w-12 h-12 rounded-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
+                        <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{club.name}</h4>
+                      {club.location && (
+                        <p className="text-sm text-gray-600">{club.location}</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      club.role === "admin" 
+                        ? "bg-blue-100 text-blue-800" 
+                        : "bg-gray-100 text-gray-800"
+                    }`}>
+                      {club.role === "admin" ? "Club Admin" : "Member"}
+                    </span>
+                    <Link
+                      href={`/clubs/${club.id}`}
+                      className="text-primary hover:text-primary-dark transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                </motion.div>
+              ))}
+              
+              {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
+                <div className="mt-6 pt-6 border-t border-gray-200">
+                  <button
+                    onClick={() => router.push("/admin/clubs")}
+                    className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
+                  >
+                    Manage My Clubs
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <p className="text-gray-600 mb-2">You&apos;re not associated with any clubs yet.</p>
+              <p className="text-sm text-gray-500 mb-6">
+                Browse clubs to find your GAA community and request to join.
+              </p>
+              <Link
+                href="/clubs"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              >
+                Browse Clubs
+              </Link>
+            </div>
+          )}
+        </motion.div>
       </motion.div>
     </div>
   );

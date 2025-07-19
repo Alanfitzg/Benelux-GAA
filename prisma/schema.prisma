@@ -123,6 +123,7 @@ model User {
   tournamentInterests TournamentInterest[]
   clubAdminRequests ClubAdminRequest[]
   reviewedAdminRequests ClubAdminRequest[] @relation("AdminRequestReviewer")
+  passwordResetTokens PasswordResetToken[]
 
   // Performance indexes for common queries
   @@index([accountStatus])      // For admin pending user queries (critical for admin)
@@ -456,4 +457,18 @@ enum InterestStatus {
   APPROVED
   REJECTED
   CANCELLED
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  used      Boolean  @default(false)
+
+  @@index([token])
+  @@index([userId])
+  @@index([expiresAt])
 }

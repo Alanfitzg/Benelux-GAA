@@ -3,13 +3,13 @@ import { createUser, getUserByEmail, getUserByUsername } from "@/lib/user"
 import { UserRegistrationSchema } from "@/lib/validation/schemas"
 import { ConflictError, withErrorHandler } from "@/lib/error-handlers"
 import { validateBody } from "@/lib/validation/middleware"
-import { sendEmail, getAdminEmails } from "@/lib/email"
-import { generateNewUserNotificationEmail, generateWelcomeEmail } from "@/lib/email-templates"
+import { sendEmail } from "@/lib/email"
+import { generateWelcomeEmail } from "@/lib/email-templates"
 import { AccountStatus } from "@prisma/client"
 
 async function registrationHandler(request: NextRequest) {
   // Validate request body using Zod schema
-  const { email, username, password, name, clubId } = await validateBody(request, UserRegistrationSchema)
+  const { email, username, password, name } = await validateBody(request, UserRegistrationSchema)
 
   // Normalize input data
   const normalizedEmail = email.toLowerCase().trim()
@@ -30,23 +30,16 @@ async function registrationHandler(request: NextRequest) {
     throw new ConflictError("This username is already taken")
   }
 
-  // Determine account status based on club association
-  const accountStatus = clubId ? AccountStatus.PENDING : AccountStatus.APPROVED
+  // All users are now auto-approved
+  const accountStatus = AccountStatus.APPROVED
   
-  // Create user
-  const user = await createUser(normalizedEmail, normalizedUsername, password, normalizedName, undefined, clubId, accountStatus)
+  // Create user without club association
+  const user = await createUser(normalizedEmail, normalizedUsername, password, normalizedName, undefined, null, accountStatus)
 
-  // Send welcome email to the new user
-  sendWelcomeEmail(user, accountStatus === AccountStatus.APPROVED).catch(error => {
+  // Send welcome email to the new user (all users are approved)
+  sendWelcomeEmail(user, true).catch(error => {
     console.error('Failed to send welcome email:', error)
   })
-
-  // Send admin notification email only for club-associated users requiring approval
-  if (accountStatus === AccountStatus.PENDING) {
-    sendAdminNotification(user).catch(error => {
-      console.error('Failed to send admin notification email:', error)
-    })
-  }
 
   return NextResponse.json({
     success: true,
@@ -58,80 +51,10 @@ async function registrationHandler(request: NextRequest) {
       role: user.role,
       accountStatus: user.accountStatus,
     },
-    message: accountStatus === AccountStatus.APPROVED 
-      ? "Account created successfully! You can now sign in and start using GAA Trips."
-      : "Account created successfully! Your account is pending approval from an administrator. You will receive an email notification once approved."
+    message: "Account created successfully! You can now sign in and start using GAA Trips."
   }, { status: 201 })
 }
 
-// Helper function to send admin notifications
-async function sendAdminNotification(user: {
-  id: string;
-  email: string;
-  name: string | null;
-  username: string;
-  clubId: string | null;
-}) {
-  try {
-    const adminEmails = await getAdminEmails()
-    
-    if (adminEmails.length === 0) {
-      console.log('No admin emails found, skipping notification')
-      return
-    }
-
-    // Get the base URL for admin panel links
-    const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
-    const adminPanelUrl = `${baseUrl}/admin`
-
-    // Get user's club name if they have one
-    let userClub: string | undefined
-    if (user.clubId) {
-      try {
-        const { prisma } = await import('@/lib/prisma')
-        const club = await prisma.club.findUnique({
-          where: { id: user.clubId },
-          select: { name: true }
-        })
-        userClub = club?.name
-      } catch (error) {
-        console.error('Failed to fetch club name:', error)
-      }
-    }
-
-    const emailData = {
-      userName: user.name || user.username,
-      userEmail: user.email,
-      userId: user.id,
-      userClub,
-      registrationDate: new Date().toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      }),
-      adminPanelUrl
-    }
-
-    const { subject, html, text } = generateNewUserNotificationEmail(emailData)
-
-    const success = await sendEmail({
-      to: adminEmails,
-      subject,
-      html,
-      text
-    })
-
-    if (success) {
-      console.log(`✅ Admin notification sent for new user: ${user.email}`)
-    } else {
-      console.error('❌ Failed to send admin notification email')
-    }
-  } catch (error) {
-    console.error('Error in sendAdminNotification:', error)
-  }
-}
 
 // Helper function to send welcome email
 async function sendWelcomeEmail(user: {

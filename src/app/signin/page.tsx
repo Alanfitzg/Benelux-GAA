@@ -4,26 +4,20 @@ import { useState, useEffect, Suspense } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { useAccountStatus } from "@/hooks/useAccountStatus"
 
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
-  const [registrationInfo, setRegistrationInfo] = useState<{show: boolean, status?: string, message?: string}>({show: false})
-  const { accountStatus, setAccountStatus, checkAccountStatus } = useAccountStatus()
+  const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false)
+  const [rememberMe, setRememberMe] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   useEffect(() => {
     const registered = searchParams.get('registered')
     if (registered === 'true') {
-      const status = searchParams.get('status')
-      const message = searchParams.get('message')
-      setRegistrationInfo({
-        show: true,
-        status: status || undefined,
-        message: message || undefined
-      })
+      setShowRegistrationSuccess(true)
     }
   }, [searchParams])
 
@@ -44,15 +38,15 @@ function SignInForm() {
       })
 
       if (result?.error) {
-        // Check if the error might be due to account status
-        const statusInfo = await checkAccountStatus(username);
-        if (statusInfo) {
-          setAccountStatus(statusInfo);
-          setError("");
-        } else {
-          setError("Invalid username or password");
-        }
+        setError("Invalid username or password");
       } else {
+        // Store remember me preference
+        if (rememberMe) {
+          localStorage.setItem('rememberMe', 'true')
+        } else {
+          localStorage.removeItem('rememberMe')
+        }
+        
         // Check if there's a redirect path stored
         const redirectPath = sessionStorage.getItem('redirectAfterSignIn')
         if (redirectPath) {
@@ -93,42 +87,23 @@ function SignInForm() {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {registrationInfo.show && (
-            <div className={`rounded-lg p-4 border shadow-sm ${
-              registrationInfo.status === 'APPROVED' 
-                ? 'bg-green-50 border-green-200/50' 
-                : 'bg-yellow-50 border-yellow-200/50'
-            }`}>
+          {showRegistrationSuccess && (
+            <div className="rounded-lg p-4 border shadow-sm bg-green-50 border-green-200/50">
               <div className="flex">
                 <div className="flex-shrink-0">
-                  <svg className={`h-5 w-5 ${
-                    registrationInfo.status === 'APPROVED' ? 'text-green-500' : 'text-yellow-500'
-                  }`} fill="currentColor" viewBox="0 0 20 20">
+                  <svg className="h-5 w-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className={`text-sm font-semibold ${
-                    registrationInfo.status === 'APPROVED' ? 'text-green-800' : 'text-yellow-800'
-                  }`}>
+                  <h3 className="text-sm font-semibold text-green-800">
                     Account Created Successfully!
                   </h3>
-                  <div className={`mt-1 text-sm ${
-                    registrationInfo.status === 'APPROVED' ? 'text-green-700' : 'text-yellow-700'
-                  }`}>
-                    <p>{registrationInfo.message}</p>
-                    {registrationInfo.status === 'PENDING' && (
-                      <p className="mt-2">
-                        <Link href="/account/status" className="font-semibold underline hover:text-yellow-600 transition-colors">
-                          Check your account status anytime
-                        </Link>
-                      </p>
-                    )}
-                    {registrationInfo.status === 'APPROVED' && (
-                      <p className="mt-2 font-medium">
-                        You can now sign in below!
-                      </p>
-                    )}
+                  <div className="mt-1 text-sm text-green-700">
+                    <p>Your account has been created and you can now sign in.</p>
+                    <p className="mt-2 font-medium">
+                      Sign in below to start using GAA Trips!
+                    </p>
                   </div>
                 </div>
               </div>
@@ -144,88 +119,78 @@ function SignInForm() {
               </div>
             </div>
           )}
-          {accountStatus && (
-            <div className={`rounded-lg p-4 shadow-sm ${
-              accountStatus.status === 'PENDING' 
-                ? 'bg-yellow-50 border border-yellow-200/50' 
-                : 'bg-red-50 border border-red-200/50'
-            }`}>
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  {accountStatus.status === 'PENDING' ? (
-                    <svg className="h-5 w-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    <svg className="h-5 w-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                    </svg>
-                  )}
-                </div>
-                <div className="ml-3">
-                  <h3 className={`text-sm font-semibold ${
-                    accountStatus.status === 'PENDING' ? 'text-yellow-800' : 'text-red-800'
-                  }`}>
-                    {accountStatus.status === 'PENDING' ? 'Account Pending Approval' : 
-                     accountStatus.status === 'REJECTED' ? 'Account Rejected' : 
-                     'Account Suspended'}
-                  </h3>
-                  <div className={`mt-1 text-sm ${
-                    accountStatus.status === 'PENDING' ? 'text-yellow-700' : 'text-red-700'
-                  }`}>
-                    <p>{accountStatus.message}</p>
-                    {accountStatus.rejectionReason && (
-                      <p className="mt-2"><strong>Reason:</strong> {accountStatus.rejectionReason}</p>
-                    )}
-                    {accountStatus.status === 'PENDING' && (
-                      <p className="mt-2">
-                        <Link href="/account/status" className="font-semibold underline hover:text-yellow-600 transition-colors">
-                          Check your account status here
-                        </Link>
-                      </p>
-                    )}
-                    {accountStatus.status === 'REJECTED' && (
-                      <p className="mt-2">
-                        You can{" "}
-                        <Link href="/signup" className="font-semibold underline hover:text-red-600 transition-colors">
-                          create a new account
-                        </Link>{" "}
-                        or contact support for assistance.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
           <div className="space-y-4">
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-                Username
+                Email or Username
               </label>
               <input
                 id="username"
                 name="username"
                 type="text"
-                autoComplete="username"
+                autoComplete="username email"
                 required
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 hover:border-gray-400"
-                placeholder="Enter your username"
+                placeholder="Enter your email or username"
               />
             </div>
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="current-password"
+                  required
+                  className="appearance-none relative block w-full px-4 py-3 pr-12 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 hover:border-gray-400"
+                  placeholder="Enter your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932" />
+                    </svg>
+                  ) : (
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
               <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 hover:border-gray-400"
-                placeholder="Enter your password"
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded cursor-pointer"
               />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700 cursor-pointer">
+                Remember me
+              </label>
+            </div>
+
+            <div className="text-sm">
+              <Link
+                href="/forgot-password"
+                className="font-medium text-primary hover:text-primary-dark transition-colors"
+              >
+                Forgot your password?
+              </Link>
             </div>
           </div>
 

@@ -2,10 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import ClubSelector from "@/components/ClubSelector";
 import PasswordRequirements from "@/components/auth/PasswordRequirements";
 import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter";
 import UsernameRequirements from "@/components/auth/UsernameRequirements";
@@ -15,12 +14,12 @@ export default function SignUp() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
-  const [isAssociatedWithClub, setIsAssociatedWithClub] = useState(false);
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
   const [showUsernameRequirements, setShowUsernameRequirements] = useState(false);
   const [usernameErrors, setUsernameErrors] = useState<string[]>([]);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Check if form is valid for submission
   const isFormValid = () => {
@@ -106,14 +105,6 @@ export default function SignUp() {
     }
   };
 
-  const handleClubAssociationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setIsAssociatedWithClub(checked);
-    // Clear selected club if unchecking
-    if (!checked) {
-      setSelectedClubId(null);
-    }
-  };
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -165,7 +156,6 @@ export default function SignUp() {
           username: formData.username,
           password: formData.password,
           name: formData.name,
-          clubId: isAssociatedWithClub ? selectedClubId : null,
         }),
       });
 
@@ -190,32 +180,25 @@ export default function SignUp() {
           });
 
           if (signInResult?.error) {
-            // Auto sign-in failed - redirect to signin page with registration success info
-            const signInUrl = `/signin?registered=true&status=${data.user.accountStatus}&message=${encodeURIComponent(data.message)}`;
-            router.push(signInUrl);
+            // Auto sign-in failed - redirect to signin page
+            router.push('/signin?registered=true');
           } else {
-            // Sign in successful - check for redirect path or go to dashboard
+            // Sign in successful - check for redirect path or go home with welcome
             const redirectPath = typeof window !== 'undefined' ? sessionStorage.getItem('redirectAfterSignIn') : null;
             
             if (redirectPath) {
               sessionStorage.removeItem('redirectAfterSignIn');
               router.push(redirectPath);
             } else {
-              // Show a brief success message for auto-approved users, then redirect
-              if (data.user.accountStatus === 'APPROVED') {
-                router.push('/?welcome=true');
-              } else {
-                // For pending users, go to a status page
-                router.push('/account/status?registered=true');
-              }
+              // Redirect to home with welcome message
+              router.push('/?welcome=true');
             }
             router.refresh();
           }
         } catch (signInError) {
           console.error('Auto sign-in exception:', signInError);
           // Fallback to signin page
-          const signInUrl = `/signin?registered=true&status=${data.user.accountStatus}&message=${encodeURIComponent(data.message)}`;
-          router.push(signInUrl);
+          router.push('/signin?registered=true');
         }
       }
     } catch {
@@ -365,21 +348,40 @@ export default function SignUp() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Password <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      name="password"
-                      type="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      onFocus={handlePasswordFocus}
-                      onBlur={handlePasswordBlur}
-                      placeholder="Create a secure password"
-                      required
-                      className={`w-full border-2 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
-                        passwordErrors.length > 0 ? 'border-red-300 focus:border-red-400' : 
-                        formData.password && passwordErrors.length === 0 ? 'border-green-300 focus:border-green-400' :
-                        'border-gray-200 focus:border-primary'
-                      }`}
-                    />
+                    <div className="relative">
+                      <input
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        onFocus={handlePasswordFocus}
+                        onBlur={handlePasswordBlur}
+                        placeholder="Create a secure password"
+                        required
+                        className={`w-full border-2 rounded-xl px-4 py-4 pr-12 bg-gray-50/50 text-gray-900 focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
+                          passwordErrors.length > 0 ? 'border-red-300 focus:border-red-400' : 
+                          formData.password && passwordErrors.length === 0 ? 'border-green-300 focus:border-green-400' :
+                          'border-gray-200 focus:border-primary'
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932" />
+                          </svg>
+                        ) : (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                     
                     {/* Password Strength Meter */}
                     <PasswordStrengthMeter 
@@ -403,19 +405,38 @@ export default function SignUp() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Confirm Password <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      name="confirmPassword"
-                      type="password"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      placeholder="Confirm your password"
-                      required
-                      className={`w-full border-2 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
-                        formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-300 focus:border-red-400' :
-                        formData.confirmPassword && formData.password === formData.confirmPassword ? 'border-green-300 focus:border-green-400' :
-                        'border-gray-200 focus:border-primary'
-                      }`}
-                    />
+                    <div className="relative">
+                      <input
+                        name="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        placeholder="Confirm your password"
+                        required
+                        className={`w-full border-2 rounded-xl px-4 py-4 pr-12 bg-gray-50/50 text-gray-900 focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
+                          formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-300 focus:border-red-400' :
+                          formData.confirmPassword && formData.password === formData.confirmPassword ? 'border-green-300 focus:border-green-400' :
+                          'border-gray-200 focus:border-primary'
+                        }`}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
+                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                      >
+                        {showConfirmPassword ? (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932" />
+                          </svg>
+                        ) : (
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                     
                     {/* Password Match Indicator */}
                     {formData.confirmPassword && (
@@ -448,88 +469,12 @@ export default function SignUp() {
                   </motion.div>
                 </div>
 
-                {/* Club Association Section */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.8 }}
-                  className="pt-6 border-t border-gray-200"
-                >
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-                      <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-800">
-                        Club Association
-                      </h3>
-                      <p className="text-sm text-gray-600">
-                        Connect with your GAA club to receive relevant updates and opportunities
-                      </p>
-                      <div className="mt-2 text-xs text-gray-500">
-                        <span className="inline-flex items-center space-x-1">
-                          <span>✓</span>
-                          <span>Get notified about tournaments in your area</span>
-                        </span>
-                        <span className="inline-flex items-center space-x-1 ml-4">
-                          <span>✓</span>
-                          <span>Connect with club members</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Club Association Checkbox */}
-                  <div className="mb-4">
-                    <label className="flex items-start space-x-3 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={isAssociatedWithClub}
-                        onChange={handleClubAssociationChange}
-                        className="mt-1 w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
-                      />
-                      <div>
-                        <span className="text-sm font-medium text-gray-800">
-                          I am associated with an international GAA club
-                        </span>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Check this if you&apos;re a member, player, or official with a GAA club outside of Ireland
-                        </p>
-                      </div>
-                    </label>
-                  </div>
-                  
-                  {/* Club Selector - Only show if checkbox is checked */}
-                  <AnimatePresence>
-                    {isAssociatedWithClub && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
-                      >
-                        <div className="mb-3">
-                          <p className="text-xs text-gray-600 bg-blue-50 border border-blue-200 rounded-lg p-3">
-                            💡 <strong>Can&apos;t find your club?</strong> No worries! You can still create an account and connect with your club later, or help us add your club to the platform.
-                          </p>
-                        </div>
-                        <ClubSelector
-                          value={selectedClubId}
-                          onChange={setSelectedClubId}
-                        />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
 
                 {/* Submit Button */}
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.9 }}
+                  transition={{ delay: 0.8 }}
                   className="pt-6"
                 >
                   <button
@@ -555,7 +500,7 @@ export default function SignUp() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 1.0 }}
+                  transition={{ delay: 0.9 }}
                   className="text-center text-sm text-gray-500"
                 >
                   By creating an account, you agree to our{" "}
