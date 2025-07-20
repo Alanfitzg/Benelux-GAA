@@ -36,6 +36,15 @@ export async function POST(request: NextRequest) {
       })
     }
 
+    // Check if user is an OAuth user (no password)
+    if (!user.password || user.password === "") {
+      // Don't reveal that this is an OAuth account
+      return NextResponse.json({
+        success: true,
+        message: "If an account exists with this email, you will receive password reset instructions.",
+      })
+    }
+
     // Delete any existing tokens for this user
     await prisma.passwordResetToken.deleteMany({
       where: { userId: user.id },

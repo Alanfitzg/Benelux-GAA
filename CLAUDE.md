@@ -35,6 +35,8 @@ When starting a new session, these files provide comprehensive context:
 - **User onboarding**: Instant approval for non-club users, welcome messaging
 - **Authentication UX**: Show/hide password toggles, email/username login flexibility
 - **Password reset**: Secure token-based password reset with email notifications
+- **Google OAuth**: Sign in/up with Google, automatic username generation
+- **OAuth edge cases**: Prevents password reset for OAuth users, blocks conflicting accounts
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -58,6 +60,10 @@ When starting a new session, these files provide comprehensive context:
 - **Password Reset**: Secure token-based system with 1-hour expiration and email notifications
 - **Remember Me**: Extended session duration (30 days) with localStorage preference
 - **Auto Sign-in**: Users automatically signed in after successful registration
+- **Google OAuth**: Complete Google sign-in/up with automatic username generation from email
+- **Account Linking**: Existing users can link Google to their password accounts seamlessly
+- **OAuth Security**: Prevents password reset for OAuth users, secure account association
+- **OAuth Edge Cases**: Handles email conflicts, prevents account takeover, graceful error handling
 - **Rate Limiting**: Currently in-memory (needs Redis for scaling)
 
 ## 🗄️ Database Patterns
@@ -67,6 +73,7 @@ When starting a new session, these files provide comprehensive context:
 - **Geocoding cache**: In-memory with 30-day TTL
 - **Calendar Models**: AvailabilitySlot, TournamentInterest with flexible date types
 - **Password Reset**: PasswordResetToken model with secure token hashing and expiration
+- **OAuth Accounts**: Account model tracks Google/Facebook OAuth associations
 - **Optional Fields**: Full name field is optional in user registration
 - **Club Association**: Moved from registration to post-signup (users request access from club pages)
 
@@ -77,8 +84,8 @@ When starting a new session, these files provide comprehensive context:
 
 ## 📊 Next Priorities (Post-Launch)
 1. **Week 1**: Google Analytics 4 setup
-2. **Week 2**: Email automation (SendGrid configured but underused)
-3. **Week 3-4**: Social authentication (Google/Facebook OAuth)
+2. **Week 2**: Email automation (Resend already integrated)
+3. **Week 3-4**: ✅ Google OAuth COMPLETED - Facebook OAuth next
 4. **Month 2**: Tournament brackets visualization
 
 ## 💻 Development Commands
@@ -104,9 +111,11 @@ npx prisma db push   # Apply schema changes
 
 ## 🚨 Critical Reminders
 - NEVER commit NEXTAUTH_SECRET to git
+- NEVER commit OAuth secrets (GOOGLE_CLIENT_SECRET) to git
 - Images use `unoptimized: true` due to Vercel limits
 - Always test with `npm run build` before deploying
 - Database indexes are CRITICAL for performance
+- OAuth users have empty password field - use `hasPassword` field to check auth method
 
 ## 📋 New Components Added
 - **`/src/components/auth/PasswordRequirements.tsx`** - Real-time password validation checklist
@@ -123,6 +132,9 @@ npx prisma db push   # Apply schema changes
 - **Remember Me**: Optional extended session duration
 - **Optional Fields**: Full name no longer mandatory
 - **Simplified Onboarding**: Removed club association from signup (moved to post-registration)
+- **Google OAuth**: One-click sign-in/up with Google accounts
+- **Account Linking**: Existing users can seamlessly link Google to their accounts
+- **Admin Visibility**: OAuth provider indicators in admin panel for better user support
 
 ---
-*Last Updated: January 2025 - Enhanced Authentication & UX Improvements*
+*Last Updated: January 2025 - Google OAuth Implementation & Enhanced Authentication*

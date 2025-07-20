@@ -13,11 +13,25 @@ async function getUsersHandler() {
     }
 
     const users = await prisma.user.findMany({
-      include: {
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        name: true,
+        role: true,
+        accountStatus: true,
+        createdAt: true,
+        clubId: true,
+        password: true, // Include password to check if user has one
         adminOfClubs: {
           select: {
             id: true,
             name: true,
+          },
+        },
+        accounts: {
+          select: {
+            provider: true,
           },
         },
       },
@@ -26,7 +40,14 @@ async function getUsersHandler() {
       },
     })
 
-    return NextResponse.json({ users })
+    // Transform users to include hasPassword instead of raw password
+    const transformedUsers = users.map(user => ({
+      ...user,
+      hasPassword: !!(user.password && user.password !== ""),
+      password: undefined, // Remove password from response for security
+    }))
+
+    return NextResponse.json({ users: transformedUsers })
   } catch (error) {
     console.error("Error fetching users:", error)
     return NextResponse.json(

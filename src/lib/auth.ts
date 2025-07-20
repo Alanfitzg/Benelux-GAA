@@ -1,5 +1,6 @@
 import NextAuth from "next-auth"
 import Credentials from "next-auth/providers/credentials"
+import Google from "next-auth/providers/google"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import type { UserRole, AccountStatus } from "@prisma/client"
@@ -13,6 +14,7 @@ declare module "next-auth" {
       name?: string | null
       role: UserRole
       accountStatus: AccountStatus
+      hasPassword: boolean
     }
   }
 
@@ -20,6 +22,7 @@ declare module "next-auth" {
     username: string
     role: UserRole
     accountStatus: AccountStatus
+    hasPassword?: boolean
   }
 }
 
@@ -33,6 +36,10 @@ export const authOptions = {
     error: "/signin",
   },
   providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     Credentials({
       name: "credentials",
       credentials: {
@@ -93,8 +100,104 @@ export const authOptions = {
   ],
   callbacks: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async jwt({ token, user }: any) {
-      if (user) {
+    async signIn({ user, account }: any) {
+      // Handle Google OAuth sign in
+      if (account?.provider === "google") {
+        const email = user.email
+        if (!email) return false
+
+        try {
+          // Check if user already exists
+          let existingUser = await prisma.user.findUnique({
+            where: { email },
+          })
+
+          if (!existingUser) {
+            // Generate a unique username from email
+            const baseUsername = email.split('@')[0].toLowerCase()
+            let username = baseUsername
+            let counter = 1
+
+            // Ensure username is unique
+            while (await prisma.user.findUnique({ where: { username } })) {
+              username = `${baseUsername}${counter}`
+              counter++
+            }
+
+            // Create new user with Google OAuth
+            existingUser = await prisma.user.create({
+              data: {
+                email,
+                username,
+                name: user.name || undefined,
+                password: "", // OAuth users don't have passwords
+                role: "USER",
+                accountStatus: "APPROVED", // Auto-approve Google users
+                approvedAt: new Date(),
+              },
+            })
+          } else {
+            // User exists - check if they already have a Google account linked
+            const existingGoogleAccount = await prisma.account.findFirst({
+              where: {
+                userId: existingUser.id,
+                provider: "google"
+              }
+            })
+
+            if (!existingGoogleAccount) {
+              // No Google account linked yet
+              if (existingUser.password && existingUser.password !== "") {
+                // This is a traditional account trying to sign in with Google
+                // Create the OAuth account link
+                await prisma.account.create({
+                  data: {
+                    userId: existingUser.id,
+                    type: "oauth",
+                    provider: "google",
+                    providerAccountId: account.providerAccountId!,
+                    access_token: account.access_token,
+                    expires_at: account.expires_at,
+                    token_type: account.token_type,
+                    scope: account.scope,
+                    id_token: account.id_token,
+                  }
+                })
+                console.log(`Linked Google account to existing user ${email}`)
+              }
+            }
+          }
+
+          // Update the user object with our database user data
+          user.id = existingUser.id
+          user.username = existingUser.username
+          user.role = existingUser.role
+          user.accountStatus = existingUser.accountStatus
+
+          return true
+        } catch (error) {
+          console.error("Error handling Google sign in:", error)
+          return false
+        }
+      }
+
+      return true
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async jwt({ token, user, account }: any) {
+      if (account?.provider === "google" && user) {
+        // For Google sign in, fetch the user data from database
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email },
+        })
+        if (dbUser) {
+          token.id = dbUser.id
+          token.username = dbUser.username
+          token.role = dbUser.role
+          token.accountStatus = dbUser.accountStatus
+        }
+      } else if (user) {
+        // For credentials sign in
         token.id = user.id
         token.username = user.username
         token.role = user.role
@@ -109,6 +212,13 @@ export const authOptions = {
         session.user.username = token.username as string
         session.user.role = token.role as UserRole
         session.user.accountStatus = token.accountStatus as AccountStatus
+        
+        // Check if user has a password (non-OAuth users)
+        const user = await prisma.user.findUnique({
+          where: { id: token.id as string },
+          select: { password: true }
+        })
+        session.user.hasPassword = !!(user?.password && user.password !== "")
       }
       return session
     },
