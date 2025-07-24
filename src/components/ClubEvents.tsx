@@ -15,9 +15,10 @@ interface Event {
 
 interface ClubEventsProps {
   events: Event[];
+  compact?: boolean;
 }
 
-export default function ClubEvents({ events }: ClubEventsProps) {
+export default function ClubEvents({ events, compact = false }: ClubEventsProps) {
   const { isEnabled } = useFeatureFlags();
   
   if (!isEnabled('CLUB_EVENTS') || events.length === 0) {
@@ -30,6 +31,42 @@ export default function ClubEvents({ events }: ClubEventsProps) {
 
   if (upcomingEvents.length === 0 && pastEvents.length === 0) {
     return null;
+  }
+
+  if (compact) {
+    const allEvents = [...upcomingEvents, ...pastEvents].slice(0, 3);
+    return (
+      <div className="space-y-3">
+        {allEvents.map((event) => (
+          <div key={event.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex-1">
+              <h4 className="text-sm font-medium text-gray-900">{event.title}</h4>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {new Date(event.startDate).toLocaleDateString('en-IE', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric'
+                })} • {event.location}
+              </p>
+            </div>
+            <Link 
+              href={`/events/${event.id}`} 
+              className="text-xs text-primary hover:text-primary/80 font-medium"
+            >
+              View
+            </Link>
+          </div>
+        ))}
+        {events.length > 3 && (
+          <Link 
+            href="/events" 
+            className="block text-center text-sm text-primary hover:text-primary/80 font-medium pt-2"
+          >
+            View all events →
+          </Link>
+        )}
+      </div>
+    );
   }
 
   return (

@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, X, Send, CheckCircle, Clock, AlertCircle } from 'lucide-react';
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Shield, X, Send, CheckCircle, Clock, AlertCircle } from "lucide-react";
 
 interface ClubAdminRequestButtonProps {
   clubId: string;
   clubName: string;
   existingRequest?: {
     id: string;
-    status: 'PENDING' | 'APPROVED' | 'REJECTED';
+    status: "PENDING" | "APPROVED" | "REJECTED";
     requestedAt: string;
     rejectionReason?: string;
   };
@@ -25,10 +25,10 @@ export default function ClubAdminRequestButton({
 }: ClubAdminRequestButtonProps) {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Don't show if user is not signed in or is already an admin
   if (!session || isCurrentAdmin) {
@@ -38,18 +38,18 @@ export default function ClubAdminRequestButton({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reason.trim()) {
-      setError('Please provide a reason for your request');
+      setError("Please provide a reason for your request");
       return;
     }
 
     setIsSubmitting(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('/api/clubs/admin-request', {
-        method: 'POST',
+      const response = await fetch("/api/clubs/admin-request", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           clubId,
@@ -60,19 +60,19 @@ export default function ClubAdminRequestButton({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit request');
+        throw new Error(data.error || "Failed to submit request");
       }
 
       setSuccess(true);
       setTimeout(() => {
         setIsModalOpen(false);
         setSuccess(false);
-        setReason('');
+        setReason("");
         // Refresh the page to show the new request status
         window.location.reload();
       }, 2000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsSubmitting(false);
     }
@@ -82,21 +82,23 @@ export default function ClubAdminRequestButton({
     if (!existingRequest) return null;
 
     switch (existingRequest.status) {
-      case 'PENDING':
+      case "PENDING":
         return (
           <div className="flex items-center gap-2 text-yellow-600 bg-yellow-50 px-3 py-2 rounded-lg">
             <Clock className="w-4 h-4" />
-            <span className="text-sm font-medium">Admin request pending review</span>
+            <span className="text-sm font-medium">
+              Admin request pending review
+            </span>
           </div>
         );
-      case 'APPROVED':
+      case "APPROVED":
         return (
           <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-2 rounded-lg">
             <CheckCircle className="w-4 h-4" />
             <span className="text-sm font-medium">Admin request approved</span>
           </div>
         );
-      case 'REJECTED':
+      case "REJECTED":
         return (
           <div className="flex items-center gap-2 text-red-600 bg-red-50 px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4" />
@@ -111,12 +113,13 @@ export default function ClubAdminRequestButton({
     return (
       <div className="space-y-2">
         {getStatusDisplay()}
-        {existingRequest.status === 'REJECTED' && existingRequest.rejectionReason && (
-          <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
-            <strong>Reason:</strong> {existingRequest.rejectionReason}
-          </div>
-        )}
-        {existingRequest.status === 'REJECTED' && (
+        {existingRequest.status === "REJECTED" &&
+          existingRequest.rejectionReason && (
+            <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-lg">
+              <strong>Reason:</strong> {existingRequest.rejectionReason}
+            </div>
+          )}
+        {existingRequest.status === "REJECTED" && (
           <button
             onClick={() => setIsModalOpen(true)}
             className="text-sm text-primary hover:text-primary-dark font-medium"
@@ -171,7 +174,8 @@ export default function ClubAdminRequestButton({
                   Request administrative access for <strong>{clubName}</strong>
                 </p>
                 <p className="text-sm text-gray-500">
-                  Your request will be reviewed by a super administrator.
+                  Your request to become an admin for this club will be
+                  reviewed.
                 </p>
               </div>
 
