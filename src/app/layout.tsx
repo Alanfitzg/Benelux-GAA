@@ -13,6 +13,8 @@ import { StructuredData, organizationStructuredData, websiteStructuredData } fro
 import { ErrorLoggerInitializer } from '@/components/ErrorLoggerInitializer';
 import ExampleDataPopup from '@/components/ExampleDataBanner';
 import { FeatureFlagProvider } from '@/contexts/FeatureFlagContext';
+import OnboardingProvider from '@/components/onboarding/OnboardingProvider';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -128,7 +130,9 @@ export default function RootLayout({
             <AuthSessionProvider>
               <FeatureFlagProvider>
                 <ErrorLoggerInitializer />
+                <Toaster position="top-center" />
                 <ExampleDataPopup />
+                <OnboardingProvider />
                 <ProfessionalHeader />
                 <main className="pt-16">
                   {children}

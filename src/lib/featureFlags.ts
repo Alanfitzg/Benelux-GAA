@@ -39,6 +39,13 @@ export const FEATURE_FLAGS: Record<string, FeatureFlag> = {
     description: 'Show analytics and statistics for clubs',
     enabled: false,
   },
+  USER_ONBOARDING: {
+    id: 'USER_ONBOARDING',
+    name: 'User Onboarding Flow',
+    description: 'Show onboarding questionnaire for new users to capture travel preferences and motivations',
+    enabled: false,
+    experimental: true,
+  },
 };
 
 export function isFeatureEnabled(featureId: string): boolean {

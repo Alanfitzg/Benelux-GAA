@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import type { UserRole } from "@prisma/client";
+import PreferencesSection from "@/components/profile/PreferencesSection";
 
 interface User {
   id: string;
@@ -285,11 +287,13 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                 >
                   <div className="flex items-center space-x-4">
                     {club.imageUrl ? (
-                      <img
+                      <Image
                         src={club.imageUrl}
                         alt={club.name}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 rounded-full object-cover"
-                        loading="lazy"
+                        unoptimized
                       />
                     ) : (
                       <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
@@ -354,6 +358,9 @@ export default function ProfileClient({ user }: ProfileClientProps) {
             </div>
           )}
         </motion.div>
+        
+        {/* Travel Preferences Section */}
+        <PreferencesSection />
       </motion.div>
     </div>
   );

@@ -124,6 +124,7 @@ model User {
   clubAdminRequests ClubAdminRequest[]
   reviewedAdminRequests ClubAdminRequest[] @relation("AdminRequestReviewer")
   passwordResetTokens PasswordResetToken[]
+  preferences     UserPreferences?
 
   // Performance indexes for common queries
   @@index([accountStatus])      // For admin pending user queries (critical for admin)
@@ -471,4 +472,35 @@ model PasswordResetToken {
   @@index([token])
   @@index([userId])
   @@index([expiresAt])
+}
+
+model UserPreferences {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  
+  // Travel Motivations (multiple selection)
+  motivations     String[] // ['weather_sun', 'weather_winter', 'budget', 'specific_city', 'specific_club', 'activities_beach', 'activities_mountain', 'nightlife', 'culture', 'food', 'short_flight', 'sister_club', 'tournament_reputation', 'friends_going']
+  
+  // Competitive Preferences
+  competitiveLevel String? // 'casual', 'mixed', 'competitive_irish', 'international', 'elite'
+  
+  // Specific Interests
+  preferredCities    String[]
+  preferredCountries String[]
+  preferredClubs     String[]
+  activities         String[] // ['surfing', 'hiking', 'nightlife', 'culture', 'food', 'swimming', 'skiing']
+  
+  // Additional preferences
+  budgetRange        String?  // 'budget', 'mid-range', 'premium'
+  maxFlightTime      Int?     // Maximum flight time in hours
+  preferredMonths    String[] // ['january', 'february', etc.]
+  
+  // Meta
+  onboardingCompleted Boolean @default(false)
+  onboardingSkipped   Boolean @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([userId])
 }
