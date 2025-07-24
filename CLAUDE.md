@@ -10,6 +10,8 @@ GAA Trips is a production-deployed platform for organizing GAA (Gaelic Athletic 
 - **Auth**: NextAuth.js v5 (beta) - credentials only
 - **Storage**: AWS S3 for images
 - **Maps**: Mapbox for geocoding and location services
+- **UI/UX**: Framer Motion animations, @hello-pangea/dnd for drag-and-drop
+- **Notifications**: react-hot-toast for user feedback
 - **Deployment**: Vercel
 
 ## 📁 Key Project Documentation
@@ -37,6 +39,8 @@ When starting a new session, these files provide comprehensive context:
 - **Password reset**: Secure token-based password reset with email notifications
 - **Google OAuth**: Sign in/up with Google, automatic username generation
 - **OAuth edge cases**: Prevents password reset for OAuth users, blocks conflicting accounts
+- **User Onboarding Flow**: Comprehensive preference collection with drag-and-drop ranking
+- **Feature Toggles**: Admin dashboard integration for easy feature management
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -76,17 +80,74 @@ When starting a new session, these files provide comprehensive context:
 - **OAuth Accounts**: Account model tracks Google/Facebook OAuth associations
 - **Optional Fields**: Full name field is optional in user registration
 - **Club Association**: Moved from registration to post-signup (users request access from club pages)
+- **User Preferences**: UserPreferences model stores travel motivations (ranked), competitive level, destinations, activities, and timing preferences
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (doesn't scale across instances)
 - Connection pooling could be optimized
 - Some legacy event types mixed with new system
 
+## 🎯 User Onboarding System (NEW - January 2025)
+
+### **Feature Toggle Control**
+- **Admin Access**: `/admin/features` - toggleable "User Onboarding Flow" feature
+- **Default State**: Disabled (experimental feature)
+- **Location**: Integrated into main admin dashboard
+
+### **Onboarding Flow Components**
+1. **Travel Motivations** (Step 1)
+   - 9 simplified options: Sun, Budget, Specific Place, Activities, Social, Tournaments, Quick Trips, Culture, Friends
+   - **Drag-and-drop ranking**: Users select and rank by priority
+   - **Smart UI**: Selection grid + ranked list with visual feedback
+
+2. **Competitive Level** (Step 2)
+   - 5 levels: Casual/Social, Mixed Ability, Competitive Irish, International Challenge, Elite
+   - Single selection with detailed descriptions
+
+3. **Optional Details** (Step 3)
+   - **Cities/Countries**: Manual input with tags
+   - **Budget Range**: Budget, Mid-range, Premium options
+   - **Activities**: 8 activity types (surfing, hiking, etc.)
+   - **Travel Timing**: Seasonal quick-select + individual months
+
+4. **Completion Summary** (Step 4)
+   - Shows ranked preferences and selections
+   - Saves to database with completion flag
+
+### **Database Schema**
+```prisma
+model UserPreferences {
+  motivations      String[]  // Ranked array of motivation IDs
+  competitiveLevel String?   // Single competitive level
+  preferredCities  String[]  // User-input cities
+  preferredCountries String[] // User-input countries  
+  activities       String[]  // Selected activity types
+  budgetRange      String?   // Budget preference
+  preferredMonths  String[]  // Travel month preferences
+  onboardingCompleted Boolean
+  onboardingSkipped   Boolean
+}
+```
+
+### **Integration Points**
+- **Automatic Trigger**: Shows for new users after feature enabled
+- **Profile Management**: Edit preferences from `/profile` page
+- **Skip Option**: Users can skip and set preferences later
+- **API Endpoints**: `/api/user/preferences` (GET, POST, PATCH)
+
+### **Technical Implementation**
+- **Components**: `/src/components/onboarding/` directory
+- **Drag & Drop**: @hello-pangea/dnd library for ranking
+- **State Management**: React hooks with real-time updates
+- **Responsive Design**: Mobile-first with compact modal layout
+- **Animations**: Framer Motion for smooth transitions
+
 ## 📊 Next Priorities (Post-Launch)
 1. **Week 1**: Google Analytics 4 setup
 2. **Week 2**: Email automation (Resend already integrated)
 3. **Week 3-4**: ✅ Google OAuth COMPLETED - Facebook OAuth next
-4. **Month 2**: Tournament brackets visualization
+4. **Month 2**: ✅ User Onboarding COMPLETED - Tournament brackets visualization
+5. **Future**: Preference-based recommendation engine using collected data
 
 ## 💻 Development Commands
 ```bash
@@ -122,6 +183,15 @@ npx prisma db push   # Apply schema changes
 - **`/src/components/auth/PasswordStrengthMeter.tsx`** - Visual password strength indicator
 - **Calendar Components**: ClubCalendar, InterestSubmissionForm, ClubCalendarManagement
 - **SignInPromptModal**: For anonymous users to sign up/in for calendar features
+- **`/src/components/onboarding/OnboardingModal.tsx`** - Main 4-step onboarding modal with progress tracking
+- **`/src/components/onboarding/MotivationSelector.tsx`** - Drag-and-drop travel motivation ranking
+- **`/src/components/onboarding/CompetitiveSelector.tsx`** - Competitive level selection with descriptions
+- **`/src/components/onboarding/DetailPreferences.tsx`** - Optional preference details with seasonal month selection
+- **`/src/components/onboarding/OnboardingComplete.tsx`** - Summary and completion confirmation
+- **`/src/components/onboarding/OnboardingProvider.tsx`** - Global provider for triggering onboarding
+- **`/src/components/profile/PreferencesSection.tsx`** - Profile integration for editing preferences
+- **`/src/hooks/useOnboarding.ts`** - Hook for onboarding state management
+- **`/src/lib/constants/onboarding.ts`** - Centralized onboarding options and configurations
 
 ## 🎯 User Experience Improvements
 - **Seamless Registration**: Auto sign-in after account creation, instant approval for all users
@@ -137,4 +207,4 @@ npx prisma db push   # Apply schema changes
 - **Admin Visibility**: OAuth provider indicators in admin panel for better user support
 
 ---
-*Last Updated: January 2025 - Google OAuth Implementation & Enhanced Authentication*
+*Last Updated: January 2025 - User Onboarding System with Drag-and-Drop Ranking*

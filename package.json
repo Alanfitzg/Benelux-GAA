@@ -22,6 +22,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",
     "@aws-sdk/client-s3": "^3.828.0",
+    "@hello-pangea/dnd": "^18.0.1",
     "@prisma/client": "^6.9.0",
     "@radix-ui/react-slot": "^1.2.3",
     "bcryptjs": "^3.0.2",
@@ -40,6 +41,7 @@
     "react": "^19.0.0",
     "react-calendar": "^6.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "react-map-gl": "^7.1.9",
     "resend": "^4.6.0",
     "schema-dts": "^1.1.5",
