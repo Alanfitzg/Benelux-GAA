@@ -33,6 +33,21 @@ export async function GET() {
             imageUrl: true,
           },
         },
+        clubAdminRequests: {
+          where: {
+            status: "PENDING",
+          },
+          include: {
+            club: {
+              select: {
+                id: true,
+                name: true,
+                location: true,
+                imageUrl: true,
+              },
+            },
+          },
+        },
       },
     })
 
@@ -66,6 +81,19 @@ export async function GET() {
           role: "admin",
         })
       }
+    }
+    
+    // Add pending admin requests
+    for (const request of user.clubAdminRequests) {
+      clubs.push({
+        ...request.club,
+        role: "pending",
+        pendingRequest: {
+          id: request.id,
+          status: request.status,
+          requestedAt: request.requestedAt,
+        },
+      })
     }
 
     return NextResponse.json({ clubs })

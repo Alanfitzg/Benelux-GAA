@@ -2,16 +2,14 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ACTIVITIES, BUDGET_RANGES, MONTHS, SEASONS } from '@/lib/constants/onboarding';
+import { BUDGET_RANGES, MONTHS, SEASONS } from '@/lib/constants/onboarding';
 
 interface DetailPreferencesProps {
   formData: {
     preferredCities: string[];
     preferredCountries: string[];
     preferredClubs: string[];
-    activities: string[];
     budgetRange: string;
-    maxFlightTime: number | null;
     preferredMonths: string[];
   };
   onUpdate: (updates: Partial<DetailPreferencesProps['formData']>) => void;
@@ -45,17 +43,6 @@ export default function DetailPreferences({ formData, onUpdate }: DetailPreferen
     }
   };
 
-  const toggleActivity = (activityId: string) => {
-    if (formData.activities.includes(activityId)) {
-      onUpdate({ 
-        activities: formData.activities.filter(id => id !== activityId) 
-      });
-    } else {
-      onUpdate({ 
-        activities: [...formData.activities, activityId] 
-      });
-    }
-  };
 
   const toggleMonth = (monthId: string) => {
     if (formData.preferredMonths.includes(monthId)) {
@@ -213,39 +200,12 @@ export default function DetailPreferences({ formData, onUpdate }: DetailPreferen
         </div>
       </motion.div>
 
-      {/* Activities */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.4 }}
-        className="space-y-3"
-      >
-        <h3 className="font-semibold text-gray-900">Activities You Enjoy</h3>
-        <div className="grid grid-cols-4 gap-2">
-          {Object.values(ACTIVITIES).map((activity) => (
-            <button
-              key={activity.id}
-              onClick={() => toggleActivity(activity.id)}
-              className={`
-                p-2 rounded-lg border transition-all text-center
-                ${formData.activities.includes(activity.id)
-                  ? 'border-primary bg-primary/5'
-                  : 'border-gray-200 hover:border-gray-300'
-                }
-              `}
-            >
-              <div className="text-xl">{activity.icon}</div>
-              <div className="text-xs mt-1">{activity.label}</div>
-            </button>
-          ))}
-        </div>
-      </motion.div>
 
       {/* Travel Months */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
+        transition={{ delay: 0.4 }}
         className="space-y-4"
       >
         <h3 className="font-semibold text-gray-900">When Do You Like to Travel?</h3>
@@ -301,28 +261,6 @@ export default function DetailPreferences({ formData, onUpdate }: DetailPreferen
         </div>
       </motion.div>
 
-      {/* Max Flight Time */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-        className="space-y-3"
-      >
-        <h3 className="font-semibold text-gray-900">Maximum Flight Time</h3>
-        <div className="flex items-center gap-4">
-          <input
-            type="range"
-            min="1"
-            max="12"
-            value={formData.maxFlightTime || 4}
-            onChange={(e) => onUpdate({ maxFlightTime: parseInt(e.target.value) })}
-            className="flex-1"
-          />
-          <span className="text-sm font-medium w-20 text-right">
-            {formData.maxFlightTime || 4} hours
-          </span>
-        </div>
-      </motion.div>
     </div>
   );
 }

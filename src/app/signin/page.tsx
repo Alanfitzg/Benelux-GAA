@@ -4,10 +4,12 @@ import { useState, useEffect, Suspense } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
+import { useAnalytics } from "@/hooks/useAnalytics"
 
 function SignInForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { trackLogin } = useAnalytics()
   const [error, setError] = useState<string>("")
   const [isLoading, setIsLoading] = useState(false)
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false)
@@ -40,6 +42,9 @@ function SignInForm() {
       if (result?.error) {
         setError("Invalid username or password");
       } else {
+        // Track successful login
+        trackLogin('credentials');
+        
         // Store remember me preference
         if (rememberMe) {
           localStorage.setItem('rememberMe', 'true')

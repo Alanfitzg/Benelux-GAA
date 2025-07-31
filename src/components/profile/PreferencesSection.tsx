@@ -13,9 +13,7 @@ interface UserPreferences {
   preferredCities: string[];
   preferredCountries: string[];
   preferredClubs: string[];
-  activities: string[];
   budgetRange: string;
-  maxFlightTime: number | null;
   preferredMonths: string[];
   onboardingCompleted: boolean;
   onboardingSkipped: boolean;

@@ -56,30 +56,20 @@ export const TRAVEL_MOTIVATIONS = {
 } as const;
 
 export const COMPETITIVE_LEVELS = {
-  casual: {
-    id: 'casual',
-    label: 'Social & Fun',
-    description: 'Just for the craic - focus on fun and meeting people'
+  social_tournament: {
+    id: 'social_tournament',
+    label: 'Social Tournament',
+    description: 'More interested in the trip than playing football - focus on fun, culture, and craic'
   },
-  mixed: {
-    id: 'mixed',
-    label: 'Mixed Ability',
-    description: 'Some competitive games, some social'
+  competitive_friendly: {
+    id: 'competitive_friendly',
+    label: 'Competitive Friendly',
+    description: 'High-level teams (usually Irish) looking to play against other strong teams'
   },
-  competitive_irish: {
-    id: 'competitive_irish',
-    label: 'Competitive Irish',
-    description: 'Match against similar Irish teams abroad'
-  },
-  international: {
-    id: 'international',
-    label: 'International Challenge',
-    description: 'Test yourself against local European teams'
-  },
-  elite: {
-    id: 'elite',
-    label: 'Elite Level',
-    description: 'High-level competitive tournaments only'
+  training_camp: {
+    id: 'training_camp',
+    label: 'Training Camp Abroad',
+    description: 'Focused on team preparation with training facilities and practice matches'
   }
 } as const;
 
