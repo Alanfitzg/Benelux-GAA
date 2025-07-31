@@ -9,9 +9,10 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
 - **Frontend**: Next.js 15.3.3 with React 19, TypeScript, Tailwind CSS
 - **Backend**: Next.js API Routes with middleware
 - **Database**: PostgreSQL with Prisma ORM (v6.9.0)
-- **Authentication**: NextAuth.js v5 (beta) with credentials provider
-- **UI/UX**: Framer Motion animations, responsive design
-- **External APIs**: Mapbox for geocoding and location services
+- **Authentication**: NextAuth.js v5 (beta) with credentials + Google OAuth
+- **Analytics**: Google Analytics 4 with custom GAA event tracking
+- **UI/UX**: Framer Motion animations, responsive design, drag-and-drop
+- **External APIs**: Mapbox for geocoding and location services (streets-v12 style)
 - **Hosting**: Database on Supabase, file uploads via AWS S3
 
 ### Key Dependencies
@@ -23,7 +24,9 @@ A comprehensive platform for organizing and managing GAA (Gaelic Athletic Associ
   "next-auth": "5.0.0-beta.28",
   "framer-motion": "11.x",
   "tailwindcss": "4.x",
-  "mapbox-gl": "3.13.0"
+  "mapbox-gl": "3.13.0",
+  "@next/third-parties": "15.x",
+  "@hello-pangea/dnd": "16.x"
 }
 ```
 
@@ -251,7 +254,27 @@ npm run dev                  # Start development server
    - **Progressive Disclosure**: Club association hidden behind checkbox in signup form
    - **Optional Fields**: Full name field made truly optional
 
-#### **3. Performance Optimizations** (High Impact)
+#### **3. Club Admin Request System** (January 2025) ⭐ *NEW*
+   - **Profile Integration**: Club admin requests accessible directly from user profile
+   - **Club Selection Modal**: Searchable modal for selecting clubs to request admin access
+   - **Smart Filtering**: Excludes clubs where user already has access or pending requests
+   - **Request Tracking**: Visual status indicators for pending, approved, rejected requests
+   - **Database Integration**: Leverages existing ClubAdminRequest model
+
+#### **4. Google Analytics 4 Implementation** (January 2025) ⭐ *NEW*
+   - **Measurement ID**: G-P01Z2DYLMH integrated across entire platform
+   - **Custom Event Tracking**: GAA-specific events (sign_up, club_admin_request, tournament_interest)
+   - **User Properties**: Role tracking, competitive levels, club associations
+   - **Hook-based API**: useAnalytics hook for easy event tracking in components
+   - **Privacy Compliant**: Proper consent handling with existing cookie system
+
+#### **5. User Interface & Experience Enhancements** (January 2025)
+   - **Map Styling**: Updated from light-v11 to streets-v12 for more vibrant, colorful map experience
+   - **Onboarding Simplified**: Reduced competitive levels from 5 to 3 focused categories
+   - **Question Removal**: Eliminated activities and flight time questions from onboarding
+   - **Drag-and-Drop**: Enhanced motivation ranking with smooth animations
+
+#### **6. Performance Optimizations** (High Impact)
    - **Database Indexes**: Added 17 critical indexes for 10-50x query performance improvement
      - Club location/teamTypes indexes (country filtering: 200ms → 5ms)
      - Event startDate index (date filtering: 150ms → 3ms)  

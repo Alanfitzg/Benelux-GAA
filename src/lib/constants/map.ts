@@ -10,7 +10,7 @@ export const MAP_CONFIG = {
   SELECTED_ITEM_ZOOM: 8,
   
   // Mapbox configuration
-  STYLE: 'mapbox://styles/mapbox/light-v11',
+  STYLE: 'mapbox://styles/mapbox/streets-v12',
   
   // Marker configuration
   MARKER_ANCHOR: 'bottom' as const,

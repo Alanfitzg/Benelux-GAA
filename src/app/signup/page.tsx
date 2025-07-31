@@ -9,9 +9,11 @@ import PasswordRequirements from "@/components/auth/PasswordRequirements";
 import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter";
 import UsernameRequirements from "@/components/auth/UsernameRequirements";
 import { passwordSchema, usernameSchema } from "@/lib/validation/schemas";
+import { useAnalytics } from "@/hooks/useAnalytics";
 
 export default function SignUp() {
   const router = useRouter();
+  const { trackSignUp } = useAnalytics();
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
@@ -171,6 +173,9 @@ export default function SignUp() {
         }
         setError(errorMessage);
       } else {
+        // Track successful signup
+        trackSignUp('credentials');
+        
         // Registration successful - now automatically sign in the user
         try {
           const signInResult = await signIn("credentials", {

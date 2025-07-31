@@ -30,24 +30,27 @@ Given you just launched, I'd rate Social Auth as **MEDIUM priority** rather than
 ### **Week 1: Data & Insights** 📊
 **Priority: CRITICAL**
 
-#### **Google Analytics 4 Setup** (2-3 hours)
-- [ ] Set up GA4 property (free tier - up to 10M events/month)
-- [ ] Track key events:
+#### **Google Analytics 4 Setup** ✅ **COMPLETED** (January 2025)
+- [x] Set up GA4 property (G-P01Z2DYLMH) with GAA Trips tracking
+- [x] Track key events:
   ```typescript
   - page_view (automatic)
-  - sign_up
-  - club_registration  
-  - event_registration
-  - tournament_team_signup
-  - contact_form_submit
+  - sign_up, login, logout
+  - club_admin_request, club_view, club_contact
+  - tournament_interest, event_registration
+  - onboarding_complete, onboarding_skip
+  - contact_form_submit, search actions
   ```
-- [ ] Custom dimensions for GAA-specific data:
+- [x] Custom dimensions for GAA-specific data:
   ```typescript
   - user_role (super_admin, club_admin, user)
   - account_status (pending, approved)
   - club_location (country)
+  - competitive_level (from onboarding)
   - event_type (tournament, friendly, etc.)
   ```
+- [x] Hook-based implementation with useAnalytics() for easy tracking
+- [x] Integrated across signup, login, onboarding, and profile interactions
 
 #### **Performance Monitoring** (1 hour)
 - [ ] Set up Core Web Vitals tracking
@@ -222,3 +225,44 @@ Your existing auth helpers in `/lib/auth-helpers.ts` will need updates:
 Your Social Auth TODO is **excellent and comprehensive** - this framework just ensures you build the right features in the right order based on actual user data rather than assumptions.
 
 The technical plan in your TODO.md is spot-on and ready to implement when the time comes!
+
+---
+
+## 📊 **January 2025 Update - Major Progress Made**
+
+### ✅ **High Priority Items COMPLETED:**
+
+#### **1. Google Analytics 4 Implementation** - **DONE** ✅
+- **Full GA4 integration** with measurement ID G-P01Z2DYLMH
+- **Custom event tracking** for GAA-specific user actions
+- **User property tracking** for roles, competitive levels, club associations
+- **Component integration** across signup, login, onboarding, profile sections
+- **Privacy compliant** with existing cookie consent system
+
+#### **2. User Experience Enhancements** - **DONE** ✅
+- **Club Admin Request System**: Users can request admin access directly from profile
+- **Enhanced Map Experience**: Updated to colorful streets-v12 style for better visual appeal  
+- **Streamlined Onboarding**: Simplified competitive levels (3 focused options vs 5 complex ones)
+- **Question Optimization**: Removed activities and flight time questions for faster onboarding
+
+### 🎯 **Current Priority Status Update:**
+
+**NEXT HIGH PRIORITIES:**
+1. **Email Automation** (Week 2 original plan) - Still high priority
+2. **Facebook OAuth** (Week 3-4 original plan) - Can proceed after Google OAuth success
+3. **Performance Monitoring** - Core Web Vitals tracking still needed
+4. **User Feedback Collection** - Simple feedback widget implementation
+
+**ACCOMPLISHED AHEAD OF SCHEDULE:**
+- ✅ Analytics implementation (was Week 1 critical item)
+- ✅ User interface improvements (visual map enhancement)  
+- ✅ Profile functionality enhancement (club admin requests)
+- ✅ Onboarding optimization (simplified flow)
+
+**IMPACT:**
+- **Analytics Foundation**: Now have comprehensive user behavior tracking for data-driven decisions
+- **Enhanced UX**: More intuitive club admin request process and visual map improvements
+- **Simplified Onboarding**: Faster user conversion with focused questions
+- **Ready for Next Phase**: Strong foundation for email automation and additional OAuth providers
+
+The platform is now well-positioned for the next phase of growth with proper analytics, enhanced user experience, and streamlined workflows.

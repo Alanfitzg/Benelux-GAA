@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { UserRole } from "@prisma/client";
 import PreferencesSection from "@/components/profile/PreferencesSection";
+import ClubSelectionModal from "@/components/profile/ClubSelectionModal";
 
 interface User {
   id: string;
@@ -26,7 +27,12 @@ interface AssociatedClub {
   name: string;
   location?: string | null;
   imageUrl?: string | null;
-  role: "member" | "admin";
+  role: "member" | "admin" | "pending";
+  pendingRequest?: {
+    id: string;
+    status: string;
+    requestedAt: string;
+  };
 }
 
 export default function ProfileClient({ user }: ProfileClientProps) {
@@ -40,6 +46,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
   const [message, setMessage] = useState("");
   const [clubs, setClubs] = useState<AssociatedClub[]>([]);
   const [loadingClubs, setLoadingClubs] = useState(true);
+  const [showClubSelectionModal, setShowClubSelectionModal] = useState(false);
 
   useEffect(() => {
     fetchUserClubs();
@@ -313,9 +320,15 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       club.role === "admin" 
                         ? "bg-blue-100 text-blue-800" 
+                        : club.role === "pending"
+                        ? "bg-yellow-100 text-yellow-800"
                         : "bg-gray-100 text-gray-800"
                     }`}>
-                      {club.role === "admin" ? "Club Admin" : "Member"}
+                      {club.role === "admin" 
+                        ? "Club Admin" 
+                        : club.role === "pending"
+                        ? "Admin Request Pending"
+                        : "Member"}
                     </span>
                     <Link
                       href={`/clubs/${club.id}`}
@@ -329,16 +342,22 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                 </motion.div>
               ))}
               
-              {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
-                <div className="mt-6 pt-6 border-t border-gray-200">
+              <div className="mt-6 pt-6 border-t border-gray-200 flex gap-3 flex-wrap">
+                {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
                   <button
                     onClick={() => router.push("/admin/clubs")}
                     className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
                   >
                     Manage My Clubs
                   </button>
-                </div>
-              )}
+                )}
+                <button
+                  onClick={() => setShowClubSelectionModal(true)}
+                  className="px-6 py-2.5 border border-primary text-primary font-medium rounded-xl hover:bg-primary/5 transition-colors"
+                >
+                  Request Admin for Another Club
+                </button>
+              </div>
             </div>
           ) : (
             <div className="text-center py-8">
@@ -347,14 +366,14 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               </svg>
               <p className="text-gray-600 mb-2">You&apos;re not associated with any clubs yet.</p>
               <p className="text-sm text-gray-500 mb-6">
-                Browse clubs to find your GAA community and request to join.
+                Browse clubs to find your GAA community and request admin access.
               </p>
-              <Link
-                href="/clubs"
+              <button
+                onClick={() => setShowClubSelectionModal(true)}
                 className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-xl text-gray-700 bg-white hover:bg-gray-50 transition-colors"
               >
-                Browse Clubs
-              </Link>
+                Request Club Admin Access
+              </button>
             </div>
           )}
         </motion.div>
@@ -362,6 +381,16 @@ export default function ProfileClient({ user }: ProfileClientProps) {
         {/* Travel Preferences Section */}
         <PreferencesSection />
       </motion.div>
+
+      {/* Club Selection Modal */}
+      <ClubSelectionModal
+        isOpen={showClubSelectionModal}
+        onClose={() => setShowClubSelectionModal(false)}
+        onRequestSubmit={() => {
+          fetchUserClubs();
+          setMessage("Club admin request submitted successfully!");
+        }}
+      />
     </div>
   );
 }

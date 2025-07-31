@@ -14,6 +14,7 @@ import { ErrorLoggerInitializer } from '@/components/ErrorLoggerInitializer';
 import ExampleDataPopup from '@/components/ExampleDataBanner';
 import { FeatureFlagProvider } from '@/contexts/FeatureFlagContext';
 import OnboardingProvider from '@/components/onboarding/OnboardingProvider';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
@@ -125,6 +126,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${poppins.variable} font-inter antialiased bg-gray-50 min-h-screen`}
       >
+        <GoogleAnalytics />
         <ErrorBoundary>
           <ErrorNotificationProvider>
             <AuthSessionProvider>

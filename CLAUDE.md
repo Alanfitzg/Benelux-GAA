@@ -9,7 +9,8 @@ GAA Trips is a production-deployed platform for organizing GAA (Gaelic Athletic 
 - **Database**: PostgreSQL (Supabase)
 - **Auth**: NextAuth.js v5 (beta) - credentials only
 - **Storage**: AWS S3 for images
-- **Maps**: Mapbox for geocoding and location services
+- **Maps**: Mapbox for geocoding and location services (streets-v12 style)
+- **Analytics**: Google Analytics 4 with custom GAA event tracking
 - **UI/UX**: Framer Motion animations, @hello-pangea/dnd for drag-and-drop
 - **Notifications**: react-hot-toast for user feedback
 - **Deployment**: Vercel
@@ -41,6 +42,10 @@ When starting a new session, these files provide comprehensive context:
 - **OAuth edge cases**: Prevents password reset for OAuth users, blocks conflicting accounts
 - **User Onboarding Flow**: Comprehensive preference collection with drag-and-drop ranking
 - **Feature Toggles**: Admin dashboard integration for easy feature management
+- **Club Admin Requests**: Profile-based system for requesting admin rights to clubs
+- **Google Analytics 4**: Comprehensive event tracking for user behavior and GAA-specific actions
+- **Map Enhancement**: Updated to colorful streets-v12 style for better visual appeal
+- **Onboarding Streamlined**: Removed activities and flight time questions, focused competitive levels
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -190,8 +195,12 @@ npx prisma db push   # Apply schema changes
 - **`/src/components/onboarding/OnboardingComplete.tsx`** - Summary and completion confirmation
 - **`/src/components/onboarding/OnboardingProvider.tsx`** - Global provider for triggering onboarding
 - **`/src/components/profile/PreferencesSection.tsx`** - Profile integration for editing preferences
+- **`/src/components/profile/ClubSelectionModal.tsx`** - Modal for selecting clubs and requesting admin access
+- **`/src/components/GoogleAnalytics.tsx`** - Google Analytics 4 integration component
 - **`/src/hooks/useOnboarding.ts`** - Hook for onboarding state management
+- **`/src/hooks/useAnalytics.ts`** - Hook for Google Analytics event tracking
 - **`/src/lib/constants/onboarding.ts`** - Centralized onboarding options and configurations
+- **`/src/lib/analytics.ts`** - Google Analytics utilities and event definitions
 
 ## 🎯 User Experience Improvements
 - **Seamless Registration**: Auto sign-in after account creation, instant approval for all users
@@ -205,6 +214,41 @@ npx prisma db push   # Apply schema changes
 - **Google OAuth**: One-click sign-in/up with Google accounts
 - **Account Linking**: Existing users can seamlessly link Google to their accounts
 - **Admin Visibility**: OAuth provider indicators in admin panel for better user support
+- **Club Admin Requests**: Users can request admin access from their profile via searchable club selection
+- **Streamlined Onboarding**: Simplified competitive levels (3 focused options) and removed unnecessary questions
+
+## 📊 Google Analytics 4 Implementation
+
+### **Measurement ID**: `G-P01Z2DYLMH`
+
+### **Tracked Events**:
+- **Authentication**: sign_up, login, logout (with method: credentials/google)
+- **Onboarding**: onboarding_complete, onboarding_skip
+- **Club Actions**: club_admin_request, club_view, club_contact
+- **User Journey**: tournament_interest, event_registration, search actions
+- **Form Submissions**: contact_form_submit, survey_submit
+
+### **Custom Properties**:
+- User role (super_admin, club_admin, user)
+- Club information (ID, name, location)
+- Competitive level preferences
+- Event types and engagement metrics
+
+### **Environment Variable**: 
+```
+NEXT_PUBLIC_GA_MEASUREMENT_ID="G-P01Z2DYLMH"
+```
+
+## 🗺️ Map Enhancements
+- **Updated Style**: Changed from `light-v11` to `streets-v12` for more colorful, engaging map experience
+- **Better Contrast**: Improved visibility of clubs and events on the map
+- **Enhanced UX**: More vibrant water bodies, parks, and urban areas
+
+## 🎯 Competitive Level Updates
+Updated from 5 complex options to 3 focused categories:
+1. **Social Tournament**: More interested in trip than competition - focus on fun, culture, craic
+2. **Competitive Friendly**: High-level teams (usually Irish) wanting strong competition  
+3. **Training Camp Abroad**: Team preparation focused with training facilities
 
 ---
-*Last Updated: January 2025 - User Onboarding System with Drag-and-Drop Ranking*
+*Last Updated: January 2025 - Google Analytics 4, Club Admin Requests, Map & Onboarding Updates*

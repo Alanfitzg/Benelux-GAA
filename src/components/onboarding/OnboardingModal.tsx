@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import { useAnalytics } from '@/hooks/useAnalytics';
 import MotivationSelector from './MotivationSelector';
 import CompetitiveSelector from './CompetitiveSelector';
 import DetailPreferences from './DetailPreferences';
@@ -17,6 +18,7 @@ interface OnboardingModalProps {
 
 export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
   const router = useRouter();
+  const { trackOnboardingComplete, trackOnboardingSkip } = useAnalytics();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -26,9 +28,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
     preferredCities: [] as string[],
     preferredCountries: [] as string[],
     preferredClubs: [] as string[],
-    activities: [] as string[],
     budgetRange: '',
-    maxFlightTime: null as number | null,
     preferredMonths: [] as string[]
   });
 
@@ -48,6 +48,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
 
   const handleSkip = async () => {
     try {
+      trackOnboardingSkip();
       await fetch('/api/user/preferences', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -72,6 +73,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
       });
 
       if (response.ok) {
+        trackOnboardingComplete(formData);
         toast.success('Preferences saved! We\'ll use these to personalize your experience.');
         setTimeout(() => {
           onClose();
