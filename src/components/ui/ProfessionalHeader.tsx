@@ -38,6 +38,7 @@ const ProfessionalHeader = () => {
   const navItems = [
     { href: "/events", label: "Tournaments" },
     { href: "/clubs", label: "Clubs" },
+    { href: "/map", label: "Map" },
     { href: "/survey", label: "Custom Trip" },
     { href: "/how-it-works", label: "How It Works" },
   ];

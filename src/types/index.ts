@@ -39,6 +39,7 @@ export interface Event {
   minTeams?: number;
   maxTeams?: number;
   acceptedTeamTypes?: string[];
+  visibility?: 'PUBLIC' | 'PRIVATE';
   
   createdAt?: string;
   updatedAt?: string;
@@ -80,4 +81,5 @@ export interface Match {
 }
 
 export type TeamStatus = 'REGISTERED' | 'CONFIRMED' | 'WITHDRAWN';
-export type MatchStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'POSTPONED'; 
+export type MatchStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'POSTPONED';
+export type TournamentVisibility = 'PUBLIC' | 'PRIVATE'; 

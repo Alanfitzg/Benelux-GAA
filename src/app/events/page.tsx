@@ -56,15 +56,18 @@ async function getEvents({
   eventType,
   country,
   month,
+  visibility,
 }: {
   eventType?: string;
   country?: string;
   month?: string;
+  visibility?: string;
 }) {
   const where: {
     eventType?: string;
     location?: { contains: string };
     startDate?: { gte: Date; lt: Date };
+    visibility?: 'PUBLIC' | 'PRIVATE';
   } = {};
   if (eventType) where.eventType = eventType;
   if (country && country !== "") {
@@ -81,10 +84,25 @@ async function getEvents({
       ),
     };
   }
+  if (visibility && visibility !== "") {
+    where.visibility = visibility as 'PUBLIC' | 'PRIVATE';
+  }
   return await prisma.event.findMany({
     where,
     orderBy: { startDate: "asc" },
-    include: {
+    select: {
+      id: true,
+      title: true,
+      eventType: true,
+      location: true,
+      startDate: true,
+      endDate: true,
+      cost: true,
+      description: true,
+      imageUrl: true,
+      latitude: true,
+      longitude: true,
+      visibility: true,
       club: {
         select: {
           id: true,
@@ -106,7 +124,8 @@ export default async function EventsPage({
     const eventType = params.eventType || "";
     const country = params.country || "";
     const month = params.month || "";
-    const events = await getEvents({ eventType, country, month });
+    const visibility = params.visibility || "";
+    const events = await getEvents({ eventType, country, month, visibility });
     const eventTypes = ["", ...EVENT_TYPES];
     const countries = Array.from(
       new Set(
@@ -118,6 +137,11 @@ export default async function EventsPage({
       .filter(Boolean)
       .sort() as string[];
     const months = getMonthOptions();
+    const visibilityOptions = [
+      { value: "", label: "All Tournaments" },
+      { value: "PUBLIC", label: "Public Only" },
+      { value: "PRIVATE", label: "Private Only" },
+    ];
 
     // Generate structured data for events
     const structuredData = {
@@ -256,6 +280,17 @@ export default async function EventsPage({
                     </option>
                   ))}
                 </select>
+                <select
+                  name="visibility"
+                  defaultValue={visibility}
+                  className="px-4 py-2.5 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                >
+                  {visibilityOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
                 <button
                   type="submit"
                   className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
@@ -276,7 +311,11 @@ export default async function EventsPage({
                     startDate: Date;
                     endDate: Date | null;
                     cost: number | null;
+                    description: string | null;
                     imageUrl: string | null;
+                    latitude: number | null;
+                    longitude: number | null;
+                    visibility: 'PUBLIC' | 'PRIVATE';
                     club: {
                       id: string;
                       name: string;
@@ -325,6 +364,19 @@ export default async function EventsPage({
                               sizes="56px"
                               className="object-cover"
                             />
+                          </div>
+                        )}
+
+                        {/* Visibility Badge */}
+                        {event.eventType === 'Tournament' && (
+                          <div className="absolute top-2 right-2">
+                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${
+                              event.visibility === 'PUBLIC' 
+                                ? 'bg-green-100 text-green-800 border border-green-200' 
+                                : 'bg-gray-100 text-gray-800 border border-gray-200'
+                            }`}>
+                              {event.visibility === 'PUBLIC' ? '🌍 Public' : '🔒 Private'}
+                            </span>
                           </div>
                         )}
 

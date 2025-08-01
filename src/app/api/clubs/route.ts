@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { requireClubAdmin } from '@/lib/auth-helpers';
+import { requireAuth, getServerSession } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 import { geocodeLocation } from '@/lib/utils/geocoding';
 import { unstable_cache, revalidateTag } from 'next/cache';
@@ -10,6 +10,7 @@ const getCachedFilterOptions = unstable_cache(
   async () => {
     console.log('Cache miss: Computing club filter options from database');
     const allClubs = await prisma.club.findMany({
+      where: { status: 'APPROVED' }, // Only include approved clubs in filter options
       select: { location: true, teamTypes: true },
     });
     
@@ -36,7 +37,8 @@ const getCachedFilterOptions = unstable_cache(
 
 async function createClubHandler(req: NextRequest) {
   try {
-    const authResult = await requireClubAdmin();
+    // Change from requireClubAdmin to requireAuth - any authenticated user can create clubs
+    const authResult = await requireAuth();
     if (authResult instanceof NextResponse) {
       return authResult;
     }
@@ -75,6 +77,9 @@ async function createClubHandler(req: NextRequest) {
         contactPhone: data.contactPhone || null,
         contactCountryCode: data.contactCountryCode || null,
         isContactWilling: data.isContactWilling || false,
+        // New status fields - all new clubs start as PENDING
+        status: 'PENDING',
+        submittedBy: authResult.user.id,
         ...geocodeData
       },
     });
@@ -98,12 +103,22 @@ async function getClubsHandler(req: NextRequest) {
     const teamType = searchParams.get('teamType') || '';
     const search = searchParams.get('search') || '';
 
+    // Check if user is admin (to show all clubs) or regular user (only approved clubs)
+    const session = await getServerSession();
+    const isAdmin = session?.user?.role === 'SUPER_ADMIN' || session?.user?.role === 'GUEST_ADMIN';
+
     // Build filter conditions
     const where: {
+      status?: 'APPROVED' | 'PENDING' | 'REJECTED';
       location?: { contains: string; mode: 'insensitive' };
       teamTypes?: { has: string };
       OR?: Array<{ name: { contains: string; mode: 'insensitive' } } | { location: { contains: string; mode: 'insensitive' } }>;
     } = {};
+
+    // Only show approved clubs to non-admin users
+    if (!isAdmin) {
+      where.status = 'APPROVED';
+    }
     
     if (country && country !== "") {
       where.location = { contains: country, mode: 'insensitive' };
@@ -143,6 +158,9 @@ async function getClubsHandler(req: NextRequest) {
         website: true,
         codes: true,
         teamTypes: true,
+        status: true,
+        createdAt: true,
+        submittedBy: true,
       },
     });
         break; // Success, exit retry loop

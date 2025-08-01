@@ -21,6 +21,7 @@ type CreateEventBody = {
   minTeams?: number;
   maxTeams?: number;
   acceptedTeamTypes?: string[];
+  visibility?: 'PUBLIC' | 'PRIVATE';
 };
 
 async function getEventsHandler(request: NextRequest) {
@@ -97,6 +98,8 @@ async function createEventHandler(request: NextRequest) {
       longitude,
       // Ensure acceptedTeamTypes is always an array (empty if not provided)
       acceptedTeamTypes: body.acceptedTeamTypes || [],
+      // Set visibility, default to PUBLIC if not provided
+      visibility: body.visibility || 'PUBLIC',
     };
 
     console.log('Event data for database:', JSON.stringify(eventData, null, 2));

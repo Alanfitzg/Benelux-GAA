@@ -35,6 +35,7 @@ export default function CreateEvent() {
   const [minTeams, setMinTeams] = useState<number | undefined>();
   const [maxTeams, setMaxTeams] = useState<number | undefined>();
   const [acceptedTeamTypes, setAcceptedTeamTypes] = useState<string[]>([]);
+  const [visibility, setVisibility] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC');
 
   // Redirect to signin if not authenticated
   useEffect(() => {
@@ -106,6 +107,7 @@ export default function CreateEvent() {
         minTeams: minTeams || undefined,
         maxTeams: maxTeams || undefined,
         acceptedTeamTypes: acceptedTeamTypes.length > 0 ? acceptedTeamTypes : undefined,
+        visibility: visibility,
       }),
     };
     
@@ -314,6 +316,43 @@ export default function CreateEvent() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          {/* Tournament Visibility */}
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-semibold text-gray-700 mb-3">
+                              Tournament Visibility
+                            </label>
+                            <div className="flex space-x-4">
+                              <label className="flex items-center space-x-3 cursor-pointer p-4 border-2 border-gray-200 rounded-xl hover:border-primary/30 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                <input
+                                  type="radio"
+                                  name="visibility"
+                                  value="PUBLIC"
+                                  checked={visibility === 'PUBLIC'}
+                                  onChange={(e) => setVisibility(e.target.value as 'PUBLIC' | 'PRIVATE')}
+                                  className="w-4 h-4 text-primary border-2 border-gray-300 focus:ring-primary focus:ring-2"
+                                />
+                                <div>
+                                  <div className="font-medium text-gray-900">🌍 Public Tournament</div>
+                                  <div className="text-sm text-gray-600">Open to new team registrations</div>
+                                </div>
+                              </label>
+                              <label className="flex items-center space-x-3 cursor-pointer p-4 border-2 border-gray-200 rounded-xl hover:border-primary/30 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                                <input
+                                  type="radio"
+                                  name="visibility"
+                                  value="PRIVATE"
+                                  checked={visibility === 'PRIVATE'}
+                                  onChange={(e) => setVisibility(e.target.value as 'PUBLIC' | 'PRIVATE')}
+                                  className="w-4 h-4 text-primary border-2 border-gray-300 focus:ring-primary focus:ring-2"
+                                />
+                                <div>
+                                  <div className="font-medium text-gray-900">🔒 Private Tournament</div>
+                                  <div className="text-sm text-gray-600">Official tournament, no new applications</div>
+                                </div>
+                              </label>
+                            </div>
+                          </div>
+
                           {/* Accepted Team Types */}
                           <div className="md:col-span-2">
                             <label className="block text-sm font-semibold text-gray-700 mb-3">

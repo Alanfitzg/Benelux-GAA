@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import Image from "next/image";
+import Link from "next/link";
 import ImageUpload from '../../components/ImageUpload';
 import LocationAutocomplete from '../../events/create/LocationAutocomplete';
 import TeamTypeMultiSelect from '@/components/forms/TeamTypeMultiSelect';
@@ -28,6 +30,7 @@ const SOCIAL_PLATFORMS: SocialMediaPlatform[] = [
 ];
 
 export default function RegisterClubPage() {
+  const { data: session, status } = useSession();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -44,6 +47,51 @@ export default function RegisterClubPage() {
   const [contactCountryCode, setContactCountryCode] = useState('+353');
   const [isContactWilling, setIsContactWilling] = useState(false);
   const router = useRouter();
+
+  // Redirect to sign in if not authenticated
+  useEffect(() => {
+    if (status === 'loading') return; // Still loading
+    if (!session) {
+      router.push('/signin?callbackUrl=/clubs/register');
+    }
+  }, [session, status, router]);
+
+  // Show loading while checking authentication
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show sign in prompt if not authenticated
+  if (!session) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 flex items-center justify-center">
+        <div className="max-w-md mx-auto text-center p-8">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg className="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Sign In Required</h2>
+          <p className="text-gray-600 mb-6">
+            You need to sign in to register a club. This helps us verify club authenticity and reduces fraud.
+          </p>
+          <Link
+            href="/signin?callbackUrl=/clubs/register"
+            className="inline-block bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
+          >
+            Sign In to Continue
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const addSocialPlatform = (platformId: string) => {
     if (!selectedPlatforms.includes(platformId)) {
@@ -122,9 +170,10 @@ export default function RegisterClubPage() {
       setSuccess(true);
       form.reset();
       setImageUrl(null);
-      router.push('/clubs');
+      // Don't redirect - let user see the success message about approval
     } else {
-      setError('Failed to register club.');
+      const errorData = await res.json();
+      setError(errorData.error || 'Failed to register club.');
     }
   }
 
@@ -167,10 +216,28 @@ export default function RegisterClubPage() {
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-xl mb-8 flex items-center space-x-3"
+                  className="bg-green-50 border border-green-200 text-green-700 px-6 py-6 rounded-xl mb-8"
                 >
-                  <span className="text-green-500">✅</span>
-                  <span>Club registered successfully!</span>
+                  <div className="flex items-start space-x-3">
+                    <span className="text-green-500 text-xl mt-0.5">✅</span>
+                    <div>
+                      <h3 className="font-semibold text-green-800 mb-2">Club Registration Submitted!</h3>
+                      <div className="text-sm text-green-700 space-y-1">
+                        <p>Your club registration has been submitted successfully and is now <strong>pending approval</strong>.</p>
+                        <p>Our admin team will review your submission and notify you once it&apos;s approved.</p>
+                        <p className="mt-3">
+                          <Link href="/clubs" className="underline hover:no-underline">
+                            Browse existing clubs
+                          </Link>
+                          {" "}while you wait, or{" "}
+                          <Link href="/events" className="underline hover:no-underline">
+                            explore tournaments
+                          </Link>
+                          .
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               )}
               {error && (

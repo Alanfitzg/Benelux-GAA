@@ -9,43 +9,39 @@ datasource db {
 }
 
 model Event {
-  id          String           @id @default(cuid())
-  title       String
-  eventType   String
-  location    String
-  latitude    Float?
-  longitude   Float?
-  startDate   DateTime
-  endDate     DateTime?
-  cost        Float?
-  description String?
-  isRecurring Boolean          @default(false)
-  imageUrl    String?
-  
-  // Tournament-specific fields
-  minTeams           Int?      // Minimum teams required
-  maxTeams           Int?      // Maximum teams allowed
-  acceptedTeamTypes  String[]  @default([]) // Types of teams accepted (e.g., ["Mens Gaelic Football", "LGFA"])
-  
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  interests   Interest[]
-  clubId      String?
-  club        Club?            @relation(fields: [clubId], references: [id])
-  surveyResponses SurveyResponse[]
-  
-  // Tournament relations
-  teams       TournamentTeam[]
-  matches     Match[]
+  id                String               @id @default(cuid())
+  title             String
+  eventType         String
+  location          String
+  latitude          Float?
+  longitude         Float?
+  startDate         DateTime
+  endDate           DateTime?
+  cost              Float?
+  description       String?
+  isRecurring       Boolean              @default(false)
+  imageUrl          String?
+  minTeams          Int?
+  maxTeams          Int?
+  acceptedTeamTypes String[]             @default([])
+  visibility        TournamentVisibility @default(PUBLIC)
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  clubId            String?
+  club              Club?                @relation(fields: [clubId], references: [id])
+  interests         Interest[]
+  matches           Match[]
+  surveyResponses   SurveyResponse[]
+  teams             TournamentTeam[]
 
-  // Performance indexes for common queries
-  @@index([startDate])                    // For date filtering/sorting (highest impact)
-  @@index([eventType])                    // For event type filtering
-  @@index([location])                     // For location-based searches
-  @@index([clubId])                       // For club events lookup
-  @@index([startDate, eventType])         // Composite for date + type filtering
-  @@index([latitude, longitude])          // For geographic proximity searches
-  @@index([acceptedTeamTypes])            // For tournament team type filtering
+  @@index([startDate])
+  @@index([eventType])
+  @@index([location])
+  @@index([clubId])
+  @@index([startDate, eventType])
+  @@index([latitude, longitude])
+  @@index([acceptedTeamTypes])
+  @@index([visibility])
 }
 
 model Interest {
@@ -57,13 +53,12 @@ model Interest {
   submittedAt DateTime @default(now())
   event       Event    @relation(fields: [eventId], references: [id])
 
-  // Performance indexes for common queries
-  @@index([eventId])        // For event interest lookups
-  @@index([submittedAt])    // For chronological queries
+  @@index([eventId])
+  @@index([submittedAt])
 }
 
 model Club {
-  id                  String   @id @default(cuid())
+  id                  String               @id @default(cuid())
   name                String
   region              String?
   subRegion           String?
@@ -76,62 +71,321 @@ model Club {
   location            String?
   latitude            Float?
   longitude           Float?
-  teamTypes           String[] @default([])
+  teamTypes           String[]             @default([])
   contactFirstName    String?
   contactLastName     String?
   contactEmail        String?
   contactPhone        String?
   contactCountryCode  String?
-  isContactWilling    Boolean  @default(false)
-  members             User[]   @relation("ClubMembers")
-  admins              User[]   @relation("ClubAdmins")
-  events              Event[]
-  clubInterests       ClubInterest[]
-  hostingPackages     HostingPackage[]
-  bookings            Booking[]
-  tournamentTeams     TournamentTeam[]
+  isContactWilling    Boolean              @default(false)
+  status              ClubStatus           @default(PENDING)
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @default(now()) @updatedAt
+  submittedBy         String?
+  reviewedAt          DateTime?
+  reviewedBy          String?
+  rejectionReason     String?
+  adminNotes          String?
   availabilitySlots   AvailabilitySlot[]
-  tournamentInterests TournamentInterest[]
+  bookings            Booking[]
   clubAdminRequests   ClubAdminRequest[]
+  clubInterests       ClubInterest[]
+  events              Event[]
+  hostingPackages     HostingPackage[]
+  tournamentInterests TournamentInterest[]
+  tournamentTeams     TournamentTeam[]
+  members             User[]               @relation("ClubMembers")
+  admins              User[]               @relation("ClubAdmins")
 
-  // Performance indexes for common queries
-  @@index([location])              // For country/location filtering (highest impact)
-  @@index([teamTypes])             // For team type filtering
-  @@index([name])                  // For name-based searches
-  @@index([latitude, longitude])   // For geographic proximity/mapping
-  @@index([region, subRegion])     // For geographic grouping
+  @@index([status])
+  @@index([location])
+  @@index([teamTypes])
+  @@index([name])
+  @@index([latitude, longitude])
+  @@index([region, subRegion])
+  @@index([createdAt])
+  @@index([submittedBy])
 }
 
 model User {
-  id              String        @id @default(cuid())
-  email           String        @unique
-  username        String        @unique
-  password        String
-  name            String?
-  role            UserRole      @default(USER)
-  accountStatus   AccountStatus @default(PENDING)
-  clubId          String?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  approvedAt      DateTime?
-  approvedBy      String?
-  rejectionReason String?
-  club            Club?         @relation("ClubMembers", fields: [clubId], references: [id])
-  adminOfClubs    Club[]        @relation("ClubAdmins")
-  accounts        Account[]
-  sessions        Session[]
-  tournamentInterests TournamentInterest[]
-  clubAdminRequests ClubAdminRequest[]
-  reviewedAdminRequests ClubAdminRequest[] @relation("AdminRequestReviewer")
-  passwordResetTokens PasswordResetToken[]
-  preferences     UserPreferences?
+  id                    String               @id @default(cuid())
+  email                 String               @unique
+  username              String               @unique
+  password              String
+  name                  String?
+  role                  UserRole             @default(USER)
+  accountStatus         AccountStatus        @default(PENDING)
+  clubId                String?
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  approvedAt            DateTime?
+  approvedBy            String?
+  rejectionReason       String?
+  accounts              Account[]
+  reviewedAdminRequests ClubAdminRequest[]   @relation("AdminRequestReviewer")
+  clubAdminRequests     ClubAdminRequest[]
+  passwordResetTokens   PasswordResetToken[]
+  sessions              Session[]
+  tournamentInterests   TournamentInterest[]
+  club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
+  preferences           UserPreferences?
+  adminOfClubs          Club[]               @relation("ClubAdmins")
 
-  // Performance indexes for common queries
-  @@index([accountStatus])      // For admin pending user queries (critical for admin)
-  @@index([role])               // For role-based filtering
-  @@index([clubId])             // For club member lookups
-  @@index([createdAt])          // For chronological sorting
-  @@index([email])              // For login performance (additional to unique)
+  @@index([accountStatus])
+  @@index([role])
+  @@index([clubId])
+  @@index([createdAt])
+  @@index([email])
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String?
+  access_token             String?
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+  refresh_token_expires_in Int?
+  user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model SurveyResponse {
+  id                    String   @id @default(cuid())
+  eventId               String?
+  role                  String
+  clubName              String?
+  country               String
+  city                  String?
+  hasTraveledAbroad     String
+  travelFrequency       String?
+  destinationsVisited   String[] @default([])
+  preferredTravelTime   String
+  teamSize              String
+  budgetPerPerson       String
+  biggestChallenge      String
+  interestedServices    String[] @default([])
+  wouldHost             String
+  wouldPayForPlatform   String
+  improvementSuggestion String?
+  additionalFeedback    String?
+  contactName           String
+  contactEmail          String
+  contactPhone          String?
+  submittedAt           DateTime @default(now())
+  ipAddress             String?
+  userAgent             String?
+  referrer              String?
+  event                 Event?   @relation(fields: [eventId], references: [id])
+}
+
+model ClubInterest {
+  id          String   @id @default(cuid())
+  clubId      String
+  name        String
+  email       String
+  message     String?
+  type        String
+  submittedAt DateTime @default(now())
+  club        Club     @relation(fields: [clubId], references: [id])
+}
+
+model ClubAdminRequest {
+  id              String                 @id @default(cuid())
+  userId          String
+  clubId          String
+  reason          String
+  status          ClubAdminRequestStatus @default(PENDING)
+  requestedAt     DateTime               @default(now())
+  reviewedAt      DateTime?
+  reviewedBy      String?
+  rejectionReason String?
+  club            Club                   @relation(fields: [clubId], references: [id])
+  reviewer        User?                  @relation("AdminRequestReviewer", fields: [reviewedBy], references: [id])
+  user            User                   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, clubId])
+  @@index([status])
+  @@index([clubId])
+  @@index([requestedAt])
+}
+
+model HostingPackage {
+  id              String    @id @default(cuid())
+  clubId          String
+  name            String
+  description     String?
+  basePrice       Float
+  dayPassPrice    Float?
+  maxTeams        Int       @default(1)
+  maxParticipants Int?
+  services        String[]  @default([])
+  isActive        Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  bookings        Booking[]
+  club            Club      @relation(fields: [clubId], references: [id])
+}
+
+model Booking {
+  id            String          @id @default(cuid())
+  clubId        String
+  packageId     String?
+  contactName   String
+  contactEmail  String
+  contactPhone  String?
+  teamName      String
+  teamSize      Int
+  arrivalDate   DateTime
+  departureDate DateTime
+  totalAmount   Float
+  platformFee   Float
+  clubEarnings  Float
+  status        BookingStatus   @default(INQUIRY)
+  notes         String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  club          Club            @relation(fields: [clubId], references: [id])
+  package       HostingPackage? @relation(fields: [packageId], references: [id])
+  payments      Payment[]
+}
+
+model Payment {
+  id              String        @id @default(cuid())
+  bookingId       String
+  amount          Float
+  type            PaymentType
+  status          PaymentStatus @default(PENDING)
+  stripePaymentId String?
+  processedAt     DateTime?
+  createdAt       DateTime      @default(now())
+  booking         Booking       @relation(fields: [bookingId], references: [id])
+}
+
+model TournamentTeam {
+  id           String     @id @default(cuid())
+  eventId      String
+  clubId       String
+  teamName     String
+  teamType     String
+  registeredAt DateTime   @default(now())
+  status       TeamStatus @default(REGISTERED)
+  awayMatches  Match[]    @relation("AwayTeam")
+  homeMatches  Match[]    @relation("HomeTeam")
+  club         Club       @relation(fields: [clubId], references: [id])
+  event        Event      @relation(fields: [eventId], references: [id])
+
+  @@unique([eventId, clubId, teamName])
+}
+
+model Match {
+  id         String         @id @default(cuid())
+  eventId    String
+  homeTeamId String
+  awayTeamId String
+  matchDate  DateTime?
+  venue      String?
+  round      String?
+  homeScore  Int?
+  awayScore  Int?
+  status     MatchStatus    @default(SCHEDULED)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+  awayTeam   TournamentTeam @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  event      Event          @relation(fields: [eventId], references: [id])
+  homeTeam   TournamentTeam @relation("HomeTeam", fields: [homeTeamId], references: [id])
+}
+
+model AvailabilitySlot {
+  id          String   @id @default(cuid())
+  clubId      String
+  date        DateTime
+  isRecurring Boolean  @default(false)
+  dayOfWeek   Int?
+  timeSlots   String[]
+  capacity    Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  club        Club     @relation(fields: [clubId], references: [id])
+
+  @@index([clubId, date])
+  @@index([date])
+}
+
+model TournamentInterest {
+  id             String           @id @default(cuid())
+  userId         String
+  clubId         String
+  interestType   InterestType
+  specificDate   DateTime?
+  monthYear      DateTime?
+  dateRangeStart DateTime?
+  dateRangeEnd   DateTime?
+  teamSize       Int
+  flexibility    FlexibilityLevel @default(FLEXIBLE)
+  message        String?
+  status         InterestStatus   @default(PENDING)
+  suggestedDates DateTime[]
+  clubResponse   String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  club           Club             @relation(fields: [clubId], references: [id])
+  user           User             @relation(fields: [userId], references: [id])
+
+  @@index([clubId, status])
+  @@index([userId])
+  @@index([monthYear])
+  @@index([status])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  used      Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model UserPreferences {
+  id                  String   @id @default(cuid())
+  userId              String   @unique
+  motivations         String[]
+  competitiveLevel    String?
+  preferredCities     String[]
+  preferredCountries  String[]
+  preferredClubs      String[]
+  activities          String[]
+  budgetRange         String?
+  maxFlightTime       Int?
+  preferredMonths     String[]
+  onboardingCompleted Boolean  @default(false)
+  onboardingSkipped   Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  user                User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 enum UserRole {
@@ -148,166 +402,21 @@ enum AccountStatus {
   SUSPENDED
 }
 
-model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
-  refresh_token_expires_in Int?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+enum ClubStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model SurveyResponse {
-  id                    String   @id @default(cuid())
-  eventId               String?
-  
-  // Respondent Info
-  role                  String
-  clubName              String?
-  country               String
-  city                  String?
-  
-  // Travel History & Intent
-  hasTraveledAbroad     String
-  travelFrequency       String?
-  destinationsVisited   String[] @default([])
-  preferredTravelTime   String
-  
-  // Budgets & Pain Points
-  teamSize              String
-  budgetPerPerson       String
-  biggestChallenge      String
-  
-  // Product Fit & Interest
-  interestedServices    String[] @default([])
-  wouldHost             String
-  wouldPayForPlatform   String
-  
-  // Open-Ended Insight
-  improvementSuggestion String?
-  additionalFeedback    String?
-  
-  // Contact Information
-  contactName           String
-  contactEmail          String
-  contactPhone          String?
-  
-  // Metadata
-  submittedAt           DateTime @default(now())
-  ipAddress             String?
-  userAgent             String?
-  referrer              String?
-  
-  event                 Event?   @relation(fields: [eventId], references: [id])
-}
-
-model ClubInterest {
-  id          String   @id @default(cuid())
-  clubId      String
-  name        String
-  email       String
-  message     String?
-  type        String   // 'contact' or 'interest'
-  submittedAt DateTime @default(now())
-  club        Club     @relation(fields: [clubId], references: [id])
-}
-
-model ClubAdminRequest {
-  id          String   @id @default(cuid())
-  userId      String
-  clubId      String
-  reason      String   // User's reason for requesting admin access
-  status      ClubAdminRequestStatus @default(PENDING)
-  requestedAt DateTime @default(now())
-  reviewedAt  DateTime?
-  reviewedBy  String?  // User ID of the super admin who reviewed
-  rejectionReason String?
-  
-  user        User     @relation(fields: [userId], references: [id])
-  club        Club     @relation(fields: [clubId], references: [id])
-  reviewer    User?    @relation("AdminRequestReviewer", fields: [reviewedBy], references: [id])
-  
-  @@unique([userId, clubId]) // Prevent duplicate requests
-  @@index([status])
-  @@index([clubId])
-  @@index([requestedAt])
+enum TournamentVisibility {
+  PUBLIC
+  PRIVATE
 }
 
 enum ClubAdminRequestStatus {
   PENDING
   APPROVED
   REJECTED
-}
-
-model HostingPackage {
-  id              String   @id @default(cuid())
-  clubId          String
-  name            String
-  description     String?
-  basePrice       Float    // Base price per team
-  dayPassPrice    Float?   // Price per person for day passes
-  maxTeams        Int      @default(1)
-  maxParticipants Int?
-  services        String[] @default([]) // accommodation, meals, transport, activities, training
-  isActive        Boolean  @default(true)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  club            Club     @relation(fields: [clubId], references: [id])
-  bookings        Booking[]
-}
-
-model Booking {
-  id                String          @id @default(cuid())
-  clubId            String
-  packageId         String?
-  contactName       String
-  contactEmail      String
-  contactPhone      String?
-  teamName          String
-  teamSize          Int
-  arrivalDate       DateTime
-  departureDate     DateTime
-  totalAmount       Float
-  platformFee       Float
-  clubEarnings      Float
-  status            BookingStatus   @default(INQUIRY)
-  notes             String?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-  club              Club            @relation(fields: [clubId], references: [id])
-  package           HostingPackage? @relation(fields: [packageId], references: [id])
-  payments          Payment[]
-}
-
-model Payment {
-  id               String        @id @default(cuid())
-  bookingId        String
-  amount           Float
-  type             PaymentType
-  status           PaymentStatus @default(PENDING)
-  stripePaymentId  String?
-  processedAt      DateTime?
-  createdAt        DateTime      @default(now())
-  booking          Booking       @relation(fields: [bookingId], references: [id])
 }
 
 enum BookingStatus {
@@ -334,48 +443,6 @@ enum PaymentStatus {
   REFUNDED
 }
 
-// Tournament-specific models
-model TournamentTeam {
-  id            String   @id @default(cuid())
-  eventId       String
-  clubId        String
-  teamName      String   // e.g., "St. Patrick's Senior Men"
-  teamType      String   // Must match event's teamType
-  registeredAt  DateTime @default(now())
-  status        TeamStatus @default(REGISTERED)
-  
-  event         Event    @relation(fields: [eventId], references: [id])
-  club          Club     @relation(fields: [clubId], references: [id])
-  
-  // Match relations
-  homeMatches   Match[]  @relation("HomeTeam")
-  awayMatches   Match[]  @relation("AwayTeam")
-  
-  @@unique([eventId, clubId, teamName])
-}
-
-model Match {
-  id            String   @id @default(cuid())
-  eventId       String
-  homeTeamId    String
-  awayTeamId    String
-  matchDate     DateTime?
-  venue         String?
-  round         String?  // e.g., "Group A", "Quarter-Final", "Final"
-  
-  // Results
-  homeScore     Int?
-  awayScore     Int?
-  status        MatchStatus @default(SCHEDULED)
-  
-  event         Event    @relation(fields: [eventId], references: [id])
-  homeTeam      TournamentTeam @relation("HomeTeam", fields: [homeTeamId], references: [id])
-  awayTeam      TournamentTeam @relation("AwayTeam", fields: [awayTeamId], references: [id])
-  
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-}
-
 enum TeamStatus {
   REGISTERED
   CONFIRMED
@@ -390,66 +457,17 @@ enum MatchStatus {
   POSTPONED
 }
 
-// Calendar-specific models
-model AvailabilitySlot {
-  id          String   @id @default(cuid())
-  clubId      String
-  club        Club     @relation(fields: [clubId], references: [id])
-  date        DateTime
-  isRecurring Boolean  @default(false)
-  dayOfWeek   Int?     // 0-6 for recurring slots
-  timeSlots   String[] // e.g., ["morning", "afternoon", "evening"]
-  capacity    Int?     // Max teams/events
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([clubId, date])
-  @@index([date])
-}
-
-model TournamentInterest {
-  id              String   @id @default(cuid())
-  userId          String
-  user            User     @relation(fields: [userId], references: [id])
-  clubId          String
-  club            Club     @relation(fields: [clubId], references: [id])
-  
-  // Flexible date options
-  interestType    InterestType
-  specificDate    DateTime?    // For specific date requests
-  monthYear       DateTime?    // For month-based interest (store as 1st of month)
-  dateRangeStart  DateTime?    // For custom date ranges
-  dateRangeEnd    DateTime?    
-  
-  teamSize        Int
-  flexibility     FlexibilityLevel @default(FLEXIBLE)
-  message         String?
-  status          InterestStatus @default(PENDING)
-  
-  // Response from club
-  suggestedDates  DateTime[]   // Club can suggest specific dates
-  clubResponse    String?
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  @@index([clubId, status])
-  @@index([userId])
-  @@index([monthYear])
-  @@index([status])
-}
-
 enum InterestType {
-  SPECIFIC_DATE    // "We want to come on July 15th"
-  ENTIRE_MONTH     // "We're interested in any time in July"
-  DATE_RANGE       // "We can come between July 10-20"
-  MULTIPLE_MONTHS  // "Any time in July or August"
+  SPECIFIC_DATE
+  ENTIRE_MONTH
+  DATE_RANGE
+  MULTIPLE_MONTHS
 }
 
 enum FlexibilityLevel {
-  FIXED            // Must be these dates
-  FLEXIBLE         // Preferred but open to alternatives
-  VERY_FLEXIBLE    // Just exploring options
+  FIXED
+  FLEXIBLE
+  VERY_FLEXIBLE
 }
 
 enum InterestStatus {
@@ -458,49 +476,4 @@ enum InterestStatus {
   APPROVED
   REJECTED
   CANCELLED
-}
-
-model PasswordResetToken {
-  id        String   @id @default(cuid())
-  token     String   @unique
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  used      Boolean  @default(false)
-
-  @@index([token])
-  @@index([userId])
-  @@index([expiresAt])
-}
-
-model UserPreferences {
-  id              String   @id @default(cuid())
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id])
-  
-  // Travel Motivations (multiple selection)
-  motivations     String[] // ['weather_sun', 'weather_winter', 'budget', 'specific_city', 'specific_club', 'activities_beach', 'activities_mountain', 'nightlife', 'culture', 'food', 'short_flight', 'sister_club', 'tournament_reputation', 'friends_going']
-  
-  // Competitive Preferences
-  competitiveLevel String? // 'casual', 'mixed', 'competitive_irish', 'international', 'elite'
-  
-  // Specific Interests
-  preferredCities    String[]
-  preferredCountries String[]
-  preferredClubs     String[]
-  activities         String[] // ['surfing', 'hiking', 'nightlife', 'culture', 'food', 'swimming', 'skiing']
-  
-  // Additional preferences
-  budgetRange        String?  // 'budget', 'mid-range', 'premium'
-  maxFlightTime      Int?     // Maximum flight time in hours
-  preferredMonths    String[] // ['january', 'february', etc.]
-  
-  // Meta
-  onboardingCompleted Boolean @default(false)
-  onboardingSkipped   Boolean @default(false)
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-
-  @@index([userId])
 }
