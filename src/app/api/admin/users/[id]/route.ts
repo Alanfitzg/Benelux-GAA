@@ -177,10 +177,44 @@ export async function DELETE(
       )
     }
 
-    // Delete the user
-    await prisma.user.delete({
-      where: { id: userId },
-    })
+    // Delete related records first to avoid foreign key constraint violations
+    await prisma.$transaction(async (tx) => {
+      // Delete user preferences if they exist
+      await tx.userPreferences.deleteMany({
+        where: { userId: userId }
+      });
+
+      // Delete club admin requests
+      await tx.clubAdminRequest.deleteMany({
+        where: { userId: userId }
+      });
+
+      // Delete password reset tokens
+      await tx.passwordResetToken.deleteMany({
+        where: { userId: userId }
+      });
+
+      // Delete OAuth accounts
+      await tx.account.deleteMany({
+        where: { userId: userId }
+      });
+
+      // Delete sessions
+      await tx.session.deleteMany({
+        where: { userId: userId }
+      });
+
+      // Note: Interest, SurveyResponse, and ClubInterest models don't have userId fields - they're for anonymous submissions
+
+      await tx.tournamentInterest.deleteMany({
+        where: { userId: userId }
+      });
+
+      // Finally delete the user
+      await tx.user.delete({
+        where: { id: userId }
+      });
+    });
 
     return NextResponse.json({ success: true })
   } catch (error) {

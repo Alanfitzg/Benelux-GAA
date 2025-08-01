@@ -20,6 +20,7 @@ interface EventData {
   description?: string;
   imageUrl?: string;
   clubId?: string;
+  visibility?: 'PUBLIC' | 'PRIVATE';
 }
 
 export default function EditEventPage() {
@@ -35,6 +36,7 @@ export default function EditEventPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [location, setLocation] = useState("");
   const [selectedClubId, setSelectedClubId] = useState<string>("");
+  const [visibility, setVisibility] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC');
 
   useEffect(() => {
     fetch(`${URLS.API.EVENTS}/${eventId}`)
@@ -44,6 +46,7 @@ export default function EditEventPage() {
         setLocation(data.location || "");
         setImageUrl(data.imageUrl || null);
         setSelectedClubId(data.clubId || "");
+        setVisibility(data.visibility || 'PUBLIC');
       });
   }, [eventId]);
 
@@ -93,6 +96,7 @@ export default function EditEventPage() {
       description: formData.get("description") as string || null,
       imageUrl: uploadedImageUrl || imageUrl || null,
       clubId: selectedClubId || null,
+      visibility: visibility,
     };
     
     console.log('Sending data:', data);
@@ -192,6 +196,45 @@ export default function EditEventPage() {
                       ))}
                     </select>
                   </div>
+
+                  {/* Tournament Visibility - Only show for tournaments */}
+                  {event.eventType === 'Tournament' && (
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Tournament Visibility
+                      </label>
+                      <div className="space-y-3">
+                        <label className="flex items-center space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-xl hover:border-primary/30 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                          <input
+                            type="radio"
+                            name="visibility"
+                            value="PUBLIC"
+                            checked={visibility === 'PUBLIC'}
+                            onChange={(e) => setVisibility(e.target.value as 'PUBLIC' | 'PRIVATE')}
+                            className="w-4 h-4 text-primary border-2 border-gray-300 focus:ring-primary focus:ring-2"
+                          />
+                          <div>
+                            <div className="font-medium text-gray-900">🌍 Public Tournament</div>
+                            <div className="text-sm text-gray-600">Open to new team registrations</div>
+                          </div>
+                        </label>
+                        <label className="flex items-center space-x-3 cursor-pointer p-3 border-2 border-gray-200 rounded-xl hover:border-primary/30 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary/5">
+                          <input
+                            type="radio"
+                            name="visibility"
+                            value="PRIVATE"
+                            checked={visibility === 'PRIVATE'}
+                            onChange={(e) => setVisibility(e.target.value as 'PUBLIC' | 'PRIVATE')}
+                            className="w-4 h-4 text-primary border-2 border-gray-300 focus:ring-primary focus:ring-2"
+                          />
+                          <div>
+                            <div className="font-medium text-gray-900">🔒 Private Tournament</div>
+                            <div className="text-sm text-gray-600">Official tournament, no new applications</div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Event Title */}
                   <div>

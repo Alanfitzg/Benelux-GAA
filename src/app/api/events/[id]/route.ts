@@ -65,6 +65,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       description: body.description || null,
       imageUrl: body.imageUrl || null,
       clubId: body.clubId || null,
+      visibility: body.visibility || 'PUBLIC',
     };
     
     console.log('Clean data:', cleanData);

@@ -14,7 +14,17 @@ export default async function AdminEventsPage() {
     revalidatePath('/admin/events');
   }
 
-  const events = await prisma.event.findMany({ orderBy: { startDate: 'asc' } });
+  const events = await prisma.event.findMany({ 
+    orderBy: { startDate: 'asc' },
+    select: {
+      id: true,
+      title: true,
+      eventType: true,
+      location: true,
+      startDate: true,
+      visibility: true,
+    }
+  });
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
@@ -42,6 +52,7 @@ export default async function AdminEventsPage() {
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visibility</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                 <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -57,6 +68,19 @@ export default async function AdminEventsPage() {
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-secondary/10 text-secondary">
                       {event.eventType}
                     </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {event.eventType === 'Tournament' ? (
+                      <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${
+                        event.visibility === 'PUBLIC' 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {event.visibility === 'PUBLIC' ? '🌍 Public' : '🔒 Private'}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400 text-xs">—</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     📍 {event.location}
