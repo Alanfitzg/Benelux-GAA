@@ -24,14 +24,24 @@ interface ClubImageMatch {
   confidence: number
 }
 
+interface CityDefaultImage {
+  id: string
+  city: string
+  imageUrl: string
+  createdAt: string
+  updatedAt: string
+}
+
 export default function ImageManagement() {
   const [clubs, setClubs] = useState<Club[]>([])
   const [s3Images, setS3Images] = useState<S3Image[]>([])
+  const [cityImages, setCityImages] = useState<CityDefaultImage[]>([])
   const [loading, setLoading] = useState(true)
   const [selectedClub, setSelectedClub] = useState<string>("")
   const [selectedImage, setSelectedImage] = useState<string>("")
+  const [selectedCity, setSelectedCity] = useState<string>("")
   const [message, setMessage] = useState("")
-  const [viewMode, setViewMode] = useState<"simple" | "smart">("smart")
+  const [viewMode, setViewMode] = useState<"simple" | "smart" | "cities">("smart")
   const [searchTerm, setSearchTerm] = useState("")
   const [processingLinks, setProcessingLinks] = useState<Set<string>>(new Set())
 
@@ -54,10 +64,68 @@ export default function ImageManagement() {
         const imagesData = await imagesResponse.json()
         setS3Images(imagesData.images)
       }
+
+      // Load city default images
+      const cityImagesResponse = await fetch("/api/admin/city-images")
+      if (cityImagesResponse.ok) {
+        const cityImagesData = await cityImagesResponse.json()
+        setCityImages(cityImagesData.data || [])
+      }
     } catch {
       console.error("Error loading data")
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleLinkCityImage = async () => {
+    if (!selectedCity || !selectedImage) {
+      setMessage("Please select both a city and an image")
+      return
+    }
+
+    try {
+      const response = await fetch("/api/admin/city-images", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          city: selectedCity,
+          imageUrl: selectedImage 
+        }),
+      })
+
+      if (response.ok) {
+        setMessage("City default image saved successfully!")
+        setSelectedCity("")
+        setSelectedImage("")
+        await loadData()
+      } else {
+        const data = await response.json()
+        setMessage(data.error || "Failed to save city image")
+      }
+    } catch {
+      setMessage("An error occurred")
+    }
+  }
+
+  const handleDeleteCityImage = async (city: string) => {
+    if (!confirm(`Remove default image for ${city}?`)) return
+
+    try {
+      const response = await fetch(`/api/admin/city-images/${encodeURIComponent(city)}`, {
+        method: "DELETE",
+      })
+
+      if (response.ok) {
+        setMessage("City image removed successfully!")
+        await loadData()
+      } else {
+        setMessage("Failed to remove city image")
+      }
+    } catch {
+      setMessage("An error occurred")
     }
   }
 
@@ -237,6 +305,16 @@ export default function ImageManagement() {
             }`}
           >
             Simple Mode
+          </button>
+          <button
+            onClick={() => setViewMode("cities")}
+            className={`px-4 py-2 rounded-md transition-colors ${
+              viewMode === "cities" 
+                ? "bg-white text-primary shadow-sm" 
+                : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            City Defaults
           </button>
         </div>
       </div>
@@ -480,6 +558,139 @@ export default function ImageManagement() {
             ))}
           </div>
         </div>
+        </div>
+      )}
+
+      {/* City Defaults View */}
+      {viewMode === "cities" && (
+        <div className="space-y-6">
+          {/* Add City Default Image Form */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Set City Default Image</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* City Input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  City Name
+                </label>
+                <input
+                  type="text"
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  placeholder="e.g., Dublin, London, Barcelona"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                />
+              </div>
+
+              {/* Image Selection */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Image
+                </label>
+                <select
+                  value={selectedImage}
+                  onChange={(e) => setSelectedImage(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <option value="">Choose an image...</option>
+                  {s3Images.map(image => (
+                    <option key={image.key} value={image.url}>
+                      {image.key.replace(/^\d{4}-\d{2}-\d{2}-/, "")} ({(image.size / 1024).toFixed(1)}KB)
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Image Preview */}
+            {selectedImage && (
+              <div className="mt-4">
+                <p className="text-sm font-medium text-gray-700 mb-2">Preview:</p>
+                <div className="w-24 h-24 relative border rounded-lg overflow-hidden">
+                  <Image
+                    src={selectedImage}
+                    alt="Selected city image preview"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            )}
+
+            <button
+              onClick={handleLinkCityImage}
+              disabled={!selectedCity || !selectedImage}
+              className="mt-4 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Save City Default Image
+            </button>
+          </div>
+
+          {/* Existing City Default Images */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">
+              City Default Images ({cityImages.length})
+            </h2>
+            
+            {cityImages.length === 0 ? (
+              <p className="text-gray-500">No city default images set yet.</p>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {cityImages.map(cityImage => (
+                  <div key={cityImage.id} className="relative bg-gray-50 rounded-lg p-4">
+                    <div className="flex items-start gap-4">
+                      <div className="w-20 h-20 relative flex-shrink-0 rounded-lg overflow-hidden">
+                        <Image
+                          src={cityImage.imageUrl}
+                          alt={`${cityImage.city} default image`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg capitalize">{cityImage.city}</h3>
+                        <p className="text-sm text-gray-500">
+                          Added: {new Date(cityImage.createdAt).toLocaleDateString()}
+                        </p>
+                        <button
+                          onClick={() => handleDeleteCityImage(cityImage.city)}
+                          className="mt-2 text-sm text-red-600 hover:text-red-800"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Available S3 Images Gallery */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Available S3 Images</h2>
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-3">
+              {s3Images.map(image => (
+                <div key={image.key} className="relative group">
+                  <div 
+                    className="w-full h-20 relative border rounded-lg overflow-hidden cursor-pointer hover:ring-2 hover:ring-primary"
+                    onClick={() => setSelectedImage(image.url)}
+                  >
+                    <Image
+                      src={image.url}
+                      alt={`City image: ${image.key.replace(/^\d{4}-\d{2}-\d{2}-/, "")}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1 truncate" title={image.key}>
+                    {image.key.replace(/^\d{4}-\d{2}-\d{2}-/, "")}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

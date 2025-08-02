@@ -6,6 +6,7 @@ import { EVENT_TYPES } from "@/lib/constants/events";
 import { MESSAGES } from "@/lib/constants";
 import CreateEventButton from "@/components/CreateEventButton";
 import { StructuredData } from "@/components/StructuredData";
+import { getCityDefaultImage } from "@/lib/city-utils";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -126,6 +127,17 @@ export default async function EventsPage({
     const month = params.month || "";
     const visibility = params.visibility || "";
     const events = await getEvents({ eventType, country, month, visibility });
+    // Fetch city default images for events without images
+    const eventsWithCityImages = await Promise.all(
+      events.map(async (event) => {
+        if (!event.imageUrl && event.location) {
+          const cityImage = await getCityDefaultImage(event.location);
+          return { ...event, cityDefaultImage: cityImage };
+        }
+        return { ...event, cityDefaultImage: null };
+      })
+    );
+    
     const eventTypes = ["", ...EVENT_TYPES];
     const countries = Array.from(
       new Set(
@@ -298,10 +310,23 @@ export default async function EventsPage({
                   Apply Filters
                 </button>
               </form>
+              
+              {/* Reset Filters Button */}
+              {(eventType || country || month || visibility) && (
+                <Link
+                  href="/events"
+                  className="bg-gray-500 text-white px-6 py-2.5 rounded-lg hover:bg-gray-600 transition shadow-sm hover:shadow-md inline-flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Reset Filters
+                </Link>
+              )}
               <CreateEventButton />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {events.map(
+              {eventsWithCityImages.map(
                 (
                   event: {
                     id: string;
@@ -313,6 +338,7 @@ export default async function EventsPage({
                     cost: number | null;
                     description: string | null;
                     imageUrl: string | null;
+                    cityDefaultImage?: string | null;
                     latitude: number | null;
                     longitude: number | null;
                     visibility: 'PUBLIC' | 'PRIVATE';
@@ -331,9 +357,9 @@ export default async function EventsPage({
                     >
                       {/* Event Image */}
                       <div className="relative h-64 overflow-hidden">
-                        {event.imageUrl ? (
+                        {event.imageUrl || event.cityDefaultImage ? (
                           <Image
-                            src={event.imageUrl}
+                            src={event.imageUrl || event.cityDefaultImage || ''}
                             alt={event.title}
                             fill
                             priority={index < 6}

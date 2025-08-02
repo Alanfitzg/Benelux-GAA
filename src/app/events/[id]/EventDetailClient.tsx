@@ -7,6 +7,7 @@ import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
+import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
 
 export default function EventDetailClient({
   eventId,
@@ -17,6 +18,8 @@ export default function EventDetailClient({
   const [teams, setTeams] = useState<TournamentTeam[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const { cityImage } = useCityDefaultImage(event?.location);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -104,7 +107,7 @@ export default function EventDetailClient({
       {/* Hero Section with Background Image */}
       <div className="relative h-96 w-full overflow-hidden">
         <Image
-          src={event?.imageUrl || URLS.PLACEHOLDER_CREST}
+          src={event?.imageUrl || cityImage || URLS.PLACEHOLDER_CREST}
           alt={event?.title || "Event Image"}
           fill
           className="object-cover"
