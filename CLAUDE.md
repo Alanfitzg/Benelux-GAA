@@ -47,6 +47,15 @@ When starting a new session, these files provide comprehensive context:
 - **Map Enhancement**: Updated to colorful streets-v12 style for better visual appeal
 - **Onboarding Streamlined**: Removed activities and flight time questions, focused competitive levels
 
+## 🚀 Recent Updates (August 2025)
+- **City Default Images**: Automatic default image assignment for events based on city location
+- **Enhanced Date Validation**: Real-time date validation with user-friendly error messages for event creation
+- **Clubs Page Redesign**: Modern country cards view with flags and club counts matching screenshot design
+- **Dual View System**: Toggle between country cards grid and expanded club listings with filters
+- **Consistent UI Theme**: Updated clubs page header to match site-wide primary color scheme and glass morphism design
+- **Enhanced Filtering**: Cross-view filtering system that works in both country cards and expanded list views
+- **Google Analytics Error Handling**: Graceful handling of ad-blocker and privacy extension blocking with silent failures
+
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
 - Event queries: 150ms → 3ms (50x faster)
@@ -86,6 +95,7 @@ When starting a new session, these files provide comprehensive context:
 - **Optional Fields**: Full name field is optional in user registration
 - **Club Association**: Moved from registration to post-signup (users request access from club pages)
 - **User Preferences**: UserPreferences model stores travel motivations (ranked), competitive level, destinations, activities, and timing preferences
+- **City Default Images**: CityDefaultImage model for automatic event image assignment based on location
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (doesn't scale across instances)
@@ -202,6 +212,16 @@ npx prisma db push   # Apply schema changes
 - **`/src/lib/constants/onboarding.ts`** - Centralized onboarding options and configurations
 - **`/src/lib/analytics.ts`** - Google Analytics utilities and event definitions
 
+## 📋 Recent Features and Components Added (August 2025)
+- **`/src/lib/validation/date-validation.ts`** - Comprehensive date validation utilities with specific error messages
+- **`/src/lib/city-utils.ts`** - City default image utilities for automatic event image assignment
+- **`/src/app/api/admin/city-images/route.ts`** - API endpoints for managing city default images (GET, POST)
+- **`/src/app/api/admin/city-images/[city]/route.ts`** - API endpoints for individual city image management (GET, PUT, DELETE)
+- **Enhanced `/src/app/clubs/page.tsx`** - Complete redesign with country cards, dual view system, and improved filtering
+- **Enhanced `/src/app/events/create/page.tsx`** - Real-time date validation with visual feedback and user-friendly error messages
+- **Enhanced `/src/app/admin/images/page.tsx`** - Added "City Defaults" tab for managing city default images
+- **Database Models**: CityDefaultImage model for storing city-specific default images with proper indexing
+
 ## 🎯 User Experience Improvements
 - **Seamless Registration**: Auto sign-in after account creation, instant approval for all users
 - **Smart Redirects**: Welcome banner for new users, intelligent post-login routing
@@ -234,9 +254,17 @@ npx prisma db push   # Apply schema changes
 - Competitive level preferences
 - Event types and engagement metrics
 
-### **Environment Variable**: 
+### **Error Handling & Privacy**:
+- **Graceful Degradation**: Silent failures when analytics is blocked
+- **Ad-Blocker Support**: Handles uBlock Origin, AdBlock Plus, Privacy Badger gracefully
+- **Development Mode**: Debug logging only in development environment
+- **Network Resilience**: Continues working when analytics requests fail
+- **Privacy Compliance**: Respects user privacy settings and network restrictions
+
+### **Environment Variables**: 
 ```
 NEXT_PUBLIC_GA_MEASUREMENT_ID="G-P01Z2DYLMH"
+NEXT_PUBLIC_ENABLE_ANALYTICS="true"  # Optional: Enable analytics in development
 ```
 
 ## 🗺️ Map Enhancements
@@ -250,5 +278,28 @@ Updated from 5 complex options to 3 focused categories:
 2. **Competitive Friendly**: High-level teams (usually Irish) wanting strong competition  
 3. **Training Camp Abroad**: Team preparation focused with training facilities
 
+## 🎨 New UI/UX Patterns Added (August 2025)
+- **Country Cards**: Flag emojis with hover effects and club counts
+- **Dual View Toggle**: Switch between grid cards and expanded list views
+- **Glass Morphism**: Frosted glass effects in headers with backdrop blur
+- **Primary Color Theme**: Consistent use of `primary` color scheme across all components
+- **Visual Filtering**: Filter status indicators with count summaries
+- **Responsive Grid**: Adaptive layouts from mobile to desktop (1-5 columns)
+- **Smart Navigation**: Context-aware back buttons and breadcrumbs
+- **Real-time Validation**: Live feedback for form inputs with color-coded states
+
+## 🔧 New Admin Features (August 2025)
+- **City Default Images Management**: Admin interface for setting default event images per city
+- **Enhanced Image Management**: Tabbed interface with "Event Images" and "City Defaults" sections
+- **Automatic Image Assignment**: Events automatically get city default images if no custom image is set
+- **Image Fallback System**: Graceful degradation from custom → city default → system default images
+
+## 🛠️ Technical Improvements (August 2025)
+- **Enhanced Error Handling**: All analytics functions now include try-catch blocks for graceful failures
+- **Client-side Filtering**: Fast filtering without API calls for better performance
+- **URL State Management**: Proper synchronization between URL parameters and component state
+- **Type Safety**: Enhanced TypeScript definitions for view modes and filter states
+- **Build Optimization**: Removed unused imports and fixed linting issues
+
 ---
-*Last Updated: January 2025 - Google Analytics 4, Club Admin Requests, Map & Onboarding Updates*
+*Last Updated: August 2025 - City Default Images, Clubs Page Redesign, Enhanced Filtering & Analytics Error Handling*

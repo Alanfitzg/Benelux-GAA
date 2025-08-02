@@ -11,6 +11,7 @@ import type { Event } from "@/types";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { TEAM_TYPES } from "@/lib/constants/teams";
 import { URLS, MESSAGES } from "@/lib/constants";
+import { validateEventDates } from "@/lib/validation/date-validation";
 
 type EventFormData = Omit<Event, "id" | "club"> & { 
   clubId?: string;
@@ -29,6 +30,7 @@ export default function CreateEvent() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [selectedClubId, setSelectedClubId] = useState<string>("");
   const [isIndependentEvent, setIsIndependentEvent] = useState<boolean>(false);
+  const [dateError, setDateError] = useState<string>("");
   
   // Tournament-specific state
   const [eventType, setEventType] = useState<string>("");
@@ -36,6 +38,9 @@ export default function CreateEvent() {
   const [maxTeams, setMaxTeams] = useState<number | undefined>();
   const [acceptedTeamTypes, setAcceptedTeamTypes] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC');
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [datesValid, setDatesValid] = useState<boolean>(false);
 
   // Redirect to signin if not authenticated
   useEffect(() => {
@@ -63,12 +68,68 @@ export default function CreateEvent() {
     return null;
   }
 
+  // Validate dates on change
+  const handleStartDateChange = (value: string) => {
+    setStartDate(value);
+    setDateError(""); // Clear error on change
+    
+    if (value) {
+      const validation = validateEventDates(value, endDate);
+      if (!validation.isValid) {
+        setDateError(validation.error || "");
+        setDatesValid(false);
+      } else {
+        setDatesValid(true);
+      }
+    }
+  };
+
+  const handleEndDateChange = (value: string) => {
+    setEndDate(value);
+    setDateError(""); // Clear error on change
+    
+    if (startDate) {
+      const validation = validateEventDates(startDate, value);
+      if (!validation.isValid) {
+        setDateError(validation.error || "");
+        setDatesValid(false);
+      } else {
+        setDatesValid(true);
+      }
+    }
+  };
+
+  // Get min date for inputs (today)
+  const getMinDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+
+  // Get max date for inputs (2 years from now)
+  const getMaxDate = () => {
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() + 2);
+    return maxDate.toISOString().split('T')[0];
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
+    setDateError("");
     setUploading(false);
     setImageUrl(null);
     const form = event.currentTarget;
+    // Get form values
+    const startDateValue = (form.elements.namedItem("startDate") as HTMLInputElement)?.value || "";
+    const endDateValue = (form.elements.namedItem("endDate") as HTMLInputElement)?.value || undefined;
+    
+    // Validate dates
+    const dateValidation = validateEventDates(startDateValue, endDateValue);
+    if (!dateValidation.isValid) {
+      setDateError(dateValidation.error || "Invalid dates");
+      return;
+    }
+    
     const file = imageFile;
     let uploadedImageUrl = "";
     
@@ -181,6 +242,31 @@ export default function CreateEvent() {
                   <span>{error}</span>
                 </motion.div>
               )}
+              
+              {dateError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-amber-50 border border-amber-200 text-amber-800 px-6 py-4 rounded-xl mb-8 flex items-center space-x-3"
+                >
+                  <span className="text-amber-500">📅</span>
+                  <span>{dateError}</span>
+                </motion.div>
+              )}
+              
+              {datesValid && startDate && !dateError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-green-50 border border-green-200 text-green-800 px-6 py-4 rounded-xl mb-8 flex items-center space-x-3"
+                >
+                  <span className="text-green-500">✅</span>
+                  <span>
+                    Event dates are valid! 
+                    {endDate ? ` Event runs from ${new Date(startDate).toLocaleDateString('en-IE')} to ${new Date(endDate).toLocaleDateString('en-IE')}` : ` Event on ${new Date(startDate).toLocaleDateString('en-IE')}`}
+                  </span>
+                </motion.div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Form Grid */}
@@ -255,9 +341,18 @@ export default function CreateEvent() {
                     <input
                       type="date"
                       name="startDate"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300"
+                      value={startDate}
+                      onChange={(e) => handleStartDateChange(e.target.value)}
+                      min={getMinDate()}
+                      max={getMaxDate()}
+                      className={`w-full border-2 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:ring-4 transition-all duration-300 ${
+                        dateError && startDate ? 'border-amber-400 focus:border-amber-500 focus:ring-amber-500/10' : 'border-gray-200 focus:border-primary focus:ring-primary/10'
+                      }`}
                       required
                     />
+                    <p className="mt-2 text-xs text-gray-500">
+                      Select a date between today and {new Date(getMaxDate()).toLocaleDateString('en-IE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                    </p>
                   </motion.div>
 
                   {/* End Date */}
@@ -272,8 +367,17 @@ export default function CreateEvent() {
                     <input
                       type="date"
                       name="endDate"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300"
+                      value={endDate}
+                      onChange={(e) => handleEndDateChange(e.target.value)}
+                      min={startDate || getMinDate()}
+                      max={getMaxDate()}
+                      className={`w-full border-2 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:ring-4 transition-all duration-300 ${
+                        dateError && endDate ? 'border-amber-400 focus:border-amber-500 focus:ring-amber-500/10' : 'border-gray-200 focus:border-primary focus:ring-primary/10'
+                      }`}
                     />
+                    <p className="mt-2 text-xs text-gray-500">
+                      {startDate ? 'Must be after start date. Maximum event duration is 30 days.' : 'Select a start date first'}
+                    </p>
                   </motion.div>
 
                   {/* Cost */}

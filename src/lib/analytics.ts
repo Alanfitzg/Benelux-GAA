@@ -1,4 +1,39 @@
 // Google Analytics event tracking utilities
+// 
+// Note: Analytics requests may fail due to:
+// - Ad blockers (uBlock Origin, AdBlock Plus, etc.)
+// - Privacy extensions (Privacy Badger, Ghostery, etc.)
+// - Network restrictions or corporate firewalls
+// - User privacy settings
+//
+// This is normal and expected behavior. All functions include error handling
+// to gracefully handle these cases without breaking the application.
+
+// Check if analytics is available and working
+export const isAnalyticsAvailable = (): boolean => {
+  return typeof window !== 'undefined' && !!window.gtag;
+};
+
+// Check if analytics requests are being blocked
+export const checkAnalyticsBlocked = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    if (!isAnalyticsAvailable()) {
+      resolve(true);
+      return;
+    }
+    
+    // Try a simple test event
+    try {
+      window.gtag!('event', 'test', {
+        custom_parameter: 'test',
+        send_to: 'none', // Don't actually send
+      });
+      resolve(false);
+    } catch {
+      resolve(true);
+    }
+  });
+};
 
 declare global {
   interface Window {
@@ -79,21 +114,36 @@ interface EventParams {
 // Track custom events
 export const trackEvent = (eventName: string, parameters?: EventParams) => {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', eventName, {
-      ...parameters,
-      // Add timestamp for better analysis
-      event_timestamp: new Date().toISOString(),
-    });
+    try {
+      window.gtag('event', eventName, {
+        ...parameters,
+        // Add timestamp for better analysis
+        event_timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      // Silently fail if analytics is blocked
+      // This is expected behavior for users with ad blockers
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('Analytics event blocked or failed:', eventName, error);
+      }
+    }
   }
 };
 
 // Track page views with custom properties
 export const trackPageView = (url: string, title?: string) => {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!, {
-      page_path: url,
-      page_title: title,
-    });
+    try {
+      window.gtag('config', process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!, {
+        page_path: url,
+        page_title: title,
+      });
+    } catch (error) {
+      // Silently fail if analytics is blocked
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('Analytics page view blocked or failed:', url, error);
+      }
+    }
   }
 };
 
@@ -105,7 +155,14 @@ export const setUserProperties = (properties: {
   club_count?: number;
 }) => {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('set', 'user_properties', properties);
+    try {
+      window.gtag('set', 'user_properties', properties);
+    } catch (error) {
+      // Silently fail if analytics is blocked
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('Analytics user properties blocked or failed:', properties, error);
+      }
+    }
   }
 };
 
@@ -122,7 +179,14 @@ export const trackPurchase = (transactionData: {
   }>;
 }) => {
   if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', 'purchase', transactionData);
+    try {
+      window.gtag('event', 'purchase', transactionData);
+    } catch (error) {
+      // Silently fail if analytics is blocked
+      if (process.env.NODE_ENV === 'development') {
+        console.debug('Analytics purchase tracking blocked or failed:', transactionData, error);
+      }
+    }
   }
 };
 

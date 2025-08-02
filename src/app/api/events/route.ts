@@ -4,6 +4,8 @@ import { geocodeLocation } from '@/lib/utils';
 import { withErrorHandling, parseJsonBody } from '@/lib/utils';
 import { requireClubAdmin } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import { getCityDefaultImage } from '@/lib/city-utils';
+import { validateEventDates } from '@/lib/validation/date-validation';
 import type { Prisma } from '@prisma/client';
 
 type CreateEventBody = {
@@ -88,10 +90,28 @@ async function createEventHandler(request: NextRequest) {
     const body = await parseJsonBody<CreateEventBody>(request);
     console.log('Creating event with data:', JSON.stringify(body, null, 2));
     
+    // Validate dates
+    const dateValidation = validateEventDates(body.startDate, body.endDate);
+    if (!dateValidation.isValid) {
+      return NextResponse.json(
+        { error: dateValidation.error || 'Invalid date selection' },
+        { status: 400 }
+      );
+    }
+    
     const { latitude, longitude } = await geocodeLocation(body.location);
+
+    let imageUrl = body.imageUrl;
+    if (!imageUrl) {
+      const cityDefaultImage = await getCityDefaultImage(body.location);
+      if (cityDefaultImage) {
+        imageUrl = cityDefaultImage;
+      }
+    }
 
     const eventData = {
       ...body,
+      imageUrl,
       startDate: new Date(body.startDate),
       endDate: body.endDate ? new Date(body.endDate) : null,
       latitude,
