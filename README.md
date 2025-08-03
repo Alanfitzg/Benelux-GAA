@@ -1,12 +1,12 @@
-# GAA Trips
+# PlayAway
 
-**Connecting GAA clubs and tournaments across Europe**
+**Connecting GAA clubs and tournaments worldwide**
 
-GAA Trips is a comprehensive platform that makes Gaelic games more accessible and sustainable worldwide by connecting GAA clubs, tournaments, and the global Irish community.
+PlayAway is a comprehensive platform that makes Gaelic games more accessible and sustainable worldwide by connecting GAA clubs, tournaments, and the global Irish community.
 
 ## 🏆 Features
 
-- **Club Discovery**: Browse and search Gaelic clubs across Europe
+- **Club Discovery**: Browse and search Gaelic clubs worldwide
 - **Event Management**: Find and create Gaelic tournaments and events
 - **Interactive Maps**: Explore clubs and events with integrated mapping
 - **User Authentication**: Secure user registration and management
@@ -40,7 +40,7 @@ GAA Trips is a comprehensive platform that makes Gaelic games more accessible an
 
    ```bash
    git clone <repository-url>
-   cd gaa-trips
+   cd play-away
    ```
 
 2. **Install dependencies**

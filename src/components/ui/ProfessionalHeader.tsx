@@ -65,7 +65,7 @@ const ProfessionalHeader = () => {
               >
                 <Image
                   src="/logo.png"
-                  alt="Gaelic Trips Logo"
+                  alt="PlayAway Logo"
                   width={56}
                   height={56}
                   className="w-14 h-14 object-contain"
@@ -80,7 +80,7 @@ const ProfessionalHeader = () => {
                 }`}
                 whileHover={{ scale: 1.02 }}
               >
-                Gaelic Trips
+                PlayAway
               </motion.span>
               <span
                 className={`text-xs opacity-75 transition-colors duration-300 ${

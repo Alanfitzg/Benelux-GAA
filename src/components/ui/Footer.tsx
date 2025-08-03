@@ -10,13 +10,13 @@ export default function Footer() {
           
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Gaelic Trips</h3>
+            <h3 className="text-lg font-semibold">PlayAway</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
-              Connecting GAA clubs and tournaments across Europe. 
-              Making Gaelic games more accessible and sustainable worldwide.
+              Connecting GAA clubs and tournaments worldwide. 
+              Making Gaelic games more accessible and sustainable globally.
             </p>
             <div className="text-sm text-gray-400">
-              <p>Gaelic Trips Ltd</p>
+              <p>PlayAway Ltd</p>
               <p>Registered in Ireland</p>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © {currentYear} Gaelic Trips Ltd. All rights reserved.
+              © {currentYear} PlayAway Ltd. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <span>

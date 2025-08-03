@@ -114,7 +114,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
             <div className="flex items-center justify-between p-6 border-b">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  {currentStep === 1 && "What brings you to GAA Trips?"}
+                  {currentStep === 1 && "What brings you to PlayAway?"}
                   {currentStep === 2 && "Your competitive level"}
                   {currentStep === 3 && "Tell us more (optional)"}
                   {currentStep === 4 && "All set!"}
