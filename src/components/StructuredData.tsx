@@ -38,7 +38,7 @@ export function generateEventStructuredData(event: Event) {
       ...(event.club.imageUrl && { "logo": event.club.imageUrl })
     } : {
       "@type": "Organization",
-      "name": "GAA Trips"
+      "name": "PlayAway"
     },
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "eventStatus": "https://schema.org/EventScheduled",
@@ -56,10 +56,10 @@ export function generateEventStructuredData(event: Event) {
 export const organizationStructuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "GAA Trips",
+  "name": "PlayAway",
   "description": "Your gateway to Gaelic games abroad. Explore GAA clubs, tournaments, and events worldwide.",
-  "url": "https://gaa-trips.vercel.app",
-  "logo": "https://gaa-trips.vercel.app/logo.png",
+  "url": "https://play-away.vercel.app",
+  "logo": "https://play-away.vercel.app/logo.png",
   "foundingDate": "2024",
   "sameAs": [
     "https://facebook.com/gaatrips",
@@ -69,21 +69,21 @@ export const organizationStructuredData = {
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "customer service",
-    "email": "info@gaa-trips.com"
+    "email": "info@play-away.com"
   }
 };
 
 export const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "GAA Trips",
+  "name": "PlayAway",
   "description": "Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-  "url": "https://gaa-trips.vercel.app",
+  "url": "https://play-away.vercel.app",
   "potentialAction": {
     "@type": "SearchAction",
     "target": {
       "@type": "EntryPoint",
-      "urlTemplate": "https://gaa-trips.vercel.app/events?search={search_term_string}"
+      "urlTemplate": "https://play-away.vercel.app/events?search={search_term_string}"
     },
     "query-input": "required name=search_term_string"
   }

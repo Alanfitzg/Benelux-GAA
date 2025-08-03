@@ -107,7 +107,7 @@ function SignInForm() {
                   <div className="mt-1 text-sm text-green-700">
                     <p>Your account has been created and you can now sign in.</p>
                     <p className="mt-2 font-medium">
-                      Sign in below to start using GAA Trips!
+                      Sign in below to start using PlayAway!
                     </p>
                   </div>
                 </div>

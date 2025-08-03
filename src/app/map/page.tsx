@@ -552,25 +552,9 @@ function MapContent() {
 
       {/* Hero Section - Hide on mobile when navigated from landing */}
       {!isMobile && (
-        <div className="relative h-[500px] md:h-[600px] overflow-hidden text-white">
-          {/* Team huddle background image - full visibility */}
-          <div 
-            className="absolute inset-0"
-            style={{
-              backgroundImage: 'url(/team-huddle.png)',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat'
-            }}
-          />
-          
-          {/* Blue tint overlay - lighter on mobile */}
-          <div className="absolute inset-0 bg-blue-900/25 md:bg-blue-900/40"></div>
-          {/* Additional dark overlay for text readability - lighter on mobile */}
-          <div className="absolute inset-0 bg-black/10 md:bg-black/20"></div>
-          
+        <div className="relative bg-gradient-to-br from-primary to-primary/80 text-white py-16 md:py-20">
           {/* Content positioned at top of the hero */}
-          <div className="relative h-full flex items-start justify-center pt-16 md:pt-20">
+          <div className="relative h-full flex items-start justify-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}

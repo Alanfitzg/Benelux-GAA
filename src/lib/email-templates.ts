@@ -128,7 +128,7 @@ export function generateNewUserNotificationEmail(data: NewUserNotificationData):
     </head>
     <body>
       <div class="header">
-        <div class="logo">🏐 Gaelic Trips</div>
+        <div class="logo">🏐 PlayAway</div>
         <h1>New User Registration</h1>
         <p style="margin: 10px 0 0 0; opacity: 0.9;">A new user has registered and needs approval</p>
       </div>
@@ -136,7 +136,7 @@ export function generateNewUserNotificationEmail(data: NewUserNotificationData):
       <div class="content">
         <p>Hello Admin,</p>
         
-        <p>A new user has just registered on the Gaelic Trips platform and is awaiting approval.</p>
+        <p>A new user has just registered on the PlayAway platform and is awaiting approval.</p>
         
         <div class="user-info">
           <h3>👤 User Details</h3>
@@ -184,7 +184,7 @@ export function generateNewUserNotificationEmail(data: NewUserNotificationData):
       </div>
       
       <div class="footer">
-        <div class="logo">Gaelic Trips</div>
+        <div class="logo">PlayAway</div>
         <p>Connecting GAA communities worldwide</p>
         <p style="margin-top: 15px; font-size: 12px;">
           This is an automated notification. Please do not reply to this email.
@@ -195,7 +195,7 @@ export function generateNewUserNotificationEmail(data: NewUserNotificationData):
   `;
 
   const text = `
-New User Registration - Gaelic Trips
+New User Registration - PlayAway
 
 A new user has registered and needs approval:
 
@@ -210,7 +210,7 @@ Please review this registration in the Admin Panel: ${data.adminPanelUrl}/users
 The user will receive an email notification once you approve or reject their account.
 
 ---
-Gaelic Trips - Connecting GAA communities worldwide
+PlayAway - Connecting GAA communities worldwide
 This is an automated notification.
   `;
 
@@ -232,8 +232,8 @@ export function generateUserApprovalNotificationEmail(data: UserApprovalNotifica
   text: string;
 } {
   const subject = data.approved 
-    ? `✅ Welcome to Gaelic Trips! Your account has been approved`
-    : `❌ Gaelic Trips Account Application Update`;
+    ? `✅ Welcome to PlayAway! Your account has been approved`
+    : `❌ PlayAway Account Application Update`;
   
   const html = data.approved ? `
     <!DOCTYPE html>
@@ -288,14 +288,14 @@ export function generateUserApprovalNotificationEmail(data: UserApprovalNotifica
     </head>
     <body>
       <div class="header">
-        <h1>🎉 Welcome to Gaelic Trips!</h1>
+        <h1>🎉 Welcome to PlayAway!</h1>
         <p>Your account has been approved</p>
       </div>
       
       <div class="content">
         <p>Hello ${data.userName},</p>
         
-        <p>Great news! Your Gaelic Trips account has been approved and you can now access all platform features.</p>
+        <p>Great news! Your PlayAway account has been approved and you can now access all platform features.</p>
         
         <p>You can now:</p>
         <ul>
@@ -309,11 +309,11 @@ export function generateUserApprovalNotificationEmail(data: UserApprovalNotifica
           <a href="${data.loginUrl}" class="btn">🚀 Start Exploring</a>
         </div>
         
-        <p>Welcome to the Gaelic Trips community!</p>
+        <p>Welcome to the PlayAway community!</p>
       </div>
       
       <div class="footer">
-        <p>Gaelic Trips - Connecting GAA communities worldwide</p>
+        <p>PlayAway - Connecting GAA communities worldwide</p>
       </div>
     </body>
     </html>
@@ -335,22 +335,22 @@ export function generateUserApprovalNotificationEmail(data: UserApprovalNotifica
       </div>
       <div class="content">
         <p>Hello ${data.userName},</p>
-        <p>Thank you for your interest in Gaelic Trips. After reviewing your application, we are unable to approve your account at this time.</p>
+        <p>Thank you for your interest in PlayAway. After reviewing your application, we are unable to approve your account at this time.</p>
         <p>If you believe this is an error or have questions, please contact our support team.</p>
       </div>
       <div class="footer">
-        <p>Gaelic Trips - Connecting GAA communities worldwide</p>
+        <p>PlayAway - Connecting GAA communities worldwide</p>
       </div>
     </body>
     </html>
   `;
 
   const text = data.approved 
-    ? `Welcome to Gaelic Trips!
+    ? `Welcome to PlayAway!
 
 Hello ${data.userName},
 
-Great news! Your Gaelic Trips account has been approved and you can now access all platform features.
+Great news! Your PlayAway account has been approved and you can now access all platform features.
 
 You can now:
 - Browse GAA clubs and tournaments
@@ -360,16 +360,16 @@ You can now:
 
 Start exploring: ${data.loginUrl}
 
-Welcome to the Gaelic Trips community!`
+Welcome to the PlayAway community!`
     : `Account Application Update
 
 Hello ${data.userName},
 
-Thank you for your interest in Gaelic Trips. After reviewing your application, we are unable to approve your account at this time.
+Thank you for your interest in PlayAway. After reviewing your application, we are unable to approve your account at this time.
 
 If you believe this is an error or have questions, please contact our support team.
 
-Gaelic Trips - Connecting GAA communities worldwide`;
+PlayAway - Connecting GAA communities worldwide`;
 
   return { subject, html, text };
 }
@@ -387,7 +387,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   html: string;
   text: string;
 } {
-  const subject = `🎉 Welcome to Gaelic Trips, ${data.userName}!`;
+  const subject = `🎉 Welcome to PlayAway, ${data.userName}!`;
   
   const html = `
     <!DOCTYPE html>
@@ -395,7 +395,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Welcome to Gaelic Trips</title>
+      <title>Welcome to PlayAway</title>
       <style>
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -484,15 +484,15 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
     </head>
     <body>
       <div class="header">
-        <div class="logo">🏐 Gaelic Trips</div>
-        <h1>Welcome to Gaelic Trips!</h1>
+        <div class="logo">🏐 PlayAway</div>
+        <h1>Welcome to PlayAway!</h1>
         <p style="margin: 10px 0 0 0; opacity: 0.9;">Your journey with the global GAA community starts here</p>
       </div>
       
       <div class="content">
         <p>Dear ${data.userName},</p>
         
-        <p>Thank you for joining Gaelic Trips! We're thrilled to have you as part of our growing community of GAA enthusiasts from around the world.</p>
+        <p>Thank you for joining PlayAway! We're thrilled to have you as part of our growing community of GAA enthusiasts from around the world.</p>
         
         ${data.isApproved ? `
         <div class="feature-list">
@@ -526,11 +526,11 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
         <p>If you have any questions or need assistance, our support team is here to help!</p>
         
         <p>Welcome aboard,<br>
-        The Gaelic Trips Team</p>
+        The PlayAway Team</p>
       </div>
       
       <div class="footer">
-        <div class="logo">Gaelic Trips</div>
+        <div class="logo">PlayAway</div>
         <p>Connecting GAA communities worldwide</p>
         
         <div class="social-links">
@@ -540,8 +540,8 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
         </div>
         
         <p style="margin-top: 15px; font-size: 12px;">
-          You received this email because you signed up for Gaelic Trips.<br>
-          © 2024 Gaelic Trips. All rights reserved.
+          You received this email because you signed up for PlayAway.<br>
+          © 2024 PlayAway. All rights reserved.
         </p>
       </div>
     </body>
@@ -549,11 +549,11 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   `;
 
   const text = `
-Welcome to Gaelic Trips!
+Welcome to PlayAway!
 
 Dear ${data.userName},
 
-Thank you for joining Gaelic Trips! We're thrilled to have you as part of our growing community of GAA enthusiasts from around the world.
+Thank you for joining PlayAway! We're thrilled to have you as part of our growing community of GAA enthusiasts from around the world.
 
 ${data.isApproved ? `
 What you can do now:
@@ -577,11 +577,11 @@ Getting Started Tips:
 If you have any questions or need assistance, our support team is here to help!
 
 Welcome aboard,
-The Gaelic Trips Team
+The PlayAway Team
 
 ---
-Gaelic Trips - Connecting GAA communities worldwide
-© 2024 Gaelic Trips. All rights reserved.
+PlayAway - Connecting GAA communities worldwide
+© 2024 PlayAway. All rights reserved.
   `;
 
   return { subject, html, text };

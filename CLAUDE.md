@@ -1,7 +1,7 @@
-# GAA Trips - AI Assistant Context
+# PlayAway - AI Assistant Context
 
 ## 🎯 Project Overview
-GAA Trips is a production-deployed platform for organizing GAA (Gaelic Athletic Association) events and tournaments across Europe. Live at: [your-domain]
+PlayAway is a production-deployed platform for organizing GAA (Gaelic Athletic Association) events and tournaments worldwide. Live at: [your-domain]
 
 ## 🏗️ Technical Stack
 - **Frontend**: Next.js 15.3.3, React 19, TypeScript, Tailwind CSS
@@ -47,9 +47,16 @@ When starting a new session, these files provide comprehensive context:
 - **Map Enhancement**: Updated to colorful streets-v12 style for better visual appeal
 - **Onboarding Streamlined**: Removed activities and flight time questions, focused competitive levels
 
-## 🚀 Recent Updates (August 2025)
-- **City Default Images**: Automatic default image assignment for events based on city location
-- **Enhanced Date Validation**: Real-time date validation with user-friendly error messages for event creation
+## 🆕 Latest Changes (August 2025)
+- **Complete Rebrand**: Platform renamed from "Gaelic Trips"/"GAA Trips" to "PlayAway" (one word)
+- **Global Positioning**: Removed "continental" references to support future UK expansion
+- **Geographic Flexibility**: Updated all Europe-specific language to international/global terminology
+- **Mobile UX Improvements**: 
+  - Hidden "Join Our Network" section on mobile (clubs page)
+  - Reduced custom trip text on mobile (tournaments page)
+  - Smaller hero image on mobile (landing page)
+  - Compact blue header sections on mobile
+- **Landing Page Enhancement**: Added "How it works" section header with "in brief" subtitle
 - **Clubs Page Redesign**: Modern country cards view with flags and club counts matching screenshot design
 - **Dual View System**: Toggle between country cards grid and expanded club listings with filters
 - **Consistent UI Theme**: Updated clubs page header to match site-wide primary color scheme and glass morphism design
@@ -323,4 +330,4 @@ npm run db:approve-clubs
 - **Cache Invalidation**: API now detects and rebuilds stale caches automatically
 
 ---
-*Last Updated: August 2025 - City Default Images, Clubs Page Redesign, Enhanced Filtering, Analytics Error Handling & Database Management Scripts*
+*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Landing Page Enhancements*

@@ -156,7 +156,7 @@ export default function ClubsPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Hero Section */}
-        <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-16">
+        <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
           <div className="container mx-auto px-4 text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Clubs / Cities
@@ -165,8 +165,8 @@ export default function ClubsPage() {
               Discover the international community of clubs
             </p>
             
-            {/* Register Club CTA */}
-            <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
+            {/* Register Club CTA - Hidden on mobile */}
+            <div className="hidden md:block mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
               <div className="text-center">
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Join Our Network
@@ -209,7 +209,7 @@ export default function ClubsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-16">
+      <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Clubs / Cities
@@ -218,8 +218,8 @@ export default function ClubsPage() {
             Discover the international community of clubs
           </p>
           
-          {/* Register Club CTA */}
-          <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
+          {/* Register Club CTA - Hidden on mobile */}
+          <div className="hidden md:block mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
             <div className="text-center">
               <h3 className="text-lg font-semibold text-white mb-2">
                 Join Our Network

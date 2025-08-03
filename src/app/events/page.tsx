@@ -25,17 +25,17 @@ export const metadata: Metadata = {
     "Irish sports calendar",
   ],
   openGraph: {
-    title: "Gaelic Tournaments & Events | GAA Trips",
+    title: "Gaelic Tournaments & Events | PlayAway",
     description:
       "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
-    url: "https://gaa-trips.vercel.app/events",
+    url: "https://play-away.vercel.app/events",
     type: "website",
   },
   alternates: {
-    canonical: "https://gaa-trips.vercel.app/events",
+    canonical: "https://play-away.vercel.app/events",
   },
   twitter: {
-    title: "Gaelic Tournaments & Events | GAA Trips",
+    title: "Gaelic Tournaments & Events | PlayAway",
     description:
       "Discover Gaelic Athletic Association tournaments and events worldwide.",
   },
@@ -191,7 +191,7 @@ export default async function EventsPage({
             }
           : {
               "@type": "Organization",
-              name: "GAA Trips",
+              name: "PlayAway",
             },
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",
@@ -203,7 +203,7 @@ export default async function EventsPage({
             priceCurrency: "EUR",
           },
         }),
-        url: `https://gaa-trips.vercel.app/events/${event.id}`,
+        url: `https://play-away.vercel.app/events/${event.id}`,
       })),
     };
 
@@ -224,10 +224,10 @@ export default async function EventsPage({
               {/* Custom Trip CTA */}
               <div className="mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
                 <div className="text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">
+                  <h3 className="hidden md:block text-lg font-semibold text-white mb-2">
                     Plan Your Custom Trip
                   </h3>
-                  <p className="text-white/90 text-sm mb-3">
+                  <p className="hidden md:block text-white/90 text-sm mb-3">
                     Complete this form to build a trip from scratch
                   </p>
                   <a
@@ -309,20 +309,18 @@ export default async function EventsPage({
                 >
                   Apply Filters
                 </button>
-              </form>
-              
-              {/* Reset Filters Button */}
-              {(eventType || country || month || visibility) && (
+                {/* Clear Search Button */}
                 <Link
                   href="/events"
                   className="bg-gray-500 text-white px-6 py-2.5 rounded-lg hover:bg-gray-600 transition shadow-sm hover:shadow-md inline-flex items-center gap-2"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  Reset Filters
+                  Clear Search
                 </Link>
-              )}
+              </form>
+              
               <CreateEventButton />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
