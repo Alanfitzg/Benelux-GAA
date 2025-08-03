@@ -178,7 +178,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-gray-900">
-                        See what's going on in Europe
+                        See what&apos;s going on in Europe
                       </h4>
                       <p className="text-gray-600 text-sm">
                         Browse tournaments across Germany, Spain, France and
