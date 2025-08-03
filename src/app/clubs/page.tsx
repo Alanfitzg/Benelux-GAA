@@ -387,82 +387,97 @@ export default function ClubsPage() {
             </div>
 
             {/* Clubs grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {selectedCountryClubs.map((club) => (
                 <motion.div
                   key={club.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+                  className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
                 >
-                  <Link href={`/clubs/${club.id}`} className="block p-6">
-                    {/* Club image */}
-                    {club.imageUrl && (
-                      <div className="mb-4 h-48 relative rounded-lg overflow-hidden">
+                  <Link href={`/clubs/${club.id}`} className="block">
+                    {/* Club image - full width with overlay */}
+                    <div className="relative h-56 overflow-hidden">
+                      {club.imageUrl ? (
                         <Image
                           src={club.imageUrl}
                           alt={club.name}
                           fill
-                          className="object-cover"
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
                           unoptimized
                         />
-                      </div>
-                    )}
-                    
-                    {/* Club info */}
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
-                      {club.name}
-                    </h3>
-                    
-                    {club.location && (
-                      <p className="text-gray-600 mb-2 flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        {club.location}
-                      </p>
-                    )}
-                    
-                    {club.teamTypes.length > 0 && (
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {club.teamTypes.slice(0, 3).map((type) => (
-                          <span
-                            key={type}
-                            className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
-                          >
-                            {type}
-                          </span>
-                        ))}
-                        {club.teamTypes.length > 3 && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                            +{club.teamTypes.length - 3} more
-                          </span>
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
+                          <div className="text-center text-primary">
+                            <div className="text-4xl mb-2">🏟️</div>
+                            <div className="text-sm font-medium">{club.name}</div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Gradient overlay for better text readability */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                      
+                      {/* Club name overlay */}
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <h3 className="text-white text-xl font-bold mb-1 leading-tight">
+                          {club.name}
+                        </h3>
+                        {club.location && (
+                          <p className="text-white/90 text-sm flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            {club.location}
+                          </p>
                         )}
                       </div>
-                    )}
+                    </div>
                     
-                    {/* Social links */}
-                    {(club.facebook || club.instagram || club.website) && (
-                      <div className="flex gap-2">
-                        {club.facebook && (
-                          <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">f</span>
-                          </div>
-                        )}
-                        {club.instagram && (
-                          <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">@</span>
-                          </div>
-                        )}
-                        {club.website && (
-                          <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs font-bold">🌐</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                    {/* Club details section */}
+                    <div className="p-5">
+                      {/* Team types */}
+                      {club.teamTypes.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {club.teamTypes.slice(0, 3).map((type) => (
+                            <span
+                              key={type}
+                              className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"
+                            >
+                              {type}
+                            </span>
+                          ))}
+                          {club.teamTypes.length > 3 && (
+                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
+                              +{club.teamTypes.length - 3}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      
+                      {/* Social links */}
+                      {(club.facebook || club.instagram || club.website) && (
+                        <div className="flex gap-2">
+                          {club.facebook && (
+                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">f</span>
+                            </div>
+                          )}
+                          {club.instagram && (
+                            <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">@</span>
+                            </div>
+                          )}
+                          {club.website && (
+                            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                              <span className="text-white text-xs font-bold">🌐</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </Link>
                 </motion.div>
               ))}
@@ -630,82 +645,97 @@ export default function ClubsPage() {
                   </div>
 
                   {/* Clubs grid for this country */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {clubsByCountry[country].map((club) => (
                       <motion.div
                         key={club.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+                        className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
                       >
-                        <Link href={`/clubs/${club.id}`} className="block p-6">
-                          {/* Club image */}
-                          {club.imageUrl && (
-                            <div className="mb-4 h-48 relative rounded-lg overflow-hidden">
+                        <Link href={`/clubs/${club.id}`} className="block">
+                          {/* Club image - full width with overlay */}
+                          <div className="relative h-56 overflow-hidden">
+                            {club.imageUrl ? (
                               <Image
                                 src={club.imageUrl}
                                 alt={club.name}
                                 fill
-                                className="object-cover"
+                                className="object-cover group-hover:scale-105 transition-transform duration-300"
                                 unoptimized
                               />
-                            </div>
-                          )}
-                          
-                          {/* Club info */}
-                          <h3 className="text-xl font-bold text-gray-900 mb-2">
-                            {club.name}
-                          </h3>
-                          
-                          {club.location && (
-                            <p className="text-gray-600 mb-2 flex items-center gap-1">
-                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                              </svg>
-                              {club.location}
-                            </p>
-                          )}
-                          
-                          {club.teamTypes.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-4">
-                              {club.teamTypes.slice(0, 3).map((type) => (
-                                <span
-                                  key={type}
-                                  className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
-                                >
-                                  {type}
-                                </span>
-                              ))}
-                              {club.teamTypes.length > 3 && (
-                                <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                                  +{club.teamTypes.length - 3} more
-                                </span>
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
+                                <div className="text-center text-primary">
+                                  <div className="text-4xl mb-2">🏟️</div>
+                                  <div className="text-sm font-medium">{club.name}</div>
+                                </div>
+                              </div>
+                            )}
+                            
+                            {/* Gradient overlay for better text readability */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            
+                            {/* Club name overlay */}
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <h3 className="text-white text-xl font-bold mb-1 leading-tight">
+                                {club.name}
+                              </h3>
+                              {club.location && (
+                                <p className="text-white/90 text-sm flex items-center gap-1">
+                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                  </svg>
+                                  {club.location}
+                                </p>
                               )}
                             </div>
-                          )}
+                          </div>
                           
-                          {/* Social links */}
-                          {(club.facebook || club.instagram || club.website) && (
-                            <div className="flex gap-2">
-                              {club.facebook && (
-                                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-xs font-bold">f</span>
-                                </div>
-                              )}
-                              {club.instagram && (
-                                <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-xs font-bold">@</span>
-                                </div>
-                              )}
-                              {club.website && (
-                                <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                                  <span className="text-white text-xs font-bold">🌐</span>
-                                </div>
-                              )}
-                            </div>
-                          )}
+                          {/* Club details section */}
+                          <div className="p-5">
+                            {/* Team types */}
+                            {club.teamTypes.length > 0 && (
+                              <div className="flex flex-wrap gap-1 mb-4">
+                                {club.teamTypes.slice(0, 3).map((type) => (
+                                  <span
+                                    key={type}
+                                    className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"
+                                  >
+                                    {type}
+                                  </span>
+                                ))}
+                                {club.teamTypes.length > 3 && (
+                                  <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
+                                    +{club.teamTypes.length - 3}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                            
+                            {/* Social links */}
+                            {(club.facebook || club.instagram || club.website) && (
+                              <div className="flex gap-2">
+                                {club.facebook && (
+                                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-xs font-bold">f</span>
+                                  </div>
+                                )}
+                                {club.instagram && (
+                                  <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-xs font-bold">@</span>
+                                  </div>
+                                )}
+                                {club.website && (
+                                  <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-xs font-bold">🌐</span>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
                         </Link>
                       </motion.div>
                     ))}
