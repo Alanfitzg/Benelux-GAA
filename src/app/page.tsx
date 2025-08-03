@@ -26,7 +26,7 @@ export default function HomePage() {
     ])
       .then(([clubsData, eventsData]) => {
         const clubs = Array.isArray(clubsData) ? clubsData : clubsData.clubs || [];
-        const events = Array.isArray(eventsData) ? eventsData : [];
+        const events = Array.isArray(eventsData) ? eventsData : eventsData.events || [];
         
         // Count unique countries
         const countries = new Set();
@@ -54,7 +54,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden bg-slate-900">
         {/* Team huddle background image */}
         <div 
-          className="absolute inset-0 opacity-60"
+          className="absolute inset-0 opacity-40"
           style={{
             backgroundImage: 'url(/team-huddle.png)',
             backgroundSize: 'cover',
@@ -63,145 +63,160 @@ export default function HomePage() {
           }}
         />
         
-        <div className="relative container mx-auto px-6 py-20">
-          <div className="max-w-4xl">
+        <div className="relative container mx-auto px-6 py-16">
+          <div className="max-w-5xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              className="text-center"
             >
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                GAA Trips
+              <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
+                Your Gateway to European GAA
               </h1>
-              <p className="text-xl md:text-2xl text-emerald-100 mb-8 font-medium">
-                Connect clubs. Organize tournaments. Travel Europe.
-              </p>
-              <p className="text-lg text-gray-300 mb-12 max-w-2xl">
-                From Berlin to Barcelona, Dublin to Amsterdam — find tournaments, 
-                connect with clubs, and take your GAA experience international.
+              <p className="text-xl md:text-2xl text-emerald-100 mb-8">
+                From Ireland and Britain to {stats.clubs}+ clubs across continental Europe
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              {/* Trust Badge */}
+              <div className="inline-flex items-center gap-4 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-10">
+                <div className="flex -space-x-2">
+                  {['🇮🇪', '🇬🇧', '🇪🇸', '🇫🇷', '🇩🇪'].map((flag, i) => (
+                    <div key={i} className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-lg border-2 border-slate-900">
+                      {flag}
+                    </div>
+                  ))}
+                </div>
+                <span className="text-white font-medium">Connecting you to continental Europe</span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/events"
-                  className="inline-flex items-center px-8 py-4 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-700 transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl text-lg"
                 >
-                  Find Tournaments
+                  Explore Continental Europe
                   <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
                 <Link
-                  href="/clubs"
-                  className="inline-flex items-center px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-slate-900 transition-all duration-200"
+                  href="/signin"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-lg text-lg"
                 >
-                  Browse Clubs
+                  Club Admin Sign In
                 </Link>
               </div>
             </motion.div>
           </div>
         </div>
 
-        {/* User Journey Selection - Positioned to overlap hero */}
-        <div className="relative z-10 -mt-20">
-          <div className="container mx-auto px-6">
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              {/* Player Path */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 bg-white hover:shadow-3xl"
-              >
-                <div className="absolute top-0 left-0 right-0 h-2 bg-emerald-600" />
-                <div className="p-8">
-                  <div className="mb-6">
-                    <span className="inline-block px-4 py-2 bg-emerald-50 text-emerald-700 rounded-full text-sm font-semibold uppercase tracking-wide">
-                      For Players & Teams
-                    </span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Travel & Play Gaelic Sports Abroad</h3>
-                  <p className="text-gray-600 mb-6">
-                    Join tournaments, connect with clubs across Europe, and experience Gaelic sports culture in new destinations.
-                  </p>
-                  <ul className="space-y-3 text-gray-700 mb-8">
-                    <li className="flex items-start">
-                      <div className="w-6 h-6 bg-emerald-50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <span className="text-emerald-600 text-sm font-bold">✓</span>
-                      </div>
-                      <span>Browse tournaments and events across 15+ countries</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="w-6 h-6 bg-emerald-50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <span className="text-emerald-600 text-sm font-bold">✓</span>
-                      </div>
-                      <span>Connect directly with verified host clubs</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="w-6 h-6 bg-emerald-50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <span className="text-emerald-600 text-sm font-bold">✓</span>
-                      </div>
-                      <span>Plan your perfect Gaelic sports trip with local insights</span>
-                    </li>
-                  </ul>
-                  <Link
-                    href="/events"
-                    className="block w-full bg-emerald-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-emerald-700 transition-colors duration-200 text-center"
-                  >
-                    Explore Tournaments →
-                  </Link>
-                </div>
-              </motion.div>
+      </section>
 
-              {/* Host Path */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                className="relative overflow-hidden rounded-2xl shadow-2xl transition-all duration-300 bg-white hover:shadow-3xl"
-              >
-                <div className="absolute top-0 left-0 right-0 h-2 bg-orange-500" />
-                <div className="p-8">
-                  <div className="mb-6">
-                    <span className="inline-block px-4 py-2 bg-orange-50 text-orange-700 rounded-full text-sm font-semibold uppercase tracking-wide">
-                      For Clubs
-                    </span>
+
+      {/* How It Works - Split Paths */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
+            {/* For Players */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-primary/5 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  From Ireland & Britain
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">1</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Discover Continental Options</h4>
+                      <p className="text-gray-600 text-sm">Browse tournaments across Germany, Spain, France and beyond</p>
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Host Teams & Generate Revenue</h3>
-                  <p className="text-gray-600 mb-6">
-                    Turn your facilities into a revenue stream by hosting tournaments and visiting teams.
-                  </p>
-                  <ul className="space-y-3 text-gray-700 mb-8">
-                    <li className="flex items-start">
-                      <div className="w-6 h-6 bg-orange-50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <span className="text-orange-600 text-sm font-bold">✓</span>
-                      </div>
-                      <span>Create tournaments and attract teams Europe-wide</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="w-6 h-6 bg-orange-50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <span className="text-orange-600 text-sm font-bold">✓</span>
-                      </div>
-                      <span>Offer accommodation and facility packages</span>
-                    </li>
-                    <li className="flex items-start">
-                      <div className="w-6 h-6 bg-orange-50 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
-                        <span className="text-orange-600 text-sm font-bold">✓</span>
-                      </div>
-                      <span>Build lasting connections with clubs abroad</span>
-                    </li>
-                  </ul>
-                  <Link
-                    href="/clubs/register"
-                    className="block w-full bg-orange-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-orange-600 transition-colors duration-200 text-center"
-                  >
-                    Start Hosting →
-                  </Link>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">2</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Connect Across Borders</h4>
+                      <p className="text-gray-600 text-sm">Link up with European clubs for unforgettable trips</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">3</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Take GAA International</h4>
+                      <p className="text-gray-600 text-sm">Bring your game to Europe&apos;s most exciting cities</p>
+                    </div>
+                  </div>
                 </div>
-              </motion.div>
-            </div>
+                <Link
+                  href="/events"
+                  className="mt-6 inline-flex items-center text-primary hover:text-primary/90 font-medium"
+                >
+                  Explore Europe
+                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </motion.div>
+
+            {/* For Hosts */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="relative"
+            >
+              <div className="bg-gray-50 rounded-2xl p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Continental Clubs
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">1</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Open Your Doors</h4>
+                      <p className="text-gray-600 text-sm">Welcome teams from Ireland and Britain to your city</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">2</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Create Tournaments</h4>
+                      <p className="text-gray-600 text-sm">Attract visiting teams and build international connections</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">3</div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900">Grow Your Club</h4>
+                      <p className="text-gray-600 text-sm">Generate revenue and strengthen GAA networks across Europe</p>
+                    </div>
+                  </div>
+                </div>
+                <Link
+                  href="/signin"
+                  className="mt-6 inline-flex items-center text-gray-600 hover:text-gray-700 font-medium"
+                >
+                  Club Admin Access
+                  <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Value Propositions */}
-      <section className="py-20 bg-white">
+      {/* Testimonials Section */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -211,76 +226,112 @@ export default function HomePage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Gaelic Trips?
+              What Our Community Says
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              The platform built by the Gaelic sports community, for the Gaelic sports community
+              Hear from teams and clubs who&apos;ve made the continental connection
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Trust & Safety */}
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Team Member Testimonial */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="bg-white rounded-lg p-6 shadow-md"
             >
-              <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                </svg>
+              <div className="mb-4">
+                <div className="flex text-primary mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 italic mb-4">
+                  &quot;GAA Trips opened up a whole new world for our club. We went from playing local teams to competing in Barcelona and Amsterdam. The connections we&apos;ve made have been incredible.&quot;
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Verified Clubs</h3>
-              <p className="text-gray-600">
-                Every club is verified, ensuring safe and reliable connections across the GAA network
-              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                  <span className="text-primary font-bold text-lg">🏐</span>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">Sarah Murphy</h4>
+                  <p className="text-gray-600 text-sm">Captain, Dublin Wanderers</p>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Community */}
+            {/* Host Club Testimonial */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="bg-white rounded-lg p-6 shadow-md"
             >
-              <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
+              <div className="mb-4">
+                <div className="flex text-primary mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 italic mb-4">
+                  &quot;Hosting Irish and British teams has transformed our club. We&apos;ve generated real revenue while building lasting friendships. The platform makes organizing everything so simple.&quot;
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Gaelic Community</h3>
-              <p className="text-gray-600">
-                Connect with clubs that share your passion for Gaelic sports and Irish culture
-              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                  <span className="text-primary font-bold text-lg">🏠</span>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">Hans Mueller</h4>
+                  <p className="text-gray-600 text-sm">President, Munich Colmcilles</p>
+                </div>
+              </div>
             </motion.div>
 
-            {/* Revenue */}
+            {/* Tournament Organizer Testimonial */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="bg-white rounded-lg p-6 shadow-md"
             >
-              <div className="w-20 h-20 bg-amber-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+              <div className="mb-4">
+                <div className="flex text-primary mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 fill-current" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <p className="text-gray-700 italic mb-4">
+                  &quot;As someone who helps coordinate our club&apos;s European trips, GAA Trips has been a game-changer. Finding quality tournaments and trustworthy hosts used to take months - now it takes minutes.&quot;
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Club Revenue</h3>
-              <p className="text-gray-600">
-                Generate income for your club by hosting tournaments and visiting teams
-              </p>
+              <div className="flex items-center">
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                  <span className="text-primary font-bold text-lg">🗺️</span>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">Conor O&apos;Brien</h4>
+                  <p className="text-gray-600 text-sm">Tour Coordinator, Cork Champions</p>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-emerald-700 text-white">
+      <section className="py-20 bg-primary text-white">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <motion.div
@@ -314,89 +365,35 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-20">
-        <div className="container mx-auto px-6">
+      {/* Join the Community */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How It Works
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              Your Bridge to Continental Europe
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Get started in minutes, whether you&apos;re looking to play or host
+            <p className="text-xl text-gray-600 mb-8">
+              From the hills of Ireland to the clubs of Berlin, Barcelona, and beyond.
+              Take your GAA journey international.
             </p>
+            <div className="flex justify-center">
+              <Link
+                href="/events"
+                className="inline-flex items-center justify-center px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors text-lg"
+              >
+                See European Tournaments
+                <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
           </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {/* For Players */}
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                For Players & Teams
-              </h3>
-              <div className="space-y-6">
-                {[
-                  { step: 1, title: "Browse Events", desc: "Explore tournaments and trips across Europe" },
-                  { step: 2, title: "Register Interest", desc: "Express interest in events that match your schedule" },
-                  { step: 3, title: "Connect", desc: "Get in touch with host clubs to finalize details" },
-                  { step: 4, title: "Travel & Play", desc: "Enjoy your Gaelic sports experience abroad" }
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.step}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-start"
-                  >
-                    <div className="w-10 h-10 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">
-                      {item.step}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                      <p className="text-gray-600">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* For Hosts */}
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">
-                For Host Clubs
-              </h3>
-              <div className="space-y-6">
-                {[
-                  { step: 1, title: "Create Profile", desc: "Set up your club profile with facilities info" },
-                  { step: 2, title: "Post Events", desc: "Create tournaments or offer hosting packages" },
-                  { step: 3, title: "Receive Inquiries", desc: "Get contacted by interested teams" },
-                  { step: 4, title: "Host & Earn", desc: "Welcome teams and generate club revenue" }
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.step}
-                    initial={{ opacity: 0, x: 20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className="flex items-start"
-                  >
-                    <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center font-bold mr-4 flex-shrink-0">
-                      {item.step}
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900">{item.title}</h4>
-                      <p className="text-gray-600">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 

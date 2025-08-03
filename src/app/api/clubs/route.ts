@@ -175,11 +175,40 @@ async function getClubsHandler(req: NextRequest) {
       }
     }
 
-    // Get cached filter options
+    // Get cached filter options (with manual cache invalidation after club status changes)
     let filterOptions;
     try {
       console.log('Clubs API: Getting filter options from cache');
       filterOptions = await getCachedFilterOptions();
+      
+      // Validate cache - if we have clubs but no countries, invalidate and rebuild
+      if (clubs && clubs.length > 0 && filterOptions.countries.length === 0) {
+        console.log('Cache appears stale (clubs exist but no countries), rebuilding...');
+        revalidateTag('club-filter-options');
+        revalidateTag('clubs');
+        revalidateTag('filters');
+        
+        // Compute directly as fallback
+        const approvedClubs = await prisma.club.findMany({
+          where: { status: 'APPROVED' },
+          select: { location: true, teamTypes: true },
+        });
+        
+        const countries = Array.from(
+          new Set(
+            approvedClubs
+              .map((club) => club.location?.split(",").pop()?.trim())
+              .filter(Boolean)
+          )
+        ).sort() as string[];
+        
+        const teamTypes = Array.from(
+          new Set(approvedClubs.flatMap((club) => club.teamTypes))
+        ).sort();
+
+        filterOptions = { countries, teamTypes };
+        console.log(`Rebuilt filter options: ${countries.length} countries, ${teamTypes.length} team types`);
+      }
     } catch (error) {
       console.error("Failed to fetch club filters:", error);
       // Return clubs without filters if this fails

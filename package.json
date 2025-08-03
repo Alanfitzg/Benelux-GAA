@@ -17,6 +17,9 @@
     "postinstall": "prisma generate",
     "backup:create": "npx ts-node scripts/backup-database.ts",
     "backup:daily": "npx ts-node scripts/daily-backup.ts",
+    "db:seed": "node scripts/seed-database.js",
+    "db:seed:approve": "node scripts/seed-database.js --auto-approve",
+    "db:approve-clubs": "node scripts/approve-seeded-clubs.js",
     "backup:test": "npx ts-node scripts/backup-database.ts --test"
   },
   "dependencies": {

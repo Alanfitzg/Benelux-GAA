@@ -300,6 +300,27 @@ Updated from 5 complex options to 3 focused categories:
 - **URL State Management**: Proper synchronization between URL parameters and component state
 - **Type Safety**: Enhanced TypeScript definitions for view modes and filter states
 - **Build Optimization**: Removed unused imports and fixed linting issues
+- **Database Seeding Scripts**: Automated tools for managing club imports and approval after database resets
+
+## 📝 Database Management Scripts (August 2025)
+After database resets or when importing old data:
+
+```bash
+# Seed database with clubs in PENDING status
+npm run db:seed
+
+# Seed database with auto-approved clubs (for trusted data)
+npm run db:seed:approve
+
+# Approve all pending clubs after import
+npm run db:approve-clubs
+```
+
+**Key Scripts:**
+- **`scripts/seed-database.js`**: Comprehensive seeding with clubs, city images, and default admin
+- **`scripts/approve-seeded-clubs.js`**: Bulk approve pending clubs with safety checks
+- **Club Status Management**: Imported clubs default to PENDING unless --auto-approve flag is used
+- **Cache Invalidation**: API now detects and rebuilds stale caches automatically
 
 ---
-*Last Updated: August 2025 - City Default Images, Clubs Page Redesign, Enhanced Filtering & Analytics Error Handling*
+*Last Updated: August 2025 - City Default Images, Clubs Page Redesign, Enhanced Filtering, Analytics Error Handling & Database Management Scripts*
