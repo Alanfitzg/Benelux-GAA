@@ -214,20 +214,20 @@ export default function ClubsPage() {
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          <h1 className="text-2xl md:text-5xl font-bold mb-4">
             Clubs / Cities
           </h1>
-          <p className="text-xl md:text-2xl mb-2">
+          <p className="text-lg md:text-2xl mb-2">
             Discover the international community of clubs
           </p>
           
           {/* Register Club CTA - Hidden on mobile */}
           <div className="hidden md:block mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-white mb-2">
+              <h3 className="text-base md:text-lg font-semibold text-white mb-2">
                 Join Our Network
               </h3>
-              <p className="text-white/90 text-sm mb-3">
+              <p className="text-white/90 text-xs md:text-sm mb-3">
                 Register your club to connect with teams across Europe
               </p>
               <Link
@@ -295,48 +295,55 @@ export default function ClubsPage() {
             </div>
 
             {/* Search and Filter Controls */}
-            <div className="flex flex-wrap gap-4 items-center justify-center">
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-center">
+              {/* Mobile: Two filters per row */}
+              <div className="grid grid-cols-2 md:flex gap-2 md:gap-4 w-full md:w-auto">
+                <select
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                  className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                >
+                  <option value="">All Countries</option>
+                  {countries.map((country: string) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+                <select
+                  value={selectedTeamType}
+                  onChange={(e) => setSelectedTeamType(e.target.value)}
+                  className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                >
+                  <option value="">All Team Types</option>
+                  {teamTypes.map((type: string) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              {/* Search Input */}
               <input
                 type="text"
                 placeholder="Search clubs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-w-[250px]"
+                className="w-full md:min-w-[250px] text-sm md:text-base px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
-              <select
-                value={selectedCountry}
-                onChange={(e) => setSelectedCountry(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option value="">All Countries</option>
-                {countries.map((country: string) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={selectedTeamType}
-                onChange={(e) => setSelectedTeamType(e.target.value)}
-                className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              >
-                <option value="">All Team Types</option>
-                {teamTypes.map((type: string) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
-              </select>
-              <div className="flex gap-2">
+              
+              {/* Buttons */}
+              <div className="flex gap-2 w-full md:w-auto">
                 <button
                   onClick={handleSearch}
-                  className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
+                  className="flex-1 md:flex-none text-sm md:text-base bg-primary text-white px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
                 >
                   Search
                 </button>
                 <button
                   onClick={handleReset}
-                  className="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition font-semibold"
+                  className="flex-1 md:flex-none text-sm md:text-base bg-gray-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-gray-600 transition font-semibold"
                 >
                   Reset
                 </button>
@@ -397,99 +404,58 @@ export default function ClubsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                  className="group bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
                 >
                   <Link href={`/clubs/${club.id}`} className="block">
-                    {/* Club image - full width with overlay */}
-                    <div className="relative h-56 overflow-hidden">
+                    {/* Club image - square format */}
+                    <div className="relative aspect-square bg-gray-50">
                       {club.imageUrl ? (
                         <Image
                           src={club.imageUrl}
                           alt={club.name}
                           fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          className="object-contain group-hover:scale-105 transition-transform duration-300"
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
-                          <div className="text-center text-primary">
-                            <div className="text-4xl mb-2">🏟️</div>
-                            <div className="text-sm font-medium">{club.name}</div>
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-center text-gray-400">
+                            <div className="text-6xl mb-2">🏟️</div>
                           </div>
                         </div>
                       )}
                       
-                      {/* Gradient overlay for better text readability */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                      
-                      {/* Club name overlay */}
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <div className="flex items-start justify-between gap-2">
-                          <h3 className="text-white text-xl font-bold mb-1 leading-tight">
-                            {club.name}
-                          </h3>
-                          {club.verificationStatus === 'VERIFIED' && (
-                            <div className="flex-shrink-0">
-                              <VerifiedTooltip>
-                                <div className="bg-white/20 backdrop-blur-sm rounded-full p-1">
-                                  <VerifiedBadge size="sm" showText={false} />
-                                </div>
-                              </VerifiedTooltip>
+                      {/* Verified badge */}
+                      {club.verificationStatus === 'VERIFIED' && (
+                        <div className="absolute top-4 right-4">
+                          <VerifiedTooltip>
+                            <div className="bg-white rounded-full shadow-lg p-1.5">
+                              <VerifiedBadge size="sm" showText={false} />
                             </div>
-                          )}
+                          </VerifiedTooltip>
                         </div>
-                        {club.location && (
-                          <p className="text-white/90 text-sm flex items-center gap-1">
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                            {club.location}
-                          </p>
-                        )}
-                      </div>
+                      )}
                     </div>
                     
                     {/* Club details section */}
                     <div className="p-5">
-                      {/* Team types */}
-                      {club.teamTypes.length > 0 && (
-                        <div className="flex flex-wrap gap-1 mb-4">
-                          {club.teamTypes.slice(0, 3).map((type) => (
-                            <span
-                              key={type}
-                              className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"
-                            >
-                              {type}
-                            </span>
-                          ))}
-                          {club.teamTypes.length > 3 && (
-                            <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
-                              +{club.teamTypes.length - 3}
-                            </span>
-                          )}
-                        </div>
+                      {/* Club name */}
+                      <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">
+                        {club.name}
+                      </h3>
+                      
+                      {/* Location */}
+                      {club.location && (
+                        <p className="text-sm text-gray-600 mb-1">
+                          <span className="font-medium">City:</span> {club.location.split(',')[0]}
+                        </p>
                       )}
                       
-                      {/* Social links */}
-                      {(club.facebook || club.instagram || club.website) && (
-                        <div className="flex gap-2">
-                          {club.facebook && (
-                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">f</span>
-                            </div>
-                          )}
-                          {club.instagram && (
-                            <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">@</span>
-                            </div>
-                          )}
-                          {club.website && (
-                            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                              <span className="text-white text-xs font-bold">🌐</span>
-                            </div>
-                          )}
-                        </div>
+                      {/* Team types */}
+                      {club.teamTypes.length > 0 && (
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium">Grades:</span> {club.teamTypes.join(' | ')}
+                        </p>
                       )}
                     </div>
                   </Link>
@@ -553,7 +519,7 @@ export default function ClubsPage() {
               </div>
             )}
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
               {sortedCountries.map((country) => (
                 <motion.div
                   key={country}
@@ -564,23 +530,23 @@ export default function ClubsPage() {
                 >
                   <Link
                     href={`/clubs?country=${encodeURIComponent(country)}`}
-                    className="block bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-300 text-center group-hover:scale-105"
+                    className="block bg-white rounded-lg p-3 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 text-center group-hover:scale-105"
                   >
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       {countryFlags[country] ? (
-                        <div className="text-6xl mb-3">
+                        <div className="text-3xl md:text-6xl mb-1 md:mb-3">
                           {countryFlags[country]}
                         </div>
                       ) : (
-                        <div className="w-16 h-12 bg-gray-200 rounded mx-auto mb-3 flex items-center justify-center">
-                          <span className="text-gray-500 text-sm">Flag</span>
+                        <div className="w-12 h-8 md:w-16 md:h-12 bg-gray-200 rounded mx-auto mb-1 md:mb-3 flex items-center justify-center">
+                          <span className="text-gray-500 text-xs md:text-sm">Flag</span>
                         </div>
                       )}
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                    <h3 className="text-sm md:text-lg font-semibold text-gray-800 mb-1 md:mb-2">
                       {country}
                     </h3>
-                    <p className="text-2xl font-bold text-primary">
+                    <p className="text-lg md:text-2xl font-bold text-primary">
                       ({clubsByCountry[country].length})
                     </p>
                   </Link>
@@ -644,15 +610,15 @@ export default function ClubsPage() {
                   {/* Country header */}
                   <div className="flex items-center gap-4 mb-6">
                     {countryFlags[country] && (
-                      <div className="text-4xl">
+                      <div className="text-3xl md:text-4xl">
                         {countryFlags[country]}
                       </div>
                     )}
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">
+                      <h2 className="text-lg md:text-2xl font-bold text-gray-900">
                         {country}
                       </h2>
-                      <p className="text-gray-600">
+                      <p className="text-sm md:text-base text-gray-600">
                         {clubsByCountry[country].length} club{clubsByCountry[country].length !== 1 ? 's' : ''}
                       </p>
                     </div>
@@ -666,88 +632,58 @@ export default function ClubsPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="group bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                        className="group bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
                       >
                         <Link href={`/clubs/${club.id}`} className="block">
-                          {/* Club image - full width with overlay */}
-                          <div className="relative h-56 overflow-hidden">
+                          {/* Club image - square format */}
+                          <div className="relative aspect-square bg-gray-50">
                             {club.imageUrl ? (
                               <Image
                                 src={club.imageUrl}
                                 alt={club.name}
                                 fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                className="object-contain group-hover:scale-105 transition-transform duration-300"
                                 unoptimized
                               />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
-                                <div className="text-center text-primary">
-                                  <div className="text-4xl mb-2">🏟️</div>
-                                  <div className="text-sm font-medium">{club.name}</div>
+                              <div className="w-full h-full flex items-center justify-center">
+                                <div className="text-center text-gray-400">
+                                  <div className="text-6xl mb-2">🏟️</div>
                                 </div>
                               </div>
                             )}
                             
-                            {/* Gradient overlay for better text readability */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            
-                            {/* Club name overlay */}
-                            <div className="absolute bottom-4 left-4 right-4">
-                              <h3 className="text-white text-xl font-bold mb-1 leading-tight">
-                                {club.name}
-                              </h3>
-                              {club.location && (
-                                <p className="text-white/90 text-sm flex items-center gap-1">
-                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  {club.location}
-                                </p>
-                              )}
-                            </div>
+                            {/* Verified badge */}
+                            {club.verificationStatus === 'VERIFIED' && (
+                              <div className="absolute top-4 right-4">
+                                <VerifiedTooltip>
+                                  <div className="bg-white rounded-full shadow-lg p-1.5">
+                                    <VerifiedBadge size="sm" showText={false} />
+                                  </div>
+                                </VerifiedTooltip>
+                              </div>
+                            )}
                           </div>
                           
                           {/* Club details section */}
                           <div className="p-5">
-                            {/* Team types */}
-                            {club.teamTypes.length > 0 && (
-                              <div className="flex flex-wrap gap-1 mb-4">
-                                {club.teamTypes.slice(0, 3).map((type) => (
-                                  <span
-                                    key={type}
-                                    className="px-2 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"
-                                  >
-                                    {type}
-                                  </span>
-                                ))}
-                                {club.teamTypes.length > 3 && (
-                                  <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full font-medium">
-                                    +{club.teamTypes.length - 3}
-                                  </span>
-                                )}
-                              </div>
+                            {/* Club name */}
+                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">
+                              {club.name}
+                            </h3>
+                            
+                            {/* Location */}
+                            {club.location && (
+                              <p className="text-sm text-gray-600 mb-1">
+                                <span className="font-medium">City:</span> {club.location.split(',')[0]}
+                              </p>
                             )}
                             
-                            {/* Social links */}
-                            {(club.facebook || club.instagram || club.website) && (
-                              <div className="flex gap-2">
-                                {club.facebook && (
-                                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                                    <span className="text-white text-xs font-bold">f</span>
-                                  </div>
-                                )}
-                                {club.instagram && (
-                                  <div className="w-8 h-8 bg-pink-500 rounded-full flex items-center justify-center">
-                                    <span className="text-white text-xs font-bold">@</span>
-                                  </div>
-                                )}
-                                {club.website && (
-                                  <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-                                    <span className="text-white text-xs font-bold">🌐</span>
-                                  </div>
-                                )}
-                              </div>
+                            {/* Team types */}
+                            {club.teamTypes.length > 0 && (
+                              <p className="text-sm text-gray-600">
+                                <span className="font-medium">Grades:</span> {club.teamTypes.join(' | ')}
+                              </p>
                             )}
                           </div>
                         </Link>

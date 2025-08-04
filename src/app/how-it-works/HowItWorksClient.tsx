@@ -8,17 +8,17 @@ export default function HowItWorksClient() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-16">
+      <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              How Gaelic Trips Works
+            <h1 className="text-3xl md:text-4xl font-bold mb-4">
+              How PlayAway Works
             </h1>
-            <p className="text-xl md:text-2xl mb-4">
+            <p className="text-lg md:text-xl mb-4">
               A community platform that helps clubs host and attend GAA events
               across Europe
             </p>
@@ -34,31 +34,31 @@ export default function HowItWorksClient() {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="text-center mb-16"
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+          <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-6">
             We make it easy to:
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div className="bg-gray-50 p-6 rounded-xl">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🎟️</span>
+            <div className="bg-gray-50 p-4 md:p-6 rounded-xl">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl md:text-3xl">🎟️</span>
               </div>
-              <h3 className="font-semibold text-gray-800">
+              <h3 className="text-sm md:text-base font-semibold text-gray-800">
                 Reserve spots at tournaments
               </h3>
             </div>
-            <div className="bg-gray-50 p-6 rounded-xl">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">💳</span>
+            <div className="bg-gray-50 p-4 md:p-6 rounded-xl">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl md:text-3xl">💳</span>
               </div>
-              <h3 className="font-semibold text-gray-800">
+              <h3 className="text-sm md:text-base font-semibold text-gray-800">
                 Simplify Payments in Advance
               </h3>
             </div>
-            <div className="bg-gray-50 p-6 rounded-xl">
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl">🤝</span>
+            <div className="bg-gray-50 p-4 md:p-6 rounded-xl">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl md:text-3xl">🤝</span>
               </div>
-              <h3 className="font-semibold text-gray-800">
+              <h3 className="text-sm md:text-base font-semibold text-gray-800">
                 Support grassroots GAA clubs directly
               </h3>
             </div>
@@ -78,10 +78,10 @@ export default function HowItWorksClient() {
                 1
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-green-800 mb-2">
+                <h3 className="text-lg md:text-2xl font-bold text-green-800 mb-2">
                   Team Tickets – €50 per Team
                 </h3>
-                <p className="text-gray-700 text-lg leading-relaxed">
+                <p className="text-gray-700 text-sm md:text-lg leading-relaxed">
                   When your club registers for a tournament, you pay a flat €50
                   fee.
                 </p>
@@ -91,20 +91,20 @@ export default function HowItWorksClient() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div className="bg-white rounded-xl p-6 border border-green-200">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600 mb-2">
+                  <div className="text-2xl md:text-3xl font-bold text-green-600 mb-2">
                     €40
                   </div>
-                  <div className="text-gray-700 font-medium">
+                  <div className="text-gray-700 font-medium text-sm md:text-base">
                     goes to the host club
                   </div>
                 </div>
               </div>
               <div className="bg-white rounded-xl p-6 border border-green-200">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600 mb-2">
+                  <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-2">
                     €10
                   </div>
-                  <div className="text-gray-700 font-medium">
+                  <div className="text-gray-700 font-medium text-sm md:text-base">
                     goes to Gaelic Trips (to run the platform)
                   </div>
                 </div>
@@ -112,8 +112,8 @@ export default function HowItWorksClient() {
             </div>
 
             <div className="bg-green-600/10 rounded-xl p-6">
-              <h4 className="font-bold text-green-800 mb-3">Why it matters:</h4>
-              <div className="space-y-2 text-gray-700">
+              <h4 className="text-sm md:text-base font-bold text-green-800 mb-3">Why it matters:</h4>
+              <div className="space-y-2 text-gray-700 text-sm md:text-base">
                 <p>
                   • Team tickets help clubs plan better and prevent last-minute
                   dropouts
@@ -140,10 +140,10 @@ export default function HowItWorksClient() {
                 2
               </div>
               <div>
-                <h3 className="text-2xl font-bold text-blue-800 mb-2">
+                <h3 className="text-lg md:text-2xl font-bold text-blue-800 mb-2">
                   Player Day-Passes
                 </h3>
-                <p className="text-gray-700 text-lg leading-relaxed">
+                <p className="text-gray-700 text-sm md:text-lg leading-relaxed">
                   Each travelling player pays a Day-Pass that covers their share
                   of local event costs — like:
                 </p>
@@ -153,25 +153,25 @@ export default function HowItWorksClient() {
             {/* What's Included */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
               <div className="bg-white rounded-lg p-4 text-center border border-blue-200">
-                <div className="text-2xl mb-2">🏟️</div>
+                <div className="text-3xl md:text-4xl mb-2">🏟️</div>
                 <div className="text-sm font-medium text-gray-700">
                   Pitch rental
                 </div>
               </div>
               <div className="bg-white rounded-lg p-4 text-center border border-blue-200">
-                <div className="text-2xl mb-2">🛡️</div>
+                <div className="text-3xl md:text-4xl mb-2">🛡️</div>
                 <div className="text-sm font-medium text-gray-700">
                   Insurance
                 </div>
               </div>
               <div className="bg-white rounded-lg p-4 text-center border border-blue-200">
-                <div className="text-2xl mb-2">🍽️</div>
+                <div className="text-3xl md:text-4xl mb-2">🍽️</div>
                 <div className="text-sm font-medium text-gray-700">
                   After-match meals
                 </div>
               </div>
               <div className="bg-white rounded-lg p-4 text-center border border-blue-200">
-                <div className="text-2xl mb-2">🥤</div>
+                <div className="text-3xl md:text-4xl mb-2">🥤</div>
                 <div className="text-sm font-medium text-gray-700">
                   Snacks & water
                 </div>
@@ -179,7 +179,7 @@ export default function HowItWorksClient() {
             </div>
 
             <div className="bg-white rounded-xl p-6 border border-blue-200 mb-6">
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-4 text-sm md:text-base">
                 <strong>Clubs set their own Day-Pass price</strong> (usually
                 around €40).
                 <br />
@@ -189,12 +189,12 @@ export default function HowItWorksClient() {
               </p>
 
               <div className="bg-blue-50 rounded-lg p-4">
-                <h5 className="font-bold text-blue-800 mb-3">
+                <h5 className="text-sm md:text-base font-bold text-blue-800 mb-3">
                   Here&apos;s how that €5 is split:
                 </h5>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-700">
+                    <span className="text-gray-700 text-sm md:text-base">
                       €2.50 goes back to the host club (supporting club
                       finances)
                     </span>
@@ -203,7 +203,7 @@ export default function HowItWorksClient() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-700">
+                    <span className="text-gray-700 text-sm md:text-base">
                       €2.50 goes to Gaelic Trips (to power the system)
                     </span>
                     <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">
@@ -215,13 +215,13 @@ export default function HowItWorksClient() {
             </div>
 
             <div className="bg-blue-600/10 rounded-xl p-6">
-              <h4 className="font-bold text-blue-800 mb-2">
+              <h4 className="text-sm md:text-base font-bold text-blue-800 mb-2">
                 Total example cost for a player:
               </h4>
-              <div className="text-xl font-bold text-gray-800">
+              <div className="text-lg md:text-xl font-bold text-gray-800">
                 €40 (Day-Pass) + €5 (Platform fee) = €45
               </div>
-              <p className="text-gray-600 mt-2 italic">
+              <p className="text-gray-600 mt-2 italic text-sm md:text-base">
                 Everything is paid upfront online. No cash. No hassle on the
                 day.
               </p>
@@ -238,7 +238,7 @@ export default function HowItWorksClient() {
         >
           <div className="bg-white rounded-2xl border-2 border-gray-200 overflow-hidden shadow-lg">
             <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-              <h3 className="text-xl font-bold text-gray-800">
+              <h3 className="text-lg md:text-xl font-bold text-gray-800">
                 Pricing Summary
               </h3>
             </div>
@@ -246,41 +246,41 @@ export default function HowItWorksClient() {
               <table className="w-full">
                 <thead className="bg-gray-100">
                   <tr>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-800">
+                    <th className="px-3 md:px-6 py-3 md:py-4 text-left font-semibold text-gray-800 text-sm md:text-base">
                       Who pays
                     </th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-800">
+                    <th className="px-3 md:px-6 py-3 md:py-4 text-left font-semibold text-gray-800 text-sm md:text-base">
                       What they pay
                     </th>
-                    <th className="px-6 py-4 text-left font-semibold text-gray-800">
+                    <th className="px-3 md:px-6 py-3 md:py-4 text-left font-semibold text-gray-800 text-sm md:text-base">
                       Who gets the money
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   <tr className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900">
+                    <td className="px-3 md:px-6 py-3 md:py-4 font-medium text-gray-900 text-sm md:text-base">
                       A team
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full font-semibold">
+                    <td className="px-3 md:px-6 py-3 md:py-4">
+                      <span className="bg-green-100 text-green-800 px-2 md:px-3 py-1 rounded-full font-semibold text-xs md:text-sm">
                         €50
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">
+                    <td className="px-3 md:px-6 py-3 md:py-4 text-gray-700 text-sm md:text-base">
                       €40 to host club, €10 to Gaelic Trips
                     </td>
                   </tr>
                   <tr className="hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900">
+                    <td className="px-3 md:px-6 py-3 md:py-4 font-medium text-gray-900 text-sm md:text-base">
                       A player
                     </td>
-                    <td className="px-6 py-4">
-                      <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full font-semibold">
+                    <td className="px-3 md:px-6 py-3 md:py-4">
+                      <span className="bg-blue-100 text-blue-800 px-2 md:px-3 py-1 rounded-full font-semibold text-xs md:text-sm">
                         ~€45
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">
+                    <td className="px-3 md:px-6 py-3 md:py-4 text-gray-700 text-sm md:text-base">
                       ~€40 to host club, €2.50 to club (extra), €2.50 to Gaelic
                       Trips
                     </td>
@@ -301,9 +301,9 @@ export default function HowItWorksClient() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-green-50 rounded-xl p-6 border-2 border-green-200 text-center">
               <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">💰</span>
+                <span className="text-white text-3xl md:text-4xl">💰</span>
               </div>
-              <h4 className="font-bold text-green-800 mb-2">
+              <h4 className="text-sm md:text-base font-bold text-green-800 mb-2">
                 ✅ Clubs earn income
               </h4>
               <p className="text-gray-700 text-sm">
@@ -312,9 +312,9 @@ export default function HowItWorksClient() {
             </div>
             <div className="bg-blue-50 rounded-xl p-6 border-2 border-blue-200 text-center">
               <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">👥</span>
+                <span className="text-white text-3xl md:text-4xl">👥</span>
               </div>
-              <h4 className="font-bold text-blue-800 mb-2">
+              <h4 className="text-sm md:text-base font-bold text-blue-800 mb-2">
                 ✅ Visitors know what they&apos;re paying for
               </h4>
               <p className="text-gray-700 text-sm">
@@ -323,9 +323,9 @@ export default function HowItWorksClient() {
             </div>
             <div className="bg-purple-50 rounded-xl p-6 border-2 border-purple-200 text-center">
               <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">⚡</span>
+                <span className="text-white text-3xl md:text-4xl">⚡</span>
               </div>
-              <h4 className="font-bold text-purple-800 mb-2">
+              <h4 className="text-sm md:text-base font-bold text-purple-800 mb-2">
                 ✅ Gaelic Trips keeps the lights on
               </h4>
               <p className="text-gray-700 text-sm">
