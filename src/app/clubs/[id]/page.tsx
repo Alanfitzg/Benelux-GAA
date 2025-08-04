@@ -13,6 +13,7 @@ import CompactCalendarWidget from "@/components/club/CompactCalendarWidget";
 import ClubCalendar from "@/components/club/ClubCalendar";
 import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
 import { getServerSession } from "@/lib/auth-helpers";
+import VerifiedBadge, { VerifiedTooltip } from "@/components/club/VerifiedBadge";
 
 export async function generateMetadata({
   params,
@@ -170,9 +171,18 @@ export default async function ClubDetailsPage({
 
               {/* Club Info */}
               <div className="flex-1 text-center md:text-left">
-                <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                  {club.name}
-                </h1>
+                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                  <h1 className="text-4xl md:text-5xl font-bold">
+                    {club.name}
+                  </h1>
+                  {club.verificationStatus === 'VERIFIED' && (
+                    <VerifiedTooltip>
+                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
+                        <VerifiedBadge size="lg" showText={false} />
+                      </div>
+                    </VerifiedTooltip>
+                  )}
+                </div>
 
                 {/* Location Badge */}
                 {club.location && (
@@ -527,6 +537,30 @@ export default async function ClubDetailsPage({
                               </div>
                             </div>
                           ))}
+                        </div>
+                      )}
+
+                      {/* Club Admin Verification Section */}
+                      {isCurrentAdmin && club.verificationStatus !== 'VERIFIED' && (
+                        <div className="mt-4 pt-4 border-t border-gray-200">
+                          <div className="bg-amber-50 p-4 rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <h4 className="text-sm font-medium text-amber-800">
+                                  Club Verification
+                                </h4>
+                                <p className="text-sm text-amber-700 mt-1">
+                                  Complete your club verification to unlock premium features
+                                </p>
+                              </div>
+                              <Link
+                                href={`/club-admin/${club.id}`}
+                                className="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
+                              >
+                                Complete Club Verification
+                              </Link>
+                            </div>
+                          </div>
                         </div>
                       )}
                     </div>

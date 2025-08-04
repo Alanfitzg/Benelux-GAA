@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
+import "../styles/modal-fix.css";
 import ProfessionalHeader from '@/components/ui/ProfessionalHeader';
 import Footer from '@/components/ui/Footer';
 import FloatingContactButton from '@/components/ui/FloatingContactButton';

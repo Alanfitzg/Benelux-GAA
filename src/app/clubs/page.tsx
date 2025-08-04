@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import VerifiedBadge, { VerifiedTooltip } from "@/components/club/VerifiedBadge";
 
 type ClubListItem = {
   id: string;
@@ -19,6 +20,8 @@ type ClubListItem = {
   website: string | null;
   codes: string | null;
   teamTypes: string[];
+  verificationStatus?: string;
+  verifiedAt?: string | null;
 };
 
 export const dynamic = "force-dynamic";
@@ -421,9 +424,20 @@ export default function ClubsPage() {
                       
                       {/* Club name overlay */}
                       <div className="absolute bottom-4 left-4 right-4">
-                        <h3 className="text-white text-xl font-bold mb-1 leading-tight">
-                          {club.name}
-                        </h3>
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="text-white text-xl font-bold mb-1 leading-tight">
+                            {club.name}
+                          </h3>
+                          {club.verificationStatus === 'VERIFIED' && (
+                            <div className="flex-shrink-0">
+                              <VerifiedTooltip>
+                                <div className="bg-white/20 backdrop-blur-sm rounded-full p-1">
+                                  <VerifiedBadge size="sm" showText={false} />
+                                </div>
+                              </VerifiedTooltip>
+                            </div>
+                          )}
+                        </div>
                         {club.location && (
                           <p className="text-white/90 text-sm flex items-center gap-1">
                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

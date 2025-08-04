@@ -43,6 +43,8 @@ type ClubMapItem = {
   website: string | null;
   codes: string | null;
   teamTypes: string[];
+  verificationStatus?: string;
+  verifiedAt?: string | null;
 };
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
@@ -777,9 +779,11 @@ function MapContent() {
                           <motion.div
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.95 }}
-                            className="cursor-pointer"
+                            className="cursor-pointer relative"
                           >
-                            <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 border-primary relative overflow-hidden">
+                            <div className={`w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 ${
+                              club.verificationStatus === 'VERIFIED' ? 'border-green-500' : 'border-primary'
+                            } relative overflow-hidden`}>
                               {club.imageUrl ? (
                                 <Image
                                   src={club.imageUrl}
@@ -789,7 +793,9 @@ function MapContent() {
                                   className="w-10 h-10 rounded-full object-cover"
                                 />
                               ) : (
-                                <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                                <div className={`w-8 h-8 ${
+                                  club.verificationStatus === 'VERIFIED' ? 'bg-green-500' : 'bg-primary'
+                                } rounded-full flex items-center justify-center`}>
                                   <span className="text-white font-bold text-sm">
                                     {club.name.charAt(0)}
                                   </span>
@@ -800,6 +806,14 @@ function MapContent() {
                                 <div className="absolute inset-0 rounded-full border-2 border-primary animate-pulse"></div>
                               )}
                             </div>
+                            {/* Verified badge */}
+                            {club.verificationStatus === 'VERIFIED' && (
+                              <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5">
+                                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                              </div>
+                            )}
                           </motion.div>
                         </Marker>
                       );
@@ -881,9 +895,19 @@ function MapContent() {
                                 </span>
                               </div>
                             )}
-                            <h3 className="font-bold text-lg text-gray-900">
-                              {club.name}
-                            </h3>
+                            <div className="flex-1">
+                              <h3 className="font-bold text-lg text-gray-900">
+                                {club.name}
+                              </h3>
+                              {club.verificationStatus === 'VERIFIED' && (
+                                <div className="flex items-center gap-1 text-green-600 text-xs">
+                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                  </svg>
+                                  <span className="font-medium">Verified Club</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
                           <div className="space-y-2 text-sm text-gray-600">
                             <p>
