@@ -56,6 +56,8 @@ When starting a new session, these files provide comprehensive context:
   - Reduced custom trip text on mobile (tournaments page)
   - Smaller hero image on mobile (landing page)
   - Compact blue header sections on mobile
+  - Country cards optimized for mobile (3 per row with smaller text and flags)
+  - Improved filter layouts for mobile screens
 - **Landing Page Enhancement**: Added "How it works" section header with "in brief" subtitle
 - **Database Backup System**: Complete backup/restore solution with safety guarantees and comprehensive documentation
 - **Clubs Page Redesign**: Modern country cards view with flags and club counts matching screenshot design
@@ -64,6 +66,8 @@ When starting a new session, these files provide comprehensive context:
 - **Enhanced Filtering**: Cross-view filtering system that works in both country cards and expanded list views
 - **Google Analytics Error Handling**: Graceful handling of ad-blocker and privacy extension blocking with silent failures
 - **Club Verification System**: Comprehensive verification workflow to incentivize club admin participation and improve data quality
+- **Error Handling Improvements**: Fixed month filter date calculation bug and added user-friendly "no events found" messages
+- **Mobile Typography Optimization**: Site-wide responsive text scaling for optimal mobile readability
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -311,6 +315,8 @@ Updated from 5 complex options to 3 focused categories:
 - **Responsive Grid**: Adaptive layouts from mobile to desktop (1-5 columns)
 - **Smart Navigation**: Context-aware back buttons and breadcrumbs
 - **Real-time Validation**: Live feedback for form inputs with color-coded states
+- **Mobile-Optimized Cards**: Country cards display 3 per row on mobile with scaled content
+- **No Results States**: User-friendly empty states with contextual messaging and clear actions
 
 ## 🔧 New Admin Features (August 2025)
 - **City Default Images Management**: Admin interface for setting default event images per city
@@ -325,6 +331,8 @@ Updated from 5 complex options to 3 focused categories:
 - **Type Safety**: Enhanced TypeScript definitions for view modes and filter states
 - **Build Optimization**: Removed unused imports and fixed linting issues
 - **Database Seeding Scripts**: Automated tools for managing club imports and approval after database resets
+- **Date Calculation Fixes**: Resolved month filter date range issues with proper year rollover handling
+- **Responsive Layout Optimization**: Improved mobile grid systems and filter arrangements
 
 ## 📝 Database Management Scripts (August 2025)
 
@@ -425,4 +433,4 @@ Verified clubs receive:
 - **Self-Service**: Club admins can verify independently without admin approval
 
 ---
-*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System*
+*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System, Mobile Typography Optimization, Error Handling Improvements*

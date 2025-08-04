@@ -165,7 +165,7 @@ export default async function ClubDetailsPage({
                   alt={club.name}
                   width={200}
                   height={200}
-                  className="w-48 h-48 rounded-full shadow-xl bg-white p-4 object-contain"
+                  className="w-48 h-48 rounded-full shadow-xl object-contain"
                 />
               </div>
 

@@ -21,9 +21,10 @@ export default function CreateEventButton() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={handleCreateEvent}
-        className="inline-block mt-6 bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition font-semibold shadow-lg hover:shadow-xl"
+        className="inline-block bg-red-600 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-lg hover:bg-red-700 transition font-semibold shadow-sm hover:shadow-md text-sm md:text-base"
       >
-        CREATE EVENT
+        <span className="hidden md:inline">CREATE EVENT</span>
+        <span className="md:hidden">Create Event</span>
       </motion.button>
 
       <AuthModal

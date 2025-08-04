@@ -86,10 +86,10 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               className="text-center"
             >
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-2xl md:text-5xl font-bold text-white mb-4">
                 The Gateway to Gaelic Games Worldwide
               </h1>
-              <p className="text-xl md:text-2xl text-emerald-100 mb-8">
+              <p className="text-lg md:text-2xl text-emerald-100 mb-8">
                 Connect with the global GAA Community
               </p>
 
@@ -150,10 +150,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-2">
               How it works
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-base md:text-lg text-gray-600">
               in brief
             </p>
           </motion.div>
@@ -168,7 +168,7 @@ export default function HomePage() {
               className="relative"
             >
               <div className="bg-primary/5 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-6">
                   For Travelling Teams
                 </h3>
                 <div className="space-y-4">
@@ -177,10 +177,10 @@ export default function HomePage() {
                       1
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         See what&apos;s going on in Europe
                       </h4>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-xs md:text-sm">
                         Browse tournaments across Germany, Spain, France and
                         beyond
                       </p>
@@ -191,10 +191,10 @@ export default function HomePage() {
                       2
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         Connect Across Borders
                       </h4>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-xs md:text-sm">
                         Link up with international clubs for unforgettable trips
                       </p>
                     </div>
@@ -204,10 +204,10 @@ export default function HomePage() {
                       3
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         Take GAA International
                       </h4>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-xs md:text-sm">
                         Bring your game to Europe&apos;s most exciting cities
                       </p>
                     </div>
@@ -244,8 +244,8 @@ export default function HomePage() {
               className="relative"
             >
               <div className="bg-gray-50 rounded-2xl p-8">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                  Hosting International Clubs
+                <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-6">
+                  For Host Clubs
                 </h3>
                 <div className="space-y-4">
                   <div className="flex gap-4">
@@ -253,10 +253,10 @@ export default function HomePage() {
                       1
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         Open Your Doors
                       </h4>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-xs md:text-sm">
                         Welcome teams from Ireland and Britain to your city
                       </p>
                     </div>
@@ -266,10 +266,10 @@ export default function HomePage() {
                       2
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         Create Tournaments
                       </h4>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-xs md:text-sm">
                         Attract visiting teams and build international
                         connections
                       </p>
@@ -280,10 +280,10 @@ export default function HomePage() {
                       3
                     </div>
                     <div>
-                      <h4 className="font-semibold text-gray-900">
+                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         Grow Your Club
                       </h4>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-xs md:text-sm">
                         Generate revenue and strengthen GAA networks across
                         Europe
                       </p>
@@ -362,10 +362,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-4">
               What Our Community Says
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto">
               Hear from teams and clubs who&apos;ve made the international
               connection
             </p>
@@ -507,10 +507,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-6">
               Your Bridge to Global GAA
             </h2>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-base md:text-xl text-gray-600 mb-8">
               From the hills of Ireland to the clubs of Berlin, Barcelona, and
               beyond. Take your GAA journey international.
             </p>
@@ -548,10 +548,10 @@ export default function HomePage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-xl md:text-4xl font-bold mb-6">
               Ready to Connect Your Club?
             </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-base md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Join the growing network of Gaelic clubs making connections across
               Europe
             </p>

@@ -36,11 +36,13 @@ const ProfessionalHeader = () => {
   }, []);
 
   const navItems = [
+    { href: "/", label: "Home" },
     { href: "/events", label: "Tournaments" },
     { href: "/clubs", label: "Clubs" },
     { href: "/map", label: "Map" },
     { href: "/survey", label: "Custom Trip" },
     { href: "/how-it-works", label: "How It Works" },
+    { href: "/faq", label: "FAQ" },
   ];
 
   return (
@@ -75,7 +77,7 @@ const ProfessionalHeader = () => {
             </div>
             <div className="flex flex-col">
               <motion.span
-                className={`text-xl font-bold transition-colors duration-300 ${
+                className={`text-xl font-bold italic transition-colors duration-300 ${
                   scrolled ? "text-gray-900" : "text-white"
                 }`}
                 whileHover={{ scale: 1.02 }}
@@ -87,7 +89,7 @@ const ProfessionalHeader = () => {
                   scrolled ? "text-gray-600" : "text-blue-100"
                 }`}
               >
-                Connecting & Supporting GAA Communities
+                Travel Platform for Global Gaelic Games
               </span>
             </div>
           </Link>

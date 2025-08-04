@@ -16,7 +16,7 @@ export default function Footer() {
               Making Gaelic games more accessible and sustainable globally.
             </p>
             <div className="text-sm text-gray-400">
-              <p>PlayAway Ltd</p>
+              <p>Gaelic Trips Ltd</p>
               <p>Registered in Ireland</p>
             </div>
           </div>
@@ -84,6 +84,11 @@ export default function Footer() {
                   Contact Form
                 </Link>
               </li>
+              <li>
+                <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -93,7 +98,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              © {currentYear} PlayAway Ltd. All rights reserved.
+              © {currentYear} Gaelic Trips Ltd. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <span>

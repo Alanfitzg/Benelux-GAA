@@ -739,7 +739,7 @@ function MapContent() {
                                   alt={event.club.name}
                                   width={40}
                                   height={40}
-                                  className="w-10 h-10 rounded-full object-cover"
+                                  className="w-10 h-10 rounded-full object-contain p-1 bg-white"
                                 />
                               ) : (
                                 <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
@@ -790,7 +790,7 @@ function MapContent() {
                                   alt={club.name}
                                   width={40}
                                   height={40}
-                                  className="w-10 h-10 rounded-full object-cover"
+                                  className="w-10 h-10 rounded-full object-contain p-1 bg-white"
                                 />
                               ) : (
                                 <div className={`w-8 h-8 ${
@@ -886,7 +886,7 @@ function MapContent() {
                                 alt={club.name}
                                 width={40}
                                 height={40}
-                                className="w-10 h-10 rounded-lg object-cover"
+                                className="w-10 h-10 rounded-lg object-contain p-1 bg-gray-100"
                               />
                             ) : (
                               <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
