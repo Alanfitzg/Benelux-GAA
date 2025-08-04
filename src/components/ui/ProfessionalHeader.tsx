@@ -35,7 +35,15 @@ const ProfessionalHeader = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const navItems = [
+  const desktopNavItems = [
+    { href: "/events", label: "Tournaments" },
+    { href: "/clubs", label: "Clubs" },
+    { href: "/map", label: "Map" },
+    { href: "/survey", label: "Custom Trip" },
+    { href: "/how-it-works", label: "How It Works" },
+  ];
+
+  const mobileNavItems = [
     { href: "/", label: "Home" },
     { href: "/events", label: "Tournaments" },
     { href: "/clubs", label: "Clubs" },
@@ -96,7 +104,7 @@ const ProfessionalHeader = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-2">
-            {navItems.map((item, index) => (
+            {desktopNavItems.map((item, index) => (
               <motion.div
                 key={item.href}
                 initial={{ opacity: 0, y: -20 }}
@@ -357,7 +365,7 @@ const ProfessionalHeader = () => {
               className="md:hidden mt-6 pb-6 border-t border-white/20"
             >
               <div className="flex flex-col space-y-4 pt-6">
-                {navItems.map((item, index) => (
+                {mobileNavItems.map((item, index) => (
                   <motion.div
                     key={item.href}
                     initial={{ opacity: 0, x: -20 }}
@@ -381,7 +389,7 @@ const ProfessionalHeader = () => {
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navItems.length * 0.1 }}
+                  transition={{ delay: mobileNavItems.length * 0.1 }}
                   className="border-t border-white/20 pt-4 mt-4"
                 >
                   {status === "loading" ? (

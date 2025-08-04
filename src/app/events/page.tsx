@@ -214,7 +214,7 @@ export default async function EventsPage({
         <StructuredData data={structuredData} />
         <div className="bg-white">
           {/* Hero Section */}
-          <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-16">
+          <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-16">
             <div className="container mx-auto px-4 text-center">
               <h1 className="text-2xl md:text-5xl font-bold mb-4">
                 Tournaments
@@ -257,6 +257,22 @@ export default async function EventsPage({
           </div>
 
           <div className="container mx-auto px-4 py-8">
+            {/* Glossary */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 mb-3">
+              <div className="flex items-center gap-2">
+                <div className="flex-shrink-0">
+                  <svg className="w-3 h-3 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs text-blue-700">
+                    <strong>Private event</strong> = Exclusive for European clubs
+                  </p>
+                </div>
+              </div>
+            </div>
+            
             <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
               <form className="flex flex-col gap-3" method="get">
                 {/* Mobile view - filters in one row */}
@@ -369,8 +385,8 @@ export default async function EventsPage({
                         key={event.id}
                         className="group relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                       >
-                        {/* Event Image */}
-                        <div className="relative h-40 md:h-64 overflow-hidden">
+                        {/* Event Image - Clickable */}
+                        <Link href={`/events/${event.id}`} className="block relative h-40 md:h-64 overflow-hidden">
                           {event.imageUrl || event.cityDefaultImage ? (
                             <Image
                               src={event.imageUrl || event.cityDefaultImage || ''}
@@ -430,7 +446,7 @@ export default async function EventsPage({
                               {event.location}
                             </p>
                           </div>
-                        </div>
+                        </Link>
 
                         {/* View Details Button */}
                         <Link

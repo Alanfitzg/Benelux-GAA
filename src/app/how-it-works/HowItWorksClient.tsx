@@ -37,28 +37,28 @@ export default function HowItWorksClient() {
           <h2 className="text-xl md:text-3xl font-bold text-gray-900 mb-6">
             We make it easy to:
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            <div className="bg-gray-50 p-4 md:p-6 rounded-xl">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl md:text-3xl">🎟️</span>
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 max-w-3xl mx-auto">
+            <div className="bg-gray-50 p-2 sm:p-3 md:p-6 rounded-xl">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl md:text-3xl">🎟️</span>
               </div>
-              <h3 className="text-sm md:text-base font-semibold text-gray-800">
+              <h3 className="text-xs sm:text-sm md:text-base font-semibold text-gray-800 text-center">
                 Reserve spots at tournaments
               </h3>
             </div>
-            <div className="bg-gray-50 p-4 md:p-6 rounded-xl">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl md:text-3xl">💳</span>
+            <div className="bg-gray-50 p-2 sm:p-3 md:p-6 rounded-xl">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl md:text-3xl">💳</span>
               </div>
-              <h3 className="text-sm md:text-base font-semibold text-gray-800">
+              <h3 className="text-xs sm:text-sm md:text-base font-semibold text-gray-800 text-center">
                 Simplify Payments in Advance
               </h3>
             </div>
-            <div className="bg-gray-50 p-4 md:p-6 rounded-xl">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                <span className="text-2xl md:text-3xl">🤝</span>
+            <div className="bg-gray-50 p-2 sm:p-3 md:p-6 rounded-xl">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3">
+                <span className="text-xl sm:text-2xl md:text-3xl">🤝</span>
               </div>
-              <h3 className="text-sm md:text-base font-semibold text-gray-800">
+              <h3 className="text-xs sm:text-sm md:text-base font-semibold text-gray-800 text-center">
                 Support grassroots GAA clubs directly
               </h3>
             </div>

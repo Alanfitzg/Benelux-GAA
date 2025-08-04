@@ -1,6 +1,6 @@
 export const EVENT_TYPES = [
   "Tournament",
-  "Friendly"
+  "Challenge match"
 ] as const;
 
 export type EventType = typeof EVENT_TYPES[number];
@@ -19,11 +19,12 @@ export const EVENT_CONSTANTS = {
   TYPES: EVENT_TYPES,
   TOURNAMENT_FORMATS: TOURNAMENT_FORMATS,
   DEFAULT_INCLUDES: [
-    "3 nights in a centrally located hotel",
-    "Breakfast each morning", 
     "All scheduled activities and fixtures",
     "Dedicated event manager",
-    "Souvenir or event pennant"
+    "Pitchside water",
+    "Pitchside snack/lunch",
+    "After tournament dinner",
+    "Pitch rental costs"
   ],
   DEFAULT_HIGHLIGHTS: [
     "Friendly fixture with a local team",
