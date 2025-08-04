@@ -1,0 +1,31 @@
+/* Temporary fix for white text in modals */
+.modal-content {
+  color: #1f2937 !important; /* Force dark text color */
+}
+
+.modal-content * {
+  color: inherit !important;
+}
+
+/* Exceptions for elements that should remain white */
+.modal-content button.bg-primary,
+.modal-content button.bg-green-600,
+.modal-content .text-white {
+  color: white !important;
+}
+
+.modal-content .text-red-600 {
+  color: #dc2626 !important;
+}
+
+.modal-content .text-green-600 {
+  color: #16a34a !important;
+}
+
+.modal-content .text-yellow-600 {
+  color: #ca8a04 !important;
+}
+
+.modal-content .text-primary {
+  color: var(--color-primary) !important;
+}

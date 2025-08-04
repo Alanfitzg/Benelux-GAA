@@ -86,6 +86,12 @@ model Club {
   reviewedBy          String?
   rejectionReason     String?
   adminNotes          String?
+  verificationStatus  ClubVerificationStatus @default(UNVERIFIED)
+  verifiedAt          DateTime?
+  verifiedBy          String?
+  verificationDetails Json?
+  lastVerificationCheck DateTime?
+  verificationExpiry  DateTime?
   availabilitySlots   AvailabilitySlot[]
   bookings            Booking[]
   clubAdminRequests   ClubAdminRequest[]
@@ -96,6 +102,7 @@ model Club {
   tournamentTeams     TournamentTeam[]
   members             User[]               @relation("ClubMembers")
   admins              User[]               @relation("ClubAdmins")
+  verifier            User?                @relation("ClubVerifier", fields: [verifiedBy], references: [id])
 
   @@index([status])
   @@index([location])
@@ -105,6 +112,8 @@ model Club {
   @@index([region, subRegion])
   @@index([createdAt])
   @@index([submittedBy])
+  @@index([verificationStatus])
+  @@index([verifiedAt])
 }
 
 model User {
@@ -130,6 +139,7 @@ model User {
   club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
   preferences           UserPreferences?
   adminOfClubs          Club[]               @relation("ClubAdmins")
+  verifiedClubs         Club[]               @relation("ClubVerifier")
 
   @@index([accountStatus])
   @@index([role])
@@ -476,6 +486,14 @@ enum InterestStatus {
   APPROVED
   REJECTED
   CANCELLED
+}
+
+enum ClubVerificationStatus {
+  UNVERIFIED
+  PENDING_VERIFICATION
+  VERIFIED
+  EXPIRED
+  DISPUTED
 }
 
 model CityDefaultImage {

@@ -159,6 +159,8 @@ async function getClubsHandler(req: NextRequest) {
         codes: true,
         teamTypes: true,
         status: true,
+        verificationStatus: true,
+        verifiedAt: true,
         createdAt: true,
         submittedBy: true,
       },

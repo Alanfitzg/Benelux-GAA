@@ -57,11 +57,13 @@ When starting a new session, these files provide comprehensive context:
   - Smaller hero image on mobile (landing page)
   - Compact blue header sections on mobile
 - **Landing Page Enhancement**: Added "How it works" section header with "in brief" subtitle
+- **Database Backup System**: Complete backup/restore solution with safety guarantees and comprehensive documentation
 - **Clubs Page Redesign**: Modern country cards view with flags and club counts matching screenshot design
 - **Dual View System**: Toggle between country cards grid and expanded club listings with filters
 - **Consistent UI Theme**: Updated clubs page header to match site-wide primary color scheme and glass morphism design
 - **Enhanced Filtering**: Cross-view filtering system that works in both country cards and expanded list views
 - **Google Analytics Error Handling**: Graceful handling of ad-blocker and privacy extension blocking with silent failures
+- **Club Verification System**: Comprehensive verification workflow to incentivize club admin participation and improve data quality
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -103,6 +105,7 @@ When starting a new session, these files provide comprehensive context:
 - **Club Association**: Moved from registration to post-signup (users request access from club pages)
 - **User Preferences**: UserPreferences model stores travel motivations (ranked), competitive level, destinations, activities, and timing preferences
 - **City Default Images**: CityDefaultImage model for automatic event image assignment based on location
+- **Club Verification**: Added verificationStatus, verifiedAt, verifiedBy, verificationDetails, lastVerificationCheck, verificationExpiry fields to Club model with ClubVerificationStatus enum (UNVERIFIED, PENDING_VERIFICATION, VERIFIED, EXPIRED, DISPUTED)
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (doesn't scale across instances)
@@ -185,6 +188,8 @@ npx prisma db push   # Apply schema changes
 - **Clear caches**: POST to `/api/admin/clear-cache` (super admin only)
 - **Monitor geocoding cache**: GET `/api/admin/geocode-cache`
 - **Test build**: Always run `npm run build` before committing
+- **Create database backup**: `npx tsx scripts/export-current-data.ts`
+- **Restore from backup**: `npx tsx scripts/restore-data.ts backups/export-[timestamp]`
 
 ## 📝 Code Style
 - NO comments unless specifically requested
@@ -228,6 +233,18 @@ npx prisma db push   # Apply schema changes
 - **Enhanced `/src/app/events/create/page.tsx`** - Real-time date validation with visual feedback and user-friendly error messages
 - **Enhanced `/src/app/admin/images/page.tsx`** - Added "City Defaults" tab for managing city default images
 - **Database Models**: CityDefaultImage model for storing city-specific default images with proper indexing
+
+### 🏆 Club Verification System Components (NEW - August 2025)
+- **`/src/lib/club-verification.ts`** - Verification requirements checker and status utilities
+- **`/src/components/club/ClubVerificationCard.tsx`** - Main verification UI component with progress tracking and requirements checklist
+- **`/src/components/club/VerifiedBadge.tsx`** - Reusable verification status badge with tooltips
+- **`/src/components/club/ClubEditForm.tsx`** - Comprehensive club editing form with verification integration
+- **`/src/app/api/clubs/[id]/verify/route.ts`** - Verification API endpoints (GET status, POST verify)
+- **`/src/app/clubs/[id]/edit/page.tsx`** - Club admin edit page with proper authorization
+- **`/src/styles/modal-fix.css`** - CSS fixes for modal text visibility issues
+- **Enhanced `/src/app/clubs/[id]/page.tsx`** - Added verification badges and simplified admin verification prompt
+- **Enhanced `/src/app/map/page.tsx`** - Visual verification indicators on map markers
+- **Enhanced `/src/components/ClubAdminDashboard.tsx`** - Integrated verification card in admin dashboard
 
 ## 🎯 User Experience Improvements
 - **Seamless Registration**: Auto sign-in after account creation, instant approval for all users
@@ -310,6 +327,8 @@ Updated from 5 complex options to 3 focused categories:
 - **Database Seeding Scripts**: Automated tools for managing club imports and approval after database resets
 
 ## 📝 Database Management Scripts (August 2025)
+
+### 🗄️ Database Seeding (Original Data)
 After database resets or when importing old data:
 
 ```bash
@@ -329,5 +348,81 @@ npm run db:approve-clubs
 - **Club Status Management**: Imported clubs default to PENDING unless --auto-approve flag is used
 - **Cache Invalidation**: API now detects and rebuilds stale caches automatically
 
+### 💾 Database Backup & Restore System (NEW)
+Complete backup/restore system for production data protection:
+
+```bash
+# Create full database backup (timestamped)
+npx tsx scripts/export-current-data.ts
+
+# Safely restore from backup (never overwrites existing data)
+npx tsx scripts/restore-data.ts backups/export-[timestamp]
+```
+
+**Backup System Features:**
+- **`scripts/export-current-data.ts`**: Complete database export to JSON files
+- **`scripts/restore-data.ts`**: Safe restore that never overwrites existing data
+- **`scripts/backup-restore-guide.md`**: Comprehensive documentation
+- **Safety Guarantees**: Restore only adds missing records, preserves all existing data
+- **Relationship Preservation**: Maintains all foreign key relationships and data integrity
+- **Progress Monitoring**: Detailed output showing what was restored vs. skipped
+- **Backup Structure**: Timestamped folders with all tables exported to individual JSON files
+
+**What Gets Backed Up:**
+- Users (with preferences, OAuth accounts, admin requests)
+- Clubs (with events, availability data, tournament interests)
+- Events (with club references and relationships)
+- Feature flags and system configuration
+- Surveys and user feedback
+- All relationship and metadata tables
+
+## 🏆 Club Verification System (NEW - August 2025)
+
+### **System Overview**
+Comprehensive verification system designed to incentivize club admin participation and improve data quality across the platform. Verified clubs receive premium features and enhanced visibility.
+
+### **Verification Requirements**
+Clubs must meet the following criteria for verification (social media is optional):
+- **Team Types**: At least one team type must be selected (required)
+- **Contact Information**: Complete contact details with first name, last name, and email (required)
+- **Location**: Valid address with geocoded coordinates (required)
+- **Club Logo**: Uploaded club image/logo (optional but recommended)
+- **Profile Completeness**: Minimum 80% completion (calculated from 9 core fields, rounded to 2 decimal places)
+
+### **Verification Status Types**
+- **UNVERIFIED**: Default status for new clubs
+- **PENDING_VERIFICATION**: Reserved for future manual review workflow
+- **VERIFIED**: Meets all requirements and verified by club admin
+- **EXPIRED**: For future re-verification requirements
+- **DISPUTED**: For future dispute resolution workflow
+
+### **Verification Benefits**
+Verified clubs receive:
+- ✅ Verified badge on club profile and listings
+- 📍 Green border/highlight on map markers
+- 🔝 Priority listing in search results (future enhancement)
+- 📊 Access to analytics dashboard (future enhancement)
+- 💬 Direct messaging capabilities (future enhancement)
+- ⭐ Featured events promotion (future enhancement)
+
+### **User Experience Flow**
+1. **Club Admin Dashboard**: Primary verification interface with detailed requirements checklist
+2. **Club Details Page**: Simplified verification prompt with "Complete Club Verification" button
+3. **Club Edit Page**: Integrated verification card at top of editing form
+4. **Public Views**: Verification badges displayed on club listings and map
+
+### **Technical Implementation**
+- **API Endpoints**: `/api/clubs/[id]/verify` (GET status, POST verify)
+- **Verification Logic**: Centralized in `/src/lib/club-verification.ts`
+- **Database Schema**: Added 6 verification fields to Club model
+- **UI Components**: Reusable verification cards and badges
+- **Authorization**: Only club admins can verify their own clubs
+
+### **Data Integrity Features**
+- **Real-time Validation**: Requirements checked dynamically as club data changes
+- **Progress Tracking**: Visual progress bar showing completion percentage
+- **Audit Trail**: Tracks who verified, when, and verification details
+- **Self-Service**: Club admins can verify independently without admin approval
+
 ---
-*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Landing Page Enhancements*
+*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System*
