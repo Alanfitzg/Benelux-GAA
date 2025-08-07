@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import ClubVerificationCard from '@/components/club/ClubVerificationCard';
+import PitchManagement from '@/components/pitch/PitchManagement';
 
 interface ClubStats {
   club: {
@@ -227,6 +228,11 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
             );
           })}
         </div>
+      </div>
+
+      {/* Pitch Management Section */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <PitchManagement clubId={clubId} canEdit={true} />
       </div>
 
       {/* Actions */}

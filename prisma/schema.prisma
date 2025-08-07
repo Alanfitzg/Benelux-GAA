@@ -28,7 +28,9 @@ model Event {
   createdAt         DateTime             @default(now())
   updatedAt         DateTime             @updatedAt
   clubId            String?
+  pitchLocationId   String?
   club              Club?                @relation(fields: [clubId], references: [id])
+  pitchLocation     PitchLocation?       @relation(fields: [pitchLocationId], references: [id])
   interests         Interest[]
   matches           Match[]
   surveyResponses   SurveyResponse[]
@@ -42,6 +44,7 @@ model Event {
   @@index([latitude, longitude])
   @@index([acceptedTeamTypes])
   @@index([visibility])
+  @@index([pitchLocationId])
 }
 
 model Interest {
@@ -98,6 +101,7 @@ model Club {
   clubInterests       ClubInterest[]
   events              Event[]
   hostingPackages     HostingPackage[]
+  pitchLocations      PitchLocation[]
   tournamentInterests TournamentInterest[]
   tournamentTeams     TournamentTeam[]
   members             User[]               @relation("ClubMembers")
@@ -134,6 +138,8 @@ model User {
   reviewedAdminRequests ClubAdminRequest[]   @relation("AdminRequestReviewer")
   clubAdminRequests     ClubAdminRequest[]
   passwordResetTokens   PasswordResetToken[]
+  pitchLocations        PitchLocation[]
+  pitchRequests         PitchRequest[]
   sessions              Session[]
   tournamentInterests   TournamentInterest[]
   club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
@@ -496,6 +502,12 @@ enum ClubVerificationStatus {
   DISPUTED
 }
 
+enum PitchRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 model CityDefaultImage {
   id        String   @id @default(cuid())
   city      String   @unique
@@ -504,4 +516,45 @@ model CityDefaultImage {
   updatedAt DateTime @updatedAt
   
   @@index([city])
+}
+
+model PitchLocation {
+  id        String   @id @default(cuid())
+  name      String
+  address   String?
+  city      String
+  latitude  Float
+  longitude Float
+  clubId    String
+  createdBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  club      Club     @relation(fields: [clubId], references: [id])
+  creator   User     @relation(fields: [createdBy], references: [id])
+  events    Event[]
+  
+  @@index([city])
+  @@index([clubId])
+  @@index([latitude, longitude])
+}
+
+model PitchRequest {
+  id          String              @id @default(cuid())
+  userId      String
+  clubId      String
+  pitchName   String
+  address     String?
+  city        String
+  message     String?
+  status      PitchRequestStatus  @default(PENDING)
+  createdAt   DateTime            @default(now())
+  processedAt DateTime?
+  processedBy String?
+  
+  user        User                @relation(fields: [userId], references: [id])
+  
+  @@index([clubId])
+  @@index([status])
+  @@index([userId])
 }

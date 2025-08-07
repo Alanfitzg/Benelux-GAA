@@ -12,6 +12,8 @@ type CreateEventBody = {
   title: string;
   eventType: string;
   location: string;
+  latitude?: number;
+  longitude?: number;
   startDate: string;
   endDate?: string;
   cost?: number;
@@ -19,6 +21,7 @@ type CreateEventBody = {
   isRecurring?: boolean;
   imageUrl?: string;
   clubId?: string;
+  pitchLocationId?: string;
   // Tournament-specific fields
   minTeams?: number;
   maxTeams?: number;
@@ -99,7 +102,15 @@ async function createEventHandler(request: NextRequest) {
       );
     }
     
-    const { latitude, longitude } = await geocodeLocation(body.location);
+    // Use provided coordinates or geocode if not provided
+    let latitude = body.latitude;
+    let longitude = body.longitude;
+    
+    if (!latitude || !longitude) {
+      const geocoded = await geocodeLocation(body.location);
+      latitude = geocoded.latitude || undefined;
+      longitude = geocoded.longitude || undefined;
+    }
 
     let imageUrl = body.imageUrl;
     if (!imageUrl) {
@@ -116,6 +127,7 @@ async function createEventHandler(request: NextRequest) {
       endDate: body.endDate ? new Date(body.endDate) : null,
       latitude,
       longitude,
+      pitchLocationId: body.pitchLocationId || null,
       // Ensure acceptedTeamTypes is always an array (empty if not provided)
       acceptedTeamTypes: body.acceptedTeamTypes || [],
       // Set visibility, default to PUBLIC if not provided

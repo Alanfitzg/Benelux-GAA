@@ -68,6 +68,9 @@ When starting a new session, these files provide comprehensive context:
 - **Club Verification System**: Comprehensive verification workflow to incentivize club admin participation and improve data quality
 - **Error Handling Improvements**: Fixed month filter date calculation bug and added user-friendly "no events found" messages
 - **Mobile Typography Optimization**: Site-wide responsive text scaling for optimal mobile readability
+- **Pitch Location Management System**: Complete training pitch management with map-based interface similar to Google Maps
+- **Global City Search**: Removed geographic restrictions to allow worldwide pitch location searches
+- **Enhanced Map Integration**: City → Pitch → Club workflow with Mapbox GL JS and sports facility categorization
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -110,6 +113,7 @@ When starting a new session, these files provide comprehensive context:
 - **User Preferences**: UserPreferences model stores travel motivations (ranked), competitive level, destinations, activities, and timing preferences
 - **City Default Images**: CityDefaultImage model for automatic event image assignment based on location
 - **Club Verification**: Added verificationStatus, verifiedAt, verifiedBy, verificationDetails, lastVerificationCheck, verificationExpiry fields to Club model with ClubVerificationStatus enum (UNVERIFIED, PENDING_VERIFICATION, VERIFIED, EXPIRED, DISPUTED)
+- **Pitch Location Management**: PitchLocation and PitchRequest models for training ground management with coordinates, club associations, and usage tracking
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (doesn't scale across instances)
@@ -249,6 +253,20 @@ npx prisma db push   # Apply schema changes
 - **Enhanced `/src/app/clubs/[id]/page.tsx`** - Added verification badges and simplified admin verification prompt
 - **Enhanced `/src/app/map/page.tsx`** - Visual verification indicators on map markers
 - **Enhanced `/src/components/ClubAdminDashboard.tsx`** - Integrated verification card in admin dashboard
+
+### 🏟️ Pitch Location Management Components (NEW - August 2025)
+- **`/src/components/pitch/EnhancedMapPitchCreator.tsx`** - Main 3-step City → Pitch → Club workflow with Mapbox integration
+- **`/src/components/pitch/PitchManagement.tsx`** - Club dashboard integration with dual creation modes (enhanced + manual)
+- **`/src/components/pitch/MapPitchCreator.tsx`** - Legacy direct map-based pitch creation component
+- **`/src/components/pitch/PitchSelector.tsx`** - Event creation integration for pitch selection with coordinate population
+- **`/src/app/api/pitch-locations/route.ts`** - Main CRUD API with role-based authorization and filtering
+- **`/src/app/api/pitch-locations/[id]/route.ts`** - Individual pitch management endpoints (GET, PUT, DELETE)
+- **`/src/app/api/pitch-locations/request/route.ts`** - Pitch request system for regular users
+- **`/src/app/admin/pitches/page.tsx`** - Comprehensive admin panel with filtering, search, and management tools
+- **`/src/app/admin/pitches/create/page.tsx`** - Legacy admin pitch creation page with club selection
+- **Enhanced `/src/components/CreateEventButton.tsx`** - Fixed session loading issues for super admin access
+- **Enhanced `/src/app/events/create/page.tsx`** - Integrated pitch selection with coordinate auto-population
+- **Database Models**: PitchLocation and PitchRequest models with proper relationships and indexing
 
 ## 🎯 User Experience Improvements
 - **Seamless Registration**: Auto sign-in after account creation, instant approval for all users
@@ -432,5 +450,126 @@ Verified clubs receive:
 - **Audit Trail**: Tracks who verified, when, and verification details
 - **Self-Service**: Club admins can verify independently without admin approval
 
+## 🏟️ Pitch Location Management System (NEW - August 2025)
+
+### **System Overview**
+A comprehensive training pitch management system featuring an intuitive map-based interface similar to Google Maps for discovering, creating, and managing GAA training locations worldwide.
+
+### **Core Features**
+
+#### **1. City → Pitch → Club Workflow**
+- **Step 1: City Selection**: Global city search with no geographic restrictions
+- **Step 2: Pitch Discovery**: Sports facility search or custom location placement via map clicks
+- **Step 3: Club Association**: Link pitch to appropriate club (handles multi-club cities)
+
+#### **2. Interactive Map Interface**
+- **Mapbox GL Integration**: Full-featured map with streets-v12 style
+- **Sports Facility Categorization**: Targets sports_complex, park, recreation, stadium, school
+- **Click-to-Place**: Custom pitch placement with draggable markers for precise positioning
+- **Search Functionality**: Real-time facility search within selected city boundaries
+
+#### **3. Permission & Access Control**
+- **Club Admins**: Can create pitches for their own clubs via enhanced or manual interface
+- **Super Admins**: Full access to create pitches for any club through admin panel
+- **Regular Users**: Can only select existing pitches or submit requests for new ones
+
+### **Database Schema**
+```prisma
+model PitchLocation {
+  id        String   @id @default(cuid())
+  name      String
+  address   String?
+  city      String
+  latitude  Float
+  longitude Float
+  clubId    String
+  createdBy String
+  club      Club     @relation(fields: [clubId], references: [id])
+  creator   User     @relation(fields: [createdBy], references: [id])
+  events    Event[]  // Usage tracking
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PitchRequest {
+  id        String   @id @default(cuid())
+  pitchName String
+  address   String?
+  city      String
+  message   String?
+  status    PitchRequestStatus @default(PENDING)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+```
+
+### **API Endpoints**
+- **`GET/POST /api/pitch-locations`**: Main CRUD operations with filtering
+- **`GET/PUT/DELETE /api/pitch-locations/[id]`**: Individual pitch management
+- **`GET/POST /api/pitch-locations/request`**: Pitch request system
+- **Authorization**: Role-based access (Club Admin + Super Admin only for creation)
+
+### **Component Architecture**
+#### **Enhanced Map Creator** (`EnhancedMapPitchCreator.tsx`)
+- 3-step modal workflow with progress tracking
+- Dynamic click handler management for map interactions  
+- Global city search with Mapbox geocoding
+- Club selection with filtering capabilities
+
+#### **Legacy Components**
+- **`MapPitchCreator.tsx`**: Direct map-based creation for club admins
+- **`PitchManagement.tsx`**: Club dashboard integration with dual creation modes
+- **Admin Panel**: Full management interface at `/admin/pitches`
+
+### **Integration Points**
+- **Event Creation**: Pitch selection dropdown with coordinate auto-population
+- **Club Profiles**: Display associated training pitches with usage statistics
+- **Map View**: Visual pitch locations with club markers and verification status
+- **Admin Dashboard**: Comprehensive pitch and request management
+
+### **Technical Implementation**
+#### **Global Search Capability**
+- **Removed Country Restrictions**: Worldwide city and facility search
+- **Mapbox Geocoding**: Real-time location search and reverse geocoding
+- **Sports Facility Filtering**: Targeted facility categories for relevant results
+
+#### **Error Handling & UX**
+- **Session Loading Guards**: Prevents button clicks during authentication loading
+- **Defensive API Responses**: Include creator information with fallback handling
+- **Click Event Management**: Proper event handler lifecycle management for map interactions
+
+#### **Performance Optimizations**
+- **Efficient Filtering**: Client-side filtering for admin interfaces
+- **Usage Tracking**: Event count tracking for pitch utilization metrics
+- **Caching Strategy**: Leverages existing Next.js caching patterns
+
+### **User Experience Flows**
+
+#### **For Club Admins**
+1. Access via Club Admin Dashboard → "Training Pitches" section
+2. Choose "Find Pitch" (enhanced workflow) or "Add Manual" (legacy)
+3. Enhanced: City search → Facility discovery → Confirmation
+4. Integration with existing club pitch management
+
+#### **For Super Admins**
+1. Navigate to `/admin/pitches` panel
+2. Comprehensive filtering and search capabilities
+3. Full CRUD operations on all pitches
+4. Manage pitch requests from regular users
+
+#### **For Event Creation**
+1. Event creators select from available pitches in dropdown
+2. Coordinate auto-population from selected pitch
+3. City-based filtering of relevant pitches
+4. Direct integration with event location data
+
+### **Benefits & Impact**
+- **User-Friendly**: Familiar Google Maps-like discovery experience
+- **Global Scale**: No geographic limitations for worldwide GAA expansion  
+- **Accurate Data**: Precise coordinates and verified facility information
+- **Permission Security**: Role-based access prevents unauthorized modifications
+- **Event Integration**: Seamless workflow from pitch creation to event planning
+
 ---
-*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System, Mobile Typography Optimization, Error Handling Improvements*
+*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System, Pitch Location Management System, Mobile Typography Optimization, Error Handling Improvements*
