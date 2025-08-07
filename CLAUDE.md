@@ -68,9 +68,8 @@ When starting a new session, these files provide comprehensive context:
 - **Club Verification System**: Comprehensive verification workflow to incentivize club admin participation and improve data quality
 - **Error Handling Improvements**: Fixed month filter date calculation bug and added user-friendly "no events found" messages
 - **Mobile Typography Optimization**: Site-wide responsive text scaling for optimal mobile readability
-- **Pitch Location Management System**: Complete training pitch management with map-based interface similar to Google Maps
-- **Global City Search**: Removed geographic restrictions to allow worldwide pitch location searches
-- **Enhanced Map Integration**: City → Pitch → Club workflow with Mapbox GL JS and sports facility categorization
+- **Pitch Location Management System**: Complete map-based pitch creation with comprehensive optional fields and global search
+- **CreateEventButton Fix**: Fixed form submission issue causing redirect to events page with empty parameters
 
 ## ⚡ Performance Metrics
 - Club filtering: 200ms → 5ms (40x faster)
@@ -119,6 +118,11 @@ When starting a new session, these files provide comprehensive context:
 - Rate limiting is in-memory (doesn't scale across instances)
 - Connection pooling could be optimized
 - Some legacy event types mixed with new system
+
+## ⚠️ Common Development Patterns & Pitfalls
+- **Button Forms**: Always add `type="button"` to buttons inside forms to prevent form submission
+- **Form Validation**: Use proper TypeScript types and validation patterns as established in pitch validation
+- **Map Integration**: Follow Mapbox event handler lifecycle management patterns (useRef + useEffect)
 
 ## 🎯 User Onboarding System (NEW - January 2025)
 
@@ -241,6 +245,13 @@ npx prisma db push   # Apply schema changes
 - **Enhanced `/src/app/events/create/page.tsx`** - Real-time date validation with visual feedback and user-friendly error messages
 - **Enhanced `/src/app/admin/images/page.tsx`** - Added "City Defaults" tab for managing city default images
 - **Database Models**: CityDefaultImage model for storing city-specific default images with proper indexing
+- **Enhanced Pitch Location System**:
+  - **`/src/components/pitch/EnhancedMapPitchCreator.tsx`** - Complete 4-step map-based creation workflow
+  - **`/src/components/pitch/EnhancedPitchForm.tsx`** - Comprehensive form with collapsible sections for optional pitch details
+  - **`/src/components/pitch/PitchDetailsDisplay.tsx`** - Rich display component for viewing pitch information
+  - **`/src/lib/constants/pitch.ts`** - Form dropdown options and validation constants
+  - **`/src/lib/validation/pitch-validation.ts`** - Complete validation utilities for pitch data
+- **Fixed `/src/components/CreateEventButton.tsx`** - Added `type="button"` to prevent form submission conflicts
 
 ### 🏆 Club Verification System Components (NEW - August 2025)
 - **`/src/lib/club-verification.ts`** - Verification requirements checker and status utilities
@@ -282,6 +293,40 @@ npx prisma db push   # Apply schema changes
 - **Admin Visibility**: OAuth provider indicators in admin panel for better user support
 - **Club Admin Requests**: Users can request admin access from their profile via searchable club selection
 - **Streamlined Onboarding**: Simplified competitive levels (3 focused options) and removed unnecessary questions
+
+## 🏟️ Pitch Location Management System (NEW - August 2025)
+
+### **System Overview**
+Complete map-based training ground management system with Google Maps-like interface for GAA clubs to create, manage, and discover pitch locations worldwide.
+
+### **4-Step Creation Workflow**
+1. **City Selection**: Global city search with Mapbox geocoding (no geographic restrictions)
+2. **Pitch Discovery**: Sports facility search with click-to-place custom locations
+3. **Club Association**: Link pitches to clubs with proper authorization
+4. **Details Form**: Comprehensive optional information collection
+5. **Confirmation**: Review and finalize before creation
+
+### **Comprehensive Pitch Data Fields**
+- **Basic Information**: Original purpose, surface type, number of pitches
+- **Amenities & Facilities**: Floodlights (with hours), changing rooms, spectator facilities, parking, other amenities
+- **Booking & Availability**: Seasonal availability, booking systems, lead time requirements
+- **Capacity & Restrictions**: Player/spectator limits, tournament capacity, age group suitability, equipment provided
+- **Contact Information**: Name, phone, email for pitch inquiries
+- **Additional Details**: Custom directions, previous events history
+
+### **Technical Implementation**
+- **Mapbox GL JS Integration**: Interactive maps with geocoding, reverse geocoding, click handlers
+- **Dynamic Event Handler Management**: Proper lifecycle management for map interactions
+- **Form Validation**: Comprehensive validation for all pitch data fields
+- **Type Safety**: Full TypeScript integration with exported interfaces
+- **API Integration**: RESTful endpoints for CRUD operations
+- **Authorization**: Club admin and super admin role-based access control
+
+### **Key Components**
+- **EnhancedMapPitchCreator**: Main creation interface with map integration
+- **EnhancedPitchForm**: Collapsible form sections with optional field handling
+- **PitchDetailsDisplay**: Rich display component for viewing pitch information
+- **Validation Utilities**: Complete data validation with custom error messages
 
 ## 📊 Google Analytics 4 Implementation
 
@@ -572,4 +617,4 @@ model PitchRequest {
 - **Event Integration**: Seamless workflow from pitch creation to event planning
 
 ---
-*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System, Pitch Location Management System, Mobile Typography Optimization, Error Handling Improvements*
+*Last Updated: August 2025 - PlayAway Rebrand, Global Positioning, Mobile UX Improvements, Database Backup System, Club Verification System, Enhanced Pitch Location Management System, Mobile Typography Optimization, Error Handling Improvements, CreateEventButton Form Submission Fix*

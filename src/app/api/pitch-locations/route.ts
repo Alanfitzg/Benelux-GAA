@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { validateCompletePitchData } from "@/lib/validation/pitch-validation";
 
 export async function GET(request: NextRequest) {
   try {
@@ -75,7 +76,37 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, address, city, latitude, longitude, clubId } = body;
+    const { 
+      name, 
+      address, 
+      city, 
+      latitude, 
+      longitude, 
+      clubId,
+      // Optional fields
+      originalPurpose,
+      surfaceType,
+      numberOfPitches,
+      hasFloodlights,
+      floodlightHours,
+      changingRooms,
+      spectatorFacilities,
+      parking,
+      otherAmenities,
+      seasonalAvailability,
+      bookingSystem,
+      bookingLeadTime,
+      maxPlayerCapacity,
+      maxSpectatorCapacity,
+      ageGroupSuitability,
+      tournamentCapacity,
+      equipmentProvided,
+      contactName,
+      contactPhone,
+      contactEmail,
+      customDirections,
+      previousEvents
+    } = body;
 
     // Check if user is super admin or club admin for the specified club
     const isSuperAdmin = user.role === "SUPER_ADMIN";
@@ -96,6 +127,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate all pitch data
+    const validation = validateCompletePitchData(body);
+    if (!validation.isValid) {
+      return NextResponse.json(
+        { 
+          error: "Validation failed", 
+          details: validation.errors 
+        },
+        { status: 400 }
+      );
+    }
+
     const pitchLocation = await prisma.pitchLocation.create({
       data: {
         name,
@@ -105,6 +148,29 @@ export async function POST(request: NextRequest) {
         longitude,
         clubId,
         createdBy: session.user.id,
+        // Optional fields (only include if provided)
+        ...(originalPurpose && { originalPurpose }),
+        ...(surfaceType && { surfaceType }),
+        ...(numberOfPitches && { numberOfPitches: parseInt(numberOfPitches.toString()) }),
+        hasFloodlights: hasFloodlights || false,
+        ...(floodlightHours && { floodlightHours }),
+        ...(changingRooms && { changingRooms }),
+        ...(spectatorFacilities && { spectatorFacilities }),
+        ...(parking && { parking }),
+        ...(otherAmenities && { otherAmenities }),
+        ...(seasonalAvailability && { seasonalAvailability }),
+        ...(bookingSystem && { bookingSystem }),
+        ...(bookingLeadTime && { bookingLeadTime }),
+        ...(maxPlayerCapacity && { maxPlayerCapacity: parseInt(maxPlayerCapacity.toString()) }),
+        ...(maxSpectatorCapacity && { maxSpectatorCapacity: parseInt(maxSpectatorCapacity.toString()) }),
+        ...(ageGroupSuitability && { ageGroupSuitability }),
+        ...(tournamentCapacity && { tournamentCapacity: parseInt(tournamentCapacity.toString()) }),
+        ...(equipmentProvided && { equipmentProvided }),
+        ...(contactName && { contactName }),
+        ...(contactPhone && { contactPhone }),
+        ...(contactEmail && { contactEmail }),
+        ...(customDirections && { customDirections }),
+        ...(previousEvents && { previousEvents }),
       },
       include: {
         club: {
