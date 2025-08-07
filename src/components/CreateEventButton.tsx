@@ -7,7 +7,7 @@ import AuthModal from '@/components/AuthModal';
 
 export default function CreateEventButton() {
   const router = useRouter();
-  const { requireAuth, showAuthModal, closeAuthModal, isAuthenticated, isLoading } = useAuthCheck();
+  const { requireAuth, showAuthModal, closeAuthModal, isLoading } = useAuthCheck();
 
   const handleCreateEvent = () => {
     if (isLoading) return; // Don't do anything while loading
