@@ -530,6 +530,40 @@ model PitchLocation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+  // Basic pitch information
+  originalPurpose String?  // Original sport the pitch was built for
+  surfaceType     String?  // Grass, artificial turf, sand-based, hybrid, etc.
+  numberOfPitches Int?     // How many pitches at this location
+  
+  // Amenities
+  hasFloodlights    Boolean @default(false)
+  floodlightHours   String? // Operating hours if available
+  changingRooms     String? // Description of changing facilities
+  spectatorFacilities String? // Stand capacity, terracing info
+  parking           String? // Parking availability details
+  otherAmenities    String? // Clubhouse, catering, equipment storage
+  
+  // Availability & Booking
+  seasonalAvailability String? // Winter restrictions, close seasons
+  bookingSystem       String?  // How to book, contact process
+  bookingLeadTime     String?  // Advance booking requirements
+  
+  // Capacity & Restrictions
+  maxPlayerCapacity   Int?    // Maximum players
+  maxSpectatorCapacity Int?   // Maximum spectators
+  ageGroupSuitability String? // Youth, Adult, Mixed
+  tournamentCapacity  Int?    // Teams for tournaments
+  equipmentProvided   String? // Goals, line marking, etc.
+  
+  // Contact & Navigation
+  contactName        String? // Pitch contact person
+  contactPhone       String? // Contact phone number
+  contactEmail       String? // Contact email
+  customDirections   String? // Special navigation instructions
+  
+  // History
+  previousEvents     String? // Description of past events held here
+  
   club      Club     @relation(fields: [clubId], references: [id])
   creator   User     @relation(fields: [createdBy], references: [id])
   events    Event[]

@@ -99,7 +99,36 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { name, address, city, latitude, longitude } = body;
+    const { 
+      name, 
+      address, 
+      city, 
+      latitude, 
+      longitude,
+      // Optional fields
+      originalPurpose,
+      surfaceType,
+      numberOfPitches,
+      hasFloodlights,
+      floodlightHours,
+      changingRooms,
+      spectatorFacilities,
+      parking,
+      otherAmenities,
+      seasonalAvailability,
+      bookingSystem,
+      bookingLeadTime,
+      maxPlayerCapacity,
+      maxSpectatorCapacity,
+      ageGroupSuitability,
+      tournamentCapacity,
+      equipmentProvided,
+      contactName,
+      contactPhone,
+      contactEmail,
+      customDirections,
+      previousEvents
+    } = body;
 
     const updated = await prisma.pitchLocation.update({
       where: { id },
@@ -109,6 +138,29 @@ export async function PUT(
         city,
         latitude,
         longitude,
+        // Optional fields (only include if provided)
+        ...(originalPurpose !== undefined && { originalPurpose }),
+        ...(surfaceType !== undefined && { surfaceType }),
+        ...(numberOfPitches !== undefined && { numberOfPitches: numberOfPitches ? parseInt(numberOfPitches.toString()) : null }),
+        ...(hasFloodlights !== undefined && { hasFloodlights }),
+        ...(floodlightHours !== undefined && { floodlightHours }),
+        ...(changingRooms !== undefined && { changingRooms }),
+        ...(spectatorFacilities !== undefined && { spectatorFacilities }),
+        ...(parking !== undefined && { parking }),
+        ...(otherAmenities !== undefined && { otherAmenities }),
+        ...(seasonalAvailability !== undefined && { seasonalAvailability }),
+        ...(bookingSystem !== undefined && { bookingSystem }),
+        ...(bookingLeadTime !== undefined && { bookingLeadTime }),
+        ...(maxPlayerCapacity !== undefined && { maxPlayerCapacity: maxPlayerCapacity ? parseInt(maxPlayerCapacity.toString()) : null }),
+        ...(maxSpectatorCapacity !== undefined && { maxSpectatorCapacity: maxSpectatorCapacity ? parseInt(maxSpectatorCapacity.toString()) : null }),
+        ...(ageGroupSuitability !== undefined && { ageGroupSuitability }),
+        ...(tournamentCapacity !== undefined && { tournamentCapacity: tournamentCapacity ? parseInt(tournamentCapacity.toString()) : null }),
+        ...(equipmentProvided !== undefined && { equipmentProvided }),
+        ...(contactName !== undefined && { contactName }),
+        ...(contactPhone !== undefined && { contactPhone }),
+        ...(contactEmail !== undefined && { contactEmail }),
+        ...(customDirections !== undefined && { customDirections }),
+        ...(previousEvents !== undefined && { previousEvents }),
       },
       include: {
         club: {

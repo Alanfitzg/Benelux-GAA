@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, MapPin, Save, X, ChevronRight, Building2 } from "lucide-react";
 import toast from "react-hot-toast";
+import EnhancedPitchForm, { PitchFormData } from "./EnhancedPitchForm";
 
 interface EnhancedMapPitchCreatorProps {
   isOpen: boolean;
@@ -37,7 +38,7 @@ interface Club {
   location?: string;
 }
 
-type Step = 'city' | 'pitch' | 'club' | 'confirm';
+type Step = 'city' | 'pitch' | 'club' | 'details' | 'confirm';
 
 export default function EnhancedMapPitchCreator({ 
   isOpen, 
@@ -75,6 +76,9 @@ export default function EnhancedMapPitchCreator({
   const [availableClubs, setAvailableClubs] = useState<Club[]>([]);
   const [selectedClubId, setSelectedClubId] = useState(preselectedClubId || "");
   const [clubSearch, setClubSearch] = useState("");
+  
+  // Step 4: Pitch details (optional fields)
+  const [pitchDetails, setPitchDetails] = useState<Partial<PitchFormData>>({});
   
   // UI state
   const [saving, setSaving] = useState(false);
@@ -308,6 +312,11 @@ export default function EnhancedMapPitchCreator({
     setCurrentStep('club');
   };
 
+  const handlePitchDetailsSubmit = (formData: PitchFormData) => {
+    setPitchDetails(formData);
+    setCurrentStep('confirm');
+  };
+
   const handleSave = async () => {
     if (!selectedPitch || !selectedClubId || !selectedCity) {
       toast.error('Please complete all steps');
@@ -327,7 +336,8 @@ export default function EnhancedMapPitchCreator({
           city: selectedCity.name,
           latitude: selectedPitch.coordinates[1],
           longitude: selectedPitch.coordinates[0],
-          clubId: selectedClubId
+          clubId: selectedClubId,
+          ...pitchDetails
         }),
       });
 
@@ -354,6 +364,7 @@ export default function EnhancedMapPitchCreator({
     setSelectedCity(null);
     setSelectedPitch(null);
     setSelectedClubId(preselectedClubId || "");
+    setPitchDetails({});
     setCitySearch("");
     setPitchSearch("");
     setCustomPitchName("");
@@ -407,6 +418,10 @@ export default function EnhancedMapPitchCreator({
               <ChevronRight className="w-3 h-3" />
               <span className={currentStep === 'club' ? 'text-primary font-medium' : ''}>
                 3. Associate Club
+              </span>
+              <ChevronRight className="w-3 h-3" />
+              <span className={currentStep === 'details' ? 'text-primary font-medium' : ''}>
+                4. Add Details
               </span>
             </div>
           </div>
@@ -657,10 +672,121 @@ export default function EnhancedMapPitchCreator({
                     )}
                   </div>
 
-                  <div className="mt-4">
+                  <div className="mt-4 space-y-3">
+                    <button
+                      onClick={() => setCurrentStep('details')}
+                      disabled={!selectedClubId}
+                      className="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                      Continue to Details
+                    </button>
                     <button
                       onClick={handleSave}
                       disabled={saving || !selectedClubId}
+                      className="w-full px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm"
+                    >
+                      <Save className="w-3 h-3" />
+                      {saving ? 'Creating...' : 'Skip Details & Save'}
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Step 4: Pitch Details */}
+              {currentStep === 'details' && (
+                <motion.div
+                  key="details"
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: 20, opacity: 0 }}
+                  className="flex flex-col h-full overflow-y-auto"
+                >
+                  <div className="mb-4">
+                    <button
+                      onClick={() => setCurrentStep('club')}
+                      className="text-primary hover:text-primary-dark text-sm mb-2"
+                    >
+                      ← Back to Club
+                    </button>
+                    <h4 className="font-medium text-gray-900">
+                      Add Pitch Details (Optional)
+                    </h4>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Provide additional information about the pitch facilities and features.
+                    </p>
+                  </div>
+
+                  <div className="flex-1 pr-2">
+                    <EnhancedPitchForm
+                      initialData={{
+                        name: selectedPitch?.name || '',
+                        address: selectedPitch?.address || '',
+                        city: selectedCity?.name || '',
+                        latitude: selectedPitch?.coordinates[1] || 0,
+                        longitude: selectedPitch?.coordinates[0] || 0,
+                        ...pitchDetails
+                      }}
+                      onSubmit={handlePitchDetailsSubmit}
+                      onCancel={() => setCurrentStep('club')}
+                      submitLabel="Continue to Confirm"
+                      isSubmitting={false}
+                    />
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Step 5: Confirmation */}
+              {currentStep === 'confirm' && (
+                <motion.div
+                  key="confirm"
+                  initial={{ x: 20, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: 20, opacity: 0 }}
+                  className="flex flex-col h-full"
+                >
+                  <div className="mb-4">
+                    <button
+                      onClick={() => setCurrentStep('details')}
+                      className="text-primary hover:text-primary-dark text-sm mb-2"
+                    >
+                      ← Back to Details
+                    </button>
+                    <h4 className="font-medium text-gray-900">
+                      Confirm Pitch Creation
+                    </h4>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Review your pitch information before creating.
+                    </p>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto">
+                    <div className="space-y-4">
+                      <div className="bg-gray-50 rounded-lg p-4">
+                        <h5 className="font-medium text-gray-900 mb-2">Basic Information</h5>
+                        <div className="space-y-1 text-sm">
+                          <div><span className="font-medium">Name:</span> {selectedPitch?.name}</div>
+                          <div><span className="font-medium">Address:</span> {selectedPitch?.address}</div>
+                          <div><span className="font-medium">City:</span> {selectedCity?.name}</div>
+                          <div><span className="font-medium">Club:</span> {availableClubs.find(c => c.id === selectedClubId)?.name}</div>
+                        </div>
+                      </div>
+
+                      {Object.keys(pitchDetails).length > 0 && (
+                        <div className="bg-gray-50 rounded-lg p-4">
+                          <h5 className="font-medium text-gray-900 mb-2">Additional Details</h5>
+                          <div className="text-sm text-gray-600">
+                            {Object.keys(pitchDetails).length} additional fields provided
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <button
+                      onClick={handleSave}
+                      disabled={saving}
                       className="w-full px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       <Save className="w-4 h-4" />
