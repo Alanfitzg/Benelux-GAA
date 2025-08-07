@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import LocationAutocomplete from "./LocationAutocomplete";
 import ImageUpload from "../../components/ImageUpload";
 import ClubSelectorOptional from "@/components/ClubSelectorOptional";
+import PitchSelector from "@/components/pitch/PitchSelector";
 import type { Event } from "@/types";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { TEAM_TYPES } from "@/lib/constants/teams";
@@ -16,6 +17,7 @@ import { validateEventDates } from "@/lib/validation/date-validation";
 type EventFormData = Omit<Event, "id" | "club"> & { 
   clubId?: string;
   acceptedTeamTypes?: string[];
+  pitchLocationId?: string;
 };
 
 export const dynamic = "force-dynamic";
@@ -31,6 +33,9 @@ export default function CreateEvent() {
   const [selectedClubId, setSelectedClubId] = useState<string>("");
   const [isIndependentEvent, setIsIndependentEvent] = useState<boolean>(false);
   const [dateError, setDateError] = useState<string>("");
+  const [selectedPitchId, setSelectedPitchId] = useState<string>("");
+  const [selectedCity, setSelectedCity] = useState<string>("");
+  const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
   
   // Tournament-specific state
   const [eventType, setEventType] = useState<string>("");
@@ -157,12 +162,15 @@ export default function CreateEvent() {
       title: (form.elements.namedItem("title") as HTMLInputElement)?.value || "",
       eventType: eventType,
       location,
+      latitude: coordinates?.lat,
+      longitude: coordinates?.lng,
       startDate: (form.elements.namedItem("startDate") as HTMLInputElement)?.value || "",
       endDate: (form.elements.namedItem("endDate") as HTMLInputElement)?.value || undefined,
       cost: parseFloat((form.elements.namedItem("cost") as HTMLInputElement)?.value) || undefined,
       description: (form.elements.namedItem("description") as HTMLTextAreaElement)?.value || undefined,
       imageUrl: uploadedImageUrl || undefined,
       clubId: isIndependentEvent ? undefined : selectedClubId || undefined,
+      pitchLocationId: selectedPitchId || undefined,
       // Tournament-specific fields
       ...(eventType === "Tournament" && {
         minTeams: minTeams || undefined,
@@ -326,8 +334,40 @@ export default function CreateEvent() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Location
                     </label>
-                    <LocationAutocomplete value={location} onChange={setLocation} />
+                    <LocationAutocomplete 
+                      value={location} 
+                      onChange={setLocation}
+                      onLocationSelect={(locationData) => {
+                        setSelectedCity(locationData.city);
+                        setCoordinates(locationData.coordinates);
+                        setLocation(locationData.address || locationData.city);
+                      }}
+                    />
                   </motion.div>
+
+                  {/* Pitch Location Selector - shows after location is selected */}
+                  {selectedCity && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.55 }}
+                      className="md:col-span-2"
+                    >
+                      <PitchSelector
+                        city={selectedCity}
+                        selectedPitchId={selectedPitchId}
+                        onPitchSelect={(pitch) => {
+                          if (pitch) {
+                            setSelectedPitchId(pitch.id);
+                            // Update coordinates if pitch is selected
+                            setCoordinates({ lat: pitch.latitude, lng: pitch.longitude });
+                          } else {
+                            setSelectedPitchId("");
+                          }
+                        }}
+                      />
+                    </motion.div>
+                  )}
 
                   {/* Start Date */}
                   <motion.div
