@@ -10,6 +10,7 @@ import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter";
 import UsernameRequirements from "@/components/auth/UsernameRequirements";
 import { passwordSchema, usernameSchema } from "@/lib/validation/schemas";
 import { useAnalytics } from "@/hooks/useAnalytics";
+import { toast } from "react-hot-toast";
 
 export default function SignUp() {
   const router = useRouter();
@@ -114,7 +115,9 @@ export default function SignUp() {
     setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      const errorMsg = "Passwords do not match";
+      setError(errorMsg);
+      toast.error(errorMsg);
       setIsLoading(false);
       return;
     }
@@ -126,7 +129,9 @@ export default function SignUp() {
       if (error && typeof error === 'object' && 'errors' in error) {
         const zodError = error as { errors: Array<{ message: string }> };
         if (zodError.errors && zodError.errors.length > 0) {
-          setError(zodError.errors[0].message);
+          const errorMsg = zodError.errors[0].message;
+          setError(errorMsg);
+          toast.error(errorMsg);
           setIsLoading(false);
           return;
         }
@@ -140,7 +145,9 @@ export default function SignUp() {
       if (error && typeof error === 'object' && 'errors' in error) {
         const zodError = error as { errors: Array<{ message: string }> };
         if (zodError.errors && zodError.errors.length > 0) {
-          setError(zodError.errors[0].message);
+          const errorMsg = zodError.errors[0].message;
+          setError(errorMsg);
+          toast.error(errorMsg);
           setIsLoading(false);
           return;
         }
@@ -172,9 +179,11 @@ export default function SignUp() {
           errorMessage = data.error.message;
         }
         setError(errorMessage);
+        toast.error(errorMessage);
       } else {
         // Track successful signup
         trackSignUp('credentials');
+        toast.success('Account created successfully! Signing you in...');
         
         // Registration successful - now automatically sign in the user
         try {
@@ -186,6 +195,7 @@ export default function SignUp() {
 
           if (signInResult?.error) {
             // Auto sign-in failed - redirect to signin page
+            toast.error('Account created but auto sign-in failed. Please sign in manually.');
             router.push('/signin?registered=true');
           } else {
             // Sign in successful - check for redirect path or go home with welcome
@@ -196,6 +206,7 @@ export default function SignUp() {
               router.push(redirectPath);
             } else {
               // Redirect to home with welcome message
+              toast.success('Welcome to PlayAway!');
               router.push('/?welcome=true');
             }
             router.refresh();
@@ -203,11 +214,14 @@ export default function SignUp() {
         } catch (signInError) {
           console.error('Auto sign-in exception:', signInError);
           // Fallback to signin page
+          toast.error('Account created but auto sign-in failed. Please sign in manually.');
           router.push('/signin?registered=true');
         }
       }
     } catch {
-      setError("An error occurred. Please try again.");
+      const errorMsg = "An error occurred. Please try again.";
+      setError(errorMsg);
+      toast.error(errorMsg);
     } finally {
       setIsLoading(false);
     }

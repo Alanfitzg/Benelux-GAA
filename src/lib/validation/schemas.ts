@@ -302,11 +302,11 @@ export type ApiResponse = z.infer<typeof ApiResponseSchema>
 export type ErrorResponse = z.infer<typeof ErrorResponseSchema>
 
 // Validation helper functions
-export function validateEventDates(startDate: string, endDate?: string | null) {
+export function validateEventDates(startDate: string, endDate?: string | null, allowPastDates: boolean = false) {
   const start = new Date(startDate)
   const now = new Date()
   
-  if (start < now) {
+  if (start < now && !allowPastDates) {
     throw new Error('Event start date cannot be in the past')
   }
   

@@ -7,6 +7,7 @@ import Link from "next/link"
 import PasswordRequirements from "@/components/auth/PasswordRequirements"
 import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter"
 import { passwordSchema } from "@/lib/validation/schemas"
+import { toast } from "react-hot-toast"
 
 function ResetPasswordForm() {
   const router = useRouter()
@@ -81,11 +82,14 @@ function ResetPasswordForm() {
       }
 
       setSuccess(true)
+      toast.success('Password reset successful! Redirecting to sign in...')
       setTimeout(() => {
         router.push("/signin")
       }, 3000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      const errorMsg = err instanceof Error ? err.message : "An error occurred"
+      setError(errorMsg)
+      toast.error(`Password reset failed: ${errorMsg}`)
     } finally {
       setIsLoading(false)
     }

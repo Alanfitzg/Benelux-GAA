@@ -11,6 +11,7 @@ import LocationAutocomplete from '../../events/create/LocationAutocomplete';
 import TeamTypeMultiSelect from '@/components/forms/TeamTypeMultiSelect';
 import CountryCodeSelector from '@/components/CountryCodeSelector';
 import type { Club } from '@/types';
+import { toast } from 'react-hot-toast';
 
 type ClubFormData = Omit<Club, 'id' | 'latitude' | 'longitude'>;
 
@@ -131,12 +132,15 @@ export default function RegisterClubPage() {
       });
       setUploading(false);
       if (!uploadRes.ok) {
-        setError('Image upload failed.');
+        const errorMsg = 'Image upload failed.';
+        setError(errorMsg);
+        toast.error(errorMsg);
         return;
       }
       const uploadJson = await uploadRes.json();
       uploadedImageUrl = uploadJson.url;
       setImageUrl(uploadedImageUrl);
+      toast.success('Image uploaded successfully!');
     }
     
     // Prepare club data
@@ -170,10 +174,13 @@ export default function RegisterClubPage() {
       setSuccess(true);
       form.reset();
       setImageUrl(null);
+      toast.success('Club registered successfully! Your club will be reviewed and approved shortly.');
       // Don't redirect - let user see the success message about approval
     } else {
       const errorData = await res.json();
-      setError(errorData.error || 'Failed to register club.');
+      const errorMsg = errorData.error || 'Failed to register club.';
+      setError(errorMsg);
+      toast.error(`Failed to register club: ${errorMsg}`);
     }
   }
 

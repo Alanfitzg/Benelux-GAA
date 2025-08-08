@@ -35,6 +35,7 @@ model Event {
   matches           Match[]
   surveyResponses   SurveyResponse[]
   teams             TournamentTeam[]
+  report            EventReport?
 
   @@index([startDate])
   @@index([eventType])
@@ -142,6 +143,7 @@ model User {
   pitchRequests         PitchRequest[]
   sessions              Session[]
   tournamentInterests   TournamentInterest[]
+  eventReports          EventReport[]
   club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
   preferences           UserPreferences?
   adminOfClubs          Club[]               @relation("ClubAdmins")
@@ -303,6 +305,9 @@ model TournamentTeam {
   status       TeamStatus @default(REGISTERED)
   awayMatches  Match[]    @relation("AwayTeam")
   homeMatches  Match[]    @relation("HomeTeam")
+  winnerReports    EventReport[] @relation("WinnerTeam")
+  runnerUpReports  EventReport[] @relation("RunnerUpTeam")
+  thirdPlaceReports EventReport[] @relation("ThirdPlaceTeam")
   club         Club       @relation(fields: [clubId], references: [id])
   event        Event      @relation(fields: [eventId], references: [id])
 
@@ -508,6 +513,11 @@ enum PitchRequestStatus {
   REJECTED
 }
 
+enum ReportStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model CityDefaultImage {
   id        String   @id @default(cuid())
   city      String   @unique
@@ -591,4 +601,49 @@ model PitchRequest {
   @@index([clubId])
   @@index([status])
   @@index([userId])
+}
+
+model EventReport {
+  id              String         @id @default(cuid())
+  eventId         String         @unique
+  createdBy       String
+  status          ReportStatus   @default(DRAFT)
+  
+  // Tournament Results (optional)
+  winnerTeamId    String?
+  runnerUpTeamId  String?
+  thirdPlaceTeamId String?
+  
+  // Participating Teams
+  participatingTeams Json?       // Array of {teamId, teamName, clubName, finalPosition}
+  
+  // Match Results Summary
+  matchResults    Json?          // Array of key match results with scores
+  
+  // Player Awards (optional)
+  playerAwards    Json?          // Array of {awardType, playerName, teamName}
+  
+  // Event Details
+  amenitiesProvided String?      // Free text describing what was included (meals, drinks, etc.)
+  eventHighlights   String?      // Key moments or highlights from the event
+  summary          String?       // Overall event summary
+  
+  // Media (to be implemented later)
+  mediaUrls       String[]       @default([])
+  
+  // Metadata
+  publishedAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  
+  // Relations
+  event           Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  creator         User           @relation(fields: [createdBy], references: [id])
+  winnerTeam      TournamentTeam? @relation("WinnerTeam", fields: [winnerTeamId], references: [id])
+  runnerUpTeam    TournamentTeam? @relation("RunnerUpTeam", fields: [runnerUpTeamId], references: [id])
+  thirdPlaceTeam  TournamentTeam? @relation("ThirdPlaceTeam", fields: [thirdPlaceTeamId], references: [id])
+  
+  @@index([eventId])
+  @@index([status])
+  @@index([createdBy])
 }
