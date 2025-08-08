@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { useAnalytics } from "@/hooks/useAnalytics"
+import { toast } from "react-hot-toast"
 
 function SignInForm() {
   const router = useRouter()
@@ -40,10 +41,13 @@ function SignInForm() {
       })
 
       if (result?.error) {
-        setError("Invalid username or password");
+        const errorMsg = "Invalid username or password";
+        setError(errorMsg);
+        toast.error(errorMsg);
       } else {
         // Track successful login
         trackLogin('credentials');
+        toast.success('Signed in successfully! Welcome back.');
         
         // Store remember me preference
         if (rememberMe) {
@@ -63,7 +67,9 @@ function SignInForm() {
         router.refresh()
       }
     } catch {
-      setError("An error occurred. Please try again.")
+      const errorMsg = "An error occurred. Please try again.";
+      setError(errorMsg);
+      toast.error(errorMsg)
     } finally {
       setIsLoading(false)
     }

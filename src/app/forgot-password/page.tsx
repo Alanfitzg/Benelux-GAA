@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
+import { toast } from "react-hot-toast"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -31,8 +32,11 @@ export default function ForgotPasswordPage() {
       }
 
       setSubmitted(true)
+      toast.success('Password reset email sent! Check your inbox.')
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      const errorMsg = err instanceof Error ? err.message : "An error occurred"
+      setError(errorMsg)
+      toast.error(`Failed to send reset email: ${errorMsg}`)
     } finally {
       setIsLoading(false)
     }

@@ -2,12 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { Event, TournamentTeam, Match } from "@/types";
 import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
+import EventReportDisplay from "@/components/events/EventReportDisplay";
+import { useSession } from "next-auth/react";
 
 export default function EventDetailClient({
   eventId,
@@ -18,7 +21,9 @@ export default function EventDetailClient({
   const [teams, setTeams] = useState<TournamentTeam[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isClubAdmin, setIsClubAdmin] = useState(false);
   
+  const { data: session } = useSession();
   const { cityImage } = useCityDefaultImage(event?.location);
 
   useEffect(() => {
@@ -27,6 +32,17 @@ export default function EventDetailClient({
         const eventRes = await fetch(`${URLS.API.EVENTS}/${eventId}`);
         const eventData = await eventRes.json();
         setEvent(eventData);
+
+        // Check if user is a club admin for this event
+        if (session?.user?.email && eventData.clubId) {
+          const userRes = await fetch('/api/user/current');
+          if (userRes.ok) {
+            const userData = await userRes.json();
+            const isAdmin = userData.adminOfClubs?.some((club: { id: string; name: string }) => club.id === eventData.clubId) || 
+                          userData.role === 'SUPER_ADMIN';
+            setIsClubAdmin(isAdmin);
+          }
+        }
 
         // If it's a tournament, fetch teams and matches
         if (eventData.eventType === 'Tournament') {
@@ -62,7 +78,7 @@ export default function EventDetailClient({
     };
 
     fetchEventData();
-  }, [eventId]);
+  }, [eventId, session]);
 
   const handleSubmit = async (eventForm: React.FormEvent<HTMLFormElement>) => {
     eventForm.preventDefault();
@@ -148,6 +164,7 @@ export default function EventDetailClient({
                 <a href="#matches" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Matches</a>
               </>
             )}
+            <a href="#report" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Event Report</a>
             <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
             <a href="#interest" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Register Interest</a>
           </nav>
@@ -294,6 +311,25 @@ export default function EventDetailClient({
                 )}
               </section>
             )}
+
+            {/* Event Report Section */}
+            <section id="report" className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold">Event Report</h2>
+                {isClubAdmin && (
+                  <Link
+                    href={`/events/${eventId}/report`}
+                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 text-sm"
+                  >
+                    Manage Report
+                  </Link>
+                )}
+              </div>
+              <EventReportDisplay 
+                eventId={eventId} 
+                isAdmin={false}
+              />
+            </section>
 
             {/* What's Included Section */}
             <section id="included" className="bg-white rounded-xl shadow-sm border p-6">

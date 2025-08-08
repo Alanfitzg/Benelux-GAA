@@ -13,6 +13,7 @@ import { EVENT_TYPES } from "@/lib/constants/events";
 import { TEAM_TYPES } from "@/lib/constants/teams";
 import { URLS, MESSAGES } from "@/lib/constants";
 import { validateEventDates } from "@/lib/validation/date-validation";
+import { toast } from "react-hot-toast";
 
 type EventFormData = Omit<Event, "id" | "club"> & { 
   clubId?: string;
@@ -33,6 +34,7 @@ export default function CreateEvent() {
   const [selectedClubId, setSelectedClubId] = useState<string>("");
   const [isIndependentEvent, setIsIndependentEvent] = useState<boolean>(false);
   const [dateError, setDateError] = useState<string>("");
+  const [dateWarning, setDateWarning] = useState<string>("");
   const [selectedPitchId, setSelectedPitchId] = useState<string>("");
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
@@ -77,14 +79,18 @@ export default function CreateEvent() {
   const handleStartDateChange = (value: string) => {
     setStartDate(value);
     setDateError(""); // Clear error on change
+    setDateWarning(""); // Clear warning on change
     
     if (value) {
-      const validation = validateEventDates(value, endDate);
+      const validation = validateEventDates(value, endDate, true); // Allow past dates
       if (!validation.isValid) {
         setDateError(validation.error || "");
         setDatesValid(false);
       } else {
         setDatesValid(true);
+        if (validation.warning) {
+          setDateWarning(validation.warning);
+        }
       }
     }
   };
@@ -92,23 +98,22 @@ export default function CreateEvent() {
   const handleEndDateChange = (value: string) => {
     setEndDate(value);
     setDateError(""); // Clear error on change
+    setDateWarning(""); // Clear warning on change
     
     if (startDate) {
-      const validation = validateEventDates(startDate, value);
+      const validation = validateEventDates(startDate, value, true); // Allow past dates
       if (!validation.isValid) {
         setDateError(validation.error || "");
         setDatesValid(false);
       } else {
         setDatesValid(true);
+        if (validation.warning) {
+          setDateWarning(validation.warning);
+        }
       }
     }
   };
 
-  // Get min date for inputs (today)
-  const getMinDate = () => {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  };
 
   // Get max date for inputs (2 years from now)
   const getMaxDate = () => {
@@ -121,6 +126,7 @@ export default function CreateEvent() {
     event.preventDefault();
     setError("");
     setDateError("");
+    setDateWarning("");
     setUploading(false);
     setImageUrl(null);
     const form = event.currentTarget;
@@ -128,8 +134,8 @@ export default function CreateEvent() {
     const startDateValue = (form.elements.namedItem("startDate") as HTMLInputElement)?.value || "";
     const endDateValue = (form.elements.namedItem("endDate") as HTMLInputElement)?.value || undefined;
     
-    // Validate dates
-    const dateValidation = validateEventDates(startDateValue, endDateValue);
+    // Validate dates with past dates allowed
+    const dateValidation = validateEventDates(startDateValue, endDateValue, true);
     if (!dateValidation.isValid) {
       setDateError(dateValidation.error || "Invalid dates");
       return;
@@ -148,12 +154,15 @@ export default function CreateEvent() {
       });
       setUploading(false);
       if (!uploadRes.ok) {
-        setError(MESSAGES.ERROR.UPLOAD_FAILED);
+        const errorMsg = MESSAGES.ERROR.UPLOAD_FAILED;
+        setError(errorMsg);
+        toast.error(errorMsg);
         return;
       }
       const uploadJson = await uploadRes.json();
       uploadedImageUrl = uploadJson.url;
       setImageUrl(uploadedImageUrl);
+      toast.success('Image uploaded successfully!');
     }
     
     // Club is now optional - no validation needed
@@ -191,16 +200,21 @@ export default function CreateEvent() {
     });
     
     if (response.ok) {
+      toast.success('Event created successfully!');
       router.push("/events");
     } else {
       console.error('Failed to create event:', response.status, response.statusText);
       try {
         const errorData = await response.json();
         console.error('Error details:', errorData);
-        setError(errorData.error || MESSAGES.ERROR.GENERIC);
+        const errorMsg = errorData.error || MESSAGES.ERROR.GENERIC;
+        setError(errorMsg);
+        toast.error(`Failed to create event: ${errorMsg}`);
       } catch {
         console.error('Could not parse error response');
-        setError(MESSAGES.ERROR.GENERIC);
+        const errorMsg = MESSAGES.ERROR.GENERIC;
+        setError(errorMsg);
+        toast.error(`Failed to create event: ${errorMsg}`);
       }
     }
   };
@@ -383,15 +397,16 @@ export default function CreateEvent() {
                       name="startDate"
                       value={startDate}
                       onChange={(e) => handleStartDateChange(e.target.value)}
-                      min={getMinDate()}
                       max={getMaxDate()}
                       className={`w-full border-2 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:ring-4 transition-all duration-300 ${
-                        dateError && startDate ? 'border-amber-400 focus:border-amber-500 focus:ring-amber-500/10' : 'border-gray-200 focus:border-primary focus:ring-primary/10'
+                        dateError && startDate ? 'border-red-400 focus:border-red-500 focus:ring-red-500/10' : 
+                        dateWarning && startDate ? 'border-amber-400 focus:border-amber-500 focus:ring-amber-500/10' : 
+                        'border-gray-200 focus:border-primary focus:ring-primary/10'
                       }`}
                       required
                     />
                     <p className="mt-2 text-xs text-gray-500">
-                      Select a date between today and {new Date(getMaxDate()).toLocaleDateString('en-IE', { year: 'numeric', month: 'long', day: 'numeric' })}
+                      Select any date up to {new Date(getMaxDate()).toLocaleDateString('en-IE', { year: 'numeric', month: 'long', day: 'numeric' })}
                     </p>
                   </motion.div>
 
@@ -409,10 +424,11 @@ export default function CreateEvent() {
                       name="endDate"
                       value={endDate}
                       onChange={(e) => handleEndDateChange(e.target.value)}
-                      min={startDate || getMinDate()}
                       max={getMaxDate()}
                       className={`w-full border-2 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:ring-4 transition-all duration-300 ${
-                        dateError && endDate ? 'border-amber-400 focus:border-amber-500 focus:ring-amber-500/10' : 'border-gray-200 focus:border-primary focus:ring-primary/10'
+                        dateError && endDate ? 'border-red-400 focus:border-red-500 focus:ring-red-500/10' : 
+                        dateWarning && endDate ? 'border-amber-400 focus:border-amber-500 focus:ring-amber-500/10' : 
+                        'border-gray-200 focus:border-primary focus:ring-primary/10'
                       }`}
                     />
                     <p className="mt-2 text-xs text-gray-500">
@@ -667,6 +683,33 @@ export default function CreateEvent() {
                     />
                   </motion.div>
                 </div>
+
+                {/* Date Warning/Error Display */}
+                {(dateWarning || dateError) && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="md:col-span-2 mt-4"
+                  >
+                    {dateError && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
+                        <p className="text-red-700 text-sm font-medium flex items-center gap-2">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {dateError}
+                        </p>
+                      </div>
+                    )}
+                    {dateWarning && !dateError && (
+                      <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                        <p className="text-amber-800 text-sm font-medium">
+                          {dateWarning}
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
+                )}
 
                 {/* Submit Button */}
                 <motion.div

@@ -1,9 +1,10 @@
 export interface DateValidationResult {
   isValid: boolean;
   error?: string;
+  warning?: string;
 }
 
-export function validateEventDates(startDate: string, endDate?: string): DateValidationResult {
+export function validateEventDates(startDate: string, endDate?: string, allowPastDates: boolean = false): DateValidationResult {
   // Check if start date is provided
   if (!startDate) {
     return {
@@ -16,6 +17,8 @@ export function validateEventDates(startDate: string, endDate?: string): DateVal
   const start = new Date(startDate);
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Reset time to start of day
+  
+  let warning: string | undefined;
 
   // Check if start date is valid
   if (isNaN(start.getTime())) {
@@ -27,10 +30,15 @@ export function validateEventDates(startDate: string, endDate?: string): DateVal
 
   // Check if start date is in the past
   if (start < today) {
-    return {
-      isValid: false,
-      error: "Start date cannot be in the past. Please select today or a future date."
-    };
+    if (allowPastDates) {
+      // Allow past dates but set warning
+      warning = "⚠️ This event is being created with a past date. This is typically used for documenting historical events or testing.";
+    } else {
+      return {
+        isValid: false,
+        error: "Start date cannot be in the past. Please select today or a future date."
+      };
+    }
   }
 
   // Check if start date is too far in the future (e.g., more than 2 years)
@@ -73,7 +81,10 @@ export function validateEventDates(startDate: string, endDate?: string): DateVal
     }
   }
 
-  return { isValid: true };
+  return { 
+    isValid: true,
+    warning: warning 
+  };
 }
 
 export function formatDateForDisplay(date: string): string {

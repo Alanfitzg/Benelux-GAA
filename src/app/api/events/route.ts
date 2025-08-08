@@ -93,13 +93,18 @@ async function createEventHandler(request: NextRequest) {
     const body = await parseJsonBody<CreateEventBody>(request);
     console.log('Creating event with data:', JSON.stringify(body, null, 2));
     
-    // Validate dates
-    const dateValidation = validateEventDates(body.startDate, body.endDate);
+    // Validate dates (allow past dates for testing)
+    const dateValidation = validateEventDates(body.startDate, body.endDate, true);
     if (!dateValidation.isValid) {
       return NextResponse.json(
         { error: dateValidation.error || 'Invalid date selection' },
         { status: 400 }
       );
+    }
+    
+    // Log warning if creating event with past date
+    if (dateValidation.warning) {
+      console.warn('Creating event with past date:', dateValidation.warning);
     }
     
     // Use provided coordinates or geocode if not provided
