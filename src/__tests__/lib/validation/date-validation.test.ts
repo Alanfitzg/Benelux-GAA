@@ -39,7 +39,7 @@ describe('Date Validation', () => {
       });
 
       it('should reject null start date', () => {
-        const result = validateEventDates(null as any, null);
+        const result = validateEventDates(null as unknown as Date, null);
         expect(result.isValid).toBe(false);
         expect(result.errors.startDate).toBe('Start date is required');
       });

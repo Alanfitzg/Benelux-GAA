@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CreateEventButton from '@/components/CreateEventButton';
 import { useAuthCheck } from '@/hooks/useAuthCheck';
@@ -31,7 +31,7 @@ describe('CreateEventButton', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockPush.mockClear();
-    (mockRouter as any).push = mockPush;
+    (mockRouter as typeof mockRouter & { push: jest.Mock }).push = mockPush;
     
     (useAuthCheck as jest.Mock).mockReturnValue({
       requireAuth: mockRequireAuth,
