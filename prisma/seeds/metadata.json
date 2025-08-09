@@ -1,0 +1,27 @@
+{
+  "exportDate": "2025-08-09T16:14:57.635Z",
+  "tableCounts": {
+    "users": 3,
+    "accounts": 0,
+    "sessions": 0,
+    "userPreferences": 1,
+    "clubs": 94,
+    "clubAdminRequests": 1,
+    "pitchLocations": 3,
+    "pitchRequests": 0,
+    "events": 35,
+    "eventReports": 1,
+    "interests": 0,
+    "tournamentTeams": 0,
+    "matches": 0,
+    "surveyResponses": 0,
+    "clubInterests": 0,
+    "tournamentInterests": 0,
+    "hostingPackages": 0,
+    "bookings": 0,
+    "payments": 0,
+    "availabilitySlots": 0,
+    "cityDefaultImages": 0,
+    "passwordResetTokens": 0
+  }
+}

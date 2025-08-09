@@ -1,0 +1,21 @@
+[
+  {
+    "id": "cmdvdt5yj00038ofjf3algbx8",
+    "userId": "cmdvdsxyl00018ofj7v3sziit",
+    "motivations": [
+      "weather_sun"
+    ],
+    "competitiveLevel": "competitive_friendly",
+    "preferredCities": [],
+    "preferredCountries": [],
+    "preferredClubs": [],
+    "activities": [],
+    "budgetRange": null,
+    "maxFlightTime": null,
+    "preferredMonths": [],
+    "onboardingCompleted": true,
+    "onboardingSkipped": false,
+    "createdAt": "2025-08-03T07:50:27.691Z",
+    "updatedAt": "2025-08-03T07:50:27.691Z"
+  }
+]

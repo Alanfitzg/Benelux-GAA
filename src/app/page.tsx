@@ -170,6 +170,38 @@ export default function HomePage() {
             </motion.div>
           </div>
         </div>
+
+        {/* Scroll Indicator - Desktop Only */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ 
+            duration: 0.6, 
+            delay: 1.5,
+            repeat: Infinity,
+            repeatType: "reverse",
+            repeatDelay: 0.5
+          }}
+          className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+        >
+          <div className="flex flex-col items-center text-white/60 hover:text-white/80 transition-colors cursor-pointer"
+               onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}>
+            <span className="text-xs uppercase tracking-widest mb-2">Scroll</span>
+            <svg 
+              className="w-6 h-6 animate-bounce" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={1.5} 
+                d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+              />
+            </svg>
+          </div>
+        </motion.div>
       </section>
 
       {/* How It Works - Split Paths */}

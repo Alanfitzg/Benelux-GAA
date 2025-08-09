@@ -1,9 +1,14 @@
 // Learn more: https://github.com/testing-library/jest-dom
-import '@testing-library/jest-dom'
+// Only import jest-dom for jsdom tests
+if (typeof window !== 'undefined') {
+  require('@testing-library/jest-dom');
+}
 
 // Mock environment variables for tests
 process.env.NEXTAUTH_URL = 'http://localhost:3000'
 process.env.NEXTAUTH_SECRET = 'test-secret'
+process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/test'
+
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -60,27 +65,74 @@ jest.mock('next-auth/react', () => ({
   signOut: jest.fn(),
 }))
 
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation(query => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(), // deprecated
-    removeListener: jest.fn(), // deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
+// Mock next-auth core
+jest.mock('next-auth', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    handlers: {
+      GET: jest.fn(),
+      POST: jest.fn(),
+    },
+    auth: jest.fn(),
+    signIn: jest.fn(),
+    signOut: jest.fn(),
   })),
-})
+}))
 
-// Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
-  unobserve() {}
+// Mock @auth/core
+jest.mock('@auth/core', () => ({
+  Auth: jest.fn(),
+  customFetch: jest.fn(),
+}))
+
+// Mock next-auth providers
+jest.mock('next-auth/providers/credentials', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    id: 'credentials',
+    name: 'credentials',
+    type: 'credentials',
+    credentials: {},
+    authorize: jest.fn(),
+  })),
+}))
+
+// Mock @auth/core providers
+jest.mock('@auth/core/providers/credentials', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    id: 'credentials',
+    name: 'credentials',
+    type: 'credentials',
+    credentials: {},
+    authorize: jest.fn(),
+  })),
+}))
+
+// Mock DOM APIs only if in browser environment
+if (typeof window !== 'undefined') {
+  // Mock window.matchMedia
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(query => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: jest.fn(), // deprecated
+      removeListener: jest.fn(), // deprecated
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  })
+
+  // Mock IntersectionObserver
+  global.IntersectionObserver = class IntersectionObserver {
+    constructor() {}
+    disconnect() {}
+    observe() {}
+    unobserve() {}
+  }
 }
 
 // Mock Next.js server APIs
@@ -162,21 +214,23 @@ jest.mock('next/server', () => ({
   NextResponse: global.Response,
 }))
 
-// Mock window.location for client-side tests
-Object.defineProperty(window, 'location', {
-  value: {
-    href: 'http://localhost:3000',
-    origin: 'http://localhost:3000',
-    protocol: 'http:',
-    host: 'localhost:3000',
-    hostname: 'localhost',
-    port: '3000',
-    pathname: '/',
-    search: '',
-    hash: '',
-    reload: jest.fn(),
-    assign: jest.fn(),
-    replace: jest.fn(),
-  },
-  writable: true,
-})
+// Mock window.location for client-side tests only
+if (typeof window !== 'undefined') {
+  Object.defineProperty(window, 'location', {
+    value: {
+      href: 'http://localhost:3000',
+      origin: 'http://localhost:3000',
+      protocol: 'http:',
+      host: 'localhost:3000',
+      hostname: 'localhost',
+      port: '3000',
+      pathname: '/',
+      search: '',
+      hash: '',
+      reload: jest.fn(),
+      assign: jest.fn(),
+      replace: jest.fn(),
+    },
+    writable: true,
+  })
+}

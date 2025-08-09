@@ -1,0 +1,47 @@
+[
+  {
+    "id": "cmdtcktyp00008o3w1k1abuna",
+    "email": "admin@gaatrips.com",
+    "username": "admin",
+    "password": "$2b$12$NOTbrWl6uEY0OjZM0aA4Geepxz1nK4TCS.c.HYbiIa.gHAwcPlZoK",
+    "name": "Super Admin",
+    "role": "SUPER_ADMIN",
+    "accountStatus": "APPROVED",
+    "clubId": null,
+    "createdAt": "2025-08-01T21:40:26.929Z",
+    "updatedAt": "2025-08-01T21:40:26.929Z",
+    "approvedAt": "2025-08-01T21:40:26.804Z",
+    "approvedBy": null,
+    "rejectionReason": null
+  },
+  {
+    "id": "cmdvdsxyl00018ofj7v3sziit",
+    "email": "sean.f.itzgerald05@gmail.com",
+    "username": "seantest1",
+    "password": "$2b$10$tgrqV3G7zSCBd6L1cWHMN.g5ynxs7YCbnR4ySd0PF6uZaSFNPRcxa",
+    "name": "Sean Fitzgerald",
+    "role": "USER",
+    "accountStatus": "APPROVED",
+    "clubId": null,
+    "createdAt": "2025-08-03T07:50:17.324Z",
+    "updatedAt": "2025-08-03T07:50:17.324Z",
+    "approvedAt": "2025-08-03T07:50:17.323Z",
+    "approvedBy": null,
+    "rejectionReason": null
+  },
+  {
+    "id": "cmdwqv01000018o5uj6ss4xm8",
+    "email": "seanfitzgerald05@gmail.com",
+    "username": "seantestams",
+    "password": "$2b$10$a7M4daLwH5ZEn1Biqw0QTum/ml1w8ZDhyzzHhebCpOnPBrcH9YQZS",
+    "name": null,
+    "role": "CLUB_ADMIN",
+    "accountStatus": "APPROVED",
+    "clubId": null,
+    "createdAt": "2025-08-04T06:43:34.500Z",
+    "updatedAt": "2025-08-04T06:49:03.499Z",
+    "approvedAt": "2025-08-04T06:43:34.497Z",
+    "approvedBy": null,
+    "rejectionReason": null
+  }
+]

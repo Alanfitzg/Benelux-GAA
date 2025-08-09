@@ -1,0 +1,27 @@
+[
+  {
+    "id": "cme37r7e600018on83ya0yhur",
+    "eventId": "cme37fnq900018o7b2b2jjbu5",
+    "createdBy": "cmdtcktyp00008o3w1k1abuna",
+    "status": "PUBLISHED",
+    "winnerTeamId": null,
+    "runnerUpTeamId": null,
+    "thirdPlaceTeamId": null,
+    "participatingTeams": null,
+    "matchResults": null,
+    "playerAwards": [
+      {
+        "teamName": "Amstedam",
+        "awardType": "MVP",
+        "playerName": "John Smith"
+      }
+    ],
+    "amenitiesProvided": null,
+    "eventHighlights": null,
+    "summary": "Leuven won the tournament",
+    "mediaUrls": [],
+    "publishedAt": "2025-08-08T19:23:07.948Z",
+    "createdAt": "2025-08-08T19:23:07.949Z",
+    "updatedAt": "2025-08-08T19:23:07.949Z"
+  }
+]
