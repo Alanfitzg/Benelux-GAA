@@ -11,10 +11,17 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   // if using TypeScript with a baseUrl set to the root directory then you need the below for alias' to work
   moduleDirectories: ['node_modules', '<rootDir>/'],
-  testEnvironment: 'jest-environment-jsdom',
+  testEnvironment: 'jest-environment-node',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^next-auth$': '<rootDir>/src/__tests__/mocks/next-auth.js',
+    '^next-auth/providers/(.*)$': '<rootDir>/src/__tests__/mocks/auth-providers.js',
+    '^@auth/core/providers/(.*)$': '<rootDir>/src/__tests__/mocks/auth-providers.js',
   },
+  // Transform ESM modules in node_modules
+  transformIgnorePatterns: [
+    'node_modules/(?!(next-auth|@auth|oauth4webapi|preact-render-to-string|preact)/)'
+  ],
   testMatch: [
     '**/__tests__/**/*.(ts|tsx|js)',
     '**/*.(test|spec).(ts|tsx|js)'
