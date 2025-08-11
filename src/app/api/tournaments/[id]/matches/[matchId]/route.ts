@@ -49,7 +49,7 @@ export async function PATCH(
     );
     
     const isTeamAdmin = user?.adminOfClubs.some(
-      club => club.id === match.homeTeam.clubId || club.id === match.awayTeam.clubId
+      club => club.id === match.homeTeam?.clubId || club.id === match.awayTeam?.clubId
     );
 
     // Tournament organizers can update everything, team admins can only update scores

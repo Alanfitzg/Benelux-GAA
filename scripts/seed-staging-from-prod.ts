@@ -120,10 +120,16 @@ async function seedStaging() {
     });
 
     for (const event of events) {
+      const { id, bracketData, ...restEventData } = event;
+      const eventDataToUpsert = {
+        ...restEventData,
+        bracketData: bracketData ?? undefined
+      };
+      
       await stagingPrisma.event.upsert({
-        where: { id: event.id },
-        update: event,
-        create: event
+        where: { id },
+        update: eventDataToUpsert,
+        create: { id, ...eventDataToUpsert }
       });
     }
     console.log(`✅ Copied ${events.length} events`);

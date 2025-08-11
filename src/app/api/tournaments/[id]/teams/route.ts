@@ -69,7 +69,7 @@ export async function POST(
     }
 
     const body = await request.json();
-    const { clubId, teamName, teamType } = body;
+    const { clubId, teamName, teamType, division } = body;
 
     // Validate that the user is a club admin
     const user = await prisma.user.findUnique({
@@ -115,12 +115,36 @@ export async function POST(
       );
     }
 
-    // Check team limits
-    if (tournament.maxTeams && tournament.teams.length >= tournament.maxTeams) {
-      return NextResponse.json(
-        { error: 'Tournament has reached maximum team capacity' },
-        { status: 400 }
-      );
+    // Check if division is required and valid
+    if (tournament.divisions && tournament.divisions.length > 0) {
+      if (!division) {
+        return NextResponse.json(
+          { error: 'Division is required for this tournament' },
+          { status: 400 }
+        );
+      }
+      if (!tournament.divisions.includes(division)) {
+        return NextResponse.json(
+          { error: `Invalid division. Available divisions: ${tournament.divisions.join(', ')}` },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Note: maxTeamsPerClub validation removed to allow unlimited teams per club per division
+
+    // Check overall team limits
+    if (tournament.maxTeams) {
+      const teamsInDivision = division 
+        ? tournament.teams.filter(t => t.division === division).length
+        : tournament.teams.length;
+        
+      if (teamsInDivision >= tournament.maxTeams) {
+        return NextResponse.json(
+          { error: 'Tournament has reached maximum team capacity' },
+          { status: 400 }
+        );
+      }
     }
 
     // Create the team registration
@@ -130,6 +154,7 @@ export async function POST(
         clubId,
         teamName,
         teamType,
+        division,
       },
       include: {
         club: true,
