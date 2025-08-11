@@ -40,6 +40,11 @@ export interface Event {
   maxTeams?: number;
   acceptedTeamTypes?: string[];
   visibility?: 'PUBLIC' | 'PRIVATE';
+  status?: 'UPCOMING' | 'ACTIVE' | 'CLOSED';
+  bracketType?: 'SINGLE_ELIMINATION' | 'DOUBLE_ELIMINATION' | 'ROUND_ROBIN' | 'GROUP_STAGE';
+  bracketData?: unknown;
+  divisions?: string[];
+  maxTeamsPerClub?: number;
   
   createdAt?: string;
   updatedAt?: string;
@@ -49,6 +54,11 @@ export interface Event {
   // Tournament relations
   teams?: TournamentTeam[];
   matches?: Match[];
+  report?: {
+    id: string;
+    status: string;
+    publishedAt?: string;
+  };
 }
 
 export interface TournamentTeam {
@@ -57,6 +67,7 @@ export interface TournamentTeam {
   clubId: string;
   teamName: string;
   teamType: string;
+  division?: string;
   registeredAt: string;
   status: TeamStatus;
   club?: Club;
@@ -66,11 +77,14 @@ export interface TournamentTeam {
 export interface Match {
   id: string;
   eventId: string;
-  homeTeamId: string;
-  awayTeamId: string;
+  homeTeamId?: string;
+  awayTeamId?: string;
+  division?: string;
   matchDate?: string;
   venue?: string;
   round?: string;
+  bracketPosition?: number;
+  nextMatchId?: string;
   homeScore?: number;
   awayScore?: number;
   status: MatchStatus;

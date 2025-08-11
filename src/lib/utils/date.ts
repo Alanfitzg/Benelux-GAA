@@ -1,5 +1,11 @@
-export function formatEventDate(date: string | Date): string {
+export function formatEventDate(date: string | Date | null | undefined): string {
+  if (!date) {
+    return 'Date TBD';
+  }
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid Date';
+  }
   return dateObj.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -23,8 +29,14 @@ export function formatEventDateRange(startDate: string | Date, endDate?: string 
   return `${start} - ${end}`;
 }
 
-export function formatShortDate(date: string | Date): string {
+export function formatShortDate(date: string | Date | null | undefined): string {
+  if (!date) {
+    return 'Date TBD';
+  }
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (isNaN(dateObj.getTime())) {
+    return 'Invalid Date';
+  }
   return dateObj.toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',

@@ -25,6 +25,11 @@ model Event {
   maxTeams          Int?
   acceptedTeamTypes String[]             @default([])
   visibility        TournamentVisibility @default(PUBLIC)
+  status            EventStatus          @default(UPCOMING)
+  bracketType       BracketType?
+  bracketData       Json?
+  divisions         String[]             @default([])
+  maxTeamsPerClub   Int?                 @default(1)
   createdAt         DateTime             @default(now())
   updatedAt         DateTime             @updatedAt
   clubId            String?
@@ -46,6 +51,7 @@ model Event {
   @@index([acceptedTeamTypes])
   @@index([visibility])
   @@index([pitchLocationId])
+  @@index([status])
 }
 
 model Interest {
@@ -301,6 +307,7 @@ model TournamentTeam {
   clubId       String
   teamName     String
   teamType     String
+  division     String?
   registeredAt DateTime   @default(now())
   status       TeamStatus @default(REGISTERED)
   awayMatches  Match[]    @relation("AwayTeam")
@@ -311,25 +318,35 @@ model TournamentTeam {
   club         Club       @relation(fields: [clubId], references: [id])
   event        Event      @relation(fields: [eventId], references: [id])
 
-  @@unique([eventId, clubId, teamName])
+  @@unique([eventId, clubId, teamName, division])
+  @@index([division])
 }
 
 model Match {
   id         String         @id @default(cuid())
   eventId    String
-  homeTeamId String
-  awayTeamId String
+  homeTeamId String?
+  awayTeamId String?
+  division   String?
   matchDate  DateTime?
   venue      String?
   round      String?
+  bracketPosition Int?
+  nextMatchId String?
   homeScore  Int?
   awayScore  Int?
   status     MatchStatus    @default(SCHEDULED)
   createdAt  DateTime       @default(now())
   updatedAt  DateTime       @updatedAt
-  awayTeam   TournamentTeam @relation("AwayTeam", fields: [awayTeamId], references: [id])
+  awayTeam   TournamentTeam? @relation("AwayTeam", fields: [awayTeamId], references: [id])
   event      Event          @relation(fields: [eventId], references: [id])
-  homeTeam   TournamentTeam @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  homeTeam   TournamentTeam? @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  nextMatch  Match?         @relation("NextMatch", fields: [nextMatchId], references: [id])
+  previousMatches Match[]    @relation("NextMatch")
+  
+  @@index([bracketPosition])
+  @@index([nextMatchId])
+  @@index([division])
 }
 
 model AvailabilitySlot {
@@ -518,6 +535,19 @@ enum ReportStatus {
   PUBLISHED
 }
 
+enum EventStatus {
+  UPCOMING
+  ACTIVE
+  CLOSED
+}
+
+enum BracketType {
+  SINGLE_ELIMINATION
+  DOUBLE_ELIMINATION
+  ROUND_ROBIN
+  GROUP_STAGE
+}
+
 model CityDefaultImage {
   id        String   @id @default(cuid())
   city      String   @unique
@@ -619,6 +649,9 @@ model EventReport {
   
   // Match Results Summary
   matchResults    Json?          // Array of key match results with scores
+  
+  // Bracket Data Snapshot
+  finalBracket    Json?          // Final bracket state for visualization
   
   // Player Awards (optional)
   playerAwards    Json?          // Array of {awardType, playerName, teamName}

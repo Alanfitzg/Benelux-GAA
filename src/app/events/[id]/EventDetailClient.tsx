@@ -10,6 +10,8 @@ import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
 import EventReportDisplay from "@/components/events/EventReportDisplay";
+import EventManagement from "@/components/events/EventManagement";
+import TournamentManager from "@/components/tournaments/TournamentManager";
 import { useSession } from "next-auth/react";
 
 export default function EventDetailClient({
@@ -79,6 +81,21 @@ export default function EventDetailClient({
 
     fetchEventData();
   }, [eventId, session]);
+
+  const refreshTeams = async () => {
+    if (event?.eventType === 'Tournament') {
+      try {
+        const teamsRes = await fetch(`/api/tournaments/${eventId}/teams`);
+        if (teamsRes.ok) {
+          const teamsData = await teamsRes.json();
+          setTeams(teamsData);
+        }
+      } catch (error) {
+        console.error('Error refreshing teams:', error);
+      }
+    }
+  };
+
 
   const handleSubmit = async (eventForm: React.FormEvent<HTMLFormElement>) => {
     eventForm.preventDefault();
@@ -159,10 +176,7 @@ export default function EventDetailClient({
             <a href="#overview" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Overview</a>
             <a href="#highlights" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Highlights</a>
             {event?.eventType === 'Tournament' && (
-              <>
-                <a href="#teams" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Teams</a>
-                <a href="#matches" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Matches</a>
-              </>
+              <a href="#tournament" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Tournament</a>
             )}
             <a href="#report" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Event Report</a>
             <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
@@ -173,6 +187,15 @@ export default function EventDetailClient({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Event Management Panel (for admins) */}
+        {event && isClubAdmin && (
+          <EventManagement
+            event={event}
+            teams={teams}
+            isClubAdmin={isClubAdmin}
+          />
+        )}
+        
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-8">
@@ -202,113 +225,16 @@ export default function EventDetailClient({
               </div>
             </section>
 
-            {/* Tournament Teams Section */}
+            {/* Tournament Management Section */}
             {event?.eventType === 'Tournament' && (
-              <section id="teams" className="bg-white rounded-xl shadow-sm border p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-bold">Registered Teams</h2>
-                  <span className="text-sm text-gray-600">
-                    {teams.length} {event.maxTeams ? `/ ${event.maxTeams}` : ''} teams
-                  </span>
-                </div>
-                
-                {teams.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {teams.map((team) => (
-                      <div key={team.id} className="border rounded-lg p-4 hover:shadow-md transition">
-                        <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-semibold text-lg">{team.teamName}</h3>
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            team.status === 'CONFIRMED' 
-                              ? 'bg-green-100 text-green-800'
-                              : team.status === 'WITHDRAWN'
-                              ? 'bg-red-100 text-red-800' 
-                              : 'bg-yellow-100 text-yellow-800'
-                          }`}>
-                            {team.status}
-                          </span>
-                        </div>
-                        <p className="text-gray-600 text-sm mb-2">{team.club?.name}</p>
-                        <p className="text-gray-500 text-xs">{team.teamType}</p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    <p>No teams registered yet</p>
-                  </div>
-                )}
-              </section>
-            )}
-
-            {/* Tournament Matches Section */}
-            {event?.eventType === 'Tournament' && (
-              <section id="matches" className="bg-white rounded-xl shadow-sm border p-6">
-                <h2 className="text-2xl font-bold mb-4">Matches</h2>
-                
-                {matches.length > 0 ? (
-                  <div className="space-y-4">
-                    {matches.map((match) => (
-                      <div key={match.id} className="border rounded-lg p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-sm font-medium text-primary">{match.round}</span>
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${
-                            match.status === 'COMPLETED'
-                              ? 'bg-green-100 text-green-800'
-                              : match.status === 'IN_PROGRESS'
-                              ? 'bg-blue-100 text-blue-800'
-                              : match.status === 'CANCELLED'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-gray-100 text-gray-800'
-                          }`}>
-                            {match.status}
-                          </span>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <p className="font-medium">{match.homeTeam?.teamName || 'TBD'}</p>
-                            <p className="text-sm text-gray-600">{match.homeTeam?.club?.name}</p>
-                          </div>
-                          
-                          <div className="mx-4 text-center">
-                            {match.homeScore !== null && match.awayScore !== null ? (
-                              <div className="text-lg font-bold">
-                                {match.homeScore} - {match.awayScore}
-                              </div>
-                            ) : (
-                              <div className="text-gray-400">VS</div>
-                            )}
-                            {match.matchDate && (
-                              <div className="text-xs text-gray-500">
-                                {new Date(match.matchDate).toLocaleDateString()}
-                              </div>
-                            )}
-                          </div>
-                          
-                          <div className="flex-1 text-right">
-                            <p className="font-medium">{match.awayTeam?.teamName || 'TBD'}</p>
-                            <p className="text-sm text-gray-600">{match.awayTeam?.club?.name}</p>
-                          </div>
-                        </div>
-                        
-                        {match.venue && (
-                          <p className="text-sm text-gray-500 mt-2">📍 {match.venue}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8 text-gray-500">
-                    <svg className="w-12 h-12 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                    </svg>
-                    <p>No matches scheduled yet</p>
-                  </div>
-                )}
+              <section id="tournament" className="space-y-0">
+                <TournamentManager
+                  event={event}
+                  teams={teams}
+                  matches={matches}
+                  isAdmin={isClubAdmin}
+                  onTeamUpdate={refreshTeams}
+                />
               </section>
             )}
 
