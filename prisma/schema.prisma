@@ -33,9 +33,10 @@ model Event {
   createdAt         DateTime             @default(now())
   updatedAt         DateTime             @updatedAt
   clubId            String?
-  pitchLocationId   String?
+  pitchLocationId   String?             // Deprecated: use pitchLocations instead
   club              Club?                @relation(fields: [clubId], references: [id])
-  pitchLocation     PitchLocation?       @relation(fields: [pitchLocationId], references: [id])
+  pitchLocation     PitchLocation?       @relation("MainPitch", fields: [pitchLocationId], references: [id])
+  pitchLocations    EventPitchLocation[] // New: multiple pitches support
   interests         Interest[]
   matches           Match[]
   surveyResponses   SurveyResponse[]
@@ -606,7 +607,8 @@ model PitchLocation {
   
   club      Club     @relation(fields: [clubId], references: [id])
   creator   User     @relation(fields: [createdBy], references: [id])
-  events    Event[]
+  events    Event[]  @relation("MainPitch")
+  eventPitchLocations EventPitchLocation[]
   
   @@index([city])
   @@index([clubId])
@@ -679,4 +681,21 @@ model EventReport {
   @@index([eventId])
   @@index([status])
   @@index([createdBy])
+}
+
+// Join table for many-to-many relationship between Events and PitchLocations
+model EventPitchLocation {
+  id              String        @id @default(cuid())
+  eventId         String
+  pitchLocationId String
+  isPrimary       Boolean       @default(false) // Mark primary venue
+  notes           String?       // Specific notes for this venue in this event
+  createdAt       DateTime      @default(now())
+  
+  event           Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  pitchLocation   PitchLocation @relation(fields: [pitchLocationId], references: [id], onDelete: Cascade)
+  
+  @@unique([eventId, pitchLocationId])
+  @@index([eventId])
+  @@index([pitchLocationId])
 }

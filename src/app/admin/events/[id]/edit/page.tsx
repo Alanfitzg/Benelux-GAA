@@ -7,6 +7,7 @@ import Link from "next/link";
 import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
 import ClubSelectorOptional from '@/components/ClubSelectorOptional';
+import PitchSelector from '@/components/PitchSelector';
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { URLS, MESSAGES } from "@/lib/constants";
 
@@ -21,6 +22,12 @@ interface EventData {
   imageUrl?: string;
   clubId?: string;
   visibility?: 'PUBLIC' | 'PRIVATE';
+  pitchLocationId?: string;
+  pitchLocations?: Array<{
+    id: string;
+    pitchLocationId: string;
+    isPrimary: boolean;
+  }>;
 }
 
 export default function EditEventPage() {
@@ -36,6 +43,7 @@ export default function EditEventPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [location, setLocation] = useState("");
   const [selectedClubId, setSelectedClubId] = useState<string>("");
+  const [selectedPitches, setSelectedPitches] = useState<string[]>([]);
   const [visibility, setVisibility] = useState<'PUBLIC' | 'PRIVATE'>('PUBLIC');
 
   useEffect(() => {
@@ -47,6 +55,12 @@ export default function EditEventPage() {
         setImageUrl(data.imageUrl || null);
         setSelectedClubId(data.clubId || "");
         setVisibility(data.visibility || 'PUBLIC');
+        // Set pitches - support both old single pitch and new multiple pitches
+        if (data.pitchLocations && data.pitchLocations.length > 0) {
+          setSelectedPitches(data.pitchLocations.map((p: { pitchLocationId: string }) => p.pitchLocationId));
+        } else if (data.pitchLocationId) {
+          setSelectedPitches([data.pitchLocationId]);
+        }
       });
   }, [eventId]);
 
@@ -97,6 +111,8 @@ export default function EditEventPage() {
       imageUrl: uploadedImageUrl || imageUrl || null,
       clubId: selectedClubId || null,
       visibility: visibility,
+      pitchLocationId: selectedPitches.length === 1 ? selectedPitches[0] : null,
+      pitchLocationIds: selectedPitches,
     };
     
     console.log('Sending data:', data);
@@ -257,6 +273,22 @@ export default function EditEventPage() {
                       Location
                     </label>
                     <LocationAutocomplete value={location} onChange={setLocation} />
+                  </div>
+
+                  {/* Pitch Selection */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Pitch Location(s) <span className="text-gray-400">(Optional)</span>
+                      {event.eventType === 'Tournament' && (
+                        <span className="ml-2 text-xs text-gray-500">Multiple pitches can be selected for tournaments</span>
+                      )}
+                    </label>
+                    <PitchSelector
+                      selectedPitches={selectedPitches}
+                      onChange={setSelectedPitches}
+                      clubId={selectedClubId}
+                      isTournament={event.eventType === 'Tournament'}
+                    />
                   </div>
 
                   {/* Start Date */}
