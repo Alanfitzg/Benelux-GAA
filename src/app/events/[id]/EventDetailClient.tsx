@@ -180,7 +180,9 @@ export default function EventDetailClient({
             )}
             <a href="#report" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Event Report</a>
             <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
-            <a href="#interest" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Register Interest</a>
+            {event?.visibility !== 'PRIVATE' && (
+              <a href="#interest" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Register Interest</a>
+            )}
           </nav>
         </div>
       </div>
@@ -272,46 +274,48 @@ export default function EventDetailClient({
               </div>
             </section>
 
-            {/* Interest Form Section */}
-            <section id="interest" className="bg-white rounded-xl shadow-sm border p-6">
-              <h2 className="text-2xl font-bold mb-6">{MESSAGES.BUTTONS.REGISTER_INTEREST}</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.NAME}</label>
-                    <input
-                      type="text"
-                      name="name"
-                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      required
-                    />
+            {/* Interest Form Section - Only show for public events */}
+            {event?.visibility !== 'PRIVATE' && (
+              <section id="interest" className="bg-white rounded-xl shadow-sm border p-6">
+                <h2 className="text-2xl font-bold mb-6">{MESSAGES.BUTTONS.REGISTER_INTEREST}</h2>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.NAME}</label>
+                      <input
+                        type="text"
+                        name="name"
+                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.EMAIL}</label>
+                      <input
+                        type="email"
+                        name="email"
+                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        required
+                      />
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.EMAIL}</label>
-                    <input
-                      type="email"
-                      name="email"
+                    <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.MESSAGE}</label>
+                    <textarea
+                      name="message"
+                      rows={4}
                       className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      required
-                    />
+                    ></textarea>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.MESSAGE}</label>
-                  <textarea
-                    name="message"
-                    rows={4}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg transition"
-                >
-                  {MESSAGES.BUTTONS.SUBMIT}
-                </button>
-              </form>
-            </section>
+                  <button
+                    type="submit"
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg transition"
+                  >
+                    {MESSAGES.BUTTONS.SUBMIT}
+                  </button>
+                </form>
+              </section>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -362,12 +366,14 @@ export default function EventDetailClient({
                     <span className="font-medium text-primary text-xl">{event?.cost ? `€${event.cost}` : MESSAGES.DEFAULTS.PLACEHOLDER}</span>
                   </div>
                 </div>
-                <a 
-                  href="#interest" 
-                  className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
-                >
-                  {MESSAGES.BUTTONS.REGISTER_INTEREST}
-                </a>
+                {event?.visibility !== 'PRIVATE' && (
+                  <a 
+                    href="#interest" 
+                    className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
+                  >
+                    {MESSAGES.BUTTONS.REGISTER_INTEREST}
+                  </a>
+                )}
               </div>
 
               {/* Custom Trip CTA */}
