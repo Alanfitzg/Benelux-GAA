@@ -147,6 +147,153 @@ enum ReportStatus {
 1. View published reports on event detail pages
 2. See tournament standings with trophy visualization
 3. Read event highlights and amenities provided
+
+---
+
+## 🎮 Enhanced Event Management System (August 2025)
+
+### **System Overview**
+Complete redesign of the event management interface providing a unified, professional dashboard for administrators to manage the entire event lifecycle from creation to completion.
+
+### **Core Architecture**
+
+#### **Unified Event Dashboard**
+**Location**: `/src/components/events/UnifiedEventDashboard.tsx`
+- **Purpose**: Single control center for all event management operations
+- **Access**: Displayed on event detail pages for authorized admins
+- **Features**:
+  - Event lifecycle status tracking (UPCOMING → ACTIVE → CLOSED)
+  - Quick action buttons with professional geometric indicators
+  - Real-time event statistics and team counts
+  - Integrated tournament management
+  - Direct edit access via "Edit Details" button
+
+#### **Professional Event Edit Interface** 
+**Location**: `/src/app/admin/events/[id]/edit/page.tsx`
+- **Design Philosophy**: Clean, business-focused interface without emojis
+- **Field Organization**: Logical sectioning with title prominently at top
+- **Features**:
+  - **Basic Information**: Title, type, dates, cost, description
+  - **Location & Venue**: Address with integrated pitch management
+  - **Tournament Settings**: Team limits, accepted types, visibility
+  - **Advanced Options**: Recurring events, custom settings
+
+#### **Enhanced Pitch Management**
+**Location**: `/src/components/events/EnhancedPitchSelector.tsx`
+- **Capabilities**: 
+  - Select existing pitch locations from searchable list
+  - Create new pitches inline without leaving the form
+  - Professional styling with clear visual hierarchy
+  - Multiple pitch association support (via EventPitchLocation table)
+
+#### **Tournament Template System**
+**Location**: `/src/lib/tournament-templates.ts`
+- **Pre-configured Templates**:
+  - Standard GAA Tournament (Men's/Ladies Football, 2 divisions each)
+  - Hurling Championship, Mixed Sports Festival, Youth Tournament
+- **Automated Team Matrix Generation**: Calculates total teams and creates registration grid
+- **Smart Registration**: Matrix-based team selection for bulk operations
+
+### **Authentication & Permissions**
+
+#### **Flexible Admin Access** 
+**Location**: `/src/app/events/[id]/EventDetailClient.tsx` (lines 46-62)
+```typescript
+// Enhanced permission logic
+const isAdmin = userData.role === 'SUPER_ADMIN' ||
+              userData.role === 'CLUB_ADMIN' ||
+              (eventData.clubId && userData.adminOfClubs?.some(...));
+```
+
+#### **Permission Matrix**
+| User Type | Independent Events | Club Events | Admin Dashboard Access |
+|-----------|-------------------|-------------|----------------------|
+| SUPER_ADMIN | ✅ Full Access | ✅ Full Access | ✅ Yes |
+| CLUB_ADMIN | ✅ Full Access | ✅ If Club Admin | ✅ Yes |
+| USER | ❌ View Only | ❌ View Only | ❌ No |
+
+#### **Event Creation Authentication**
+**Location**: `/src/app/api/events/route.ts` (lines 86-106)
+- **Independent Events**: Requires basic authentication only
+- **Club Events**: Requires club admin privileges for specific club
+- **Flexible Logic**: Supports both club-managed and independent events
+
+### **Database Schema Enhancements**
+
+#### **EventPitchLocation Table**
+```sql
+model EventPitchLocation {
+  id              String        @id @default(cuid())
+  eventId         String
+  pitchLocationId String
+  isPrimary       Boolean       @default(false)
+  notes           String?
+  
+  event           Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  pitchLocation   PitchLocation @relation(fields: [pitchLocationId], references: [id], onDelete: Cascade)
+  
+  @@unique([eventId, pitchLocationId])
+  @@index([eventId])
+  @@index([pitchLocationId])
+}
+```
+
+#### **Enhanced Event Model**
+- **Tournament Fields**: `minTeams`, `maxTeams`, `acceptedTeamTypes[]`, `bracketType`
+- **Status Workflow**: `status` enum (UPCOMING, ACTIVE, CLOSED)
+- **Multiple Pitches**: Relationship to `EventPitchLocation[]`
+- **Flexible Club Association**: Optional `clubId` for independent events
+
+### **User Experience Workflows**
+
+#### **Event Creation Flow**
+1. **Form Access**: Navigate to `/events/create`
+2. **Field Completion**: Logical top-to-bottom flow starting with event title
+3. **Pitch Selection**: Choose existing venues or create new ones inline
+4. **Tournament Setup**: Use templates for quick configuration (if tournament)
+5. **Authentication Check**: System validates permissions before creation
+6. **Success**: Redirects to events list with confirmation
+
+#### **Event Management Flow**
+1. **Dashboard Access**: Navigate to any event detail page as admin
+2. **Control Center**: View `UnifiedEventDashboard` with lifecycle status
+3. **Quick Actions**: 
+   - Click "Edit Details" to access professional edit form
+   - Manage tournament teams and brackets (if applicable)
+   - Update event status through lifecycle buttons
+4. **Advanced Management**: Access reporting, team registration, and match management
+
+#### **Tournament Management Flow**
+1. **Template Selection**: Choose pre-configured tournament format
+2. **Team Matrix Setup**: System generates registration grid based on template
+3. **Bulk Registration**: Use matrix interface for multiple team/division selection
+4. **Team Management**: Add, edit, remove teams through unified interface
+5. **Bracket Generation**: Automatic bracket creation based on registered teams
+
+### **Error Handling & Resilience**
+
+#### **API Transaction Management**
+- **Database Transactions**: All event updates wrapped in Prisma transactions
+- **Partial Failure Handling**: Pitch associations can fail without affecting core event data
+- **Comprehensive Logging**: Detailed console logging for debugging
+- **Type Safety**: Strict TypeScript types prevent field name mismatches
+
+#### **Authentication Session Fixes**
+- **NEXTAUTH_URL Sync**: Ensures authentication works on all ports (3000, 3002)
+- **Cookie Configuration**: Proper localhost settings for session persistence
+- **Middleware Compatibility**: Updated domain allowlist for development environments
+
+### **Performance & Scalability**
+- **Lazy Loading**: Components load only when admin permissions are verified
+- **Efficient Queries**: Optimized database queries with proper indexing
+- **Caching Strategy**: Leverages Next.js caching for static event data
+- **Error Boundaries**: Graceful degradation if components fail to load
+
+### **Future Enhancements**
+- **Real-time Updates**: WebSocket integration for live tournament updates
+- **Advanced Templates**: More sophisticated tournament bracket configurations
+- **Mobile Optimization**: Touch-friendly interfaces for tablet-based event management
+- **Integration**: Third-party tournament management system connections
 4. Access historical tournament data
 
 ### **Technical Implementation**

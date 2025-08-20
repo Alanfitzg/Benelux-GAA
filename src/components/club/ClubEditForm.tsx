@@ -89,6 +89,7 @@ export default function ClubEditForm({ club }: { club: Club }) {
     setImageUploading(true);
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('type', 'club-crest');
 
     try {
       const response = await fetch('/api/upload', {

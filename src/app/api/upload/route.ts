@@ -22,12 +22,24 @@ async function uploadHandler(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
+    const uploadType = formData.get("type") as string | null;
+    
     if (!file) {
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
     }
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const fileName = `${Date.now()}-${file.name}`;
+    
+    // Determine the folder based on upload type
+    let folder = "";
+    if (uploadType === "club-crest") {
+      folder = "club-crests/";
+    } else if (uploadType === "event-image") {
+      folder = "event-images/";
+    }
+    // Add more folder types as needed
+    
+    const fileName = `${folder}${Date.now()}-${file.name}`;
     const bucket = process.env.S3_BUCKET_NAME!;
     const uploadParams = {
       Bucket: bucket,

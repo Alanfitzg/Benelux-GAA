@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import type { Event, TournamentTeam, Match } from "@/types";
 import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
@@ -10,7 +9,8 @@ import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
 import EventReportDisplay from "@/components/events/EventReportDisplay";
-import EventManagement from "@/components/events/EventManagement";
+import UnifiedEventDashboard from "@/components/events/UnifiedEventDashboard";
+import EnhancedTeamRegistration from "@/components/tournaments/EnhancedTeamRegistration";
 import TournamentManager from "@/components/tournaments/TournamentManager";
 import { useSession } from "next-auth/react";
 
@@ -31,18 +31,33 @@ export default function EventDetailClient({
   useEffect(() => {
     const fetchEventData = async () => {
       try {
+        console.log('Fetching event data for ID:', eventId);
         const eventRes = await fetch(`${URLS.API.EVENTS}/${eventId}`);
+        console.log('Event API response status:', eventRes.status);
+        
+        if (!eventRes.ok) {
+          throw new Error(`Failed to fetch event: ${eventRes.status} ${eventRes.statusText}`);
+        }
+        
         const eventData = await eventRes.json();
+        console.log('Event data received:', eventData);
         setEvent(eventData);
 
-        // Check if user is a club admin for this event
-        if (session?.user?.email && eventData.clubId) {
+        // Check if user can admin this event
+        if (session?.user?.email) {
           const userRes = await fetch('/api/user/current');
           if (userRes.ok) {
             const userData = await userRes.json();
-            const isAdmin = userData.adminOfClubs?.some((club: { id: string; name: string }) => club.id === eventData.clubId) || 
-                          userData.role === 'SUPER_ADMIN';
+            const isAdmin = userData.role === 'SUPER_ADMIN' ||
+                          userData.role === 'CLUB_ADMIN' ||
+                          (eventData.clubId && userData.adminOfClubs?.some((club: { id: string; name: string }) => club.id === eventData.clubId));
             setIsClubAdmin(isAdmin);
+            console.log('Admin check result:', { 
+              userRole: userData.role, 
+              eventClubId: eventData.clubId, 
+              adminOfClubs: userData.adminOfClubs, 
+              isAdmin 
+            });
           }
         }
 
@@ -178,6 +193,9 @@ export default function EventDetailClient({
             {event?.eventType === 'Tournament' && (
               <a href="#tournament" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Tournament</a>
             )}
+            {event?.eventType === 'Tournament' && isClubAdmin && (
+              <a href="#team-management" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Team Management</a>
+            )}
             <a href="#report" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Event Report</a>
             <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
             {event?.visibility !== 'PRIVATE' && (
@@ -189,11 +207,12 @@ export default function EventDetailClient({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Event Management Panel (for admins) */}
+        {/* Unified Event Dashboard (for admins) */}
         {event && isClubAdmin && (
-          <EventManagement
+          <UnifiedEventDashboard
             event={event}
             teams={teams}
+            matches={matches}
             isClubAdmin={isClubAdmin}
           />
         )}
@@ -227,6 +246,20 @@ export default function EventDetailClient({
               </div>
             </section>
 
+            {/* Team Management Section */}
+            {event?.eventType === 'Tournament' && isClubAdmin && (
+              <section id="team-management" className="space-y-6">
+                <div className="bg-white rounded-xl shadow-sm border p-6">
+                  <h2 className="text-2xl font-bold mb-4">Team Management</h2>
+                  <EnhancedTeamRegistration
+                    event={event}
+                    onTeamsAdded={refreshTeams}
+                    isAdmin={isClubAdmin}
+                  />
+                </div>
+              </section>
+            )}
+
             {/* Tournament Management Section */}
             {event?.eventType === 'Tournament' && (
               <section id="tournament" className="space-y-0">
@@ -240,24 +273,16 @@ export default function EventDetailClient({
               </section>
             )}
 
-            {/* Event Report Section */}
-            <section id="report" className="bg-white rounded-xl shadow-sm border p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">Event Report</h2>
-                {isClubAdmin && (
-                  <Link
-                    href={`/events/${eventId}/report`}
-                    className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 text-sm"
-                  >
-                    Manage Report
-                  </Link>
-                )}
-              </div>
-              <EventReportDisplay 
-                eventId={eventId} 
-                isAdmin={false}
-              />
-            </section>
+            {/* Event Report Section - Integrated into dashboard for admins */}
+            {!isClubAdmin && (
+              <section id="report" className="bg-white rounded-xl shadow-sm border p-6">
+                <h2 className="text-2xl font-bold mb-4">Event Report</h2>
+                <EventReportDisplay 
+                  eventId={eventId} 
+                  isAdmin={false}
+                />
+              </section>
+            )}
 
             {/* What's Included Section */}
             <section id="included" className="bg-white rounded-xl shadow-sm border p-6">

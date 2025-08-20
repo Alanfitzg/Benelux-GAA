@@ -22,6 +22,7 @@ For comprehensive information, see these modular documentation files:
 - **Event Report System**: Post-tournament reporting with results and awards
 - **Database Backup System**: Complete backup/restore with safety guarantees
 - **Enhanced Test Suite**: Jest testing infrastructure with 85% coverage
+- **🎮 Enhanced Event Management System**: Complete redesign with unified dashboard, tournament templates, and professional interface
 
 ## 🏗️ Tech Stack (Brief)
 - **Frontend**: Next.js 15.3.3, React 19, TypeScript, Tailwind CSS
@@ -85,14 +86,20 @@ npx prisma db push   # Apply schema changes
 - OAuth users: check `hasPassword` field for auth method
 - Always test build before deploying
 
+## 🐛 Recently Fixed Issues
+- ✅ Event creation authentication (flexible independent/club event creation)
+- ✅ Prisma field name mismatches (EventPitchLocation table sync)
+- ✅ Admin session persistence (NEXTAUTH_URL port sync, cookie configuration)
+- ✅ Event editing access from details page (improved admin permission logic)
+
 ## 🐛 Known Issues
 - Rate limiting is in-memory (needs Redis for scaling)
 - Connection pooling could be optimized
 
 ## 📊 Next Priorities
-1. **Immediate**: Facebook OAuth integration
-2. **Month 1**: Tournament brackets visualization
-3. **Future**: Preference-based recommendation engine
+1. **Immediate**: Apply logical field ordering to event create page
+2. **Month 1**: Tournament brackets visualization enhancement
+3. **Future**: Real-time tournament updates with WebSocket integration
 
 ---
 *For detailed information, see the documentation files in `/docs/` and `/project-docs/`*
