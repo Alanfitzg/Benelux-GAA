@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { geocodeLocation } from '@/lib/utils';
 import { withErrorHandling, parseJsonBody } from '@/lib/utils';
-import { requireClubAdmin } from '@/lib/auth-helpers';
+import { requireClubAdmin, getServerSession } from '@/lib/auth-helpers';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 import { getCityDefaultImage } from '@/lib/city-utils';
 import { validateEventDates } from '@/lib/validation/date-validation';
@@ -22,6 +22,7 @@ type CreateEventBody = {
   imageUrl?: string;
   clubId?: string;
   pitchLocationId?: string;
+  pitchLocationIds?: string[]; // For multiple pitch associations
   // Tournament-specific fields
   minTeams?: number;
   maxTeams?: number;
@@ -84,14 +85,29 @@ async function getEventsHandler(request: NextRequest) {
 }
 
 async function createEventHandler(request: NextRequest) {
-  const authResult = await requireClubAdmin();
-  if (authResult instanceof NextResponse) {
-    return authResult;
+  console.log('=== Event Creation Request Started ===');
+  const session = await getServerSession();
+  console.log('Session found:', !!session?.user, 'User ID:', session?.user?.id);
+  
+  if (!session?.user) {
+    console.log('❌ Authentication failed - no session or user');
+    return NextResponse.json(
+      { error: "Authentication required" },
+      { status: 401 }
+    );
   }
   
   return withErrorHandling(async () => {
     const body = await parseJsonBody<CreateEventBody>(request);
-    console.log('Creating event with data:', JSON.stringify(body, null, 2));
+    console.log('✅ Event creation body parsed:', JSON.stringify(body, null, 2));
+    
+    // If creating a club event, require club admin privileges
+    if (body.clubId) {
+      const authResult = await requireClubAdmin();
+      if (authResult instanceof NextResponse) {
+        return authResult;
+      }
+    }
     
     // Validate dates (allow past dates for testing)
     const dateValidation = validateEventDates(body.startDate, body.endDate, true);
@@ -126,29 +142,38 @@ async function createEventHandler(request: NextRequest) {
     }
 
     const eventData = {
-      ...body,
-      imageUrl,
-      startDate: new Date(body.startDate),
-      endDate: body.endDate ? new Date(body.endDate) : null,
+      title: body.title,
+      eventType: body.eventType,
+      location: body.location,
       latitude,
       longitude,
+      startDate: new Date(body.startDate),
+      endDate: body.endDate ? new Date(body.endDate) : null,
+      cost: body.cost || null,
+      description: body.description || null,
+      isRecurring: body.isRecurring || false,
+      imageUrl,
+      clubId: body.clubId || null,
       pitchLocationId: body.pitchLocationId || null,
-      // Ensure acceptedTeamTypes is always an array (empty if not provided)
+      // Tournament-specific fields
+      minTeams: body.minTeams || null,
+      maxTeams: body.maxTeams || null,
       acceptedTeamTypes: body.acceptedTeamTypes || [],
-      // Set visibility, default to PUBLIC if not provided
       visibility: body.visibility || 'PUBLIC',
     };
 
     console.log('Event data for database:', JSON.stringify(eventData, null, 2));
 
     try {
+      console.log('📝 Creating event in database...');
       const event = await prisma.event.create({
         data: eventData,
       });
-      console.log('Event created successfully:', event.id);
-      return event;
+      console.log('✅ Event created successfully! ID:', event.id, 'Title:', event.title);
+      console.log('📤 Returning response with status 201');
+      return NextResponse.json(event, { status: 201 });
     } catch (dbError) {
-      console.error('Database error creating event:', dbError);
+      console.error('❌ Database error creating event:', dbError);
       throw dbError;
     }
   });

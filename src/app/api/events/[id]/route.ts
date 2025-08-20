@@ -6,34 +6,65 @@ import { requireClubAdmin } from '@/lib/auth-helpers';
 
 export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-  const event = await prisma.event.findUnique({
-    where: { id },
-    include: {
-      club: {
-        select: {
-          id: true,
-          name: true,
-          imageUrl: true,
+  
+  try {
+    const event = await prisma.event.findUnique({
+      where: { id },
+      include: {
+        club: {
+          select: {
+            id: true,
+            name: true,
+            imageUrl: true,
+          }
         }
       },
-      pitchLocations: {
+    });
+    
+    if (!event) {
+      return NextResponse.json({ error: MESSAGES.ERROR.EVENT_NOT_FOUND }, { status: 404 });
+    }
+    
+    // Try to include pitch locations if the table exists
+    let eventWithPitches = event;
+    try {
+      const eventWithPitchData = await prisma.event.findUnique({
+        where: { id },
         include: {
-          pitchLocation: {
+          club: {
             select: {
               id: true,
               name: true,
-              city: true,
-              address: true,
+              imageUrl: true,
+            }
+          },
+          pitchLocations: {
+            include: {
+              pitchLocation: {
+                select: {
+                  id: true,
+                  name: true,
+                  city: true,
+                  address: true,
+                }
+              }
             }
           }
-        }
+        },
+      });
+      if (eventWithPitchData) {
+        eventWithPitches = eventWithPitchData;
       }
-    },
-  });
-  if (!event) {
-    return NextResponse.json({ error: MESSAGES.ERROR.EVENT_NOT_FOUND }, { status: 404 });
+    } catch {
+      // If pitchLocations table doesn't exist, just use the basic event data
+      console.warn('PitchLocations table not found, returning event without pitch data');
+    }
+    
+    return NextResponse.json(eventWithPitches);
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-  return NextResponse.json(event);
 }
 
 export async function PUT(request: NextRequest, context: { params: Promise<{ id: string }> }) {
@@ -93,20 +124,26 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
       
       // Handle multiple pitch associations if provided
       if (body.pitchLocationIds && Array.isArray(body.pitchLocationIds)) {
-        // Remove existing pitch associations
-        await tx.eventPitchLocation.deleteMany({
-          where: { eventId: id },
-        });
-        
-        // Create new pitch associations
-        if (body.pitchLocationIds.length > 0) {
-          await tx.eventPitchLocation.createMany({
-            data: body.pitchLocationIds.map((pitchId: string, index: number) => ({
-              eventId: id,
-              pitchLocationId: pitchId,
-              isPrimary: index === 0, // First pitch is primary
-            })),
+        try {
+          // Remove existing pitch associations
+          await tx.eventPitchLocation.deleteMany({
+            where: { eventId: id },
           });
+          
+          // Create new pitch associations
+          if (body.pitchLocationIds.length > 0) {
+            await tx.eventPitchLocation.createMany({
+              data: body.pitchLocationIds.map((pitchId: string, index: number) => ({
+                eventId: id,
+                pitchLocationId: pitchId,
+                isPrimary: index === 0, // First pitch is primary
+              })),
+            });
+          }
+        } catch (pitchError) {
+          console.error('Error handling pitch associations:', pitchError);
+          // Continue with event update even if pitch associations fail
+          // The main event data should still be saved
         }
       }
       

@@ -103,6 +103,7 @@ export default function EditClubPage() {
       setUploading(true);
       const uploadData = new FormData();
       uploadData.append("file", file);
+      uploadData.append("type", "club-crest");
       const uploadRes = await fetch(URLS.API.UPLOAD, {
         method: "POST",
         body: uploadData,

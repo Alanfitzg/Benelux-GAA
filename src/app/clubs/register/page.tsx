@@ -126,6 +126,7 @@ export default function RegisterClubPage() {
       setUploading(true);
       const uploadData = new FormData();
       uploadData.append('file', file);
+      uploadData.append('type', 'club-crest');
       const uploadRes = await fetch('/api/upload', {
         method: 'POST',
         body: uploadData,

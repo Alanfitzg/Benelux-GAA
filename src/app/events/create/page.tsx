@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import LocationAutocomplete from "./LocationAutocomplete";
 import ImageUpload from "../../components/ImageUpload";
 import ClubSelectorOptional from "@/components/ClubSelectorOptional";
-import PitchSelector from "@/components/pitch/PitchSelector";
+import EnhancedPitchSelector from "@/components/events/EnhancedPitchSelector";
 import type { Event } from "@/types";
 import { EVENT_TYPES } from "@/lib/constants/events";
 import { TEAM_TYPES } from "@/lib/constants/teams";
@@ -19,6 +19,7 @@ type EventFormData = Omit<Event, "id" | "club"> & {
   clubId?: string;
   acceptedTeamTypes?: string[];
   pitchLocationId?: string;
+  pitchLocationIds?: string[];
 };
 
 export const dynamic = "force-dynamic";
@@ -35,7 +36,7 @@ export default function CreateEvent() {
   const [isIndependentEvent, setIsIndependentEvent] = useState<boolean>(false);
   const [dateError, setDateError] = useState<string>("");
   const [dateWarning, setDateWarning] = useState<string>("");
-  const [selectedPitchId, setSelectedPitchId] = useState<string>("");
+  const [selectedPitches, setSelectedPitches] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [coordinates, setCoordinates] = useState<{ lat: number; lng: number } | null>(null);
   
@@ -148,6 +149,7 @@ export default function CreateEvent() {
       setUploading(true);
       const uploadData = new FormData();
       uploadData.append("file", file);
+      uploadData.append("type", "event-image");
       const uploadRes = await fetch(URLS.API.UPLOAD, {
         method: "POST",
         body: uploadData,
@@ -179,7 +181,8 @@ export default function CreateEvent() {
       description: (form.elements.namedItem("description") as HTMLTextAreaElement)?.value || undefined,
       imageUrl: uploadedImageUrl || undefined,
       clubId: isIndependentEvent ? undefined : selectedClubId || undefined,
-      pitchLocationId: selectedPitchId || undefined,
+      pitchLocationId: selectedPitches.length === 1 ? selectedPitches[0] : undefined,
+      pitchLocationIds: selectedPitches,
       // Tournament-specific fields
       ...(eventType === "Tournament" && {
         minTeams: minTeams || undefined,
@@ -199,9 +202,20 @@ export default function CreateEvent() {
       body: JSON.stringify(data),
     });
     
+    console.log('Event creation response status:', response.status);
+    console.log('Event creation response ok:', response.ok);
+    
     if (response.ok) {
-      toast.success('Event created successfully!');
-      router.push("/events");
+      try {
+        const createdEvent = await response.json();
+        console.log('✅ Event created successfully:', createdEvent);
+        toast.success(`Event "${createdEvent.title}" created successfully!`);
+        router.push("/events");
+      } catch (parseError) {
+        console.error('Could not parse success response:', parseError);
+        toast.success('Event created successfully!');
+        router.push("/events");
+      }
     } else {
       console.error('Failed to create event:', response.status, response.statusText);
       try {
@@ -367,18 +381,14 @@ export default function CreateEvent() {
                       transition={{ delay: 0.55 }}
                       className="md:col-span-2"
                     >
-                      <PitchSelector
-                        city={selectedCity}
-                        selectedPitchId={selectedPitchId}
-                        onPitchSelect={(pitch) => {
-                          if (pitch) {
-                            setSelectedPitchId(pitch.id);
-                            // Update coordinates if pitch is selected
-                            setCoordinates({ lat: pitch.latitude, lng: pitch.longitude });
-                          } else {
-                            setSelectedPitchId("");
-                          }
+                      <EnhancedPitchSelector
+                        selectedPitches={selectedPitches}
+                        onChange={(pitches) => {
+                          setSelectedPitches(pitches);
                         }}
+                        clubId={isIndependentEvent ? undefined : selectedClubId}
+                        isTournament={eventType === "Tournament"}
+                        allowCreate={true}
                       />
                     </motion.div>
                   )}

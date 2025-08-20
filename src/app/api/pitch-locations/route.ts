@@ -108,22 +108,37 @@ export async function POST(request: NextRequest) {
       previousEvents
     } = body;
 
-    // Check if user is super admin or club admin for the specified club
+    // Check if user is super admin or club admin for the specified club (if clubId provided)
     const isSuperAdmin = user.role === "SUPER_ADMIN";
-    const isClubAdmin = user.adminOfClubs.some(club => club.id === clubId);
+    const isClubAdmin = clubId ? user.adminOfClubs.some(club => club.id === clubId) : false;
 
-    if (!isSuperAdmin && !isClubAdmin) {
+    // If clubId is provided, user must be admin of that club or super admin
+    if (clubId && !isSuperAdmin && !isClubAdmin) {
       return NextResponse.json(
-        { error: "You must be a club admin to add pitch locations" },
+        { error: "You must be a club admin to add pitch locations for that club" },
         { status: 403 }
       );
     }
 
     // Validate required fields
-    if (!name || !city || latitude === undefined || longitude === undefined || !clubId) {
+    if (!name || !city || latitude === undefined || longitude === undefined) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing required fields: name, city, latitude, longitude" },
         { status: 400 }
+      );
+    }
+
+    // If no clubId provided, create a "general" pitch location (associated with user's first admin club if available)
+    let finalClubId = clubId;
+    if (!finalClubId && user.adminOfClubs.length > 0) {
+      finalClubId = user.adminOfClubs[0].id; // Use first admin club
+    }
+    
+    // Super admins can create pitch locations without club association by using a default system club
+    if (!finalClubId && !isSuperAdmin) {
+      return NextResponse.json(
+        { error: "You must be a club admin or provide a club ID to create pitch locations" },
+        { status: 403 }
       );
     }
 
@@ -146,7 +161,7 @@ export async function POST(request: NextRequest) {
         city,
         latitude,
         longitude,
-        clubId,
+        clubId: finalClubId,
         createdBy: session.user.id,
         // Optional fields (only include if provided)
         ...(originalPurpose && { originalPurpose }),
