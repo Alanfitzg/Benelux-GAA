@@ -715,6 +715,7 @@ function EventCard({ event, index, searchQuery }: { event: Event; index: number;
           {event.cost !== null && (
             <p className="text-primary font-semibold">
               {event.cost === 0 ? "Free" : `€${event.cost}`}
+              <span className="text-xs text-gray-500 font-normal ml-1">per person</span>
             </p>
           )}
           {event.description && searchQuery && event.description.toLowerCase().includes(searchQuery.toLowerCase()) && (
