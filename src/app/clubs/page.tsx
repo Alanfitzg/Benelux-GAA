@@ -397,7 +397,7 @@ export default function ClubsPage() {
             </div>
 
             {/* Clubs grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
               {selectedCountryClubs.map((club) => (
                 <motion.div
                   key={club.id}
@@ -427,9 +427,9 @@ export default function ClubsPage() {
                       
                       {/* Verified badge */}
                       {club.verificationStatus === 'VERIFIED' && (
-                        <div className="absolute top-4 right-4">
+                        <div className="absolute top-2 right-2 md:top-4 md:right-4">
                           <VerifiedTooltip>
-                            <div className="bg-white rounded-full shadow-lg p-1.5">
+                            <div className="bg-white rounded-full shadow-lg p-1 md:p-1.5">
                               <VerifiedBadge size="sm" showText={false} />
                             </div>
                           </VerifiedTooltip>
@@ -438,22 +438,22 @@ export default function ClubsPage() {
                     </div>
                     
                     {/* Club details section */}
-                    <div className="p-5">
+                    <div className="p-2 md:p-5">
                       {/* Club name */}
-                      <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">
+                      <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">
                         {club.name}
                       </h3>
                       
                       {/* Location */}
                       {club.location && (
-                        <p className="text-sm text-gray-600 mb-1">
-                          <span className="font-medium">City:</span> {club.location.split(',')[0]}
+                        <p className="text-xs md:text-sm text-gray-600 mb-1 line-clamp-1">
+                          <span className="font-medium hidden md:inline">City:</span> {club.location.split(',')[0]}
                         </p>
                       )}
                       
                       {/* Team types */}
                       {club.teamTypes.length > 0 && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-xs md:text-sm text-gray-600 hidden md:block">
                           <span className="font-medium">Grades:</span> {club.teamTypes.join(' | ')}
                         </p>
                       )}
@@ -625,7 +625,7 @@ export default function ClubsPage() {
                   </div>
 
                   {/* Clubs grid for this country */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
                     {clubsByCountry[country].map((club) => (
                       <motion.div
                         key={club.id}
@@ -655,9 +655,9 @@ export default function ClubsPage() {
                             
                             {/* Verified badge */}
                             {club.verificationStatus === 'VERIFIED' && (
-                              <div className="absolute top-4 right-4">
+                              <div className="absolute top-2 right-2 md:top-4 md:right-4">
                                 <VerifiedTooltip>
-                                  <div className="bg-white rounded-full shadow-lg p-1.5">
+                                  <div className="bg-white rounded-full shadow-lg p-1 md:p-1.5">
                                     <VerifiedBadge size="sm" showText={false} />
                                   </div>
                                 </VerifiedTooltip>
@@ -666,22 +666,22 @@ export default function ClubsPage() {
                           </div>
                           
                           {/* Club details section */}
-                          <div className="p-5">
+                          <div className="p-2 md:p-5">
                             {/* Club name */}
-                            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2">
+                            <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">
                               {club.name}
                             </h3>
                             
                             {/* Location */}
                             {club.location && (
-                              <p className="text-sm text-gray-600 mb-1">
-                                <span className="font-medium">City:</span> {club.location.split(',')[0]}
+                              <p className="text-xs md:text-sm text-gray-600 mb-1 line-clamp-1">
+                                <span className="font-medium hidden md:inline">City:</span> {club.location.split(',')[0]}
                               </p>
                             )}
                             
                             {/* Team types */}
                             {club.teamTypes.length > 0 && (
-                              <p className="text-sm text-gray-600">
+                              <p className="text-xs md:text-sm text-gray-600 hidden md:block">
                                 <span className="font-medium">Grades:</span> {club.teamTypes.join(' | ')}
                               </p>
                             )}
