@@ -48,8 +48,7 @@ export default function EventsPageClient({
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [selectedEventType, setSelectedEventType] = useState(searchParams.get("type") || "");
   const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "");
-  const [dateFrom, setDateFrom] = useState(searchParams.get("from") || "");
-  const [dateTo, setDateTo] = useState(searchParams.get("to") || "");
+  const [selectedMonth, setSelectedMonth] = useState(searchParams.get("month") || "");
   const [priceRange, setPriceRange] = useState(searchParams.get("price") || "");
   const [visibility, setVisibility] = useState(searchParams.get("visibility") || "");
   const [showFilters, setShowFilters] = useState(false);
@@ -92,16 +91,13 @@ export default function EventsPageClient({
       );
     }
 
-    // Date range filter
-    if (dateFrom) {
-      filtered = filtered.filter(
-        (event) => new Date(event.startDate) >= new Date(dateFrom)
-      );
-    }
-    if (dateTo) {
-      filtered = filtered.filter(
-        (event) => new Date(event.startDate) <= new Date(dateTo)
-      );
+    // Monthly filter
+    if (selectedMonth) {
+      const [year, month] = selectedMonth.split("-").map(Number);
+      filtered = filtered.filter((event) => {
+        const eventDate = new Date(event.startDate);
+        return eventDate.getFullYear() === year && eventDate.getMonth() === month - 1;
+      });
     }
 
     // Price filter
@@ -131,8 +127,7 @@ export default function EventsPageClient({
     debouncedSearch,
     selectedEventType,
     selectedCountry,
-    dateFrom,
-    dateTo,
+    selectedMonth,
     priceRange,
     visibility,
   ]);
@@ -143,8 +138,7 @@ export default function EventsPageClient({
     if (debouncedSearch) params.set("q", debouncedSearch);
     if (selectedEventType) params.set("type", selectedEventType);
     if (selectedCountry) params.set("country", selectedCountry);
-    if (dateFrom) params.set("from", dateFrom);
-    if (dateTo) params.set("to", dateTo);
+    if (selectedMonth) params.set("month", selectedMonth);
     if (priceRange) params.set("price", priceRange);
     if (visibility) params.set("visibility", visibility);
 
@@ -154,8 +148,7 @@ export default function EventsPageClient({
     debouncedSearch,
     selectedEventType,
     selectedCountry,
-    dateFrom,
-    dateTo,
+    selectedMonth,
     priceRange,
     visibility,
     router,
@@ -170,8 +163,7 @@ export default function EventsPageClient({
     setSearchQuery("");
     setSelectedEventType("");
     setSelectedCountry("");
-    setDateFrom("");
-    setDateTo("");
+    setSelectedMonth("");
     setPriceRange("");
     setVisibility("");
   };
@@ -181,40 +173,27 @@ export default function EventsPageClient({
     searchQuery,
     selectedEventType,
     selectedCountry,
-    dateFrom,
-    dateTo,
+    selectedMonth,
     priceRange,
     visibility,
   ].filter(Boolean).length;
 
-  // Quick date filters
-  const setQuickDateFilter = (preset: string) => {
+  // Generate month options for the next 12 months
+  const getMonthOptions = () => {
+    const months = [];
     const today = new Date();
-    const formatDateString = (date: Date) => date.toISOString().split("T")[0];
-
-    switch (preset) {
-      case "weekend":
-        const friday = new Date(today);
-        friday.setDate(today.getDate() + ((5 - today.getDay() + 7) % 7));
-        const sunday = new Date(friday);
-        sunday.setDate(friday.getDate() + 2);
-        setDateFrom(formatDateString(friday));
-        setDateTo(formatDateString(sunday));
-        break;
-      case "month":
-        setDateFrom(formatDateString(today));
-        const nextMonth = new Date(today);
-        nextMonth.setMonth(today.getMonth() + 1);
-        setDateTo(formatDateString(nextMonth));
-        break;
-      case "summer":
-        const summerStart = new Date(today.getFullYear(), 5, 1); // June 1
-        const summerEnd = new Date(today.getFullYear(), 7, 31); // August 31
-        setDateFrom(formatDateString(summerStart));
-        setDateTo(formatDateString(summerEnd));
-        break;
+    
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
+      const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      const label = date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+      months.push({ value, label });
     }
+    
+    return months;
   };
+  
+  const monthOptions = getMonthOptions();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -274,45 +253,23 @@ export default function EventsPageClient({
                 </div>
               </div>
 
-              {/* Date Range */}
+              {/* Month Filter */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Date Range
+                  Month
                 </label>
-                <div className="space-y-2">
-                  <input
-                    type="date"
-                    value={dateFrom}
-                    onChange={(e) => setDateFrom(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                  <input
-                    type="date"
-                    value={dateTo}
-                    onChange={(e) => setDateTo(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                  />
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      onClick={() => setQuickDateFilter("weekend")}
-                      className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
-                    >
-                      This Weekend
-                    </button>
-                    <button
-                      onClick={() => setQuickDateFilter("month")}
-                      className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
-                    >
-                      Next Month
-                    </button>
-                    <button
-                      onClick={() => setQuickDateFilter("summer")}
-                      className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded"
-                    >
-                      Summer
-                    </button>
-                  </div>
-                </div>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                >
+                  <option value="">All Months</option>
+                  {monthOptions.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {/* Event Type */}
@@ -481,41 +438,19 @@ export default function EventsPageClient({
                           ))}
                         </select>
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <input
-                          type="date"
-                          value={dateFrom}
-                          onChange={(e) => setDateFrom(e.target.value)}
-                          placeholder="From"
-                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        />
-                        <input
-                          type="date"
-                          value={dateTo}
-                          onChange={(e) => setDateTo(e.target.value)}
-                          placeholder="To"
-                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        />
-                      </div>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setQuickDateFilter("weekend")}
-                          className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg"
+                      <div>
+                        <select
+                          value={selectedMonth}
+                          onChange={(e) => setSelectedMonth(e.target.value)}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                         >
-                          This Weekend
-                        </button>
-                        <button
-                          onClick={() => setQuickDateFilter("month")}
-                          className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg"
-                        >
-                          Next Month
-                        </button>
-                        <button
-                          onClick={() => setQuickDateFilter("summer")}
-                          className="text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg"
-                        >
-                          Summer
-                        </button>
+                          <option value="">All Months</option>
+                          {monthOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div className="flex justify-end">
                         <button
@@ -577,13 +512,12 @@ export default function EventsPageClient({
                     </button>
                   </span>
                 )}
-                {(dateFrom || dateTo) && (
+                {selectedMonth && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                    Date: {dateFrom && formatEventDate(new Date(dateFrom))} - {dateTo && formatEventDate(new Date(dateTo))}
+                    Month: {monthOptions.find(m => m.value === selectedMonth)?.label}
                     <button
                       onClick={() => {
-                        setDateFrom("");
-                        setDateTo("");
+                        setSelectedMonth("");
                       }}
                       className="hover:bg-primary/20 rounded-full p-0.5"
                     >

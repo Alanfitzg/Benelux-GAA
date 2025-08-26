@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 
 interface Club {
   location?: string;
@@ -17,6 +17,15 @@ export default function HomePage() {
     tournaments: 0,
     countries: 0,
   });
+  
+  const [displayStats, setDisplayStats] = useState({
+    clubs: 0,
+    tournaments: 0,
+    countries: 0,
+  });
+  
+  const statsRef = useRef(null);
+  const isInView = useInView(statsRef, { once: true });
   
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
@@ -83,6 +92,38 @@ export default function HomePage() {
       })
       .catch(console.error);
   }, []);
+
+  // Animate counting when stats section is in view
+  useEffect(() => {
+    if (isInView && (stats.clubs > 0 || stats.tournaments > 0 || stats.countries > 0)) {
+      const duration = 2000; // 2 seconds
+      const steps = 60;
+      const interval = duration / steps;
+      
+      let currentStep = 0;
+      
+      const timer = setInterval(() => {
+        currentStep++;
+        const progress = currentStep / steps;
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        
+        setDisplayStats({
+          clubs: Math.floor(stats.clubs * easeOutQuart),
+          tournaments: Math.floor(stats.tournaments * easeOutQuart),
+          countries: Math.floor(stats.countries * easeOutQuart),
+        });
+        
+        if (currentStep >= steps) {
+          clearInterval(timer);
+          setDisplayStats(stats);
+        }
+      }, interval);
+      
+      return () => clearInterval(timer);
+    }
+  }, [isInView, stats]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -243,9 +284,10 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        See what&apos;s going on in Europe
+                        <span className="hidden md:inline">See what&apos;s going on in Europe</span>
+                        <span className="md:hidden">Browse European tournaments & events</span>
                       </h4>
-                      <p className="text-gray-600 text-xs md:text-sm">
+                      <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Browse tournaments across Germany, Spain, France and
                         beyond
                       </p>
@@ -257,9 +299,10 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Connect Across Borders
+                        <span className="hidden md:inline">Connect Across Borders</span>
+                        <span className="md:hidden">Connect with international clubs</span>
                       </h4>
-                      <p className="text-gray-600 text-xs md:text-sm">
+                      <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Link up with international clubs for unforgettable trips
                       </p>
                     </div>
@@ -270,9 +313,10 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Take GAA International
+                        <span className="hidden md:inline">Take GAA International</span>
+                        <span className="md:hidden">Create relationships with European clubs</span>
                       </h4>
-                      <p className="text-gray-600 text-xs md:text-sm">
+                      <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Bring your game to Europe&apos;s most exciting cities
                       </p>
                     </div>
@@ -322,7 +366,7 @@ export default function HomePage() {
                         Open Your Doors
                       </h4>
                       <p className="text-gray-600 text-xs md:text-sm">
-                        Welcome teams from Ireland and Britain to your city
+                        Welcome visiting teams for tournaments and trips!
                       </p>
                     </div>
                   </div>
@@ -335,8 +379,7 @@ export default function HomePage() {
                         Create Tournaments
                       </h4>
                       <p className="text-gray-600 text-xs md:text-sm">
-                        Attract visiting teams and build international
-                        connections
+                        Invitational tournaments strengthen clubs. Increase activity at home and build up your community
                       </p>
                     </div>
                   </div>
@@ -349,8 +392,7 @@ export default function HomePage() {
                         Grow Your Club
                       </h4>
                       <p className="text-gray-600 text-xs md:text-sm">
-                        Generate revenue and strengthen GAA networks across
-                        Europe
+                        Generate revenue, create memories, unite communities
                       </p>
                     </div>
                   </div>
@@ -381,17 +423,17 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-primary text-white">
+      <section className="py-12 md:py-20 bg-primary text-white" ref={statsRef}>
         <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
+          <div className="grid grid-cols-3 gap-4 md:gap-8 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="text-5xl font-bold mb-2">{stats.clubs}+</div>
-              <div className="text-xl">Gaelic Clubs</div>
+              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">{displayStats.clubs}+</div>
+              <div className="text-sm md:text-xl">Clubs</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
@@ -399,10 +441,10 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
             >
-              <div className="text-5xl font-bold mb-2">
-                {stats.tournaments}+
+              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">
+                {displayStats.tournaments}+
               </div>
-              <div className="text-xl">Tournaments</div>
+              <div className="text-sm md:text-xl">Tournaments</div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
@@ -410,8 +452,8 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <div className="text-5xl font-bold mb-2">{stats.countries}+</div>
-              <div className="text-xl">Countries</div>
+              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">{displayStats.countries}+</div>
+              <div className="text-sm md:text-xl">Countries</div>
             </motion.div>
           </div>
         </div>
