@@ -65,6 +65,23 @@ export async function GET(
     const totalEventInterests = club.events.reduce((sum, event) => sum + event._count.interests, 0);
     const upcomingEvents = club.events.filter(event => new Date(event.startDate) > new Date());
     const pastEvents = club.events.filter(event => new Date(event.startDate) <= new Date());
+    
+    // Calculate earnings for current calendar year
+    const currentYear = new Date().getFullYear();
+    const yearStart = new Date(currentYear, 0, 1);
+    const yearEnd = new Date(currentYear, 11, 31, 23, 59, 59);
+    
+    const yearEvents = club.events.filter(event => {
+      const eventDate = new Date(event.startDate);
+      return eventDate >= yearStart && eventDate <= yearEnd;
+    });
+    
+    const yearEarnings = yearEvents.reduce((sum, event) => {
+      if (event.cost && event._count.interests > 0) {
+        return sum + (event.cost * event._count.interests);
+      }
+      return sum;
+    }, 0);
 
     // Get interest details for each event
     const eventStats = club.events.map(event => ({
@@ -121,7 +138,9 @@ export async function GET(
         upcomingEvents: upcomingEvents.length,
         pastEvents: pastEvents.length,
         totalInterests: totalEventInterests,
-        averageInterestsPerEvent: club.events.length > 0 ? (totalEventInterests / club.events.length).toFixed(1) : '0'
+        averageInterestsPerEvent: club.events.length > 0 ? (totalEventInterests / club.events.length).toFixed(1) : '0',
+        yearEarnings: yearEarnings,
+        currentYear: currentYear
       },
       events: eventStats,
       recentInterests: recentInterests.map(interest => ({

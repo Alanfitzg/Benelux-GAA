@@ -272,6 +272,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
 
         {/* Associated Clubs Section */}
         <motion.div
+          id="associated-clubs"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}

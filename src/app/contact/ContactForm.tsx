@@ -203,7 +203,7 @@ export default function ContactForm() {
           <div className="flex items-center space-x-2">
             <span className="text-red-600">❌</span>
             <p className="text-red-800 font-medium">
-              Sorry, there was an error sending your message. Please try again or email us directly at info@gaa-trips.com.
+              Sorry, there was an error sending your message. Please try again or email us directly at alan@gaelictrips.com.
             </p>
           </div>
         </motion.div>

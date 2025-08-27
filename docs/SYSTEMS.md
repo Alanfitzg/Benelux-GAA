@@ -55,6 +55,41 @@ model UserPreferences {
 - **Responsive Design**: Mobile-first with compact modal layout
 - **Animations**: Framer Motion for smooth transitions
 
+## 💰 Club Earnings Tracking System
+
+### **System Overview**
+Real-time earnings calculation and display for clubs, tracking revenue from tournament registrations on an annual basis. Provides clubs with financial insights and performance metrics.
+
+### **Core Features**
+- **Annual Earnings Calculation**: Automatically calculates total earnings for current calendar year
+- **Real-time Updates**: Earnings update as new registrations are received
+- **Visual Dashboard Display**: Prominent earnings card with gradient styling in club admin dashboard
+- **Currency Formatting**: Proper locale-based formatting (€ EUR with Irish formatting)
+
+### **Technical Implementation**
+- **API Endpoint**: `/api/clubs/[id]/stats/route.ts` enhanced with earnings calculation
+- **Calculation Logic**: 
+  - Filters events by current calendar year (January 1 - December 31)
+  - Multiplies event cost by number of interests/registrations
+  - Aggregates total across all club events
+- **Dashboard Component**: `ClubAdminDashboard.tsx` displays earnings in dedicated card
+- **Response Format**:
+  ```typescript
+  {
+    overview: {
+      yearEarnings: number,      // Total earnings for current year
+      currentYear: number,        // Current calendar year
+      // ... other stats
+    }
+  }
+  ```
+
+### **UI/UX Features**
+- **Prominent Display**: Green gradient card at top of dashboard
+- **Responsive Design**: Mobile-optimized with proper scaling
+- **Clear Context**: Shows year and source of earnings
+- **Professional Styling**: Business-focused design with financial iconography
+
 ## 📝 Event Report System
 
 ### **System Overview**
