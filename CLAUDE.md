@@ -16,13 +16,14 @@ For comprehensive information, see these modular documentation files:
 
 ## 🚀 Recent Updates (August 2025)
 - **Complete Rebrand**: Platform renamed to "PlayAway" with global positioning
-- **Mobile UX Improvements**: Optimized layouts, country cards, responsive typography
+- **Mobile UX Improvements**: Optimized layouts, country cards, responsive typography, hidden pitch management on mobile
 - **Club Verification System**: Comprehensive verification workflow for data quality
 - **Pitch Location Management**: Global map-based training ground discovery system
 - **Event Report System**: Post-tournament reporting with results and awards
 - **Database Backup System**: Complete backup/restore with safety guarantees
 - **Enhanced Test Suite**: Jest testing infrastructure with 85% coverage
 - **🎮 Enhanced Event Management System**: Complete redesign with unified dashboard, tournament templates, and professional interface
+- **💰 Earnings Tracking**: Annual earnings calculation and display for clubs from tournament registrations
 
 ## 🏗️ Tech Stack (Brief)
 - **Frontend**: Next.js 15.3.3, React 19, TypeScript, Tailwind CSS

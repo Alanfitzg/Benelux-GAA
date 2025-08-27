@@ -98,6 +98,17 @@
 - **`/src/components/club/VerifiedBadge.tsx`** - Reusable verification status badge with tooltips
 - **`/src/components/club/ClubEditForm.tsx`** - Comprehensive club editing form with verification integration
 - **`/src/app/api/clubs/[id]/verify/route.ts`** - Verification API endpoints (GET status, POST verify)
+
+## 💰 Club Dashboard Enhancements (August 2025)
+- **Enhanced `/src/components/ClubAdminDashboard.tsx`** - Added annual earnings tracking with:
+  - Prominent earnings card with gradient styling
+  - Current year revenue calculation from tournament registrations
+  - Mobile-responsive grid layout with optimized card sizes
+  - Hidden pitch management on mobile for better UX
+- **Enhanced `/src/app/api/clubs/[id]/stats/route.ts`** - Added earnings calculation:
+  - Calendar year filtering (January 1 - December 31)
+  - Automatic revenue aggregation from event costs and registrations
+  - Returns yearEarnings and currentYear in API response
 - **`/src/app/clubs/[id]/edit/page.tsx`** - Club admin edit page with proper authorization
 - **`/src/styles/modal-fix.css`** - CSS fixes for modal text visibility issues
 - **Enhanced `/src/app/clubs/[id]/page.tsx`** - Added verification badges and simplified admin verification prompt

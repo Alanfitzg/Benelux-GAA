@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ContactForm from "./ContactForm";
+import { Instagram, Facebook, Twitter, Music2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -64,26 +65,9 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Email</h3>
-                    <p className="text-gray-600">info@gaa-trips.com</p>
+                    <p className="text-gray-600">alan@gaelictrips.com</p>
                     <p className="text-sm text-gray-500 mt-1">
                       We typically respond within 24 hours
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-4">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary">🌍</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      Global Community
-                    </h3>
-                    <p className="text-gray-600">
-                      Connecting GAA clubs worldwide
-                    </p>
-                    <p className="text-sm text-gray-500 mt-1">
-                      From Ireland to Australia, USA to Canada
                     </p>
                   </div>
                 </div>
@@ -105,41 +89,40 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* FAQ */}
+            {/* Social Media */}
             <div className="bg-white rounded-2xl shadow-lg p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
-                Frequently Asked Questions
+                Follow Us
               </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
-                    How do I add my club to GAA Trips?
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    You can register your club using our club registration form,
-                    or contact us directly with your club details.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
-                    Can I submit tournament information?
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    Yes! We welcome tournament submissions. Use our event
-                    creation form or reach out to us with event details.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">
-                    Is GAA Trips free to use?
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    Absolutely! GAA Trips is completely free for clubs, players,
-                    and fans to use.
-                  </p>
-                </div>
+              <div className="flex justify-center gap-4">
+                <a
+                  href="#"
+                  className="flex items-center justify-center p-3 bg-gradient-to-br from-purple-600 to-pink-500 rounded-xl hover:opacity-80 transition-opacity duration-200"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center justify-center p-3 bg-blue-600 rounded-xl hover:opacity-80 transition-opacity duration-200"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center justify-center p-3 bg-black rounded-xl hover:opacity-80 transition-opacity duration-200"
+                  aria-label="X (Twitter)"
+                >
+                  <Twitter className="w-6 h-6 text-white" />
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center justify-center p-3 bg-black rounded-xl hover:opacity-80 transition-opacity duration-200"
+                  aria-label="TikTok"
+                >
+                  <Music2 className="w-6 h-6 text-white" />
+                </a>
               </div>
             </div>
           </div>
