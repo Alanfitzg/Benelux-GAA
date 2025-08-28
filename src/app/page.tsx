@@ -450,28 +450,36 @@ export default function HomePage() {
             {/* Social Media Icons */}
             <div className="flex justify-center gap-6">
               <a
-                href="#"
+                href="https://www.instagram.com/playaway_travel/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center p-4 bg-gradient-to-br from-purple-600 to-pink-500 rounded-xl hover:scale-110 transition-all duration-200 shadow-lg"
                 aria-label="Instagram"
               >
                 <Instagram className="w-8 h-8 text-white" />
               </a>
               <a
-                href="#"
+                href="https://www.facebook.com/profile.php?id=61555666091788"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center p-4 bg-blue-600 rounded-xl hover:scale-110 transition-all duration-200 shadow-lg"
                 aria-label="Facebook"
               >
                 <Facebook className="w-8 h-8 text-white" />
               </a>
               <a
-                href="#"
+                href="https://x.com/GaaTrips"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center p-4 bg-black rounded-xl hover:scale-110 transition-all duration-200 shadow-lg"
                 aria-label="X (Twitter)"
               >
                 <Twitter className="w-8 h-8 text-white" />
               </a>
               <a
-                href="#"
+                href="https://www.tiktok.com/@playgaaaway"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center p-4 bg-black rounded-xl hover:scale-110 transition-all duration-200 shadow-lg"
                 aria-label="TikTok"
               >

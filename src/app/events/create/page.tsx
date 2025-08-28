@@ -307,11 +307,30 @@ export default function CreateEvent() {
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Form Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Event Type */}
+                  {/* Event Title - Moved to first position */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
+                    className="md:col-span-2"
+                  >
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Event Title
+                    </label>
+                    <input
+                      type="text"
+                      name="title"
+                      placeholder="Enter event title"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                      required
+                    />
+                  </motion.div>
+
+                  {/* Event Type - Moved to second position */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.4 }}
                     className="md:col-span-1"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -333,26 +352,47 @@ export default function CreateEvent() {
                     </select>
                   </motion.div>
 
-                  {/* Event Title */}
+                  {/* Club Association - Moved to third position */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
                     className="md:col-span-1"
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Event Title
-                    </label>
-                    <input
-                      type="text"
-                      name="title"
-                      placeholder="Enter event title"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
-                      required
-                    />
+                    <div className="space-y-4">
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          id="independentEvent"
+                          checked={isIndependentEvent}
+                          onChange={(e) => {
+                            setIsIndependentEvent(e.target.checked);
+                            if (e.target.checked) {
+                              setSelectedClubId("");
+                            }
+                          }}
+                          className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                        />
+                        <label htmlFor="independentEvent" className="text-sm font-medium text-gray-700">
+                          Independent event (no club association)
+                        </label>
+                      </div>
+                      
+                      {!isIndependentEvent && (
+                        <div>
+                          <label className="block text-sm font-semibold text-gray-700 mb-3">
+                            Club Association <span className="text-gray-400">(Optional)</span>
+                          </label>
+                          <ClubSelectorOptional
+                            value={selectedClubId}
+                            onChange={setSelectedClubId}
+                          />
+                        </div>
+                      )}
+                    </div>
                   </motion.div>
 
-                  {/* Location */}
+                  {/* Location - Now fourth in order */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -393,7 +433,7 @@ export default function CreateEvent() {
                     </motion.div>
                   )}
 
-                  {/* Start Date */}
+                  {/* Start Date - Now after location/pitch */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -424,7 +464,7 @@ export default function CreateEvent() {
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.7 }}
+                    transition={{ delay: 0.6 }}
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       End Date <span className="text-gray-400">(Optional)</span>
@@ -446,16 +486,17 @@ export default function CreateEvent() {
                     </p>
                   </motion.div>
 
-                  {/* Cost */}
+                  {/* Cost - Now full width */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.8 }}
+                    transition={{ delay: 0.7 }}
+                    className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Cost <span className="text-gray-400">(Optional)</span>
                     </label>
-                    <div className="relative">
+                    <div className="relative max-w-xs">
                       <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">€</span>
                       <input
                         type="number"
@@ -472,7 +513,7 @@ export default function CreateEvent() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.85 }}
+                      transition={{ delay: 0.8 }}
                       className="md:col-span-2"
                     >
                       <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6 space-y-6">
@@ -617,51 +658,12 @@ export default function CreateEvent() {
                     </motion.div>
                   )}
 
-                  {/* Club Association */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: eventType === "Tournament" ? 0.95 : 0.9 }}
-                    className="md:col-span-2"
-                  >
-                    <div className="space-y-4">
-                      <div className="flex items-center space-x-3">
-                        <input
-                          type="checkbox"
-                          id="independentEvent"
-                          checked={isIndependentEvent}
-                          onChange={(e) => {
-                            setIsIndependentEvent(e.target.checked);
-                            if (e.target.checked) {
-                              setSelectedClubId("");
-                            }
-                          }}
-                          className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
-                        />
-                        <label htmlFor="independentEvent" className="text-sm font-medium text-gray-700">
-                          This is an independent event (not associated with a specific club)
-                        </label>
-                      </div>
-                      
-                      {!isIndependentEvent && (
-                        <div>
-                          <label className="block text-sm font-semibold text-gray-700 mb-3">
-                            Club Association <span className="text-gray-400">(Optional)</span>
-                          </label>
-                          <ClubSelectorOptional
-                            value={selectedClubId}
-                            onChange={setSelectedClubId}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
 
                   {/* Description */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: eventType === "Tournament" ? 1.05 : 1.0 }}
+                    transition={{ delay: eventType === "Tournament" ? 0.9 : 0.85 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -679,7 +681,7 @@ export default function CreateEvent() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: eventType === "Tournament" ? 1.15 : 1.1 }}
+                    transition={{ delay: eventType === "Tournament" ? 0.95 : 0.9 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -725,7 +727,7 @@ export default function CreateEvent() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: eventType === "Tournament" ? 1.25 : 1.2 }}
+                  transition={{ delay: eventType === "Tournament" ? 1.0 : 0.95 }}
                   className="pt-8 border-t border-gray-200"
                 >
                   <button

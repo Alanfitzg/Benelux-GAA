@@ -194,7 +194,26 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-6 border-t border-gray-200">
+                <div className="flex justify-end pt-6 border-t border-gray-200 space-x-3">
+                  {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
+                    <div className="flex gap-2">
+                      {clubs
+                        .filter(club => club.role === "admin")
+                        .slice(0, 1) // Show only first club dashboard button in this section
+                        .map(club => (
+                          <button
+                            key={club.id}
+                            onClick={() => router.push(`/club-admin/${club.id}`)}
+                            className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-medium rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg flex items-center space-x-2"
+                          >
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <span>Host Dashboard</span>
+                          </button>
+                      ))}
+                    </div>
+                  )}
                   <button
                     onClick={() => setIsEditing(true)}
                     className="px-6 py-2.5 bg-primary text-white font-medium rounded-xl hover:bg-primary/90 transition-colors"
@@ -345,12 +364,30 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               
               <div className="mt-6 pt-6 border-t border-gray-200 flex gap-3 flex-wrap">
                 {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
-                  <button
-                    onClick={() => router.push("/admin/clubs")}
-                    className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
-                  >
-                    Manage My Clubs
-                  </button>
+                  <>
+                    {clubs
+                      .filter(club => club.role === "admin")
+                      .map(club => (
+                        <button
+                          key={club.id}
+                          onClick={() => router.push(`/club-admin/${club.id}`)}
+                          className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-xl hover:from-primary-dark hover:to-primary transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                        >
+                          <span className="flex items-center space-x-2">
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span>Host Dashboard - {club.name}</span>
+                          </span>
+                        </button>
+                      ))}
+                    <button
+                      onClick={() => router.push("/admin/clubs")}
+                      className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
+                    >
+                      Manage My Clubs
+                    </button>
+                  </>
                 )}
                 <button
                   onClick={() => setShowClubSelectionModal(true)}
