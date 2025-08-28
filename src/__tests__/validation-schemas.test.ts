@@ -194,10 +194,10 @@ describe('Zod Validation Schemas', () => {
   describe('TeamTypeSchema', () => {
     it('accepts valid team types', () => {
       const validTypes = [
-        'Senior Mens Gaelic Football',
-        'Senior Ladies Gaelic Football',
-        'Senior Mens Hurling',
-        'Senior Ladies Hurling (Camogie)',
+        'Mens Gaelic Football',
+        'Ladies Gaelic Football',
+        'Hurling',
+        'Ladies Hurling (Camogie)',
         'Youth/Underage',
         'Mixed/Social',
         'Other'

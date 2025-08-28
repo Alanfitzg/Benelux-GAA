@@ -151,17 +151,11 @@ export default function HowItWorksClient() {
             </div>
 
             {/* What's Included */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-white rounded-lg p-4 text-center border border-blue-200">
                 <div className="text-3xl md:text-4xl mb-2">🏟️</div>
                 <div className="text-sm font-medium text-gray-700">
                   Pitch rental
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-4 text-center border border-blue-200">
-                <div className="text-3xl md:text-4xl mb-2">🛡️</div>
-                <div className="text-sm font-medium text-gray-700">
-                  Insurance
                 </div>
               </div>
               <div className="bg-white rounded-lg p-4 text-center border border-blue-200">

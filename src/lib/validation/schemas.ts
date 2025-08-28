@@ -44,14 +44,10 @@ export const AccountStatusSchema = z.enum(['PENDING', 'APPROVED', 'REJECTED', 'S
 
 // Team types validation
 export const TeamTypeSchema = z.enum([
-  'Senior Mens Gaelic Football',
-  'Senior Ladies Gaelic Football', 
-  'Senior Mens Hurling',
-  'Senior Ladies Hurling (Camogie)',
-  'Junior Mens Gaelic Football',
-  'Junior Ladies Gaelic Football',
-  'Junior Mens Hurling',
-  'Junior Ladies Hurling (Camogie)',
+  'Mens Gaelic Football',
+  'Ladies Gaelic Football', 
+  'Hurling',
+  'Ladies Hurling (Camogie)',
   'Youth/Underage',
   'Mixed/Social',
   'Other'
