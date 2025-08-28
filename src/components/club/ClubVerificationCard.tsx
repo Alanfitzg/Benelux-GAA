@@ -147,6 +147,7 @@ export default function ClubVerificationCard({ clubId }: ClubVerificationCardPro
                 label="Team Types Selected"
                 completed={verificationChecks.hasTeamTypes}
                 required
+                hint="Select at least one team type"
               />
               <RequirementItem
                 label="Contact Information Complete"
