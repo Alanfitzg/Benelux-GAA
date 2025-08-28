@@ -49,7 +49,6 @@ export default function EventsPageClient({
   const [selectedEventType, setSelectedEventType] = useState(searchParams.get("type") || "");
   const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "");
   const [selectedMonth, setSelectedMonth] = useState(searchParams.get("month") || "");
-  const [priceRange, setPriceRange] = useState(searchParams.get("price") || "");
   const [visibility, setVisibility] = useState(searchParams.get("visibility") || "");
   const [showFilters, setShowFilters] = useState(false);
   
@@ -100,17 +99,6 @@ export default function EventsPageClient({
       });
     }
 
-    // Price filter
-    if (priceRange) {
-      const [min, max] = priceRange.split("-").map(Number);
-      filtered = filtered.filter((event) => {
-        if (event.cost === null) return priceRange === "free";
-        if (priceRange === "free") return event.cost === 0;
-        if (max === undefined) return event.cost >= min;
-        return event.cost >= min && event.cost <= max;
-      });
-    }
-
     // Visibility filter
     if (visibility) {
       filtered = filtered.filter((event) => event.visibility === visibility);
@@ -128,7 +116,6 @@ export default function EventsPageClient({
     selectedEventType,
     selectedCountry,
     selectedMonth,
-    priceRange,
     visibility,
   ]);
 
@@ -139,7 +126,6 @@ export default function EventsPageClient({
     if (selectedEventType) params.set("type", selectedEventType);
     if (selectedCountry) params.set("country", selectedCountry);
     if (selectedMonth) params.set("month", selectedMonth);
-    if (priceRange) params.set("price", priceRange);
     if (visibility) params.set("visibility", visibility);
 
     const queryString = params.toString();
@@ -149,7 +135,6 @@ export default function EventsPageClient({
     selectedEventType,
     selectedCountry,
     selectedMonth,
-    priceRange,
     visibility,
     router,
   ]);
@@ -164,7 +149,6 @@ export default function EventsPageClient({
     setSelectedEventType("");
     setSelectedCountry("");
     setSelectedMonth("");
-    setPriceRange("");
     setVisibility("");
   };
 
@@ -174,7 +158,6 @@ export default function EventsPageClient({
     selectedEventType,
     selectedCountry,
     selectedMonth,
-    priceRange,
     visibility,
   ].filter(Boolean).length;
 
@@ -307,25 +290,6 @@ export default function EventsPageClient({
                       {country}
                     </option>
                   ))}
-                </select>
-              </div>
-
-              {/* Price Range */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price Range
-                </label>
-                <select
-                  value={priceRange}
-                  onChange={(e) => setPriceRange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                >
-                  <option value="">Any Price</option>
-                  <option value="free">Free</option>
-                  <option value="0-50">€0 - €50</option>
-                  <option value="50-100">€50 - €100</option>
-                  <option value="100-200">€100 - €200</option>
-                  <option value="200-999999">€200+</option>
                 </select>
               </div>
 

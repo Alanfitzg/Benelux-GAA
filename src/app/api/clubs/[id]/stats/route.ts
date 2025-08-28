@@ -88,13 +88,13 @@ export async function GET(
       id: event.id,
       title: event.title,
       eventType: event.eventType,
-      startDate: event.startDate,
+      startDate: event.startDate.toISOString(),
       location: event.location,
       interestCount: event._count.interests,
       interests: event.interests.map(interest => ({
         name: interest.name,
         email: interest.email,
-        submittedAt: interest.submittedAt,
+        submittedAt: interest.submittedAt.toISOString(),
         message: interest.message
       }))
     }));
@@ -148,7 +148,7 @@ export async function GET(
         name: interest.name,
         email: interest.email,
         eventTitle: interest.event.title,
-        submittedAt: interest.submittedAt,
+        submittedAt: interest.submittedAt.toISOString(),
         message: interest.message
       }))
     };

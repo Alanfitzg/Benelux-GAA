@@ -285,7 +285,7 @@ export default function HomePage() {
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
                         <span className="hidden md:inline">Take GAA International</span>
-                        <span className="md:hidden">Create relationships with European clubs</span>
+                        <span className="md:hidden">Create new relationships, and great memories!</span>
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Bring your game to Europe&apos;s most exciting cities
@@ -350,7 +350,7 @@ export default function HomePage() {
                         Create Tournaments
                       </h4>
                       <p className="text-gray-600 text-xs md:text-sm">
-                        Invitational tournaments strengthen clubs. Increase activity at home and build up your community
+                        Invitational tournaments strengthen clubs, and increasing activity at home builds communities
                       </p>
                     </div>
                   </div>
@@ -531,8 +531,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-slate-800 text-white">
+      {/* Custom Trip CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-primary to-primary/80 text-white">
         <div className="container mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -541,24 +541,41 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="text-xl md:text-4xl font-bold mb-6">
-              Ready to Connect Your Club?
+              Not sure where you want to go?
             </h2>
-            <p className="text-base md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-              Join the growing network of Gaelic clubs making connections across
-              Europe
+            <p className="text-base md:text-xl text-white/90 mb-8 max-w-3xl mx-auto">
+              If nothing listed suits your needs, we can work with you to develop the perfect trip. Just fill in the form and we'll get back to you!
             </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link
-                href="/signup"
-                className="px-8 py-4 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-colors text-lg"
-              >
-                Get Started Free
-              </Link>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 max-w-5xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
+                <h3 className="font-semibold text-sm md:text-base mb-2">Tournaments</h3>
+                <p className="text-white/80 text-xs md:text-sm">Multi-city tournaments with accommodation and logistics</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
+                <h3 className="font-semibold text-sm md:text-base mb-2">Training Camps</h3>
+                <p className="text-white/80 text-xs md:text-sm">Intensive coaching with professional facilities</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
+                <h3 className="font-semibold text-sm md:text-base mb-2">Stag Weekends</h3>
+                <p className="text-white/80 text-xs md:text-sm">Unique GAA experiences for memorable celebrations</p>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
+                <h3 className="font-semibold text-sm md:text-base mb-2">Fundraising events</h3>
+                <p className="text-white/80 text-xs md:text-sm">Special matches and events to support your club</p>
+              </div>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-slate-800 transition-colors text-lg"
+                className="px-6 md:px-8 py-3 md:py-4 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm md:text-lg"
               >
-                Contact Us
+                Plan Your Custom Trip
+              </Link>
+              <Link
+                href="/events"
+                className="px-6 md:px-8 py-3 md:py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors text-sm md:text-lg"
+              >
+                Browse Existing Events
               </Link>
             </div>
           </motion.div>
