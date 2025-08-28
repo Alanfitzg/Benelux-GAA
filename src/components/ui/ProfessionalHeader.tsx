@@ -47,7 +47,6 @@ const ProfessionalHeader = () => {
     { href: "/", label: "Home" },
     { href: "/events", label: "Tournaments" },
     { href: "/clubs", label: "Clubs" },
-    { href: "/map", label: "Map" },
     { href: "/survey", label: "Custom Trip" },
     { href: "/how-it-works", label: "How It Works" },
     { href: "/faq", label: "FAQ" },
