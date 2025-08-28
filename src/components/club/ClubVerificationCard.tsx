@@ -155,14 +155,10 @@ export default function ClubVerificationCard({ clubId }: ClubVerificationCardPro
                 hint="First name, last name, and email required"
               />
               <RequirementItem
-                label="Location Verified"
-                completed={verificationChecks.hasLocation}
-                required
-                hint="Address and coordinates required"
-              />
-              <RequirementItem
                 label="Club Logo Added"
                 completed={verificationChecks.hasLogo}
+                required
+                hint="Upload club logo or image"
               />
               
               <div className="mt-4 pt-4 border-t">

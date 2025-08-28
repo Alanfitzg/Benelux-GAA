@@ -40,8 +40,7 @@ export function canVerifyClub(requirements: VerificationRequirements): boolean {
   return (
     requirements.hasTeamTypes &&
     requirements.hasContactInfo &&
-    requirements.hasLocation &&
-    requirements.profileCompleteness >= 80
+    requirements.hasLogo
   );
 }
 
