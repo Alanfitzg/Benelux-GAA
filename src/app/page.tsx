@@ -18,13 +18,13 @@ export default function HomePage() {
     tournaments: 0,
     countries: 0,
   });
-  
+
   const [displayStats, setDisplayStats] = useState({
     clubs: 0,
     tournaments: 0,
     countries: 0,
   });
-  
+
   const statsRef = useRef(null);
   const isInView = useInView(statsRef, { once: true });
 
@@ -65,32 +65,35 @@ export default function HomePage() {
 
   // Animate counting when stats section is in view
   useEffect(() => {
-    if (isInView && (stats.clubs > 0 || stats.tournaments > 0 || stats.countries > 0)) {
+    if (
+      isInView &&
+      (stats.clubs > 0 || stats.tournaments > 0 || stats.countries > 0)
+    ) {
       const duration = 2000; // 2 seconds
       const steps = 60;
       const interval = duration / steps;
-      
+
       let currentStep = 0;
-      
+
       const timer = setInterval(() => {
         currentStep++;
         const progress = currentStep / steps;
-        
+
         // Easing function for smooth animation
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-        
+
         setDisplayStats({
           clubs: Math.floor(stats.clubs * easeOutQuart),
           tournaments: Math.floor(stats.tournaments * easeOutQuart),
           countries: Math.floor(stats.countries * easeOutQuart),
         });
-        
+
         if (currentStep >= steps) {
           clearInterval(timer);
           setDisplayStats(stats);
         }
       }, interval);
-      
+
       return () => clearInterval(timer);
     }
   }, [isInView, stats]);
@@ -116,7 +119,7 @@ export default function HomePage() {
             }
           `}</style>
         </div>
-        
+
         {/* Gradient overlay for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/30 to-slate-900/60"></div>
 
@@ -132,10 +135,14 @@ export default function HomePage() {
                 The Gateway to Gaelic Games Worldwide
               </h1>
               <p className="text-lg md:text-2xl text-emerald-100 mb-8">
-                <span className="hidden md:inline">Connect with the global GAA Community</span>
-                <span className="md:hidden">Connect, Travel, and link up with international Gaelic Games Communities</span>
+                <span className="hidden md:inline">
+                  Connect with the global GAA Community
+                </span>
+                <span className="md:hidden">
+                  Connect, Travel, and link up with international Gaelic Games
+                  Communities
+                </span>
               </p>
-
 
               <div className="flex flex-row gap-2 sm:gap-4 justify-center mt-20 sm:mt-0">
                 <Link
@@ -187,29 +194,35 @@ export default function HomePage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ 
-            duration: 0.6, 
+          transition={{
+            duration: 0.6,
             delay: 1.5,
             repeat: Infinity,
             repeatType: "reverse",
-            repeatDelay: 0.5
+            repeatDelay: 0.5,
           }}
           className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
         >
-          <div className="flex flex-col items-center text-white/60 hover:text-white/80 transition-colors cursor-pointer"
-               onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}>
-            <span className="text-xs uppercase tracking-widest mb-2">Scroll</span>
-            <svg 
-              className="w-6 h-6 animate-bounce" 
-              fill="none" 
-              stroke="currentColor" 
+          <div
+            className="flex flex-col items-center text-white/60 hover:text-white/80 transition-colors cursor-pointer"
+            onClick={() =>
+              window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
+            }
+          >
+            <span className="text-xs uppercase tracking-widest mb-2">
+              Scroll
+            </span>
+            <svg
+              className="w-6 h-6 animate-bounce"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={1.5} 
-                d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
               />
             </svg>
           </div>
@@ -230,9 +243,7 @@ export default function HomePage() {
             <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-2">
               How it works
             </h2>
-            <p className="text-base md:text-lg text-gray-600">
-              in brief
-            </p>
+            <p className="text-base md:text-lg text-gray-600">in brief</p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
@@ -255,8 +266,12 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        <span className="hidden md:inline">See what&apos;s going on in Europe</span>
-                        <span className="md:hidden">Browse European tournaments & events</span>
+                        <span className="hidden md:inline">
+                          See what&apos;s going on in Europe
+                        </span>
+                        <span className="md:hidden">
+                          Browse European tournaments & events
+                        </span>
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Browse tournaments across Germany, Spain, France and
@@ -270,8 +285,12 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        <span className="hidden md:inline">Connect Across Borders</span>
-                        <span className="md:hidden">Connect with international clubs</span>
+                        <span className="hidden md:inline">
+                          Connect Across Borders
+                        </span>
+                        <span className="md:hidden">
+                          Connect with international clubs
+                        </span>
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Link up with international clubs for unforgettable trips
@@ -284,8 +303,12 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        <span className="hidden md:inline">Take GAA International</span>
-                        <span className="md:hidden">Create new relationships, and great memories!</span>
+                        <span className="hidden md:inline">
+                          Take GAA International
+                        </span>
+                        <span className="md:hidden">
+                          Create new relationships, and great memories!
+                        </span>
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Bring your game to Europe&apos;s most exciting cities
@@ -350,7 +373,8 @@ export default function HomePage() {
                         Create Tournaments
                       </h4>
                       <p className="text-gray-600 text-xs md:text-sm">
-                        Invitational tournaments strengthen clubs, and increasing activity at home builds communities
+                        Invitational tournaments strengthen clubs, and
+                        increasing activity at home builds communities
                       </p>
                     </div>
                   </div>
@@ -403,7 +427,9 @@ export default function HomePage() {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">{displayStats.clubs}+</div>
+              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">
+                {displayStats.clubs}+
+              </div>
               <div className="text-sm md:text-xl">Clubs</div>
             </motion.div>
             <motion.div
@@ -423,7 +449,9 @@ export default function HomePage() {
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">{displayStats.countries}+</div>
+              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">
+                {displayStats.countries}+
+              </div>
               <div className="text-sm md:text-xl">Countries</div>
             </motion.div>
           </div>
@@ -446,7 +474,7 @@ export default function HomePage() {
             <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
               Stay connected with the global GAA community on social media
             </p>
-            
+
             {/* Social Media Icons */}
             <div className="flex justify-center gap-6">
               <a
@@ -504,7 +532,8 @@ export default function HomePage() {
               The Directory of European Invitational Tournaments
             </h2>
             <p className="text-base md:text-xl text-gray-600 mb-8">
-              All of the tournaments listed here are approved by the governing bodies within Gaelic Games Europe
+              All of the tournaments listed here are approved by the governing
+              bodies within Gaelic Games Europe
             </p>
             <div className="flex justify-center">
               <Link
@@ -544,24 +573,42 @@ export default function HomePage() {
               Not sure where you want to go?
             </h2>
             <p className="text-base md:text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-              If nothing listed suits your needs, we can work with you to develop the perfect trip. Just fill in the form and we'll get back to you!
+              If nothing listed suits your needs, we can work with you to
+              develop the perfect trip. Just fill in the form and we&apos;ll get
+              back to you!
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 max-w-5xl mx-auto">
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">Tournaments</h3>
-                <p className="text-white/80 text-xs md:text-sm">Multi-city tournaments with accommodation and logistics</p>
+                <h3 className="font-semibold text-sm md:text-base mb-2">
+                  Tournaments
+                </h3>
+                <p className="text-white/80 text-xs md:text-sm">
+                  Multi-city tournaments with accommodation and logistics
+                </p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">Training Camps</h3>
-                <p className="text-white/80 text-xs md:text-sm">Intensive coaching with professional facilities</p>
+                <h3 className="font-semibold text-sm md:text-base mb-2">
+                  Training Camps
+                </h3>
+                <p className="text-white/80 text-xs md:text-sm">
+                  Intensive coaching with professional facilities
+                </p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">Stag Weekends</h3>
-                <p className="text-white/80 text-xs md:text-sm">Unique GAA experiences for memorable celebrations</p>
+                <h3 className="font-semibold text-sm md:text-base mb-2">
+                  Stag Weekends
+                </h3>
+                <p className="text-white/80 text-xs md:text-sm">
+                  Unique GAA experiences for memorable celebrations
+                </p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">Fundraising events</h3>
-                <p className="text-white/80 text-xs md:text-sm">Special matches and events to support your club</p>
+                <h3 className="font-semibold text-sm md:text-base mb-2">
+                  Fundraising events
+                </h3>
+                <p className="text-white/80 text-xs md:text-sm">
+                  Special matches and events to support your club
+                </p>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
