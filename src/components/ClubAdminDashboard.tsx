@@ -4,6 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
 import ClubVerificationCard from '@/components/club/ClubVerificationCard';
 import PitchManagement from '@/components/pitch/PitchManagement';
+import CreateEventButton from '@/components/CreateEventButton';
 
 interface ClubStats {
   club: {
@@ -51,6 +52,7 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
+  const [showVerification, setShowVerification] = useState(false);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -90,15 +92,38 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {stats.club.name} - Admin Dashboard
-        </h1>
-        <p className="text-gray-600">{stats.club.location}</p>
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {stats.club.name} - Admin Dashboard
+          </h1>
+          <p className="text-gray-600">{stats.club.location}</p>
+        </div>
+        <CreateEventButton />
       </div>
 
-      {/* Verification Card */}
-      <ClubVerificationCard clubId={clubId} />
+      {/* Verification Card - Collapsible */}
+      <div className="bg-white rounded-lg shadow">
+        <button
+          onClick={() => setShowVerification(!showVerification)}
+          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+        >
+          <h2 className="text-lg font-semibold text-gray-900">Club Verification</h2>
+          <svg
+            className={`w-5 h-5 text-gray-500 transition-transform ${showVerification ? 'rotate-180' : ''}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        {showVerification && (
+          <div className="px-6 pb-6">
+            <ClubVerificationCard clubId={clubId} />
+          </div>
+        )}
+      </div>
 
       {/* Earnings Card */}
       <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg shadow-lg p-6 text-white">

@@ -174,37 +174,6 @@ export default function ClubsPage() {
             <p className="text-xl md:text-2xl mb-2">
               Discover the international community of clubs
             </p>
-            
-            {/* Register Club CTA - Hidden on mobile */}
-            <div className="hidden md:block mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Join Our Network
-                </h3>
-                <p className="text-white/90 text-sm mb-3">
-                  Register your club to connect with teams across Europe
-                </p>
-                <Link
-                  href="/clubs/register"
-                  className="inline-flex items-center bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
-                >
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
-                  Register Your Club
-                </Link>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -227,37 +196,6 @@ export default function ClubsPage() {
           <p className="text-lg md:text-2xl mb-2">
             Discover the international community of clubs
           </p>
-          
-          {/* Register Club CTA - Hidden on mobile */}
-          <div className="hidden md:block mt-6 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 max-w-2xl mx-auto">
-            <div className="text-center">
-              <h3 className="text-base md:text-lg font-semibold text-white mb-2">
-                Join Our Network
-              </h3>
-              <p className="text-white/90 text-xs md:text-sm mb-3">
-                Register your club to connect with teams across Europe
-              </p>
-              <Link
-                href="/clubs/register"
-                className="inline-flex items-center bg-white text-primary px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
-                Register Your Club
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
 

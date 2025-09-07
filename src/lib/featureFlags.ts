@@ -43,7 +43,7 @@ export const FEATURE_FLAGS: Record<string, FeatureFlag> = {
     id: 'USER_ONBOARDING',
     name: 'User Onboarding Flow',
     description: 'Show onboarding questionnaire for new users to capture travel preferences and motivations',
-    enabled: false,
+    enabled: true,
     experimental: true,
   },
 };

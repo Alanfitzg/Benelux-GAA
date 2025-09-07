@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
+import { useSession } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Club {
@@ -9,6 +10,7 @@ interface Club {
   location: string | null;
   region: string | null;
   imageUrl?: string | null;
+  role?: 'admin' | 'member' | 'pending';
 }
 
 interface ClubSelectorOptionalProps {
@@ -18,12 +20,14 @@ interface ClubSelectorOptionalProps {
 }
 
 export default function ClubSelectorOptional({ value, onChange, disabled = false }: ClubSelectorOptionalProps) {
+  const { data: session } = useSession();
   const [clubs, setClubs] = useState<Club[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const selectedClub = Array.isArray(clubs) ? clubs.find(c => c.id === value) : undefined;
@@ -49,12 +53,17 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
     const fetchClubs = async () => {
       try {
         setError(null);
-        const response = await fetch('/api/clubs');
+        // Fetch clubs - API will return all clubs for super admin, or only admin clubs for others
+        const response = await fetch('/api/user/clubs');
         if (response.ok) {
           const responseData = await response.json();
-          // Handle both response formats - object with clubs property or direct array
-          const clubsData = responseData.clubs || responseData;
-          setClubs(Array.isArray(clubsData) ? clubsData : []);
+          const adminClubs = responseData.clubs?.filter((club: Club) => club.role === 'admin') || [];
+          setClubs(adminClubs);
+          
+          // Check if user is super admin (if all clubs are returned with admin role)
+          if (session?.user?.role === 'SUPER_ADMIN') {
+            setIsSuperAdmin(true);
+          }
         } else {
           throw new Error('Failed to load clubs');
         }
@@ -67,7 +76,7 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
     };
 
     fetchClubs();
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -134,7 +143,7 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
                 )}
               </div>
             ) : (
-              <span className="text-gray-500">No club selected</span>
+              <span className="text-gray-500">{clubs.length === 0 ? 'No admin clubs available' : 'No club selected'}</span>
             )}
           </div>
           <svg
@@ -160,11 +169,16 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
             <div className="p-3 border-b border-gray-100">
               <input
                 type="text"
-                placeholder="Search clubs..."
+                placeholder={isSuperAdmin ? "Search all clubs..." : "Search clubs..."}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
               />
+              {isSuperAdmin && (
+                <p className="text-xs text-gray-500 mt-2">
+                  Super Admin: You can assign any club to this event
+                </p>
+              )}
             </div>
             
             <div className="max-h-60 overflow-y-auto">
@@ -187,7 +201,9 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
                 </div>
               ) : filteredClubs.length === 0 ? (
                 <div className="px-4 py-3 text-gray-500 text-sm">
-                  {search ? 'No clubs found matching your search' : 'No clubs available'}
+                  {search ? 'No clubs found matching your search' : 
+                   clubs.length === 0 ? 'You are not an admin of any clubs. Only club admins can create events for their clubs.' : 
+                   'No clubs available'}
                 </div>
               ) : (
                 filteredClubs.map((club) => (

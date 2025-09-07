@@ -3,6 +3,11 @@ import { NextRequest, NextResponse } from 'next/server'
 // In-memory store for rate limiting (use Redis in production)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
 
+// Clear rate limit store on module load in development
+if (process.env.NODE_ENV === 'development') {
+  rateLimitStore.clear()
+}
+
 // Clean up expired entries every 5 minutes
 setInterval(() => {
   const now = Date.now()
@@ -177,9 +182,9 @@ export const RATE_LIMITS = {
 
   // Authentication endpoints (more restrictive)
   AUTH: {
-    limit: 5, // 5 attempts
-    window: 15 * 60 * 1000, // per 15 minutes
-    message: 'Too many authentication attempts. Please wait 15 minutes before trying again.'
+    limit: 20, // 20 attempts
+    window: 60 * 1000, // per minute (changed from 15 minutes to 1 minute for development)
+    message: 'Too many authentication attempts. Please wait a moment before trying again.'
   },
 
   // User registration (very restrictive)
@@ -203,11 +208,11 @@ export const RATE_LIMITS = {
     message: 'Too many upload attempts. Please wait a minute before trying again.'
   },
 
-  // Contact/interest forms (moderate restrictions)
+  // Contact/interest forms (relaxed for important feature)
   FORMS: {
-    limit: 10, // 10 submissions
-    window: 60 * 60 * 1000, // per hour
-    message: 'Too many form submissions. Please wait an hour before submitting again.'
+    limit: 50, // 50 submissions (increased from 10)
+    window: 60 * 1000, // per minute (changed from per hour)
+    message: 'Too many form submissions. Please wait a moment before submitting again.'
   }
 } as const
 

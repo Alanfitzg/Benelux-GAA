@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 const AdminRequestSchema = z.object({
   clubId: z.string().cuid('Invalid club ID'),
-  reason: z.string().min(10, 'Reason must be at least 10 characters').max(500, 'Reason must be no more than 500 characters'),
+  reason: z.string().min(1, 'Reason is required').max(500, 'Reason must be no more than 500 characters'),
 });
 
 async function adminRequestHandler(request: NextRequest) {

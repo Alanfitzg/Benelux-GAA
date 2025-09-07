@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, X, Send, CheckCircle, Clock, AlertCircle } from "lucide-react";
 
@@ -20,15 +21,17 @@ interface ClubAdminRequestButtonProps {
 export default function ClubAdminRequestButton({
   clubId,
   clubName,
-  existingRequest,
+  existingRequest: initialRequest,
   isCurrentAdmin,
 }: ClubAdminRequestButtonProps) {
   const { data: session } = useSession();
+  const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
+  const [existingRequest, setExistingRequest] = useState(initialRequest);
 
   // Don't show if user is not signed in or is already an admin
   if (!session || isCurrentAdmin) {
@@ -64,12 +67,19 @@ export default function ClubAdminRequestButton({
       }
 
       setSuccess(true);
+      // Update the local state with the new request
+      setExistingRequest({
+        id: data.request.id,
+        status: "PENDING",
+        requestedAt: data.request.requestedAt || new Date().toISOString(),
+      });
+      
       setTimeout(() => {
         setIsModalOpen(false);
         setSuccess(false);
         setReason("");
-        // Refresh the page to show the new request status
-        window.location.reload();
+        // Refresh the router to update server components without losing session
+        router.refresh();
       }, 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "@/lib/auth-helpers"
 import { prisma } from "@/lib/prisma"
+import { UserRole } from "@prisma/client"
 
 export async function GET() {
   const session = await getServerSession()
@@ -13,6 +14,28 @@ export async function GET() {
   }
 
   try {
+    // If user is SUPER_ADMIN, return all clubs with admin role
+    if (session.user.role === UserRole.SUPER_ADMIN) {
+      const allClubs = await prisma.club.findMany({
+        select: {
+          id: true,
+          name: true,
+          location: true,
+          imageUrl: true,
+        },
+        orderBy: {
+          name: 'asc'
+        }
+      })
+
+      // Map all clubs with admin role for super admin
+      const clubs = allClubs.map(club => ({
+        ...club,
+        role: "admin" as const,
+      }))
+
+      return NextResponse.json({ clubs })
+    }
     // Get user with their club associations
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },

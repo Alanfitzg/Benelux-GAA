@@ -8,7 +8,6 @@ import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
 import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
-import EventReportDisplay from "@/components/events/EventReportDisplay";
 import UnifiedEventDashboard from "@/components/events/UnifiedEventDashboard";
 import EnhancedTeamRegistration from "@/components/tournaments/EnhancedTeamRegistration";
 import TournamentManager from "@/components/tournaments/TournamentManager";
@@ -189,14 +188,12 @@ export default function EventDetailClient({
         <div className="max-w-7xl mx-auto px-4">
           <nav className="flex gap-8 overflow-x-auto">
             <a href="#overview" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Overview</a>
-            <a href="#highlights" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Highlights</a>
             {event?.eventType === 'Tournament' && (
               <a href="#tournament" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Tournament</a>
             )}
             {event?.eventType === 'Tournament' && isClubAdmin && (
               <a href="#team-management" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Team Management</a>
             )}
-            <a href="#report" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Event Report</a>
             <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
             {event?.visibility !== 'PRIVATE' && (
               <a href="#interest" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Register Interest</a>
@@ -228,24 +225,6 @@ export default function EventDetailClient({
               </p>
             </section>
 
-            {/* Highlights Section */}
-            <section id="highlights" className="bg-white rounded-xl shadow-sm border p-6">
-              <h2 className="text-2xl font-bold mb-4">Event Highlights</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(event?.eventType === 'Tournament' 
-                  ? EVENT_CONSTANTS.TOURNAMENT_HIGHLIGHTS 
-                  : (event?.description ? event.description.split('\n') : EVENT_CONSTANTS.DEFAULT_HIGHLIGHTS)
-                ).map((highlight, idx) => (
-                  <div key={idx} className="flex gap-3">
-                    <svg className="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-gray-700">{highlight}</span>
-                  </div>
-                ))}
-              </div>
-            </section>
-
             {/* Team Management Section */}
             {event?.eventType === 'Tournament' && isClubAdmin && (
               <section id="team-management" className="space-y-6">
@@ -269,17 +248,6 @@ export default function EventDetailClient({
                   matches={matches}
                   isAdmin={isClubAdmin}
                   onTeamUpdate={refreshTeams}
-                />
-              </section>
-            )}
-
-            {/* Event Report Section - Integrated into dashboard for admins */}
-            {!isClubAdmin && (
-              <section id="report" className="bg-white rounded-xl shadow-sm border p-6">
-                <h2 className="text-2xl font-bold mb-4">Event Report</h2>
-                <EventReportDisplay 
-                  eventId={eventId} 
-                  isAdmin={false}
                 />
               </section>
             )}
@@ -387,7 +355,7 @@ export default function EventDetailClient({
                     </>
                   )}
                   <div className="flex justify-between py-2">
-                    <span className="text-gray-600">Cost</span>
+                    <span className="text-gray-600">Cost per person</span>
                     <span className="font-medium text-primary text-xl">{event?.cost ? `€${event.cost}` : MESSAGES.DEFAULTS.PLACEHOLDER}</span>
                   </div>
                 </div>
