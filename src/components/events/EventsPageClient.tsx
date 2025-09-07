@@ -22,6 +22,7 @@ interface Event {
   latitude: number | null;
   longitude: number | null;
   visibility: "PUBLIC" | "PRIVATE";
+  acceptedTeamTypes?: string[];
   club: {
     id: string;
     name: string;
@@ -33,6 +34,8 @@ interface EventsPageClientProps {
   initialEvents: Event[];
   eventTypes: readonly string[];
   countries: string[];
+  sportTypes: readonly string[];
+  usedSportTypes: string[];
 }
 
 
@@ -40,6 +43,8 @@ export default function EventsPageClient({
   initialEvents,
   eventTypes,
   countries,
+  sportTypes,
+  usedSportTypes,
 }: EventsPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -50,6 +55,10 @@ export default function EventsPageClient({
   const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "");
   const [selectedMonth, setSelectedMonth] = useState(searchParams.get("month") || "");
   const [visibility, setVisibility] = useState(searchParams.get("visibility") || "");
+  const [selectedSportTypes, setSelectedSportTypes] = useState<string[]>(() => {
+    const sports = searchParams.get("sports");
+    return sports ? sports.split(",") : [];
+  });
   const [showFilters, setShowFilters] = useState(false);
   
   // Debounced search
@@ -104,6 +113,19 @@ export default function EventsPageClient({
       filtered = filtered.filter((event) => event.visibility === visibility);
     }
 
+    // Sport type filter (if multiple selected, event must contain ALL selected types)
+    if (selectedSportTypes.length > 0) {
+      filtered = filtered.filter((event) => {
+        if (!event.acceptedTeamTypes || event.acceptedTeamTypes.length === 0) {
+          return false;
+        }
+        // Check if event contains ALL selected sport types
+        return selectedSportTypes.every(sportType => 
+          event.acceptedTeamTypes!.includes(sportType)
+        );
+      });
+    }
+
     // Sort by date (earliest first)
     filtered.sort((a, b) => {
       return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
@@ -117,6 +139,7 @@ export default function EventsPageClient({
     selectedCountry,
     selectedMonth,
     visibility,
+    selectedSportTypes,
   ]);
 
   // Update URL params
@@ -127,6 +150,7 @@ export default function EventsPageClient({
     if (selectedCountry) params.set("country", selectedCountry);
     if (selectedMonth) params.set("month", selectedMonth);
     if (visibility) params.set("visibility", visibility);
+    if (selectedSportTypes.length > 0) params.set("sports", selectedSportTypes.join(","));
 
     const queryString = params.toString();
     router.push(`/events${queryString ? `?${queryString}` : ""}`, { scroll: false });
@@ -136,6 +160,7 @@ export default function EventsPageClient({
     selectedCountry,
     selectedMonth,
     visibility,
+    selectedSportTypes,
     router,
   ]);
 
@@ -150,6 +175,7 @@ export default function EventsPageClient({
     setSelectedCountry("");
     setSelectedMonth("");
     setVisibility("");
+    setSelectedSportTypes([]);
   };
 
   // Count active filters
@@ -159,6 +185,7 @@ export default function EventsPageClient({
     selectedCountry,
     selectedMonth,
     visibility,
+    selectedSportTypes.length > 0,
   ].filter(Boolean).length;
 
   // Generate month options for the next 12 months
@@ -309,6 +336,57 @@ export default function EventsPageClient({
                 </select>
               </div>
 
+              {/* Sport Types Multi-Select */}
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sport Types
+                  {selectedSportTypes.length > 0 && (
+                    <span className="ml-2 text-xs text-gray-500">
+                      ({selectedSportTypes.length} selected)
+                    </span>
+                  )}
+                </label>
+                <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-white">
+                  {sportTypes.map((sport) => {
+                    const isUsed = usedSportTypes.includes(sport);
+                    return (
+                      <label
+                        key={sport}
+                        className={`flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors ${
+                          !isUsed ? 'opacity-50' : ''
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedSportTypes.includes(sport)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedSportTypes([...selectedSportTypes, sport]);
+                            } else {
+                              setSelectedSportTypes(selectedSportTypes.filter(s => s !== sport));
+                            }
+                          }}
+                          className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                        />
+                        <span className="text-sm text-gray-700">
+                          {sport}
+                          {!isUsed && <span className="text-xs text-gray-400 ml-1">(no events)</span>}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+                {selectedSportTypes.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setSelectedSportTypes([])}
+                    className="mt-2 text-xs text-primary hover:text-primary/80"
+                  >
+                    Clear selection
+                  </button>
+                )}
+              </div>
+
             </div>
           </aside>
 
@@ -416,6 +494,49 @@ export default function EventsPageClient({
                           ))}
                         </select>
                       </div>
+                      
+                      {/* Sport Types for Mobile */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Sport Types
+                          {selectedSportTypes.length > 0 && (
+                            <span className="ml-2 text-xs text-gray-500">
+                              ({selectedSportTypes.length} selected)
+                            </span>
+                          )}
+                        </label>
+                        <div className="space-y-2 max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-white">
+                          {sportTypes.map((sport) => {
+                            const isUsed = usedSportTypes.includes(sport);
+                            return (
+                              <label
+                                key={sport}
+                                className={`flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors ${
+                                  !isUsed ? 'opacity-50' : ''
+                                }`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedSportTypes.includes(sport)}
+                                  onChange={(e) => {
+                                    if (e.target.checked) {
+                                      setSelectedSportTypes([...selectedSportTypes, sport]);
+                                    } else {
+                                      setSelectedSportTypes(selectedSportTypes.filter(s => s !== sport));
+                                    }
+                                  }}
+                                  className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                                />
+                                <span className="text-xs text-gray-700">
+                                  {sport}
+                                  {!isUsed && <span className="text-xs text-gray-400 ml-1">(no events)</span>}
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </div>
+                      </div>
+                      
                       <div className="flex justify-end">
                         <button
                           onClick={clearFilters}
@@ -495,6 +616,23 @@ export default function EventsPageClient({
                     </button>
                   </span>
                 )}
+                {selectedSportTypes.map((sport) => (
+                  <span key={sport} className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                    Sport: {sport}
+                    <button
+                      onClick={() => setSelectedSportTypes(selectedSportTypes.filter(s => s !== sport))}
+                      className="hover:bg-primary/20 rounded-full p-0.5"
+                    >
+                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </span>
+                ))}
               </div>
             )}
 

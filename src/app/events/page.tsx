@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import React from "react";
 import { EVENT_TYPES } from "@/lib/constants/events";
+import { TEAM_TYPES } from "@/lib/constants/teams";
 import { MESSAGES } from "@/lib/constants";
 import { StructuredData } from "@/components/StructuredData";
 import { getCityDefaultImage } from "@/lib/city-utils";
@@ -57,6 +58,7 @@ async function getAllEvents() {
       latitude: true,
       longitude: true,
       visibility: true,
+      acceptedTeamTypes: true,
       club: {
         select: {
           id: true,
@@ -69,7 +71,12 @@ async function getAllEvents() {
 }
 
 async function getFilterOptions() {
-  const events = await prisma.event.findMany();
+  const events = await prisma.event.findMany({
+    select: {
+      location: true,
+      acceptedTeamTypes: true,
+    }
+  });
   
   const countries = Array.from(
     new Set(
@@ -80,10 +87,21 @@ async function getFilterOptions() {
   )
     .filter(Boolean)
     .sort() as string[];
+  
+  // Get all unique sport types that are actually used in events
+  const usedSportTypes = Array.from(
+    new Set(
+      events.flatMap((e: { acceptedTeamTypes: string[] }) => 
+        e.acceptedTeamTypes || []
+      )
+    )
+  ).sort() as string[];
     
   return {
     eventTypes: EVENT_TYPES,
     countries,
+    sportTypes: TEAM_TYPES, // All available sport types
+    usedSportTypes, // Sport types that are actually used
   };
 }
 
@@ -174,6 +192,8 @@ export default async function EventsPage() {
           initialEvents={eventsWithCityImages}
           eventTypes={filterOptions.eventTypes}
           countries={filterOptions.countries}
+          sportTypes={filterOptions.sportTypes}
+          usedSportTypes={filterOptions.usedSportTypes}
         />
       </>
     );
