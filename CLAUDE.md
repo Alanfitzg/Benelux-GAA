@@ -24,6 +24,9 @@ For comprehensive information, see these modular documentation files:
 - **Enhanced Test Suite**: Jest testing infrastructure with 85% coverage
 - **🎮 Enhanced Event Management System**: Complete redesign with unified dashboard, tournament templates, and professional interface
 - **💰 Earnings Tracking**: Annual earnings calculation and display for clubs from tournament registrations
+- **⭐ Club Testimonials System**: Dual approval workflow (super admin → club admin), carousel display, dashboard management
+- **🔒 Authentication Gates**: Event details obscured for non-authenticated users to encourage sign-ups
+- **✈️ Updated Branding**: Custom airplane favicon and icons throughout the platform
 
 ## 🏗️ Tech Stack (Brief)
 - **Frontend**: Next.js 15.3.3, React 19, TypeScript, Tailwind CSS
@@ -47,9 +50,10 @@ For comprehensive information, see these modular documentation files:
 
 ## 🗄️ Database Quick Reference
 - **Strategy**: Using `prisma db push` (no migrations)
-- **Key Models**: User, Club, Event, EventReport, PitchLocation, UserPreferences
+- **Key Models**: User, Club, Event, EventReport, PitchLocation, UserPreferences, Testimonial
 - **Caching**: Next.js unstable_cache for clubs (6hr TTL)
 - **Verification**: Club verification status with progress tracking
+- **Testimonials**: PENDING → SUPER_ADMIN_APPROVED → APPROVED workflow with reordering
 
 ## 💻 Development Commands
 ```bash
@@ -92,6 +96,9 @@ npx prisma db push   # Apply schema changes
 - ✅ Prisma field name mismatches (EventPitchLocation table sync)
 - ✅ Admin session persistence (NEXTAUTH_URL port sync, cookie configuration)
 - ✅ Event editing access from details page (improved admin permission logic)
+- ✅ Testimonials system implementation (dual approval workflow, carousel display, admin dashboard integration)
+- ✅ Authentication gates for event details (encouraging user registration)
+- ✅ Favicon and branding updates (custom airplane icon implementation)
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (needs Redis for scaling)

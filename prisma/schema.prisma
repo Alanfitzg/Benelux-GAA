@@ -112,6 +112,7 @@ model Club {
   pitchLocations      PitchLocation[]
   tournamentInterests TournamentInterest[]
   tournamentTeams     TournamentTeam[]
+  testimonials        Testimonial[]
   members             User[]               @relation("ClubMembers")
   admins              User[]               @relation("ClubAdmins")
   verifier            User?                @relation("ClubVerifier", fields: [verifiedBy], references: [id])
@@ -151,6 +152,9 @@ model User {
   sessions              Session[]
   tournamentInterests   TournamentInterest[]
   eventReports          EventReport[]
+  testimonials          Testimonial[]
+  testimonialSuperAdminApprovals Testimonial[] @relation("TestimonialSuperAdminApprover")
+  testimonialClubAdminApprovals  Testimonial[] @relation("TestimonialClubAdminApprover")
   club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
   preferences           UserPreferences?
   adminOfClubs          Club[]               @relation("ClubAdmins")
@@ -698,4 +702,39 @@ model EventPitchLocation {
   @@unique([eventId, pitchLocationId])
   @@index([eventId])
   @@index([pitchLocationId])
+}
+
+model Testimonial {
+  id                    String              @id @default(cuid())
+  clubId                String
+  userId                String
+  content               String              @db.VarChar(500)
+  status                TestimonialStatus   @default(PENDING)
+  displayOrder          Int                 @default(0)
+  deleteRequested       Boolean             @default(false)
+  deleteRequestedAt     DateTime?
+  submittedAt           DateTime            @default(now())
+  superAdminApprovedAt  DateTime?
+  superAdminApprovedBy  String?
+  clubAdminApprovedAt   DateTime?
+  clubAdminApprovedBy   String?
+  updatedAt             DateTime            @updatedAt
+  
+  club                  Club                @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  user                  User                @relation(fields: [userId], references: [id])
+  superAdminApprover    User?               @relation("TestimonialSuperAdminApprover", fields: [superAdminApprovedBy], references: [id])
+  clubAdminApprover     User?               @relation("TestimonialClubAdminApprover", fields: [clubAdminApprovedBy], references: [id])
+  
+  @@unique([clubId, userId])
+  @@index([clubId, status])
+  @@index([userId])
+  @@index([status])
+  @@index([displayOrder])
+}
+
+enum TestimonialStatus {
+  PENDING
+  SUPER_ADMIN_APPROVED
+  APPROVED
+  REJECTED
 }

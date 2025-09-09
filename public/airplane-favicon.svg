@@ -1,0 +1,8 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Airplane body -->
+  <path d="M4 16L16 4L20 8L28 6L30 8L26 12L30 16L28 18L20 16L16 20L12 16L4 16Z" fill="#2563eb" stroke="#2563eb" stroke-width="1" stroke-linejoin="round"/>
+  <!-- Wing detail -->
+  <path d="M8 12L12 8L20 10L16 14L8 12Z" fill="#1d4ed8"/>
+  <!-- Tail -->
+  <path d="M6 18L10 22L14 18L10 18L6 18Z" fill="#1d4ed8"/>
+</svg>

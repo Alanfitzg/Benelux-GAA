@@ -33,6 +33,19 @@
 - **`/src/__tests__/lib/validation/date-validation.test.ts`** - Event date validation and error handling
 - **`/src/__tests__/lib/club-verification.test.ts`** - Club verification requirements and completeness scoring
 
+## ⭐ Testimonials System Components (August 2025)
+- **`/src/components/testimonials/TestimonialSection.tsx`** - Main wrapper with form toggle and carousel display
+- **`/src/components/testimonials/TestimonialCarousel.tsx`** - Auto-playing carousel with navigation controls
+- **`/src/components/testimonials/TestimonialForm.tsx`** - User submission form with validation and character counting
+- **`/src/components/testimonials/TestimonialsDashboardWidget.tsx`** - Club admin dashboard integration with quick actions
+- **`/src/components/auth/SignUpGate.tsx`** - Authentication gate component for encouraging user registration
+- **`/src/app/api/testimonials/route.ts`** - Main testimonials CRUD API with filtering and validation
+- **`/src/app/api/testimonials/[id]/route.ts`** - Individual testimonial management (GET, PUT, DELETE)
+- **`/src/app/api/testimonials/[id]/approve/route.ts`** - Dual approval workflow endpoint
+- **`/src/app/api/testimonials/[id]/reject/route.ts`** - Testimonial rejection endpoint
+- **`/src/app/api/testimonials/reorder/route.ts`** - Drag-and-drop reordering endpoint
+- **`/src/app/admin/testimonials/page.tsx`** - Super admin testimonials management interface
+
 ## 📋 Recent Features and Components Added (August 2025)
 - **`/src/lib/validation/date-validation.ts`** - Comprehensive date validation utilities with specific error messages
 - **`/src/lib/city-utils.ts`** - City default image utilities for automatic event image assignment
@@ -42,6 +55,7 @@
 - **Enhanced `/src/app/events/create/page.tsx`** - Real-time date validation with visual feedback and user-friendly error messages
 - **Enhanced `/src/app/admin/images/page.tsx`** - Added "City Defaults" tab for managing city default images
 - **Database Models**: CityDefaultImage model for storing city-specific default images with proper indexing
+- **✈️ Branding Updates**: Custom airplane favicon and icons (`/src/app/icon.svg`, `/src/app/apple-icon.svg`, `/public/favicon.ico`)
 - **Enhanced Pitch Location System**:
   - **`/src/components/pitch/EnhancedMapPitchCreator.tsx`** - Complete 4-step map-based creation workflow
   - **`/src/components/pitch/EnhancedPitchForm.tsx`** - Comprehensive form with collapsible sections for optional pitch details

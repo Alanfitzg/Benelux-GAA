@@ -11,6 +11,7 @@ import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
 import UnifiedEventDashboard from "@/components/events/UnifiedEventDashboard";
 import EnhancedTeamRegistration from "@/components/tournaments/EnhancedTeamRegistration";
 import TournamentManager from "@/components/tournaments/TournamentManager";
+import SignUpGate from "@/components/auth/SignUpGate";
 import { useSession } from "next-auth/react";
 
 export default function EventDetailClient({
@@ -242,29 +243,73 @@ export default function EventDetailClient({
             {/* Tournament Management Section */}
             {event?.eventType === 'Tournament' && (
               <section id="tournament" className="space-y-0">
-                <TournamentManager
-                  event={event}
-                  teams={teams}
-                  matches={matches}
-                  isAdmin={isClubAdmin}
-                  onTeamUpdate={refreshTeams}
-                />
+                {session?.user ? (
+                  <TournamentManager
+                    event={event}
+                    teams={teams}
+                    matches={matches}
+                    isAdmin={isClubAdmin}
+                    onTeamUpdate={refreshTeams}
+                  />
+                ) : (
+                  <SignUpGate
+                    title="Tournament Details & Brackets"
+                    description="See team lineups, brackets, match schedules and live results. Create a free account to access full tournament information."
+                    previewHeight="h-40"
+                    className="bg-white rounded-xl shadow-sm border"
+                  >
+                    <div className="p-6">
+                      <TournamentManager
+                        event={event}
+                        teams={teams}
+                        matches={matches}
+                        isAdmin={isClubAdmin}
+                        onTeamUpdate={refreshTeams}
+                      />
+                    </div>
+                  </SignUpGate>
+                )}
               </section>
             )}
 
             {/* What's Included Section */}
-            <section id="included" className="bg-white rounded-xl shadow-sm border p-6">
-              <h2 className="text-2xl font-bold mb-4">What&apos;s Included</h2>
-              <div className="space-y-3">
-                {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
-                  <div key={idx} className="flex gap-3">
-                    <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-gray-700">{item}</span>
+            <section id="included">
+              {session?.user ? (
+                <div className="bg-white rounded-xl shadow-sm border p-6">
+                  <h2 className="text-2xl font-bold mb-4">What&apos;s Included</h2>
+                  <div className="space-y-3">
+                    {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
+                      <div key={idx} className="flex gap-3">
+                        <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span className="text-gray-700">{item}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              ) : (
+                <SignUpGate
+                  title="See Everything That's Included"
+                  description="View the complete list of accommodations, meals, transport options, and activities included in your trip package."
+                  previewHeight="h-32"
+                  className="bg-white rounded-xl shadow-sm border"
+                >
+                  <div className="p-6">
+                    <h2 className="text-2xl font-bold mb-4">What&apos;s Included</h2>
+                    <div className="space-y-3">
+                      {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
+                        <div key={idx} className="flex gap-3">
+                          <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          <span className="text-gray-700">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </SignUpGate>
+              )}
             </section>
 
             {/* Interest Form Section - Only show for public events */}
@@ -330,42 +375,95 @@ export default function EventDetailClient({
                     <span className="text-gray-600">Date</span>
                     <span className="font-medium">{event ? formatEventDate(event.startDate) : MESSAGES.DEFAULTS.PLACEHOLDER}</span>
                   </div>
+                  
+                  {/* Tournament Details - Hidden for non-authenticated users */}
                   {event?.eventType === 'Tournament' && (
                     <>
-                      {event.acceptedTeamTypes && event.acceptedTeamTypes.length > 0 && (
+                      {session?.user ? (
+                        <>
+                          {event.acceptedTeamTypes && event.acceptedTeamTypes.length > 0 && (
+                            <div className="py-2 border-b">
+                              <span className="text-gray-600 block mb-1">Accepted Team Categories</span>
+                              <div className="flex flex-wrap gap-1">
+                                {event.acceptedTeamTypes.map((type, idx) => (
+                                  <span key={idx} className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
+                                    {type}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <div className="flex justify-between py-2 border-b">
+                            <span className="text-gray-600">Teams Registered</span>
+                            <span className="font-medium">
+                              {teams.length}
+                              {event.minTeams && ` (min: ${event.minTeams})`}
+                              {event.maxTeams && ` / ${event.maxTeams}`}
+                            </span>
+                          </div>
+                        </>
+                      ) : (
                         <div className="py-2 border-b">
-                          <span className="text-gray-600 block mb-1">Accepted Team Categories</span>
-                          <div className="flex flex-wrap gap-1">
-                            {event.acceptedTeamTypes.map((type, idx) => (
-                              <span key={idx} className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
-                                {type}
-                              </span>
-                            ))}
+                          <div className="flex justify-between items-center">
+                            <span className="text-gray-600">Tournament Details</span>
+                            <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                              </svg>
+                              Sign in to view
+                            </div>
                           </div>
                         </div>
                       )}
-                      <div className="flex justify-between py-2 border-b">
-                        <span className="text-gray-600">Teams</span>
-                        <span className="font-medium">
-                          {teams.length}
-                          {event.minTeams && ` (min: ${event.minTeams})`}
-                          {event.maxTeams && ` / ${event.maxTeams}`}
-                        </span>
-                      </div>
                     </>
                   )}
+                  
+                  {/* Pricing - Hidden for non-authenticated users */}
                   <div className="flex justify-between py-2">
                     <span className="text-gray-600">Cost per person</span>
-                    <span className="font-medium text-primary text-xl">{event?.cost ? `€${event.cost}` : MESSAGES.DEFAULTS.PLACEHOLDER}</span>
+                    {session?.user ? (
+                      <span className="font-medium text-primary text-xl">
+                        {event?.cost ? `€${event.cost}` : MESSAGES.DEFAULTS.PLACEHOLDER}
+                      </span>
+                    ) : (
+                      <div className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        Sign in to view pricing
+                      </div>
+                    )}
                   </div>
                 </div>
-                {event?.visibility !== 'PRIVATE' && (
-                  <a 
-                    href="#interest" 
-                    className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
-                  >
-                    {MESSAGES.BUTTONS.REGISTER_INTEREST}
-                  </a>
+                
+                {/* Sign up CTA or Interest Button */}
+                {session?.user ? (
+                  event?.visibility !== 'PRIVATE' && (
+                    <a 
+                      href="#interest" 
+                      className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
+                    >
+                      {MESSAGES.BUTTONS.REGISTER_INTEREST}
+                    </a>
+                  )
+                ) : (
+                  <div className="mt-6 space-y-2">
+                    <a 
+                      href="/signup" 
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-center block transition flex items-center justify-center gap-2"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Create Free Account
+                    </a>
+                    <a 
+                      href="/signin" 
+                      className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2 rounded-lg text-center block transition text-sm"
+                    >
+                      Already have an account? Sign In
+                    </a>
+                  </div>
                 )}
               </div>
 

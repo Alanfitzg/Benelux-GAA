@@ -14,6 +14,7 @@ import ClubCalendar from "@/components/club/ClubCalendar";
 import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
 import { getServerSession } from "@/lib/auth-helpers";
 import VerifiedBadge, { VerifiedTooltip } from "@/components/club/VerifiedBadge";
+import TestimonialSection from "@/components/testimonials/TestimonialSection";
 
 export async function generateMetadata({
   params,
@@ -113,6 +114,32 @@ export default async function ClubDetailsPage({
       },
     },
   });
+
+  // Fetch testimonials
+  const testimonials = await prisma.testimonial.findMany({
+    where: {
+      clubId: id,
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          username: true,
+        },
+      },
+    },
+    orderBy: [
+      { status: 'asc' },
+      { displayOrder: 'asc' },
+      { submittedAt: 'desc' },
+    ],
+  });
+
+  const approvedTestimonials = testimonials.filter(t => t.status === 'APPROVED');
+  const userTestimonial = session?.user 
+    ? testimonials.find(t => t.userId === session.user.id)
+    : null;
 
   // Get user's admin request if they're logged in
   let adminRequest = null;
@@ -589,6 +616,7 @@ export default async function ClubDetailsPage({
                     <ClubEvents events={club.events} compact={true} />
                   </div>
                 )}
+
               </div>
 
               {/* Right Column - Calendar Widget */}
@@ -602,6 +630,23 @@ export default async function ClubDetailsPage({
                 </div>
               </div>
             </div>
+
+            {/* Testimonials Section */}
+            <TestimonialSection
+              clubId={club.id}
+              clubName={club.name}
+              approvedTestimonials={approvedTestimonials.map(t => ({
+                id: t.id,
+                content: t.content,
+                user: t.user,
+                submittedAt: t.submittedAt.toISOString(),
+              }))}
+              userTestimonial={userTestimonial ? {
+                id: userTestimonial.id,
+                content: userTestimonial.content,
+              } : undefined}
+              isAuthenticated={!!session?.user}
+            />
 
             {/* Back to Clubs Link */}
             <div className="text-center mt-8">

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ClubVerificationCard from '@/components/club/ClubVerificationCard';
 import PitchManagement from '@/components/pitch/PitchManagement';
 import CreateEventButton from '@/components/CreateEventButton';
+import TestimonialsDashboardWidget from '@/components/testimonials/TestimonialsDashboardWidget';
 
 interface ClubStats {
   club: {
@@ -279,6 +280,9 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
         </div>
       </div>
 
+      {/* Testimonials Management */}
+      <TestimonialsDashboardWidget clubId={clubId} />
+
       {/* Pitch Management Section - Hidden on mobile */}
       <div className="hidden md:block bg-white rounded-lg shadow p-6">
         <PitchManagement clubId={clubId} canEdit={true} />
@@ -297,6 +301,12 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
           className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark"
         >
           Edit Club Details
+        </Link>
+        <Link 
+          href={`/club-admin/${clubId}/testimonials`}
+          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700"
+        >
+          Manage Testimonials
         </Link>
       </div>
     </div>

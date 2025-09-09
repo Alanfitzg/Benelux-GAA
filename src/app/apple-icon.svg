@@ -1,0 +1,14 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="180" height="180" rx="40" fill="#ffffff"/>
+  
+  <!-- Airplane centered and scaled -->
+  <g transform="translate(90, 90) scale(4) translate(-16, -16)" fill="#2563eb">
+    <!-- Main fuselage -->
+    <path d="M2 15.5L12 5.5L16 9.5L28 7L30 9L26 13L28 15L26 17L14 19L10 23L6 19L8 17L2 15.5Z"/>
+    <!-- Wing -->
+    <path d="M6 13L10 9L18 11L14 15L6 13Z"/>
+    <!-- Tail fin -->
+    <path d="M4 17L8 21L12 17H4Z"/>
+  </g>
+</svg>

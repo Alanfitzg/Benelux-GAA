@@ -1,0 +1,11 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Airplane silhouette based on your drawing -->
+  <g fill="#2563eb">
+    <!-- Main fuselage -->
+    <path d="M2 15.5L12 5.5L16 9.5L28 7L30 9L26 13L28 15L26 17L14 19L10 23L6 19L8 17L2 15.5Z"/>
+    <!-- Wing -->
+    <path d="M6 13L10 9L18 11L14 15L6 13Z"/>
+    <!-- Tail fin -->
+    <path d="M4 17L8 21L12 17H4Z"/>
+  </g>
+</svg>

@@ -529,3 +529,175 @@ model PitchRequest {
 - **Accurate Data**: Precise coordinates and verified facility information
 - **Permission Security**: Role-based access prevents unauthorized modifications
 - **Event Integration**: Seamless workflow from pitch creation to event planning
+
+## ⭐ Club Testimonials System
+
+### **System Overview**
+Comprehensive testimonials feature allowing users to submit reviews for GAA clubs with a dual approval workflow (super admin → club admin) to ensure quality and authenticity. Features carousel display, dashboard management, and authentication gates.
+
+### **Core Features**
+
+#### **1. Dual Approval Workflow**
+- **Step 1**: User submits testimonial → Status: PENDING
+- **Step 2**: Super admin approves → Status: SUPER_ADMIN_APPROVED  
+- **Step 3**: Club admin approves → Status: APPROVED (publicly visible)
+- **Rejection**: Either admin can reject → Status: REJECTED
+- **Editing**: Users can edit testimonials, resetting approval status to PENDING
+
+#### **2. Content Management**
+- **Character Limit**: 500 characters maximum for testimonials
+- **Text Only**: Clean, professional text-based reviews only
+- **User Attribution**: Shows reviewer name/username and submission date
+- **Display Order**: Drag-and-drop reordering for approved testimonials
+
+#### **3. Public Display**
+- **Auto-playing Carousel**: 5-second intervals with manual navigation
+- **Club Profile Integration**: Testimonials section on club details pages
+- **Hidden Form**: "Write Testimonial" button reveals form (reduces visual clutter)
+- **Authentication Required**: Users must be logged in to submit testimonials
+
+### **Database Schema**
+```prisma
+model Testimonial {
+  id                    String            @id @default(cuid())
+  content               String            // Max 500 characters
+  status                TestimonialStatus @default(PENDING)
+  userId                String
+  clubId                String
+  displayOrder          Int?              // For approved testimonials
+  submittedAt           DateTime          @default(now())
+  superAdminApprovedAt  DateTime?
+  superAdminApprovedBy  String?
+  clubAdminApprovedAt   DateTime?
+  clubAdminApprovedBy   String?
+  updatedAt             DateTime          @updatedAt
+  
+  user                  User              @relation(fields: [userId], references: [id])
+  club                  Club              @relation(fields: [clubId], references: [id])
+  superAdminApprover    User?             @relation("SuperAdminApprover", fields: [superAdminApprovedBy], references: [id])
+  clubAdminApprover     User?             @relation("ClubAdminApprover", fields: [clubAdminApprovedBy], references: [id])
+  
+  @@unique([userId, clubId])
+  @@index([clubId, status])
+  @@index([status])
+}
+
+enum TestimonialStatus {
+  PENDING
+  SUPER_ADMIN_APPROVED
+  APPROVED
+  REJECTED
+}
+```
+
+### **API Endpoints**
+- **`GET/POST /api/testimonials`**: List and create testimonials with filtering
+- **`PUT/DELETE /api/testimonials/[id]`**: Update and delete individual testimonials
+- **`POST /api/testimonials/[id]/approve`**: Dual approval workflow endpoint
+- **`POST /api/testimonials/[id]/reject`**: Rejection workflow endpoint
+- **`POST /api/testimonials/reorder`**: Drag-and-drop reordering for approved testimonials
+
+### **Component Architecture**
+
+#### **Public Display Components**
+- **`TestimonialSection.tsx`**: Main wrapper with form toggle and carousel
+- **`TestimonialCarousel.tsx`**: Auto-playing carousel with navigation controls
+- **`TestimonialForm.tsx`**: User submission form with validation
+
+#### **Admin Components**
+- **`TestimonialsDashboardWidget.tsx`**: Club admin dashboard integration
+- **Admin Panel**: Super admin management interface at `/admin/testimonials`
+
+### **Dashboard Integration**
+
+#### **Club Admin Dashboard Widget**
+- **Pending Count**: Shows testimonials awaiting club admin approval
+- **Quick Actions**: Approve/reject buttons directly from dashboard
+- **Status Overview**: Real-time stats for pending, approved, and total testimonials
+- **Navigation**: Direct links to full testimonial management
+
+#### **Super Admin Panel**
+- **Global Management**: View all testimonials across all clubs
+- **Bulk Operations**: Efficient approval/rejection workflows
+- **Filtering**: By status, club, date, and user
+- **Audit Trail**: Complete approval history and timestamps
+
+### **Authentication & Permission System**
+
+#### **User Permissions**
+| User Type | Create | Edit Own | Delete Own | Approve | Admin Panel |
+|-----------|--------|----------|------------|---------|-------------|
+| USER | ✅ | ✅ | ✅ | ❌ | ❌ |
+| CLUB_ADMIN | ✅ | ✅ | ✅ | ✅ Club Only | ✅ Club Only |
+| SUPER_ADMIN | ✅ | ✅ | ✅ | ✅ All | ✅ All |
+
+#### **Approval Workflow Logic**
+```typescript
+// Super admin approval (PENDING → SUPER_ADMIN_APPROVED)
+if (userRole === 'SUPER_ADMIN' && currentStatus === 'PENDING') {
+  updateStatus('SUPER_ADMIN_APPROVED');
+}
+
+// Club admin approval (SUPER_ADMIN_APPROVED → APPROVED) 
+if (isClubAdmin && currentStatus === 'SUPER_ADMIN_APPROVED') {
+  updateStatus('APPROVED');
+}
+```
+
+### **User Experience Features**
+
+#### **Authentication Gates**
+- **Event Details Pages**: Key information hidden for non-authenticated users
+- **Sign-up Encouragement**: "Create Free Account" CTAs with blurred content previews
+- **Progressive Disclosure**: Option to view without signing up (with reminder prompts)
+
+#### **Responsive Design**
+- **Mobile Optimized**: Touch-friendly carousel navigation
+- **Professional Styling**: Clean, business-focused design without emojis
+- **Loading States**: Skeleton loading and error handling
+- **Form Validation**: Real-time character counting and validation feedback
+
+### **Technical Implementation**
+
+#### **Drag-and-Drop Reordering**
+- **Library**: @dnd-kit/core and @dnd-kit/sortable
+- **API Integration**: Batch reorder API with optimistic updates
+- **Persistence**: Display order stored in database for approved testimonials
+
+#### **Carousel Auto-play**
+- **5-Second Intervals**: Automatic progression with manual override
+- **Pause on Hover**: User-friendly interaction patterns
+- **Loop Behavior**: Continuous cycling through testimonials
+- **Navigation Controls**: Previous/next buttons with visual indicators
+
+#### **Data Validation**
+- **Client-side**: Real-time character counting and form validation
+- **Server-side**: Comprehensive Zod schema validation
+- **Security**: SQL injection prevention and XSS protection
+- **Rate Limiting**: Per-user testimonial limits and spam prevention
+
+### **Quality Control Features**
+
+#### **Content Moderation**
+- **Dual Approval**: Prevents inappropriate content through two-step review
+- **Edit Reset**: Editing testimonials resets approval status for re-review  
+- **Audit Trail**: Complete history of approvals, rejections, and modifications
+- **Deletion Requests**: Only super admins can permanently delete testimonials
+
+#### **Spam Prevention**
+- **One Per Club**: Users limited to one testimonial per club
+- **Character Limits**: 500-character maximum prevents spam walls
+- **Authentication Required**: Prevents anonymous spam submissions
+
+### **Integration Points**
+- **Club Profiles**: Seamless integration into club details pages
+- **Admin Dashboards**: Comprehensive management widgets for both user types  
+- **Authentication System**: Leverages existing NextAuth.js user management
+- **Event Pages**: Authentication gates encourage user registration
+
+### **Benefits & Impact**
+- **Trust Building**: Authentic user reviews build club credibility
+- **User Engagement**: Encourages community participation and feedback
+- **Quality Assurance**: Dual approval ensures high-quality testimonials
+- **Growth Driver**: Authentication gates increase user registrations
+- **Club Insights**: Valuable feedback for club improvement and marketing
