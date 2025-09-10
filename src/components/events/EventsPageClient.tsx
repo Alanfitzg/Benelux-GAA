@@ -748,6 +748,21 @@ function EventCard({ event, index, searchQuery }: { event: Event; index: number;
           <p className="text-gray-600 text-sm mb-2 line-clamp-1">
             📍 {searchQuery ? highlightText(event.location) : event.location}
           </p>
+          
+          {/* Sport Types Display */}
+          {event.acceptedTeamTypes && event.acceptedTeamTypes.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-2">
+              {event.acceptedTeamTypes.map((sport) => (
+                <span
+                  key={sport}
+                  className="inline-block px-2 py-0.5 bg-primary/10 text-primary text-xs font-medium rounded-full"
+                >
+                  {sport}
+                </span>
+              ))}
+            </div>
+          )}
+          
           {event.cost !== null && (
             <p className="text-primary font-semibold">
               {event.cost === 0 ? "Free" : `€${event.cost}`}

@@ -1,20 +1,21 @@
 # PlayAway System Documentation
 
-## 🎯 User Onboarding System
+## 🎯 User Onboarding System - "The Profile Builder"
 
 ### **Feature Toggle Control**
 - **Admin Access**: `/admin/features` - toggleable "User Onboarding Flow" feature
 - **Default State**: Disabled (experimental feature)
 - **Location**: Integrated into main admin dashboard
 
-### **Onboarding Flow Components**
+### **Profile Builder Flow Components**
 1. **Travel Motivations** (Step 1)
    - 9 simplified options: Sun, Budget, Specific Place, Activities, Social, Tournaments, Quick Trips, Culture, Friends
    - **Drag-and-drop ranking**: Users select and rank by priority
    - **Smart UI**: Selection grid + ranked list with visual feedback
 
 2. **Competitive Level** (Step 2)
-   - 5 levels: Casual/Social, Mixed Ability, Competitive Irish, International Challenge, Elite
+   - 3 sport-neutral levels: Social Tournament, Competitive Friendly, Training Camp Abroad
+   - Updated with sport-neutral language (removed football assumptions)
    - Single selection with detailed descriptions
 
 3. **Optional Details** (Step 3)
@@ -701,3 +702,33 @@ if (isClubAdmin && currentStatus === 'SUPER_ADMIN_APPROVED') {
 - **Quality Assurance**: Dual approval ensures high-quality testimonials
 - **Growth Driver**: Authentication gates increase user registrations
 - **Club Insights**: Valuable feedback for club improvement and marketing
+
+---
+
+## 🎯 User Experience & Form Systems (December 2025)
+
+### **Simplified Survey System**
+**Location**: `/src/components/SurveyForm.tsx`
+- **Redesign**: Reduced from 6 steps to 2 steps for better completion rates
+- **Step 1**: Club information (role, location, club name, travel frequency)
+- **Step 2**: Combined preferences and contact information
+- **Improvements**: Better field organization, logical flow, mobile-optimized layouts
+
+### **Interactive How It Works System**
+**Location**: `/src/app/how-it-works/HowItWorksClient.tsx`
+- **Path-Based Experience**: Users choose between "Travelling Team" or "Host" flows
+- **Dynamic Content**: Separate detailed information for each user type
+- **Navigation**: Toggle functionality to switch between perspectives
+- **Design**: Clean, professional interface without colored banners
+
+### **Event Display Enhancements**
+**Location**: `/src/components/events/EventsPageClient.tsx`
+- **Sport Type Badges**: Display GAA sport types (Hurling, LGFA, G4MO, etc.) on event tiles
+- **Visual Improvements**: Better event identification and categorization
+- **User Experience**: Clearer event browsing with sport-specific filtering
+
+### **Enhanced Disclaimers & Transparency**
+**Location**: `/src/app/events/[id]/EventDetailClient.tsx`
+- **Host Responsibility**: Added disclaimer in "What's Included" sections
+- **User Trust**: Clear communication about club responsibilities
+- **Transparency**: Better user understanding of service delivery

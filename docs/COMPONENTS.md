@@ -5,9 +5,9 @@
 - **`/src/components/auth/PasswordStrengthMeter.tsx`** - Visual password strength indicator
 - **Calendar Components**: ClubCalendar, InterestSubmissionForm, ClubCalendarManagement
 - **SignInPromptModal**: For anonymous users to sign up/in for calendar features
-- **`/src/components/onboarding/OnboardingModal.tsx`** - Main 4-step onboarding modal with progress tracking
+- **`/src/components/onboarding/OnboardingModal.tsx`** - "The Profile Builder" - Main 4-step onboarding modal with progress tracking
 - **`/src/components/onboarding/MotivationSelector.tsx`** - Drag-and-drop travel motivation ranking
-- **`/src/components/onboarding/CompetitiveSelector.tsx`** - Competitive level selection with descriptions
+- **`/src/components/onboarding/CompetitiveSelector.tsx`** - Competitive level selection with sport-neutral language
 - **`/src/components/onboarding/DetailPreferences.tsx`** - Optional preference details with seasonal month selection
 - **`/src/components/onboarding/OnboardingComplete.tsx`** - Summary and completion confirmation
 - **`/src/components/onboarding/OnboardingProvider.tsx`** - Global provider for triggering onboarding
@@ -16,7 +16,7 @@
 - **`/src/components/GoogleAnalytics.tsx`** - Google Analytics 4 integration component
 - **`/src/hooks/useOnboarding.ts`** - Hook for onboarding state management
 - **`/src/hooks/useAnalytics.ts`** - Hook for Google Analytics event tracking
-- **`/src/lib/constants/onboarding.ts`** - Centralized onboarding options and configurations
+- **`/src/lib/constants/onboarding.ts`** - Centralized onboarding options and configurations (updated with sport-neutral language)
 - **`/src/lib/analytics.ts`** - Google Analytics utilities and event definitions
 
 ## 📝 Event Report System Components (August 2025)
@@ -142,3 +142,25 @@
 - **Enhanced `/src/components/CreateEventButton.tsx`** - Fixed session loading issues for super admin access
 - **Enhanced `/src/app/events/create/page.tsx`** - Integrated pitch selection with coordinate auto-population
 - **Database Models**: PitchLocation and PitchRequest models with proper relationships and indexing
+
+## 🎯 UX & Form Improvements (December 2025)
+
+### **Homepage & Navigation Updates**
+- **Enhanced `/src/app/page.tsx`** - Streamlined "How It Works" section with mobile-first text, corrected custom trip button routing
+- **Enhanced `/src/components/SurveyForm.tsx`** - Simplified custom trip form (reduced from 6 steps to 2 steps) with better field organization
+
+### **Interactive How It Works Page**
+- **Complete redesign `/src/app/how-it-works/HowItWorksClient.tsx`** - New interactive path-based experience:
+  - Initial state with "For the Travelling Team" and "For the Host" buttons
+  - Separate detailed flows for each user type
+  - Toggle functionality to switch between perspectives
+  - Removed colored banner, inverted title colors for cleaner design
+  - Added profile setup step for travelling teams
+
+### **Event Experience Enhancements**
+- **Enhanced `/src/components/events/EventsPageClient.tsx`** - Added sport type badges to event tiles (Hurling, LGFA, G4MO, etc.)
+- **Enhanced `/src/app/events/[id]/EventDetailClient.tsx`** - Added host club responsibility disclaimer in "What's Included" section
+
+### **Profile Builder Improvements**  
+- **Enhanced `/src/components/onboarding/OnboardingModal.tsx`** - Renamed to "The Profile Builder" for better clarity
+- **Updated `/src/lib/constants/onboarding.ts`** - Implemented sport-neutral language removing football assumptions

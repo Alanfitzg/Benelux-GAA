@@ -59,7 +59,7 @@ export const COMPETITIVE_LEVELS = {
   social_tournament: {
     id: 'social_tournament',
     label: 'Social Tournament',
-    description: 'More interested in the trip than playing football - focus on fun, culture, and craic'
+    description: 'More interested in the trip than competitive games - focus on fun, culture, and craic'
   },
   competitive_friendly: {
     id: 'competitive_friendly',

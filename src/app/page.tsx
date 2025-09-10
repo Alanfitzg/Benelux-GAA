@@ -266,12 +266,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        <span className="hidden md:inline">
-                          See what&apos;s going on in Europe
-                        </span>
-                        <span className="md:hidden">
-                          Browse European tournaments & events
-                        </span>
+                        Browse European tournaments & events
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Browse tournaments across Germany, Spain, France and
@@ -285,12 +280,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        <span className="hidden md:inline">
-                          Connect Across Borders
-                        </span>
-                        <span className="md:hidden">
-                          Connect with international clubs
-                        </span>
+                        Connect with international clubs
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Link up with international clubs for unforgettable trips
@@ -303,12 +293,7 @@ export default function HomePage() {
                     </div>
                     <div>
                       <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        <span className="hidden md:inline">
-                          Take GAA International
-                        </span>
-                        <span className="md:hidden">
-                          Create new relationships, and great memories!
-                        </span>
+                        Create new relationships, and great memories!
                       </h4>
                       <p className="hidden md:block text-gray-600 text-xs md:text-sm">
                         Bring your game to Europe&apos;s most exciting cities
@@ -583,7 +568,7 @@ export default function HomePage() {
                   Tournaments
                 </h3>
                 <p className="text-white/80 text-xs md:text-sm">
-                  Multi-city tournaments with accommodation and logistics
+                  Multi-city tournaments and competitive events
                 </p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
@@ -613,7 +598,7 @@ export default function HomePage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/contact"
+                href="/survey"
                 className="px-6 md:px-8 py-3 md:py-4 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm md:text-lg"
               >
                 Plan Your Custom Trip

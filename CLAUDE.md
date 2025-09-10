@@ -14,7 +14,7 @@ For comprehensive information, see these modular documentation files:
 6. **`/project-docs/TODO.md`** - Social authentication implementation plan
 7. **`/DEPLOYMENT_CHECKLIST.md`** - Production deployment requirements
 
-## 🚀 Recent Updates (August 2025)
+## 🚀 Recent Updates (December 2025)
 - **Complete Rebrand**: Platform renamed to "PlayAway" with global positioning
 - **Mobile UX Improvements**: Optimized layouts, country cards, responsive typography, hidden pitch management on mobile
 - **Club Verification System**: Comprehensive verification workflow for data quality
@@ -27,6 +27,11 @@ For comprehensive information, see these modular documentation files:
 - **⭐ Club Testimonials System**: Dual approval workflow (super admin → club admin), carousel display, dashboard management
 - **🔒 Authentication Gates**: Event details obscured for non-authenticated users to encourage sign-ups
 - **✈️ Updated Branding**: Custom airplane favicon and icons throughout the platform
+- **🏠 Homepage UX Improvements**: Streamlined "How It Works" section with mobile-first text, simplified custom trip form with 2-step process
+- **🎯 Interactive How It Works Page**: Path-based user experience with separate flows for travelling teams vs host clubs
+- **📋 Profile Builder Enhancement**: Renamed onboarding form to "The Profile Builder" with sport-neutral language
+- **🏆 Event Tiles Enhancement**: Sport type badges (Hurling, LGFA, G4MO, etc.) now display on tournament listings
+- **📝 What's Included Disclaimer**: Added host club responsibility notice for event components
 
 ## 🏗️ Tech Stack (Brief)
 - **Frontend**: Next.js 15.3.3, React 19, TypeScript, Tailwind CSS
@@ -99,6 +104,12 @@ npx prisma db push   # Apply schema changes
 - ✅ Testimonials system implementation (dual approval workflow, carousel display, admin dashboard integration)
 - ✅ Authentication gates for event details (encouraging user registration)
 - ✅ Favicon and branding updates (custom airplane icon implementation)
+- ✅ Homepage "How It Works" section mobile responsiveness and text optimization
+- ✅ Custom trip form simplification (reduced from 6 steps to 2 steps)
+- ✅ How It Works page redesign with interactive path-based user experience
+- ✅ Event tiles sport type display (sport badges on tournament listings)
+- ✅ Profile Builder form naming and sport-neutral language implementation
+- ✅ What's Included section disclaimer for host club responsibilities
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (needs Redis for scaling)

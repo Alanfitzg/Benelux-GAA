@@ -307,6 +307,9 @@ export default function EventDetailClient({
                         </div>
                       ))}
                     </div>
+                    <p className="text-xs text-gray-500 mt-4 italic">
+                      This host club is responsible for selecting and delivering the components listed
+                    </p>
                   </div>
                 </SignUpGate>
               )}

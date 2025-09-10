@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import HowItWorksClient from "./HowItWorksClient";
 
 export const metadata: Metadata = {
-  title: "How It Works | Gaelic Trips",
+  title: "How It Works | PlayAway",
   description:
-    "Learn how Gaelic Trips supports GAA clubs through team tickets, day passes, and community-first principles. Discover how our platform works and puts money back into clubs.",
+    "Learn how PlayAway supports GAA clubs through team tickets, day passes, and community-first principles. Discover how our platform works and puts money back into clubs.",
   keywords: [
-    "how gaelic trips works",
+    "how playaway works",
     "GAA club support",
     "team tickets",
     "day passes",
@@ -16,10 +16,10 @@ export const metadata: Metadata = {
     "gaelic games travel",
   ],
   openGraph: {
-    title: "How It Works | Gaelic Trips",
+    title: "How It Works | PlayAway",
     description:
-      "Learn how Gaelic Trips supports GAA clubs and puts money back into the community through our transparent platform.",
-    url: "https://gaa-trips.vercel.app/how-it-works",
+      "Learn how PlayAway supports GAA clubs and puts money back into the community through our transparent platform.",
+    url: "https://play-away.vercel.app/how-it-works",
     type: "website",
   },
 };
