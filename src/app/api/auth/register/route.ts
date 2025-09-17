@@ -8,8 +8,14 @@ import { generateWelcomeEmail } from "@/lib/email-templates"
 import { AccountStatus } from "@prisma/client"
 
 async function registrationHandler(request: NextRequest) {
-  // Validate request body using Zod schema
-  const { email, username, password, name } = await validateBody(request, UserRegistrationSchema)
+  // Get the raw body first to extract additional fields
+  const body = await request.json()
+  
+  // Validate required fields using Zod schema
+  const { email, username, password, name } = await validateBody({ json: async () => body } as NextRequest, UserRegistrationSchema)
+  
+  // Extract additional fields
+  const { clubId, isClubMember } = body
 
   // Normalize input data
   const normalizedEmail = email.toLowerCase().trim()
@@ -33,8 +39,17 @@ async function registrationHandler(request: NextRequest) {
   // All users are now auto-approved
   const accountStatus = AccountStatus.APPROVED
   
-  // Create user without club association
-  const user = await createUser(normalizedEmail, normalizedUsername, password, normalizedName, undefined, null, accountStatus)
+  // Create user with optional club association
+  const user = await createUser(
+    normalizedEmail, 
+    normalizedUsername, 
+    password, 
+    normalizedName, 
+    undefined, 
+    clubId || null, 
+    accountStatus,
+    isClubMember || false
+  )
 
   // Send welcome email to the new user (all users are approved)
   sendWelcomeEmail(user, true).catch(error => {

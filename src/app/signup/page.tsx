@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import PasswordRequirements from "@/components/auth/PasswordRequirements";
 import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter";
 import UsernameRequirements from "@/components/auth/UsernameRequirements";
+import CascadingClubSelector from "@/components/auth/CascadingClubSelector";
 import { passwordSchema, usernameSchema } from "@/lib/validation/schemas";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { toast } from "react-hot-toast";
@@ -42,6 +43,8 @@ export default function SignUp() {
     password: "",
     confirmPassword: "",
     name: "",
+    clubId: null as string | null,
+    isClubMember: false,
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +168,8 @@ export default function SignUp() {
           username: formData.username,
           password: formData.password,
           name: formData.name,
+          clubId: formData.clubId,
+          isClubMember: formData.isClubMember,
         }),
       });
 
@@ -488,6 +493,24 @@ export default function SignUp() {
                   </motion.div>
                 </div>
 
+                {/* Club Selection */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.75 }}
+                  className="md:col-span-2"
+                >
+                  <CascadingClubSelector
+                    value={formData.clubId}
+                    onChange={(clubId, isClubMember) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        clubId,
+                        isClubMember
+                      }));
+                    }}
+                  />
+                </motion.div>
 
                 {/* Submit Button */}
                 <motion.div

@@ -71,8 +71,11 @@ model Interest {
 model Club {
   id                  String               @id @default(cuid())
   name                String
-  region              String?
-  subRegion           String?
+  internationalUnitId String?
+  countryId           String?
+  regionId            String?
+  region              String?              // Legacy field - keeping for backward compatibility
+  subRegion           String?              // Legacy field - keeping for backward compatibility
   map                 String?
   facebook            String?
   instagram           String?
@@ -83,6 +86,8 @@ model Club {
   latitude            Float?
   longitude           Float?
   teamTypes           String[]             @default([])
+  sportsSupported     String[]             @default([])
+  dataSource          String?              // e.g., "GAA_INTL", "WIKIPEDIA", "PITCH_FINDER", "USER_SUBMITTED"
   contactFirstName    String?
   contactLastName     String?
   contactEmail        String?
@@ -116,6 +121,9 @@ model Club {
   members             User[]               @relation("ClubMembers")
   admins              User[]               @relation("ClubAdmins")
   verifier            User?                @relation("ClubVerifier", fields: [verifiedBy], references: [id])
+  internationalUnit   InternationalUnit?   @relation(fields: [internationalUnitId], references: [id])
+  country             Country?             @relation(fields: [countryId], references: [id])
+  regionRecord        Region?              @relation(fields: [regionId], references: [id])
 
   @@index([status])
   @@index([location])
@@ -127,6 +135,10 @@ model Club {
   @@index([submittedBy])
   @@index([verificationStatus])
   @@index([verifiedAt])
+  @@index([internationalUnitId])
+  @@index([countryId])
+  @@index([regionId])
+  @@index([dataSource])
 }
 
 model User {
@@ -138,6 +150,7 @@ model User {
   role                  UserRole             @default(USER)
   accountStatus         AccountStatus        @default(PENDING)
   clubId                String?
+  isClubMember          Boolean              @default(false)
   createdAt             DateTime             @default(now())
   updatedAt             DateTime             @updatedAt
   approvedAt            DateTime?
@@ -737,4 +750,86 @@ enum TestimonialStatus {
   SUPER_ADMIN_APPROVED
   APPROVED
   REJECTED
+}
+
+// New models for cascading club selection
+model InternationalUnit {
+  id          String      @id @default(cuid())
+  code        String      @unique
+  name        String
+  displayOrder Int        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  countries   Country[]
+  clubs       Club[]
+  
+  @@index([displayOrder])
+}
+
+model Country {
+  id                  String              @id @default(cuid())
+  code                String              @unique
+  name                String
+  internationalUnitId String
+  hasRegions          Boolean             @default(false)
+  displayOrder        Int                 @default(0)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  
+  internationalUnit   InternationalUnit   @relation(fields: [internationalUnitId], references: [id])
+  regions             Region[]
+  clubs               Club[]
+  
+  @@index([internationalUnitId])
+  @@index([displayOrder])
+}
+
+model Region {
+  id          String      @id @default(cuid())
+  code        String
+  name        String
+  countryId   String
+  displayOrder Int        @default(0)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  country     Country     @relation(fields: [countryId], references: [id])
+  clubs       Club[]
+  
+  @@unique([countryId, code])
+  @@index([countryId])
+  @@index([displayOrder])
+}
+
+model ClubSubmission {
+  id                  String      @id @default(cuid())
+  name                String
+  internationalUnitId String?
+  countryId           String?
+  regionId            String?
+  countryName         String?     // For manual entries
+  regionName          String?     // For manual entries
+  sportsSupported     String[]    @default([])
+  website             String?
+  email               String?
+  status              SubmissionStatus @default(PENDING)
+  submittedBy         String
+  submittedAt         DateTime    @default(now())
+  reviewedBy          String?
+  reviewedAt          DateTime?
+  approvalNotes       String?
+  rejectionReason     String?
+  convertedToClubId   String?     // Reference to created club if approved
+  
+  @@index([status])
+  @@index([submittedBy])
+  @@index([submittedAt])
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  DUPLICATE
 }

@@ -9,7 +9,8 @@ export async function createUser(
   name?: string,
   role: UserRole = UserRole.USER,
   clubId?: string | null,
-  accountStatus: AccountStatus = AccountStatus.PENDING
+  accountStatus: AccountStatus = AccountStatus.PENDING,
+  isClubMember: boolean = false
 ) {
   const hashedPassword = await bcrypt.hash(password, 10)
   
@@ -20,7 +21,7 @@ export async function createUser(
       password: hashedPassword,
       name,
       role,
-      clubId,
+      club: clubId ? { connect: { id: clubId } } : undefined,
       accountStatus,
       approvedAt: accountStatus === AccountStatus.APPROVED ? new Date() : undefined,
     },
