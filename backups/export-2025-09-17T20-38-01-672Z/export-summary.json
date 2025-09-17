@@ -1,0 +1,14 @@
+{
+  "exportDate": "2025-09-17T20:38:02.194Z",
+  "exportDir": "/Users/alan/workspace/Gaa-Events/backups/export-2025-09-17T20-38-01-672Z",
+  "counts": {
+    "users": 5,
+    "clubs": 88,
+    "events": 33,
+    "surveys": 1,
+    "availabilitySlots": 0,
+    "tournamentInterests": 0,
+    "clubAdminRequests": 2
+  },
+  "note": "This export contains all current database data for backup purposes."
+}

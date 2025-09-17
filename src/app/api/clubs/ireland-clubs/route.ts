@@ -14,7 +14,7 @@ async function getIrishClubsHandler(request: Request) {
     // Get Ireland country ID
     const irelandCountry = await prisma.$queryRaw`
       SELECT id FROM "Country" WHERE code = 'IE'
-    ` as any[];
+    ` as { id: string }[];
 
     if (!irelandCountry.length) {
       return NextResponse.json({ error: 'Ireland country not found' }, { status: 400 });

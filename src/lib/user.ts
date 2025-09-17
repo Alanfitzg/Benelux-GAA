@@ -9,8 +9,7 @@ export async function createUser(
   name?: string,
   role: UserRole = UserRole.USER,
   clubId?: string | null,
-  accountStatus: AccountStatus = AccountStatus.PENDING,
-  isClubMember: boolean = false
+  accountStatus: AccountStatus = AccountStatus.PENDING
 ) {
   const hashedPassword = await bcrypt.hash(password, 10)
   

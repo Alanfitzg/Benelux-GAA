@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Users, ChevronDown, Plus, AlertCircle, CheckCircle, Globe, MapPin, Building } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Users, Plus, AlertCircle, CheckCircle, Building } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 interface InternationalUnit {
@@ -56,7 +56,7 @@ const SPORTS_OPTIONS = [
   'Rounders'
 ];
 
-export default function CascadingClubSelector({ value, onChange, required = false }: CascadingClubSelectorProps) {
+export default function CascadingClubSelector({ value, onChange }: CascadingClubSelectorProps) {
   // Toggle state
   const [isClubMember, setIsClubMember] = useState<boolean | null>(null);
   
@@ -93,6 +93,32 @@ export default function CascadingClubSelector({ value, onChange, required = fals
     email: ''
   });
   const [submitting, setSubmitting] = useState(false);
+
+  // Helper functions to check unit types (defined early to avoid reference errors)
+  const isIreland = useCallback(() => {
+    const country = countries.find(c => c.id === selectedCountry);
+    return country?.code === 'IE';
+  }, [countries, selectedCountry]);
+
+  const isBritain = useCallback(() => {
+    const unit = units.find(u => u.id === selectedUnit);
+    return unit?.code === 'BRITAIN';
+  }, [units, selectedUnit]);
+
+  const isNewYork = useCallback(() => {
+    const unit = units.find(u => u.id === selectedUnit);
+    return unit?.code === 'NEW_YORK';
+  }, [units, selectedUnit]);
+
+  const isUSAGAA = useCallback(() => {
+    const unit = units.find(u => u.id === selectedUnit);
+    return unit?.code === 'USA_GAA';
+  }, [units, selectedUnit]);
+
+  const isCanada = useCallback(() => {
+    const unit = units.find(u => u.id === selectedUnit);
+    return unit?.code === 'CANADA';
+  }, [units, selectedUnit]);
 
   // Load international units on mount
   useEffect(() => {
@@ -132,7 +158,7 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       setClubs([]);
       setCounties([]);
     }
-  }, [selectedUnit]);
+  }, [selectedUnit, isBritain, isCanada, isNewYork, isUSAGAA]);
 
   // Load regions when country is selected (if applicable)
   useEffect(() => {
@@ -177,7 +203,7 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       loadCanadaClubs(selectedRegion);
     }
     // Note: New York clubs are loaded directly when unit is selected (no regions/countries)
-  }, [selectedCounty, selectedRegion, selectedCountry]);
+  }, [selectedCounty, selectedRegion, selectedCountry, isBritain, isCanada, isIreland, isNewYork, isUSAGAA]);
 
   const loadInternationalUnits = async () => {
     setLoadingUnits(true);
@@ -243,13 +269,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const britainUnit = units.find((u: any) => u.code === 'BRITAIN');
+      const britainUnit = units.find((u: InternationalUnit) => u.code === 'BRITAIN');
       if (!britainUnit) throw new Error('Britain unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${britainUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load Britain country');
       const countries = await countryResponse.json();
-      const britainCountry = countries.find((c: any) => c.code === 'BRITAIN');
+      const britainCountry = countries.find((c: Country) => c.code === 'BRITAIN');
       if (!britainCountry) throw new Error('Britain country not found');
 
       // Load Britain regions
@@ -276,13 +302,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const britainUnit = units.find((u: any) => u.code === 'BRITAIN');
+      const britainUnit = units.find((u: InternationalUnit) => u.code === 'BRITAIN');
       if (!britainUnit) throw new Error('Britain unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${britainUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load Britain country');
       const countries = await countryResponse.json();
-      const britainCountry = countries.find((c: any) => c.code === 'BRITAIN');
+      const britainCountry = countries.find((c: Country) => c.code === 'BRITAIN');
       if (!britainCountry) throw new Error('Britain country not found');
 
       // Load clubs by region
@@ -313,13 +339,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const newYorkUnit = units.find((u: any) => u.code === 'NEW_YORK');
+      const newYorkUnit = units.find((u: InternationalUnit) => u.code === 'NEW_YORK');
       if (!newYorkUnit) throw new Error('New York unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${newYorkUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load New York countries');
       const countries = await countryResponse.json();
-      const usaCountry = countries.find((c: any) => c.code === 'US');
+      const usaCountry = countries.find((c: Country) => c.code === 'US');
       if (!usaCountry) throw new Error('USA country not found under New York');
 
       // Load all clubs directly from New York (no regions)
@@ -346,13 +372,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const usaGaaUnit = units.find((u: any) => u.code === 'USA_GAA');
+      const usaGaaUnit = units.find((u: InternationalUnit) => u.code === 'USA_GAA');
       if (!usaGaaUnit) throw new Error('USA GAA unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${usaGaaUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load USA GAA countries');
       const countries = await countryResponse.json();
-      const usaCountry = countries.find((c: any) => c.code === 'USA-GAA');
+      const usaCountry = countries.find((c: Country) => c.code === 'USA-GAA');
       if (!usaCountry) throw new Error('USA country not found under USA GAA');
 
       // Load divisions (regions)
@@ -379,13 +405,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const canadaUnit = units.find((u: any) => u.code === 'CANADA');
+      const canadaUnit = units.find((u: InternationalUnit) => u.code === 'CANADA');
       if (!canadaUnit) throw new Error('Canada unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${canadaUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load Canada countries');
       const countries = await countryResponse.json();
-      const canadaCountry = countries.find((c: any) => c.code === 'CAN');
+      const canadaCountry = countries.find((c: Country) => c.code === 'CAN');
       if (!canadaCountry) throw new Error('Canada country not found under Canada unit');
 
       // Load divisions (regions)
@@ -412,13 +438,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const usaGaaUnit = units.find((u: any) => u.code === 'USA_GAA');
+      const usaGaaUnit = units.find((u: InternationalUnit) => u.code === 'USA_GAA');
       if (!usaGaaUnit) throw new Error('USA GAA unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${usaGaaUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load USA GAA countries');
       const countries = await countryResponse.json();
-      const usaCountry = countries.find((c: any) => c.code === 'USA-GAA');
+      const usaCountry = countries.find((c: Country) => c.code === 'USA-GAA');
       if (!usaCountry) throw new Error('USA country not found under USA GAA');
 
       // Load clubs by division
@@ -449,13 +475,13 @@ export default function CascadingClubSelector({ value, onChange, required = fals
       const unitResponse = await fetch('/api/clubs/international-units-sql');
       if (!unitResponse.ok) throw new Error('Failed to load units');
       const units = await unitResponse.json();
-      const canadaUnit = units.find((u: any) => u.code === 'CANADA');
+      const canadaUnit = units.find((u: InternationalUnit) => u.code === 'CANADA');
       if (!canadaUnit) throw new Error('Canada unit not found');
 
       const countryResponse = await fetch(`/api/clubs/countries-sql?unitId=${canadaUnit.id}`);
       if (!countryResponse.ok) throw new Error('Failed to load Canada countries');
       const countries = await countryResponse.json();
-      const canadaCountry = countries.find((c: any) => c.code === 'CAN');
+      const canadaCountry = countries.find((c: Country) => c.code === 'CAN');
       if (!canadaCountry) throw new Error('Canada country not found');
 
       const params = new URLSearchParams();
@@ -541,30 +567,6 @@ export default function CascadingClubSelector({ value, onChange, required = fals
     }
   };
 
-  const isIreland = () => {
-    const country = countries.find(c => c.id === selectedCountry);
-    return country?.code === 'IE';
-  };
-
-  const isBritain = () => {
-    const unit = units.find(u => u.id === selectedUnit);
-    return unit?.code === 'BRITAIN';
-  };
-
-  const isNewYork = () => {
-    const unit = units.find(u => u.id === selectedUnit);
-    return unit?.code === 'NEW_YORK';
-  };
-
-  const isUSAGAA = () => {
-    const unit = units.find(u => u.id === selectedUnit);
-    return unit?.code === 'USA_GAA';
-  };
-
-  const isCanada = () => {
-    const unit = units.find(u => u.id === selectedUnit);
-    return unit?.code === 'CANADA';
-  };
 
   const handleClubMemberToggle = (isMember: boolean) => {
     setIsClubMember(isMember);
@@ -651,7 +653,7 @@ export default function CascadingClubSelector({ value, onChange, required = fals
           >
             <div className="flex items-center justify-center gap-2">
               <CheckCircle className="w-5 h-5" />
-              <span>Yes, I'm a member</span>
+              <span>Yes, I&apos;m a member</span>
             </div>
           </button>
           <button
@@ -868,7 +870,7 @@ export default function CascadingClubSelector({ value, onChange, required = fals
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-amber-900">Can't find your club?</p>
+                  <p className="text-sm font-medium text-amber-900">Can&apos;t find your club?</p>
                   <p className="text-sm text-amber-700 mt-1">
                     Help us add your club to our global directory.
                   </p>

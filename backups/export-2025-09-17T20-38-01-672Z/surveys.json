@@ -1,0 +1,38 @@
+[
+  {
+    "id": "cmfciuv6l0001ky04unzumfm6",
+    "eventId": null,
+    "role": "Player",
+    "clubName": "Na Fianna, Dublin",
+    "country": "Ireland",
+    "city": "Dublin",
+    "hasTraveledAbroad": "No",
+    "travelFrequency": null,
+    "destinationsVisited": [
+      "Spain",
+      "Portugal",
+      "Other",
+      "France",
+      "Netherlands"
+    ],
+    "preferredTravelTime": "Summer",
+    "teamSize": "10–15",
+    "budgetPerPerson": "€250–€500",
+    "biggestChallenge": "Logistics",
+    "interestedServices": [
+      "Tournaments",
+      "Training camps"
+    ],
+    "wouldHost": "No",
+    "wouldPayForPlatform": "No – we prefer handling it ourselves",
+    "improvementSuggestion": null,
+    "additionalFeedback": null,
+    "contactName": "Alan Fitzgerald",
+    "contactEmail": "alanfitzg@gmail.com",
+    "contactPhone": "0852464739",
+    "submittedAt": "2025-09-09T12:23:32.376Z",
+    "ipAddress": "86.42.23.44",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+    "referrer": "https://www.playawaygaa.com/survey"
+  }
+]

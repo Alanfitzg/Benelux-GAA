@@ -9,7 +9,7 @@ async function getFilteredClubsHandler(request: Request) {
     const regionId = searchParams.get('regionId');
     const search = searchParams.get('search');
 
-    const where: any = {
+    const where: { status: string; countryId?: string; regionId?: string; name?: { contains: string; mode: 'insensitive' } } = {
       status: 'APPROVED', // Only show approved clubs
     };
 
