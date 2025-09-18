@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
+import type { Prisma } from '@prisma/client';
 
 async function getFilteredClubsHandler(request: Request) {
   try {
@@ -9,7 +10,7 @@ async function getFilteredClubsHandler(request: Request) {
     const regionId = searchParams.get('regionId');
     const search = searchParams.get('search');
 
-    const where: { status: string; countryId?: string; regionId?: string; name?: { contains: string; mode: 'insensitive' } } = {
+    const where: Prisma.ClubWhereInput = {
       status: 'APPROVED', // Only show approved clubs
     };
 

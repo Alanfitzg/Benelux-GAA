@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import { withRateLimit, RATE_LIMITS } from '@/lib/rate-limit';
 
 async function submitClubHandler(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     
     if (!session?.user) {
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
@@ -77,4 +76,4 @@ async function submitClubHandler(request: NextRequest) {
   }
 }
 
-export const POST = withRateLimit(RATE_LIMITS.API, submitClubHandler);
+export const POST = withRateLimit(RATE_LIMITS.FORMS, submitClubHandler);

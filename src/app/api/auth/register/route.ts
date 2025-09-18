@@ -15,7 +15,7 @@ async function registrationHandler(request: NextRequest) {
   const { email, username, password, name } = await validateBody({ json: async () => body } as NextRequest, UserRegistrationSchema)
   
   // Extract additional fields
-  const { clubId, isClubMember } = body
+  const { clubId } = body
 
   // Normalize input data
   const normalizedEmail = email.toLowerCase().trim()
@@ -47,8 +47,7 @@ async function registrationHandler(request: NextRequest) {
     normalizedName, 
     undefined, 
     clubId || null, 
-    accountStatus,
-    isClubMember || false
+    accountStatus
   )
 
   // Send welcome email to the new user (all users are approved)
