@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cmfp3j7g600008obhdf4tx9k4",
+    "code": "IRELAND",
+    "name": "Ireland",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:34.518Z",
+    "updatedAt": "2025-09-18T07:35:34.518Z"
+  },
+  {
+    "id": "cmfp3j7hk00018obhrb6zhv7k",
+    "code": "BRITAIN",
+    "name": "Britain",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:34.569Z",
+    "updatedAt": "2025-09-18T07:35:34.569Z"
+  },
+  {
+    "id": "cmfp3j7j000028obh78spaeyf",
+    "code": "EUROPE",
+    "name": "Europe",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:34.621Z",
+    "updatedAt": "2025-09-18T07:35:34.621Z"
+  },
+  {
+    "id": "cmfp3j7ke00038obhdxecxu7t",
+    "code": "NORTH_AMERICA",
+    "name": "North America",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:34.671Z",
+    "updatedAt": "2025-09-18T07:35:34.671Z"
+  },
+  {
+    "id": "cmfp3j7lq00048obhugkg9s2r",
+    "code": "AUSTRALASIA",
+    "name": "Australasia",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:34.719Z",
+    "updatedAt": "2025-09-18T07:35:34.719Z"
+  },
+  {
+    "id": "cmfp3j7n200058obhypmhp6ts",
+    "code": "ASIA",
+    "name": "Asia",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:34.767Z",
+    "updatedAt": "2025-09-18T07:35:34.767Z"
+  },
+  {
+    "id": "cmfp3j7oj00068obh40dcdn4a",
+    "code": "MIDDLE_EAST",
+    "name": "Middle East",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:34.819Z",
+    "updatedAt": "2025-09-18T07:35:34.819Z"
+  },
+  {
+    "id": "cmfp3j7px00078obh1p0j7lsj",
+    "code": "AFRICA",
+    "name": "Africa",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:34.869Z",
+    "updatedAt": "2025-09-18T07:35:34.869Z"
+  },
+  {
+    "id": "cmfp3j7rc00088obhgj7tew6m",
+    "code": "REST_WORLD",
+    "name": "Rest of World",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:34.920Z",
+    "updatedAt": "2025-09-18T07:35:34.920Z"
+  }
+]

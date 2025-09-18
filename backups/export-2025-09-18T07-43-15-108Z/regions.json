@@ -1,0 +1,731 @@
+[
+  {
+    "id": "cmfp3jaw4002c8obhwff6591q",
+    "code": "DUB",
+    "name": "Dublin",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:38.980Z",
+    "updatedAt": "2025-09-18T07:35:38.980Z"
+  },
+  {
+    "id": "cmfp3jaxq002e8obh51fm5av1",
+    "code": "WIC",
+    "name": "Wicklow",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:39.039Z",
+    "updatedAt": "2025-09-18T07:35:39.039Z"
+  },
+  {
+    "id": "cmfp3jaz8002g8obht8nul09n",
+    "code": "WEX",
+    "name": "Wexford",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:39.093Z",
+    "updatedAt": "2025-09-18T07:35:39.093Z"
+  },
+  {
+    "id": "cmfp3jb0s002i8obhcznp0z87",
+    "code": "CAR",
+    "name": "Carlow",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:39.148Z",
+    "updatedAt": "2025-09-18T07:35:39.148Z"
+  },
+  {
+    "id": "cmfp3jb2d002k8obh9ou689b0",
+    "code": "KIL",
+    "name": "Kilkenny",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:39.205Z",
+    "updatedAt": "2025-09-18T07:35:39.205Z"
+  },
+  {
+    "id": "cmfp3jb3s002m8obh3yy1xh7x",
+    "code": "MEA",
+    "name": "Meath",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:39.256Z",
+    "updatedAt": "2025-09-18T07:35:39.256Z"
+  },
+  {
+    "id": "cmfp3jb56002o8obh3psc4me1",
+    "code": "LOU",
+    "name": "Louth",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:39.306Z",
+    "updatedAt": "2025-09-18T07:35:39.306Z"
+  },
+  {
+    "id": "cmfp3jb6l002q8obh6l4u2j8n",
+    "code": "MON",
+    "name": "Monaghan",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:39.358Z",
+    "updatedAt": "2025-09-18T07:35:39.358Z"
+  },
+  {
+    "id": "cmfp3jb84002s8obh7t60bbu8",
+    "code": "CAV",
+    "name": "Cavan",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:39.412Z",
+    "updatedAt": "2025-09-18T07:35:39.412Z"
+  },
+  {
+    "id": "cmfp3jb9f002u8obhrwlynlte",
+    "code": "LON",
+    "name": "Longford",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:39.459Z",
+    "updatedAt": "2025-09-18T07:35:39.459Z"
+  },
+  {
+    "id": "cmfp3jbap002w8obh6y4vhqjs",
+    "code": "WES",
+    "name": "Westmeath",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T07:35:39.505Z",
+    "updatedAt": "2025-09-18T07:35:39.505Z"
+  },
+  {
+    "id": "cmfp3jbc8002y8obhhle9w9vz",
+    "code": "OFF",
+    "name": "Offaly",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T07:35:39.561Z",
+    "updatedAt": "2025-09-18T07:35:39.561Z"
+  },
+  {
+    "id": "cmfp3jbdn00308obhbt8vt6dz",
+    "code": "LAO",
+    "name": "Laois",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 12,
+    "createdAt": "2025-09-18T07:35:39.612Z",
+    "updatedAt": "2025-09-18T07:35:39.612Z"
+  },
+  {
+    "id": "cmfp3jbex00328obh3pjqnshu",
+    "code": "KID",
+    "name": "Kildare",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 13,
+    "createdAt": "2025-09-18T07:35:39.657Z",
+    "updatedAt": "2025-09-18T07:35:39.657Z"
+  },
+  {
+    "id": "cmfp3jbga00348obh3iwoom15",
+    "code": "COR",
+    "name": "Cork",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 14,
+    "createdAt": "2025-09-18T07:35:39.706Z",
+    "updatedAt": "2025-09-18T07:35:39.706Z"
+  },
+  {
+    "id": "cmfp3jbhr00368obh7kuxvw15",
+    "code": "KER",
+    "name": "Kerry",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 15,
+    "createdAt": "2025-09-18T07:35:39.759Z",
+    "updatedAt": "2025-09-18T07:35:39.759Z"
+  },
+  {
+    "id": "cmfp3jbj300388obhvjgg3nus",
+    "code": "LIM",
+    "name": "Limerick",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 16,
+    "createdAt": "2025-09-18T07:35:39.807Z",
+    "updatedAt": "2025-09-18T07:35:39.807Z"
+  },
+  {
+    "id": "cmfp3jbkh003a8obhmhesutzw",
+    "code": "CLA",
+    "name": "Clare",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 17,
+    "createdAt": "2025-09-18T07:35:39.857Z",
+    "updatedAt": "2025-09-18T07:35:39.857Z"
+  },
+  {
+    "id": "cmfp3jblr003c8obhfxypxiy4",
+    "code": "TIP",
+    "name": "Tipperary",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 18,
+    "createdAt": "2025-09-18T07:35:39.903Z",
+    "updatedAt": "2025-09-18T07:35:39.903Z"
+  },
+  {
+    "id": "cmfp3jbnb003e8obhmqh6hl4o",
+    "code": "WAT",
+    "name": "Waterford",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 19,
+    "createdAt": "2025-09-18T07:35:39.959Z",
+    "updatedAt": "2025-09-18T07:35:39.959Z"
+  },
+  {
+    "id": "cmfp3jbpp003g8obhf3x93x5t",
+    "code": "GAL",
+    "name": "Galway",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 20,
+    "createdAt": "2025-09-18T07:35:40.046Z",
+    "updatedAt": "2025-09-18T07:35:40.046Z"
+  },
+  {
+    "id": "cmfp3jbrr003i8obht1fqa1ls",
+    "code": "MAY",
+    "name": "Mayo",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 21,
+    "createdAt": "2025-09-18T07:35:40.120Z",
+    "updatedAt": "2025-09-18T07:35:40.120Z"
+  },
+  {
+    "id": "cmfp3jbth003k8obh0b7dm8vx",
+    "code": "SLI",
+    "name": "Sligo",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 22,
+    "createdAt": "2025-09-18T07:35:40.182Z",
+    "updatedAt": "2025-09-18T07:35:40.182Z"
+  },
+  {
+    "id": "cmfp3jbus003m8obhhskvxvg9",
+    "code": "LEI",
+    "name": "Leitrim",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 23,
+    "createdAt": "2025-09-18T07:35:40.228Z",
+    "updatedAt": "2025-09-18T07:35:40.228Z"
+  },
+  {
+    "id": "cmfp3jbw5003o8obh1i2fmln8",
+    "code": "ROS",
+    "name": "Roscommon",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 24,
+    "createdAt": "2025-09-18T07:35:40.277Z",
+    "updatedAt": "2025-09-18T07:35:40.277Z"
+  },
+  {
+    "id": "cmfp3jbxj003q8obhhm6yskjr",
+    "code": "DON",
+    "name": "Donegal",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 25,
+    "createdAt": "2025-09-18T07:35:40.327Z",
+    "updatedAt": "2025-09-18T07:35:40.327Z"
+  },
+  {
+    "id": "cmfp3jc0g003s8obhgxm55tey",
+    "code": "ANT",
+    "name": "Antrim",
+    "countryId": "cmfp3j80g000e8obhg5lkkt42",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:40.433Z",
+    "updatedAt": "2025-09-18T07:35:40.433Z"
+  },
+  {
+    "id": "cmfp3jc1q003u8obh1arqvwt4",
+    "code": "ARM",
+    "name": "Armagh",
+    "countryId": "cmfp3j80g000e8obhg5lkkt42",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:40.478Z",
+    "updatedAt": "2025-09-18T07:35:40.478Z"
+  },
+  {
+    "id": "cmfp3jc2y003w8obhwosor7nc",
+    "code": "DER",
+    "name": "Derry",
+    "countryId": "cmfp3j80g000e8obhg5lkkt42",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:40.522Z",
+    "updatedAt": "2025-09-18T07:35:40.522Z"
+  },
+  {
+    "id": "cmfp3jc4o003y8obhvgbdu4x9",
+    "code": "DOW",
+    "name": "Down",
+    "countryId": "cmfp3j80g000e8obhg5lkkt42",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:40.584Z",
+    "updatedAt": "2025-09-18T07:35:40.584Z"
+  },
+  {
+    "id": "cmfp3jc6800408obho7nda21g",
+    "code": "FER",
+    "name": "Fermanagh",
+    "countryId": "cmfp3j80g000e8obhg5lkkt42",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:40.640Z",
+    "updatedAt": "2025-09-18T07:35:40.640Z"
+  },
+  {
+    "id": "cmfp3jc8600428obhqs6jc7sd",
+    "code": "TYR",
+    "name": "Tyrone",
+    "countryId": "cmfp3j80g000e8obhg5lkkt42",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:40.711Z",
+    "updatedAt": "2025-09-18T07:35:40.711Z"
+  },
+  {
+    "id": "cmfp3jcb700448obhe30jumf6",
+    "code": "LON",
+    "name": "London",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:40.820Z",
+    "updatedAt": "2025-09-18T07:35:40.820Z"
+  },
+  {
+    "id": "cmfp3jcch00468obhwsspue32",
+    "code": "SCO",
+    "name": "Scotland",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:40.866Z",
+    "updatedAt": "2025-09-18T07:35:40.866Z"
+  },
+  {
+    "id": "cmfp3jcdt00488obhsh0l6tiy",
+    "code": "WAL",
+    "name": "Wales",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:40.914Z",
+    "updatedAt": "2025-09-18T07:35:40.914Z"
+  },
+  {
+    "id": "cmfp3jcf6004a8obhx96987s7",
+    "code": "NW",
+    "name": "North West England",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:40.963Z",
+    "updatedAt": "2025-09-18T07:35:40.963Z"
+  },
+  {
+    "id": "cmfp3jch6004c8obh069huevu",
+    "code": "NE",
+    "name": "North East England",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:41.034Z",
+    "updatedAt": "2025-09-18T07:35:41.034Z"
+  },
+  {
+    "id": "cmfp3jcj1004e8obhx71djbu6",
+    "code": "YH",
+    "name": "Yorkshire & Humber",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:41.102Z",
+    "updatedAt": "2025-09-18T07:35:41.102Z"
+  },
+  {
+    "id": "cmfp3jcke004g8obhe2umdgap",
+    "code": "EM",
+    "name": "East Midlands",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:41.150Z",
+    "updatedAt": "2025-09-18T07:35:41.150Z"
+  },
+  {
+    "id": "cmfp3jcm0004i8obhxgk0ac01",
+    "code": "WM",
+    "name": "West Midlands",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:41.208Z",
+    "updatedAt": "2025-09-18T07:35:41.208Z"
+  },
+  {
+    "id": "cmfp3jcnf004k8obhb31kit9x",
+    "code": "EE",
+    "name": "East of England",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:41.260Z",
+    "updatedAt": "2025-09-18T07:35:41.260Z"
+  },
+  {
+    "id": "cmfp3jcpq004m8obh97i6slt9",
+    "code": "SE",
+    "name": "South East England",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:41.337Z",
+    "updatedAt": "2025-09-18T07:35:41.337Z"
+  },
+  {
+    "id": "cmfp3jcs4004o8obhp72boj0n",
+    "code": "SW",
+    "name": "South West England",
+    "countryId": "cmfp3j7xe000c8obhczb18ks7",
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T07:35:41.428Z",
+    "updatedAt": "2025-09-18T07:35:41.428Z"
+  },
+  {
+    "id": "cmfp3jcus004q8obh9guenewe",
+    "code": "NY",
+    "name": "New York",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:41.524Z",
+    "updatedAt": "2025-09-18T07:35:41.524Z"
+  },
+  {
+    "id": "cmfp3jcw2004s8obhqt05tif1",
+    "code": "CA",
+    "name": "California",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:41.570Z",
+    "updatedAt": "2025-09-18T07:35:41.570Z"
+  },
+  {
+    "id": "cmfp3jcxk004u8obhz4j9d7mr",
+    "code": "MA",
+    "name": "Massachusetts",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:41.624Z",
+    "updatedAt": "2025-09-18T07:35:41.624Z"
+  },
+  {
+    "id": "cmfp3jcys004w8obhsugrrimf",
+    "code": "IL",
+    "name": "Illinois",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:41.668Z",
+    "updatedAt": "2025-09-18T07:35:41.668Z"
+  },
+  {
+    "id": "cmfp3jd09004y8obh05lkyfqr",
+    "code": "TX",
+    "name": "Texas",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:41.721Z",
+    "updatedAt": "2025-09-18T07:35:41.721Z"
+  },
+  {
+    "id": "cmfp3jd1o00508obhe5knv43o",
+    "code": "FL",
+    "name": "Florida",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:41.772Z",
+    "updatedAt": "2025-09-18T07:35:41.772Z"
+  },
+  {
+    "id": "cmfp3jd2z00528obhh32ip4va",
+    "code": "PA",
+    "name": "Pennsylvania",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:41.819Z",
+    "updatedAt": "2025-09-18T07:35:41.819Z"
+  },
+  {
+    "id": "cmfp3jd4900548obhbukfu94u",
+    "code": "OH",
+    "name": "Ohio",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:41.866Z",
+    "updatedAt": "2025-09-18T07:35:41.866Z"
+  },
+  {
+    "id": "cmfp3jd5j00568obh9ga8lb2c",
+    "code": "GA",
+    "name": "Georgia",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:41.912Z",
+    "updatedAt": "2025-09-18T07:35:41.912Z"
+  },
+  {
+    "id": "cmfp3jd6s00588obhwzmuwt6y",
+    "code": "NC",
+    "name": "North Carolina",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:41.956Z",
+    "updatedAt": "2025-09-18T07:35:41.956Z"
+  },
+  {
+    "id": "cmfp3jd88005a8obhl10xlawq",
+    "code": "VA",
+    "name": "Virginia",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T07:35:42.008Z",
+    "updatedAt": "2025-09-18T07:35:42.008Z"
+  },
+  {
+    "id": "cmfp3jd9k005c8obhrif5s5uc",
+    "code": "MD",
+    "name": "Maryland",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T07:35:42.057Z",
+    "updatedAt": "2025-09-18T07:35:42.057Z"
+  },
+  {
+    "id": "cmfp3jdav005e8obh8u2qcvvh",
+    "code": "NJ",
+    "name": "New Jersey",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 12,
+    "createdAt": "2025-09-18T07:35:42.103Z",
+    "updatedAt": "2025-09-18T07:35:42.103Z"
+  },
+  {
+    "id": "cmfp3jdcc005g8obhhjtdzfhd",
+    "code": "CT",
+    "name": "Connecticut",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 13,
+    "createdAt": "2025-09-18T07:35:42.156Z",
+    "updatedAt": "2025-09-18T07:35:42.156Z"
+  },
+  {
+    "id": "cmfp3jdds005i8obhpt2rkb99",
+    "code": "WA",
+    "name": "Washington",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 14,
+    "createdAt": "2025-09-18T07:35:42.209Z",
+    "updatedAt": "2025-09-18T07:35:42.209Z"
+  },
+  {
+    "id": "cmfp3jdf7005k8obhfaft3537",
+    "code": "OR",
+    "name": "Oregon",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 15,
+    "createdAt": "2025-09-18T07:35:42.260Z",
+    "updatedAt": "2025-09-18T07:35:42.260Z"
+  },
+  {
+    "id": "cmfp3jdgp005m8obhmydxhae4",
+    "code": "CO",
+    "name": "Colorado",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 16,
+    "createdAt": "2025-09-18T07:35:42.314Z",
+    "updatedAt": "2025-09-18T07:35:42.314Z"
+  },
+  {
+    "id": "cmfp3jdi3005o8obhi2kn7a2v",
+    "code": "AZ",
+    "name": "Arizona",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 17,
+    "createdAt": "2025-09-18T07:35:42.363Z",
+    "updatedAt": "2025-09-18T07:35:42.363Z"
+  },
+  {
+    "id": "cmfp3jdjc005q8obh0rjb2oxx",
+    "code": "MI",
+    "name": "Michigan",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 18,
+    "createdAt": "2025-09-18T07:35:42.408Z",
+    "updatedAt": "2025-09-18T07:35:42.408Z"
+  },
+  {
+    "id": "cmfp3jdkk005s8obhxdv0ofe3",
+    "code": "MN",
+    "name": "Minnesota",
+    "countryId": "cmfp3j8sa000y8obh9992dh6w",
+    "displayOrder": 19,
+    "createdAt": "2025-09-18T07:35:42.452Z",
+    "updatedAt": "2025-09-18T07:35:42.452Z"
+  },
+  {
+    "id": "cmfp3jdn8005u8obhis3jm0xp",
+    "code": "ON",
+    "name": "Ontario",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:42.549Z",
+    "updatedAt": "2025-09-18T07:35:42.549Z"
+  },
+  {
+    "id": "cmfp3jdol005w8obhg9u4g5cc",
+    "code": "QC",
+    "name": "Quebec",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:42.597Z",
+    "updatedAt": "2025-09-18T07:35:42.597Z"
+  },
+  {
+    "id": "cmfp3jdqj005y8obhewbx5wk3",
+    "code": "BC",
+    "name": "British Columbia",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:42.668Z",
+    "updatedAt": "2025-09-18T07:35:42.668Z"
+  },
+  {
+    "id": "cmfp3jds100608obhimshfydj",
+    "code": "AB",
+    "name": "Alberta",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:42.721Z",
+    "updatedAt": "2025-09-18T07:35:42.721Z"
+  },
+  {
+    "id": "cmfp3jdtd00628obh7zqmmcbd",
+    "code": "MB",
+    "name": "Manitoba",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:42.770Z",
+    "updatedAt": "2025-09-18T07:35:42.770Z"
+  },
+  {
+    "id": "cmfp3jdus00648obhufx4cv04",
+    "code": "SK",
+    "name": "Saskatchewan",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:42.820Z",
+    "updatedAt": "2025-09-18T07:35:42.820Z"
+  },
+  {
+    "id": "cmfp3jdw100668obhytugyfeo",
+    "code": "NS",
+    "name": "Nova Scotia",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:42.865Z",
+    "updatedAt": "2025-09-18T07:35:42.865Z"
+  },
+  {
+    "id": "cmfp3jdxh00688obhqejxilhx",
+    "code": "NB",
+    "name": "New Brunswick",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:42.918Z",
+    "updatedAt": "2025-09-18T07:35:42.918Z"
+  },
+  {
+    "id": "cmfp3jdyy006a8obh45m0ewkl",
+    "code": "NL",
+    "name": "Newfoundland and Labrador",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:42.970Z",
+    "updatedAt": "2025-09-18T07:35:42.970Z"
+  },
+  {
+    "id": "cmfp3je0b006c8obhutoxkkb3",
+    "code": "PE",
+    "name": "Prince Edward Island",
+    "countryId": "cmfp3j8v900108obhfc5mcaz2",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:43.019Z",
+    "updatedAt": "2025-09-18T07:35:43.019Z"
+  },
+  {
+    "id": "cmfp3je3a006e8obha1zkf491",
+    "code": "NSW",
+    "name": "New South Wales",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:43.121Z",
+    "updatedAt": "2025-09-18T07:35:43.121Z"
+  },
+  {
+    "id": "cmfp3je4m006g8obh75umk7fq",
+    "code": "VIC",
+    "name": "Victoria",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:43.174Z",
+    "updatedAt": "2025-09-18T07:35:43.174Z"
+  },
+  {
+    "id": "cmfp3je61006i8obhc15k3um4",
+    "code": "QLD",
+    "name": "Queensland",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:43.225Z",
+    "updatedAt": "2025-09-18T07:35:43.225Z"
+  },
+  {
+    "id": "cmfp3je7b006k8obhoz00yhtz",
+    "code": "WA",
+    "name": "Western Australia",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:43.271Z",
+    "updatedAt": "2025-09-18T07:35:43.271Z"
+  },
+  {
+    "id": "cmfp3je8o006m8obh91wpnycf",
+    "code": "SA",
+    "name": "South Australia",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:43.320Z",
+    "updatedAt": "2025-09-18T07:35:43.320Z"
+  },
+  {
+    "id": "cmfp3je9x006o8obhwsrd49pz",
+    "code": "TAS",
+    "name": "Tasmania",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:43.365Z",
+    "updatedAt": "2025-09-18T07:35:43.365Z"
+  },
+  {
+    "id": "cmfp3jeb8006q8obhk12xqbny",
+    "code": "ACT",
+    "name": "Australian Capital Territory",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:43.412Z",
+    "updatedAt": "2025-09-18T07:35:43.412Z"
+  },
+  {
+    "id": "cmfp3jecp006s8obhh2qf2jz5",
+    "code": "NT",
+    "name": "Northern Territory",
+    "countryId": "cmfp3j91800148obhc30sd2gw",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:43.466Z",
+    "updatedAt": "2025-09-18T07:35:43.466Z"
+  }
+]

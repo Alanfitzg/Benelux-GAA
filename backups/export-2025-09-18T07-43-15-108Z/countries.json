@@ -1,0 +1,372 @@
+[
+  {
+    "id": "cmfp3j7ua000a8obhpucs24q6",
+    "code": "IE",
+    "name": "Ireland",
+    "internationalUnitId": "cmfp3j7g600008obhdf4tx9k4",
+    "hasRegions": true,
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:35.026Z",
+    "updatedAt": "2025-09-18T07:35:35.026Z"
+  },
+  {
+    "id": "cmfp3j7xe000c8obhczb18ks7",
+    "code": "GB",
+    "name": "Great Britain",
+    "internationalUnitId": "cmfp3j7hk00018obhrb6zhv7k",
+    "hasRegions": true,
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:35.138Z",
+    "updatedAt": "2025-09-18T07:35:35.138Z"
+  },
+  {
+    "id": "cmfp3j80g000e8obhg5lkkt42",
+    "code": "NI",
+    "name": "Northern Ireland",
+    "internationalUnitId": "cmfp3j7hk00018obhrb6zhv7k",
+    "hasRegions": true,
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:35.248Z",
+    "updatedAt": "2025-09-18T07:35:35.248Z"
+  },
+  {
+    "id": "cmfp3j83k000g8obh2yntd9lq",
+    "code": "FR",
+    "name": "France",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:35.360Z",
+    "updatedAt": "2025-09-18T07:35:35.360Z"
+  },
+  {
+    "id": "cmfp3j86b000i8obhpn6jd6lo",
+    "code": "DE",
+    "name": "Germany",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:35.460Z",
+    "updatedAt": "2025-09-18T07:35:35.460Z"
+  },
+  {
+    "id": "cmfp3j88w000k8obh8cfq4uae",
+    "code": "ES",
+    "name": "Spain",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:35.552Z",
+    "updatedAt": "2025-09-18T07:35:35.552Z"
+  },
+  {
+    "id": "cmfp3j8bj000m8obh91fpiui1",
+    "code": "IT",
+    "name": "Italy",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:35.647Z",
+    "updatedAt": "2025-09-18T07:35:35.647Z"
+  },
+  {
+    "id": "cmfp3j8e0000o8obh40mphmpk",
+    "code": "NL",
+    "name": "Netherlands",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:35.736Z",
+    "updatedAt": "2025-09-18T07:35:35.736Z"
+  },
+  {
+    "id": "cmfp3j8gk000q8obh4b2m4fae",
+    "code": "BE",
+    "name": "Belgium",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:35.828Z",
+    "updatedAt": "2025-09-18T07:35:35.828Z"
+  },
+  {
+    "id": "cmfp3j8jc000s8obhiizcnuf4",
+    "code": "CH",
+    "name": "Switzerland",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:35.928Z",
+    "updatedAt": "2025-09-18T07:35:35.928Z"
+  },
+  {
+    "id": "cmfp3j8mj000u8obh3w7s0msi",
+    "code": "AT",
+    "name": "Austria",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T07:35:36.043Z",
+    "updatedAt": "2025-09-18T07:35:36.043Z"
+  },
+  {
+    "id": "cmfp3j8pg000w8obhlo76l8c5",
+    "code": "LU",
+    "name": "Luxembourg",
+    "internationalUnitId": "cmfp3j7j000028obh78spaeyf",
+    "hasRegions": false,
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T07:35:36.148Z",
+    "updatedAt": "2025-09-18T07:35:36.148Z"
+  },
+  {
+    "id": "cmfp3j8sa000y8obh9992dh6w",
+    "code": "US",
+    "name": "United States",
+    "internationalUnitId": "cmfp3j7ke00038obhdxecxu7t",
+    "hasRegions": true,
+    "displayOrder": 12,
+    "createdAt": "2025-09-18T07:35:36.251Z",
+    "updatedAt": "2025-09-18T07:35:36.251Z"
+  },
+  {
+    "id": "cmfp3j8v900108obhfc5mcaz2",
+    "code": "CA",
+    "name": "Canada",
+    "internationalUnitId": "cmfp3j7ke00038obhdxecxu7t",
+    "hasRegions": true,
+    "displayOrder": 13,
+    "createdAt": "2025-09-18T07:35:36.357Z",
+    "updatedAt": "2025-09-18T07:35:36.357Z"
+  },
+  {
+    "id": "cmfp3j8y600128obh2p0vmhcf",
+    "code": "MX",
+    "name": "Mexico",
+    "internationalUnitId": "cmfp3j7ke00038obhdxecxu7t",
+    "hasRegions": false,
+    "displayOrder": 14,
+    "createdAt": "2025-09-18T07:35:36.462Z",
+    "updatedAt": "2025-09-18T07:35:36.462Z"
+  },
+  {
+    "id": "cmfp3j91800148obhc30sd2gw",
+    "code": "AU",
+    "name": "Australia",
+    "internationalUnitId": "cmfp3j7lq00048obhugkg9s2r",
+    "hasRegions": true,
+    "displayOrder": 15,
+    "createdAt": "2025-09-18T07:35:36.572Z",
+    "updatedAt": "2025-09-18T07:35:36.572Z"
+  },
+  {
+    "id": "cmfp3j94400168obhnj18tyf3",
+    "code": "NZ",
+    "name": "New Zealand",
+    "internationalUnitId": "cmfp3j7lq00048obhugkg9s2r",
+    "hasRegions": false,
+    "displayOrder": 16,
+    "createdAt": "2025-09-18T07:35:36.676Z",
+    "updatedAt": "2025-09-18T07:35:36.676Z"
+  },
+  {
+    "id": "cmfp3j96x00188obhpkivi90k",
+    "code": "JP",
+    "name": "Japan",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 17,
+    "createdAt": "2025-09-18T07:35:36.777Z",
+    "updatedAt": "2025-09-18T07:35:36.777Z"
+  },
+  {
+    "id": "cmfp3j99o001a8obhqhhphoyt",
+    "code": "CN",
+    "name": "China",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 18,
+    "createdAt": "2025-09-18T07:35:36.876Z",
+    "updatedAt": "2025-09-18T07:35:36.876Z"
+  },
+  {
+    "id": "cmfp3j9cl001c8obhlhgvnu1w",
+    "code": "KR",
+    "name": "South Korea",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 19,
+    "createdAt": "2025-09-18T07:35:36.981Z",
+    "updatedAt": "2025-09-18T07:35:36.981Z"
+  },
+  {
+    "id": "cmfp3j9f6001e8obhc7vdiye6",
+    "code": "SG",
+    "name": "Singapore",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 20,
+    "createdAt": "2025-09-18T07:35:37.075Z",
+    "updatedAt": "2025-09-18T07:35:37.075Z"
+  },
+  {
+    "id": "cmfp3j9iq001g8obhc16tvtgn",
+    "code": "HK",
+    "name": "Hong Kong",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 21,
+    "createdAt": "2025-09-18T07:35:37.203Z",
+    "updatedAt": "2025-09-18T07:35:37.203Z"
+  },
+  {
+    "id": "cmfp3j9lr001i8obhw3kpwa3q",
+    "code": "TH",
+    "name": "Thailand",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 22,
+    "createdAt": "2025-09-18T07:35:37.312Z",
+    "updatedAt": "2025-09-18T07:35:37.312Z"
+  },
+  {
+    "id": "cmfp3j9p3001k8obh90o056he",
+    "code": "MY",
+    "name": "Malaysia",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 23,
+    "createdAt": "2025-09-18T07:35:37.431Z",
+    "updatedAt": "2025-09-18T07:35:37.431Z"
+  },
+  {
+    "id": "cmfp3j9s2001m8obhavbzdxvl",
+    "code": "IN",
+    "name": "India",
+    "internationalUnitId": "cmfp3j7n200058obhypmhp6ts",
+    "hasRegions": false,
+    "displayOrder": 24,
+    "createdAt": "2025-09-18T07:35:37.538Z",
+    "updatedAt": "2025-09-18T07:35:37.538Z"
+  },
+  {
+    "id": "cmfp3j9w4001o8obhxkhmyyw6",
+    "code": "AE",
+    "name": "United Arab Emirates",
+    "internationalUnitId": "cmfp3j7oj00068obh40dcdn4a",
+    "hasRegions": false,
+    "displayOrder": 25,
+    "createdAt": "2025-09-18T07:35:37.683Z",
+    "updatedAt": "2025-09-18T07:35:37.683Z"
+  },
+  {
+    "id": "cmfp3j9yl001q8obh26lmaygq",
+    "code": "SA",
+    "name": "Saudi Arabia",
+    "internationalUnitId": "cmfp3j7oj00068obh40dcdn4a",
+    "hasRegions": false,
+    "displayOrder": 26,
+    "createdAt": "2025-09-18T07:35:37.773Z",
+    "updatedAt": "2025-09-18T07:35:37.773Z"
+  },
+  {
+    "id": "cmfp3ja1n001s8obhr71itmpr",
+    "code": "QA",
+    "name": "Qatar",
+    "internationalUnitId": "cmfp3j7oj00068obh40dcdn4a",
+    "hasRegions": false,
+    "displayOrder": 27,
+    "createdAt": "2025-09-18T07:35:37.884Z",
+    "updatedAt": "2025-09-18T07:35:37.884Z"
+  },
+  {
+    "id": "cmfp3ja4g001u8obhw6lk9hto",
+    "code": "KW",
+    "name": "Kuwait",
+    "internationalUnitId": "cmfp3j7oj00068obh40dcdn4a",
+    "hasRegions": false,
+    "displayOrder": 28,
+    "createdAt": "2025-09-18T07:35:37.984Z",
+    "updatedAt": "2025-09-18T07:35:37.984Z"
+  },
+  {
+    "id": "cmfp3ja7q001w8obh5pde1496",
+    "code": "OM",
+    "name": "Oman",
+    "internationalUnitId": "cmfp3j7oj00068obh40dcdn4a",
+    "hasRegions": false,
+    "displayOrder": 29,
+    "createdAt": "2025-09-18T07:35:38.102Z",
+    "updatedAt": "2025-09-18T07:35:38.102Z"
+  },
+  {
+    "id": "cmfp3jab5001y8obhde74s2vc",
+    "code": "BH",
+    "name": "Bahrain",
+    "internationalUnitId": "cmfp3j7oj00068obh40dcdn4a",
+    "hasRegions": false,
+    "displayOrder": 30,
+    "createdAt": "2025-09-18T07:35:38.226Z",
+    "updatedAt": "2025-09-18T07:35:38.226Z"
+  },
+  {
+    "id": "cmfp3jae300208obhy586o99e",
+    "code": "ZA",
+    "name": "South Africa",
+    "internationalUnitId": "cmfp3j7px00078obh1p0j7lsj",
+    "hasRegions": false,
+    "displayOrder": 31,
+    "createdAt": "2025-09-18T07:35:38.332Z",
+    "updatedAt": "2025-09-18T07:35:38.332Z"
+  },
+  {
+    "id": "cmfp3jahg00228obhp6kqr5b1",
+    "code": "NG",
+    "name": "Nigeria",
+    "internationalUnitId": "cmfp3j7px00078obh1p0j7lsj",
+    "hasRegions": false,
+    "displayOrder": 32,
+    "createdAt": "2025-09-18T07:35:38.452Z",
+    "updatedAt": "2025-09-18T07:35:38.452Z"
+  },
+  {
+    "id": "cmfp3jakg00248obhtojl6uuy",
+    "code": "KE",
+    "name": "Kenya",
+    "internationalUnitId": "cmfp3j7px00078obh1p0j7lsj",
+    "hasRegions": false,
+    "displayOrder": 33,
+    "createdAt": "2025-09-18T07:35:38.561Z",
+    "updatedAt": "2025-09-18T07:35:38.561Z"
+  },
+  {
+    "id": "cmfp3jand00268obhscxcfi0b",
+    "code": "AR",
+    "name": "Argentina",
+    "internationalUnitId": "cmfp3j7rc00088obhgj7tew6m",
+    "hasRegions": false,
+    "displayOrder": 34,
+    "createdAt": "2025-09-18T07:35:38.665Z",
+    "updatedAt": "2025-09-18T07:35:38.665Z"
+  },
+  {
+    "id": "cmfp3jaq500288obhkzz5u04a",
+    "code": "BR",
+    "name": "Brazil",
+    "internationalUnitId": "cmfp3j7rc00088obhgj7tew6m",
+    "hasRegions": false,
+    "displayOrder": 35,
+    "createdAt": "2025-09-18T07:35:38.766Z",
+    "updatedAt": "2025-09-18T07:35:38.766Z"
+  },
+  {
+    "id": "cmfp3jatn002a8obhzlhq3zyw",
+    "code": "CL",
+    "name": "Chile",
+    "internationalUnitId": "cmfp3j7rc00088obhgj7tew6m",
+    "hasRegions": false,
+    "displayOrder": 36,
+    "createdAt": "2025-09-18T07:35:38.891Z",
+    "updatedAt": "2025-09-18T07:35:38.891Z"
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cmdwqzc6500038o5u3ht8af1o",
+    "userId": "cmdwqv01000018o5uj6ss4xm8",
+    "clubId": "cmdtccg1x00108oskbkw7zlyl",
+    "reason": "I am the admin",
+    "status": "APPROVED",
+    "requestedAt": "2025-08-04T06:46:56.861Z",
+    "reviewedAt": "2025-08-04T06:49:03.363Z",
+    "reviewedBy": "cmdtcktyp00008o3w1k1abuna",
+    "rejectionReason": null
+  },
+  {
+    "id": "cmev8qjv30007jy04oqnbcicq",
+    "userId": "cmev8pre70001ib04vnxda5by",
+    "clubId": "cmdtccghl002n8osksdxiouug",
+    "reason": "I am the club founder and am testing the site",
+    "status": "APPROVED",
+    "requestedAt": "2025-08-28T10:08:09.999Z",
+    "reviewedAt": "2025-08-28T10:08:49.534Z",
+    "reviewedBy": "cmdtcktyp00008o3w1k1abuna",
+    "rejectionReason": null
+  }
+]

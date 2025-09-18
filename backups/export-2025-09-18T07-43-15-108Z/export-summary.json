@@ -1,0 +1,31 @@
+{
+  "exportDate": "2025-09-18T07:43:18.614Z",
+  "exportDir": "/Users/seanfitzgerald/workspace/Projects/vibe-coding/gaa-trips/backups/export-2025-09-18T07-43-15-108Z",
+  "counts": {
+    "users": 5,
+    "clubs": 88,
+    "events": 33,
+    "surveys": 1,
+    "internationalUnits": 9,
+    "countries": 37,
+    "regions": 81,
+    "clubSubmissions": 0,
+    "clubInterests": 0,
+    "clubAdminRequests": 2,
+    "availabilitySlots": 0,
+    "hostingPackages": 0,
+    "eventReports": 0,
+    "eventPitchLocations": 0,
+    "interests": 0,
+    "tournamentTeams": 0,
+    "tournamentInterests": 0,
+    "matches": 0,
+    "pitchLocations": 0,
+    "pitchRequests": 0,
+    "bookings": 0,
+    "payments": 0,
+    "testimonials": 0,
+    "cityImages": 0
+  },
+  "note": "This export contains ALL database data including hierarchical structure for complete backup."
+}
