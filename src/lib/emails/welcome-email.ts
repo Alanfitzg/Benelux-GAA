@@ -18,7 +18,7 @@ export async function sendWelcomeEmail({
   clubCrestUrl
 }: SendWelcomeEmailParams) {
   try {
-    const emailHtml = render(WelcomeEmail({
+    const emailHtml = await render(WelcomeEmail({
       userName,
       clubName,
       clubCrestUrl
@@ -34,8 +34,8 @@ export async function sendWelcomeEmail({
       },
     });
 
-    console.log('Welcome email sent successfully:', data.id);
-    return { success: true, emailId: data.id };
+    console.log('Welcome email sent successfully:', data);
+    return { success: true, emailId: data.data?.id };
   } catch (error) {
     console.error('Error sending welcome email:', error);
     return { success: false, error: error instanceof Error ? error.message : 'Unknown error' };
