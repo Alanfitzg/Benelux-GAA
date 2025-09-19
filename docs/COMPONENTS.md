@@ -3,6 +3,7 @@
 ## 📋 Core Components Added
 - **`/src/components/auth/PasswordRequirements.tsx`** - Real-time password validation checklist
 - **`/src/components/auth/PasswordStrengthMeter.tsx`** - Visual password strength indicator
+- **`/src/components/auth/SimpleClubSelector.tsx`** - Enhanced club selector with Ireland special handling
 - **Calendar Components**: ClubCalendar, InterestSubmissionForm, ClubCalendarManagement
 - **SignInPromptModal**: For anonymous users to sign up/in for calendar features
 - **`/src/components/onboarding/OnboardingModal.tsx`** - "The Profile Builder" - Main 4-step onboarding modal with progress tracking
@@ -45,6 +46,16 @@
 - **`/src/app/api/testimonials/[id]/reject/route.ts`** - Testimonial rejection endpoint
 - **`/src/app/api/testimonials/reorder/route.ts`** - Drag-and-drop reordering endpoint
 - **`/src/app/admin/testimonials/page.tsx`** - Super admin testimonials management interface
+
+## 🌍 Global Club System Components (January 2025)
+- **`/src/app/clubs/page.tsx`** - Enhanced clubs overview page with European focus and comprehensive country flags
+- **`/src/app/api/clubs/ireland-clubs/route.ts`** - Modified API for unified Ireland club queries (RoI + NI)
+- **`/src/app/api/clubs/international-units-sql/route.ts`** - Clean international units API (no duplicates)
+- **`/src/app/api/clubs/countries-sql/route.ts`** - Clean countries API (no duplicates)
+- **`/src/app/map/page.tsx`** - Map view with Ireland/UK clubs excluded for better international focus
+- **`/scripts/import-all-gaa-clubs.ts`** - Comprehensive bulk import system with duplicate detection
+- **`/scripts/clean-duplicate-international-units.ts`** - Database cleanup script for international units
+- **`/scripts/clean-duplicate-countries.ts`** - Database cleanup script for duplicate countries
 
 ## 📋 Recent Features and Components Added (August 2025)
 - **`/src/lib/validation/date-validation.ts`** - Comprehensive date validation utilities with specific error messages

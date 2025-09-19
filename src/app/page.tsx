@@ -6,6 +6,7 @@ import { Instagram, Facebook, Twitter, Music2 } from "lucide-react";
 
 interface Club {
   location?: string;
+  status?: string;
 }
 
 interface Event {
@@ -42,22 +43,27 @@ export default function HomePage() {
           ? eventsData
           : eventsData.events || [];
 
-        // Count unique countries
-        const countries = new Set();
-        clubs.forEach((club: Club) => {
+        // Only count approved clubs
+        const approvedClubs = clubs.filter((club: Club) => 
+          club.status === 'APPROVED'
+        );
+
+        // Count unique countries from approved clubs only
+        const countriesWithClubs = new Set();
+        approvedClubs.forEach((club: Club) => {
           if (club.location) {
             const parts = club.location.split(",");
             if (parts.length > 1) {
-              countries.add(parts[parts.length - 1].trim());
+              countriesWithClubs.add(parts[parts.length - 1].trim());
             }
           }
         });
 
         setStats({
-          clubs: clubs.length,
+          clubs: approvedClubs.length,
           tournaments: events.filter((e: Event) => e.eventType === "Tournament")
             .length,
-          countries: countries.size,
+          countries: countriesWithClubs.size,
         });
       })
       .catch(console.error);

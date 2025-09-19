@@ -28,11 +28,13 @@ export const dynamic = "force-dynamic";
 
 // Country flag mapping - using flag emoji or flag icon URLs
 const countryFlags: Record<string, string> = {
+  // Europe
   "Austria": "🇦🇹",
-  "Belgium": "🇧🇪", 
+  "Belgium": "🇧🇪",
   "Croatia": "🇭🇷",
   "Czech Republic": "🇨🇿",
   "Denmark": "🇩🇰",
+  "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
   "Estonia": "🇪🇪",
   "Finland": "🇫🇮",
   "France": "🇫🇷",
@@ -41,6 +43,7 @@ const countryFlags: Record<string, string> = {
   "Hungary": "🇭🇺",
   "Iceland": "🇮🇸",
   "Ireland": "🇮🇪",
+  "Isle of Man": "🇮🇲",
   "Italy": "🇮🇹",
   "Luxembourg": "🇱🇺",
   "Netherlands": "🇳🇱",
@@ -48,16 +51,67 @@ const countryFlags: Record<string, string> = {
   "Norway": "🇳🇴",
   "Poland": "🇵🇱",
   "Portugal": "🇵🇹",
+  "Romania": "🇷🇴",
   "Russia": "🇷🇺",
+  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
   "Slovakia": "🇸🇰",
+  "Slovenia": "🇸🇮",
   "Spain": "🇪🇸",
   "Sweden": "🇸🇪",
   "Switzerland": "🇨🇭",
   "United Kingdom": "🇬🇧",
   "UK": "🇬🇧",
-  "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-  "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿"
+  "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+
+  // North America
+  "Canada": "🇨🇦",
+  "Cayman Island": "🇰🇾",
+  "Mexico": "🇲🇽",
+  "United States": "🇺🇸",
+
+  // Asia
+  "Cambodia": "🇰🇭",
+  "China": "🇨🇳",
+  "Hong Kong": "🇭🇰",
+  "India": "🇮🇳",
+  "Indonesia": "🇮🇩",
+  "Japan": "🇯🇵",
+  "Malaysia": "🇲🇾",
+  "Myanmar": "🇲🇲",
+  "Pakistan": "🇵🇰",
+  "Singapore": "🇸🇬",
+  "Signapore": "🇸🇬", // Typo in database
+  "South Korea": "🇰🇷",
+  "Taiwan": "🇹🇼",
+  "Thailand": "🇹🇭",
+  "Vietnam": "🇻🇳",
+
+  // Middle East
+  "Bahrain": "🇧🇭",
+  "Kuwait": "🇰🇼",
+  "Oman": "🇴🇲",
+  "Qatar": "🇶🇦",
+  "Saudi Arabia": "🇸🇦",
+  "UAE": "🇦🇪",
+
+  // Australasia
+  "Australia": "🇦🇺",
+  "New Zealand": "🇳🇿",
+
+  // Africa
+  "Kenya": "🇰🇪",
+  "Nigeria": "🇳🇬",
+  "South Africa": "🇿🇦",
+  "Uganda": "🇺🇬",
+
+  // South America
+  "Argentina": "🇦🇷",
+  "Brazil": "🇧🇷",
+  "Chile": "🇨🇱",
+  "Paraguay": "🇵🇾",
+
+  // Other
+  "Channel Islands": "🇯🇪" // Using Jersey flag as representative
 };
 
 export default function ClubsPage() {
@@ -72,6 +126,13 @@ export default function ClubsPage() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedTeamType, setSelectedTeamType] = useState("");
   const [viewMode, setViewMode] = useState<"countries" | "list">("countries");
+
+  // European countries filter
+  const europeanCountries = [
+    "France", "Romania", "Denmark", "Croatia", "Poland", "Germany", "Italy",
+    "Netherlands", "Belgium", "Switzerland", "Austria", "Luxembourg", "Spain",
+    "Gibraltar", "Sweden", "Finland", "Russia", "Norway", "Portugal", "Slovenia"
+  ];
 
   // Get current filter values from URL
   const country = searchParams.get("country") || "";
@@ -111,16 +172,20 @@ export default function ClubsPage() {
     fetchClubs();
   }, [country, teamType, search]);
 
-  // Filter clubs based on search and team type
+  // Filter clubs based on search, team type, and European countries only
   const filteredClubs = clubs.filter((club) => {
-    const matchesSearch = !search || 
+    const matchesSearch = !search ||
       club.name.toLowerCase().includes(search.toLowerCase()) ||
       club.location?.toLowerCase().includes(search.toLowerCase());
-    
-    const matchesTeamType = !teamType || 
+
+    const matchesTeamType = !teamType ||
       club.teamTypes.some(type => type.toLowerCase().includes(teamType.toLowerCase()));
-    
-    return matchesSearch && matchesTeamType;
+
+    // Only show European clubs
+    const clubCountry = club.location?.split(",").pop()?.trim() || "Unknown";
+    const isEuropean = europeanCountries.includes(clubCountry);
+
+    return matchesSearch && matchesTeamType && isEuropean;
   });
 
   // Group filtered clubs by country
@@ -191,10 +256,10 @@ export default function ClubsPage() {
       <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-2xl md:text-5xl font-bold mb-4">
-            Clubs / Cities
+            European GAA Clubs
           </h1>
           <p className="text-lg md:text-2xl mb-2">
-            Discover the international community of clubs
+            Discover GAA clubs across Europe
           </p>
         </div>
       </div>
@@ -248,8 +313,8 @@ export default function ClubsPage() {
                   onChange={(e) => setSelectedCountry(e.target.value)}
                   className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
-                  <option value="">All Countries</option>
-                  {countries.map((country: string) => (
+                  <option value="">All European Countries</option>
+                  {countries.filter(country => europeanCountries.includes(country)).map((country: string) => (
                     <option key={country} value={country}>
                       {country}
                     </option>

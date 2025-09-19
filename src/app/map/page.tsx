@@ -196,6 +196,19 @@ function MapContent() {
     });
   }, [clubs, selectedCountry, searchTerm]);
 
+  // Filter clubs for map display - exclude Ireland and UK clubs
+  const mapDisplayClubs = useMemo(() => {
+    return filteredClubs.filter((club) => {
+      if (!club.location) return true; // Show clubs without location
+
+      const location = club.location.toLowerCase();
+      // Exclude clubs from Ireland, United Kingdom, Northern Ireland, Scotland, Wales, England
+      const excludedCountries = ['ireland', 'united kingdom', 'uk', 'northern ireland', 'scotland', 'wales', 'england'];
+
+      return !excludedCountries.some(country => location.includes(country));
+    });
+  }, [filteredClubs]);
+
   const countries = useMemo(() => getCountriesFromClubs(clubs), [clubs]);
 
   const handleSidebarClick = (event: Event) => {
@@ -757,7 +770,7 @@ function MapContent() {
                         </Marker>
                       );
                     })
-                  : filteredClubs.map((club) => {
+                  : mapDisplayClubs.map((club) => {
                       if (!hasValidCoordinates(club)) return null;
                       return (
                         <Marker
@@ -965,13 +978,13 @@ function MapContent() {
               className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-professional p-6 min-w-48"
             >
               <h4 className="font-semibold text-gray-800 mb-3">
-                Platform Stats
+                Map Stats
               </h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Clubs</span>
+                  <span className="text-gray-600">Clubs on Map</span>
                   <span className="font-semibold text-primary">
-                    {clubs.length}
+                    {viewMode === "clubs" ? mapDisplayClubs.length : clubs.length}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -987,6 +1000,11 @@ function MapContent() {
                   </span>
                 </div>
               </div>
+              {viewMode === "clubs" && (
+                <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-500">
+                  * Ireland & UK clubs hidden from map
+                </div>
+              )}
             </motion.div>
           )}
         </div>

@@ -1,5 +1,39 @@
 # PlayAway System Documentation
 
+## 🌍 Global Club Management System
+
+### **Club Import & Data Management**
+- **Bulk Import**: Comprehensive import system for GAA clubs worldwide
+- **Data Sources**: CSV imports from regional GAA organizations
+- **Duplicate Detection**: Multi-level matching using name, location, and coordinates
+- **Coverage**: 2,400+ clubs across 60+ countries
+
+### **International Unit Hierarchy**
+```
+InternationalUnit (8 units)
+├── Ireland (IRE) - Special handling
+├── Britain (GB)
+├── Europe (EUR) - 20 countries
+├── North America (USA) - USA, Canada, Mexico, Cayman Islands
+├── Australasia (AUS) - Australia, New Zealand
+├── Asia (ASIA) - 14 countries
+├── Middle East (ME) - 6 countries
+└── South America (SA) - 4 countries + Africa
+```
+
+### **Ireland Special Handling**
+- **Unified Experience**: Combines Republic of Ireland + Northern Ireland
+- **Flow**: Ireland → Province → County → Club (bypasses country selection)
+- **Provinces**: Leinster, Munster, Connacht, Ulster (includes NI counties)
+- **API**: `/api/clubs/ireland-clubs` includes all island of Ireland clubs
+- **User Experience**: Seamless GAA community regardless of political borders
+
+### **Database Cleanup & Maintenance**
+- **Duplicate Removal**: Automated scripts for international units and countries
+- **Migration Scripts**: Safe data migration with transaction rollback
+- **Scripts Location**: `/scripts/clean-duplicate-*.ts`
+- **Data Integrity**: Foreign key constraint handling and conflict resolution
+
 ## 🎯 User Onboarding System - "The Profile Builder"
 
 ### **Feature Toggle Control**

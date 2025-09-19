@@ -14,7 +14,7 @@ For comprehensive information, see these modular documentation files:
 6. **`/project-docs/TODO.md`** - Social authentication implementation plan
 7. **`/DEPLOYMENT_CHECKLIST.md`** - Production deployment requirements
 
-## 🚀 Recent Updates (December 2025)
+## 🚀 Recent Updates (January 2025)
 - **Complete Rebrand**: Platform renamed to "PlayAway" with global positioning
 - **Mobile UX Improvements**: Optimized layouts, country cards, responsive typography, hidden pitch management on mobile
 - **Club Verification System**: Comprehensive verification workflow for data quality
@@ -32,6 +32,11 @@ For comprehensive information, see these modular documentation files:
 - **📋 Profile Builder Enhancement**: Renamed onboarding form to "The Profile Builder" with sport-neutral language
 - **🏆 Event Tiles Enhancement**: Sport type badges (Hurling, LGFA, G4MO, etc.) now display on tournament listings
 - **📝 What's Included Disclaimer**: Added host club responsibility notice for event components
+- **🌍 Global GAA Club Database**: Imported 1,030 new clubs worldwide with comprehensive duplicate detection
+- **🇮🇪 Ireland Special Handling**: Unified Ireland experience (Republic + Northern Ireland) with Province → County → Club flow
+- **🏳️ Country Flags Integration**: Complete flag coverage for 60+ countries in clubs overview
+- **🇪🇺 European Clubs Focus**: Dedicated European clubs view with 20 countries and comprehensive flags
+- **🧹 Database Cleanup**: Removed 58 duplicate countries and international units, improved data quality
 
 ## 🏗️ Tech Stack (Brief)
 - **Frontend**: Next.js 15.3.3, React 19, TypeScript, Tailwind CSS
@@ -55,10 +60,12 @@ For comprehensive information, see these modular documentation files:
 
 ## 🗄️ Database Quick Reference
 - **Strategy**: Using `prisma db push` (no migrations)
-- **Key Models**: User, Club, Event, EventReport, PitchLocation, UserPreferences, Testimonial
+- **Key Models**: User, Club, Event, EventReport, PitchLocation, UserPreferences, Testimonial, InternationalUnit, Country
 - **Caching**: Next.js unstable_cache for clubs (6hr TTL)
 - **Verification**: Club verification status with progress tracking
 - **Testimonials**: PENDING → SUPER_ADMIN_APPROVED → APPROVED workflow with reordering
+- **Global Clubs**: 2,400+ clubs across 60+ countries with coordinated data structure
+- **Hierarchy**: InternationalUnit → Country → Region/Province → County → Club
 
 ## 💻 Development Commands
 ```bash
@@ -74,6 +81,13 @@ npx prisma db push   # Apply schema changes
 - **E2E Tests**: User journeys (Playwright)
 - **Coverage**: 85% with thresholds configured
 - **Commands**: `npm test`, `npm run test:coverage`, `npm run test:e2e`
+
+## 🌍 Global Club Management
+- **Import Scripts**: `scripts/import-all-gaa-clubs.ts` for bulk club imports
+- **Duplicate Detection**: Multi-level matching (name, location, coordinates, fuzzy)
+- **Cleanup Scripts**: `scripts/clean-duplicate-*.ts` for database maintenance
+- **Ireland Special**: Province-based flow bypassing country selection
+- **European Focus**: Clubs overview filtered to European countries only
 
 ## 🔧 Common Tasks
 - **Add indexes**: Update schema.prisma, then `npx prisma db push`
@@ -110,6 +124,10 @@ npx prisma db push   # Apply schema changes
 - ✅ Event tiles sport type display (sport badges on tournament listings)
 - ✅ Profile Builder form naming and sport-neutral language implementation
 - ✅ What's Included section disclaimer for host club responsibilities
+- ✅ Duplicate international units in signup form dropdowns (club selector cleanup)
+- ✅ Duplicate countries in dropdown selections (database normalization)
+- ✅ Ireland/UK clubs cluttering the map view (geographic filtering)
+- ✅ Missing country flags in clubs overview (comprehensive flag coverage)
 
 ## 🐛 Known Issues
 - Rate limiting is in-memory (needs Redis for scaling)
@@ -120,7 +138,10 @@ npx prisma db push   # Apply schema changes
 2. **Month 1**: Tournament brackets visualization enhancement
 3. **Future**: Real-time tournament updates with WebSocket integration
 
+## 📚 New Documentation Files
+8. **`/docs/DATABASE_OPERATIONS.md`** - Global club import, duplicate cleanup, and Ireland handling
+
 ---
 *For detailed information, see the documentation files in `/docs/` and `/project-docs/`*
 
-*Last Updated: August 2025 - Modular documentation structure*
+*Last Updated: January 2025 - Global club system and database operations*

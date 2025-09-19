@@ -51,7 +51,7 @@ async function registrationHandler(request: NextRequest) {
   )
 
   // Send welcome email to the new user (all users are approved)
-  sendWelcomeEmail(user, true).catch(error => {
+  sendWelcomeEmail({ ...user, clubId: clubId || null }, true).catch(error => {
     console.error('Failed to send welcome email:', error)
   })
 
@@ -76,16 +76,36 @@ async function sendWelcomeEmail(user: {
   email: string;
   name: string | null;
   username: string;
+  clubId?: string | null;
 }, isApproved: boolean) {
   try {
     const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'
     const loginUrl = `${baseUrl}/signin`
 
+    // Fetch club information if user has a club
+    let clubInfo = null;
+    if (user.clubId) {
+      const { prisma } = await import('@/lib/prisma');
+      try {
+        clubInfo = await prisma.club.findUnique({
+          where: { id: user.clubId },
+          select: {
+            name: true,
+            imageUrl: true
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching club info for welcome email:', error);
+      }
+    }
+
     const emailData = {
       userName: user.name || user.username,
       userEmail: user.email,
       loginUrl,
-      isApproved
+      isApproved,
+      clubName: clubInfo?.name || null,
+      clubImageUrl: clubInfo?.imageUrl || null
     }
 
     const { subject, html, text } = generateWelcomeEmail(emailData)

@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react";
 import PasswordRequirements from "@/components/auth/PasswordRequirements";
 import PasswordStrengthMeter from "@/components/auth/PasswordStrengthMeter";
 import UsernameRequirements from "@/components/auth/UsernameRequirements";
-import CascadingClubSelector from "@/components/auth/CascadingClubSelector";
+import SimpleClubSelector from "@/components/auth/SimpleClubSelector";
 import { passwordSchema, usernameSchema } from "@/lib/validation/schemas";
 import { useAnalytics } from "@/hooks/useAnalytics";
 import { toast } from "react-hot-toast";
@@ -500,7 +500,7 @@ export default function SignUp() {
                   transition={{ delay: 0.75 }}
                   className="md:col-span-2"
                 >
-                  <CascadingClubSelector
+                  <SimpleClubSelector
                     value={formData.clubId}
                     onChange={(clubId, isClubMember) => {
                       setFormData(prev => ({

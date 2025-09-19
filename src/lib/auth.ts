@@ -15,6 +15,8 @@ declare module "next-auth" {
       role: UserRole
       accountStatus: AccountStatus
       hasPassword: boolean
+      clubId?: string | null
+      isClubMember?: boolean
     }
   }
 
@@ -23,6 +25,8 @@ declare module "next-auth" {
     role: UserRole
     accountStatus: AccountStatus
     hasPassword?: boolean
+    clubId?: string | null
+    isClubMember?: boolean
   }
 }
 
@@ -224,12 +228,19 @@ export const authOptions = {
         session.user.role = token.role as UserRole
         session.user.accountStatus = token.accountStatus as AccountStatus
         
-        // Check if user has a password (non-OAuth users)
+        // Fetch user data including club information and password status
         const user = await prisma.user.findUnique({
           where: { id: token.id as string },
-          select: { password: true }
+          select: { 
+            password: true,
+            clubId: true,
+            isClubMember: true
+          }
         })
+        
         session.user.hasPassword = !!(user?.password && user.password !== "")
+        session.user.clubId = user?.clubId || null
+        session.user.isClubMember = user?.isClubMember || false
       }
       return session
     },

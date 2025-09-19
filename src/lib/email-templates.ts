@@ -380,6 +380,8 @@ export interface WelcomeEmailData {
   userEmail: string;
   loginUrl: string;
   isApproved: boolean;
+  clubName?: string | null;
+  clubImageUrl?: string | null;
 }
 
 export function generateWelcomeEmail(data: WelcomeEmailData): {
@@ -387,7 +389,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   html: string;
   text: string;
 } {
-  const subject = `Welcome to PlayAway, ${data.userName} - Your Global GAA Adventure Starts Now!`;
+  const subject = `Cead mile Failte ${data.userName} - Welcome to PlayAway! 🇮🇪`;
   
   const html = `
     <!DOCTYPE html>
@@ -398,300 +400,330 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
       <title>Welcome to PlayAway</title>
       <style>
         body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-          line-height: 1.6;
-          color: #1a1a1a;
-          background-color: #fafafa;
+          font-family: Arial, sans-serif;
           max-width: 600px;
           margin: 0 auto;
-          padding: 20px;
+          backgroundColor: #ffffff;
+          color: #333333;
         }
         .header {
-          background: linear-gradient(135deg, #264673, #3a5998, #2563eb);
+          background-color: #4472C4;
           color: white;
-          padding: 40px 20px;
-          border-radius: 12px 12px 0 0;
+          padding: 30px 20px;
           text-align: center;
-          box-shadow: 0 10px 25px -3px rgba(38, 70, 115, 0.15);
+          border-radius: 8px 8px 0 0;
         }
         .header h1 {
-          margin: 0;
-          font-size: 28px;
-          font-weight: 600;
-        }
-        .logo {
-          font-size: 24px;
+          font-size: 36px;
           font-weight: bold;
-          margin-bottom: 10px;
+          margin: 0 0 10px 0;
+          font-style: italic;
+        }
+        .header p {
+          font-size: 16px;
+          margin: 0;
+          font-weight: 300;
         }
         .content {
-          background: #ffffff;
-          padding: 40px;
-          border: 1px solid #e5e7eb;
-          border-top: none;
-          color: #1a1a1a;
+          padding: 30px 20px;
         }
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 15px;
-          margin: 20px 0;
-        }
-        .stat-card {
+        .greeting {
           text-align: center;
-          padding: 15px;
-          background: linear-gradient(135deg, #f0f4ff, #e6ebff);
-          border-radius: 8px;
-          border: 1px solid #e5e7eb;
+          margin-bottom: 30px;
         }
-        .stat-number {
+        .greeting h2 {
           font-size: 24px;
+          font-weight: normal;
+          margin: 0 0 10px 0;
+        }
+        .greeting h3 {
+          font-size: 20px;
           font-weight: bold;
-          color: #264673;
+          margin: 0 0 20px 0;
+          color: #4472C4;
         }
-        .stat-label {
-          font-size: 12px;
-          color: #6b7280;
-          margin-top: 5px;
-        }
-        .feature-list {
-          background: #f3f4f6;
-          padding: 20px;
-          border-radius: 8px;
+        .club-profile {
+          display: flex;
+          align-items: center;
+          justify-content: center;
           margin: 20px 0;
-          border-left: 4px solid #264673;
+          padding: 15px;
+          background-color: #f8f9fa;
+          border-radius: 12px;
+          border: 2px solid #4472C4;
         }
-        .feature-list h3 {
-          color: #264673;
-          margin-top: 0;
+        .club-crest {
+          width: 60px;
+          height: 60px;
+          object-fit: contain;
+          border-radius: 8px;
+          margin-right: 15px;
+          background-color: white;
+          padding: 5px;
+          border: 1px solid #e9ecef;
         }
-        .feature-list ul {
-          margin: 10px 0;
+        .club-info {
+          text-align: left;
+        }
+        .club-info h4 {
+          font-size: 18px;
+          font-weight: bold;
+          margin: 0 0 5px 0;
+          color: #4472C4;
+        }
+        .club-info p {
+          font-size: 14px;
+          margin: 0;
+          color: #6c757d;
+        }
+        .welcome-section {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        .welcome-section h2 {
+          font-size: 28px;
+          font-weight: bold;
+          margin: 0 0 15px 0;
+        }
+        .welcome-section em {
+          color: #4472C4;
+        }
+        .welcome-section p {
+          font-size: 16px;
+          line-height: 1.6;
+          margin: 0 0 10px 0;
+        }
+        .info-box {
+          background-color: #e8f1ff;
+          border-radius: 12px;
+          padding: 20px;
+          margin-bottom: 20px;
+          border: 2px solid #4472C4;
+        }
+        .info-box h3 {
+          background-color: #4472C4;
+          color: white;
+          padding: 10px 20px;
+          border-radius: 20px;
+          font-size: 18px;
+          font-weight: bold;
+          margin: 0 0 15px 0;
+          display: inline-block;
+        }
+        .info-box p {
+          font-size: 15px;
+          line-height: 1.6;
+          margin: 0;
+        }
+        .info-box ul {
+          font-size: 15px;
+          line-height: 1.6;
+          margin: 0;
           padding-left: 20px;
         }
-        .feature-list li {
-          margin-bottom: 8px;
-          color: #1a1a1a;
+        .info-box strong {
+          font-weight: bold;
         }
-        .destination-banner {
-          background: linear-gradient(135deg, #f0f4ff, #e6ebff);
-          border: 1px solid #264673;
-          padding: 20px;
-          border-radius: 8px;
-          margin: 20px 0;
+        .quick-start {
+          margin-bottom: 30px;
         }
-        .destination-banner h3 {
-          margin: 0 0 10px 0;
-          color: #264673;
+        .quick-start h3 {
+          font-size: 20px;
+          font-weight: bold;
+          color: #d32f2f;
+          margin: 0 0 15px 0;
         }
-        .btn {
-          display: inline-block;
-          background: linear-gradient(135deg, #264673, #3a5998);
-          color: white;
-          padding: 14px 32px;
-          border-radius: 12px;
-          text-decoration: none;
-          font-weight: 600;
-          margin: 20px 10px;
-          transition: all 0.3s ease;
-          box-shadow: 0 4px 6px -2px rgba(38, 70, 115, 0.2);
-        }
-        .btn:hover {
-          background: linear-gradient(135deg, #1a3352, #264673);
-          transform: scale(1.02);
-          box-shadow: 0 10px 25px -3px rgba(38, 70, 115, 0.3);
-        }
-        .btn-secondary {
-          background: linear-gradient(135deg, #2563eb, #3b82f6);
-        }
-        .btn-secondary:hover {
-          background: linear-gradient(135deg, #1d4ed8, #2563eb);
-        }
-        .status-note {
-          background: #f0f4ff;
-          border: 1px solid #264673;
+        .step {
+          background-color: #f8f9fa;
           padding: 15px;
           border-radius: 8px;
-          margin: 20px 0;
+          border-left: 4px solid #4472C4;
+          margin-bottom: 10px;
         }
-        .status-note strong {
-          color: #264673;
+        .destinations-box {
+          background-color: #f0f4f8;
+          border: 2px solid #4472C4;
+          border-radius: 8px;
+          padding: 15px;
+          margin-top: 20px;
         }
-        .footer {
-          background: #f3f4f6;
-          padding: 20px;
-          border-radius: 0 0 12px 12px;
-          border: 1px solid #e5e7eb;
-          border-top: none;
-          text-align: center;
+        .destinations-box h4 {
+          font-size: 16px;
+          font-weight: bold;
+          color: #4472C4;
+          margin: 0 0 10px 0;
+        }
+        .destinations-box p {
           font-size: 14px;
-          color: #6b7280;
+          line-height: 1.5;
+          margin: 0 0 5px 0;
         }
-        .social-links {
-          margin: 15px 0;
+        .help-section {
+          background-color: #fff3cd;
+          border: 1px solid #ffeaa7;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 30px;
         }
-        .social-links a {
-          text-decoration: none;
-          margin: 0 10px;
-          color: #6b7280;
-          transition: color 0.3s ease;
+        .help-section p {
+          font-size: 16px;
+          margin: 0;
+          line-height: 1.6;
         }
-        .social-links a:hover {
-          color: #264673;
+        .footer-section {
+          text-align: center;
+          margin-top: 40px;
+        }
+        .footer-section p {
+          font-size: 16px;
+          margin: 0 0 5px 0;
+        }
+        .footer-section .signature {
+          font-weight: bold;
+          color: #4472C4;
+        }
+        .footer-branding {
+          background-color: #f8f9fa;
+          padding: 20px;
+          text-align: center;
+          border-top: 1px solid #e9ecef;
+          border-radius: 0 0 8px 8px;
+        }
+        .footer-branding p {
+          font-size: 12px;
+          color: #6c757d;
+          margin: 0;
         }
       </style>
     </head>
     <body>
       <div class="header">
-        <div class="logo">PlayAway</div>
-        <h1>Welcome to Your Global GAA Network!</h1>
-        <p style="margin: 10px 0 0 0; opacity: 0.9;">Join thousands of players across 6 continents</p>
+        <h1>PlayAway</h1>
+        <p>A travel platform that connects Global Gaelic Games communities</p>
       </div>
-      
+
       <div class="content">
-        <p>Dear ${data.userName},</p>
-        
-        <p><strong>Céad míle fáilte!</strong> A hundred thousand welcomes to PlayAway - your passport to GAA adventures worldwide!</p>
-        
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-number">1,000+</div>
-            <div class="stat-label">GAA Clubs</div>
+        <div class="greeting">
+          <h2>Dear ${data.userName}</h2>
+          <h3>Cead mile Failte</h3>
+          ${data.clubName ? `
+          <div class="club-profile">
+            ${data.clubImageUrl ? `<img src="${data.clubImageUrl}" alt="${data.clubName} Crest" class="club-crest" />` : ''}
+            <div class="club-info">
+              <h4>${data.clubName}</h4>
+              <p>Club Member</p>
+            </div>
           </div>
-          <div class="stat-card">
-            <div class="stat-number">50+</div>
-            <div class="stat-label">Countries</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">100+</div>
-            <div class="stat-label">Tournaments</div>
-          </div>
+          ` : ''}
         </div>
-        
-        ${data.isApproved ? `
-        <div class="feature-list">
-          <h3>Your PlayAway Journey Includes:</h3>
+
+        <div class="welcome-section">
+          <h2>Welcome to <em>PlayAway</em></h2>
+          <p>The travel platform built by and for the global Gaelic Games community.</p>
+          <p>Whether you're a player, coach, volunteer, or just love being part of GAA life abroad, PlayAway makes it easier to travel, connect, and compete — while supporting the clubs that keep our community alive.</p>
+        </div>
+
+        <div class="info-box">
+          <h3>What is PlayAway?</h3>
+          <p>PlayAway is the first platform designed to simplify GAA travel across Europe and beyond. From tournaments to training camps, we help clubs list their events, take bookings in advance, and welcome teams from around the world — reducing risk, and costs</p>
+        </div>
+
+        <div class="info-box">
+          <h3>Why does it matter?</h3>
+          <p style="margin-bottom: 15px;">Tourism around Gaelic Games is already happening - but without structure, opportunities are lost.</p>
+          <p style="font-weight: bold; margin-bottom: 10px;">PlayAway changes that by:</p>
           <ul>
-            <li><strong>Global Club Directory:</strong> Connect with GAA clubs from Dublin to Dubai, New York to New Zealand</li>
-            <li><strong>Tournament Calendar:</strong> Discover tournaments worldwide - from local blitzes to international championships</li>
-            <li><strong>Trip Planning:</strong> Build custom GAA tours combining matches, training, and cultural experiences</li>
-            <li><strong>Community Hub:</strong> Join a network of passionate GAA players, coaches, and supporters globally</li>
-            <li><strong>Exclusive Access:</strong> Early bird tournament registrations and special travel packages</li>
+            <li>Investigating events and promoting opportunities to travel</li>
+            <li>Creating new revenue streams for local clubs and communities</li>
+            <li>Strengthening club links worldwide</li>
+            <li><strong>Protecting both the clubs and the hosts by offering rules and guidelines for both traveling teams and hosts, while ensuring the best bang for buck for the customers!</strong></li>
           </ul>
         </div>
-        
-        <div class="destination-banner">
-          <h3>Popular Destinations This Season:</h3>
-          <p><strong>Ireland:</strong> Experience GAA at its roots with 500+ clubs<br>
-          <strong>USA & Canada:</strong> Join the thriving North American GAA scene<br>
-          <strong>Australia:</strong> Combine GAA with incredible travel experiences<br>
-          <strong>Europe:</strong> Play in tournaments from Barcelona to Berlin<br>
-          <strong>Middle East & Asia:</strong> Discover emerging GAA communities</p>
+
+        <div class="quick-start">
+          <h3>Quick Start Guide:</h3>
+          
+          <div class="step">
+            <strong>Step 1:</strong> Complete your player profile with position, skill level, and travel preferences
+          </div>
+          <div class="step">
+            <strong>Step 2:</strong> Browse tournaments by date, location, or competition level
+          </div>
+          <div class="step">
+            <strong>Step 3:</strong> Connect with clubs for training sessions or friendly matches
+          </div>
+          <div class="step">
+            <strong>Step 4:</strong> Use our trip planner to create your perfect GAA adventure
+          </div>
+
+          <div class="destinations-box">
+            <h4>Popular Destinations This Season:</h4>
+            <p><strong>Ireland:</strong> Experience GAA at its source with 500+ clubs</p>
+            <p><strong>USA & Canada:</strong> Join the thriving North American GAA scene</p>
+            <p><strong>Australia:</strong> Combine GAA with incredible travel experiences</p>
+            <p><strong>Europe:</strong> Play in tournaments from Barcelona to Berlin</p>
+            <p><strong>Middle East & Asia:</strong> Discover emerging GAA communities</p>
+          </div>
         </div>
-        
-        <div style="text-align: center;">
-          <a href="${data.loginUrl}" class="btn">Explore Clubs & Tournaments</a>
-          <a href="${data.loginUrl}/survey" class="btn btn-secondary">Plan Your Trip</a>
+
+        <div class="help-section">
+          <p><strong>Need Help?</strong> Our team is here to assist with tournament registrations, travel planning, or connecting with clubs. Just reply to this email!</p>
         </div>
-        ` : `
-        <div class="status-note">
-          <strong>Your Account is Being Reviewed</strong>
-          <p style="margin: 10px 0 0 0;">We're reviewing your profile and will activate your account within 24 hours. Once approved, you'll have full access to our global GAA network!</p>
+
+        <div class="footer-section">
+          <p>Looking forward to seeing you on pitches around the world!</p>
+          <p class="signature">Slán go fóill,</p>
+          <p class="signature">The PlayAway Team</p>
         </div>
-        
-        <div class="feature-list">
-          <h3>While You Wait, Did You Know?</h3>
-          <ul>
-            <li>PlayAway connects players with clubs in over 50 countries</li>
-            <li>Our platform hosts 100+ tournaments annually</li>
-            <li>Members save an average of 30% on GAA travel packages</li>
-            <li>You can create custom training camps with international clubs</li>
-          </ul>
-        </div>
-        `}
-        
-        <h3>Quick Start Guide:</h3>
-        <ul>
-          <li><strong>Step 1:</strong> Complete your player profile with position, skill level, and travel preferences</li>
-          <li><strong>Step 2:</strong> Browse tournaments by date, location, or competition level</li>
-          <li><strong>Step 3:</strong> Connect with clubs for training sessions or friendly matches</li>
-          <li><strong>Step 4:</strong> Use our trip planner to create your perfect GAA adventure</li>
-        </ul>
-        
-        <p><strong>Need Help?</strong> Our team is here to assist with tournament registrations, travel planning, or connecting with clubs. Just reply to this email!</p>
-        
-        <p>Looking forward to seeing you on pitches around the world!<br><br>
-        <strong>Slán go fóill,</strong><br>
-        The PlayAway Team</p>
       </div>
-      
-      <div class="footer">
-        <div class="logo">PlayAway</div>
-        <p><strong>Your Gateway to Global Gaelic Games</strong></p>
-        
-        <div class="social-links">
-          <a href="#">Facebook</a>
-          <a href="#">Twitter</a>
-          <a href="#">Instagram</a>
-          <a href="#">LinkedIn</a>
-        </div>
-        
-        <p style="margin-top: 15px; font-size: 12px;">
-          PlayAway - Gaelic Trips Ltd | Registered in Ireland<br>
-          You're receiving this because you signed up at play-away.com<br>
-          © 2025 PlayAway. All rights reserved.
-        </p>
+
+      <div class="footer-branding">
+        <p>© 2024 PlayAway - Connecting GAA Communities Worldwide</p>
       </div>
     </body>
     </html>
   `;
 
   const text = `
-Welcome to PlayAway - Your Global GAA Adventure Starts Now!
+Cead mile Failte ${data.userName} - Welcome to PlayAway!
 
 Dear ${data.userName},
 
-Céad míle fáilte! A hundred thousand welcomes to PlayAway - your passport to GAA adventures worldwide!
+Cead mile Failte
 
-BY THE NUMBERS:
-- 1,000+ GAA Clubs worldwide
-- 50+ Countries represented
-- 100+ Annual Tournaments
+Welcome to PlayAway
 
-${data.isApproved ? `
-YOUR PLAYAWAY JOURNEY INCLUDES:
+The travel platform built by and for the global Gaelic Games community.
 
-- Global Club Directory: Connect with GAA clubs from Dublin to Dubai, New York to New Zealand
-- Tournament Calendar: Discover tournaments worldwide - from local blitzes to international championships
-- Trip Planning: Build custom GAA tours combining matches, training, and cultural experiences
-- Community Hub: Join a network of passionate GAA players, coaches, and supporters globally
-- Exclusive Access: Early bird tournament registrations and special travel packages
+Whether you're a player, coach, volunteer, or just love being part of GAA life abroad, PlayAway makes it easier to travel, connect, and compete — while supporting the clubs that keep our community alive.
 
-POPULAR DESTINATIONS THIS SEASON:
-- Ireland: Experience GAA at its roots with 500+ clubs
-- USA & Canada: Join the thriving North American GAA scene
-- Australia: Combine GAA with incredible travel experiences
-- Europe: Play in tournaments from Barcelona to Berlin
-- Middle East & Asia: Discover emerging GAA communities
+What is PlayAway?
 
-Get Started Now: ${data.loginUrl}
-Plan Your Trip: ${data.loginUrl}/survey
-` : `
-YOUR ACCOUNT IS BEING REVIEWED
-We're reviewing your profile and will activate your account within 24 hours. Once approved, you'll have full access to our global GAA network!
+PlayAway is the first platform designed to simplify GAA travel across Europe and beyond. From tournaments to training camps, we help clubs list their events, take bookings in advance, and welcome teams from around the world — reducing risk, and costs
 
-WHILE YOU WAIT, DID YOU KNOW?
-- PlayAway connects players with clubs in over 50 countries
-- Our platform hosts 100+ tournaments annually
-- Members save an average of 30% on GAA travel packages
-- You can create custom training camps with international clubs
-`}
+Why does it matter?
 
-QUICK START GUIDE:
+Tourism around Gaelic Games is already happening - but without structure, opportunities are lost.
+
+PlayAway changes that by:
+• Investigating events and promoting opportunities to travel
+• Creating new revenue streams for local clubs and communities
+• Strengthening club links worldwide
+• Protecting both the clubs and the hosts by offering rules and guidelines for both traveling teams and hosts, while ensuring the best bang for buck for the customers!
+
+Quick Start Guide:
+
 Step 1: Complete your player profile with position, skill level, and travel preferences
 Step 2: Browse tournaments by date, location, or competition level
 Step 3: Connect with clubs for training sessions or friendly matches
 Step 4: Use our trip planner to create your perfect GAA adventure
+
+Popular Destinations This Season:
+Ireland: Experience GAA at its source with 500+ clubs
+USA & Canada: Join the thriving North American GAA scene
+Australia: Combine GAA with incredible travel experiences
+Europe: Play in tournaments from Barcelona to Berlin
+Middle East & Asia: Discover emerging GAA communities
 
 Need Help? Our team is here to assist with tournament registrations, travel planning, or connecting with clubs. Just reply to this email!
 
@@ -701,9 +733,7 @@ Slán go fóill,
 The PlayAway Team
 
 ---
-PlayAway - Your Gateway to Global Gaelic Games
-Gaelic Trips Ltd | Registered in Ireland
-© 2025 PlayAway. All rights reserved.
+© 2024 PlayAway - Connecting GAA Communities Worldwide
   `;
 
   return { subject, html, text };
