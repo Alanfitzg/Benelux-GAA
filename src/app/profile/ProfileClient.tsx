@@ -57,14 +57,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
   const [loadingPrimaryClub, setLoadingPrimaryClub] = useState(false);
   const [showClubSelectionModal, setShowClubSelectionModal] = useState(false);
 
-  useEffect(() => {
-    fetchUserClubs();
-    if (user.clubId && user.isClubMember) {
-      fetchPrimaryClub();
-    }
-  }, [fetchPrimaryClub, user.clubId, user.isClubMember]);
-
-  const fetchUserClubs = async () => {
+  const fetchUserClubs = useCallback(async () => {
     try {
       const response = await fetch("/api/user/clubs");
       if (response.ok) {
@@ -76,7 +69,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
     } finally {
       setLoadingClubs(false);
     }
-  };
+  }, []);
 
   const fetchPrimaryClub = useCallback(async () => {
     if (!user.clubId) return;
@@ -99,6 +92,13 @@ export default function ProfileClient({ user }: ProfileClientProps) {
       setLoadingPrimaryClub(false);
     }
   }, [user.clubId]);
+
+  useEffect(() => {
+    fetchUserClubs();
+    if (user.clubId && user.isClubMember) {
+      fetchPrimaryClub();
+    }
+  }, [fetchUserClubs, fetchPrimaryClub, user.clubId, user.isClubMember]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
