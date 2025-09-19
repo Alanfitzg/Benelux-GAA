@@ -23,7 +23,7 @@ async function cleanDuplicateCountries() {
     console.log(`${colors.blue}Found ${allCountries.length} total countries${colors.reset}`);
 
     // Group countries by name and international unit
-    const grouped: { [key: string]: any[] } = {};
+    const grouped: { [key: string]: { id: string; name: string; code: string; internationalUnitId: string; region?: string | null; subRegion?: string | null }[] } = {};
     allCountries.forEach(country => {
       const key = `${country.internationalUnitId}:${country.name}`;
       if (!grouped[key]) {
@@ -33,14 +33,14 @@ async function cleanDuplicateCountries() {
     });
 
     // Find duplicates
-    const duplicateGroups = Object.entries(grouped).filter(([_, countries]) => countries.length > 1);
+    const duplicateGroups = Object.entries(grouped).filter(([, countries]) => countries.length > 1);
 
     console.log(`${colors.yellow}Found ${duplicateGroups.length} duplicate country groups:${colors.reset}`);
 
     let totalMigrated = 0;
     let totalDeleted = 0;
 
-    for (const [key, duplicates] of duplicateGroups) {
+    for (const [, duplicates] of duplicateGroups) {
       const countryName = duplicates[0].name;
       console.log(`\n${colors.cyan}Processing: ${countryName} (${duplicates.length} duplicates)${colors.reset}`);
 

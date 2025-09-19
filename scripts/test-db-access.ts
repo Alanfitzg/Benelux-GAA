@@ -53,16 +53,16 @@ async function testDatabaseAccess() {
       console.log(`Testing: ${name}`);
       const result = await test();
       console.log(`✅ SUCCESS: ${JSON.stringify(result)}\n`);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.log(`❌ FAILED: ${name}`);
-      console.log(`   Error: ${error.message}`);
+      console.log(`   Error: ${error instanceof Error ? error.message : String(error)}`);
       
       // Check for specific RLS error patterns
-      if (error.message.includes('new row violates row-level security policy')) {
+      if (error instanceof Error && error.message.includes('new row violates row-level security policy')) {
         console.log('   🔒 This is an RLS INSERT policy issue');
-      } else if (error.message.includes('permission denied')) {
+      } else if (error instanceof Error && error.message.includes('permission denied')) {
         console.log('   🔒 This is a permission issue');
-      } else if (error.code === 'P2025') {
+      } else if (error instanceof Error && 'code' in error && error.code === 'P2025') {
         console.log('   🔍 Record not found (might be RLS filtering)');
       }
       console.log('');

@@ -8,7 +8,7 @@ async function approveExistingUsers() {
     // Update all users to APPROVED status and set approvedAt timestamp
     const result = await prisma.user.updateMany({
       data: {
-        accountStatus: 'APPROVED' as any,
+        accountStatus: 'APPROVED',
         approvedAt: new Date(),
       },
     });

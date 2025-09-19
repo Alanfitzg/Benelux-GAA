@@ -42,7 +42,7 @@ async function restoreData() {
       const summaryData = await fs.readFile(summaryPath, 'utf-8');
       summary = JSON.parse(summaryData);
       console.log('📊 Backup summary:', summary.counts);
-    } catch (error) {
+    } catch {
       console.log('⚠️  No summary file found, proceeding with restore...');
     }
 
@@ -171,7 +171,7 @@ async function restoreUsers(backupDir: string): Promise<number> {
 
     if (!existing) {
       // Create user without relations first
-      const { preferences, clubAdminRequests, accounts, passwordResetTokens, ...userData } = user;
+      const { preferences, ...userData } = user;
       
       const newUser = await prisma.user.create({
         data: userData
@@ -216,7 +216,7 @@ async function restoreClubs(backupDir: string): Promise<number> {
 
     if (!existing) {
       // Create club without relations
-      const { events, availabilitySlots, tournamentInterests, ...clubData } = club;
+      const { ...clubData } = club;
       
       await prisma.club.create({
         data: clubData
@@ -251,7 +251,7 @@ async function restoreEvents(backupDir: string): Promise<number> {
 
     if (!existing) {
       // Remove nested club data and create event
-      const { club, ...eventData } = event;
+      const { ...eventData } = event;
       
       // Convert date strings back to Date objects
       eventData.startDate = new Date(eventData.startDate);

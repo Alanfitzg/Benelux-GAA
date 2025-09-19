@@ -6,7 +6,7 @@ import path from "path"
 // Configuration
 const BACKUP_DIR = "./backups"
 const MAX_LOCAL_BACKUPS = 7 // Keep last 7 local backups
-const MAX_S3_BACKUPS = 30 // Keep last 30 S3 backups
+// const MAX_S3_BACKUPS = 30 // Keep last 30 S3 backups
 
 // S3 Configuration
 const s3Client = new S3Client({

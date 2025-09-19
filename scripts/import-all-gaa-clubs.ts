@@ -16,6 +16,17 @@ const colors = {
   cyan: '\x1b[36m',
 };
 
+// Types
+interface ExistingClub {
+  id: string;
+  name: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  countryId?: string | null;
+  region?: string | null;
+  subRegion?: string | null;
+}
+
 // CSV Row Interface
 interface CSVRow {
   File: string;
@@ -77,7 +88,7 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
 }
 
 // Check for duplicate club
-async function findDuplicateClub(row: CSVRow, existingClubs: any[]): Promise<{ club: any; reason: string } | null> {
+async function findDuplicateClub(row: CSVRow, existingClubs: ExistingClub[]): Promise<{ club: ExistingClub; reason: string } | null> {
   const normalizedName = normalizeClubName(row.Club);
   const lat = parseFloat(row.Latitude);
   const lon = parseFloat(row.Longitude);
