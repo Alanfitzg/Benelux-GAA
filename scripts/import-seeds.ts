@@ -58,7 +58,8 @@ async function importSeeds() {
 
     console.log('\nImporting seed data...\n');
 
-    const importFile = async (filename: string, modelName: string, importFn: (data: unknown) => Promise<unknown>) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const importFile = async (filename: string, modelName: string, importFn: (data: any) => Promise<any>) => {
       const filePath = path.join(seedsDir, filename);
       if (fs.existsSync(filePath)) {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));

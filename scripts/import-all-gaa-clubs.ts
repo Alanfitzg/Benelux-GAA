@@ -20,6 +20,7 @@ const colors = {
 interface ExistingClub {
   id: string;
   name: string;
+  location?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   countryId?: string | null;
