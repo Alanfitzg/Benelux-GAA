@@ -746,7 +746,18 @@ export default function EventsPageClient({
               <CalendarView
                 clubId={selectedClub}
                 clubName={mainlandEuropeClubs.find(c => c.id === selectedClub)?.name || ""}
-                permissions={clubPermissions[selectedClub] || {}}
+                permissions={{
+                  canViewCalendar: clubPermissions[selectedClub]?.canViewCalendar || false,
+                  canCreateEvents: clubPermissions[selectedClub]?.canCreateEvents || false,
+                  canEditAllEvents: false,
+                  canBlockWeekends: false,
+                  canFlagPriorityWeekends: false,
+                  canViewInterestIdentities: clubPermissions[selectedClub]?.canViewInterestIdentities || false,
+                  canSubmitInterest: false,
+                  canViewAllCalendars: false,
+                  canManageHolidays: false,
+                  canAccessDigest: false
+                }}
                 isMainlandEurope={true}
               />
             )

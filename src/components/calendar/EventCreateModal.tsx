@@ -13,12 +13,24 @@ interface EventCreateModalProps {
 }
 
 export default function EventCreateModal({ clubId, selectedDate, onClose, onSuccess }: EventCreateModalProps) {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    eventType: CalendarEventType;
+    eventSource: EventSource;
+    fixtureType: FixtureType | null;
+    startDate: string;
+    endDate: string;
+    startTime: string;
+    endTime: string;
+    location: string;
+    notes: string;
+  }>({
     title: "",
     description: "",
     eventType: CalendarEventType.TOURNAMENT,
     eventSource: EventSource.CLUB,
-    fixtureType: null as FixtureType | null,
+    fixtureType: null,
     startDate: selectedDate ? format(selectedDate, "yyyy-MM-dd") : format(new Date(), "yyyy-MM-dd"),
     endDate: "",
     startTime: "",

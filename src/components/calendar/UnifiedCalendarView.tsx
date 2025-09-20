@@ -55,6 +55,7 @@ export default function UnifiedCalendarView({
   const [loading, setLoading] = useState(true);
   const [showInterestModal, setShowInterestModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [selectedClubForInterest, setSelectedClubForInterest] = useState<string | null>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   const fetchUnifiedCalendarData = useCallback(async () => {
     setLoading(true);
@@ -251,7 +252,7 @@ export default function UnifiedCalendarView({
                   uniqueUsers={dayData.uniqueUsers}
                   holidays={dayData.holidays}
                   isBlocked={dayData.isBlocked}
-                  priorityWeekend={dayData.priorityWeekend}
+                  priorityWeekend={dayData.priorityWeekend || null}
                   filters={{...filters, showHolidays: true}}
                   permissions={getUnifiedPermissions()}
                   onClick={() => handleDateClick(date)}

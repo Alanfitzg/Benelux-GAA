@@ -205,7 +205,7 @@ export default function CalendarView({ clubId, clubName, permissions, isMainland
         <CalendarFilters
           filters={filters}
           onFiltersChange={setFilters}
-          showInterestFilter={permissions.canViewInterest !== false}
+          showInterestFilter={permissions.canSubmitInterest !== false}
         />
 
         <div className="flex items-center justify-between mt-4">
@@ -258,7 +258,7 @@ export default function CalendarView({ clubId, clubName, permissions, isMainland
                   uniqueUsers={dayData.uniqueUsers}
                   holidays={dayData.holidays}
                   isBlocked={dayData.isBlocked}
-                  priorityWeekend={dayData.priorityWeekend}
+                  priorityWeekend={dayData.priorityWeekend || null}
                   filters={{...filters, showHolidays: true}}
                   permissions={permissions}
                   onClick={() => handleDateClick(date)}
