@@ -125,6 +125,8 @@ model Club {
   calendarWatches     CalendarWatch[]
   members             User[]               @relation("ClubMembers")
   admins              User[]               @relation("ClubAdmins")
+  submitter           User?                @relation("ClubSubmitter", fields: [submittedBy], references: [id])
+  reviewer            User?                @relation("ClubReviewer", fields: [reviewedBy], references: [id])
   verifier            User?                @relation("ClubVerifier", fields: [verifiedBy], references: [id])
   internationalUnit   InternationalUnit?   @relation(fields: [internationalUnitId], references: [id])
   country             Country?             @relation(fields: [countryId], references: [id])
@@ -176,6 +178,8 @@ model User {
   club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
   preferences           UserPreferences?
   adminOfClubs          Club[]               @relation("ClubAdmins")
+  submittedClubs        Club[]               @relation("ClubSubmitter")
+  reviewedClubs         Club[]               @relation("ClubReviewer")
   verifiedClubs         Club[]               @relation("ClubVerifier")
 
   @@index([accountStatus])

@@ -20,8 +20,20 @@ interface PendingClub {
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
   createdAt: string;
   submittedBy: string | null;
+  submitter: {
+    id: string;
+    email: string;
+    username: string | null;
+    name: string;
+  } | null;
   reviewedAt: string | null;
   reviewedBy: string | null;
+  reviewer: {
+    id: string;
+    email: string;
+    username: string | null;
+    name: string;
+  } | null;
   rejectionReason: string | null;
   adminNotes: string | null;
   facebook: string | null;
@@ -185,6 +197,13 @@ export default function ClubApprovalPage() {
                           <p><strong>Location:</strong> {club.location}</p>
                           <p><strong>Region:</strong> {club.region || 'Not specified'}</p>
                           <p><strong>Submitted:</strong> {new Date(club.createdAt).toLocaleDateString()}</p>
+                          <p><strong>Submitted by:</strong> {club.submitter ? (
+                            <span className="text-blue-600">
+                              {club.submitter.name || club.submitter.email}
+                            </span>
+                          ) : (
+                            <span className="text-gray-400">Unknown</span>
+                          )}</p>
                         </div>
                         <div>
                           <p><strong>Contact:</strong> {club.contactFirstName} {club.contactLastName}</p>
@@ -217,8 +236,11 @@ export default function ClubApprovalPage() {
                       {/* Status Info */}
                       {club.status !== 'PENDING' && (
                         <div className="mt-3 p-3 bg-gray-50 rounded-lg text-sm">
-                          <p><strong>Status:</strong> {club.status}</p>
+                          <p><strong>Status:</strong> <span className={`font-semibold ${
+                            club.status === 'APPROVED' ? 'text-green-600' : 'text-red-600'
+                          }`}>{club.status}</span></p>
                           {club.reviewedAt && <p><strong>Reviewed:</strong> {new Date(club.reviewedAt).toLocaleDateString()}</p>}
+                          {club.reviewer && <p><strong>Reviewed by:</strong> <span className="text-blue-600">{club.reviewer.name || club.reviewer.email}</span></p>}
                           {club.rejectionReason && <p><strong>Rejection Reason:</strong> {club.rejectionReason}</p>}
                           {club.adminNotes && <p><strong>Admin Notes:</strong> {club.adminNotes}</p>}
                         </div>
@@ -261,6 +283,22 @@ export default function ClubApprovalPage() {
                 >
                   ×
                 </button>
+              </div>
+
+              {/* Submitter Information */}
+              <div className="mb-6 p-4 bg-blue-50 rounded-lg">
+                <p className="text-sm text-gray-700">
+                  <strong>Submitted by:</strong>{' '}
+                  {selectedClub.submitter ? (
+                    <span className="text-blue-600 font-medium">
+                      {selectedClub.submitter.name || selectedClub.submitter.email}
+                    </span>
+                  ) : (
+                    <span className="text-gray-500">Unknown</span>
+                  )}
+                  {' on '}
+                  <span className="font-medium">{new Date(selectedClub.createdAt).toLocaleDateString()}</span>
+                </p>
               </div>
 
               {/* Admin Notes */}
