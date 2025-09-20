@@ -188,7 +188,7 @@ export default async function EventsPage() {
     };
 
     // Get all mainland Europe clubs for calendar access (with fallback)
-    let mainlandEuropeClubs: { id: string; name: string }[] = [];
+    let mainlandEuropeClubs: { id: string; name: string; isMainlandEurope: boolean }[] = [];
     let clubPermissions: Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canViewInterestIdentities: boolean }> = {};
 
     try {
@@ -205,7 +205,7 @@ export default async function EventsPage() {
       const fallbackPermissions = {
         canViewCalendar: true,
         canCreateEvents: false,
-        canSubmitInterest: !!session?.user?.id
+        canViewInterestIdentities: false
       };
 
       mainlandEuropeClubs.forEach(club => {

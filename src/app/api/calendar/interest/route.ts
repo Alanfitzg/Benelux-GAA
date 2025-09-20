@@ -12,7 +12,7 @@ const submitInterestSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth();
+    const session = await getServerSession();
     const { searchParams } = new URL(request.url);
     const clubId = searchParams.get("clubId");
     const startDate = searchParams.get("startDate");
@@ -80,16 +80,16 @@ export async function GET(request: NextRequest) {
       }
 
       // Store user IDs for later lookup
-      if (permissions.canViewInterestIdentities) {
+      if (permissions.canViewInterestIdentities && acc[dateKey].userIds) {
         acc[dateKey].userIds.add(interest.userId);
       }
 
       return acc;
-    }, {} as Record<string, { count: number; userIds: Set<string> }>);
+    }, {} as Record<string, { date: Date; totalSubmissions: number; uniqueUsers: Set<string>; locations: string[]; userIds: Set<string> | undefined }>);
 
     // Get user details for superadmins (if needed)
     const formattedInterests = await Promise.all(
-      Object.values(interestsByDate).map(async (item: { count: number; userIds: Set<string> }) => {
+      Object.values(interestsByDate).map(async (item: { date: Date; totalSubmissions: number; uniqueUsers: Set<string>; locations: string[]; userIds: Set<string> | undefined }) => {
         let users = undefined;
 
         if (permissions.canViewInterestIdentities && item.userIds) {

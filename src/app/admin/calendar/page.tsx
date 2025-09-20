@@ -21,6 +21,7 @@ export default async function CalendarManagementPage() {
       id: true,
       name: true,
       location: true,
+      isMainlandEurope: true,
     },
     orderBy: { name: "asc" },
   });

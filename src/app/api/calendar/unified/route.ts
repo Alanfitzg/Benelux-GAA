@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
 
       if (!acc[dateKey]) {
         acc[dateKey] = {
-          date: interest.date,
+          date: dateKey,
           totalSubmissions: 0,
           uniqueUsers: new Set(),
           clubs: new Set()

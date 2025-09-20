@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
       conflictWarning = `Warning: There is a competitive fixture on this date (${existingFixture.title})`;
 
       // Notify superadmins about the conflict
-      await createConflictNotification(validatedData.clubId, validatedData.startDate, session.user.id);
+      await createConflictNotification(validatedData.clubId, validatedData.startDate);
     }
 
     // Set crest type based on event type

@@ -7,7 +7,8 @@ import UnifiedCalendarView from "@/components/calendar/UnifiedCalendarView";
 interface Club {
   id: string;
   name: string;
-  location: string;
+  location: string | null;
+  isMainlandEurope: boolean;
 }
 
 interface Stats {
@@ -59,10 +60,10 @@ export default function CalendarAdminDashboard({ clubs, stats }: CalendarAdminDa
     acc[club.id] = {
       canViewCalendar: true,
       canCreateEvents: false,
-      canSubmitInterest: true,
+      canViewInterestIdentities: true,
     };
     return acc;
-  }, {} as Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canSubmitInterest: boolean }>);
+  }, {} as Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canViewInterestIdentities: boolean }>);
 
   return (
     <div className="space-y-6">

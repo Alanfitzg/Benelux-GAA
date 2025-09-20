@@ -45,7 +45,7 @@ export default function CalendarView({ clubId, clubName, permissions, isMainland
   const [filters, setFilters] = useState<Filters>({
     showFixtures: true,
     showEvents: true,
-    showInterest: permissions.canViewInterest !== false,
+    showInterest: permissions.canViewInterestIdentities !== false,
   });
   const [loading, setLoading] = useState(true);
   const [showEventModal, setShowEventModal] = useState(false);

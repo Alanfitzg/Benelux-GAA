@@ -41,7 +41,7 @@ export default function CalendarCell({
 
   // Calculate interest gradient intensity (0-100%)
   const interestIntensity = Math.min(100, interestCount * 10);
-  const shouldShowInterest = filters.showInterest && interestCount > 0 && (permissions.canViewInterest !== false);
+  const shouldShowInterest = filters.showInterest && interestCount > 0 && (permissions.canViewInterestIdentities !== false);
 
   // Separate fixtures from other events
   const fixtures = events.filter(e => e.eventSource === EventSource.FIXTURE);
@@ -118,7 +118,7 @@ export default function CalendarCell({
       )}
 
       {/* Interest indicator */}
-      {shouldShowInterest && permissions.canViewInterest !== false && (
+      {shouldShowInterest && permissions.canViewInterestIdentities !== false && (
         <div className="absolute bottom-2 right-2 flex items-center gap-1">
           <Users className="w-3 h-3 text-green-600" />
           <span className="text-xs font-medium text-green-700">
