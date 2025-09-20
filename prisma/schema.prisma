@@ -108,6 +108,7 @@ model Club {
   verificationDetails Json?
   lastVerificationCheck DateTime?
   verificationExpiry  DateTime?
+  isMainlandEurope    Boolean              @default(false) // For geo-restriction
   availabilitySlots   AvailabilitySlot[]
   bookings            Booking[]
   clubAdminRequests   ClubAdminRequest[]
@@ -118,6 +119,10 @@ model Club {
   tournamentInterests TournamentInterest[]
   tournamentTeams     TournamentTeam[]
   testimonials        Testimonial[]
+  calendarEvents      CalendarEvent[]
+  calendarInterests   CalendarInterest[]
+  blockedWeekends     BlockedWeekend[]
+  calendarWatches     CalendarWatch[]
   members             User[]               @relation("ClubMembers")
   admins              User[]               @relation("ClubAdmins")
   verifier            User?                @relation("ClubVerifier", fields: [verifiedBy], references: [id])
@@ -832,4 +837,160 @@ enum SubmissionStatus {
   APPROVED
   REJECTED
   DUPLICATE
+}
+
+// Calendar-specific models for the new Club Admin Calendar feature
+model CalendarEvent {
+  id              String            @id @default(cuid())
+  clubId          String
+  title           String
+  description     String?
+  eventType       CalendarEventType
+  eventSource     EventSource
+  fixtureType     FixtureType?
+  crestType       CrestType         @default(CLUB)
+  startDate       DateTime
+  endDate         DateTime?
+  startTime       String?
+  endTime         String?
+  location        String?
+  notes           String?
+  isBlocked       Boolean           @default(false)
+  conflictWarning String?
+  createdBy       String
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  club            Club              @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@index([clubId, startDate])
+  @@index([startDate])
+  @@index([eventType])
+  @@index([eventSource])
+}
+
+model CalendarInterest {
+  id                String    @id @default(cuid())
+  clubId            String
+  userId            String
+  date              DateTime
+  preferredLocation String?
+  submissionCount   Int       @default(1)
+  isAnonymous       Boolean   @default(false) // True when viewed by club admins
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  club              Club      @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, userId, date])
+  @@index([clubId, date])
+  @@index([date])
+  @@index([userId])
+}
+
+model BlockedWeekend {
+  id          String    @id @default(cuid())
+  clubId      String
+  startDate   DateTime
+  endDate     DateTime
+  reason      String?
+  blockedBy   String
+  createdAt   DateTime  @default(now())
+
+  club        Club      @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@index([clubId, startDate])
+  @@index([startDate, endDate])
+}
+
+model Holiday {
+  id          String        @id @default(cuid())
+  country     String
+  date        DateTime
+  name        String
+  type        HolidayType
+  cachedAt    DateTime      @default(now())
+
+  @@unique([country, date, type])
+  @@index([country, date])
+  @@index([date])
+}
+
+model PriorityWeekend {
+  id          String    @id @default(cuid())
+  date        DateTime
+  message     String
+  createdBy   String
+  createdAt   DateTime  @default(now())
+
+  @@unique([date])
+  @@index([date])
+}
+
+model CalendarWatch {
+  id                  String    @id @default(cuid())
+  clubId              String
+  date                DateTime
+  userId              String
+  addedToMailingList  Boolean   @default(false)
+  createdAt           DateTime  @default(now())
+
+  club                Club      @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, date, userId])
+  @@index([clubId, date])
+  @@index([date])
+}
+
+model ArchivedInterest {
+  id                String    @id @default(cuid())
+  clubId            String
+  userId            String
+  date              DateTime
+  preferredLocation String?
+  submissionCount   Int
+  originalCreatedAt DateTime
+  archivedAt        DateTime  @default(now())
+
+  @@index([clubId])
+  @@index([archivedAt])
+}
+
+model CalendarDigestLog {
+  id          String    @id @default(cuid())
+  sentAt      DateTime  @default(now())
+  recipients  String[]
+  success     Boolean
+  errorMessage String?
+  metrics     Json?     // Store KPIs and stats for the digest
+
+  @@index([sentAt])
+}
+
+enum CalendarEventType {
+  FIXTURE
+  TRAINING
+  TOURNAMENT
+  SOCIAL
+}
+
+enum EventSource {
+  CLUB
+  FIXTURE
+  SYSTEM
+}
+
+enum FixtureType {
+  COMPETITIVE
+  INVITATIONAL
+}
+
+enum CrestType {
+  CLUB
+  EUROPE_GAA
+}
+
+enum HolidayType {
+  PUBLIC
+  SCHOOL
 }

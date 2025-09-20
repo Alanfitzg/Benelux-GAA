@@ -1,0 +1,241 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "@/lib/auth-helpers";
+import { prisma } from "@/lib/prisma";
+import { hash } from "bcryptjs";
+import { UserRole, AccountStatus } from "@prisma/client";
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession();
+
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = params;
+
+    if (!id) {
+      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+    }
+
+    // Check if user exists and get their role
+    const userToDelete = await prisma.user.findUnique({
+      where: { id },
+      select: { role: true },
+    });
+
+    if (!userToDelete) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Prevent deleting SUPER_ADMIN users for safety
+    if (userToDelete.role === UserRole.SUPER_ADMIN) {
+      return NextResponse.json(
+        { error: "Cannot delete super admin users" },
+        { status: 403 }
+      );
+    }
+
+    // Remove user from any club admin roles before deletion
+    await prisma.user.update({
+      where: { id },
+      data: {
+        adminOfClubs: {
+          set: [] // This disconnects from all clubs
+        }
+      }
+    });
+
+    // Delete the user (this will cascade and delete related records)
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return NextResponse.json(
+      { error: "Failed to delete user" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession();
+
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = params;
+    const body = await request.json();
+    const { email, username, name, role, accountStatus, clubId, adminOfClubIds, newPassword } = body;
+
+    if (!id) {
+      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+    }
+
+    // Check if user exists
+    const existingUser = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!existingUser) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Check for email/username conflicts with other users
+    if (email !== existingUser.email || username !== existingUser.username) {
+      const conflictUser = await prisma.user.findFirst({
+        where: {
+          AND: [
+            { id: { not: id } },
+            {
+              OR: [
+                { email: email },
+                { username: username },
+              ],
+            },
+          ],
+        },
+      });
+
+      if (conflictUser) {
+        return NextResponse.json(
+          { error: "Email or username already exists" },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Prepare update data
+    const updateData: {
+      email: string;
+      username: string;
+      name: string | null;
+      role: UserRole;
+      accountStatus: AccountStatus;
+      clubId: string | null;
+      password?: string;
+    } = {
+      email,
+      username,
+      name: name || null,
+      role: role as UserRole,
+      accountStatus: accountStatus as AccountStatus,
+      clubId: clubId || null,
+    };
+
+    // Hash new password if provided
+    if (newPassword) {
+      updateData.password = await hash(newPassword, 12);
+    }
+
+    // Update the user
+    const updatedUserRaw = await prisma.user.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        name: true,
+        role: true,
+        accountStatus: true,
+        createdAt: true,
+        clubId: true,
+        password: true,
+        club: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+        accounts: {
+          select: {
+            provider: true,
+          },
+        },
+      },
+    });
+
+    // Handle club admin assignments
+    if (role === UserRole.CLUB_ADMIN && Array.isArray(adminOfClubIds)) {
+      // Remove from all clubs first
+      await prisma.user.update({
+        where: { id },
+        data: {
+          adminOfClubs: {
+            set: [] // This disconnects from all clubs
+          }
+        }
+      });
+
+      // Assign to selected clubs
+      if (adminOfClubIds.length > 0) {
+        await prisma.user.update({
+          where: { id },
+          data: {
+            adminOfClubs: {
+              connect: adminOfClubIds.map(clubId => ({ id: clubId }))
+            }
+          }
+        });
+      }
+    } else if (role !== UserRole.CLUB_ADMIN) {
+      // Remove from all clubs if not a club admin
+      await prisma.user.update({
+        where: { id },
+        data: {
+          adminOfClubs: {
+            set: [] // This disconnects from all clubs
+          }
+        }
+      });
+    }
+
+    // Get admin clubs for the updated user
+    const adminOfClubsResult = await prisma.club.findMany({
+      where: {
+        admins: {
+          some: { id }
+        }
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+
+    const updatedUser = {
+      id: updatedUserRaw.id,
+      email: updatedUserRaw.email,
+      username: updatedUserRaw.username,
+      name: updatedUserRaw.name,
+      role: updatedUserRaw.role,
+      accountStatus: updatedUserRaw.accountStatus,
+      createdAt: updatedUserRaw.createdAt,
+      clubId: updatedUserRaw.clubId,
+      hasPassword: !!updatedUserRaw.password,
+      club: updatedUserRaw.club,
+      adminOfClubs: adminOfClubsResult,
+      accounts: updatedUserRaw.accounts,
+    };
+
+    return NextResponse.json({ user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return NextResponse.json(
+      { error: "Failed to update user" },
+      { status: 500 }
+    );
+  }
+}

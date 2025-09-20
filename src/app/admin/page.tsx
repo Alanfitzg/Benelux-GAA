@@ -176,8 +176,25 @@ export default function AdminDashboard() {
           </div>
         </Link>
 
-        <Link 
-          href="/admin/features" 
+        <Link
+          href="/admin/calendar"
+          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-indigo-400/20 to-blue-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">📅</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                Calendar Management
+              </h2>
+              <p className="text-gray-600 mt-1">Manage club calendars, events, and interest submissions</p>
+            </div>
+          </div>
+        </Link>
+
+        <Link
+          href="/admin/features"
           className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
         >
           <div className="flex items-center space-x-4">

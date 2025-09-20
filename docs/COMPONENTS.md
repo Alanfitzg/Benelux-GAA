@@ -4,7 +4,7 @@
 - **`/src/components/auth/PasswordRequirements.tsx`** - Real-time password validation checklist
 - **`/src/components/auth/PasswordStrengthMeter.tsx`** - Visual password strength indicator
 - **`/src/components/auth/SimpleClubSelector.tsx`** - Enhanced club selector with Ireland special handling
-- **Calendar Components**: ClubCalendar, InterestSubmissionForm, ClubCalendarManagement
+- **Calendar Components**: ClubCalendar, InterestSubmissionForm, ClubCalendarManagement (Enhanced September 2025)
 - **SignInPromptModal**: For anonymous users to sign up/in for calendar features
 - **`/src/components/onboarding/OnboardingModal.tsx`** - "The Profile Builder" - Main 4-step onboarding modal with progress tracking
 - **`/src/components/onboarding/MotivationSelector.tsx`** - Drag-and-drop travel motivation ranking
@@ -130,6 +130,7 @@
   - Current year revenue calculation from tournament registrations
   - Mobile-responsive grid layout with optimized card sizes
   - Hidden pitch management on mobile for better UX
+  - **Interest Calendar Centerpiece**: Integrated ClubCalendarManagement as the primary dashboard component
 - **Enhanced `/src/app/api/clubs/[id]/stats/route.ts`** - Added earnings calculation:
   - Calendar year filtering (January 1 - December 31)
   - Automatic revenue aggregation from event costs and registrations
@@ -172,6 +173,38 @@
 - **Enhanced `/src/components/events/EventsPageClient.tsx`** - Added sport type badges to event tiles (Hurling, LGFA, G4MO, etc.)
 - **Enhanced `/src/app/events/[id]/EventDetailClient.tsx`** - Added host club responsibility disclaimer in "What's Included" section
 
-### **Profile Builder Improvements**  
+### **Profile Builder Improvements**
 - **Enhanced `/src/components/onboarding/OnboardingModal.tsx`** - Renamed to "The Profile Builder" for better clarity
 - **Updated `/src/lib/constants/onboarding.ts`** - Implemented sport-neutral language removing football assumptions
+
+## 📅 Club Admin Calendar Enhancements (September 2025)
+
+### **Interest Calendar as Dashboard Centerpiece**
+- **Enhanced `/src/components/admin/ClubCalendarManagement.tsx`** - Major redesign with:
+  - **Calendar Tile View**: New default view showing month grid with daily tiles regardless of activity
+  - **Three View System**: Calendar View (new), Interests List, and Availability Management
+  - **Always-Visible Calendar**: Tiles display for every day, providing complete monthly overview
+  - **Visual Activity Indicators**: Color-coded tiles showing availability, interests, and events
+  - **Enhanced Data Integration**: Fetches and displays events, tournament interests, and availability data
+  - **Responsive Design**: Mobile-optimized grid layout with hover effects and visual feedback
+
+### **Dashboard Integration**
+- **Enhanced `/src/components/ClubAdminDashboard.tsx`** - Calendar positioning updates:
+  - **Primary Position**: ClubCalendarManagement moved to prominent centerpiece location
+  - **Visual Emphasis**: Wrapped in gradient background styling for prominence
+  - **Import Integration**: Added ClubCalendarManagement import and component usage
+
+### **Key Features Implemented**
+- ✅ **Always-Visible Tiles**: Calendar grid shows regardless of demand or events registered
+- ✅ **Multi-View Interface**: Calendar, Interests, and Availability tabs for comprehensive management
+- ✅ **Activity Visualization**: Green checkmarks for availability, yellow user icons for interests, blue globes for events
+- ✅ **Interactive Elements**: Hover effects, month navigation, and clickable tiles
+- ✅ **Color-Coded Legend**: Clear visual guide for understanding tile indicators
+- ✅ **Responsive Grid**: 7-day week layout optimized for all screen sizes
+- ✅ **Dashboard Prominence**: Positioned as the primary component club admins see first
+
+### **Technical Implementation**
+- **Date Utilities**: Integrated `date-fns` for calendar grid generation and date comparisons
+- **State Management**: Enhanced view state handling for calendar/interests/availability switching
+- **Data Fetching**: Unified API calls for events, interests, and availability data
+- **Visual Components**: Motion effects, icons, and styling improvements for professional appearance

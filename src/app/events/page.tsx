@@ -6,6 +6,7 @@ import { MESSAGES } from "@/lib/constants";
 import { StructuredData } from "@/components/StructuredData";
 import { getCityDefaultImage } from "@/lib/city-utils";
 import EventsPageClient from "@/components/events/EventsPageClient";
+import { getServerSession } from "@/lib/auth-helpers";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -107,6 +108,7 @@ async function getFilterOptions() {
 
 export default async function EventsPage() {
   try {
+    const session = await getServerSession();
     const [events, filterOptions] = await Promise.all([
       getAllEvents(),
       getFilterOptions(),
@@ -185,15 +187,49 @@ export default async function EventsPage() {
       })),
     };
 
+    // Get all mainland Europe clubs for calendar access (with fallback)
+    let mainlandEuropeClubs: { id: string; name: string }[] = [];
+    let clubPermissions: Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canViewInterestIdentities: boolean }> = {};
+
+    try {
+      mainlandEuropeClubs = await prisma.club.findMany({
+        where: { isMainlandEurope: true },
+        select: {
+          id: true,
+          name: true,
+          isMainlandEurope: true
+        },
+      });
+
+      // Simple fallback permissions for all clubs
+      const fallbackPermissions = {
+        canViewCalendar: true,
+        canCreateEvents: false,
+        canSubmitInterest: !!session?.user?.id
+      };
+
+      mainlandEuropeClubs.forEach(club => {
+        clubPermissions[club.id] = fallbackPermissions;
+      });
+    } catch (error) {
+      console.error("Error loading calendar data:", error);
+      // Continue without calendar functionality
+      mainlandEuropeClubs = [];
+      clubPermissions = {};
+    }
+
     return (
       <>
         <StructuredData data={structuredData} />
-        <EventsPageClient 
+        <EventsPageClient
           initialEvents={eventsWithCityImages}
           eventTypes={filterOptions.eventTypes}
           countries={filterOptions.countries}
           sportTypes={filterOptions.sportTypes}
           usedSportTypes={filterOptions.usedSportTypes}
+          mainlandEuropeClubs={mainlandEuropeClubs}
+          clubPermissions={clubPermissions}
+          userId={session?.user?.id || null}
         />
       </>
     );

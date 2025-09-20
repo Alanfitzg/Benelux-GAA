@@ -6,6 +6,7 @@ import ClubVerificationCard from '@/components/club/ClubVerificationCard';
 import PitchManagement from '@/components/pitch/PitchManagement';
 import CreateEventButton from '@/components/CreateEventButton';
 import TestimonialsDashboardWidget from '@/components/testimonials/TestimonialsDashboardWidget';
+import ClubCalendarManagement from '@/components/admin/ClubCalendarManagement';
 
 interface ClubStats {
   club: {
@@ -101,6 +102,11 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
           <p className="text-gray-600">{stats.club.location}</p>
         </div>
         <CreateEventButton />
+      </div>
+
+      {/* Interest Calendar Management - Centerpiece */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-1">
+        <ClubCalendarManagement clubId={clubId} clubName={stats.club.name} />
       </div>
 
       {/* Verification Card - Collapsible */}

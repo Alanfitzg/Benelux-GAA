@@ -7,6 +7,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import CreateEventButton from "@/components/CreateEventButton";
 import { formatEventDate } from "@/lib/utils";
+import CalendarView from "@/components/calendar/CalendarView";
+import UnifiedCalendarView from "@/components/calendar/UnifiedCalendarView";
+import { Calendar, List } from "lucide-react";
 
 interface Event {
   id: string;
@@ -30,12 +33,21 @@ interface Event {
   } | null;
 }
 
+interface Club {
+  id: string;
+  name: string;
+  isMainlandEurope: boolean;
+}
+
 interface EventsPageClientProps {
   initialEvents: Event[];
   eventTypes: readonly string[];
   countries: string[];
   sportTypes: readonly string[];
   usedSportTypes: string[];
+  mainlandEuropeClubs?: Club[];
+  clubPermissions?: Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canViewInterestIdentities: boolean }>;
+  userId?: string | null;
 }
 
 
@@ -45,10 +57,17 @@ export default function EventsPageClient({
   countries,
   sportTypes,
   usedSportTypes,
+  mainlandEuropeClubs = [],
+  clubPermissions = {},
+  userId = null,
 }: EventsPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
+
+  // State for view mode
+  const [viewMode, setViewMode] = useState<"list" | "calendar">("list");
+  const [selectedClub, setSelectedClub] = useState<string>("all"); // Default to "all" for unified view
+
   // State for filters
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
   const [selectedEventType, setSelectedEventType] = useState(searchParams.get("type") || "");
@@ -392,6 +411,59 @@ export default function EventsPageClient({
 
           {/* Main Content */}
           <div className="flex-1">
+            {/* View Toggle and Club Selector */}
+            {mainlandEuropeClubs.length > 0 && (
+              <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setViewMode("list")}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        viewMode === "list"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      <List className="w-4 h-4" />
+                      List View
+                    </button>
+                    <button
+                      onClick={() => setViewMode("calendar")}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                        viewMode === "calendar"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      <Calendar className="w-4 h-4" />
+                      Calendar View
+                    </button>
+                  </div>
+
+                  {viewMode === "calendar" && (
+                    <div className="flex items-center gap-2">
+                      <label htmlFor="club-select" className="text-sm font-medium text-gray-700">
+                        Select Club:
+                      </label>
+                      <select
+                        id="club-select"
+                        value={selectedClub}
+                        onChange={(e) => setSelectedClub(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      >
+                        <option value="all">All European Clubs</option>
+                        {mainlandEuropeClubs.map((club) => (
+                          <option key={club.id} value={club.id}>
+                            {club.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Mobile Filter Bar */}
             <div className="lg:hidden bg-white rounded-lg shadow-sm p-4 mb-4">
               <div className="flex items-center gap-3">
@@ -636,19 +708,21 @@ export default function EventsPageClient({
               </div>
             )}
 
-            {/* Events Grid */}
-            {filteredEvents.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredEvents.map((event, index) => (
-                  <EventCard key={event.id} event={event} index={index} searchQuery={debouncedSearch} />
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16 bg-white rounded-lg">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 className="text-xl font-semibold text-gray-700 mb-2">
-                  No events found
-                </h3>
+            {/* Events Display - List or Calendar */}
+            {viewMode === "list" ? (
+              // List View
+              filteredEvents.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredEvents.map((event, index) => (
+                    <EventCard key={event.id} event={event} index={index} searchQuery={debouncedSearch} />
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-16 bg-white rounded-lg">
+                  <div className="text-6xl mb-4">🔍</div>
+                  <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                    No events found
+                  </h3>
                 <p className="text-gray-500 mb-6">
                   Try adjusting your filters or search query
                 </p>
@@ -659,7 +733,24 @@ export default function EventsPageClient({
                   Clear All Filters
                 </button>
               </div>
-            )}
+            )
+          ) : (
+            // Calendar View
+            selectedClub === "all" ? (
+              <UnifiedCalendarView
+                mainlandEuropeClubs={mainlandEuropeClubs}
+                clubPermissions={clubPermissions}
+                userId={userId}
+              />
+            ) : (
+              <CalendarView
+                clubId={selectedClub}
+                clubName={mainlandEuropeClubs.find(c => c.id === selectedClub)?.name || ""}
+                permissions={clubPermissions[selectedClub] || {}}
+                isMainlandEurope={true}
+              />
+            )
+          )}
           </div>
         </div>
       </div>

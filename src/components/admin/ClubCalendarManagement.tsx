@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Calendar, X, Plus, MessageSquare } from 'lucide-react';
-import { format, startOfMonth, endOfMonth } from 'date-fns';
+import { Calendar, X, Plus, MessageSquare, Users, CheckCircle, Globe } from 'lucide-react';
+import { format, startOfMonth, endOfMonth, isSameDay, isWithinInterval } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TournamentInterest {
@@ -32,6 +32,13 @@ interface AvailabilitySlot {
   capacity?: number;
 }
 
+interface Event {
+  id: string;
+  title: string;
+  startDate: string;
+  eventType: string;
+}
+
 interface ClubCalendarManagementProps {
   clubId: string;
   clubName: string;
@@ -39,9 +46,10 @@ interface ClubCalendarManagementProps {
 
 export default function ClubCalendarManagement({ clubId, clubName }: ClubCalendarManagementProps) {
   const [interests, setInterests] = useState<TournamentInterest[]>([]);
-  const [, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
+  const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [view, setView] = useState<'interests' | 'availability'>('interests');
+  const [view, setView] = useState<'calendar' | 'interests' | 'availability'>('calendar');
   const [selectedInterest, setSelectedInterest] = useState<TournamentInterest | null>(null);
   const [suggestDatesForm, setSuggestDatesForm] = useState({
     suggestedDates: [''],
@@ -52,9 +60,13 @@ export default function ClubCalendarManagement({ clubId, clubName }: ClubCalenda
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
-      const [interestsRes, availabilityRes] = await Promise.all([
+      const start = startOfMonth(currentDate);
+      const end = endOfMonth(currentDate);
+
+      const [interestsRes, availabilityRes, eventsRes] = await Promise.all([
         fetch(`/api/clubs/${clubId}/tournament-interest?year=${currentDate.getFullYear()}&month=${currentDate.getMonth() + 1}`),
-        fetch(`/api/clubs/${clubId}/availability?startDate=${startOfMonth(currentDate).toISOString()}&endDate=${endOfMonth(currentDate).toISOString()}`),
+        fetch(`/api/clubs/${clubId}/availability?startDate=${start.toISOString()}&endDate=${end.toISOString()}`),
+        fetch(`/api/events?clubId=${clubId}&startDate=${start.toISOString()}&endDate=${end.toISOString()}`),
       ]);
 
       if (interestsRes.ok) {
@@ -65,6 +77,11 @@ export default function ClubCalendarManagement({ clubId, clubName }: ClubCalenda
       if (availabilityRes.ok) {
         const data = await availabilityRes.json();
         setAvailabilitySlots(data);
+      }
+
+      if (eventsRes.ok) {
+        const data = await eventsRes.json();
+        setEvents(data);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -139,6 +156,48 @@ export default function ClubCalendarManagement({ clubId, clubName }: ClubCalenda
     }));
   };
 
+  const getDaysInMonth = () => {
+    const start = startOfMonth(currentDate);
+    const days = [];
+    const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+
+    const firstDayOfWeek = start.getDay();
+    for (let i = 0; i < firstDayOfWeek; i++) {
+      days.push(null);
+    }
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      days.push(new Date(currentDate.getFullYear(), currentDate.getMonth(), i));
+    }
+
+    return days;
+  };
+
+  const getDateContent = (date: Date) => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+
+    const availability = availabilitySlots.find(
+      (slot) => format(new Date(slot.date), 'yyyy-MM-dd') === dateStr
+    );
+
+    const dayInterests = interests.filter((interest) => {
+      if (interest.specificDate && isSameDay(new Date(interest.specificDate), date)) {
+        return true;
+      }
+      if (interest.dateRangeStart && interest.dateRangeEnd) {
+        return isWithinInterval(date, {
+          start: new Date(interest.dateRangeStart),
+          end: new Date(interest.dateRangeEnd),
+        });
+      }
+      return false;
+    });
+
+    const dayEvents = events.filter((event) => isSameDay(new Date(event.startDate), date));
+
+    return { availability, interests: dayInterests, events: dayEvents };
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'PENDING':
@@ -172,17 +231,25 @@ export default function ClubCalendarManagement({ clubId, clubName }: ClubCalenda
           </h2>
           <div className="flex items-center gap-2">
             <button
+              onClick={() => setView('calendar')}
+              className={`px-3 py-1 text-sm border rounded-lg ${
+                view === 'calendar' ? 'bg-blue-50 border-blue-500 text-blue-700' : 'hover:bg-gray-50'
+              }`}
+            >
+              Calendar View
+            </button>
+            <button
               onClick={() => setView('interests')}
               className={`px-3 py-1 text-sm border rounded-lg ${
                 view === 'interests' ? 'bg-green-50 border-green-500 text-green-700' : 'hover:bg-gray-50'
               }`}
             >
-              Tournament Interests ({interests.length})
+              Interests ({interests.length})
             </button>
             <button
               onClick={() => setView('availability')}
               className={`px-3 py-1 text-sm border rounded-lg ${
-                view === 'availability' ? 'bg-green-50 border-green-500 text-green-700' : 'hover:bg-gray-50'
+                view === 'availability' ? 'bg-orange-50 border-orange-500 text-orange-700' : 'hover:bg-gray-50'
               }`}
             >
               Availability
@@ -209,7 +276,75 @@ export default function ClubCalendarManagement({ clubId, clubName }: ClubCalenda
         </div>
       </div>
 
-      {view === 'interests' ? (
+      {view === 'calendar' ? (
+        <div className="p-6">
+          <div className="grid grid-cols-7 gap-1 mb-2">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+              <div key={day} className="text-center text-sm font-medium text-gray-600 py-2">
+                {day}
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-7 gap-1">
+            {getDaysInMonth().map((date, index) => {
+              if (!date) {
+                return <div key={`empty-${index}`} className="h-24" />;
+              }
+
+              const { availability, interests: dayInterests, events: dayEvents } = getDateContent(date);
+              const hasContent = availability || dayInterests.length > 0 || dayEvents.length > 0;
+
+              return (
+                <motion.div
+                  key={date.toISOString()}
+                  className={`h-24 p-2 border rounded-lg ${
+                    hasContent ? 'border-gray-300 bg-gray-50' : 'border-gray-200'
+                  } hover:bg-gray-100 cursor-pointer`}
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="text-sm font-medium mb-1">{format(date, 'd')}</div>
+                  <div className="space-y-1">
+                    {availability && (
+                      <div className="flex items-center gap-1 text-xs text-green-600">
+                        <CheckCircle className="w-3 h-3" />
+                        <span>Available</span>
+                      </div>
+                    )}
+                    {dayInterests.length > 0 && (
+                      <div className="flex items-center gap-1 text-xs text-yellow-600">
+                        <Users className="w-3 h-3" />
+                        <span>{dayInterests.length} interest{dayInterests.length > 1 ? 's' : ''}</span>
+                      </div>
+                    )}
+                    {dayEvents.map((event) => (
+                      <div key={event.id} className="flex items-center gap-1 text-xs text-blue-600">
+                        <Globe className="w-3 h-3" />
+                        <span className="truncate">{event.title}</span>
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+          <div className="mt-4 p-4 border-t border-gray-200 bg-gray-50">
+            <div className="flex items-center justify-center gap-6 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full" />
+                <span>Available Dates</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                <span>Team Interest</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-blue-500 rounded-full" />
+                <span>Tournaments</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : view === 'interests' ? (
         <div className="p-6">
           {interests.length === 0 ? (
             <div className="text-center py-12 text-gray-500">
