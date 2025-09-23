@@ -53,6 +53,8 @@ export default function ClubApprovalPage() {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState('');
   const [adminNotes, setAdminNotes] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedClub, setEditedClub] = useState<Partial<PendingClub>>({});
 
   // Check permissions
   useEffect(() => {
@@ -82,6 +84,31 @@ export default function ClubApprovalPage() {
     fetchClubs();
   }, [fetchClubs]);
 
+  const openReviewModal = (club: PendingClub) => {
+    setSelectedClub(club);
+    setEditedClub({
+      name: club.name,
+      location: club.location,
+      region: club.region,
+      subRegion: club.subRegion,
+      contactFirstName: club.contactFirstName,
+      contactLastName: club.contactLastName,
+      contactEmail: club.contactEmail,
+      contactPhone: club.contactPhone,
+      facebook: club.facebook,
+      instagram: club.instagram,
+      website: club.website,
+      teamTypes: club.teamTypes,
+    });
+    setIsEditing(false);
+    setRejectionReason('');
+    setAdminNotes('');
+  };
+
+  const handleEditField = (field: string, value: string | string[] | null) => {
+    setEditedClub(prev => ({ ...prev, [field]: value }));
+  };
+
   const handleAction = async (clubId: string, action: 'approve' | 'reject') => {
     if (action === 'reject' && !rejectionReason.trim()) {
       alert('Please provide a rejection reason');
@@ -90,14 +117,26 @@ export default function ClubApprovalPage() {
 
     try {
       setActionLoading(clubId);
+      const requestBody: {
+        action: string;
+        rejectionReason?: string;
+        adminNotes?: string;
+        editedData?: Partial<PendingClub>;
+      } = {
+        action,
+        rejectionReason: action === 'reject' ? rejectionReason : undefined,
+        adminNotes: adminNotes || undefined,
+      };
+
+      // Include edited fields if in editing mode
+      if (isEditing) {
+        requestBody.editedData = editedClub;
+      }
+
       const res = await fetch(`/api/admin/clubs/${clubId}/approve`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action,
-          rejectionReason: action === 'reject' ? rejectionReason : undefined,
-          adminNotes: adminNotes || undefined,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (res.ok) {
@@ -105,6 +144,8 @@ export default function ClubApprovalPage() {
         setSelectedClub(null);
         setRejectionReason('');
         setAdminNotes('');
+        setIsEditing(false);
+        setEditedClub({});
       } else {
         const error = await res.json();
         alert(error.error || 'Failed to update club status');
@@ -252,7 +293,7 @@ export default function ClubApprovalPage() {
                   {club.status === 'PENDING' && (
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => setSelectedClub(club)}
+                        onClick={() => openReviewModal(club)}
                         className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                       >
                         Review
@@ -272,17 +313,31 @@ export default function ClubApprovalPage() {
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Review Club: {selectedClub.name}</h2>
-                <button
-                  onClick={() => setSelectedClub(null)}
-                  className="text-gray-400 hover:text-gray-600 text-2xl"
-                >
-                  ×
-                </button>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Review Club: {isEditing ? editedClub.name || selectedClub.name : selectedClub.name}
+                </h2>
+                <div className="flex items-center space-x-3">
+                  <button
+                    onClick={() => setIsEditing(!isEditing)}
+                    className={`px-3 py-1 rounded-lg text-sm font-medium ${
+                      isEditing
+                        ? 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                    }`}
+                  >
+                    {isEditing ? 'Cancel Edit' : 'Edit Club'}
+                  </button>
+                  <button
+                    onClick={() => setSelectedClub(null)}
+                    className="text-gray-400 hover:text-gray-600 text-2xl"
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
 
               {/* Submitter Information */}
@@ -299,6 +354,226 @@ export default function ClubApprovalPage() {
                   {' on '}
                   <span className="font-medium">{new Date(selectedClub.createdAt).toLocaleDateString()}</span>
                 </p>
+              </div>
+
+              {/* Club Information */}
+              <div className="mb-6 p-4 border rounded-lg">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Club Information {isEditing && <span className="text-sm text-orange-600">(Editing Mode)</span>}
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Club Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Club Name</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedClub.name || ''}
+                        onChange={(e) => handleEditField('name', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.name}</p>
+                    )}
+                  </div>
+
+                  {/* Location */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedClub.location || ''}
+                        onChange={(e) => handleEditField('location', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.location}</p>
+                    )}
+                  </div>
+
+                  {/* Region */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Region</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedClub.region || ''}
+                        onChange={(e) => handleEditField('region', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.region || '-'}</p>
+                    )}
+                  </div>
+
+                  {/* Sub Region */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Sub Region</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedClub.subRegion || ''}
+                        onChange={(e) => handleEditField('subRegion', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.subRegion || '-'}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <h4 className="text-md font-semibold text-gray-900 mt-6 mb-3">Contact Information</h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* First Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedClub.contactFirstName || ''}
+                        onChange={(e) => handleEditField('contactFirstName', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.contactFirstName || '-'}</p>
+                    )}
+                  </div>
+
+                  {/* Last Name */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                    {isEditing ? (
+                      <input
+                        type="text"
+                        value={editedClub.contactLastName || ''}
+                        onChange={(e) => handleEditField('contactLastName', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.contactLastName || '-'}</p>
+                    )}
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    {isEditing ? (
+                      <input
+                        type="email"
+                        value={editedClub.contactEmail || ''}
+                        onChange={(e) => handleEditField('contactEmail', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.contactEmail || '-'}</p>
+                    )}
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    {isEditing ? (
+                      <input
+                        type="tel"
+                        value={editedClub.contactPhone || ''}
+                        onChange={(e) => handleEditField('contactPhone', e.target.value)}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.contactPhone || '-'}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Social Links */}
+                <h4 className="text-md font-semibold text-gray-900 mt-6 mb-3">Social Media</h4>
+                <div className="grid md:grid-cols-3 gap-4">
+                  {/* Facebook */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Facebook</label>
+                    {isEditing ? (
+                      <input
+                        type="url"
+                        value={editedClub.facebook || ''}
+                        onChange={(e) => handleEditField('facebook', e.target.value)}
+                        placeholder="https://facebook.com/..."
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.facebook ? (
+                        <a href={selectedClub.facebook} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+                          {selectedClub.facebook}
+                        </a>
+                      ) : '-'}</p>
+                    )}
+                  </div>
+
+                  {/* Instagram */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Instagram</label>
+                    {isEditing ? (
+                      <input
+                        type="url"
+                        value={editedClub.instagram || ''}
+                        onChange={(e) => handleEditField('instagram', e.target.value)}
+                        placeholder="https://instagram.com/..."
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.instagram ? (
+                        <a href={selectedClub.instagram} target="_blank" rel="noopener noreferrer" className="text-pink-600 hover:underline">
+                          {selectedClub.instagram}
+                        </a>
+                      ) : '-'}</p>
+                    )}
+                  </div>
+
+                  {/* Website */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Website</label>
+                    {isEditing ? (
+                      <input
+                        type="url"
+                        value={editedClub.website || ''}
+                        onChange={(e) => handleEditField('website', e.target.value)}
+                        placeholder="https://..."
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      />
+                    ) : (
+                      <p className="text-gray-900">{selectedClub.website ? (
+                        <a href={selectedClub.website} target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:underline">
+                          {selectedClub.website}
+                        </a>
+                      ) : '-'}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Team Types */}
+                <div className="mt-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Team Types</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={Array.isArray(editedClub.teamTypes) ? editedClub.teamTypes.join(', ') : ''}
+                      onChange={(e) => handleEditField('teamTypes', e.target.value.split(',').map(t => t.trim()).filter(t => t))}
+                      placeholder="Men's, Women's, Youth, etc. (comma separated)"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                  ) : (
+                    <div className="flex flex-wrap gap-2">
+                      {selectedClub.teamTypes.length > 0 ?
+                        selectedClub.teamTypes.map((type, idx) => (
+                          <span key={idx} className="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                            {type}
+                          </span>
+                        )) : <span className="text-gray-500">None specified</span>
+                      }
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Admin Notes */}
@@ -336,14 +611,14 @@ export default function ClubApprovalPage() {
                   disabled={actionLoading === selectedClub.id}
                   className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {actionLoading === selectedClub.id ? 'Approving...' : 'Approve Club'}
+                  {actionLoading === selectedClub.id ? 'Processing...' : isEditing ? 'Save & Approve Club' : 'Approve Club'}
                 </button>
                 <button
                   onClick={() => handleAction(selectedClub.id, 'reject')}
                   disabled={actionLoading === selectedClub.id || !rejectionReason.trim()}
                   className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {actionLoading === selectedClub.id ? 'Rejecting...' : 'Reject Club'}
+                  {actionLoading === selectedClub.id ? 'Processing...' : 'Reject Club'}
                 </button>
               </div>
             </div>

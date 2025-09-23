@@ -71,6 +71,7 @@ model Interest {
 model Club {
   id                  String               @id @default(cuid())
   name                String
+  internationalUnitText String?            // Direct text field for form submissions
   internationalUnitId String?
   countryId           String?
   regionId            String?

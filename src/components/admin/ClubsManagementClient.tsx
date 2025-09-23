@@ -37,12 +37,13 @@ type Props = {
 export default function ClubsManagementClient({ initialClubs, deleteClub }: Props) {
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const clubs = initialClubs;
 
   // Extract unique regions for filter dropdown
   const regions = useMemo(() => {
     const regionSet = new Set<string>();
 
-    initialClubs.forEach(club => {
+    clubs.forEach(club => {
       // Priority order: internationalUnit > country > regionRecord > legacy region field
       if (club.internationalUnit?.name) {
         regionSet.add(club.internationalUnit.name);
@@ -56,11 +57,11 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
     });
 
     return Array.from(regionSet).sort();
-  }, [initialClubs]);
+  }, [clubs]);
 
   // Filter clubs based on selected region and search term
   const filteredClubs = useMemo(() => {
-    return initialClubs.filter(club => {
+    return clubs.filter(club => {
       // Region filter
       if (selectedRegion !== "all") {
         const clubRegion = club.internationalUnit?.name ||
@@ -86,7 +87,8 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
       return true;
     });
-  }, [initialClubs, selectedRegion, searchTerm]);
+  }, [clubs, selectedRegion, searchTerm]);
+
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -246,6 +248,7 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
           </table>
         </div>
       </div>
+
     </div>
   );
 }

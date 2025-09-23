@@ -61,6 +61,7 @@ async function createClubHandler(req: NextRequest) {
     const club = await prisma.club.create({
       data: {
         name: data.name,
+        internationalUnitText: data.internationalUnit || null,
         region: data.region || null,
         subRegion: data.subRegion || null,
         map: data.map || null,

@@ -148,6 +148,7 @@ export default function RegisterClubPage() {
     const data: ClubFormData = {
       name: (form.elements.namedItem('name') as HTMLInputElement)?.value || '',
       location,
+      internationalUnit: (form.elements.namedItem('internationalUnit') as HTMLInputElement)?.value || '',
       region: (form.elements.namedItem('region') as HTMLInputElement)?.value || null,
       subRegion: (form.elements.namedItem('subRegion') as HTMLInputElement)?.value || null,
       facebook: socialMedia.facebook || null,
@@ -306,34 +307,52 @@ export default function RegisterClubPage() {
                     <TeamTypeMultiSelect value={teamTypes} onChange={setTeamTypes} />
                   </motion.div>
 
-                  {/* Region */}
+                  {/* International Unit */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6 }}
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Region <span className="text-gray-400">(Optional)</span>
+                      International Unit <span className="text-red-500">*</span>
                     </label>
                     <input
-                      name="region"
-                      placeholder="e.g., Europe, North America"
+                      name="internationalUnit"
+                      placeholder="e.g., Europe, North America, Asia"
+                      required
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                     />
                   </motion.div>
 
-                  {/* Sub Region */}
+                  {/* Region (within International Unit) */}
                   <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 }}
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Region <span className="text-gray-400">(Optional)</span>
+                    </label>
+                    <input
+                      name="region"
+                      placeholder="e.g., Western Europe, East Coast"
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                    />
+                  </motion.div>
+
+                  {/* Sub Region */}
+                  <motion.div
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.8 }}
+                    className="md:col-span-2"
+                  >
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Sub Region <span className="text-gray-400">(Optional)</span>
                     </label>
                     <input
                       name="subRegion"
-                      placeholder="e.g., Western Europe, East Coast"
+                      placeholder="e.g., County Cork, New York State"
                       className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                     />
                   </motion.div>
@@ -342,7 +361,7 @@ export default function RegisterClubPage() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 }}
+                    transition={{ delay: 0.9 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -408,7 +427,7 @@ export default function RegisterClubPage() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.9 }}
+                    transition={{ delay: 1.0 }}
                     className="md:col-span-2"
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
@@ -438,7 +457,7 @@ export default function RegisterClubPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.0 }}
+                  transition={{ delay: 1.1 }}
                   className="mt-12 pt-12 border-t-2 border-gray-300"
                 >
                   <div className="bg-blue-50 rounded-2xl p-8 border border-blue-200">

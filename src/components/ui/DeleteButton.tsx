@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 interface DeleteButtonProps {
   id: string;
@@ -9,14 +9,28 @@ interface DeleteButtonProps {
   className?: string;
 }
 
-export default function DeleteButton({ 
-  id, 
-  onDelete, 
+export default function DeleteButton({
+  id,
+  onDelete,
   itemType = 'item',
   className = "px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
 }: DeleteButtonProps) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleDelete = async (e: React.FormEvent<HTMLFormElement>) => {
-    if (!window.confirm(`Are you sure you want to delete this ${itemType}?`)) {
+    if (!window.confirm(`Are you sure you want to delete this ${itemType}? This will also delete all related data.`)) {
+      e.preventDefault();
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const formData = new FormData(e.currentTarget);
+      await onDelete(formData);
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Failed to delete. Please try again.');
+      setIsDeleting(false);
       e.preventDefault();
     }
   };
@@ -24,7 +38,13 @@ export default function DeleteButton({
   return (
     <form action={onDelete} style={{ display: 'inline' }} onSubmit={handleDelete}>
       <input type="hidden" name="id" value={id} />
-      <button type="submit" className={className}>Delete</button>
+      <button
+        type="submit"
+        className={className}
+        disabled={isDeleting}
+      >
+        {isDeleting ? 'Deleting...' : 'Delete'}
+      </button>
     </form>
   );
 }

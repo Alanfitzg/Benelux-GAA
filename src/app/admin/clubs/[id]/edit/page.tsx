@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import ImageUpload from '../../../../components/ImageUpload';
 import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
+import ClubRelocationModal from "@/components/admin/ClubRelocationModal";
 import { TEAM_TYPES } from "@/lib/constants/teams";
 import { URLS, MESSAGES } from "@/lib/constants";
 import { FormSkeleton } from "@/components/ui/Skeleton";
@@ -44,6 +45,7 @@ export default function EditClubPage() {
   const [selectedTeamTypes, setSelectedTeamTypes] = useState<string[]>([]);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [newPlatform, setNewPlatform] = useState("");
+  const [relocationModalOpen, setRelocationModalOpen] = useState(false);
 
   const socialPlatforms = ["Facebook", "Instagram", "Twitter", "YouTube", "Website", "Other"];
 
@@ -88,6 +90,22 @@ export default function EditClubPage() {
 
   const removeSocialLink = (index: number) => {
     setSocialLinks(socialLinks.filter((_, i) => i !== index));
+  };
+
+  const handleRelocationSuccess = async () => {
+    // Refresh the club data after relocation
+    try {
+      const response = await fetch(`${URLS.API.CLUBS}/${clubId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setClub(data);
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 3000);
+      }
+    } catch (error) {
+      console.error('Error refreshing club:', error);
+      setError('Failed to refresh club data');
+    }
   };
 
   async function handleSubmit(eventForm: React.FormEvent<HTMLFormElement>) {
@@ -395,12 +413,21 @@ export default function EditClubPage() {
 
                 {/* Action Buttons */}
                 <div className="pt-8 border-t border-gray-200 flex justify-between">
-                  <Link
-                    href="/admin/clubs"
-                    className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium"
-                  >
-                    Cancel
-                  </Link>
+                  <div className="flex space-x-3">
+                    <Link
+                      href="/admin/clubs"
+                      className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition font-medium"
+                    >
+                      Cancel
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setRelocationModalOpen(true)}
+                      className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium"
+                    >
+                      Relocate Club
+                    </button>
+                  </div>
                   <button
                     type="submit"
                     disabled={uploading}
@@ -421,6 +448,22 @@ export default function EditClubPage() {
           </motion.div>
         </div>
       </div>
+
+      {/* Club Relocation Modal */}
+      {club && (
+        <ClubRelocationModal
+          club={{
+            id: clubId,
+            name: club.name,
+            internationalUnit: null,
+            country: null,
+            regionRecord: null,
+          }}
+          isOpen={relocationModalOpen}
+          onClose={() => setRelocationModalOpen(false)}
+          onSuccess={handleRelocationSuccess}
+        />
+      )}
     </div>
   );
 } 
