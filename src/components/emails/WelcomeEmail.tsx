@@ -63,8 +63,9 @@ export function WelcomeEmail({ userName, clubName, clubCrestUrl }: WelcomeEmailP
           {/* Club Crest */}
           {clubCrestUrl && (
             <div style={{ margin: '20px 0' }}>
-              <img 
-                src={clubCrestUrl} 
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={clubCrestUrl}
                 alt={`${clubName} crest`}
                 style={{
                   width: '80px',

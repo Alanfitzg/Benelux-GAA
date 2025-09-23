@@ -148,7 +148,7 @@ export default function RegisterClubPage() {
     const data: ClubFormData = {
       name: (form.elements.namedItem('name') as HTMLInputElement)?.value || '',
       location,
-      internationalUnit: (form.elements.namedItem('internationalUnit') as HTMLInputElement)?.value || '',
+      internationalUnitText: (form.elements.namedItem('internationalUnit') as HTMLInputElement)?.value || '',
       region: (form.elements.namedItem('region') as HTMLInputElement)?.value || null,
       subRegion: (form.elements.namedItem('subRegion') as HTMLInputElement)?.value || null,
       facebook: socialMedia.facebook || null,
@@ -158,6 +158,7 @@ export default function RegisterClubPage() {
       imageUrl: uploadedImageUrl || null,
       map: null,
       teamTypes,
+      sportsSupported: [],
       contactFirstName: contactFirstName || null,
       contactLastName: contactLastName || null,
       contactEmail: contactEmail || null,

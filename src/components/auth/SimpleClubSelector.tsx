@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { 
   Users, 
   Plus, 
@@ -810,10 +811,13 @@ export default function SimpleClubSelector({ value, onChange }: SimpleClubSelect
                           >
                             <div className="flex items-start gap-3">
                               {club.imageUrl ? (
-                                <img
+                                <Image
                                   src={club.imageUrl}
                                   alt={`${club.name} crest`}
+                                  width={48}
+                                  height={48}
                                   className="w-12 h-12 rounded-lg object-cover border border-gray-200 flex-shrink-0"
+                                  unoptimized
                                 />
                               ) : (
                                 <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -905,10 +909,13 @@ export default function SimpleClubSelector({ value, onChange }: SimpleClubSelect
                 >
                   <div className="flex items-start gap-4">
                     {selectedClubData.imageUrl ? (
-                      <img
+                      <Image
                         src={selectedClubData.imageUrl}
                         alt={`${selectedClubData.name} crest`}
+                        width={80}
+                        height={80}
                         className="w-20 h-20 rounded-xl object-cover border-2 border-white shadow-lg flex-shrink-0"
+                        unoptimized
                       />
                     ) : (
                       <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center border-2 border-green-200 flex-shrink-0">
