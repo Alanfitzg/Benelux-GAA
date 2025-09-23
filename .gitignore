@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 
 /src/generated/prisma
+
+*-crests-data/
+*-investigation/
+download-results.json
+/scripts/check-*.ts
+/scripts/investigate-*.ts
+/scripts/download-*.ts
+/scripts/extract-*.ts
