@@ -237,19 +237,16 @@ export default function SignUp() {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-primary-light to-secondary text-white">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative container mx-auto px-6 py-16">
+        <div className="relative container mx-auto px-4 py-8 md:py-12">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-4xl md:text-5xl font-bold font-poppins mb-4">
+            <h1 className="text-xl md:text-3xl lg:text-4xl font-bold font-poppins">
               Join the Global GAA Community
             </h1>
-            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
-              Connect with Gaelic clubs worldwide, discover tournaments, and be part of the international GAA family.
-            </p>
           </motion.div>
         </div>
         {/* Animated background shapes */}
@@ -258,29 +255,20 @@ export default function SignUp() {
       </div>
 
       {/* Form Section */}
-      <div className="relative -mt-12 px-6">
+      <div className="relative -mt-8 px-4 md:px-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-2xl mx-auto"
         >
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-professional-lg border border-gray-200/50 overflow-hidden">
-            <div className="p-8 md:p-12">
+          <div className="bg-white/95 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-professional-lg border border-gray-200/50 overflow-hidden">
+            <div className="p-4 md:p-8">
               {/* Header */}
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              <div className="text-center mb-4 md:mb-6">
+                <h2 className="text-base md:text-lg font-bold text-gray-900">
                   Create Your Account
                 </h2>
-                <p className="text-gray-600">
-                  Already have an account?{" "}
-                  <Link
-                    href="/signin"
-                    className="text-primary font-semibold hover:text-primary-dark transition-colors"
-                  >
-                    Sign in here
-                  </Link>
-                </p>
               </div>
 
               {error && (
@@ -294,9 +282,9 @@ export default function SignUp() {
                 </motion.div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
                 {/* Personal Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
                   {/* Email */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -304,7 +292,7 @@ export default function SignUp() {
                     transition={{ delay: 0.3 }}
                     className="md:col-span-2"
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       Email Address <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -314,7 +302,7 @@ export default function SignUp() {
                       onChange={handleInputChange}
                       placeholder="Enter your email address"
                       required
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                      className="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 text-base bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                     />
                   </motion.div>
 
@@ -324,7 +312,7 @@ export default function SignUp() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       Username <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -336,7 +324,7 @@ export default function SignUp() {
                       onBlur={handleUsernameBlur}
                       placeholder="Choose a username"
                       required
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                      className="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 text-base bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                     />
                     <UsernameRequirements 
                       username={formData.username} 
@@ -350,7 +338,7 @@ export default function SignUp() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.5 }}
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       Full Name <span className="text-gray-400">(Optional)</span>
                     </label>
                     <input
@@ -359,7 +347,7 @@ export default function SignUp() {
                       value={formData.name}
                       onChange={handleInputChange}
                       placeholder="Enter your full name"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-4 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
+                      className="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 text-base bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                     />
                   </motion.div>
 
@@ -369,7 +357,7 @@ export default function SignUp() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.6 }}
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       Password <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
@@ -382,7 +370,7 @@ export default function SignUp() {
                         onBlur={handlePasswordBlur}
                         placeholder="Create a secure password"
                         required
-                        className={`w-full border-2 rounded-xl px-4 py-4 pr-12 bg-gray-50/50 text-gray-900 focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
+                        className={`w-full border-2 rounded-lg px-3 py-2.5 pr-10 text-base bg-gray-50/50 text-gray-900 focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
                           passwordErrors.length > 0 ? 'border-red-300 focus:border-red-400' : 
                           formData.password && passwordErrors.length === 0 ? 'border-green-300 focus:border-green-400' :
                           'border-gray-200 focus:border-primary'
@@ -426,7 +414,7 @@ export default function SignUp() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 }}
                   >
-                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                       Confirm Password <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
@@ -437,7 +425,7 @@ export default function SignUp() {
                         onChange={handleInputChange}
                         placeholder="Confirm your password"
                         required
-                        className={`w-full border-2 rounded-xl px-4 py-4 pr-12 bg-gray-50/50 text-gray-900 focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
+                        className={`w-full border-2 rounded-lg px-3 py-2.5 pr-10 text-base bg-gray-50/50 text-gray-900 focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
                           formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-300 focus:border-red-400' :
                           formData.confirmPassword && formData.password === formData.confirmPassword ? 'border-green-300 focus:border-green-400' :
                           'border-gray-200 focus:border-primary'
@@ -517,12 +505,12 @@ export default function SignUp() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
-                  className="pt-6"
+                  className="pt-4"
                 >
                   <button
                     type="submit"
                     disabled={isLoading || !isFormValid()}
-                    className="w-full bg-gradient-to-r from-primary to-primary-light hover:from-primary-dark hover:to-primary text-white font-semibold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    className="w-full bg-gradient-to-r from-primary to-primary-light hover:from-primary-dark hover:to-primary text-white font-semibold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transform transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none text-base"
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center space-x-3">
@@ -543,7 +531,7 @@ export default function SignUp() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.85 }}
-                  className="mt-6"
+                  className="mt-4"
                 >
                   <div className="relative">
                     <div className="absolute inset-0 flex items-center">
@@ -554,11 +542,11 @@ export default function SignUp() {
                     </div>
                   </div>
 
-                  <div className="mt-6">
+                  <div className="mt-4">
                     <button
                       type="button"
                       onClick={() => signIn("google", { callbackUrl: "/" })}
-                      className="w-full flex items-center justify-center gap-3 px-4 py-3 border border-gray-300 rounded-xl text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform hover:scale-[1.02]"
+                      className="w-full flex items-center justify-center gap-3 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform hover:scale-[1.02] text-base"
                     >
                       <svg className="h-5 w-5" viewBox="0 0 24 24">
                         <path

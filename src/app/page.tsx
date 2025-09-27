@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
-import { Instagram, Facebook, Twitter, Music2 } from "lucide-react";
+import { Instagram, Facebook, Twitter, Music2, Trophy, Globe, Plane } from "lucide-react";
 
 interface Club {
   location?: string;
@@ -11,6 +11,20 @@ interface Club {
 
 interface Event {
   eventType: string;
+  id: string;
+  name: string;
+  startDate: string;
+  location?: string;
+  imageUrl?: string;
+}
+
+interface Testimonial {
+  id: string;
+  content: string;
+  author: string;
+  club?: {
+    name: string;
+  };
 }
 
 export default function HomePage() {
@@ -26,16 +40,56 @@ export default function HomePage() {
     countries: 0,
   });
 
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [eventsPerPage, setEventsPerPage] = useState(3);
+
   const statsRef = useRef(null);
   const isInView = useInView(statsRef, { once: true });
 
-  // Fetch stats
+  useEffect(() => {
+    const updateEventsPerPage = () => {
+      if (window.innerWidth < 768) {
+        setEventsPerPage(1);
+      } else if (window.innerWidth < 1024) {
+        setEventsPerPage(2);
+      } else {
+        setEventsPerPage(3);
+      }
+    };
+
+    updateEventsPerPage();
+    window.addEventListener('resize', updateEventsPerPage);
+    return () => window.removeEventListener('resize', updateEventsPerPage);
+  }, []);
+
+  const totalPages = Math.ceil(upcomingEvents.length / eventsPerPage);
+
+  const nextEvent = () => {
+    setCurrentEventIndex((prev) => (prev + 1) % totalPages);
+  };
+
+  const prevEvent = () => {
+    setCurrentEventIndex((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const getCurrentEvents = () => {
+    const start = currentEventIndex * eventsPerPage;
+    return upcomingEvents.slice(start, start + eventsPerPage);
+  };
+
+  const isEventPast = (dateString: string) => {
+    return new Date(dateString) < new Date();
+  };
+
   useEffect(() => {
     Promise.all([
       fetch("/api/clubs").then((res) => res.json()),
       fetch("/api/events").then((res) => res.json()),
+      fetch("/api/testimonials/approved").then((res) => res.json()).catch(() => ({ testimonials: [] })),
     ])
-      .then(([clubsData, eventsData]) => {
+      .then(([clubsData, eventsData, testimonialsData]) => {
         const clubs = Array.isArray(clubsData)
           ? clubsData
           : clubsData.clubs || [];
@@ -43,12 +97,10 @@ export default function HomePage() {
           ? eventsData
           : eventsData.events || [];
 
-        // Only count approved clubs
-        const approvedClubs = clubs.filter((club: Club) => 
+        const approvedClubs = clubs.filter((club: Club) =>
           club.status === 'APPROVED'
         );
 
-        // Count unique countries from approved clubs only
         const countriesWithClubs = new Set();
         approvedClubs.forEach((club: Club) => {
           if (club.location) {
@@ -59,23 +111,33 @@ export default function HomePage() {
           }
         });
 
+        const tournaments = events.filter((e: Event) => e.eventType === "Tournament");
+
         setStats({
           clubs: approvedClubs.length,
-          tournaments: events.filter((e: Event) => e.eventType === "Tournament")
-            .length,
+          tournaments: tournaments.length,
           countries: countriesWithClubs.size,
         });
+
+        const upcoming = tournaments
+          .sort((a: Event, b: Event) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+          .slice(0, 9);
+
+        setUpcomingEvents(upcoming);
+
+        if (testimonialsData.testimonials) {
+          setTestimonials(testimonialsData.testimonials.slice(0, 3));
+        }
       })
       .catch(console.error);
   }, []);
 
-  // Animate counting when stats section is in view
   useEffect(() => {
     if (
       isInView &&
       (stats.clubs > 0 || stats.tournaments > 0 || stats.countries > 0)
     ) {
-      const duration = 2000; // 2 seconds
+      const duration = 2000;
       const steps = 60;
       const interval = duration / steps;
 
@@ -85,7 +147,6 @@ export default function HomePage() {
         currentStep++;
         const progress = currentStep / steps;
 
-        // Easing function for smooth animation
         const easeOutQuart = 1 - Math.pow(1 - progress, 4);
 
         setDisplayStats({
@@ -106,351 +167,469 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-slate-900 min-h-[500px] md:min-h-[800px] flex items-start">
-        {/* Team huddle background image */}
-        <div
-          className="absolute inset-0 opacity-90 bg-no-repeat bg-center"
-          style={{
-            backgroundImage: "url(/team-huddle.png)",
-            backgroundSize: "auto 100%",
-            backgroundPosition: "center 70%",
-          }}
-        >
-          <style jsx>{`
-            @media (min-width: 768px) {
-              div {
-                background-size: cover !important;
-              }
-            }
-          `}</style>
-        </div>
+      {/* Hero Section - Redesigned */}
+      <section
+        className="relative text-white overflow-hidden min-h-screen"
+        style={{
+          background: 'linear-gradient(to bottom, #0B2C58, #1A3D80)'
+        }}
+      >
 
-        {/* Gradient overlay for better text readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/30 to-slate-900/60"></div>
+        <div className="relative container mx-auto px-6 pt-16 md:pt-0 flex items-start md:items-center justify-center min-h-screen" style={{ zIndex: 1 }}>
+          <div className="text-center max-w-4xl mx-auto">
+            {/* Brand Name - PlayAway (Main Headline) */}
+            <motion.h1
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: 'easeInOut' }}
+              className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4 md:mb-6"
+              style={{ color: '#FFFFFF', fontSize: 'clamp(32px, 8vw, 64px)' }}
+            >
+              PlayAway
+            </motion.h1>
 
-        <div className="relative container mx-auto px-6 pt-20 md:pt-24 pb-16 z-10">
-          <div className="max-w-5xl mx-auto">
+            {/* Tagline - Gateway (Sub-headline) */}
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1, ease: 'easeInOut' }}
+              className="text-lg md:text-2xl lg:text-3xl font-semibold mb-8 md:mb-12"
+              style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: 'clamp(18px, 4vw, 28px)' }}
+            >
+              Gateway to Global Gaelic Games
+            </motion.p>
+
+            {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center"
+              transition={{ duration: 0.8, delay: 1.5 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center"
             >
-              <h1 className="text-2xl md:text-5xl font-bold text-white mb-4">
-                The Gateway to Gaelic Games Worldwide
-              </h1>
-              <p className="text-lg md:text-2xl text-emerald-100 mb-8">
-                <span className="hidden md:inline">
-                  Connect with the global GAA Community
-                </span>
-                <span className="md:hidden">
-                  Connect, Travel, and link up with international Gaelic Games
-                  Communities
-                </span>
-              </p>
-
-              <div className="flex flex-row gap-2 sm:gap-4 justify-center mt-20 sm:mt-0">
-                <Link
-                  href="/events"
-                  className="inline-flex items-center justify-center px-3 py-3 sm:px-8 sm:py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-lg"
+              <Link
+                href="/events"
+                className="inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-white font-semibold rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-lg text-base md:text-lg"
+                style={{ color: '#1A3D80' }}
+              >
+                Find Tournaments
+                <svg
+                  className="ml-2 w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <span className="hidden sm:inline">European tournaments</span>
-                  <span className="sm:hidden">Tournaments</span>
-                  <svg
-                    className="ml-1 sm:ml-2 w-4 h-4 sm:w-5 sm:h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </Link>
-                <Link
-                  href="/clubs"
-                  className="inline-flex items-center justify-center px-3 py-3 sm:px-8 sm:py-4 bg-white text-slate-900 font-semibold rounded-lg hover:bg-gray-100 transition-all duration-200 shadow-lg text-sm sm:text-lg"
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Link>
+              <Link
+                href="/clubs"
+                className="inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white transition-all duration-200 text-base md:text-lg"
+                style={{
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#1A3D80';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#FFFFFF';
+                }}
+              >
+                Explore Clubs
+                <svg
+                  className="ml-2 w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <span className="hidden sm:inline">European clubs</span>
-                  <span className="sm:hidden">Clubs</span>
-                  <svg
-                    className="ml-1 sm:ml-2 w-4 h-4 sm:w-5 sm:h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </Link>
-              </div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </Link>
             </motion.div>
           </div>
         </div>
-
-        {/* Scroll Indicator - Desktop Only */}
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.6,
-            delay: 1.5,
-            repeat: Infinity,
-            repeatType: "reverse",
-            repeatDelay: 0.5,
-          }}
-          className="hidden md:block absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
-        >
-          <div
-            className="flex flex-col items-center text-white/60 hover:text-white/80 transition-colors cursor-pointer"
-            onClick={() =>
-              window.scrollTo({ top: window.innerHeight, behavior: "smooth" })
-            }
-          >
-            <span className="text-xs uppercase tracking-widest mb-2">
-              Scroll
-            </span>
-            <svg
-              className="w-6 h-6 animate-bounce"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
-          </div>
-        </motion.div>
       </section>
 
-      {/* How It Works - Split Paths */}
-      <section className="py-8 md:py-16 bg-white">
+      {/* Quick Value Props */}
+      <section className="py-12 md:py-16 bg-gray-50" ref={statsRef}>
         <div className="container mx-auto px-6">
-          {/* Section Header */}
+          <div className="grid grid-cols-3 gap-3 md:gap-6 max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg text-center"
+            >
+              <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                <Trophy className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                {displayStats.clubs}+
+              </div>
+              <h3 className="text-sm md:text-lg font-semibold text-gray-900 mb-1">Clubs</h3>
+              <p className="text-gray-600 text-xs md:text-sm hidden md:block">
+                Connect with GAA communities across {displayStats.countries}+ countries
+              </p>
+              <p className="text-gray-600 text-xs md:hidden">
+                GAA communities worldwide
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg text-center"
+            >
+              <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                <Globe className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                {displayStats.tournaments}+
+              </div>
+              <h3 className="text-sm md:text-lg font-semibold text-gray-900 mb-1">Tournaments</h3>
+              <p className="text-gray-600 text-xs md:text-sm hidden md:block">
+                Browse approved events in Spain, Germany, France & beyond
+              </p>
+              <p className="text-gray-600 text-xs md:hidden">
+                European events
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg text-center"
+            >
+              <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                <Plane className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                Custom
+              </div>
+              <h3 className="text-sm md:text-lg font-semibold text-gray-900 mb-1">Your Trip</h3>
+              <p className="text-gray-600 text-xs md:text-sm hidden md:block">
+                Can&apos;t find what you need? We&apos;ll plan it for you
+              </p>
+              <p className="text-gray-600 text-xs md:hidden">
+                Tailored trips
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Two-Path Journey - Simplified */}
+      <section className="py-8 md:py-12 bg-white">
+        <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center mb-6 md:mb-12"
+            className="text-center mb-6 md:mb-8"
           >
-            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
               How it works
             </h2>
-            <p className="text-base md:text-lg text-gray-600">in brief</p>
+            <p className="text-base md:text-lg text-gray-600">Choose your path</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-            {/* For Players */}
+          <div className="grid grid-cols-2 gap-3 md:gap-4 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="relative"
+              className="bg-primary/5 rounded-lg md:rounded-xl p-3 md:p-5 border-2 border-primary/20 hover:border-primary/40 transition-all"
             >
-              <div className="bg-primary/5 rounded-2xl p-8">
-                <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
-                  For Travelling Teams
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
-                      1
-                    </div>
-                    <div>
-                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Browse European tournaments & events
-                      </h4>
-                      <p className="hidden md:block text-gray-600 text-xs md:text-sm">
-                        Browse tournaments across Germany, Spain, France and
-                        beyond
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Connect with international clubs
-                      </h4>
-                      <p className="hidden md:block text-gray-600 text-xs md:text-sm">
-                        Link up with international clubs for unforgettable trips
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
-                      3
-                    </div>
-                    <div>
-                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Create new relationships, and great memories!
-                      </h4>
-                      <p className="hidden md:block text-gray-600 text-xs md:text-sm">
-                        Bring your game to Europe&apos;s most exciting cities
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <Link
-                  href="/events"
-                  className="mt-6 inline-flex items-center text-primary hover:text-primary/90 font-medium border border-primary hover:border-primary/90 px-4 py-2 rounded-lg transition-all duration-200 text-xs md:text-sm"
-                >
-                  Explore Europe
-                  <svg
-                    className="ml-1 w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
+              <h3 className="text-base md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
+                For Travelling Teams
+              </h3>
+              <ul className="space-y-2 md:space-y-3 mb-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-primary font-bold text-sm md:text-base">✓</span>
+                  <span className="text-gray-700 text-xs md:text-sm">Browse European tournaments</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary font-bold text-sm md:text-base">✓</span>
+                  <span className="text-gray-700 text-xs md:text-sm">Connect with international clubs</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-primary font-bold text-sm md:text-base">✓</span>
+                  <span className="text-gray-700 text-xs md:text-sm">Create unforgettable memories</span>
+                </li>
+              </ul>
+              <Link
+                href="/events"
+                className="inline-flex items-center text-primary hover:text-primary/90 font-semibold text-xs md:text-sm"
+              >
+                Explore
+                <svg className="ml-1 w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </motion.div>
 
-            {/* For Hosts */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="relative"
+              className="bg-gray-50 rounded-lg md:rounded-xl p-3 md:p-5 border-2 border-gray-200 hover:border-gray-300 transition-all"
             >
-              <div className="bg-gray-50 rounded-2xl p-8">
-                <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
-                  For Host Clubs
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
-                      1
-                    </div>
-                    <div>
-                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Open Your Doors
-                      </h4>
-                      <p className="text-gray-600 text-xs md:text-sm">
-                        Welcome visiting teams for tournaments and trips!
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Create Tournaments
-                      </h4>
-                      <p className="text-gray-600 text-xs md:text-sm">
-                        Invitational tournaments strengthen clubs, and
-                        increasing activity at home builds communities
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex gap-4">
-                    <div className="w-8 h-8 bg-gray-600 text-white rounded-full flex items-center justify-center flex-shrink-0 text-sm font-bold">
-                      3
-                    </div>
-                    <div>
-                      <h4 className="text-sm md:text-base font-semibold text-gray-900">
-                        Grow Your Club
-                      </h4>
-                      <p className="text-gray-600 text-xs md:text-sm">
-                        Generate revenue, create memories, unite communities
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <Link
-                  href="/signin"
-                  className="mt-6 inline-flex items-center text-gray-600 hover:text-gray-700 font-medium border border-gray-600 hover:border-gray-700 px-4 py-2 rounded-lg transition-all duration-200 text-xs md:text-sm"
-                >
-                  Club Admin Access
-                  <svg
-                    className="ml-1 w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </Link>
-              </div>
+              <h3 className="text-base md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
+                For Host Clubs
+              </h3>
+              <ul className="space-y-2 md:space-y-3 mb-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-600 font-bold text-sm md:text-base">✓</span>
+                  <span className="text-gray-700 text-xs md:text-sm">Welcome visiting teams</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-600 font-bold text-sm md:text-base">✓</span>
+                  <span className="text-gray-700 text-xs md:text-sm">Create tournaments & events</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-gray-600 font-bold text-sm md:text-base">✓</span>
+                  <span className="text-gray-700 text-xs md:text-sm">Grow your club & community</span>
+                </li>
+              </ul>
+              <Link
+                href="/signin"
+                className="inline-flex items-center text-gray-600 hover:text-gray-700 font-semibold text-xs md:text-sm"
+              >
+                Admin Access
+                <svg className="ml-1 w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-12 md:py-20 bg-primary text-white" ref={statsRef}>
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-3 gap-4 md:gap-8 text-center">
+      {/* Featured Tournaments - Carousel */}
+      {upcomingEvents.length > 0 && (
+        <section className="py-16 md:py-20 mb-12 md:mb-16 bg-gradient-to-b from-gray-100 to-white border-t border-gray-300">
+          <div className="container mx-auto px-6 md:px-8">
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
+              className="text-center mb-10 md:mb-12"
             >
-              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">
-                {displayStats.clubs}+
-              </div>
-              <div className="text-sm md:text-xl">Clubs</div>
+              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 inline-block">
+                Upcoming Tournaments
+                <div className="h-1 w-20 bg-primary mx-auto mt-2 rounded-full"></div>
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 mt-4">
+                Join the action at these featured events
+              </p>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-            >
-              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">
-                {displayStats.tournaments}+
+
+            <div className="relative max-w-7xl mx-auto mb-8">
+              {/* Carousel Container */}
+              <div className="overflow-hidden">
+                <motion.div
+                  key={currentEventIndex}
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+                >
+                  {getCurrentEvents().map((event) => (
+                    <Link
+                      key={event.id}
+                      href={`/events/${event.id}`}
+                      className="flex flex-col bg-white rounded-xl overflow-hidden transition-all duration-300 group"
+                      style={{ boxShadow: '0 2px 12px rgba(0, 0, 0, 0.15)' }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.2)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = '0 2px 12px rgba(0, 0, 0, 0.15)';
+                      }}
+                    >
+                      <div className="relative w-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center overflow-hidden" style={{ aspectRatio: '16/9' }}>
+                        {event.imageUrl ? (
+                          <img
+                            src={event.imageUrl}
+                            alt={event.name}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        ) : (
+                          <Trophy className="w-16 h-16 text-white/50" />
+                        )}
+                        {isEventPast(event.startDate) && (
+                          <div className="hidden md:block absolute top-3 right-3">
+                            <span className="text-xs font-semibold text-red-600 bg-white/95 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm italic">
+                              Event has passed
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-4">
+                        <h3 className="font-bold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                          {event.name}
+                        </h3>
+                        <div className="space-y-1 mt-auto">
+                          <p className="text-sm text-gray-600 flex items-center gap-1.5">
+                            <span>📅</span>
+                            <span>{new Date(event.startDate).toLocaleDateString('en-GB', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                            })}</span>
+                          </p>
+                          {event.location && (
+                            <p className="text-sm text-gray-600 flex items-center gap-1.5 line-clamp-1">
+                              <span>📍</span>
+                              <span>{event.location}</span>
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </motion.div>
               </div>
-              <div className="text-sm md:text-xl">Tournaments</div>
-            </motion.div>
+
+              {/* Navigation Buttons */}
+              {totalPages > 1 && (
+                <>
+                  <button
+                    type="button"
+                    onClick={prevEvent}
+                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
+                    aria-label="Previous page"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={nextEvent}
+                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
+                    aria-label="Next page"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </>
+              )}
+
+              {/* Dots Indicator */}
+              {totalPages > 1 && (
+                <div className="flex justify-center gap-2 mt-6">
+                  {Array.from({ length: totalPages }).map((_, index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      onClick={() => setCurrentEventIndex(index)}
+                      className={`h-2 rounded-full transition-all ${
+                        index === currentEventIndex
+                          ? 'bg-primary w-8'
+                          : 'bg-gray-300 hover:bg-gray-400 w-2'
+                      }`}
+                      aria-label={`Go to page ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* View All Events CTA */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
+              className="text-center mt-12 mb-6"
             >
-              <div className="text-2xl md:text-5xl font-bold mb-1 md:mb-2">
-                {displayStats.countries}+
-              </div>
-              <div className="text-sm md:text-xl">Countries</div>
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                <span>View All Events</span>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </motion.div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      {/* Social Media Section */}
-      <section className="py-16 bg-gray-50">
+      {/* Testimonials */}
+      {testimonials.length > 0 && (
+        <section className="py-16 md:py-20 bg-white">
+          <div className="container mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-center mb-8"
+            >
+              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+                What Clubs Are Saying
+              </h2>
+              <p className="text-base md:text-lg text-gray-600">
+                Hear from the GAA community
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={testimonial.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+                >
+                  <div className="mb-4">
+                    <svg className="w-8 h-8 text-primary/30" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-700 mb-4 italic">
+                    &quot;{testimonial.content}&quot;
+                  </p>
+                  <div className="border-t border-gray-200 pt-4">
+                    <p className="font-semibold text-gray-900">{testimonial.author}</p>
+                    {testimonial.club && (
+                      <p className="text-sm text-gray-600">{testimonial.club.name}</p>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Social Media */}
+      <section className="py-12 md:py-16 bg-gray-50">
         <div className="container mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -459,15 +638,14 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-4">
               Follow Our Journey
             </h2>
-            <p className="text-base md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              Stay connected with the global GAA community on social media
+            <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+              Stay connected with the global GAA community
             </p>
 
-            {/* Social Media Icons */}
-            <div className="flex justify-center gap-6">
+            <div className="flex justify-center gap-4">
               <a
                 href="https://www.instagram.com/playaway_travel/"
                 target="_blank"
@@ -509,116 +687,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Join the Community */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto"
-          >
-            <h2 className="text-xl md:text-4xl font-bold text-gray-900 mb-6">
-              The Directory of European Invitational Tournaments
-            </h2>
-            <p className="text-base md:text-xl text-gray-600 mb-8">
-              All of the tournaments listed here are approved by the governing
-              bodies within Gaelic Games Europe
-            </p>
-            <div className="flex justify-center">
-              <Link
-                href="/events"
-                className="inline-flex items-center justify-center px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors text-lg"
-              >
-                See All Tournaments
-                <svg
-                  className="ml-2 w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Custom Trip CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary to-primary/80 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-xl md:text-4xl font-bold mb-6">
-              Not sure where you want to go?
-            </h2>
-            <p className="text-base md:text-xl text-white/90 mb-8 max-w-3xl mx-auto">
-              If nothing listed suits your needs, we can work with you to
-              develop the perfect trip. Just fill in the form and we&apos;ll get
-              back to you!
-            </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8 max-w-5xl mx-auto">
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">
-                  Tournaments
-                </h3>
-                <p className="text-white/80 text-xs md:text-sm">
-                  Multi-city tournaments and competitive events
-                </p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">
-                  Training Camps
-                </h3>
-                <p className="text-white/80 text-xs md:text-sm">
-                  Intensive coaching with professional facilities
-                </p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">
-                  Stag Weekends
-                </h3>
-                <p className="text-white/80 text-xs md:text-sm">
-                  Unique GAA experiences for memorable celebrations
-                </p>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 md:p-6">
-                <h3 className="font-semibold text-sm md:text-base mb-2">
-                  Fundraising events
-                </h3>
-                <p className="text-white/80 text-xs md:text-sm">
-                  Special matches and events to support your club
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/survey"
-                className="px-6 md:px-8 py-3 md:py-4 bg-white text-primary rounded-lg font-semibold hover:bg-gray-100 transition-colors text-sm md:text-lg"
-              >
-                Plan Your Custom Trip
-              </Link>
-              <Link
-                href="/events"
-                className="px-6 md:px-8 py-3 md:py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors text-sm md:text-lg"
-              >
-                Browse Existing Events
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </div>
   );
 }
