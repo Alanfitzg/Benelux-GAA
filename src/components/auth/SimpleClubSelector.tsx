@@ -3,19 +3,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { 
-  Users, 
-  Plus, 
-  CheckCircle, 
-  Building, 
-  Search, 
+import {
+  Users,
+  Plus,
+  CheckCircle,
+  Building,
+  Search,
   MapPin,
-  Globe,
   ChevronRight,
   Star,
   Info,
-  Loader,
-  Flag
+  Loader
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 

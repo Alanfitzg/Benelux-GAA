@@ -64,7 +64,7 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
   // Filter clubs based on selected region, search term, location filter, and data quality
   const filteredClubs = useMemo(() => {
-    let filtered = clubs.filter(club => {
+    const filtered = clubs.filter(club => {
       // Region filter
       if (selectedRegion !== "all") {
         const clubRegion = club.internationalUnit?.name ||

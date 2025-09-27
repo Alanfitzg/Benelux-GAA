@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import { Instagram, Facebook, Twitter, Music2, Trophy, Globe, Plane } from "lucide-react";
 
@@ -468,10 +469,12 @@ export default function HomePage() {
                     >
                       <div className="relative w-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center overflow-hidden" style={{ aspectRatio: '16/9' }}>
                         {event.imageUrl ? (
-                          <img
+                          <Image
                             src={event.imageUrl}
                             alt={event.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            fill
+                            unoptimized
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
                           <Trophy className="w-16 h-16 text-white/50" />
