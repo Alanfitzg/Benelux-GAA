@@ -19,7 +19,6 @@ Runs automatically when you `git commit`:
 Runs automatically when you `git push`:
 
 - ✅ **Production Build** - Ensures code builds successfully
-- ✅ **Tests** - Runs the test suite
 
 ### Manual Commands
 
