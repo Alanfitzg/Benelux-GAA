@@ -49,3 +49,4 @@ download-results.json
 /scripts/investigate-*.ts
 /scripts/download-*.ts
 /scripts/extract-*.ts
+/backups/

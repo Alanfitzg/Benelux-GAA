@@ -1,0 +1,11 @@
+echo "🚀 Running pre-push checks..."
+
+# Run full build to ensure everything compiles
+echo "🏗️ Testing production build..."
+npm run build
+
+# Run tests
+echo "🧪 Running tests..."
+npm test -- --passWithNoTests
+
+echo "✅ Pre-push checks passed! Ready to deploy to Vercel!"
