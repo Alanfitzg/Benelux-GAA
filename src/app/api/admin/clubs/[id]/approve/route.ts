@@ -4,9 +4,10 @@ import { auth } from "@/lib/auth";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const session = await auth();
 
     if (
@@ -45,7 +46,7 @@ export async function PATCH(
 
     // Find the club
     const club = await prisma.club.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!club) {
@@ -124,7 +125,7 @@ export async function PATCH(
 
     // Update the club
     const updatedClub = await prisma.club.update({
-      where: { id: params.id },
+      where: { id },
       data: updateData,
       include: {
         submitter: {
