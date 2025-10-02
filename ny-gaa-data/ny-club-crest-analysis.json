@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-09-21T20:49:24.451Z",
+  "testUrl": "https://gaanewyork.com/clubs/3451",
+  "clubName": "New York GAA",
+  "totalImages": 3,
+  "potentialCrests": [
+    "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/pdvurtp4s0rpfbaaybnsaqjdjclo",
+    "/assets/cz_footer_artboard-0f7db5fe3dd4eba4ed2c068b4753fb65718c73796e194f1934a9a0c478b9cfd9.png",
+    "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/7o7f1cdrvjyj9k51dovkcpon3i08"
+  ],
+  "mainCrest": "/assets/cz_footer_artboard-0f7db5fe3dd4eba4ed2c068b4753fb65718c73796e194f1934a9a0c478b9cfd9.png",
+  "allImages": [
+    "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/pdvurtp4s0rpfbaaybnsaqjdjclo",
+    "/assets/cz_footer_artboard-0f7db5fe3dd4eba4ed2c068b4753fb65718c73796e194f1934a9a0c478b9cfd9.png",
+    "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/7o7f1cdrvjyj9k51dovkcpon3i08"
+  ],
+  "crestExtractionPattern": "Found main crest"
+}

@@ -1,0 +1,430 @@
+{
+  "timestamp": "2025-09-21T20:43:14.493Z",
+  "source": "gaanewyork.com-improved-extraction",
+  "totalClubsFound": 46,
+  "sampledClubs": 5,
+  "extractedClubs": [
+    {
+      "id": "2306",
+      "name": "Hoboken Guards",
+      "url": "https://gaanewyork.com/clubs/2306",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "566",
+      "name": "Tipperary NY",
+      "url": "https://gaanewyork.com/clubs/566",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com",
+      "latitude": 40.887652,
+      "longitude": -73.903615
+    },
+    {
+      "id": "2868",
+      "name": "Le Cheile NY",
+      "url": "https://gaanewyork.com/clubs/2868",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "4736",
+      "name": "TBC 2 (NY GAA)",
+      "url": "https://gaanewyork.com/clubs/4736",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "4735",
+      "name": "TBC 1 (NY GAA)",
+      "url": "https://gaanewyork.com/clubs/4735",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3451",
+      "name": "Clare GAA New York",
+      "url": "https://gaanewyork.com/clubs/3451",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2311",
+      "name": "Rockland GAA",
+      "url": "https://gaanewyork.com/clubs/2311",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2309",
+      "name": "Shannon Gaels New York",
+      "url": "https://gaanewyork.com/clubs/2309",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2308",
+      "name": "Limerick New York",
+      "url": "https://gaanewyork.com/clubs/2308",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2307",
+      "name": "Waterford New York",
+      "url": "https://gaanewyork.com/clubs/2307",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "1643",
+      "name": "Westmeath New York",
+      "url": "https://gaanewyork.com/clubs/1643",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2528",
+      "name": "Brooklyn Shamrocks",
+      "url": "https://gaanewyork.com/clubs/2528",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2547",
+      "name": "Cavan New York",
+      "url": "https://gaanewyork.com/clubs/2547",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2549",
+      "name": "Cork NY",
+      "url": "https://gaanewyork.com/clubs/2549",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2550",
+      "name": "Donegal NY",
+      "url": "https://gaanewyork.com/clubs/2550",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2554",
+      "name": "Kerry NY",
+      "url": "https://gaanewyork.com/clubs/2554",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2570",
+      "name": "Sligo NY",
+      "url": "https://gaanewyork.com/clubs/2570",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2571",
+      "name": "St Barnabas NY",
+      "url": "https://gaanewyork.com/clubs/2571",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2558",
+      "name": "Longford NY",
+      "url": "https://gaanewyork.com/clubs/2558",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2560",
+      "name": "Manhattan Gaels",
+      "url": "https://gaanewyork.com/clubs/2560",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2562",
+      "name": "Monaghan NY",
+      "url": "https://gaanewyork.com/clubs/2562",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2569",
+      "name": "Rangers NY",
+      "url": "https://gaanewyork.com/clubs/2569",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2574",
+      "name": "St Raymond’s NY",
+      "url": "https://gaanewyork.com/clubs/2574",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3455",
+      "name": "New York Celtics",
+      "url": "https://gaanewyork.com/clubs/3455",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "5321",
+      "name": "Galway GAA - New York",
+      "url": "https://gaanewyork.com/clubs/5321",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2567",
+      "name": "O’Donovan Rossa",
+      "url": "https://gaanewyork.com/clubs/2567",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3454",
+      "name": "St Patricks NY",
+      "url": "https://gaanewyork.com/clubs/3454",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2575",
+      "name": "Tyrone NY",
+      "url": "https://gaanewyork.com/clubs/2575",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2872",
+      "name": "Westput Setanta",
+      "url": "https://gaanewyork.com/clubs/2872",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3452",
+      "name": "Dutchess GAA",
+      "url": "https://gaanewyork.com/clubs/3452",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2566",
+      "name": "NYPD",
+      "url": "https://gaanewyork.com/clubs/2566",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2553",
+      "name": "Hibernians NY",
+      "url": "https://gaanewyork.com/clubs/2553",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2552",
+      "name": "FDNY",
+      "url": "https://gaanewyork.com/clubs/2552",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2561",
+      "name": "Mayo NY",
+      "url": "https://gaanewyork.com/clubs/2561",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "5322",
+      "name": "Dutchess Griffins",
+      "url": "https://gaanewyork.com/clubs/5322",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2312",
+      "name": "Ulster New York",
+      "url": "https://gaanewyork.com/clubs/2312",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2556",
+      "name": "Leitrim NY",
+      "url": "https://gaanewyork.com/clubs/2556",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2555",
+      "name": "Kerry-Donegal",
+      "url": "https://gaanewyork.com/clubs/2555",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2563",
+      "name": "Na Fianna NY",
+      "url": "https://gaanewyork.com/clubs/2563",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2572",
+      "name": "St Brigid’s NY",
+      "url": "https://gaanewyork.com/clubs/2572",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3809",
+      "name": "Offally/Westmeath",
+      "url": "https://gaanewyork.com/clubs/3809",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3456",
+      "name": "Philadelphia Shamrocks",
+      "url": "https://gaanewyork.com/clubs/3456",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2527",
+      "name": "Annie Moores",
+      "url": "https://gaanewyork.com/clubs/2527",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2557",
+      "name": "Liberty Gaels",
+      "url": "https://gaanewyork.com/clubs/2557",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "2565",
+      "name": "New York Dev Squad",
+      "url": "https://gaanewyork.com/clubs/2565",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    },
+    {
+      "id": "3457",
+      "name": "Na Toraidhe",
+      "url": "https://gaanewyork.com/clubs/3457",
+      "location": "New York, NY, USA",
+      "region": "New York",
+      "country": "United States",
+      "source": "gaanewyork.com"
+    }
+  ],
+  "summary": {
+    "totalClubs": 46,
+    "clubsWithCoordinates": 1,
+    "uniqueNames": 46,
+    "readyForDatabaseImport": true
+  }
+}

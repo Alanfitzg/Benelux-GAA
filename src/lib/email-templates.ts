@@ -9,13 +9,15 @@ export interface NewUserNotificationData {
   adminPanelUrl: string;
 }
 
-export function generateNewUserNotificationEmail(data: NewUserNotificationData): {
+export function generateNewUserNotificationEmail(
+  data: NewUserNotificationData
+): {
   subject: string;
   html: string;
   text: string;
 } {
   const subject = `🆕 New User Registration: ${data.userName}`;
-  
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -148,12 +150,16 @@ export function generateNewUserNotificationEmail(data: NewUserNotificationData):
             <div class="info-label">Email:</div>
             <div class="info-value">${data.userEmail}</div>
           </div>
-          ${data.userClub ? `
+          ${
+            data.userClub
+              ? `
           <div class="info-row">
             <div class="info-label">Club:</div>
             <div class="info-value">${data.userClub}</div>
           </div>
-          ` : ''}
+          `
+              : ""
+          }
           <div class="info-row">
             <div class="info-label">Registered:</div>
             <div class="info-value">${data.registrationDate}</div>
@@ -201,7 +207,7 @@ A new user has registered and needs approval:
 
 Name: ${data.userName}
 Email: ${data.userEmail}
-${data.userClub ? `Club: ${data.userClub}` : ''}
+${data.userClub ? `Club: ${data.userClub}` : ""}
 Registered: ${data.registrationDate}
 Status: Pending Approval
 
@@ -226,16 +232,19 @@ export interface UserApprovalNotificationData {
   loginUrl: string;
 }
 
-export function generateUserApprovalNotificationEmail(data: UserApprovalNotificationData): {
+export function generateUserApprovalNotificationEmail(
+  data: UserApprovalNotificationData
+): {
   subject: string;
   html: string;
   text: string;
 } {
-  const subject = data.approved 
+  const subject = data.approved
     ? `✅ Welcome to PlayAway! Your account has been approved`
     : `❌ PlayAway Account Application Update`;
-  
-  const html = data.approved ? `
+
+  const html = data.approved
+    ? `
     <!DOCTYPE html>
     <html>
     <head>
@@ -317,7 +326,8 @@ export function generateUserApprovalNotificationEmail(data: UserApprovalNotifica
       </div>
     </body>
     </html>
-  ` : `
+  `
+    : `
     <!DOCTYPE html>
     <html>
     <head>
@@ -345,7 +355,7 @@ export function generateUserApprovalNotificationEmail(data: UserApprovalNotifica
     </html>
   `;
 
-  const text = data.approved 
+  const text = data.approved
     ? `Welcome to PlayAway!
 
 Hello ${data.userName},
@@ -390,7 +400,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   text: string;
 } {
   const subject = `Cead mile Failte ${data.userName} - Welcome to PlayAway! 🇮🇪`;
-  
+
   const html = `
     <!DOCTYPE html>
     <html>
@@ -401,10 +411,14 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
       <style>
         body {
           font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #f4f4f4;
+        }
+        .email-wrapper {
           max-width: 600px;
           margin: 0 auto;
-          backgroundColor: #ffffff;
-          color: #333333;
+          background-color: #ffffff;
         }
         .header {
           background-color: #4472C4;
@@ -416,63 +430,63 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
         .header h1 {
           font-size: 36px;
           font-weight: bold;
-          margin: 0 0 10px 0;
-          font-style: italic;
-        }
-        .header p {
-          font-size: 16px;
           margin: 0;
-          font-weight: 300;
+          font-style: italic;
         }
         .content {
           padding: 30px 20px;
+          background-color: #ffffff;
         }
         .greeting {
           text-align: center;
           margin-bottom: 30px;
         }
         .greeting h2 {
-          font-size: 24px;
+          font-size: 26px;
           font-weight: normal;
           margin: 0 0 10px 0;
+          color: #333333;
         }
         .greeting h3 {
-          font-size: 20px;
+          font-size: 22px;
           font-weight: bold;
           margin: 0 0 20px 0;
           color: #4472C4;
         }
         .club-profile {
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          justify-content: center;
-          margin: 20px 0;
-          padding: 15px;
+          justify-content: flex-start;
+          margin: 15px auto;
+          padding: 10px 15px;
           background-color: #f8f9fa;
-          border-radius: 12px;
+          border-radius: 8px;
           border: 2px solid #4472C4;
+          max-width: 400px;
         }
         .club-crest {
-          width: 60px;
-          height: 60px;
+          width: 50px;
+          height: 50px;
           object-fit: contain;
-          border-radius: 8px;
-          margin-right: 15px;
+          border-radius: 6px;
+          margin-right: 12px;
           background-color: white;
-          padding: 5px;
+          padding: 4px;
           border: 1px solid #e9ecef;
+          flex-shrink: 0;
         }
         .club-info {
           text-align: left;
+          flex: 1;
         }
         .club-info h4 {
-          font-size: 18px;
+          font-size: 16px;
           font-weight: bold;
-          margin: 0 0 5px 0;
+          margin: 0 0 3px 0;
           color: #4472C4;
         }
         .club-info p {
-          font-size: 14px;
+          font-size: 13px;
           margin: 0;
           color: #6c757d;
         }
@@ -481,22 +495,25 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
           margin-bottom: 30px;
         }
         .welcome-section h2 {
-          font-size: 28px;
+          font-size: 32px;
           font-weight: bold;
           margin: 0 0 15px 0;
+          color: #333333;
         }
         .welcome-section em {
           color: #4472C4;
+          font-style: italic;
         }
         .welcome-section p {
-          font-size: 16px;
-          line-height: 1.6;
+          font-size: 17px;
+          line-height: 1.7;
           margin: 0 0 10px 0;
+          color: #555555;
         }
         .info-box {
           background-color: #e8f1ff;
           border-radius: 12px;
-          padding: 20px;
+          padding: 25px;
           margin-bottom: 20px;
           border: 2px solid #4472C4;
         }
@@ -505,10 +522,14 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
           color: white;
           padding: 10px 20px;
           border-radius: 20px;
-          font-size: 18px;
+          font-size: 19px;
           font-weight: bold;
           margin: 0 0 15px 0;
           display: inline-block;
+        }
+        .info-box p, .info-box ul, .info-box li {
+          color: #333333;
+          font-size: 16px;
         }
         .info-box p {
           font-size: 15px;
@@ -569,14 +590,16 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
           font-size: 16px;
           margin: 0;
           line-height: 1.6;
+          color: #333333;
         }
         .footer-section {
           text-align: center;
           margin-top: 40px;
         }
         .footer-section p {
-          font-size: 16px;
-          margin: 0 0 5px 0;
+          font-size: 17px;
+          margin: 0 0 8px 0;
+          color: #333333;
         }
         .footer-section .signature {
           font-weight: bold;
@@ -584,47 +607,47 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
         }
         .footer-branding {
           background-color: #f8f9fa;
-          padding: 20px;
+          padding: 25px 20px;
           text-align: center;
           border-top: 1px solid #e9ecef;
           border-radius: 0 0 8px 8px;
         }
         .footer-branding p {
-          font-size: 12px;
+          font-size: 13px;
           color: #6c757d;
           margin: 0;
         }
       </style>
     </head>
     <body>
-      <div class="header">
-        <h1>PlayAway</h1>
-        <p>A travel platform that connects Global Gaelic Games communities</p>
-      </div>
-
-      <div class="content">
-        <div class="greeting">
-          <h2>Dear ${data.userName}</h2>
-          <h3>Cead mile Failte</h3>
-          ${data.clubName ? `
-          <div class="club-profile">
-            ${data.clubImageUrl ? `<img src="${data.clubImageUrl}" alt="${data.clubName} Crest" class="club-crest" />` : ''}
-            <div class="club-info">
-              <h4>${data.clubName}</h4>
-              <p>Club Member</p>
-            </div>
-          </div>
-          ` : ''}
+      <!-- Wrapper -->
+      <div class="email-wrapper" style="background-color: #ffffff; max-width: 600px; margin: 0 auto;">
+        <div class="header">
+          <h1>PlayAway</h1>
         </div>
 
+        <div class="content">
         <div class="welcome-section">
           <h2>Welcome to <em>PlayAway</em></h2>
           <p>The travel platform built by and for the global Gaelic Games community.</p>
           <p>Whether you're a player, coach, volunteer, or just love being part of GAA life abroad, PlayAway makes it easier to travel, connect, and compete — while supporting the clubs that keep our community alive.</p>
         </div>
 
+        <div class="greeting">
+          <h2>Dear ${data.userName}</h2>
+          <h3>Cead mile Failte</h3>
+
+          <!-- Account Details Box -->
+          <div style="background-color: #f0f4f8; border-left: 4px solid #4472C4; border-radius: 8px; padding: 20px; margin: 20px auto; max-width: 500px; text-align: left;">
+            <p style="margin: 0 0 12px 0; font-size: 15px; color: #6c757d; font-weight: 600;">Your Account Details:</p>
+            <p style="margin: 0 0 8px 0; font-size: 15px; color: #374151;"><strong>Email:</strong> ${data.userEmail}</p>
+            ${data.clubName ? `<p style="margin: 0 0 8px 0; font-size: 15px; color: #374151;"><strong>Club:</strong> ${data.clubName}</p>` : ""}
+            <p style="margin: 0; font-size: 14px; color: #6c757d; font-style: italic;">You can use your email to log in at any time</p>
+          </div>
+        </div>
+
         <div class="info-box">
-          <h3>What is PlayAway?</h3>
+          <h3>What is the PlayAway platform?</h3>
           <p>PlayAway is the first platform designed to simplify GAA travel across Europe and beyond. From tournaments to training camps, we help clubs list their events, take bookings in advance, and welcome teams from around the world — reducing risk, and costs</p>
         </div>
 
@@ -640,34 +663,69 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
           </ul>
         </div>
 
-        <div class="quick-start">
-          <h3>Quick Start Guide:</h3>
-          
-          <div class="step">
-            <strong>Step 1:</strong> Complete your player profile with position, skill level, and travel preferences
-          </div>
-          <div class="step">
-            <strong>Step 2:</strong> Browse tournaments by date, location, or competition level
-          </div>
-          <div class="step">
-            <strong>Step 3:</strong> Connect with clubs for training sessions or friendly matches
-          </div>
-          <div class="step">
-            <strong>Step 4:</strong> Use our trip planner to create your perfect GAA adventure
+        <!-- First Steps Checklist -->
+        <div style="background-color: #f0f4f8; border: 2px solid #4472C4; border-radius: 12px; padding: 25px; margin-bottom: 30px;">
+          <h3 style="font-size: 24px; font-weight: bold; color: #4472C4; margin: 0 0 20px 0;">Your First Steps:</h3>
+
+          <div style="display: table; width: 100%; margin-bottom: 18px;">
+            <div style="display: table-cell; width: 30px; vertical-align: top; padding-top: 2px;">
+              <div style="width: 22px; height: 22px; border: 3px solid #4472C4; border-radius: 4px; background-color: white;"></div>
+            </div>
+            <div style="display: table-cell; vertical-align: top; padding-left: 12px;">
+              <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #333333;">
+                <a href="${data.loginUrl}/profile-builder" style="color: #4472C4; text-decoration: underline; font-weight: 600;">Complete Profile Builder</a>
+                <br><span style="font-size: 15px; color: #6c757d;">Tell us your interests to get personalized event recommendations</span>
+              </p>
+            </div>
           </div>
 
-          <div class="destinations-box">
-            <h4>Popular Destinations This Season:</h4>
-            <p><strong>Ireland:</strong> Experience GAA at its source with 500+ clubs</p>
-            <p><strong>USA & Canada:</strong> Join the thriving North American GAA scene</p>
-            <p><strong>Australia:</strong> Combine GAA with incredible travel experiences</p>
-            <p><strong>Europe:</strong> Play in tournaments from Barcelona to Berlin</p>
-            <p><strong>Middle East & Asia:</strong> Discover emerging GAA communities</p>
+          <div style="display: table; width: 100%; margin-bottom: 18px;">
+            <div style="display: table-cell; width: 30px; vertical-align: top; padding-top: 2px;">
+              <div style="width: 22px; height: 22px; border: 3px solid #4472C4; border-radius: 4px; background-color: white;"></div>
+            </div>
+            <div style="display: table-cell; vertical-align: top; padding-left: 12px;">
+              <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #333333;">
+                <a href="${data.loginUrl}/events" style="color: #4472C4; text-decoration: underline; font-weight: 600;">Browse events in your region</a>
+                <br><span style="font-size: 15px; color: #6c757d;">Discover tournaments and GAA activities near you</span>
+              </p>
+            </div>
+          </div>
+
+          <div style="display: table; width: 100%;">
+            <div style="display: table-cell; width: 30px; vertical-align: top; padding-top: 2px;">
+              <div style="width: 22px; height: 22px; border: 3px solid #4472C4; border-radius: 4px; background-color: white;"></div>
+            </div>
+            <div style="display: table-cell; vertical-align: top; padding-left: 12px;">
+              <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #333333;">
+                <strong style="color: #4472C4; font-weight: 600;">Follow us on social media</strong>
+                <br><span style="font-size: 15px; color: #6c757d;">Stay updated with the latest GAA travel opportunities</span>
+              </p>
+            </div>
           </div>
         </div>
 
         <div class="help-section">
-          <p><strong>Need Help?</strong> Our team is here to assist with tournament registrations, travel planning, or connecting with clubs. Just reply to this email!</p>
+          <p><strong>Need Help?</strong> Our team is here to assist with tournament registrations, travel planning, or connecting with clubs.</p>
+          <p style="margin: 10px 0 0 0;">Contact us at: <a href="mailto:alan@gaelictrips.com" style="color: #4472C4; text-decoration: none; font-weight: 600;">alan@gaelictrips.com</a></p>
+        </div>
+
+        <!-- Social Media Links -->
+        <div style="background-color: #f0f4f8; border: 2px solid #4472C4; border-radius: 12px; padding: 25px; text-align: center; margin: 30px 0;">
+          <p style="margin: 0 0 20px 0; font-weight: 600; color: #4472C4; font-size: 20px;">Follow us on social media</p>
+          <div style="margin-bottom: 0;">
+            <a href="https://www.facebook.com/playaway.ie" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on Facebook">
+              <span style="display: inline-block; background: #3b5998; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 24px; font-weight: bold;">f</span>
+            </a>
+            <a href="https://www.instagram.com/playaway.ie" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on Instagram">
+              <span style="display: inline-block; background: #E4405F; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 24px; font-weight: bold;">📷</span>
+            </a>
+            <a href="https://www.tiktok.com/@playaway.ie" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on TikTok">
+              <span style="display: inline-block; background: #000000; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 20px; font-weight: bold;">TT</span>
+            </a>
+            <a href="https://www.linkedin.com/company/playaway" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on LinkedIn">
+              <span style="display: inline-block; background: #0077B5; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 24px; font-weight: bold;">in</span>
+            </a>
+          </div>
         </div>
 
         <div class="footer-section">
@@ -677,9 +735,11 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
         </div>
       </div>
 
-      <div class="footer-branding">
-        <p>© 2024 PlayAway - Connecting GAA Communities Worldwide</p>
+        <div class="footer-branding">
+          <p style="margin: 0;">© 2025 PlayAway - Connecting GAA Communities Worldwide</p>
+        </div>
       </div>
+      <!-- End wrapper -->
     </body>
     </html>
   `;

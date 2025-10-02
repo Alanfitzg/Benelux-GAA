@@ -1,129 +1,160 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { requireSuperAdmin, getServerSession } from '@/lib/auth-helpers';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
 export async function PATCH(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> }
+  request: NextRequest,
+  { params }: { params: { id: string } }
 ) {
-  const params = await context.params;
-  // Check if user is super admin
-  const authResult = await requireSuperAdmin();
-  if (authResult instanceof NextResponse) {
-    return authResult;
-  }
-
-  const session = await getServerSession();
-  if (!session?.user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
-    const { action, rejectionReason, adminNotes, editedData } = await req.json();
-    const clubId = params.id;
+    const session = await auth();
 
-    if (!['approve', 'reject'].includes(action)) {
+    if (
+      !session?.user ||
+      !["SUPER_ADMIN", "GUEST_ADMIN"].includes(session.user.role)
+    ) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const body = await request.json();
+    const {
+      action,
+      rejectionReason,
+      adminNotes,
+      editedData,
+      internationalUnitId,
+    } = body;
+
+    if (!action || !["approve", "reject"].includes(action)) {
+      return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+    }
+
+    if (action === "reject" && !rejectionReason?.trim()) {
       return NextResponse.json(
-        { error: 'Invalid action' },
+        { error: "Rejection reason is required" },
         { status: 400 }
       );
     }
 
-    if (action === 'reject' && !rejectionReason) {
+    if (action === "approve" && !internationalUnitId?.trim()) {
       return NextResponse.json(
-        { error: 'Rejection reason is required' },
+        { error: "International Unit assignment is required for approval" },
+        { status: 400 }
+      );
+    }
+
+    // Find the club
+    const club = await prisma.club.findUnique({
+      where: { id: params.id },
+    });
+
+    if (!club) {
+      return NextResponse.json({ error: "Club not found" }, { status: 404 });
+    }
+
+    if (club.status !== "PENDING") {
+      return NextResponse.json(
+        { error: "Club has already been reviewed" },
         { status: 400 }
       );
     }
 
     // Prepare update data
     const updateData: {
-      status: 'APPROVED' | 'REJECTED';
+      status: "APPROVED" | "REJECTED";
       reviewedAt: Date;
       reviewedBy: string;
-      rejectionReason: string | null;
-      adminNotes: string | null;
+      adminNotes?: string | null;
+      rejectionReason?: string;
+      internationalUnitId?: string;
       name?: string;
       location?: string;
-      internationalUnitText?: string | null;
       region?: string | null;
       subRegion?: string | null;
-      contactFirstName?: string | null;
-      contactLastName?: string | null;
-      contactEmail?: string | null;
-      contactPhone?: string | null;
       facebook?: string | null;
       instagram?: string | null;
       website?: string | null;
       teamTypes?: string[];
+      primaryContactName?: string;
+      primaryContactEmail?: string | null;
     } = {
-      status: action === 'approve' ? 'APPROVED' : 'REJECTED',
+      status: action === "approve" ? "APPROVED" : "REJECTED",
       reviewedAt: new Date(),
       reviewedBy: session.user.id,
-      rejectionReason: action === 'reject' ? rejectionReason : null,
-      adminNotes: adminNotes || null
+      adminNotes: adminNotes || club.adminNotes,
     };
 
-    // If there's edited data, include it in the update
-    if (editedData && action === 'approve') {
-      // Validate and clean the edited data
-      if (editedData.name && typeof editedData.name === 'string') {
-        updateData.name = editedData.name.trim();
+    if (action === "reject") {
+      updateData.rejectionReason = rejectionReason;
+    }
+
+    // Assign international unit for approval
+    if (action === "approve" && internationalUnitId) {
+      updateData.internationalUnitId = internationalUnitId;
+    }
+
+    // Apply edited data if provided
+    if (editedData) {
+      // Map the interface fields back to database fields
+      if (editedData.name) updateData.name = editedData.name;
+      if (editedData.location) updateData.location = editedData.location;
+      if (editedData.region !== undefined)
+        updateData.region = editedData.region;
+      if (editedData.subRegion !== undefined)
+        updateData.subRegion = editedData.subRegion;
+      if (editedData.facebook !== undefined)
+        updateData.facebook = editedData.facebook;
+      if (editedData.instagram !== undefined)
+        updateData.instagram = editedData.instagram;
+      if (editedData.website !== undefined)
+        updateData.website = editedData.website;
+      if (editedData.teamTypes) updateData.teamTypes = editedData.teamTypes;
+
+      // Handle contact fields - combine first and last name back to primaryContactName
+      if (editedData.contactFirstName || editedData.contactLastName) {
+        const firstName = editedData.contactFirstName || "";
+        const lastName = editedData.contactLastName || "";
+        updateData.primaryContactName = `${firstName} ${lastName}`.trim();
       }
-      if (editedData.location && typeof editedData.location === 'string') {
-        updateData.location = editedData.location.trim();
-      }
-      if (editedData.internationalUnitText !== undefined) {
-        updateData.internationalUnitText = editedData.internationalUnitText ? editedData.internationalUnitText.trim() : null;
-      }
-      if (editedData.region !== undefined) {
-        updateData.region = editedData.region ? editedData.region.trim() : null;
-      }
-      if (editedData.subRegion !== undefined) {
-        updateData.subRegion = editedData.subRegion ? editedData.subRegion.trim() : null;
-      }
-      if (editedData.contactFirstName !== undefined) {
-        updateData.contactFirstName = editedData.contactFirstName ? editedData.contactFirstName.trim() : null;
-      }
-      if (editedData.contactLastName !== undefined) {
-        updateData.contactLastName = editedData.contactLastName ? editedData.contactLastName.trim() : null;
-      }
-      if (editedData.contactEmail !== undefined) {
-        updateData.contactEmail = editedData.contactEmail ? editedData.contactEmail.trim() : null;
-      }
-      if (editedData.contactPhone !== undefined) {
-        updateData.contactPhone = editedData.contactPhone ? editedData.contactPhone.trim() : null;
-      }
-      if (editedData.facebook !== undefined) {
-        updateData.facebook = editedData.facebook ? editedData.facebook.trim() : null;
-      }
-      if (editedData.instagram !== undefined) {
-        updateData.instagram = editedData.instagram ? editedData.instagram.trim() : null;
-      }
-      if (editedData.website !== undefined) {
-        updateData.website = editedData.website ? editedData.website.trim() : null;
-      }
-      if (editedData.teamTypes && Array.isArray(editedData.teamTypes)) {
-        updateData.teamTypes = editedData.teamTypes.filter((type: unknown): type is string => {
-          return type != null && typeof type === 'string';
-        }).map((type: string) => type.trim());
+
+      if (editedData.contactEmail) {
+        updateData.primaryContactEmail = editedData.contactEmail;
       }
     }
 
+    // Update the club
     const updatedClub = await prisma.club.update({
-      where: { id: clubId },
-      data: updateData
+      where: { id: params.id },
+      data: updateData,
+      include: {
+        submitter: {
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            name: true,
+          },
+        },
+        reviewer: {
+          select: {
+            id: true,
+            email: true,
+            username: true,
+            name: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json({
       success: true,
+      message: `Club ${action}d successfully`,
       club: updatedClub,
-      message: editedData && action === 'approve' ? 'Club updated and approved successfully' : 'Club status updated successfully'
     });
   } catch (error) {
-    console.error('Error updating club status:', error);
+    console.error("Error updating club status:", error);
     return NextResponse.json(
-      { error: 'Failed to update club status' },
+      { error: "Failed to update club status" },
       { status: 500 }
     );
   }

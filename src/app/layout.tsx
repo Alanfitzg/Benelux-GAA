@@ -1,52 +1,72 @@
-import React from 'react';
+import React from "react";
 import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import "../styles/modal-fix.css";
-import ProfessionalHeader from '@/components/ui/ProfessionalHeader';
-import Footer from '@/components/ui/Footer';
-import FloatingContactButton from '@/components/ui/FloatingContactButton';
-import { AuthSessionProvider } from '@/components/providers/session-provider';
-import CookieConsent from '@/components/CookieConsent';
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { ErrorNotificationProvider } from '@/components/ErrorNotification';
-import { StructuredData, organizationStructuredData, websiteStructuredData } from '@/components/StructuredData';
-import { ErrorLoggerInitializer } from '@/components/ErrorLoggerInitializer';
-import ExampleDataPopup from '@/components/ExampleDataBanner';
-import { FeatureFlagProvider } from '@/contexts/FeatureFlagContext';
-import OnboardingProvider from '@/components/onboarding/OnboardingProvider';
-import GoogleAnalytics from '@/components/GoogleAnalytics';
-import { Toaster } from 'react-hot-toast';
+import ProfessionalHeader from "@/components/ui/ProfessionalHeader";
+import Footer from "@/components/ui/Footer";
+import FloatingContactButton from "@/components/ui/FloatingContactButton";
+import { AuthSessionProvider } from "@/components/providers/session-provider";
+import CookieConsent from "@/components/CookieConsent";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorNotificationProvider } from "@/components/ErrorNotification";
+import {
+  StructuredData,
+  organizationStructuredData,
+  websiteStructuredData,
+} from "@/components/StructuredData";
+import { ErrorLoggerInitializer } from "@/components/ErrorLoggerInitializer";
+import ExampleDataPopup from "@/components/ExampleDataBanner";
+import { FeatureFlagProvider } from "@/contexts/FeatureFlagContext";
+import OnboardingProvider from "@/components/onboarding/OnboardingProvider";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  display: 'swap',
+  display: "swap",
 });
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ['300', '400', '500', '600', '700'],
-  display: 'swap',
+  weight: ["300", "400", "500", "600", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    default: "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-    template: "%s | PlayAway"
+    default:
+      "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
+    template: "%s | PlayAway",
   },
-  description: "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
+  description:
+    "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
   keywords: [
-    "GAA", "Gaelic Athletic Association", "Irish sports", "Gaelic football", 
-    "Hurling", "Camogie", "Handball", "Irish clubs worldwide", "GAA tournaments", 
-    "Irish culture", "Gaelic games", "Ireland", "Irish diaspora", "sports travel",
-    "GAA clubs", "Gaelic sports", "Irish community", "traditional Irish sports"
+    "GAA",
+    "Gaelic Athletic Association",
+    "Irish sports",
+    "Gaelic football",
+    "Hurling",
+    "Camogie",
+    "Handball",
+    "Irish clubs worldwide",
+    "GAA tournaments",
+    "Irish culture",
+    "Gaelic games",
+    "Ireland",
+    "Irish diaspora",
+    "sports travel",
+    "GAA clubs",
+    "Gaelic sports",
+    "Irish community",
+    "traditional Irish sports",
   ],
   authors: [{ name: "PlayAway" }],
   creator: "PlayAway",
   publisher: "PlayAway",
-  
+
   // Open Graph metadata for social sharing
   openGraph: {
     type: "website",
@@ -54,7 +74,8 @@ export const metadata: Metadata = {
     url: "https://play-away.vercel.app",
     siteName: "PlayAway",
     title: "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-    description: "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
+    description:
+      "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
     images: [
       {
         url: "https://play-away.vercel.app/og-image.jpg",
@@ -62,7 +83,7 @@ export const metadata: Metadata = {
         height: 630,
         alt: "PlayAway - Discover Gaelic Clubs Worldwide",
         type: "image/jpeg",
-      }
+      },
     ],
   },
 
@@ -72,7 +93,8 @@ export const metadata: Metadata = {
     site: "@gaatrips",
     creator: "@gaatrips",
     title: "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-    description: "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community.",
+    description:
+      "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community.",
     images: ["https://play-away.vercel.app/og-image.jpg"],
   },
 
@@ -101,6 +123,16 @@ export const metadata: Metadata = {
   referrer: "origin-when-cross-origin",
   category: "Sports",
   classification: "Sports and Recreation",
+
+  // Favicon and icons
+  icons: {
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+      { url: "/icon.png", sizes: "1563x1563", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "1563x1563", type: "image/png" }],
+    shortcut: "/logo.png",
+  },
 
   // Additional metadata
   other: {
@@ -137,9 +169,7 @@ export default function RootLayout({
                 <ExampleDataPopup />
                 <OnboardingProvider />
                 <ProfessionalHeader />
-                <main className="pt-16">
-                  {children}
-                </main>
+                <main className="pt-16">{children}</main>
                 <Footer />
                 <FloatingContactButton />
                 <CookieConsent />

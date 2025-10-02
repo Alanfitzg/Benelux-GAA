@@ -1,4 +1,13 @@
-'use client';
+"use client";
+
+// Disabled automatic opening to reduce bounce rate
+// Profile Builder is now accessed via welcome email link at /profile-builder
+
+export default function OnboardingProvider() {
+  return null;
+}
+
+/* DISABLED CODE - Profile Builder opens via /profile-builder link from welcome email
 
 import { useEffect, useState } from 'react';
 import { useOnboarding } from '@/hooks/useOnboarding';
@@ -10,11 +19,10 @@ export default function OnboardingProvider() {
 
   useEffect(() => {
     if (!isLoading && shouldShowOnboarding) {
-      // Delay showing modal to avoid jarring UX
       const timer = setTimeout(() => {
         setIsOpen(true);
       }, 1000);
-      
+
       return () => clearTimeout(timer);
     }
   }, [shouldShowOnboarding, isLoading]);
@@ -24,9 +32,10 @@ export default function OnboardingProvider() {
   }
 
   return (
-    <OnboardingModal 
-      isOpen={isOpen} 
-      onClose={() => setIsOpen(false)} 
+    <OnboardingModal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
     />
   );
 }
+*/

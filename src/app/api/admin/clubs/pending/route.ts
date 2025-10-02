@@ -1,21 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { requireSuperAdmin } from '@/lib/auth-helpers';
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 
-export async function GET(req: NextRequest) {
-  // Check if user is super admin
-  const authResult = await requireSuperAdmin();
-  if (authResult instanceof NextResponse) {
-    return authResult;
-  }
-
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const status = searchParams.get('status') || 'PENDING';
+    const session = await auth();
+
+    if (
+      !session?.user ||
+      !["SUPER_ADMIN", "GUEST_ADMIN"].includes(session.user.role)
+    ) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const status = searchParams.get("status") || "PENDING";
 
     const clubs = await prisma.club.findMany({
       where: {
-        status: status as 'PENDING' | 'APPROVED' | 'REJECTED'
+        status: status as "PENDING" | "APPROVED" | "REJECTED",
+        dataSource: "USER_SUBMITTED",
       },
       include: {
         submitter: {
@@ -23,66 +27,68 @@ export async function GET(req: NextRequest) {
             id: true,
             email: true,
             username: true,
-            name: true
-          }
+            name: true,
+          },
         },
         reviewer: {
           select: {
             id: true,
             email: true,
             username: true,
-            name: true
-          }
-        }
+            name: true,
+          },
+        },
+        internationalUnit: {
+          select: {
+            id: true,
+            code: true,
+            name: true,
+          },
+        },
       },
       orderBy: {
-        createdAt: 'desc'
-      }
+        createdAt: "desc",
+      },
     });
 
-    // Transform the data to match the expected format
-    const formattedClubs = clubs.map(club => ({
+    // Transform the data to match the interface expectations
+    const transformedClubs = clubs.map((club) => ({
       id: club.id,
       name: club.name,
-      location: club.location || '',
+      location: club.location,
+      region: club.region,
+      subRegion: club.subRegion,
       imageUrl: club.imageUrl,
-      teamTypes: club.teamTypes,
-      contactFirstName: club.contactFirstName,
-      contactLastName: club.contactLastName,
-      contactEmail: club.contactEmail,
-      contactPhone: club.contactPhone,
-      isContactWilling: club.isContactWilling,
+      teamTypes: club.teamTypes || [],
+      // Map new fields to old interface expectations
+      contactFirstName:
+        club.primaryContactName?.split(" ")[0] || club.primaryContactName,
+      contactLastName:
+        club.primaryContactName?.split(" ").slice(1).join(" ") || null,
+      contactEmail: club.primaryContactEmail,
+      contactPhone: null, // Not collected in new form
+      isContactWilling: true, // Default for new submissions
       status: club.status,
       createdAt: club.createdAt.toISOString(),
       submittedBy: club.submittedBy,
-      submitter: club.submitter ? {
-        id: club.submitter.id,
-        email: club.submitter.email,
-        username: club.submitter.username,
-        name: club.submitter.name || club.submitter.username || club.submitter.email
-      } : null,
+      submitter: club.submitter,
       reviewedAt: club.reviewedAt?.toISOString() || null,
       reviewedBy: club.reviewedBy,
-      reviewer: club.reviewer ? {
-        id: club.reviewer.id,
-        email: club.reviewer.email,
-        username: club.reviewer.username,
-        name: club.reviewer.name || club.reviewer.username || club.reviewer.email
-      } : null,
+      reviewer: club.reviewer,
       rejectionReason: club.rejectionReason,
       adminNotes: club.adminNotes,
+      notesForAdmin: club.notesForAdmin,
       facebook: club.facebook,
       instagram: club.instagram,
       website: club.website,
-      region: club.region,
-      subRegion: club.subRegion
+      internationalUnitId: club.internationalUnitId,
     }));
 
-    return NextResponse.json({ clubs: formattedClubs });
+    return NextResponse.json({ clubs: transformedClubs });
   } catch (error) {
-    console.error('Error fetching pending clubs:', error);
+    console.error("Error fetching pending clubs:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch clubs' },
+      { error: "Failed to fetch clubs" },
       { status: 500 }
     );
   }

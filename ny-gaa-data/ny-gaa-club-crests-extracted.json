@@ -1,0 +1,382 @@
+{
+  "timestamp": "2025-09-21T20:50:15.646Z",
+  "source": "gaanewyork.com-crest-extraction",
+  "totalClubsProcessed": 46,
+  "successfulExtractions": 46,
+  "errors": 0,
+  "clubsWithCrests": [
+    {
+      "name": "Hoboken Guards",
+      "id": "2306",
+      "url": "https://gaanewyork.com/clubs/2306",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/cyacirbyn3mlk481vb8boy22pjjo",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:05.671Z"
+    },
+    {
+      "name": "Tipperary NY",
+      "id": "566",
+      "url": "https://gaanewyork.com/clubs/566",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/ak6gxgfqnn1pou64qbkoyjbnwwg3",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:05.904Z"
+    },
+    {
+      "name": "Le Cheile NY",
+      "id": "2868",
+      "url": "https://gaanewyork.com/clubs/2868",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/yw82m2hsfe0q4aatzc1ogimd83wd",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:06.123Z"
+    },
+    {
+      "name": "TBC 2 (NY GAA)",
+      "id": "4736",
+      "url": "https://gaanewyork.com/clubs/4736",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/3tbufqmp6yf8rjomo8yfq6v08pmz",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:06.331Z"
+    },
+    {
+      "name": "TBC 1 (NY GAA)",
+      "id": "4735",
+      "url": "https://gaanewyork.com/clubs/4735",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/nhfjb8ckzdnlc304n4gyz51tf858",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:06.548Z"
+    },
+    {
+      "name": "Clare GAA New York",
+      "id": "3451",
+      "url": "https://gaanewyork.com/clubs/3451",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/pdvurtp4s0rpfbaaybnsaqjdjclo",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:06.753Z"
+    },
+    {
+      "name": "Rockland GAA",
+      "id": "2311",
+      "url": "https://gaanewyork.com/clubs/2311",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/0ez7bntryr7v08pm0p3wgzgmpicz",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:06.964Z"
+    },
+    {
+      "name": "Shannon Gaels New York",
+      "id": "2309",
+      "url": "https://gaanewyork.com/clubs/2309",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/2ujednp1k4c0it9yhas71xcirakn",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:07.179Z"
+    },
+    {
+      "name": "Limerick New York",
+      "id": "2308",
+      "url": "https://gaanewyork.com/clubs/2308",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/cz29h8imn0pxrsukbcqu2c58eb2p",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:07.398Z"
+    },
+    {
+      "name": "Waterford New York",
+      "id": "2307",
+      "url": "https://gaanewyork.com/clubs/2307",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/ohpq2jfaet3udl3almjn17payz2q",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:07.660Z"
+    },
+    {
+      "name": "Westmeath New York",
+      "id": "1643",
+      "url": "https://gaanewyork.com/clubs/1643",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/pmb43xbj6uf9c5t06m93k4mc4oem",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:07.866Z"
+    },
+    {
+      "name": "Brooklyn Shamrocks",
+      "id": "2528",
+      "url": "https://gaanewyork.com/clubs/2528",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/qyrjm27uqkjjdljyel0m6n8scp0v",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:08.083Z"
+    },
+    {
+      "name": "Cavan New York",
+      "id": "2547",
+      "url": "https://gaanewyork.com/clubs/2547",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/ul5srdkg32qwlwevbmelrpufbe19",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:08.295Z"
+    },
+    {
+      "name": "Cork NY",
+      "id": "2549",
+      "url": "https://gaanewyork.com/clubs/2549",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/9crso1q2pjcjixbqeutjldxlytt0",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:08.517Z"
+    },
+    {
+      "name": "Donegal NY",
+      "id": "2550",
+      "url": "https://gaanewyork.com/clubs/2550",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/rm3159wqvv2vu6kk5dvgadolmzxh",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:08.744Z"
+    },
+    {
+      "name": "Kerry NY",
+      "id": "2554",
+      "url": "https://gaanewyork.com/clubs/2554",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/8b0rzdfudpu7tfe0xkdv4gjv35q4",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:08.960Z"
+    },
+    {
+      "name": "Sligo NY",
+      "id": "2570",
+      "url": "https://gaanewyork.com/clubs/2570",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/42qfqihyk6240k6yo25563uxjki1",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:09.163Z"
+    },
+    {
+      "name": "St Barnabas NY",
+      "id": "2571",
+      "url": "https://gaanewyork.com/clubs/2571",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/zeygbajzz8hvrd8kyj4pkj4ycssi",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:09.373Z"
+    },
+    {
+      "name": "Longford NY",
+      "id": "2558",
+      "url": "https://gaanewyork.com/clubs/2558",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/xc1dk82dyy0gfthzbkcqjwu9ix30",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:09.598Z"
+    },
+    {
+      "name": "Manhattan Gaels",
+      "id": "2560",
+      "url": "https://gaanewyork.com/clubs/2560",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/f6efnonqdl6gb0oe9gmozidlmrbw",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:09.812Z"
+    },
+    {
+      "name": "Monaghan NY",
+      "id": "2562",
+      "url": "https://gaanewyork.com/clubs/2562",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/dekr4zdbrngh0a0c86nl6yirld1f",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:10.023Z"
+    },
+    {
+      "name": "Rangers NY",
+      "id": "2569",
+      "url": "https://gaanewyork.com/clubs/2569",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/wlweo0c136oef5li46rbnn11pakq",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:10.227Z"
+    },
+    {
+      "name": "St Raymond’s NY",
+      "id": "2574",
+      "url": "https://gaanewyork.com/clubs/2574",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/dshq4wsd8ejb5xebabfc63ya6i09",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:10.440Z"
+    },
+    {
+      "name": "New York Celtics",
+      "id": "3455",
+      "url": "https://gaanewyork.com/clubs/3455",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/1noio73j8x1f15z4tszwlfmecmgd",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:10.647Z"
+    },
+    {
+      "name": "Galway GAA - New York",
+      "id": "5321",
+      "url": "https://gaanewyork.com/clubs/5321",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/uajlewqens50nu3dwa0yii195th2",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:10.854Z"
+    },
+    {
+      "name": "O’Donovan Rossa",
+      "id": "2567",
+      "url": "https://gaanewyork.com/clubs/2567",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/24ur5hzybezaybvuci80fvke7ion",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:11.063Z"
+    },
+    {
+      "name": "St Patricks NY",
+      "id": "3454",
+      "url": "https://gaanewyork.com/clubs/3454",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/7bcv1lc4rekc8462hu4ovntl4ubu",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:11.293Z"
+    },
+    {
+      "name": "Tyrone NY",
+      "id": "2575",
+      "url": "https://gaanewyork.com/clubs/2575",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/rklehomodpgmhbywe9t5a8k666qu",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:11.550Z"
+    },
+    {
+      "name": "Westput Setanta",
+      "id": "2872",
+      "url": "https://gaanewyork.com/clubs/2872",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/0v68qsltdtzpum9kvrgi8vyqfln5",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:11.778Z"
+    },
+    {
+      "name": "Dutchess GAA",
+      "id": "3452",
+      "url": "https://gaanewyork.com/clubs/3452",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/1f7qbhd80ses62gj6ouevuxelwk0",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:11.989Z"
+    },
+    {
+      "name": "NYPD",
+      "id": "2566",
+      "url": "https://gaanewyork.com/clubs/2566",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/8tslg7nkzk8z8c6g432csbpqpjho",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:12.196Z"
+    },
+    {
+      "name": "Hibernians NY",
+      "id": "2553",
+      "url": "https://gaanewyork.com/clubs/2553",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/hj8bvyqcrs7k0h1ny675o8bzdks2",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:12.415Z"
+    },
+    {
+      "name": "FDNY",
+      "id": "2552",
+      "url": "https://gaanewyork.com/clubs/2552",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/av4jdqxs82x9lui2f4d80c0ge8q6",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:12.620Z"
+    },
+    {
+      "name": "Mayo NY",
+      "id": "2561",
+      "url": "https://gaanewyork.com/clubs/2561",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/rszlu5nj65s5l91aweryz6wiskhd",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:12.835Z"
+    },
+    {
+      "name": "Dutchess Griffins",
+      "id": "5322",
+      "url": "https://gaanewyork.com/clubs/5322",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/t3cis8tq353invm6ovfyd4rulz2t",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:13.048Z"
+    },
+    {
+      "name": "Ulster New York",
+      "id": "2312",
+      "url": "https://gaanewyork.com/clubs/2312",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/a7b4ienko36g3kjl1ggehcvkkk20",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:13.285Z"
+    },
+    {
+      "name": "Leitrim NY",
+      "id": "2556",
+      "url": "https://gaanewyork.com/clubs/2556",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/so4eidba6t5eg2a7jzwert6luk30",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:13.503Z"
+    },
+    {
+      "name": "Kerry-Donegal",
+      "id": "2555",
+      "url": "https://gaanewyork.com/clubs/2555",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/0iwzo0f88fra00b4lz1yiytf209t",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:13.768Z"
+    },
+    {
+      "name": "Na Fianna NY",
+      "id": "2563",
+      "url": "https://gaanewyork.com/clubs/2563",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/pabngszmldwg85k0j5ev99pqco5y",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:13.974Z"
+    },
+    {
+      "name": "St Brigid’s NY",
+      "id": "2572",
+      "url": "https://gaanewyork.com/clubs/2572",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/48c8eldn82mnoxtau9zqgnhcqky1",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:14.200Z"
+    },
+    {
+      "name": "Offally/Westmeath",
+      "id": "3809",
+      "url": "https://gaanewyork.com/clubs/3809",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/06ewik01sjhf00cac04bxnbgwo0j",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:14.422Z"
+    },
+    {
+      "name": "Philadelphia Shamrocks",
+      "id": "3456",
+      "url": "https://gaanewyork.com/clubs/3456",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/xmtyr4xhbxapat06ei9qd33u79o5",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:14.637Z"
+    },
+    {
+      "name": "Annie Moores",
+      "id": "2527",
+      "url": "https://gaanewyork.com/clubs/2527",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/clq027nnvhu51chvwdi150v7ov4n",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:14.849Z"
+    },
+    {
+      "name": "Liberty Gaels",
+      "id": "2557",
+      "url": "https://gaanewyork.com/clubs/2557",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/3hpq2ughajnapr9rve0gfh7di7xl",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:15.057Z"
+    },
+    {
+      "name": "New York Dev Squad",
+      "id": "2565",
+      "url": "https://gaanewyork.com/clubs/2565",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/xandi2jo7wl6dn7fmzefo8vzf2bm",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:15.272Z"
+    },
+    {
+      "name": "Na Toraidhe",
+      "id": "3457",
+      "url": "https://gaanewyork.com/clubs/3457",
+      "crestUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/8smcbdo5rqdr3i49uzo2dro17oab",
+      "crestType": "s3-hosted",
+      "extractedAt": "2025-09-21T20:50:15.495Z"
+    }
+  ],
+  "summary": {
+    "totalCrests": 46,
+    "s3HostedCrests": 46,
+    "localHostedCrests": 0
+  }
+}

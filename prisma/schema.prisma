@@ -95,6 +95,9 @@ model Club {
   contactPhone        String?
   contactCountryCode  String?
   isContactWilling    Boolean              @default(false)
+  primaryContactName  String?              // For user submissions - required when user creates club
+  primaryContactEmail String?              // For user submissions - required when user creates club
+  notesForAdmin       String?              // Optional notes from user to admin
   status              ClubStatus           @default(PENDING)
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @default(now()) @updatedAt
