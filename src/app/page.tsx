@@ -25,6 +25,7 @@ interface Event {
   startDate: string;
   location?: string;
   imageUrl?: string;
+  sportType?: string;
 }
 
 interface Testimonial {
@@ -296,33 +297,81 @@ export default function HomePage() {
             </motion.div>
           </div>
 
-          {/* Mobile Layout - Text with map background */}
-          <div className="md:hidden relative w-full h-screen">
-            {/* Background Map */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="absolute inset-0 flex items-center justify-center overflow-hidden"
-            >
-              <Image
-                src="/Europe-map.png.png"
-                alt="Europe Map"
-                width={800}
-                height={600}
-                className="w-full h-full object-cover opacity-40"
-                unoptimized
-              />
-            </motion.div>
+          {/* Mobile Layout - Text with simple background */}
+          <div className="md:hidden relative w-full h-screen flex items-center justify-center overflow-hidden">
+            {/* Subtle floating shapes background */}
+            <div className="absolute inset-0">
+              <svg
+                className="absolute inset-0 w-full h-full"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <filter id="blur">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="30" />
+                  </filter>
+                </defs>
+                <ellipse
+                  cx="20%"
+                  cy="20%"
+                  rx="150"
+                  ry="80"
+                  fill="rgba(255,255,255,0.1)"
+                  filter="url(#blur)"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    from="0 0"
+                    to="300 0"
+                    dur="40s"
+                    repeatCount="indefinite"
+                  />
+                </ellipse>
+                <ellipse
+                  cx="60%"
+                  cy="40%"
+                  rx="200"
+                  ry="100"
+                  fill="rgba(255,255,255,0.08)"
+                  filter="url(#blur)"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    from="0 0"
+                    to="250 0"
+                    dur="50s"
+                    repeatCount="indefinite"
+                  />
+                </ellipse>
+                <ellipse
+                  cx="30%"
+                  cy="70%"
+                  rx="180"
+                  ry="90"
+                  fill="rgba(255,255,255,0.12)"
+                  filter="url(#blur)"
+                >
+                  <animateTransform
+                    attributeName="transform"
+                    type="translate"
+                    from="0 0"
+                    to="280 0"
+                    dur="45s"
+                    repeatCount="indefinite"
+                  />
+                </ellipse>
+              </svg>
+            </div>
 
             {/* Foreground Text Content */}
-            <div className="relative z-10 text-left px-4 pt-8">
+            <div className="relative z-10 text-center px-4">
               {/* Brand Name - PlayAway (Main Headline) */}
               <motion.h1
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.5, ease: "easeInOut" }}
-                className="text-2xl font-bold mb-1"
+                className="text-4xl font-bold mb-4"
                 style={{ color: "#FFFFFF" }}
               >
                 PlayAway
@@ -333,18 +382,18 @@ export default function HomePage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1, ease: "easeInOut" }}
-                className="text-sm font-semibold mb-32"
+                className="text-lg font-semibold mb-12"
                 style={{ color: "rgba(255, 255, 255, 0.9)" }}
               >
                 Gateway to Global Gaelic Games
               </motion.p>
 
-              {/* CTA Buttons - Positioned below map */}
+              {/* CTA Buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 1.5 }}
-                className="flex flex-col gap-2 max-w-[200px] mt-16"
+                className="flex flex-col gap-3 max-w-xs mx-auto"
               >
                 <Link
                   href="/events"
@@ -376,48 +425,55 @@ export default function HomePage() {
 
       {/* Featured Tournaments - Carousel */}
       {upcomingEvents.length > 0 && (
-        <section className="py-16 md:py-20 mb-12 md:mb-16 bg-gradient-to-b from-gray-100 to-white border-t border-gray-300">
+        <section className="py-16 md:py-20 mb-0 md:mb-0 bg-gradient-to-b from-gray-100 to-white border-t border-gray-300">
           <div className="container mx-auto px-6 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-center mb-10 md:mb-12"
+              className="text-center mb-6 md:mb-12"
             >
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-3 inline-block">
+              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 inline-block">
                 Upcoming Tournaments
-                <div className="h-1 w-20 bg-primary mx-auto mt-2 rounded-full"></div>
+                <div className="h-1 w-20 bg-primary mx-auto mt-1 rounded-full"></div>
               </h2>
-              <p className="text-base md:text-lg text-gray-600 mt-4">
+              <p className="text-base md:text-lg text-gray-600 mt-1 md:mt-4">
                 Join the action at these featured events
               </p>
             </motion.div>
 
             <div className="relative max-w-7xl mx-auto mb-8">
               {/* Carousel Container */}
-              <div className="overflow-hidden">
+              <div className="overflow-visible md:overflow-hidden">
                 <motion.div
                   key={currentEventIndex}
                   initial={{ opacity: 0, x: 100 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
                   transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 md:px-0"
                 >
-                  {getCurrentEvents().map((event) => (
+                  {getCurrentEvents().map((event, index) => (
                     <Link
                       key={event.id}
                       href={`/events/${event.id}`}
-                      className="flex flex-col bg-white rounded-xl overflow-hidden transition-all duration-300 group"
-                      style={{ boxShadow: "0 2px 12px rgba(0, 0, 0, 0.15)" }}
+                      className={`flex flex-col bg-white rounded-xl overflow-hidden transition-all duration-300 group ${
+                        index === 0
+                          ? "md:shadow-[0_2px_12px_rgba(0,0,0,0.15)] shadow-[0_8px_30px_rgba(0,0,0,0.25)] scale-105 md:scale-100"
+                          : "md:shadow-[0_2px_12px_rgba(0,0,0,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.1)] scale-95 md:scale-100 opacity-60 md:opacity-100"
+                      } mx-auto w-[85%] md:w-full`}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.boxShadow =
-                          "0 8px 24px rgba(0, 0, 0, 0.2)";
+                        if (window.innerWidth >= 768) {
+                          e.currentTarget.style.boxShadow =
+                            "0 8px 24px rgba(0, 0, 0, 0.2)";
+                        }
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.boxShadow =
-                          "0 2px 12px rgba(0, 0, 0, 0.15)";
+                        if (window.innerWidth >= 768) {
+                          e.currentTarget.style.boxShadow =
+                            "0 2px 12px rgba(0, 0, 0, 0.15)";
+                        }
                       }}
                     >
                       <div
@@ -435,19 +491,33 @@ export default function HomePage() {
                         ) : (
                           <Trophy className="w-16 h-16 text-white/50" />
                         )}
+                        {/* Sport Type Badge - Top Left */}
+                        {event.sportType && (
+                          <div className="absolute top-3 left-3 z-10">
+                            <span className="text-xs font-semibold text-white bg-primary/90 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm">
+                              {event.sportType}
+                            </span>
+                          </div>
+                        )}
                         {isEventPast(event.startDate) && (
-                          <div className="hidden md:block absolute top-3 right-3">
+                          <div className="hidden md:block absolute top-3 right-3 z-10">
                             <span className="text-xs font-semibold text-red-600 bg-white/95 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm italic">
                               Event has passed
                             </span>
                           </div>
                         )}
+                        {/* Mobile: Title Overlay at Bottom of Image */}
+                        <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent px-3 pt-10 pb-3 z-10">
+                          <h3 className="font-bold text-base text-white line-clamp-2 drop-shadow-lg">
+                            {event.name}
+                          </h3>
+                        </div>
                       </div>
                       <div className="p-4">
-                        <h3 className="font-bold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                        <h3 className="font-bold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors md:block hidden">
                           {event.name}
                         </h3>
-                        <div className="space-y-1 mt-auto">
+                        <div className="space-y-1 mt-auto border border-gray-300 bg-gray-50 rounded-lg p-2 md:border-0 md:bg-transparent md:p-0">
                           <p className="text-sm text-gray-600 flex items-center gap-1.5">
                             <span>📅</span>
                             <span>
@@ -474,13 +544,13 @@ export default function HomePage() {
                 </motion.div>
               </div>
 
-              {/* Navigation Buttons */}
+              {/* Navigation Buttons - Hidden on Mobile */}
               {totalPages > 1 && (
                 <>
                   <button
                     type="button"
                     onClick={prevEvent}
-                    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
+                    className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
                     aria-label="Previous page"
                   >
                     <svg
@@ -500,7 +570,7 @@ export default function HomePage() {
                   <button
                     type="button"
                     onClick={nextEvent}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
+                    className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
                     aria-label="Next page"
                   >
                     <svg
@@ -546,7 +616,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-center mt-12 mb-6"
+              className="text-center mt-12 mb-0"
             >
               <Link
                 href="/events"
@@ -573,30 +643,36 @@ export default function HomePage() {
       )}
 
       {/* Quick Value Props */}
-      <section className="py-12 md:py-16 bg-gray-50" ref={statsRef}>
+      <section
+        className="py-12 md:py-16"
+        ref={statsRef}
+        style={{
+          background: "linear-gradient(to bottom, #0B2C58, #1A3D80)",
+        }}
+      >
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-3 gap-3 md:gap-6 max-w-4xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg text-center"
+              className="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-lg text-center"
             >
-              <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
-                <Trophy className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+              <div className="inline-flex items-center justify-center w-8 h-8 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                <Trophy className="w-4 h-4 md:w-7 md:h-7 text-primary" />
               </div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+              <div className="text-xl md:text-3xl font-bold text-gray-900 mb-1">
                 {displayStats.clubs}+
               </div>
-              <h3 className="text-sm md:text-lg font-semibold text-gray-900 mb-1">
+              <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
                 Clubs
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Connect with GAA communities across {displayStats.countries}+
                 countries
               </p>
-              <p className="text-gray-600 text-xs md:hidden">
+              <p className="text-gray-600 text-[9px] sm:text-[10px] leading-tight md:hidden">
                 GAA communities worldwide
               </p>
             </motion.div>
@@ -604,45 +680,49 @@ export default function HomePage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
+              transition={{ duration: 0.5, delay: 1.0 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg text-center"
+              className="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-lg text-center"
             >
-              <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
-                <Globe className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+              <div className="inline-flex items-center justify-center w-8 h-8 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                <Globe className="w-4 h-4 md:w-7 md:h-7 text-primary" />
               </div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+              <div className="text-xl md:text-3xl font-bold text-gray-900 mb-1">
                 {displayStats.tournaments}+
               </div>
-              <h3 className="text-sm md:text-lg font-semibold text-gray-900 mb-1">
+              <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
                 Tournaments
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Browse approved events in Spain, Germany, France & beyond
               </p>
-              <p className="text-gray-600 text-xs md:hidden">European events</p>
+              <p className="text-gray-600 text-[9px] sm:text-[10px] leading-tight md:hidden">
+                European events
+              </p>
             </motion.div>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 1.5 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg text-center"
+              className="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-lg text-center"
             >
-              <div className="inline-flex items-center justify-center w-10 h-10 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
-                <Plane className="w-5 h-5 md:w-7 md:h-7 text-primary" />
+              <div className="inline-flex items-center justify-center w-8 h-8 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                <Plane className="w-4 h-4 md:w-7 md:h-7 text-primary" />
               </div>
-              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+              <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1">
                 Custom
               </div>
-              <h3 className="text-sm md:text-lg font-semibold text-gray-900 mb-1">
+              <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
                 Your Trip
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Can&apos;t find what you need? We&apos;ll plan it for you
               </p>
-              <p className="text-gray-600 text-xs md:hidden">Tailored trips</p>
+              <p className="text-gray-600 text-[10px] leading-tight md:hidden">
+                Tailored trips
+              </p>
             </motion.div>
           </div>
         </div>
