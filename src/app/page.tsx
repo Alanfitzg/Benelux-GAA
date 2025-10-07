@@ -21,7 +21,7 @@ interface Club {
 interface Event {
   eventType: string;
   id: string;
-  name: string;
+  title: string;
   startDate: string;
   location?: string;
   imageUrl?: string;
@@ -52,42 +52,10 @@ export default function HomePage() {
 
   const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [currentEventIndex, setCurrentEventIndex] = useState(0);
-  const [eventsPerPage, setEventsPerPage] = useState(3);
 
   const statsRef = useRef(null);
   const isInView = useInView(statsRef, { once: true });
 
-  useEffect(() => {
-    const updateEventsPerPage = () => {
-      if (window.innerWidth < 768) {
-        setEventsPerPage(1);
-      } else if (window.innerWidth < 1024) {
-        setEventsPerPage(2);
-      } else {
-        setEventsPerPage(3);
-      }
-    };
-
-    updateEventsPerPage();
-    window.addEventListener("resize", updateEventsPerPage);
-    return () => window.removeEventListener("resize", updateEventsPerPage);
-  }, []);
-
-  const totalPages = Math.ceil(upcomingEvents.length / eventsPerPage);
-
-  const nextEvent = () => {
-    setCurrentEventIndex((prev) => (prev + 1) % totalPages);
-  };
-
-  const prevEvent = () => {
-    setCurrentEventIndex((prev) => (prev - 1 + totalPages) % totalPages);
-  };
-
-  const getCurrentEvents = () => {
-    const start = currentEventIndex * eventsPerPage;
-    return upcomingEvents.slice(start, start + eventsPerPage);
-  };
 
   const isEventPast = (dateString: string) => {
     return new Date(dateString) < new Date();
@@ -423,75 +391,61 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Tournaments - Carousel */}
+      {/* Featured Tournaments - Horizontal Scroll */}
       {upcomingEvents.length > 0 && (
-        <section className="py-16 md:py-20 mb-0 md:mb-0 bg-gradient-to-b from-gray-100 to-white border-t border-gray-300">
+        <section className="py-16 md:py-20 bg-gradient-to-b from-gray-100 to-white border-t border-gray-300">
           <div className="container mx-auto px-6 md:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-center mb-6 md:mb-12"
+              className="text-center mb-8 md:mb-12"
             >
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-1 inline-block">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 Upcoming Tournaments
-                <div className="h-1 w-20 bg-primary mx-auto mt-1 rounded-full"></div>
               </h2>
-              <p className="text-base md:text-lg text-gray-600 mt-1 md:mt-4">
+              <p className="text-base md:text-lg text-gray-600">
                 Join the action at these featured events
               </p>
             </motion.div>
 
-            <div className="relative max-w-7xl mx-auto mb-8">
-              {/* Carousel Container */}
-              <div className="overflow-visible md:overflow-hidden">
-                <motion.div
-                  key={currentEventIndex}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ duration: 0.3 }}
-                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 md:px-0"
-                >
-                  {getCurrentEvents().map((event, index) => (
-                    <Link
-                      key={event.id}
-                      href={`/events/${event.id}`}
-                      className={`flex flex-col bg-white rounded-xl overflow-hidden transition-all duration-300 group ${
-                        index === 0
-                          ? "md:shadow-[0_2px_12px_rgba(0,0,0,0.15)] shadow-[0_8px_30px_rgba(0,0,0,0.25)] scale-105 md:scale-100"
-                          : "md:shadow-[0_2px_12px_rgba(0,0,0,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.1)] scale-95 md:scale-100 opacity-60 md:opacity-100"
-                      } mx-auto w-[85%] md:w-full`}
-                      onMouseEnter={(e) => {
-                        if (window.innerWidth >= 768) {
-                          e.currentTarget.style.boxShadow =
-                            "0 8px 24px rgba(0, 0, 0, 0.2)";
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        if (window.innerWidth >= 768) {
-                          e.currentTarget.style.boxShadow =
-                            "0 2px 12px rgba(0, 0, 0, 0.15)";
-                        }
-                      }}
-                    >
+            {/* Horizontal Scroll Container */}
+            <div className="relative">
+              <div
+                className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 scrollbar-hide"
+                style={{
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                }}
+              >
+                {upcomingEvents.slice(0, 9).map((event) => (
+                  <Link
+                    key={event.id}
+                    href={`/events/${event.id}`}
+                    className="flex-none w-[85%] sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-start"
+                  >
+                    <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full group">
+                      {/* Image Section */}
                       <div
-                        className="relative w-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center overflow-hidden"
+                        className="relative w-full bg-gradient-to-br from-primary to-primary-light overflow-hidden"
                         style={{ aspectRatio: "16/9" }}
                       >
                         {event.imageUrl ? (
                           <Image
                             src={event.imageUrl}
-                            alt={event.name}
+                            alt={event.title}
                             fill
                             unoptimized
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <Trophy className="w-16 h-16 text-white/50" />
+                          <div className="flex items-center justify-center h-full">
+                            <Trophy className="w-16 h-16 text-white/50" />
+                          </div>
                         )}
-                        {/* Sport Type Badge - Top Left */}
+
+                        {/* Sport Type Badge */}
                         {event.sportType && (
                           <div className="absolute top-3 left-3 z-10">
                             <span className="text-xs font-semibold text-white bg-primary/90 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm">
@@ -499,27 +453,28 @@ export default function HomePage() {
                             </span>
                           </div>
                         )}
+
+                        {/* Event Status Badge */}
                         {isEventPast(event.startDate) && (
-                          <div className="hidden md:block absolute top-3 right-3 z-10">
+                          <div className="absolute top-3 right-3 z-10">
                             <span className="text-xs font-semibold text-red-600 bg-white/95 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm italic">
-                              Event has passed
+                              Past Event
                             </span>
                           </div>
                         )}
-                        {/* Mobile: Title Overlay at Bottom of Image */}
-                        <div className="md:hidden absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent px-3 pt-10 pb-3 z-10">
-                          <h3 className="font-bold text-base text-white line-clamp-2 drop-shadow-lg">
-                            {event.name}
-                          </h3>
-                        </div>
                       </div>
-                      <div className="p-4">
-                        <h3 className="font-bold text-base text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors md:block hidden">
-                          {event.name}
+
+                      {/* Content Section */}
+                      <div className="p-5">
+                        {/* Event Title */}
+                        <h3 className="font-bold text-lg text-gray-900 mb-3 line-clamp-2 group-hover:text-primary transition-colors">
+                          {event.title}
                         </h3>
-                        <div className="space-y-1 mt-auto border border-gray-300 bg-gray-50 rounded-lg p-2 md:border-0 md:bg-transparent md:p-0">
-                          <p className="text-sm text-gray-600 flex items-center gap-1.5">
-                            <span>📅</span>
+
+                        {/* Event Details */}
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
+                            <span className="text-lg">📅</span>
                             <span>
                               {new Date(event.startDate).toLocaleDateString(
                                 "en-GB",
@@ -530,84 +485,28 @@ export default function HomePage() {
                                 }
                               )}
                             </span>
-                          </p>
+                          </div>
                           {event.location && (
-                            <p className="text-sm text-gray-600 flex items-center gap-1.5 line-clamp-1">
-                              <span>📍</span>
-                              <span>{event.location}</span>
-                            </p>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <span className="text-lg">📍</span>
+                              <span className="line-clamp-1">
+                                {event.location}
+                              </span>
+                            </div>
                           )}
                         </div>
                       </div>
-                    </Link>
-                  ))}
-                </motion.div>
+                    </div>
+                  </Link>
+                ))}
               </div>
 
-              {/* Navigation Buttons - Hidden on Mobile */}
-              {totalPages > 1 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={prevEvent}
-                    className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
-                    aria-label="Previous page"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={nextEvent}
-                    className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-6 bg-primary text-white rounded-full p-2.5 shadow-lg hover:bg-primary-dark hover:scale-110 transition-all z-10"
-                    aria-label="Next page"
-                  >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2.5}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </>
-              )}
-
-              {/* Dots Indicator */}
-              {totalPages > 1 && (
-                <div className="flex justify-center gap-2 mt-6">
-                  {Array.from({ length: totalPages }).map((_, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => setCurrentEventIndex(index)}
-                      className={`h-2 rounded-full transition-all ${
-                        index === currentEventIndex
-                          ? "bg-primary w-8"
-                          : "bg-gray-300 hover:bg-gray-400 w-2"
-                      }`}
-                      aria-label={`Go to page ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
+              {/* Scroll Indicator */}
+              <div className="text-center mt-6">
+                <p className="text-sm text-gray-500">
+                  ← Scroll to explore more tournaments →
+                </p>
+              </div>
             </div>
 
             {/* View All Events CTA */}
@@ -616,7 +515,7 @@ export default function HomePage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="text-center mt-12 mb-0"
+              className="text-center mt-12"
             >
               <Link
                 href="/events"
@@ -712,10 +611,10 @@ export default function HomePage() {
                 <Plane className="w-4 h-4 md:w-7 md:h-7 text-primary" />
               </div>
               <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1">
-                Custom
+                Custom Trip
               </div>
               <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
-                Your Trip
+                Tailored for You
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Can&apos;t find what you need? We&apos;ll plan it for you

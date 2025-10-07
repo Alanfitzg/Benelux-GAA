@@ -6,7 +6,10 @@ import type { Event, TournamentTeam, Match } from "@/types";
 import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
-import { StructuredData, generateEventStructuredData } from "@/components/StructuredData";
+import {
+  StructuredData,
+  generateEventStructuredData,
+} from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
 import UnifiedEventDashboard from "@/components/events/UnifiedEventDashboard";
 import EnhancedTeamRegistration from "@/components/tournaments/EnhancedTeamRegistration";
@@ -14,81 +17,84 @@ import TournamentManager from "@/components/tournaments/TournamentManager";
 import SignUpGate from "@/components/auth/SignUpGate";
 import { useSession } from "next-auth/react";
 
-export default function EventDetailClient({
-  eventId,
-}: {
-  eventId: string;
-}) {
+export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [event, setEvent] = useState<Event | null>(null);
   const [teams, setTeams] = useState<TournamentTeam[]>([]);
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [isClubAdmin, setIsClubAdmin] = useState(false);
-  
+
   const { data: session } = useSession();
   const { cityImage } = useCityDefaultImage(event?.location);
 
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        console.log('Fetching event data for ID:', eventId);
+        console.log("Fetching event data for ID:", eventId);
         const eventRes = await fetch(`${URLS.API.EVENTS}/${eventId}`);
-        console.log('Event API response status:', eventRes.status);
-        
+        console.log("Event API response status:", eventRes.status);
+
         if (!eventRes.ok) {
-          throw new Error(`Failed to fetch event: ${eventRes.status} ${eventRes.statusText}`);
+          throw new Error(
+            `Failed to fetch event: ${eventRes.status} ${eventRes.statusText}`
+          );
         }
-        
+
         const eventData = await eventRes.json();
-        console.log('Event data received:', eventData);
+        console.log("Event data received:", eventData);
         setEvent(eventData);
 
         // Check if user can admin this event
         if (session?.user?.email) {
-          const userRes = await fetch('/api/user/current');
+          const userRes = await fetch("/api/user/current");
           if (userRes.ok) {
             const userData = await userRes.json();
-            const isAdmin = userData.role === 'SUPER_ADMIN' ||
-                          userData.role === 'CLUB_ADMIN' ||
-                          (eventData.clubId && userData.adminOfClubs?.some((club: { id: string; name: string }) => club.id === eventData.clubId));
+            const isAdmin =
+              userData.role === "SUPER_ADMIN" ||
+              userData.role === "CLUB_ADMIN" ||
+              (eventData.clubId &&
+                userData.adminOfClubs?.some(
+                  (club: { id: string; name: string }) =>
+                    club.id === eventData.clubId
+                ));
             setIsClubAdmin(isAdmin);
-            console.log('Admin check result:', { 
-              userRole: userData.role, 
-              eventClubId: eventData.clubId, 
-              adminOfClubs: userData.adminOfClubs, 
-              isAdmin 
+            console.log("Admin check result:", {
+              userRole: userData.role,
+              eventClubId: eventData.clubId,
+              adminOfClubs: userData.adminOfClubs,
+              isAdmin,
             });
           }
         }
 
         // If it's a tournament, fetch teams and matches
-        if (eventData.eventType === 'Tournament') {
+        if (eventData.eventType === "Tournament") {
           try {
             const [teamsRes, matchesRes] = await Promise.all([
               fetch(`/api/tournaments/${eventId}/teams`),
-              fetch(`/api/tournaments/${eventId}/matches`)
+              fetch(`/api/tournaments/${eventId}/matches`),
             ]);
-            
+
             if (teamsRes.ok) {
               const teamsData = await teamsRes.json();
               setTeams(teamsData);
             } else {
-              console.warn('Failed to fetch teams:', teamsRes.status);
+              console.warn("Failed to fetch teams:", teamsRes.status);
             }
-            
+
             if (matchesRes.ok) {
               const matchesData = await matchesRes.json();
               setMatches(matchesData);
             } else {
-              console.warn('Failed to fetch matches:', matchesRes.status);
+              console.warn("Failed to fetch matches:", matchesRes.status);
             }
           } catch (tournamentError) {
-            console.warn('Error fetching tournament data:', tournamentError);
+            console.warn("Error fetching tournament data:", tournamentError);
             // Continue loading the page even if tournament data fails
           }
         }
       } catch (error) {
-        console.error('Error fetching event data:', error);
+        console.error("Error fetching event data:", error);
       } finally {
         setLoading(false);
       }
@@ -98,7 +104,7 @@ export default function EventDetailClient({
   }, [eventId, session]);
 
   const refreshTeams = async () => {
-    if (event?.eventType === 'Tournament') {
+    if (event?.eventType === "Tournament") {
       try {
         const teamsRes = await fetch(`/api/tournaments/${eventId}/teams`);
         if (teamsRes.ok) {
@@ -106,11 +112,10 @@ export default function EventDetailClient({
           setTeams(teamsData);
         }
       } catch (error) {
-        console.error('Error refreshing teams:', error);
+        console.error("Error refreshing teams:", error);
       }
     }
   };
-
 
   const handleSubmit = async (eventForm: React.FormEvent<HTMLFormElement>) => {
     eventForm.preventDefault();
@@ -145,13 +150,17 @@ export default function EventDetailClient({
 
   return (
     <>
-      {event && <StructuredData data={generateEventStructuredData({
-        ...event,
-        startDate: event.startDate,
-        endDate: event.endDate || event.startDate,
-        imageUrl: event.imageUrl || undefined,
-      })} />}
-      
+      {event && (
+        <StructuredData
+          data={generateEventStructuredData({
+            ...event,
+            startDate: event.startDate,
+            endDate: event.endDate || event.startDate,
+            imageUrl: event.imageUrl || undefined,
+          })}
+        />
+      )}
+
       {/* Hero Section with Background Image */}
       <div className="relative h-96 w-full overflow-hidden">
         <Image
@@ -164,20 +173,47 @@ export default function EventDetailClient({
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30" />
         <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-5xl font-extrabold mb-2">{event?.title || 'Event Title'}</h1>
+            <h1 className="text-5xl font-extrabold mb-2">
+              {event?.title || "Event Title"}
+            </h1>
             <div className="flex flex-wrap gap-4 items-center text-lg">
               <span className="flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
                 </svg>
                 {event?.location || MESSAGES.DEFAULTS.LOCATION}
               </span>
               <span className="flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
                 </svg>
-                {event ? formatEventDate(event.startDate) : 'Event Date'}
+                {event ? formatEventDate(event.startDate) : "Event Date"}
               </span>
             </div>
           </div>
@@ -188,16 +224,41 @@ export default function EventDetailClient({
       <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
           <nav className="flex gap-8 overflow-x-auto">
-            <a href="#overview" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Overview</a>
-            {event?.eventType === 'Tournament' && (
-              <a href="#tournament" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Tournament</a>
+            <a
+              href="#overview"
+              className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
+            >
+              Overview
+            </a>
+            {event?.eventType === "Tournament" && (
+              <a
+                href="#tournament"
+                className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
+              >
+                Tournament
+              </a>
             )}
-            {event?.eventType === 'Tournament' && isClubAdmin && (
-              <a href="#team-management" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Team Management</a>
+            {event?.eventType === "Tournament" && isClubAdmin && (
+              <a
+                href="#team-management"
+                className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
+              >
+                Team Management
+              </a>
             )}
-            <a href="#included" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">What&apos;s Included</a>
-            {event?.visibility !== 'PRIVATE' && (
-              <a href="#interest" className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap">Register Interest</a>
+            <a
+              href="#included"
+              className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
+            >
+              What&apos;s Included
+            </a>
+            {event?.visibility !== "PRIVATE" && (
+              <a
+                href="#interest"
+                className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
+              >
+                Register Interest
+              </a>
             )}
           </nav>
         </div>
@@ -214,20 +275,26 @@ export default function EventDetailClient({
             isClubAdmin={isClubAdmin}
           />
         )}
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-8">
             {/* Overview Section */}
-            <section id="overview" className="bg-white rounded-xl shadow-sm border p-6">
+            <section
+              id="overview"
+              className="bg-white rounded-xl shadow-sm border p-6"
+            >
               <h2 className="text-2xl font-bold mb-4">Event Overview</h2>
               <p className="text-gray-700 leading-relaxed">
-                {event?.description || "Join us for an unforgettable GAA experience! This event brings together passionate fans and players for an amazing celebration of Irish sport and culture."}
+                {event?.description ||
+                  (session
+                    ? "No description available for this event."
+                    : "Create an account to see event details.")}
               </p>
             </section>
 
             {/* Team Management Section */}
-            {event?.eventType === 'Tournament' && isClubAdmin && (
+            {event?.eventType === "Tournament" && isClubAdmin && (
               <section id="team-management" className="space-y-6">
                 <div className="bg-white rounded-xl shadow-sm border p-6">
                   <h2 className="text-2xl font-bold mb-4">Team Management</h2>
@@ -241,7 +308,7 @@ export default function EventDetailClient({
             )}
 
             {/* Tournament Management Section */}
-            {event?.eventType === 'Tournament' && (
+            {event?.eventType === "Tournament" && (
               <section id="tournament" className="space-y-0">
                 {session?.user ? (
                   <TournamentManager
@@ -276,12 +343,24 @@ export default function EventDetailClient({
             <section id="included">
               {session?.user ? (
                 <div className="bg-white rounded-xl shadow-sm border p-6">
-                  <h2 className="text-2xl font-bold mb-4">What&apos;s Included</h2>
+                  <h2 className="text-2xl font-bold mb-4">
+                    What&apos;s Included
+                  </h2>
                   <div className="space-y-3">
                     {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
                       <div key={idx} className="flex gap-3">
-                        <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        <svg
+                          className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
                         </svg>
                         <span className="text-gray-700">{item}</span>
                       </div>
@@ -296,19 +375,32 @@ export default function EventDetailClient({
                   className="bg-white rounded-xl shadow-sm border"
                 >
                   <div className="p-6">
-                    <h2 className="text-2xl font-bold mb-4">What&apos;s Included</h2>
+                    <h2 className="text-2xl font-bold mb-4">
+                      What&apos;s Included
+                    </h2>
                     <div className="space-y-3">
                       {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
                         <div key={idx} className="flex gap-3">
-                          <svg className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          <svg
+                            className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
                           </svg>
                           <span className="text-gray-700">{item}</span>
                         </div>
                       ))}
                     </div>
                     <p className="text-xs text-gray-500 mt-4 italic">
-                      This host club is responsible for selecting and delivering the components listed
+                      This host club is responsible for selecting and delivering
+                      the components listed
                     </p>
                   </div>
                 </SignUpGate>
@@ -316,13 +408,20 @@ export default function EventDetailClient({
             </section>
 
             {/* Interest Form Section - Only show for public events */}
-            {event?.visibility !== 'PRIVATE' && (
-              <section id="interest" className="bg-white rounded-xl shadow-sm border p-6">
-                <h2 className="text-2xl font-bold mb-6">{MESSAGES.BUTTONS.REGISTER_INTEREST}</h2>
+            {event?.visibility !== "PRIVATE" && (
+              <section
+                id="interest"
+                className="bg-white rounded-xl shadow-sm border p-6"
+              >
+                <h2 className="text-2xl font-bold mb-6">
+                  {MESSAGES.BUTTONS.REGISTER_INTEREST}
+                </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.NAME}</label>
+                      <label className="block text-sm font-medium mb-2">
+                        {MESSAGES.FORM.NAME}
+                      </label>
                       <input
                         type="text"
                         name="name"
@@ -331,7 +430,9 @@ export default function EventDetailClient({
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.EMAIL}</label>
+                      <label className="block text-sm font-medium mb-2">
+                        {MESSAGES.FORM.EMAIL}
+                      </label>
                       <input
                         type="email"
                         name="email"
@@ -341,7 +442,9 @@ export default function EventDetailClient({
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">{MESSAGES.FORM.MESSAGE}</label>
+                    <label className="block text-sm font-medium mb-2">
+                      {MESSAGES.FORM.MESSAGE}
+                    </label>
                     <textarea
                       name="message"
                       rows={4}
@@ -368,36 +471,52 @@ export default function EventDetailClient({
                 <div className="space-y-3">
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Type</span>
-                    <span className="font-medium">{event?.eventType || MESSAGES.DEFAULTS.PLACEHOLDER}</span>
+                    <span className="font-medium">
+                      {event?.eventType || MESSAGES.DEFAULTS.PLACEHOLDER}
+                    </span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Location</span>
-                    <span className="font-medium">{event?.location || MESSAGES.DEFAULTS.LOCATION}</span>
+                    <span className="font-medium">
+                      {event?.location || MESSAGES.DEFAULTS.LOCATION}
+                    </span>
                   </div>
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Date</span>
-                    <span className="font-medium">{event ? formatEventDate(event.startDate) : MESSAGES.DEFAULTS.PLACEHOLDER}</span>
+                    <span className="font-medium">
+                      {event
+                        ? formatEventDate(event.startDate)
+                        : MESSAGES.DEFAULTS.PLACEHOLDER}
+                    </span>
                   </div>
-                  
+
                   {/* Tournament Details - Hidden for non-authenticated users */}
-                  {event?.eventType === 'Tournament' && (
+                  {event?.eventType === "Tournament" && (
                     <>
                       {session?.user ? (
                         <>
-                          {event.acceptedTeamTypes && event.acceptedTeamTypes.length > 0 && (
-                            <div className="py-2 border-b">
-                              <span className="text-gray-600 block mb-1">Accepted Team Categories</span>
-                              <div className="flex flex-wrap gap-1">
-                                {event.acceptedTeamTypes.map((type, idx) => (
-                                  <span key={idx} className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs rounded-full">
-                                    {type}
-                                  </span>
-                                ))}
+                          {event.acceptedTeamTypes &&
+                            event.acceptedTeamTypes.length > 0 && (
+                              <div className="py-2 border-b">
+                                <span className="text-gray-600 block mb-1">
+                                  Accepted Team Categories
+                                </span>
+                                <div className="flex flex-wrap gap-1">
+                                  {event.acceptedTeamTypes.map((type, idx) => (
+                                    <span
+                                      key={idx}
+                                      className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
+                                    >
+                                      {type}
+                                    </span>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                           <div className="flex justify-between py-2 border-b">
-                            <span className="text-gray-600">Teams Registered</span>
+                            <span className="text-gray-600">
+                              Teams Registered
+                            </span>
                             <span className="font-medium">
                               {teams.length}
                               {event.minTeams && ` (min: ${event.minTeams})`}
@@ -408,10 +527,22 @@ export default function EventDetailClient({
                       ) : (
                         <div className="py-2 border-b">
                           <div className="flex justify-between items-center">
-                            <span className="text-gray-600">Tournament Details</span>
+                            <span className="text-gray-600">
+                              Tournament Details
+                            </span>
                             <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                              <svg
+                                className="w-3 h-3"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                                />
                               </svg>
                               Sign in to view
                             </div>
@@ -420,30 +551,42 @@ export default function EventDetailClient({
                       )}
                     </>
                   )}
-                  
+
                   {/* Pricing - Hidden for non-authenticated users */}
                   <div className="flex justify-between py-2">
                     <span className="text-gray-600">Cost per person</span>
                     {session?.user ? (
                       <span className="font-medium text-primary text-xl">
-                        {event?.cost ? `€${event.cost}` : MESSAGES.DEFAULTS.PLACEHOLDER}
+                        {event?.cost
+                          ? `€${event.cost}`
+                          : MESSAGES.DEFAULTS.PLACEHOLDER}
                       </span>
                     ) : (
                       <div className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2 py-1 rounded">
-                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                          />
                         </svg>
                         Sign in to view pricing
                       </div>
                     )}
                   </div>
                 </div>
-                
+
                 {/* Sign up CTA or Interest Button */}
                 {session?.user ? (
-                  event?.visibility !== 'PRIVATE' && (
-                    <a 
-                      href="#interest" 
+                  event?.visibility !== "PRIVATE" && (
+                    <a
+                      href="#interest"
                       className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
                     >
                       {MESSAGES.BUTTONS.REGISTER_INTEREST}
@@ -451,17 +594,27 @@ export default function EventDetailClient({
                   )
                 ) : (
                   <div className="mt-6 space-y-2">
-                    <a 
-                      href="/signup" 
+                    <a
+                      href="/signup"
                       className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-center block transition flex items-center justify-center gap-2"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                        />
                       </svg>
                       Create Free Account
                     </a>
-                    <a 
-                      href="/signin" 
+                    <a
+                      href="/signin"
                       className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2 rounded-lg text-center block transition text-sm"
                     >
                       Already have an account? Sign In
@@ -473,13 +626,25 @@ export default function EventDetailClient({
               {/* Custom Trip CTA */}
               <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 border border-primary/20">
                 <h3 className="text-lg font-bold mb-2">Want a Custom Trip?</h3>
-                <p className="text-gray-700 text-sm mb-4">Create a personalized GAA trip experience for your club</p>
-                <a 
+                <p className="text-gray-700 text-sm mb-4">
+                  Create a personalized GAA trip experience for your club
+                </p>
+                <a
                   href={`/survey?eventId=${eventId}`}
                   className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
                 >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
                   </svg>
                   Plan Your Trip
                 </a>

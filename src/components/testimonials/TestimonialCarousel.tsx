@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 
 interface Testimonial {
   id: string;
@@ -18,7 +18,9 @@ interface TestimonialCarouselProps {
   testimonials: Testimonial[];
 }
 
-export default function TestimonialCarousel({ testimonials }: TestimonialCarouselProps) {
+export default function TestimonialCarousel({
+  testimonials,
+}: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -38,7 +40,7 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
 
   const goToPrevious = () => {
     setIsAutoPlaying(false);
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? testimonials.length - 1 : prevIndex - 1
     );
   };
@@ -56,11 +58,11 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-8 relative">
+    <div className="bg-gradient-to-br from-primary to-primary-light rounded-xl p-8 relative">
       <div className="max-w-4xl mx-auto">
         <div className="flex items-start mb-6">
-          <Quote className="w-10 h-10 text-green-400 flex-shrink-0 mt-2" />
-          <h2 className="text-2xl font-bold text-gray-900 ml-3">
+          <Quote className="w-10 h-10 text-white/80 flex-shrink-0 mt-2" />
+          <h2 className="text-2xl font-bold text-white ml-3">
             What People Say About This Club
           </h2>
         </div>
@@ -85,28 +87,31 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
             </>
           )}
 
-          <div className="bg-white rounded-lg shadow-sm p-6 min-h-[200px]">
+          <div className="rounded-lg p-6 min-h-[200px]">
             <div className="space-y-4">
-              <p className="text-gray-700 text-lg leading-relaxed italic">
+              <p className="text-white text-lg leading-relaxed italic">
                 &ldquo;{currentTestimonial.content}&rdquo;
               </p>
-              
-              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+
+              <div className="flex items-center justify-between pt-4 border-t border-white/20">
                 <div>
-                  <p className="font-medium text-gray-900">
-                    {currentTestimonial.user.name || currentTestimonial.user.username}
+                  <p className="font-medium text-white">
+                    {currentTestimonial.user.name ||
+                      currentTestimonial.user.username}
                   </p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(currentTestimonial.submittedAt).toLocaleDateString('en-IE', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
+                  <p className="text-sm text-white/80">
+                    {new Date(
+                      currentTestimonial.submittedAt
+                    ).toLocaleDateString("en-IE", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
                     })}
                   </p>
                 </div>
-                
+
                 {testimonials.length > 1 && (
-                  <div className="text-sm text-gray-500">
+                  <div className="text-sm text-white/80">
                     {currentIndex + 1} of {testimonials.length}
                   </div>
                 )}
@@ -122,9 +127,9 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex 
-                    ? 'bg-green-600 w-8' 
-                    : 'bg-gray-300 hover:bg-gray-400'
+                  index === currentIndex
+                    ? "bg-white w-8"
+                    : "bg-white/40 hover:bg-white/60"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
               />

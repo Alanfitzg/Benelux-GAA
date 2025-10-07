@@ -146,7 +146,11 @@ function MapContent() {
           return res.json();
         })
         .then((data) => {
-          console.log("Fetched clubs:", data?.clubs?.length || data?.length, "clubs");
+          console.log(
+            "Fetched clubs:",
+            data?.clubs?.length || data?.length,
+            "clubs"
+          );
           if (Array.isArray(data)) {
             // Handle old API format (direct array)
             setClubs(data);
@@ -199,13 +203,52 @@ function MapContent() {
   // Filter clubs for map display - exclude Ireland and UK clubs
   const mapDisplayClubs = useMemo(() => {
     return filteredClubs.filter((club) => {
-      if (!club.location) return true; // Show clubs without location
+      // Exclude by location text
+      if (club.location) {
+        const location = club.location.toLowerCase();
+        // Exclude clubs from Ireland, United Kingdom, Northern Ireland (including all 6 counties), Scotland, Wales, England
+        const excludedLocations = [
+          "ireland",
+          "united kingdom",
+          "uk",
+          "northern ireland",
+          // Northern Ireland counties (6 counties)
+          "antrim",
+          "armagh",
+          "down",
+          "fermanagh",
+          "tyrone",
+          "derry",
+          // Rest of UK
+          "scotland",
+          "wales",
+          "england",
+        ];
 
-      const location = club.location.toLowerCase();
-      // Exclude clubs from Ireland, United Kingdom, Northern Ireland, Scotland, Wales, England
-      const excludedCountries = ['ireland', 'united kingdom', 'uk', 'northern ireland', 'scotland', 'wales', 'england'];
+        if (excludedLocations.some((excluded) => location.includes(excluded))) {
+          return false;
+        }
+      }
 
-      return !excludedCountries.some(country => location.includes(country));
+      // Also exclude by geographic coordinates (Ireland bounding box)
+      // Ireland: Lat 51.4 to 55.4, Long -10.5 to -5.5
+      // UK (excluding NI already covered): Lat 49.9 to 60.9, Long -8.2 to 1.8
+      if (club.latitude && club.longitude) {
+        const lat = club.latitude;
+        const lng = club.longitude;
+
+        // Exclude Ireland geographic area
+        if (lat >= 51.4 && lat <= 55.4 && lng >= -10.5 && lng <= -5.5) {
+          return false;
+        }
+
+        // Exclude Great Britain geographic area
+        if (lat >= 49.9 && lat <= 60.9 && lng >= -8.2 && lng <= 1.8) {
+          return false;
+        }
+      }
+
+      return true;
     });
   }, [filteredClubs]);
 
@@ -243,19 +286,19 @@ function MapContent() {
 
   // Handle welcome message for new users
   useEffect(() => {
-    const welcome = searchParams.get('welcome');
-    if (welcome === 'true') {
+    const welcome = searchParams.get("welcome");
+    if (welcome === "true") {
       setShowWelcome(true);
       // Auto-hide after 5 seconds
       const timer = setTimeout(() => {
         setShowWelcome(false);
       }, 5000);
-      
+
       // Clean up URL parameter
       const url = new URL(window.location.href);
-      url.searchParams.delete('welcome');
-      window.history.replaceState({}, '', url.toString());
-      
+      url.searchParams.delete("welcome");
+      window.history.replaceState({}, "", url.toString());
+
       return () => clearTimeout(timer);
     }
   }, [searchParams]);
@@ -542,21 +585,44 @@ function MapContent() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   </div>
                   <div>
                     <h3 className="font-bold text-lg">Welcome to GAA Trips!</h3>
-                    <p className="text-green-100 text-sm">Your account has been created successfully. Start exploring clubs and tournaments worldwide.</p>
+                    <p className="text-green-100 text-sm">
+                      Your account has been created successfully. Start
+                      exploring clubs and tournaments worldwide.
+                    </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowWelcome(false)}
                   className="text-white/80 hover:text-white transition-colors p-2"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                 </button>
               </div>
@@ -567,63 +633,27 @@ function MapContent() {
 
       {/* Hero Section - Hide on mobile when navigated from landing */}
       {!isMobile && (
-        <div className="relative bg-gradient-to-br from-primary to-primary/80 text-white py-16 md:py-20">
-          {/* Content positioned at top of the hero */}
-          <div className="relative h-full flex items-start justify-center">
+        <div className="relative bg-gradient-to-br from-primary to-primary/80 text-white py-12">
+          <div className="relative h-full flex items-center justify-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="text-center px-6"
             >
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
-                Explore GAA Clubs & Tournaments
+              <h1 className="text-3xl font-bold mb-2 text-white">
+                International Club Map
               </h1>
-              <p className="text-lg md:text-xl text-white mb-8 font-light max-w-3xl">
-                Discover clubs across Europe and find tournaments to join
+              <p className="text-sm text-white/90 font-light">
+                No clubs on the island of Ireland are displayed
               </p>
-              
-              {/* Three buttons in a row */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setViewMode("clubs")}
-                  className="px-8 py-3 bg-white/90 backdrop-blur-sm text-gray-900 font-semibold rounded-full shadow-lg hover:bg-white transition-all duration-300 min-w-[150px]"
-                >
-                  Find Clubs
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setViewMode("tournaments")}
-                  className="px-8 py-3 bg-white/90 backdrop-blur-sm text-gray-900 font-semibold rounded-full shadow-lg hover:bg-white transition-all duration-300 min-w-[150px]"
-                >
-                  Tournaments
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    // Scroll to map section
-                    const mapSection = document.getElementById('map-section');
-                    mapSection?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-8 py-3 bg-transparent border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-gray-900 transition-all duration-300 min-w-[150px]"
-                >
-                  See map
-                </motion.button>
-              </div>
             </motion.div>
           </div>
         </div>
       )}
 
       {/* Main Content */}
-      <div
-        id="map-section"
-        className="flex relative h-screen"
-      >
+      <div id="map-section" className="flex relative h-screen">
         {/* Desktop Sidebar */}
         {!isMobile &&
           (loading && status !== "loading" ? (
@@ -757,7 +787,9 @@ function MapContent() {
                               ) : (
                                 <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
                                   <span className="text-white font-bold text-sm">
-                                    {event.eventType === "Tournament" ? "T" : "F"}
+                                    {event.eventType === "Tournament"
+                                      ? "T"
+                                      : "F"}
                                   </span>
                                 </div>
                               )}
@@ -794,9 +826,13 @@ function MapContent() {
                             whileTap={{ scale: 0.95 }}
                             className="cursor-pointer relative"
                           >
-                            <div className={`w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 ${
-                              club.verificationStatus === 'VERIFIED' ? 'border-green-500' : 'border-primary'
-                            } relative overflow-hidden`}>
+                            <div
+                              className={`w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 ${
+                                club.verificationStatus === "VERIFIED"
+                                  ? "border-green-500"
+                                  : "border-primary"
+                              } relative overflow-hidden`}
+                            >
                               {club.imageUrl ? (
                                 <Image
                                   src={club.imageUrl}
@@ -806,9 +842,13 @@ function MapContent() {
                                   className="w-10 h-10 rounded-full object-contain p-1 bg-white"
                                 />
                               ) : (
-                                <div className={`w-8 h-8 ${
-                                  club.verificationStatus === 'VERIFIED' ? 'bg-green-500' : 'bg-primary'
-                                } rounded-full flex items-center justify-center`}>
+                                <div
+                                  className={`w-8 h-8 ${
+                                    club.verificationStatus === "VERIFIED"
+                                      ? "bg-green-500"
+                                      : "bg-primary"
+                                  } rounded-full flex items-center justify-center`}
+                                >
                                   <span className="text-white font-bold text-sm">
                                     {club.name.charAt(0)}
                                   </span>
@@ -820,10 +860,18 @@ function MapContent() {
                               )}
                             </div>
                             {/* Verified badge */}
-                            {club.verificationStatus === 'VERIFIED' && (
+                            {club.verificationStatus === "VERIFIED" && (
                               <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5">
-                                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                <svg
+                                  className="w-3 h-3 text-white"
+                                  fill="currentColor"
+                                  viewBox="0 0 20 20"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                    clipRule="evenodd"
+                                  />
                                 </svg>
                               </div>
                             )}
@@ -878,17 +926,25 @@ function MapContent() {
                 {selectedClubId && viewMode === "clubs" && (
                   <Popup
                     longitude={
-                      Array.isArray(clubs) ? clubs.find((c) => c.id === selectedClubId)?.longitude || 0 : 0
+                      Array.isArray(clubs)
+                        ? clubs.find((c) => c.id === selectedClubId)
+                            ?.longitude || 0
+                        : 0
                     }
                     latitude={
-                      Array.isArray(clubs) ? clubs.find((c) => c.id === selectedClubId)?.latitude || 0 : 0
+                      Array.isArray(clubs)
+                        ? clubs.find((c) => c.id === selectedClubId)
+                            ?.latitude || 0
+                        : 0
                     }
                     anchor={MAP_CONFIG.POPUP_ANCHOR}
                     onClose={() => setSelectedClubId(null)}
                     className="min-w-64"
                   >
                     {(() => {
-                      const club = Array.isArray(clubs) ? clubs.find((c) => c.id === selectedClubId) : null;
+                      const club = Array.isArray(clubs)
+                        ? clubs.find((c) => c.id === selectedClubId)
+                        : null;
                       if (!club) return null;
                       return (
                         <div className="p-4">
@@ -912,12 +968,22 @@ function MapContent() {
                               <h3 className="font-bold text-lg text-gray-900">
                                 {club.name}
                               </h3>
-                              {club.verificationStatus === 'VERIFIED' && (
+                              {club.verificationStatus === "VERIFIED" && (
                                 <div className="flex items-center gap-1 text-green-600 text-xs">
-                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                  <svg
+                                    className="w-3 h-3"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                      clipRule="evenodd"
+                                    />
                                   </svg>
-                                  <span className="font-medium">Verified Club</span>
+                                  <span className="font-medium">
+                                    Verified Club
+                                  </span>
                                 </div>
                               )}
                             </div>
@@ -977,14 +1043,14 @@ function MapContent() {
               transition={{ delay: 1 }}
               className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-sm rounded-2xl shadow-professional p-6 min-w-48"
             >
-              <h4 className="font-semibold text-gray-800 mb-3">
-                Map Stats
-              </h4>
+              <h4 className="font-semibold text-gray-800 mb-3">Map Stats</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Clubs on Map</span>
                   <span className="font-semibold text-primary">
-                    {viewMode === "clubs" ? mapDisplayClubs.length : clubs.length}
+                    {viewMode === "clubs"
+                      ? mapDisplayClubs.length
+                      : clubs.length}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -1002,7 +1068,7 @@ function MapContent() {
               </div>
               {viewMode === "clubs" && (
                 <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-500">
-                  * Ireland & UK clubs hidden from map
+                  * All Ireland (incl. NI) & UK clubs hidden
                 </div>
               )}
             </motion.div>
@@ -1015,7 +1081,13 @@ function MapContent() {
 
 export default function MapPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
       <MapContent />
     </Suspense>
   );

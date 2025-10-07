@@ -13,8 +13,11 @@ import CompactCalendarWidget from "@/components/club/CompactCalendarWidget";
 import ClubCalendar from "@/components/club/ClubCalendar";
 import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
 import { getServerSession } from "@/lib/auth-helpers";
-import VerifiedBadge, { VerifiedTooltip } from "@/components/club/VerifiedBadge";
+import VerifiedBadge, {
+  VerifiedTooltip,
+} from "@/components/club/VerifiedBadge";
 import TestimonialSection from "@/components/testimonials/TestimonialSection";
+import ClubInterestCTA from "@/components/club/ClubInterestCTA";
 
 export async function generateMetadata({
   params,
@@ -130,15 +133,17 @@ export default async function ClubDetailsPage({
       },
     },
     orderBy: [
-      { status: 'asc' },
-      { displayOrder: 'asc' },
-      { submittedAt: 'desc' },
+      { status: "asc" },
+      { displayOrder: "asc" },
+      { submittedAt: "desc" },
     ],
   });
 
-  const approvedTestimonials = testimonials.filter(t => t.status === 'APPROVED');
-  const userTestimonial = session?.user 
-    ? testimonials.find(t => t.userId === session.user.id)
+  const approvedTestimonials = testimonials.filter(
+    (t) => t.status === "APPROVED"
+  );
+  const userTestimonial = session?.user
+    ? testimonials.find((t) => t.userId === session.user.id)
     : null;
 
   // Get user's admin request if they're logged in
@@ -202,7 +207,7 @@ export default async function ClubDetailsPage({
                   <h1 className="text-4xl md:text-5xl font-bold">
                     {club.name}
                   </h1>
-                  {club.verificationStatus === 'VERIFIED' && (
+                  {club.verificationStatus === "VERIFIED" && (
                     <VerifiedTooltip>
                       <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
                         <VerifiedBadge size="lg" showText={false} />
@@ -418,51 +423,14 @@ export default async function ClubDetailsPage({
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Left Column - Club Details */}
               <div className="lg:col-span-2 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Basic Information */}
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                      <svg
-                        className="w-5 h-5 mr-2 text-primary"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      Club Information
-                    </h3>
-                    <div className="space-y-3">
-                      {club.location && (
-                        <div>
-                          <p className="text-sm font-medium text-gray-500">
-                            Location
-                          </p>
-                          <p className="text-gray-900">{club.location}</p>
-                        </div>
-                      )}
-                      {club.region && (
-                        <div>
-                          <p className="text-sm font-medium text-gray-500">
-                            Region
-                          </p>
-                          <p className="text-gray-900">{club.region}</p>
-                        </div>
-                      )}
-                      {club.codes && (
-                        <div>
-                          <p className="text-sm font-medium text-gray-500">
-                            Club Codes
-                          </p>
-                          <p className="text-gray-900">{club.codes}</p>
-                        </div>
-                      )}
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:items-center">
+                  {/* Center CTA - Desktop Only */}
+                  <div className="hidden md:flex md:col-span-1 items-center justify-center">
+                    <ClubInterestCTA
+                      clubId={club.id}
+                      clubName={club.name}
+                      userId={session?.user?.id}
+                    />
                   </div>
 
                   {/* Club Admins and Contact Combined */}
@@ -470,7 +438,7 @@ export default async function ClubDetailsPage({
                   club.contactFirstName ||
                   club.contactEmail ||
                   club.contactPhone ? (
-                    <div className="bg-white rounded-lg shadow p-6">
+                    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 md:col-span-1">
                       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                         <svg
                           className="w-5 h-5 mr-2 text-primary"
@@ -568,28 +536,30 @@ export default async function ClubDetailsPage({
                       )}
 
                       {/* Club Admin Verification Section */}
-                      {isCurrentAdmin && club.verificationStatus !== 'VERIFIED' && (
-                        <div className="mt-4 pt-4 border-t border-gray-200">
-                          <div className="bg-amber-50 p-4 rounded-lg">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="text-sm font-medium text-amber-800">
-                                  Club Verification
-                                </h4>
-                                <p className="text-sm text-amber-700 mt-1">
-                                  Complete your club verification to unlock premium features
-                                </p>
+                      {isCurrentAdmin &&
+                        club.verificationStatus !== "VERIFIED" && (
+                          <div className="mt-4 pt-4 border-t border-gray-200">
+                            <div className="bg-amber-50 p-4 rounded-lg">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <h4 className="text-sm font-medium text-amber-800">
+                                    Club Verification
+                                  </h4>
+                                  <p className="text-sm text-amber-700 mt-1">
+                                    Complete your club verification to unlock
+                                    premium features
+                                  </p>
+                                </div>
+                                <Link
+                                  href={`/club-admin/${club.id}`}
+                                  className="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
+                                >
+                                  Complete Club Verification
+                                </Link>
                               </div>
-                              <Link
-                                href={`/club-admin/${club.id}`}
-                                className="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
-                              >
-                                Complete Club Verification
-                              </Link>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
                     </div>
                   ) : null}
                 </div>
@@ -616,10 +586,9 @@ export default async function ClubDetailsPage({
                     <ClubEvents events={club.events} compact={true} />
                   </div>
                 )}
-
               </div>
 
-              {/* Right Column - Calendar Widget */}
+              {/* Right Column - Events Widget */}
               <div className="lg:col-span-1">
                 <div className="lg:sticky lg:top-4">
                   <CompactCalendarWidget
@@ -632,21 +601,27 @@ export default async function ClubDetailsPage({
             </div>
 
             {/* Testimonials Section */}
-            <TestimonialSection
-              clubId={club.id}
-              clubName={club.name}
-              approvedTestimonials={approvedTestimonials.map(t => ({
-                id: t.id,
-                content: t.content,
-                user: t.user,
-                submittedAt: t.submittedAt.toISOString(),
-              }))}
-              userTestimonial={userTestimonial ? {
-                id: userTestimonial.id,
-                content: userTestimonial.content,
-              } : undefined}
-              isAuthenticated={!!session?.user}
-            />
+            <div className="mt-12">
+              <TestimonialSection
+                clubId={club.id}
+                clubName={club.name}
+                approvedTestimonials={approvedTestimonials.map((t) => ({
+                  id: t.id,
+                  content: t.content,
+                  user: t.user,
+                  submittedAt: t.submittedAt.toISOString(),
+                }))}
+                userTestimonial={
+                  userTestimonial
+                    ? {
+                        id: userTestimonial.id,
+                        content: userTestimonial.content,
+                      }
+                    : undefined
+                }
+                isAuthenticated={!!session?.user}
+              />
+            </div>
 
             {/* Back to Clubs Link */}
             <div className="text-center mt-8">

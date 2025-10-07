@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import TestimonialCarousel from './TestimonialCarousel';
-import TestimonialForm from './TestimonialForm';
-import { MessageSquarePlus, X } from 'lucide-react';
+import { useState } from "react";
+import TestimonialCarousel from "./TestimonialCarousel";
+import TestimonialForm from "./TestimonialForm";
+import { MessageSquarePlus, X } from "lucide-react";
 
 interface Testimonial {
   id: string;
@@ -36,12 +36,26 @@ export default function TestimonialSection({
 }: TestimonialSectionProps) {
   const [showForm, setShowForm] = useState(false);
 
+  const placeholderTestimonial: Testimonial = {
+    id: "placeholder",
+    content: `Playing with ${clubName} was an unforgettable experience. The hospitality and competitive spirit made our trip truly special.`,
+    user: {
+      id: "placeholder",
+      name: "PlayAway Traveller",
+      username: "playaway",
+    },
+    submittedAt: new Date().toISOString(),
+  };
+
+  const testimonialsToDisplay =
+    approvedTestimonials.length > 0
+      ? approvedTestimonials
+      : [placeholderTestimonial];
+
   return (
     <div className="space-y-6">
-      {/* Testimonials Carousel - Always visible if there are approved testimonials */}
-      {approvedTestimonials.length > 0 && (
-        <TestimonialCarousel testimonials={approvedTestimonials} />
-      )}
+      {/* Testimonials Carousel - Always visible */}
+      <TestimonialCarousel testimonials={testimonialsToDisplay} />
 
       {/* Add Testimonial Button and Form */}
       {isAuthenticated && (
@@ -53,13 +67,10 @@ export default function TestimonialSection({
                 className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md hover:shadow-lg"
               >
                 <MessageSquarePlus className="w-5 h-5" />
-                {userTestimonial ? 'Edit Your Testimonial' : 'Add a Testimonial'}
+                {userTestimonial
+                  ? "Edit Your Testimonial"
+                  : "Add a Testimonial"}
               </button>
-              {approvedTestimonials.length === 0 && (
-                <p className="text-sm text-gray-600 mt-3">
-                  Be the first to share your experience with {clubName}!
-                </p>
-              )}
             </div>
           ) : (
             <div className="relative">
@@ -81,15 +92,6 @@ export default function TestimonialSection({
               />
             </div>
           )}
-        </div>
-      )}
-
-      {/* Message for non-authenticated users */}
-      {!isAuthenticated && approvedTestimonials.length === 0 && (
-        <div className="bg-gray-50 rounded-lg p-6 text-center">
-          <p className="text-gray-600">
-            No testimonials yet. Sign in to be the first to share your experience!
-          </p>
         </div>
       )}
     </div>

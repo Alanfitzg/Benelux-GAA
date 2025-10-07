@@ -1,0 +1,2569 @@
+{
+  "timestamp": "2025-10-07T13:14:31.741Z",
+  "totalMatches": 366,
+  "unmatchedClubs": 1996,
+  "matches": [
+    {
+      "clubId": "cmfr8kbfz0003r3v3aozsryq8",
+      "clubName": "Abbeydorney",
+      "crestFile": "abbeydorney.png",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/abbeydorney.png"
+    },
+    {
+      "clubId": "cmfr8kcvf0039r3v3v1ch5ue4",
+      "clubName": "Ballymacelligott",
+      "crestFile": "ballymacelligott.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/ballymacelligott.jpg"
+    },
+    {
+      "clubId": "cmfr8kg2j00apr3v3wh8miyu9",
+      "clubName": "Clounmacon",
+      "crestFile": "clounmacon.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/clounmacon.jpg"
+    },
+    {
+      "clubId": "cmfr8kgoo00c5r3v3yrdcu6in",
+      "clubName": "Cromane",
+      "crestFile": "cromane.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/cromane.jpg"
+    },
+    {
+      "clubId": "cmfr8khec00dpr3v35m7i8m8d",
+      "clubName": "Derrynane",
+      "crestFile": "derrynane.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/derrynane.jpg"
+    },
+    {
+      "clubId": "cmfr8khlr00e9r3v3ck6g4sxn",
+      "clubName": "Doneraile",
+      "crestFile": "doneraile.png",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/doneraile.png"
+    },
+    {
+      "clubId": "cmfr8kcrw0031r3v3yeivydig",
+      "clubName": "Ballygiblin",
+      "crestFile": "ballygiblin.png",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/ballygiblin.png"
+    },
+    {
+      "clubId": "cmfr8kesx007lr3v34eaup6zh",
+      "clubName": "Castletownbere",
+      "crestFile": "castletownbere.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/castletownbere.gif"
+    },
+    {
+      "clubId": "cmfr8kj7t00i3r3v342ndlz1g",
+      "clubName": "Fermoy",
+      "crestFile": "fermoy.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/fermoy.gif"
+    },
+    {
+      "clubId": "cmfr8kjk600ixr3v3l2c313bl",
+      "clubName": "Freemount",
+      "crestFile": "freemount.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/freemount.jpg"
+    },
+    {
+      "clubId": "cmfr8kjvm00jpr3v3ok726k56",
+      "clubName": "Garnish",
+      "crestFile": "garnish.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/garnish.jpg"
+    },
+    {
+      "clubId": "cmfr8kkb700kpr3v3jq9i3het",
+      "clubName": "Glenlara",
+      "crestFile": "glenlara.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/glenlara.gif"
+    },
+    {
+      "clubId": "cmfr8kkdp00kvr3v3lssekl7f",
+      "clubName": "Gneeveguilla",
+      "crestFile": "gneeveguilla.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/gneeveguilla.jpg"
+    },
+    {
+      "clubId": "cmfr8kkcv00ktr3v38ccsb0sd",
+      "clubName": "Glenville",
+      "crestFile": "glenville.png",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/glenville.png"
+    },
+    {
+      "clubId": "cmfr8kkf700kzr3v3pztp4pbq",
+      "clubName": "Goleen",
+      "crestFile": "goleen.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/goleen.gif"
+    },
+    {
+      "clubId": "cmfr8kll300nnr3v37474rqgd",
+      "clubName": "Kanturk",
+      "crestFile": "kanturk.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/kanturk.jpg"
+    },
+    {
+      "clubId": "cmfr8kng700rxr3v3izp6byti",
+      "clubName": "Lismire",
+      "crestFile": "lismire.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/lismire.jpg"
+    },
+    {
+      "clubId": "cmfr8knu600svr3v3ji2qohxz",
+      "clubName": "Macroom",
+      "crestFile": "macroom.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/macroom.gif"
+    },
+    {
+      "clubId": "cmfr8kojw00ulr3v3cvj5lews",
+      "clubName": "Mitchelstown",
+      "crestFile": "mitchelstown.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/mitchelstown.gif"
+    },
+    {
+      "clubId": "cmfr8koid00uhr3v3z5lpre7b",
+      "clubName": "Milltown/Castlemaine",
+      "crestFile": "milltown-castlemaine.jpg",
+      "confidence": 100,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8ks53012pr3v3axyeymjj",
+      "clubName": "Rathmore",
+      "crestFile": "rathmore.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/rathmore.jpg"
+    },
+    {
+      "clubId": "cmfr8ks6h012tr3v34tf1wzg1",
+      "clubName": "Rathpeacon",
+      "crestFile": "rathpeacon.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/rathpeacon.jpg"
+    },
+    {
+      "clubId": "cmfr8ksb00133r3v3e2yv0he1",
+      "clubName": "Redmonds",
+      "crestFile": "redmonds.gif",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/redmonds.gif"
+    },
+    {
+      "clubId": "cmfr8kw4r016rr3v3gab54q0v",
+      "clubName": "Sneem",
+      "crestFile": "sneem.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/sneem.jpg"
+    },
+    {
+      "clubId": "cmfr8kvkv015rr3v3yyupjeux",
+      "clubName": "Shanballymore",
+      "crestFile": "shanballymore.jpg",
+      "confidence": 100,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8l1pz01j7r3v3ntjnum7h",
+      "clubName": "UCC",
+      "crestFile": "ucc.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/ucc.jpg"
+    },
+    {
+      "clubId": "cmfr8l1f301ihr3v3xogp15bt",
+      "clubName": "Tracton",
+      "crestFile": "tracton.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/tracton.jpg"
+    },
+    {
+      "clubId": "cmfr8l1ky01ivr3v3tjo98l9n",
+      "clubName": "Tuosist",
+      "crestFile": "tuosist.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/tuosist.jpg"
+    },
+    {
+      "clubId": "cmfr8l26101kbr3v3rwyyw2my",
+      "clubName": "Whitechurch",
+      "crestFile": "whitechurch.jpg",
+      "confidence": 100,
+      "currentImageUrl": "/club-crests/whitechurch.jpg"
+    },
+    {
+      "clubId": "cmfr8kk2t00k5r3v3mgiuo26y",
+      "clubName": "Glanworth/Harbour Rovers",
+      "crestFile": "glanworth-harbour-rovers.gif",
+      "confidence": 96,
+      "currentImageUrl": "/club-crests/glanworth-harbour-rovers.gif"
+    },
+    {
+      "clubId": "cmfr8keof007br3v3gjn2v98m",
+      "clubName": "Castleisland Desmonds",
+      "crestFile": "castleisland-desmonds.jpg",
+      "confidence": 95,
+      "currentImageUrl": "/club-crests/castleisland-desmonds.jpg"
+    },
+    {
+      "clubId": "cmfpf5h6s002xr39exijf7kkh",
+      "clubName": "Glenbeigh-Glencar GAA",
+      "crestFile": "glenbeigh-glencar-gaa.jpg",
+      "confidence": 95,
+      "currentImageUrl": "/club-crests/glenbeigh-glencar-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h3c0025r39eycgllke0",
+      "clubName": "Ballylongford GAA",
+      "crestFile": "ballylongford-gaa.jpg",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballylongford-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h2u0021r39eu9m76dqj",
+      "clubName": "Ballydonoghue GAA",
+      "crestFile": "ballydonoghue-gaa.jpg",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballydonoghue-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h91003dr39e0u3uvb5w",
+      "clubName": "Knocknagoshel GAA",
+      "crestFile": "knocknagoshel-gaa.jpg",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/knocknagoshel-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpe816i0001r3bys9nbl1l5",
+      "clubName": "Ballyboughal GAA",
+      "crestFile": "ballyboughal-gaa.png",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballyboughal-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5gvf000hr39emszxut3r",
+      "clubName": "Ballinascarthy GAA",
+      "crestFile": "ballinascarthy-gaa.gif",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballinascarthy-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5h4c002dr39eri7mj1hq",
+      "clubName": "Castlegregory GAA",
+      "crestFile": "castlegregory-gaa.gif",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/castlegregory-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gvo000jr39ewwesyytz",
+      "clubName": "Ballincollig GAA",
+      "crestFile": "ballincollig-gaa.gif",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballincollig-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gvx000lr39emeasda0r",
+      "clubName": "Ballinhassig GAA",
+      "crestFile": "ballinhassig-gaa.gif",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballinhassig-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gv5000fr39e1rfvqy4v",
+      "clubName": "Ballinacurra GAA",
+      "crestFile": "ballinacurra-gaa.gif",
+      "confidence": 94,
+      "currentImageUrl": "/club-crests/ballinacurra-gaa.gif"
+    },
+    {
+      "clubId": "cmfr8kht300err3v3ak96ybca",
+      "clubName": "Dromid Pearses",
+      "crestFile": "dromid-pearses.jpg",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/dromid-pearses.jpg"
+    },
+    {
+      "clubId": "cmfpe81b20013r3bye98dg7cv",
+      "clubName": "Fingallians GAA",
+      "crestFile": "fingallians-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/fingallians-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5hb4003tr39el16s585w",
+      "clubName": "Scartaglin GAA",
+      "crestFile": "scartaglin-gaa.jpg",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/scartaglin-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5hdn004dr39egvz7zkw8",
+      "clubName": "Waterville GAA",
+      "crestFile": "waterville-gaa.jpg",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/waterville-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5kax00qvr39egf0eyc8a",
+      "clubName": "Whitecross GAA",
+      "crestFile": "whitecross-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/whitecross-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81ch001fr3byhxbgcn5g",
+      "clubName": "Innisfails GAA",
+      "crestFile": "innisfails-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/innisfails-gaa.png"
+    },
+    {
+      "clubId": "cmfpe817p0009r3bycgb60hkt",
+      "clubName": "Castleknock GAA",
+      "crestFile": "castleknock-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/castleknock-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81bt0019r3by46811zar",
+      "clubName": "Garristown GAA",
+      "crestFile": "garristown-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/garristown-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81gk002dr3byz57asvay",
+      "clubName": "Portobello GAA",
+      "crestFile": "portobello-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/portobello-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5gxw0011r39e11phu847",
+      "clubName": "Carrigaline GAA",
+      "crestFile": "carrigaline-gaa.gif",
+      "confidence": 93,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5gwo000rr39e5a59x4ad",
+      "clubName": "Bishopstown GAA",
+      "crestFile": "bishopstown-gaa.gif",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/bishopstown-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gy60013r39eakhy8h4a",
+      "clubName": "Castlehaven GAA",
+      "crestFile": "castlehaven-gaa.gif",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/castlehaven-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gye0015r39exveevg0t",
+      "clubName": "Clonakilty GAA",
+      "crestFile": "clonakilty-gaa.gif",
+      "confidence": 93,
+      "currentImageUrl": "/club-crests/clonakilty-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5h0k001nr39er61ists9",
+      "clubName": "Sarsfields GAA",
+      "crestFile": "sarsfields-gaa.png",
+      "confidence": 93,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8keuf007pr3v3lwkhelaz",
+      "clubName": "Causeway GAA",
+      "crestFile": "causeway-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/causeway-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h1o001rr39e1bhul64e",
+      "clubName": "Annascaul GAA",
+      "crestFile": "annascaul-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/annascaul-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h330023r39e4ermho4e",
+      "clubName": "Ballyduff GAA",
+      "crestFile": "ballyduff-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/ballyduff-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h3s0029r39ekgm3m8ub",
+      "clubName": "Beaufort GAA",
+      "crestFile": "beaufort-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/beaufort-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h4l002fr39eu2tytdub",
+      "clubName": "Churchill GAA",
+      "crestFile": "churchill-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/churchill-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h71002zr39ensf6qdyf",
+      "clubName": "Glenflesk GAA",
+      "crestFile": "glenflesk-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/glenflesk-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h8c0037r39e3ajw8cxm",
+      "clubName": "Kilcummin GAA",
+      "crestFile": "kilcummin-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/kilcummin-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h8k0039r39eu6882sie",
+      "clubName": "Kilgarvan GAA",
+      "crestFile": "kilgarvan-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/kilgarvan-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5hd50049r39evstx3qs6",
+      "clubName": "Templenoe GAA",
+      "crestFile": "templenoe-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/templenoe-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5gz4001br39enz297wjd",
+      "clubName": "Imokilly GAA",
+      "crestFile": "imokilly-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kcwh003br3v3dqyh3eq2",
+      "clubName": "Ballymacnab Round Towers",
+      "crestFile": "ballymacnab-round-towers.png",
+      "confidence": 92,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe818m000hr3byesjzjbxx",
+      "clubName": "Clontarf GAA",
+      "crestFile": "clontarf-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/clontarf-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81j6002zr3byxho884se",
+      "clubName": "Shankill GAA",
+      "crestFile": "shankill-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81q4004pr3byomi5efww",
+      "clubName": "Wanderers GAA",
+      "crestFile": "wanderers-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/wanderers-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kmky00pvr3v324lm5bbk",
+      "clubName": "Kilmoyley GAA",
+      "crestFile": "kilmoyley-gaa.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/kilmoyley-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kn7k00rbr3v3mcu2qq3f",
+      "clubName": "Laune Rangers",
+      "crestFile": "laune-rangers.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/laune-rangers.jpg"
+    },
+    {
+      "clubId": "cmfr8kqar00ylr3v3dlncc6nz",
+      "clubName": "O'Connell's GAA, Tullysaran",
+      "crestFile": "o-connell-s-gaa-tullysaran.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/o-connell-s-gaa-tullysaran.png"
+    },
+    {
+      "clubId": "cmfr8l1t301jfr3v3urc601f9",
+      "clubName": "Valentia Young Islanders",
+      "crestFile": "valentia-young-islanders.jpg",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/valentia-young-islanders.jpg"
+    },
+    {
+      "clubId": "cmfr8l1vm01jlr3v3w7skcyta",
+      "clubName": "Viking Gaels",
+      "crestFile": "viking-gaels.jpg",
+      "confidence": 92,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5gst0001r39ep4mzuk8p",
+      "clubName": "Adrigole GAA",
+      "crestFile": "adrigole-gaa.gif",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/adrigole-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gw7000nr39e0vc5a8it",
+      "clubName": "Ballinora GAA",
+      "crestFile": "ballinora-gaa.gif",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/ballinora-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gx6000vr39exy7c07uh",
+      "clubName": "Buttevant GAA",
+      "crestFile": "buttevant-gaa.gif",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/buttevant-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gzd001dr39ear76ejyg",
+      "clubName": "Midleton GAA",
+      "crestFile": "midleton-gaa.gif",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/midleton-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5k4l00pfr39ea367fxne",
+      "clubName": "Collegeland O'Rahilly's GAA",
+      "crestFile": "collegeland-o-rahilly-s-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/collegeland-o-rahilly-s-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k6z00pzr39ex5qp3d62",
+      "clubName": "Lissummon GAA",
+      "crestFile": "lissummon-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/lissummon-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k5s00ppr39ez12cfzwg",
+      "clubName": "Forkhill GAA",
+      "crestFile": "forkhill-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/forkhill-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k8300q7r39edhrfebv4",
+      "clubName": "Mullaghbawn Cúchullain's GAA",
+      "crestFile": "mullaghbawn-c-chullain-s-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/mullaghbawn-c-chullain-s-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k6000prr39e7n6j4xxl",
+      "clubName": "Granemore GAA",
+      "crestFile": "granemore-gaa.png",
+      "confidence": 92,
+      "currentImageUrl": "/club-crests/granemore-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kh7x00dbr3v32z8foax2",
+      "clubName": "Davitt's GAA, Ballyhegan",
+      "crestFile": "davitt-s-gaa-ballyhegan.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/davitt-s-gaa-ballyhegan.png"
+    },
+    {
+      "clubId": "cmfpe81fn0025r3byijuk0n2m",
+      "clubName": "O'Dwyers GAA",
+      "crestFile": "o-dwyers-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/o-dwyers-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h9a003fr39e9dn019ik",
+      "clubName": "Lispole GAA",
+      "crestFile": "lispole-gaa.jpg",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/lispole-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5k4t00phr39ez29005s9",
+      "clubName": "Crossmaglen Rangers GAA",
+      "crestFile": "crossmaglen-rangers-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/crossmaglen-rangers-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h9z003lr39e8nwzzifm",
+      "clubName": "Moyvane GAA",
+      "crestFile": "moyvane-gaa.jpg",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/moyvane-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5gwx000tr39eyo4yn7nl",
+      "clubName": "Blarney GAA",
+      "crestFile": "blarney-gaa.gif",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/blarney-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5h26001vr39e8no6x9h2",
+      "clubName": "Ardfert GAA",
+      "crestFile": "ardfert-gaa.jpg",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/ardfert-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpe819i000pr3bygh12zaze",
+      "clubName": "Crumlin GAA",
+      "crestFile": "crumlin-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/crumlin-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81dm001pr3byxokp3m4x",
+      "clubName": "Man-O-War GAA",
+      "crestFile": "man-o-war-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/man-o-war-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81iy002xr3by7cfkpg8v",
+      "clubName": "Setanta GAA",
+      "crestFile": "setanta-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/setanta-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81qc004rr3by7if1fss7",
+      "clubName": "Whitehall Colmcille GAA",
+      "crestFile": "whitehall-colmcille-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/whitehall-colmcille-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kllz00npr3v3kdx4jl31",
+      "clubName": "Keltoi Vigo",
+      "crestFile": "keltoi-vigo.png",
+      "confidence": 91,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750609675897-Keltoi-Vigo%20%281%29.png"
+    },
+    {
+      "clubId": "cmfr8krhr011dr3v3wdsv9gcb",
+      "clubName": "Pearse's GAA, Annaghmore",
+      "crestFile": "pearse-s-gaa-annaghmore.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/pearse-s-gaa-annaghmore.png"
+    },
+    {
+      "clubId": "cmfr8kwae0173r3v3eb8i0zsk",
+      "clubName": "St Finbarrs",
+      "crestFile": "st-finbarr-s.gif",
+      "confidence": 91,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/club-crests/1758456933312-St%20Finbarr%E2%80%99s%20Gaelic%20Football%20Club%20%28WA%29.jpeg"
+    },
+    {
+      "clubId": "cmfr8kxhz019nr3v3esyu6ugj",
+      "clubName": "St. Finbarr's",
+      "crestFile": "st-finbarr-s.gif",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/st-finbarr-s.gif"
+    },
+    {
+      "clubId": "cmfpe81bb0015r3byrang0698",
+      "clubName": "Foxrock Cabinteely GAA",
+      "crestFile": "foxrock-cabinteely-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/foxrock-cabinteely-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81fv0027r3by1eesp0wp",
+      "clubName": "O'Tooles GAA",
+      "crestFile": "o-tooles-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/o-tooles-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5gyv0019r39epn4j39k0",
+      "clubName": "Douglas GAA",
+      "crestFile": "douglas-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/douglas-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5hcu0047r39eowg8qr86",
+      "clubName": "Tarbert GAA",
+      "crestFile": "tarbert-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/tarbert-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k3200p3r39ep33x8cdh",
+      "clubName": "Ballyhegan Davitts GAA",
+      "crestFile": "ballyhegan-davitts-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/ballyhegan-davitts-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k2l00ozr39etjnrcdhz",
+      "clubName": "Annaghmore Pearses GAA",
+      "crestFile": "annaghmore-pearses-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "/club-crests/annaghmore-pearses-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5lj4010fr39e1b5zl9u7",
+      "clubName": "Setanta GAA",
+      "crestFile": "setanta-gaa.png",
+      "confidence": 91,
+      "currentImageUrl": "https://donegalgaa.b-cdn.net/wp-content/uploads/2024/03/Setanta-150x150.jpeg"
+    },
+    {
+      "clubId": "cmfr8kbpm000nr3v3mx6sadoo",
+      "clubName": "Allenwood",
+      "crestFile": "kildare/allenwood-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/allenwood-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kbzu001br3v3qc5m6qu4",
+      "clubName": "Ardclough",
+      "crestFile": "kildare/ardclough-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/ardclough-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kbwe0013r3v30m4rw7kr",
+      "clubName": "Annanough",
+      "crestFile": "laois/annanough.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/laois/annanough.png"
+    },
+    {
+      "clubId": "cmfr8kc8w001xr3v3qm4sqtb1",
+      "clubName": "Athgarvan",
+      "crestFile": "kildare/athgarvan-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/athgarvan-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kc7b001tr3v3oajn85hz",
+      "clubName": "Asca",
+      "crestFile": "annascaul-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/Ballinascarthy-GAA-ICON.png"
+    },
+    {
+      "clubId": "cmfr8kc20001hr3v363jdllbg",
+      "clubName": "Ardmore",
+      "crestFile": "waterford/ardmore-gaa-official.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/deuglan-naofa-ardmore-football-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kcnk002rr3v3u6m8z5qj",
+      "clubName": "Ballycommon",
+      "crestFile": "offaly/ballycommon-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/ballycommon-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kcuh0037r3v3acuf0nuz",
+      "clubName": "Ballylanders",
+      "crestFile": "limerick/ballylanders-.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/limerick/ballylanders.jpg"
+    },
+    {
+      "clubId": "cmfr8kd21003pr3v3oxpujzy0",
+      "clubName": "Ballyskenagh",
+      "crestFile": "offaly/ballyskenagh-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/ballyskenagh-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kczj003jr3v36cfewgih",
+      "clubName": "Ballypickas",
+      "crestFile": "laois/ballypickas.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/laois/ballypickas.jpg"
+    },
+    {
+      "clubId": "cmfr8kdje004xr3v3ryq44gnd",
+      "clubName": "Blackrock",
+      "crestFile": "limerick/blackrock-limerick.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/blackrock-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kdg2004pr3v30w6ww9b1",
+      "clubName": "Berlin GAA",
+      "crestFile": "berlin.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1754159325153-Berlin.webp"
+    },
+    {
+      "clubId": "cmfr8kecc006lr3v3pxto46g0",
+      "clubName": "Cappagh",
+      "crestFile": "kildare/cappagh-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kdwy005rr3v38zp2m4nw",
+      "clubName": "Bruff",
+      "crestFile": "limerick/bruff.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/limerick/bruff.jpg"
+    },
+    {
+      "clubId": "cmfr8kebi006jr3v3dliaqxoc",
+      "clubName": "Cappagh",
+      "crestFile": "kildare/cappagh-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/cappagh-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kdz3005vr3v3e7z10acg",
+      "clubName": "Bunmahon",
+      "crestFile": "waterford/bunmahon-gaa-official.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/bunmahon-gaa-official.png"
+    },
+    {
+      "clubId": "cmfr8ke3w0063r3v3ggb4ol8q",
+      "clubName": "Cahir",
+      "crestFile": "st-mary-s-gaa-cahirciveen.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs_large/120.jpg"
+    },
+    {
+      "clubId": "cmfr8ke0k005xr3v3p5twulnw",
+      "clubName": "Butlerstown",
+      "crestFile": "waterford/butlerstown-hurling-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/butlerstown-hurling-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kerg007jr3v3w91kd2l5",
+      "clubName": "Castlemitchell",
+      "crestFile": "kildare/castlemitchell-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/castlemitchell-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kek70073r3v3douxilbe",
+      "clubName": "Carrig/Riverstown",
+      "crestFile": "offaly/carrig-riverstown-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/carrig-riverstown-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kee0006pr3v3lxyofg1m",
+      "clubName": "Cappataggle",
+      "crestFile": "galway/cappataggle-hurling-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/galway/cappataggle-hurling-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kees006rr3v38o18d7hq",
+      "clubName": "Cappincur",
+      "crestFile": "offaly/cappincur-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/cappincur-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kep5007dr3v3ccv3e8m0",
+      "clubName": "Castlelyons",
+      "crestFile": "lyon.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/Castlelyons-Camogie-Icon.png"
+    },
+    {
+      "clubId": "cmfpf5h41002br39e56inr55u",
+      "clubName": "Brosna GAA",
+      "crestFile": "brosna-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/brosna-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kf4n008fr3v3v6mt57lh",
+      "clubName": "CIT",
+      "crestFile": "heartland/kansas-city-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/culver-city-cougars.png"
+    },
+    {
+      "clubId": "cmfr8kfi2009br3v3tmpep5ox",
+      "clubName": "Clermont Gaels",
+      "crestFile": "clermont.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Clermont.webp"
+    },
+    {
+      "clubId": "cmfr8kfx000adr3v3m7o5sfvr",
+      "clubName": "Clones",
+      "crestFile": "monaghan/clones.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/monaghan/clones.jpg"
+    },
+    {
+      "clubId": "cmfr8kfu000a5r3v36a78v4oj",
+      "clubName": "Clonbullogue",
+      "crestFile": "offaly/clonbullogue-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/clonbullogue-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h4t002hr39ekzrvcby7",
+      "clubName": "Cordal GAA",
+      "crestFile": "cordal-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/cordal-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kgpc00c7r3v3nlpt5i6s",
+      "clubName": "Croom",
+      "crestFile": "limerick/croom.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/limerick/croom.jpg"
+    },
+    {
+      "clubId": "cmfpf5h52002jr39ehlxh90ea",
+      "clubName": "Currow GAA",
+      "crestFile": "currow-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/currow-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h5b002lr39etcf4g4v8",
+      "clubName": "Dingle GAA",
+      "crestFile": "dingle-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/dingle-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kgbh00bbr3v37knd3rjx",
+      "clubName": "Coolera/Strandhill",
+      "crestFile": "sligo/coolera-strandhill-football-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/sligo/coolera-strandhill-football-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kgll00bxr3v3jl8yhauk",
+      "clubName": "Crinkle",
+      "crestFile": "offaly/crinkle-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/crinkle-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kgnb00c1r3v3ytzf1b6g",
+      "clubName": "Croatian Celts",
+      "crestFile": "croatia.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/croatia.webp"
+    },
+    {
+      "clubId": "cmfr8kh2x00d1r3v3pbtpjla9",
+      "clubName": "Daingean",
+      "crestFile": "offaly/daingean-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/offaly/daingean-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kgwa00cnr3v34g0uo3xb",
+      "clubName": "Cullen",
+      "crestFile": "kildare/kilcullen-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/Moycullen-Camogie.png"
+    },
+    {
+      "clubId": "cmfpf5h6a002tr39e1ralolsu",
+      "clubName": "Firies GAA",
+      "crestFile": "firies-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/firies-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8ki3b00fdr3v3c3pid2ba",
+      "clubName": "Dunhill",
+      "crestFile": "waterford/dunhill-hurling-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/dunhill-hurling-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kce20029r3v3mh54stje",
+      "clubName": "Azur Gaels",
+      "crestFile": "azur.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/azur-gaels-Logopng%20%281%29.png"
+    },
+    {
+      "clubId": "cmfr8kdo70059r3v33hg4ylex",
+      "clubName": "Bordeaux Gaelic Football",
+      "crestFile": "bordeaux.gif",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/Watergrasshill-Ladies-FootballIconBanner2022.png"
+    },
+    {
+      "clubId": "cmfr8kiat00fvr3v3z2y499aa",
+      "clubName": "Eindhoven Shamrocks GAA",
+      "crestFile": "eindhoven.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/sydneyshamrocks.png"
+    },
+    {
+      "clubId": "cmfpf5h61002rr39ecx99fita",
+      "clubName": "Finuge GAA",
+      "crestFile": "finuge-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/finuge-gaa.jpg"
+    },
+    {
+      "clubId": "cmfuauax30000r3p5dvq81ihd",
+      "clubName": "Augsburg GAA",
+      "crestFile": "augsburg.webp",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/europe/augsburg-gaa-oneills.png"
+    },
+    {
+      "clubId": "cmfpf5h9r003jr39ep0pkeb6j",
+      "clubName": "Listry GAA",
+      "crestFile": "listry-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/listry-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kfrd009zr3v3c7tz7i53",
+      "clubName": "Clogherinkoe",
+      "crestFile": "kildare/clogherinkoe-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/clogherinkoe-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h8t003br39e9gitxnmc",
+      "clubName": "Killarney Legion GAA",
+      "crestFile": "killarney-legion-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmgfp90fd000cr3xgy1840ioq",
+      "clubName": "Eindhoven Shamrocks",
+      "crestFile": "eindhoven.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Eindhoven.webp"
+    },
+    {
+      "clubId": "cmgfp90gc000er3xgyuqprmfu",
+      "clubName": "Lyon (Ludugnum)",
+      "crestFile": "lyon.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Lyon.webp"
+    },
+    {
+      "clubId": "cmgfp90i8000gr3xg79d7nare",
+      "clubName": "Malmo GAA",
+      "crestFile": "malmo.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750463445300-Malmo.webp"
+    },
+    {
+      "clubId": "cmgfp90ix000hr3xg954tn6zr",
+      "clubName": "Rómhánaigh Augsburg Óg",
+      "crestFile": "augsburg.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750794459381-Augsburg.webp"
+    },
+    {
+      "clubId": "cmgfp909f0001r3xgvk4zvvkq",
+      "clubName": "Setanta Berlin Gaelic Club",
+      "crestFile": "berlin.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750610480620-Setanta%20Berlin%20%281%29.png"
+    },
+    {
+      "clubId": "cmgfp90bq0005r3xgfb7cflid",
+      "clubName": "Auriense Gaelic",
+      "crestFile": "auriense.png",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750613405005-Auriense%20%281%29.png"
+    },
+    {
+      "clubId": "cmgfp90dw0009r3xgwn0dpb9k",
+      "clubName": "Amsterdam GAA",
+      "crestFile": "amsterdam.png",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750606533629-Amsterdam%20GAA%20%20%281%29.png"
+    },
+    {
+      "clubId": "cmgfp90mz000or3xgmbt931xc",
+      "clubName": "Guernsey Gaels",
+      "crestFile": "guernsey.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Guernsey.webp"
+    },
+    {
+      "clubId": "cmgfp90o7000qr3xgxs62pcs9",
+      "clubName": "Kerne (Quimper)",
+      "crestFile": "kerne.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Kerne.webp"
+    },
+    {
+      "clubId": "cmgfp90q4000tr3xgsqkzzri6",
+      "clubName": "Hurling Club Stuttgart",
+      "crestFile": "stuttgart.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750609558552-Stuttgart.png"
+    },
+    {
+      "clubId": "cmgfp90ru000wr3xgg91g6bi6",
+      "clubName": "Independiente FC",
+      "crestFile": "independiente.png",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750609596046-Independiente.png"
+    },
+    {
+      "clubId": "cmgfp90sr000yr3xg2ksacuc2",
+      "clubName": "Munich Colmcilles",
+      "crestFile": "munich.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Munich-Colmcilles-logo.png"
+    },
+    {
+      "clubId": "cmgfp90t7000zr3xgcob7aiq8",
+      "clubName": "Prague Hibernians",
+      "crestFile": "prague.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/prague.webp"
+    },
+    {
+      "clubId": "cmgfp90z60019r3xgu969ev38",
+      "clubName": "Budapest Gaels",
+      "crestFile": "budapest.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Budapest.jpg"
+    },
+    {
+      "clubId": "cmgfp90xl0016r3xgz8a8qiif",
+      "clubName": "Vienna Gaels GAA",
+      "crestFile": "vienna.png",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750610089529-VIENNA%20GAELS%20%281%29.png"
+    },
+    {
+      "clubId": "cmfr8kgu000chr3v3loozztgx",
+      "clubName": "CÃºchulainn's GAA, Armagh",
+      "crestFile": "c-chulainn-s-gaa-armagh.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/c-chulainn-s-gaa-armagh.png"
+    },
+    {
+      "clubId": "cmgfp912t001er3xgv3fngt8t",
+      "clubName": "Bordeaux Gaelic Football Club",
+      "crestFile": "bordeaux.gif",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Bordeaux.gif"
+    },
+    {
+      "clubId": "cmfr8kc52001nr3v3gnxxb70w",
+      "clubName": "Armagh GAA",
+      "crestFile": "armagh-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/armagh-gaa.png"
+    },
+    {
+      "clubId": "cmgfp914l001hr3xg21xmfgka",
+      "clubName": "Liverieg (Liffre)",
+      "crestFile": "liffre.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750609789354-Logo-US-Liffre-Football-Gaelique.png"
+    },
+    {
+      "clubId": "cmgfp915c001ir3xg6i3kw624",
+      "clubName": "Football Gaélique Mondeville",
+      "crestFile": "mondeville.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/MOndeville.webp"
+    },
+    {
+      "clubId": "cmgfp919j001qr3xg1i5xrbw4",
+      "clubName": "Luxembourg",
+      "crestFile": "gaelic_sports_club_luxembourg_crest.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Gaelic_Sports_Club_Luxembourg_Crest.jpg"
+    },
+    {
+      "clubId": "cmfr8kj5f00hxr3v3qior2kms",
+      "clubName": "Feohanagh/Castlemahon",
+      "crestFile": "limerick/feohanagh-castlemahon.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/limerick/feohanagh-castlemahon.jpg"
+    },
+    {
+      "clubId": "cmfr8kj8k00i5r3v3z8pitv5s",
+      "clubName": "Fethard",
+      "crestFile": "wexford/fethard-st-mogues-football.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs_large/997.jpg"
+    },
+    {
+      "clubId": "cmfpe81770005r3byzyqxiu6g",
+      "clubName": "Ballymun Kickhams GAA",
+      "crestFile": "ballymun-kickhams-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/ballymun-kickhams-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81de001nr3by3utdp9fp",
+      "clubName": "Lucan Sarsfields GAA",
+      "crestFile": "lucan-sarsfields-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81an000zr3byer3j2vc5",
+      "clubName": "Faughs GAA",
+      "crestFile": "faughs-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/faughs-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81cp001hr3byq8dup0e0",
+      "clubName": "Kevins GAA",
+      "crestFile": "kevins-gaa.jpeg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kevins-gaa.jpeg"
+    },
+    {
+      "clubId": "cmfpe81ew001zr3byiqq2kzp7",
+      "clubName": "Naomh Fionnbarra GAA",
+      "crestFile": "naomh-fionnbarra-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/naomh-fionnbarra-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kbqk000pr3v3hm3s9kjk",
+      "clubName": "Amsterdam GAC",
+      "crestFile": "amsterdam.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/western/st-josephs-silicon-valley.png"
+    },
+    {
+      "clubId": "cmfr8kjqo00jdr3v3mkijztai",
+      "clubName": "Gaelic Football Club d'Arthon",
+      "crestFile": "d-arthon.png",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/D-Arthon.png"
+    },
+    {
+      "clubId": "cmfr8kk1800k1r3v3l41jzsfx",
+      "clubName": "Gibraltar Gaels",
+      "crestFile": "gibraltar.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1754159575560-gibraltar.webp"
+    },
+    {
+      "clubId": "cmfr8kkhv00l5r3v3pke4lkx7",
+      "clubName": "Gothenburg GAA",
+      "crestFile": "gothenburg.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750463392573-Gothenburg.webp"
+    },
+    {
+      "clubId": "cmfr8kko100ljr3v3c5f4eqmm",
+      "clubName": "Guernsey Gaels GAA",
+      "crestFile": "guernsey.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/Blackhall-Gaels.png"
+    },
+    {
+      "clubId": "cmfr8kkn700lhr3v3sej07lae",
+      "clubName": "Groningen Gaels",
+      "crestFile": "groningen.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/groningen.png"
+    },
+    {
+      "clubId": "cmfr8kln300nrr3v35tjzt25t",
+      "clubName": "Kerne Football GaÃ©lique",
+      "crestFile": "kerne.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/St-Rynaghs-Football-ICON.png"
+    },
+    {
+      "clubId": "cmfr8kmf800pjr3v3f9ps5ycz",
+      "clubName": "Kilmallock",
+      "crestFile": "limerick/kilmallock.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/limerick/kilmallock.jpg"
+    },
+    {
+      "clubId": "cmfr8kmd400pfr3v3kjf120h0",
+      "clubName": "Kilmacthomas",
+      "crestFile": "waterford/kilmacthomas-hurling-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/kilmacthomas-hurling-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kma500p9r3v3od9f9f47",
+      "clubName": "Killyon",
+      "crestFile": "lyon.webp",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kmt200qdr3v3z7i2khg5",
+      "clubName": "Kinsale",
+      "crestFile": "waterford/clashmore-kinsalebeg-football-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/kinsale-gaa-crest.png"
+    },
+    {
+      "clubId": "cmfr8kmn000pzr3v355c19tf3",
+      "clubName": "Kilrossanty",
+      "crestFile": "waterford/kilrossanty-football-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/kilrossanty-football-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kmul00qhr3v38l3mjf03",
+      "clubName": "Knock",
+      "crestFile": "castleknock-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs_large/1001.jpg"
+    },
+    {
+      "clubId": "cmfr8knis00s3r3v3gluj7s2o",
+      "clubName": "Lixnaw GAA",
+      "crestFile": "lixnaw-gaa.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/lixnaw-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kngv00rzr3v3zdp876b0",
+      "clubName": "Lismore",
+      "crestFile": "waterford/lismore-hurling-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/lismore-hurling-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8koxb00vhr3v37cj6s6r7",
+      "clubName": "Moy",
+      "crestFile": "antrim/glen-rovers-gac-armoy.png",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/MOYCULLEN-ICON.png"
+    },
+    {
+      "clubId": "cmfr8kokm00unr3v34oexwthk",
+      "clubName": "Modeligo",
+      "crestFile": "waterford/modeligo-hurling-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/modeligo-hurling-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kp2e00vtr3v3i2zibstm",
+      "clubName": "Munich GAA",
+      "crestFile": "munich.webp",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kq0s00xxr3v3zvaul4uq",
+      "clubName": "Newcastle",
+      "crestFile": "limerick/newcastle-west-.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/St-Finians-Newcastle.png"
+    },
+    {
+      "clubId": "cmfr8kq7300ydr3v3phw9cfem",
+      "clubName": "Niort Gaels",
+      "crestFile": "niort.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/Niort.webp"
+    },
+    {
+      "clubId": "cmfr8kr7c010pr3v3z3vglt63",
+      "clubName": "Pallaskenry",
+      "crestFile": "limerick/kildimo-pallaskenry.jpg",
+      "confidence": 90,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs/979.jpg"
+    },
+    {
+      "clubId": "cmfr8kqxq0103r3v3aymg3bmu",
+      "clubName": "Oslo GAA",
+      "crestFile": "oslo.webp",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8ks19012fr3v3j711fpr3",
+      "clubName": "Rathcoffey",
+      "crestFile": "kildare/rathcoffey-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/rathcoffey-gaa.png"
+    },
+    {
+      "clubId": "cmfr8ks3n012lr3v33w5hh5tw",
+      "clubName": "Rathgormack",
+      "crestFile": "waterford/rathgormack-football-clubinfo.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/waterford/rathgormack-football-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8ksd20139r3v3geedciii",
+      "clubName": "Rheban",
+      "crestFile": "kildare/rheban-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/rheban-gaa.png"
+    },
+    {
+      "clubId": "cmfr8ksix013nr3v3sb6zf9ol",
+      "clubName": "Robertstown",
+      "crestFile": "kildare/robertstown-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/robertstown-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kvui0163r3v3tnubuez6",
+      "clubName": "Shelmaliers",
+      "crestFile": "wexford/shelmaliers-football.jpg",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/wexford/shelmaliers-hc-hurling.jpg"
+    },
+    {
+      "clubId": "cmfr8ku09015hr3v3opvo0jep",
+      "clubName": "Setanta Berlin GAA",
+      "crestFile": "berlin.webp",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kzms01ebr3v387qo0xgu",
+      "clubName": "St. Patrick's GAA, Carrickcruppen",
+      "crestFile": "st-patrick-s-gaa-carrickcruppen.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/st-patrick-s-gaa-carrickcruppen.png"
+    },
+    {
+      "clubId": "cmfr8l0q101gxr3v3it79lyw9",
+      "clubName": "Suncroft",
+      "crestFile": "kildare/suncroft-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/kildare/suncroft-gaa.png"
+    },
+    {
+      "clubId": "cmfr8l0lw01gnr3v3vbbhb8v5",
+      "clubName": "Stockholm Gaels",
+      "crestFile": "stockholm.webp",
+      "confidence": 90,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750463470660-Stockholm.webp"
+    },
+    {
+      "clubId": "cmfr8l1hl01inr3v31ueb7ejf",
+      "clubName": "Tulla",
+      "crestFile": "offaly/tullamore-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs/683.jpg"
+    },
+    {
+      "clubId": "cmfpe81gs002fr3bykvakr53r",
+      "clubName": "Raheny GAA",
+      "crestFile": "raheny-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/raheny-gaa.png"
+    },
+    {
+      "clubId": "cmfpeppkq008fr3xfodxux0o9",
+      "clubName": "Naomh Fionnbarra GAA",
+      "crestFile": "naomh-fionnbarra-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5gts0005r39efu8f51hd",
+      "clubName": "Aghada GAA",
+      "crestFile": "aghada-gaa.png",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/aghada-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h03001jr39embqbq2jr",
+      "clubName": "O'Donovan Rossa (Skibbereen) GAA",
+      "crestFile": "o-donovan-rossa-skibbereen-gaa.gif",
+      "confidence": 90,
+      "currentImageUrl": "/club-crests/o-donovan-rossa-skibbereen-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5h2e001xr39ecd486vk0",
+      "clubName": "Asdee GAA",
+      "crestFile": "asdee-gaa.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/asdee-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h5t002pr39euwe5d9po",
+      "clubName": "Duagh GAA",
+      "crestFile": "duagh-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/duagh-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h6j002vr39er1wag4az",
+      "clubName": "Fossa GAA",
+      "crestFile": "fossa-gaa.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/fossa-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpe81oi004br3by6mcnf8x4",
+      "clubName": "Starlights GFC GAA",
+      "crestFile": "starlights-gfc-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/starlights-gfc-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h9j003hr39ertjjgmz3",
+      "clubName": "Listowel Emmets GAA",
+      "crestFile": "listowel-emmets-gaa.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/listowel-emmets-gaa.jpg"
+    },
+    {
+      "clubId": "cmgfp910d001ar3xgmnclwbeu",
+      "clubName": "Herdeiros de Dhais",
+      "crestFile": "herdeiros-de-dhais.png",
+      "confidence": 89,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750609225545-Herdeiros-de-Dhais.png"
+    },
+    {
+      "clubId": "cmfpf5h3k0027r39ehuhpddjq",
+      "clubName": "Beale GAA",
+      "crestFile": "beale-gaa.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/beale-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpe8192000lr3byifueu2r1",
+      "clubName": "Craobh Chiaráin GAA",
+      "crestFile": "craobh-chiar-in-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/craobh-chiar-in-gaa.png"
+    },
+    {
+      "clubId": "cmfpe819r000rr3byftrqs1wq",
+      "clubName": "Cuala GAA",
+      "crestFile": "cuala-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/cuala-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81cx001jr3by3rt5t89b",
+      "clubName": "Kilmacud Crokes GAA",
+      "crestFile": "kilmacud-crokes-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/kilmacud-crokes-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81h0002hr3by3blh3gji",
+      "clubName": "Ranelagh Gaels GAA",
+      "crestFile": "ranelagh-gaels-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81hz002pr3bygnn8hvl4",
+      "clubName": "Round Towers Clondalkin GAA",
+      "crestFile": "round-towers-clondalkin-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81je0031r3bynziw2pwa",
+      "clubName": "Skerries Harps GAA",
+      "crestFile": "skerries-harps-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81oz004fr3bypunxy4gi",
+      "clubName": "Templeogue Synge Street GAA",
+      "crestFile": "templeogue-synge-street-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/templeogue-synge-street-gaa.png"
+    },
+    {
+      "clubId": "cmfr8klnq00ntr3v3xolxyqc2",
+      "clubName": "Kerry GAA",
+      "crestFile": "kerry-gaa.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/kerry-gaa.jpg"
+    },
+    {
+      "clubId": "cmfr8kwpd017xr3v3fswdpe6o",
+      "clubName": "St. Brendan's Hurling, Ardfert",
+      "crestFile": "st-brendan-s-hurling-ardfert.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/st-brendan-s-hurling-ardfert.jpg"
+    },
+    {
+      "clubId": "cmfr8l12l01hpr3v3zylohq8c",
+      "clubName": "Thomas Davis' GAA, Corrinshego",
+      "crestFile": "thomas-davis-gaa-corrinshego.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/thomas-davis-gaa-corrinshego.png"
+    },
+    {
+      "clubId": "cmfpe818u000jr3bygj3dblfd",
+      "clubName": "Commercials Hurling Club GAA",
+      "crestFile": "commercials-hurling-club-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/commercials-hurling-club-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81bj0017r3by6afg55lc",
+      "clubName": "Garda GAA",
+      "crestFile": "garda-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/garda-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5gxo000zr39ekvre3lrz",
+      "clubName": "Carbery Rangers GAA",
+      "crestFile": "carbery-rangers-gaa.gif",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/carbery-rangers-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5gwf000pr39era0kxwxy",
+      "clubName": "Beara GAA",
+      "crestFile": "beara-gaa.gif",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/beara-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5h0b001lr39e7jfqt79i",
+      "clubName": "Russell Rovers GAA",
+      "crestFile": "russell-rovers-gaa.jpg",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/russell-rovers-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5k3l00p7r39ea24gvefy",
+      "clubName": "Clady Mitchells GAA",
+      "crestFile": "clady-mitchells-gaa.png",
+      "confidence": 89,
+      "currentImageUrl": "/club-crests/clady-mitchells-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h1x001tr39e8hmsbp19",
+      "clubName": "An Ghaeltacht GAA",
+      "crestFile": "an-ghaeltacht-gaa.jpg",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/an-ghaeltacht-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5h2l001zr39eu5yn99uu",
+      "clubName": "Austin Stacks GAA",
+      "crestFile": "austin-stacks-gaa.jpg",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/southwest/austin-celtic-cowboys.png"
+    },
+    {
+      "clubId": "cmfpf5h830035r39eg9ms45fw",
+      "clubName": "Keel GAA",
+      "crestFile": "keel-gaa.jpg",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/keel-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5gzl001fr39e58j4msng",
+      "clubName": "Nemo Rangers GAA",
+      "crestFile": "nemo-rangers-gaa.gif",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/nemo-rangers-gaa.gif"
+    },
+    {
+      "clubId": "cmfpf5k4c00pdr39eqv8v9orc",
+      "clubName": "Clonmore Robert Emmets GAA",
+      "crestFile": "clonmore-robert-emmets-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kitl00h5r3v3qdmy2083",
+      "clubName": "Eoghan Rua GAA, Middletown",
+      "crestFile": "eoghan-rua-gaa-middletown.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/eoghan-rua-gaa-middletown.png"
+    },
+    {
+      "clubId": "cmfpf5k9000qfr39eys6ruqxt",
+      "clubName": "Shane O'Neill's GAA",
+      "crestFile": "shane-o-neill-s-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/shane-o-neill-s-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kzev01dtr3v3cn3fdcuc",
+      "clubName": "St. Moninne's GAA, Killeavy",
+      "crestFile": "st-moninne-s-gaa-killeavy.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5h7e0031r39eb1sn1fg5",
+      "clubName": "John Mitchels GAA",
+      "crestFile": "john-mitchels-gaa.jpg",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/john-mitchels-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpe8186000dr3bykuqc7wti",
+      "clubName": "Clann Mhuire GAA",
+      "crestFile": "clann-mhuire-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/clann-mhuire-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81au0011r3byz5e10nme",
+      "clubName": "Fingal Ravens GAA",
+      "crestFile": "fingal-ravens-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/fingal-ravens-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81f60021r3byyebok0el",
+      "clubName": "Naomh Mearnóg GAA",
+      "crestFile": "naomh-mearn-g-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/naomh-mearn-g-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81hi002lr3byi56z3f1a",
+      "clubName": "Robert Emmets GAA",
+      "crestFile": "robert-emmets-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/robert-emmets-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81hq002nr3by1gy6x2ne",
+      "clubName": "Rosmini Gaels GAA",
+      "crestFile": "rosmini-gaels-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81k90039r3byd5oda9n7",
+      "clubName": "St. Colmcilles GAA",
+      "crestFile": "st-colmcilles-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-colmcilles-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81m9003rr3by1uak1nf4",
+      "clubName": "St. Margarets GAA",
+      "crestFile": "st-margarets-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-margarets-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81nt0045r3by0grmlutq",
+      "clubName": "St. Peregrines GAA",
+      "crestFile": "st-peregrines-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-peregrines-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81o10047r3bymm9yyj3y",
+      "clubName": "St. Sylvesters GAA",
+      "crestFile": "st-sylvesters-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-sylvesters-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81pf004jr3byfvclif32",
+      "clubName": "Trinity Gaels GAA",
+      "crestFile": "trinity-gaels-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81p7004hr3by6mkujnvw",
+      "clubName": "Thomas Davis GAA",
+      "crestFile": "thomas-davis-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/northwest/thomas-meagher-hurling-club.png"
+    },
+    {
+      "clubId": "cmfr8kp7600w3r3v3xp3w4i2x",
+      "clubName": "Na Fianna GAA, Middletown",
+      "crestFile": "na-fianna-gaa-middletown.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/na-fianna-gaa-middletown.png"
+    },
+    {
+      "clubId": "cmfr8krf80117r3v3887sj57c",
+      "clubName": "Peadar Ã“ DoirnÃ­n GAA, Forkhill",
+      "crestFile": "peadar-doirn-n-gaa-forkhill.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/peadar-doirn-n-gaa-forkhill.png"
+    },
+    {
+      "clubId": "cmfr8ktao014rr3v3wx8t1yr2",
+      "clubName": "Sarsfield's GAA, High Moss",
+      "crestFile": "sarsfield-s-gaa-high-moss.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kx1u018rr3v30bih6mu8",
+      "clubName": "St. Colmcille's GAA, Grange",
+      "crestFile": "st-colmcille-s-gaa-grange.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8ky2501avr3v3vw29rmx9",
+      "clubName": "St. Killian's GAA, Whitecross",
+      "crestFile": "st-killian-s-gaa-whitecross.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfr8kyjn01c1r3v3iumuu8vh",
+      "clubName": "St. Mary's GAA, Cahirciveen",
+      "crestFile": "st-mary-s-gaa-cahirciveen.jpg",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-mary-s-gaa-cahirciveen.jpg"
+    },
+    {
+      "clubId": "cmfr8kzq101ejr3v38x4nhex7",
+      "clubName": "St. Patrick's GAA, Dromintee",
+      "crestFile": "st-patrick-s-gaa-dromintee.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-patrick-s-gaa-dromintee.png"
+    },
+    {
+      "clubId": "cmfr8kzbf01dlr3v3bmf2m221",
+      "clubName": "St. Mochua's GAA, Derrynoose",
+      "crestFile": "st-mochua-s-gaa-derrynoose.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/st-mochua-s-gaa-derrynoose.png"
+    },
+    {
+      "clubId": "cmfr8l29y01klr3v3xgjzh47p",
+      "clubName": "Wolfe Tone GAA, Derrymacash",
+      "crestFile": "wolfe-tone-gaa-derrymacash.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/wolfe-tone-gaa-derrymacash.png"
+    },
+    {
+      "clubId": "cmfpe817x000br3by6go0norw",
+      "clubName": "Civil Service Football GAA",
+      "crestFile": "civil-service-football-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/civil-service-football-gaa.png"
+    },
+    {
+      "clubId": "cmfpe817f0007r3bydhlbxhse",
+      "clubName": "Beann Eadair GAA",
+      "crestFile": "beann-eadair-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/beann-eadair-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k4300pbr39etxq4jhj3",
+      "clubName": "Clann Eireann GAA",
+      "crestFile": "clann-eireann-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/clann-eireann-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k2t00p1r39embt8q0sq",
+      "clubName": "Armagh Harps GAA",
+      "crestFile": "armagh-harps-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5k6r00pxr39e7vf44dka",
+      "clubName": "Killeavy St Moninna's GAA",
+      "crestFile": "killeavy-st-moninna-s-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5k5a00plr39eknkqu0rg",
+      "clubName": "Derrynoose St Mochua's GAA",
+      "crestFile": "derrynoose-st-mochua-s-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/derrynoose-st-mochua-s-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k6i00pvr39e8yn6vklf",
+      "clubName": "Keady Michael Dwyer's GAA",
+      "crestFile": "keady-michael-dwyer-s-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "/club-crests/keady-michael-dwyer-s-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5k6a00ptr39e5hvid5hb",
+      "clubName": "Grange St Colmcille's GAA",
+      "crestFile": "grange-st-colmcille-s-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5lim010dr39eslbnws5c",
+      "clubName": "Robert Emmets GAA",
+      "crestFile": "robert-emmets-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "https://donegalgaa.b-cdn.net/wp-content/uploads/2024/03/robert-emmets-150x150.jpg"
+    },
+    {
+      "clubId": "cmfpfkvk50003r3rsf03tur0a",
+      "clubName": "St. Colmcille's GAA",
+      "crestFile": "st-colmcilles-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/print-crest.png"
+    },
+    {
+      "clubId": "cmfpfk49m001br3pfvidr1b9i",
+      "clubName": "John Mitchels GAA",
+      "crestFile": "john-mitchels-gaa.jpg",
+      "confidence": 88,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/johnmitchelsbrisbane.png"
+    },
+    {
+      "clubId": "cmfpfk4i90037r3pf0zn648dj",
+      "clubName": "St. Colmcille's GAA",
+      "crestFile": "st-colmcilles-gaa.png",
+      "confidence": 88,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/WG-BANNER-CREST.png"
+    },
+    {
+      "clubId": "cmfpe81eo001xr3byvl2fug40",
+      "clubName": "Naomh Barróg GAA",
+      "crestFile": "naomh-barr-g-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/naomh-barr-g-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81oa0049r3bydinxkr15",
+      "clubName": "St. Vincents GAA",
+      "crestFile": "st-vincents-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/st-vincents-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81ju0035r3bys89ltd89",
+      "clubName": "St. Brendans GAA",
+      "crestFile": "st-brendans-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/st-brendans-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kx990197r3v3wubo8gcg",
+      "clubName": "St. Enda's GAA, Ballyboden",
+      "crestFile": "st-enda-s-gaa-ballyboden.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/st-enda-s-gaa-ballyboden.png"
+    },
+    {
+      "clubId": "cmfpe818e000fr3byjt65n8y8",
+      "clubName": "Clanna Gael GAA",
+      "crestFile": "clanna-gael-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/clanna-gael-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81nl0043r3by2yam4si1",
+      "clubName": "St. Patricks GAA",
+      "crestFile": "st-patricks-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/st-patricks-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81ld003jr3byothd10rg",
+      "clubName": "Ballinteer St. John's GAA",
+      "crestFile": "ballinteer-st-john-s-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "/club-crests/ballinteer-st-john-s-gaa.png"
+    },
+    {
+      "clubId": "cmfpepoub0031r3xfowqsl5mu",
+      "clubName": "St Patrick's GAA",
+      "crestFile": "st-patricks-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5isx00fnr39evgazyxm3",
+      "clubName": "St Brendan's GAA",
+      "crestFile": "st-brendans-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpfk4f0002hr3pf45s8mkwu",
+      "clubName": "St Brendans GAA",
+      "crestFile": "st-brendans-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/St-Brendans-Manchester-ICON.png"
+    },
+    {
+      "clubId": "cmfpfk4h1002xr3pfvk2tddjh",
+      "clubName": "St Patricks GAA",
+      "crestFile": "st-patricks-gaa.png",
+      "confidence": 87,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/St.-Patricks-GAA-TipperaryIconBanner2024.png"
+    },
+    {
+      "clubId": "cmfr8kgjn00btr3v3xxn8alco",
+      "clubName": "Craobh Rua GAA",
+      "crestFile": "craobh-rua-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/craobh-rua-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5hbm003xr39e8680uzwr",
+      "clubName": "Spa GAA",
+      "crestFile": "spa-gaa.jpg",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/spa-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5k7l00q3r39edkzwtx1t",
+      "clubName": "Madden St Josephs GAA",
+      "crestFile": "madden-st-josephs-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/madden-st-josephs-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81af000xr3bylscok1xw",
+      "clubName": "Erins Isle GAA",
+      "crestFile": "erins-isle-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/erins-isle-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81c9001dr3byykb9wbm0",
+      "clubName": "Good Counsel Liffey Gaels GAA & Camogie Club",
+      "crestFile": "good-counsel-liffey-gaels-gaa-camogie-club.png",
+      "confidence": 86,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81fe0023r3byrei3m2kr",
+      "clubName": "Naomh Olaf GAA",
+      "crestFile": "naomh-olaf-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/naomh-olaf-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81i7002rr3byq5vyblp7",
+      "clubName": "Round Towers Lusk GAA",
+      "crestFile": "round-towers-lusk-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81k10037r3by3j1439ne",
+      "clubName": "St. Brigids GAA",
+      "crestFile": "st-brigids-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81n6003zr3byuasl8pcq",
+      "clubName": "St. Monicas GAA",
+      "crestFile": "st-monicas-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/st-monicas-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81nd0041r3bygy74l1r4",
+      "clubName": "St. Oliver Plunkett Eoghan Ruadh GAA",
+      "crestFile": "st-oliver-plunkett-eoghan-ruadh-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/st-oliver-plunkett-eoghan-ruadh-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81ql004tr3by8m2fcgmf",
+      "clubName": "Wild Geese GAA",
+      "crestFile": "wild-geese-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/wild-geese-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kxlo019vr3v339rdgpxa",
+      "clubName": "St. Ita's",
+      "crestFile": "st-ita-s.jpg",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/st-ita-s.jpg"
+    },
+    {
+      "clubId": "cmfr8kyp701cfr3v3m187v28l",
+      "clubName": "St. Mary's GAA, Granemore",
+      "crestFile": "st-mary-s-gaa-granemore.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/st-mary-s-gaa-granemore.png"
+    },
+    {
+      "clubId": "cmfpe81kp003dr3byqm4umqn1",
+      "clubName": "St. Finian's GAA",
+      "crestFile": "st-finian-s-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/st-finian-s-gaa.png"
+    },
+    {
+      "clubId": "cmfpepqkl00g3r3xfg0aw18ic",
+      "clubName": "St Brigid’s GAA",
+      "crestFile": "st-brigids-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5k9h00qjr39e5f1i8x1r",
+      "clubName": "St Malachy's (Armagh) GAA",
+      "crestFile": "st-malachy-s-armagh-gaa.png",
+      "confidence": 86,
+      "currentImageUrl": "/club-crests/st-malachy-s-armagh-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5h5k002nr39ebfsafk0e",
+      "clubName": "Dr Crokes GAA",
+      "crestFile": "dr-crokes-gaa.jpg",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/dr-crokes-gaa.jpg"
+    },
+    {
+      "clubId": "cmfpf5kag00qrr39e61jbeqmj",
+      "clubName": "St Peter's (Lurgan) GAA",
+      "crestFile": "st-peter-s-lurgan-gaa.png",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/st-peter-s-lurgan-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81e2001tr3byxjcnsruz",
+      "clubName": "Na Fianna GAA",
+      "crestFile": "na-fianna-gaa.png",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/na-fianna-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81iq002vr3by7mmagnfj",
+      "clubName": "Scoil Uí Chonaill GAA",
+      "crestFile": "scoil-u-chonaill-gaa.png",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/scoil-u-chonaill-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kn3200r1r3v39lv182md",
+      "clubName": "LÃ¡mh Dhearg GAA, Keady",
+      "crestFile": "l-mh-dhearg-gaa-keady.png",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/l-mh-dhearg-gaa-keady.png"
+    },
+    {
+      "clubId": "cmfr8ktji015br3v3x9hnct5y",
+      "clubName": "SeÃ¡n South's GAA, Clady",
+      "crestFile": "se-n-south-s-gaa-clady.png",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/se-n-south-s-gaa-clady.png"
+    },
+    {
+      "clubId": "cmfr8l0b801fxr3v3ahrmx83b",
+      "clubName": "St. Peter's GAA, Lurgan",
+      "crestFile": "st-peter-s-gaa-lurgan.png",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/st-peter-s-gaa-lurgan.png"
+    },
+    {
+      "clubId": "cmfpf5h0t001pr39eqdz1reot",
+      "clubName": "St Vincent’s (Cork) GAA",
+      "crestFile": "st-vincent-s-cork-gaa.gif",
+      "confidence": 85,
+      "currentImageUrl": "/club-crests/st-vincent-s-cork-gaa.gif"
+    },
+    {
+      "clubId": "cmfr8l08s01frr3v333bgrbuq",
+      "clubName": "St. Paul's GAA, Lurgan",
+      "crestFile": "st-paul-s-gaa-lurgan.png",
+      "confidence": 84,
+      "currentImageUrl": "/club-crests/st-paul-s-gaa-lurgan.png"
+    },
+    {
+      "clubId": "cmfpf5k8b00q9r39e6o4c18n6",
+      "clubName": "Pearse Óg Armagh GAA",
+      "crestFile": "pearse-g-armagh-gaa.png",
+      "confidence": 84,
+      "currentImageUrl": "/club-crests/pearse-g-armagh-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5ka700qpr39e7wgpvhk8",
+      "clubName": "St Paul's (Lurgan) GAA",
+      "crestFile": "st-paul-s-lurgan-gaa.png",
+      "confidence": 84,
+      "currentImageUrl": "/club-crests/st-paul-s-lurgan-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5hac003nr39ehntovrxq",
+      "clubName": "Na Gaeil GAA",
+      "crestFile": "na-gaeil-gaa.jpg",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/na-gaeil-gaa.jpg"
+    },
+    {
+      "clubId": "cmgfp91bl001tr3xge7idhz2f",
+      "clubName": "Tolosa Gaels",
+      "crestFile": "toloso-gaels.webp",
+      "confidence": 83,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1754159635564-Tolosa%20Gaels%20-%20Logo%20-%20cropped.png"
+    },
+    {
+      "clubId": "cmfpe81jm0033r3bytrn2kjav",
+      "clubName": "St. Annes GAA",
+      "crestFile": "st-annes-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/st-annes-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81mh003tr3byasy3kz8c",
+      "clubName": "St. Marks GAA",
+      "crestFile": "st-marks-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/st-marks-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81mq003vr3byz3ei5kft",
+      "clubName": "St. Marys GAA",
+      "crestFile": "st-marys-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/st-marys-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81my003xr3bylfrikq91",
+      "clubName": "St. Maurs GAA",
+      "crestFile": "st-maurs-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/st-maurs-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81ls003nr3byzfwdfxp4",
+      "clubName": "St. Judes GAA",
+      "crestFile": "st-judes-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/st-judes-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81l5003hr3by9gknxma1",
+      "clubName": "St. James Gaels GAA",
+      "crestFile": "st-james-gaels-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpeppql009nr3xfofvnhhsx",
+      "clubName": "Ballivor GAA",
+      "crestFile": "ballinora-gaa.gif",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/meath/ballivor-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5jkn00lbr39e824mwzvb",
+      "clubName": "St Mary's GAA",
+      "crestFile": "st-marys-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5k8j00qbr39elmhpxe2o",
+      "clubName": "Port Mor GAA",
+      "crestFile": "port-mor-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": "/club-crests/port-mor-gaa.png"
+    },
+    {
+      "clubId": "cmfpfk4cy0021r3pfgxl5mkrw",
+      "clubName": "Robert Emmetts GAA",
+      "crestFile": "robert-emmets-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpfk4g2002pr3pfnxwgkhir",
+      "clubName": "St Jude's GAA",
+      "crestFile": "st-judes-gaa.png",
+      "confidence": 83,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81a6000vr3bytftyez0r",
+      "clubName": "Erin Go Bragh GAA",
+      "crestFile": "erin-go-bragh-gaa.png",
+      "confidence": 82,
+      "currentImageUrl": "/club-crests/erin-go-bragh-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81du001rr3byqanqaqld",
+      "clubName": "Na Dubh Ghall GAA",
+      "crestFile": "na-dubh-ghall-gaa.png",
+      "confidence": 82,
+      "currentImageUrl": "/club-crests/na-dubh-ghall-gaa.png"
+    },
+    {
+      "clubId": "cmfpe81oq004dr3byurfkptk0",
+      "clubName": "Stars of Erin GAA",
+      "crestFile": "stars-of-erin-gaa.png",
+      "confidence": 82,
+      "currentImageUrl": "/club-crests/stars-of-erin-gaa.png"
+    },
+    {
+      "clubId": "cmfpfk46o000nr3pfi93yy5dz",
+      "clubName": "Erin go Bragh GAA",
+      "crestFile": "erin-go-bragh-gaa.png",
+      "confidence": 82,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/Erins-Own-Castlecomer.png"
+    },
+    {
+      "clubId": "cmgfp9169001kr3xgoe72nx0s",
+      "clubName": "Estrela Vermehla",
+      "crestFile": "estrela-vermelha.png",
+      "confidence": 81,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/1750607975886-Estrela-Vermelha.png"
+    },
+    {
+      "clubId": "cmfpe819a000nr3byinj62e6n",
+      "clubName": "Croí Ró Naofa GAA",
+      "crestFile": "cro-r-naofa-gaa.png",
+      "confidence": 80,
+      "currentImageUrl": "/club-crests/cro-r-naofa-gaa.png"
+    },
+    {
+      "clubId": "cmfpeppch006pr3xfasll843m",
+      "clubName": "Colmcille GAA",
+      "crestFile": "st-colmcilles-gaa.png",
+      "confidence": 80,
+      "currentImageUrl": "https://longfordgaa.ie/wp-content/uploads/Colmcille-1-881x1024.png"
+    },
+    {
+      "clubId": "cmfpeppdx0071r3xf7r4t23uk",
+      "clubName": "Legan Sarsfields GAA",
+      "crestFile": "lucan-sarsfields-gaa.png",
+      "confidence": 80,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpepq5i00cvr3xf1l6uf8zv",
+      "clubName": "Durrow GAA",
+      "crestFile": "currow-gaa.jpg",
+      "confidence": 80,
+      "currentImageUrl": "/club-crests/offaly/durrow-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5ivn00g5r39ejooajfve",
+      "clubName": "Ardagh GAA",
+      "crestFile": "armagh-gaa.png",
+      "confidence": 80,
+      "currentImageUrl": "https://sportlomo-userupload.s3.amazonaws.com/clubLogos/561/ardagh_gaa.png"
+    },
+    {
+      "clubId": "cmfpf5j8800izr39et2zqvh9k",
+      "clubName": "Crosna GAA",
+      "crestFile": "brosna-gaa.jpg",
+      "confidence": 80,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5jns00lxr39enkmb3dig",
+      "clubName": "Carrigallen GAA",
+      "crestFile": "carrigaline-gaa.gif",
+      "confidence": 80,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpe81ec001vr3byhbeez24d",
+      "clubName": "Na Gaeil Óga CLG GAA",
+      "crestFile": "na-gaeil-ga-clg-gaa.png",
+      "confidence": 79,
+      "currentImageUrl": "/club-crests/na-gaeil-ga-clg-gaa.png"
+    },
+    {
+      "clubId": "cmfr8kchl002hr3v3i1odnzza",
+      "clubName": "Ballinacurra Gaels",
+      "crestFile": "ballinacurra-gaa.gif",
+      "confidence": 78,
+      "currentImageUrl": "/club-crests/limerick/na-piarsaigh-hc-limerick.jpg"
+    },
+    {
+      "clubId": "cmfr8kh0u00cxr3v32rjrvalx",
+      "clubName": "Curry GAA",
+      "crestFile": "currow-gaa.jpg",
+      "confidence": 78,
+      "currentImageUrl": "/club-crests/sligo/curry-football-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8khbu00djr3v3f66balmw",
+      "clubName": "Derry GAA",
+      "crestFile": "kerry-gaa.jpg",
+      "confidence": 78,
+      "currentImageUrl": "https://www.oneills.com/media/catalog/category/DerrylaughanKB-Banner.png"
+    },
+    {
+      "clubId": "cmgfp90x50015r3xgmpd84v2d",
+      "clubName": "Píobairí Strakonice",
+      "crestFile": "piobairai-strakonic.png",
+      "confidence": 78,
+      "currentImageUrl": "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/PIobairai-Strakonic.png"
+    },
+    {
+      "clubId": "cmfpf5jz300obr39epz9w3zxm",
+      "clubName": "Rossa GAA",
+      "crestFile": "fossa-gaa.jpg",
+      "confidence": 78,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpepqdp00elr3xfvd8b66zl",
+      "clubName": "Clonkill GAA",
+      "crestFile": "clonakilty-gaa.gif",
+      "confidence": 77,
+      "currentImageUrl": "/club-crests/westmeath/clonkill-gaa.png"
+    },
+    {
+      "clubId": "cmfpf5j1900hfr39efdqfrofo",
+      "clubName": "Kilcommon GAA",
+      "crestFile": "kilcummin-gaa.jpg",
+      "confidence": 77,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpepp2m004pr3xf6068zph7",
+      "clubName": "Ballinakill-Annagh Hill GAA",
+      "crestFile": "laois/ballinakill-annagh-hill-gaa.png",
+      "confidence": 76,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5i19009hr39ejc7b9rq5",
+      "clubName": "Ballinacourty GAA",
+      "crestFile": "ballinacurra-gaa.gif",
+      "confidence": 76,
+      "currentImageUrl": "/club-crests/waterford/ballinacourty-football-clubinfo.jpg"
+    },
+    {
+      "clubId": "cmfr8kfxu00afr3v3x9bab3vi",
+      "clubName": "Clonlara",
+      "crestFile": "glenlara.gif",
+      "confidence": 75,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs/177.jpg"
+    },
+    {
+      "clubId": "cmfvnl7sg0001r329z0hwyqbr",
+      "clubName": "Celtanta GAA",
+      "crestFile": "setanta-gaa.png",
+      "confidence": 75,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpg7wa5005pr34qym9rnljb",
+      "clubName": "Westmeath NY GAA",
+      "crestFile": "westmeath/tang-gaa.png",
+      "confidence": 75,
+      "currentImageUrl": "https://theclubapp-photos-production.s3.eu-west-1.amazonaws.com/pmb43xbj6uf9c5t06m93k4mc4oem"
+    },
+    {
+      "clubId": "cmfr8l05m01fjr3v3i3lld966",
+      "clubName": "St. Patricks, Arva",
+      "crestFile": "st-patricks-gaa.png",
+      "confidence": 75,
+      "currentImageUrl": "/club-crests/cavan/arva-gaa.png"
+    },
+    {
+      "clubId": "cmfpepp6d005hr3xf6v0icuyk",
+      "clubName": "Kilcavan GAA",
+      "crestFile": "kilgarvan-gaa.jpg",
+      "confidence": 75,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpepq6y00d7r3xfvomo5p4i",
+      "clubName": "Kilcormac-Killoughey GAA",
+      "crestFile": "offaly/kilcormac-killoughey-gaa.png",
+      "confidence": 75,
+      "currentImageUrl": "/club-crests/offaly/kilcormac-killoughey-gaa.png"
+    },
+    {
+      "clubId": "cmfpepqs300hnr3xfnp659xle",
+      "clubName": "Kilmore GAA",
+      "crestFile": "kilmoyley-gaa.jpg",
+      "confidence": 75,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpepr0l00ipr3xft8ryogau",
+      "clubName": "Arklow Geraldines-Ballymoney GAA",
+      "crestFile": "wicklow/arklow-geraldines-ballymoney-gaa.png",
+      "confidence": 75,
+      "currentImageUrl": "/club-crests/wicklow/arklow-geraldines-ballymoney-gaa.png"
+    },
+    {
+      "clubId": "cmfpepr4400jhr3xff06lsmzy",
+      "clubName": "Kilcoole GAA",
+      "crestFile": "kilmoyley-gaa.jpg",
+      "confidence": 75,
+      "currentImageUrl": null
+    },
+    {
+      "clubId": "cmfpf5hqw0075r39eav4kfcxv",
+      "clubName": "Ballina GAA",
+      "crestFile": "ballinora-gaa.gif",
+      "confidence": 75,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs/46.jpg"
+    },
+    {
+      "clubId": "cmfpf5ica00bvr39e5reywx1v",
+      "clubName": "Kilmaley GAA",
+      "crestFile": "kilmoyley-gaa.jpg",
+      "confidence": 75,
+      "currentImageUrl": "https://www.clubinfo.ie/crests/clubs/374.jpg"
+    },
+    {
+      "clubId": "cmfpf5jb000jdr39evy9enr4f",
+      "clubName": "Kilmore GAA",
+      "crestFile": "kilmoyley-gaa.jpg",
+      "confidence": 75,
+      "currentImageUrl": "/club-crests/roscommon/kilmore.png"
+    },
+    {
+      "clubId": "cmfpf5jn400lrr39ex7vjg6ns",
+      "clubName": "Ballinaglera GAA",
+      "crestFile": "ballinacurra-gaa.gif",
+      "confidence": 75,
+      "currentImageUrl": "/club-crests/leitrim/ballinaglera-official.jpg"
+    }
+  ]
+}

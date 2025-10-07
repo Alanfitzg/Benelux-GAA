@@ -5,7 +5,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
-import VerifiedBadge, { VerifiedTooltip } from "@/components/club/VerifiedBadge";
+import VerifiedBadge, {
+  VerifiedTooltip,
+} from "@/components/club/VerifiedBadge";
 
 type ClubListItem = {
   id: string;
@@ -29,89 +31,89 @@ export const dynamic = "force-dynamic";
 // Country flag mapping - using flag emoji or flag icon URLs
 const countryFlags: Record<string, string> = {
   // Europe
-  "Austria": "🇦🇹",
-  "Belgium": "🇧🇪",
-  "Croatia": "🇭🇷",
+  Austria: "🇦🇹",
+  Belgium: "🇧🇪",
+  Croatia: "🇭🇷",
   "Czech Republic": "🇨🇿",
-  "Denmark": "🇩🇰",
-  "England": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-  "Estonia": "🇪🇪",
-  "Finland": "🇫🇮",
-  "France": "🇫🇷",
-  "Germany": "🇩🇪",
-  "Gibraltar": "🇬🇮",
-  "Hungary": "🇭🇺",
-  "Iceland": "🇮🇸",
-  "Ireland": "🇮🇪",
+  Denmark: "🇩🇰",
+  England: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+  Estonia: "🇪🇪",
+  Finland: "🇫🇮",
+  France: "🇫🇷",
+  Germany: "🇩🇪",
+  Gibraltar: "🇬🇮",
+  Hungary: "🇭🇺",
+  Iceland: "🇮🇸",
+  Ireland: "🇮🇪",
   "Isle of Man": "🇮🇲",
-  "Italy": "🇮🇹",
-  "Luxembourg": "🇱🇺",
-  "Netherlands": "🇳🇱",
+  Italy: "🇮🇹",
+  Luxembourg: "🇱🇺",
+  Netherlands: "🇳🇱",
   "The Netherlands": "🇳🇱",
-  "Norway": "🇳🇴",
-  "Poland": "🇵🇱",
-  "Portugal": "🇵🇹",
-  "Romania": "🇷🇴",
-  "Russia": "🇷🇺",
-  "Scotland": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-  "Slovakia": "🇸🇰",
-  "Slovenia": "🇸🇮",
-  "Spain": "🇪🇸",
-  "Sweden": "🇸🇪",
-  "Switzerland": "🇨🇭",
+  Norway: "🇳🇴",
+  Poland: "🇵🇱",
+  Portugal: "🇵🇹",
+  Romania: "🇷🇴",
+  Russia: "🇷🇺",
+  Scotland: "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+  Slovakia: "🇸🇰",
+  Slovenia: "🇸🇮",
+  Spain: "🇪🇸",
+  Sweden: "🇸🇪",
+  Switzerland: "🇨🇭",
   "United Kingdom": "🇬🇧",
-  "UK": "🇬🇧",
-  "Wales": "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
+  UK: "🇬🇧",
+  Wales: "🏴󠁧󠁢󠁷󠁬󠁳󠁿",
 
   // North America
-  "Canada": "🇨🇦",
+  Canada: "🇨🇦",
   "Cayman Island": "🇰🇾",
-  "Mexico": "🇲🇽",
+  Mexico: "🇲🇽",
   "United States": "🇺🇸",
 
   // Asia
-  "Cambodia": "🇰🇭",
-  "China": "🇨🇳",
+  Cambodia: "🇰🇭",
+  China: "🇨🇳",
   "Hong Kong": "🇭🇰",
-  "India": "🇮🇳",
-  "Indonesia": "🇮🇩",
-  "Japan": "🇯🇵",
-  "Malaysia": "🇲🇾",
-  "Myanmar": "🇲🇲",
-  "Pakistan": "🇵🇰",
-  "Singapore": "🇸🇬",
-  "Signapore": "🇸🇬", // Typo in database
+  India: "🇮🇳",
+  Indonesia: "🇮🇩",
+  Japan: "🇯🇵",
+  Malaysia: "🇲🇾",
+  Myanmar: "🇲🇲",
+  Pakistan: "🇵🇰",
+  Singapore: "🇸🇬",
+  Signapore: "🇸🇬", // Typo in database
   "South Korea": "🇰🇷",
-  "Taiwan": "🇹🇼",
-  "Thailand": "🇹🇭",
-  "Vietnam": "🇻🇳",
+  Taiwan: "🇹🇼",
+  Thailand: "🇹🇭",
+  Vietnam: "🇻🇳",
 
   // Middle East
-  "Bahrain": "🇧🇭",
-  "Kuwait": "🇰🇼",
-  "Oman": "🇴🇲",
-  "Qatar": "🇶🇦",
+  Bahrain: "🇧🇭",
+  Kuwait: "🇰🇼",
+  Oman: "🇴🇲",
+  Qatar: "🇶🇦",
   "Saudi Arabia": "🇸🇦",
-  "UAE": "🇦🇪",
+  UAE: "🇦🇪",
 
   // Australasia
-  "Australia": "🇦🇺",
+  Australia: "🇦🇺",
   "New Zealand": "🇳🇿",
 
   // Africa
-  "Kenya": "🇰🇪",
-  "Nigeria": "🇳🇬",
+  Kenya: "🇰🇪",
+  Nigeria: "🇳🇬",
   "South Africa": "🇿🇦",
-  "Uganda": "🇺🇬",
+  Uganda: "🇺🇬",
 
   // South America
-  "Argentina": "🇦🇷",
-  "Brazil": "🇧🇷",
-  "Chile": "🇨🇱",
-  "Paraguay": "🇵🇾",
+  Argentina: "🇦🇷",
+  Brazil: "🇧🇷",
+  Chile: "🇨🇱",
+  Paraguay: "🇵🇾",
 
   // Other
-  "Channel Islands": "🇯🇪" // Using Jersey flag as representative
+  "Channel Islands": "🇯🇪", // Using Jersey flag as representative
 };
 
 export default function ClubsPage() {
@@ -129,9 +131,26 @@ export default function ClubsPage() {
 
   // European countries filter
   const europeanCountries = [
-    "France", "Romania", "Denmark", "Croatia", "Poland", "Germany", "Italy",
-    "Netherlands", "Belgium", "Switzerland", "Austria", "Luxembourg", "Spain",
-    "Gibraltar", "Sweden", "Finland", "Russia", "Norway", "Portugal", "Slovenia"
+    "France",
+    "Romania",
+    "Denmark",
+    "Croatia",
+    "Poland",
+    "Germany",
+    "Italy",
+    "Netherlands",
+    "Belgium",
+    "Switzerland",
+    "Austria",
+    "Luxembourg",
+    "Spain",
+    "Gibraltar",
+    "Sweden",
+    "Finland",
+    "Russia",
+    "Norway",
+    "Portugal",
+    "Slovenia",
   ];
 
   // Get current filter values from URL
@@ -174,12 +193,16 @@ export default function ClubsPage() {
 
   // Filter clubs based on search, team type, and European countries only
   const filteredClubs = clubs.filter((club) => {
-    const matchesSearch = !search ||
+    const matchesSearch =
+      !search ||
       club.name.toLowerCase().includes(search.toLowerCase()) ||
       club.location?.toLowerCase().includes(search.toLowerCase());
 
-    const matchesTeamType = !teamType ||
-      club.teamTypes.some(type => type.toLowerCase().includes(teamType.toLowerCase()));
+    const matchesTeamType =
+      !teamType ||
+      club.teamTypes.some((type) =>
+        type.toLowerCase().includes(teamType.toLowerCase())
+      );
 
     // Only show European clubs
     const clubCountry = club.location?.split(",").pop()?.trim() || "Unknown";
@@ -205,11 +228,14 @@ export default function ClubsPage() {
   const sortedCountries = Object.keys(clubsByCountry).sort();
 
   // Get clubs for the selected country (if any)
-  const selectedCountryClubs = (selectedCountry || country) ? 
-    filteredClubs.filter(club => {
-      const clubCountry = club.location?.split(",").pop()?.trim() || "Unknown";
-      return clubCountry === (selectedCountry || country);
-    }) : [];
+  const selectedCountryClubs =
+    selectedCountry || country
+      ? filteredClubs.filter((club) => {
+          const clubCountry =
+            club.location?.split(",").pop()?.trim() || "Unknown";
+          return clubCountry === (selectedCountry || country);
+        })
+      : [];
 
   const handleSearch = () => {
     const params = new URLSearchParams();
@@ -280,8 +306,18 @@ export default function ClubsPage() {
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                      />
                     </svg>
                     Country Cards
                   </span>
@@ -295,8 +331,18 @@ export default function ClubsPage() {
                   }`}
                 >
                   <span className="flex items-center gap-2">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6h16M4 10h16M4 14h16M4 18h16"
+                      />
                     </svg>
                     Club List
                   </span>
@@ -314,11 +360,13 @@ export default function ClubsPage() {
                   className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="">All European Countries</option>
-                  {countries.filter(country => europeanCountries.includes(country)).map((country: string) => (
-                    <option key={country} value={country}>
-                      {country}
-                    </option>
-                  ))}
+                  {countries
+                    .filter((country) => europeanCountries.includes(country))
+                    .map((country: string) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
                 </select>
                 <select
                   value={selectedTeamType}
@@ -333,7 +381,7 @@ export default function ClubsPage() {
                   ))}
                 </select>
               </div>
-              
+
               {/* Search Input */}
               <input
                 type="text"
@@ -342,7 +390,7 @@ export default function ClubsPage() {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full md:min-w-[250px] text-sm md:text-base px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
-              
+
               {/* Buttons */}
               <div className="flex gap-2 w-full md:w-auto">
                 <button
@@ -377,8 +425,18 @@ export default function ClubsPage() {
                 }}
                 className="flex items-center gap-2 text-primary hover:text-primary/90 transition"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
                 </svg>
                 Back to All Countries
               </button>
@@ -396,11 +454,10 @@ export default function ClubsPage() {
                   {selectedCountry || country}
                 </h2>
                 <p className="text-gray-600">
-                  {selectedCountryClubs.length} club{selectedCountryClubs.length !== 1 ? 's' : ''} found
+                  {selectedCountryClubs.length} club
+                  {selectedCountryClubs.length !== 1 ? "s" : ""} found
                   {(search || teamType) && (
-                    <span className="text-primary ml-1">
-                      (filtered)
-                    </span>
+                    <span className="text-primary ml-1">(filtered)</span>
                   )}
                 </p>
               </div>
@@ -434,9 +491,9 @@ export default function ClubsPage() {
                           </div>
                         </div>
                       )}
-                      
+
                       {/* Verified badge */}
-                      {club.verificationStatus === 'VERIFIED' && (
+                      {club.verificationStatus === "VERIFIED" && (
                         <div className="absolute top-2 right-2 md:top-4 md:right-4">
                           <VerifiedTooltip>
                             <div className="bg-white rounded-full shadow-lg p-1 md:p-1.5">
@@ -446,25 +503,29 @@ export default function ClubsPage() {
                         </div>
                       )}
                     </div>
-                    
+
                     {/* Club details section */}
                     <div className="p-2 md:p-5">
                       {/* Club name */}
                       <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">
                         {club.name}
                       </h3>
-                      
+
                       {/* Location */}
                       {club.location && (
                         <p className="text-xs md:text-sm text-gray-600 mb-1 line-clamp-1">
-                          <span className="font-medium hidden md:inline">City:</span> {club.location.split(',')[0]}
+                          <span className="font-medium hidden md:inline">
+                            City:
+                          </span>{" "}
+                          {club.location.split(",")[0]}
                         </p>
                       )}
-                      
+
                       {/* Team types */}
                       {club.teamTypes.length > 0 && (
                         <p className="text-xs md:text-sm text-gray-600 hidden md:block">
-                          <span className="font-medium">Grades:</span> {club.teamTypes.join(' | ')}
+                          <span className="font-medium">Grades:</span>{" "}
+                          {club.teamTypes.join(" | ")}
                         </p>
                       )}
                     </div>
@@ -481,10 +542,9 @@ export default function ClubsPage() {
                   {(search || teamType) && " matching your criteria"}
                 </h3>
                 <p className="text-gray-500 mb-6">
-                  {(search || teamType) ? 
-                    "Try adjusting your search criteria or clear filters" :
-                    "Try searching for a different country or browse all clubs"
-                  }
+                  {search || teamType
+                    ? "Try adjusting your search criteria or clear filters"
+                    : "Try searching for a different country or browse all clubs"}
                 </p>
                 <button
                   onClick={() => {
@@ -506,12 +566,24 @@ export default function ClubsPage() {
               <div className="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+                    <svg
+                      className="w-5 h-5 text-primary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"
+                      />
                     </svg>
                     <span className="text-primary font-medium">
-                      Filters Active: 
-                      {search && <span className="ml-1">&quot;{search}&quot;</span>}
+                      Filters Active:
+                      {search && (
+                        <span className="ml-1">&quot;{search}&quot;</span>
+                      )}
                       {search && teamType && <span className="mx-1">•</span>}
                       {teamType && <span className="ml-1">{teamType}</span>}
                     </span>
@@ -524,11 +596,12 @@ export default function ClubsPage() {
                   </button>
                 </div>
                 <p className="text-primary/90 text-sm mt-1">
-                  Showing {Object.keys(clubsByCountry).length} countries with {filteredClubs.length} clubs total
+                  Showing {Object.keys(clubsByCountry).length} countries with{" "}
+                  {filteredClubs.length} clubs total
                 </p>
               </div>
             )}
-            
+
             <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
               {sortedCountries.map((country) => (
                 <motion.div
@@ -549,7 +622,9 @@ export default function ClubsPage() {
                         </div>
                       ) : (
                         <div className="w-12 h-8 md:w-16 md:h-12 bg-gray-200 rounded mx-auto mb-1 md:mb-3 flex items-center justify-center">
-                          <span className="text-gray-500 text-xs md:text-sm">Flag</span>
+                          <span className="text-gray-500 text-xs md:text-sm">
+                            Flag
+                          </span>
                         </div>
                       )}
                     </div>
@@ -590,12 +665,24 @@ export default function ClubsPage() {
               <div className="mb-6 p-4 bg-primary/5 border border-primary/20 rounded-lg">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z" />
+                    <svg
+                      className="w-5 h-5 text-primary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.707A1 1 0 013 7V4z"
+                      />
                     </svg>
                     <span className="text-primary font-medium">
-                      Filters Active: 
-                      {search && <span className="ml-1">&quot;{search}&quot;</span>}
+                      Filters Active:
+                      {search && (
+                        <span className="ml-1">&quot;{search}&quot;</span>
+                      )}
                       {search && teamType && <span className="mx-1">•</span>}
                       {teamType && <span className="ml-1">{teamType}</span>}
                     </span>
@@ -616,7 +703,10 @@ export default function ClubsPage() {
             {/* Clubs organized by country */}
             <div className="space-y-8">
               {sortedCountries.map((country) => (
-                <div key={country} className="border-b border-gray-200 pb-8 last:border-b-0">
+                <div
+                  key={country}
+                  className="border-b border-gray-200 pb-8 last:border-b-0"
+                >
                   {/* Country header */}
                   <div className="flex items-center gap-4 mb-6">
                     {countryFlags[country] && (
@@ -629,7 +719,8 @@ export default function ClubsPage() {
                         {country}
                       </h2>
                       <p className="text-sm md:text-base text-gray-600">
-                        {clubsByCountry[country].length} club{clubsByCountry[country].length !== 1 ? 's' : ''}
+                        {clubsByCountry[country].length} club
+                        {clubsByCountry[country].length !== 1 ? "s" : ""}
                       </p>
                     </div>
                   </div>
@@ -645,26 +736,26 @@ export default function ClubsPage() {
                         className="group bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
                       >
                         <Link href={`/clubs/${club.id}`} className="block">
-                          {/* Club image - square format */}
-                          <div className="relative aspect-square bg-gray-50">
+                          {/* Club image - constrained size */}
+                          <div className="relative h-32 md:h-40 bg-gray-50 flex items-center justify-center p-4">
                             {club.imageUrl ? (
-                              <Image
-                                src={club.imageUrl}
-                                alt={club.name}
-                                fill
-                                className="object-contain group-hover:scale-105 transition-transform duration-300"
-                                unoptimized
-                              />
+                              <div className="relative w-20 h-20 md:w-24 md:h-24">
+                                <Image
+                                  src={club.imageUrl}
+                                  alt={club.name}
+                                  fill
+                                  className="object-contain group-hover:scale-105 transition-transform duration-300"
+                                  unoptimized
+                                />
+                              </div>
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center">
-                                <div className="text-center text-gray-400">
-                                  <div className="text-6xl mb-2">🏟️</div>
-                                </div>
+                              <div className="text-center text-gray-400">
+                                <div className="text-4xl md:text-5xl">🏟️</div>
                               </div>
                             )}
-                            
+
                             {/* Verified badge */}
-                            {club.verificationStatus === 'VERIFIED' && (
+                            {club.verificationStatus === "VERIFIED" && (
                               <div className="absolute top-2 right-2 md:top-4 md:right-4">
                                 <VerifiedTooltip>
                                   <div className="bg-white rounded-full shadow-lg p-1 md:p-1.5">
@@ -674,25 +765,29 @@ export default function ClubsPage() {
                               </div>
                             )}
                           </div>
-                          
+
                           {/* Club details section */}
                           <div className="p-2 md:p-5">
                             {/* Club name */}
                             <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">
                               {club.name}
                             </h3>
-                            
+
                             {/* Location */}
                             {club.location && (
                               <p className="text-xs md:text-sm text-gray-600 mb-1 line-clamp-1">
-                                <span className="font-medium hidden md:inline">City:</span> {club.location.split(',')[0]}
+                                <span className="font-medium hidden md:inline">
+                                  City:
+                                </span>{" "}
+                                {club.location.split(",")[0]}
                               </p>
                             )}
-                            
+
                             {/* Team types */}
                             {club.teamTypes.length > 0 && (
                               <p className="text-xs md:text-sm text-gray-600 hidden md:block">
-                                <span className="font-medium">Grades:</span> {club.teamTypes.join(' | ')}
+                                <span className="font-medium">Grades:</span>{" "}
+                                {club.teamTypes.join(" | ")}
                               </p>
                             )}
                           </div>
@@ -712,16 +807,15 @@ export default function ClubsPage() {
                   {(search || teamType) && " matching your criteria"}
                 </h3>
                 <p className="text-gray-500 mb-6">
-                  {(search || teamType) ? 
-                    "Try adjusting your search criteria or clear filters" :
-                    "Try adjusting your search criteria or browse all clubs"
-                  }
+                  {search || teamType
+                    ? "Try adjusting your search criteria or clear filters"
+                    : "Try adjusting your search criteria or browse all clubs"}
                 </p>
                 <button
                   onClick={handleReset}
                   className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
                 >
-                  {(search || teamType) ? "Clear Filters" : "Show All Clubs"}
+                  {search || teamType ? "Clear Filters" : "Show All Clubs"}
                 </button>
               </div>
             )}
