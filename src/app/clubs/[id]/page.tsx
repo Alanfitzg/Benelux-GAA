@@ -17,7 +17,7 @@ import VerifiedBadge, {
   VerifiedTooltip,
 } from "@/components/club/VerifiedBadge";
 import TestimonialSection from "@/components/testimonials/TestimonialSection";
-import ClubInterestCTA from "@/components/club/ClubInterestCTA";
+import ClubInterestCTAWrapper from "@/components/club/ClubInterestCTAWrapper";
 
 export async function generateMetadata({
   params,
@@ -425,8 +425,8 @@ export default async function ClubDetailsPage({
               <div className="lg:col-span-2 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:items-center">
                   {/* Center CTA - Desktop Only */}
-                  <div className="hidden md:flex md:col-span-1 items-center justify-center">
-                    <ClubInterestCTA
+                  <div className="md:col-span-1 flex items-center justify-center">
+                    <ClubInterestCTAWrapper
                       clubId={club.id}
                       clubName={club.name}
                       userId={session?.user?.id}
