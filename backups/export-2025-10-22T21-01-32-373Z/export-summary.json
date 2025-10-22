@@ -1,0 +1,31 @@
+{
+  "exportDate": "2025-10-22T21:01:33.433Z",
+  "exportDir": "/Users/alan/workspace/Gaa-Events/backups/export-2025-10-22T21-01-32-373Z",
+  "counts": {
+    "users": 6,
+    "clubs": 2358,
+    "events": 11,
+    "surveys": 1,
+    "internationalUnits": 10,
+    "countries": 62,
+    "regions": 215,
+    "clubSubmissions": 0,
+    "clubInterests": 0,
+    "clubAdminRequests": 1,
+    "availabilitySlots": 0,
+    "hostingPackages": 0,
+    "eventReports": 0,
+    "eventPitchLocations": 0,
+    "interests": 0,
+    "tournamentTeams": 0,
+    "tournamentInterests": 0,
+    "matches": 0,
+    "pitchLocations": 0,
+    "pitchRequests": 0,
+    "bookings": 0,
+    "payments": 0,
+    "testimonials": 0,
+    "cityImages": 0
+  },
+  "note": "This export contains ALL database data including hierarchical structure for complete backup."
+}

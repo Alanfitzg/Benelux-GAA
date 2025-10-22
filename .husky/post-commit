@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Auto-backup database after commits that might affect data
+BRANCH=$(git branch --show-current)
+COMMIT_MSG=$(git log -1 --pretty=%B)
+
+# Only create backup if:
+# 1. On main branch
+# 2. Commit message contains keywords like "club", "data", "import", "update"
+if [ "$BRANCH" = "main" ] && echo "$COMMIT_MSG" | grep -qi '\(club\|data\|import\|database\|restore\|backup\)'; then
+  echo "📦 Database-related commit detected. Creating automatic backup..."
+  echo "   Branch: $BRANCH"
+  echo "   Commit: $(git log -1 --oneline)"
+
+  # Run backup in background to not slow down commit
+  (npx tsx scripts/export-current-data.ts > /dev/null 2>&1 &)
+
+  echo "✅ Backup initiated in background"
+  echo "   Location will be: backups/export-[timestamp]/"
+fi

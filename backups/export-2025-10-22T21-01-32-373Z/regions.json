@@ -1,0 +1,1937 @@
+[
+  {
+    "id": "cmfp3jaw4002c8obhwff6591q",
+    "code": "DUB",
+    "name": "Dublin",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:38.980Z",
+    "updatedAt": "2025-09-18T07:35:38.980Z"
+  },
+  {
+    "id": "cmfp3jaxq002e8obh51fm5av1",
+    "code": "WIC",
+    "name": "Wicklow",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:39.039Z",
+    "updatedAt": "2025-09-18T07:35:39.039Z"
+  },
+  {
+    "id": "cmfp3jaz8002g8obht8nul09n",
+    "code": "WEX",
+    "name": "Wexford",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:39.093Z",
+    "updatedAt": "2025-09-18T07:35:39.093Z"
+  },
+  {
+    "id": "cmfp3jb0s002i8obhcznp0z87",
+    "code": "CAR",
+    "name": "Carlow",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:39.148Z",
+    "updatedAt": "2025-09-18T07:35:39.148Z"
+  },
+  {
+    "id": "cmfp3jb2d002k8obh9ou689b0",
+    "code": "KIL",
+    "name": "Kilkenny",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:39.205Z",
+    "updatedAt": "2025-09-18T07:35:39.205Z"
+  },
+  {
+    "id": "cmfp3jb3s002m8obh3yy1xh7x",
+    "code": "MEA",
+    "name": "Meath",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:39.256Z",
+    "updatedAt": "2025-09-18T07:35:39.256Z"
+  },
+  {
+    "id": "cmfp3jb56002o8obh3psc4me1",
+    "code": "LOU",
+    "name": "Louth",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:39.306Z",
+    "updatedAt": "2025-09-18T07:35:39.306Z"
+  },
+  {
+    "id": "cmfp3jb6l002q8obh6l4u2j8n",
+    "code": "MON",
+    "name": "Monaghan",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:39.358Z",
+    "updatedAt": "2025-09-18T07:35:39.358Z"
+  },
+  {
+    "id": "cmfp3jb84002s8obh7t60bbu8",
+    "code": "CAV",
+    "name": "Cavan",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:39.412Z",
+    "updatedAt": "2025-09-18T07:35:39.412Z"
+  },
+  {
+    "id": "cmfp3jb9f002u8obhrwlynlte",
+    "code": "LON",
+    "name": "Longford",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:39.459Z",
+    "updatedAt": "2025-09-18T07:35:39.459Z"
+  },
+  {
+    "id": "cmfp3jbap002w8obh6y4vhqjs",
+    "code": "WES",
+    "name": "Westmeath",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T07:35:39.505Z",
+    "updatedAt": "2025-09-18T07:35:39.505Z"
+  },
+  {
+    "id": "cmfp3jbc8002y8obhhle9w9vz",
+    "code": "OFF",
+    "name": "Offaly",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T07:35:39.561Z",
+    "updatedAt": "2025-09-18T07:35:39.561Z"
+  },
+  {
+    "id": "cmfp3jbdn00308obhbt8vt6dz",
+    "code": "LAO",
+    "name": "Laois",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 12,
+    "createdAt": "2025-09-18T07:35:39.612Z",
+    "updatedAt": "2025-09-18T07:35:39.612Z"
+  },
+  {
+    "id": "cmfp3jbex00328obh3pjqnshu",
+    "code": "KID",
+    "name": "Kildare",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 13,
+    "createdAt": "2025-09-18T07:35:39.657Z",
+    "updatedAt": "2025-09-18T07:35:39.657Z"
+  },
+  {
+    "id": "cmfp3jbga00348obh3iwoom15",
+    "code": "COR",
+    "name": "Cork",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 14,
+    "createdAt": "2025-09-18T07:35:39.706Z",
+    "updatedAt": "2025-09-18T07:35:39.706Z"
+  },
+  {
+    "id": "cmfp3jbhr00368obh7kuxvw15",
+    "code": "KER",
+    "name": "Kerry",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 15,
+    "createdAt": "2025-09-18T07:35:39.759Z",
+    "updatedAt": "2025-09-18T07:35:39.759Z"
+  },
+  {
+    "id": "cmfp3jbj300388obhvjgg3nus",
+    "code": "LIM",
+    "name": "Limerick",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 16,
+    "createdAt": "2025-09-18T07:35:39.807Z",
+    "updatedAt": "2025-09-18T07:35:39.807Z"
+  },
+  {
+    "id": "cmfp3jbkh003a8obhmhesutzw",
+    "code": "CLA",
+    "name": "Clare",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 17,
+    "createdAt": "2025-09-18T07:35:39.857Z",
+    "updatedAt": "2025-09-18T07:35:39.857Z"
+  },
+  {
+    "id": "cmfp3jblr003c8obhfxypxiy4",
+    "code": "TIP",
+    "name": "Tipperary",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 18,
+    "createdAt": "2025-09-18T07:35:39.903Z",
+    "updatedAt": "2025-09-18T07:35:39.903Z"
+  },
+  {
+    "id": "cmfp3jbnb003e8obhmqh6hl4o",
+    "code": "WAT",
+    "name": "Waterford",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 19,
+    "createdAt": "2025-09-18T07:35:39.959Z",
+    "updatedAt": "2025-09-18T07:35:39.959Z"
+  },
+  {
+    "id": "cmfp3jbpp003g8obhf3x93x5t",
+    "code": "GAL",
+    "name": "Galway",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 20,
+    "createdAt": "2025-09-18T07:35:40.046Z",
+    "updatedAt": "2025-09-18T07:35:40.046Z"
+  },
+  {
+    "id": "cmfp3jbrr003i8obht1fqa1ls",
+    "code": "MAY",
+    "name": "Mayo",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 21,
+    "createdAt": "2025-09-18T07:35:40.120Z",
+    "updatedAt": "2025-09-18T07:35:40.120Z"
+  },
+  {
+    "id": "cmfp3jbth003k8obh0b7dm8vx",
+    "code": "SLI",
+    "name": "Sligo",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 22,
+    "createdAt": "2025-09-18T07:35:40.182Z",
+    "updatedAt": "2025-09-18T07:35:40.182Z"
+  },
+  {
+    "id": "cmfp3jbus003m8obhhskvxvg9",
+    "code": "LEI",
+    "name": "Leitrim",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 23,
+    "createdAt": "2025-09-18T07:35:40.228Z",
+    "updatedAt": "2025-09-18T07:35:40.228Z"
+  },
+  {
+    "id": "cmfp3jbw5003o8obh1i2fmln8",
+    "code": "ROS",
+    "name": "Roscommon",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 24,
+    "createdAt": "2025-09-18T07:35:40.277Z",
+    "updatedAt": "2025-09-18T07:35:40.277Z"
+  },
+  {
+    "id": "cmfp3jbxj003q8obhhm6yskjr",
+    "code": "DON",
+    "name": "Donegal",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 25,
+    "createdAt": "2025-09-18T07:35:40.327Z",
+    "updatedAt": "2025-09-18T07:35:40.327Z"
+  },
+  {
+    "id": "cmfp3jcus004q8obh9guenewe",
+    "code": "NY",
+    "name": "New York",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:41.524Z",
+    "updatedAt": "2025-09-18T07:35:41.524Z"
+  },
+  {
+    "id": "cmfp3jcw2004s8obhqt05tif1",
+    "code": "CA",
+    "name": "California",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:41.570Z",
+    "updatedAt": "2025-09-18T07:35:41.570Z"
+  },
+  {
+    "id": "cmfp3jcxk004u8obhz4j9d7mr",
+    "code": "MA",
+    "name": "Massachusetts",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:41.624Z",
+    "updatedAt": "2025-09-18T07:35:41.624Z"
+  },
+  {
+    "id": "cmfp3jcys004w8obhsugrrimf",
+    "code": "IL",
+    "name": "Illinois",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:41.668Z",
+    "updatedAt": "2025-09-18T07:35:41.668Z"
+  },
+  {
+    "id": "cmfp3jd09004y8obh05lkyfqr",
+    "code": "TX",
+    "name": "Texas",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:41.721Z",
+    "updatedAt": "2025-09-18T07:35:41.721Z"
+  },
+  {
+    "id": "cmfp3jd1o00508obhe5knv43o",
+    "code": "FL",
+    "name": "Florida",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:41.772Z",
+    "updatedAt": "2025-09-18T07:35:41.772Z"
+  },
+  {
+    "id": "cmfp3jd2z00528obhh32ip4va",
+    "code": "PA",
+    "name": "Pennsylvania",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:41.819Z",
+    "updatedAt": "2025-09-18T07:35:41.819Z"
+  },
+  {
+    "id": "cmfp3jd4900548obhbukfu94u",
+    "code": "OH",
+    "name": "Ohio",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:41.866Z",
+    "updatedAt": "2025-09-18T07:35:41.866Z"
+  },
+  {
+    "id": "cmfp3jd5j00568obh9ga8lb2c",
+    "code": "GA",
+    "name": "Georgia",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T07:35:41.912Z",
+    "updatedAt": "2025-09-18T07:35:41.912Z"
+  },
+  {
+    "id": "cmfp3jd6s00588obhwzmuwt6y",
+    "code": "NC",
+    "name": "North Carolina",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T07:35:41.956Z",
+    "updatedAt": "2025-09-18T07:35:41.956Z"
+  },
+  {
+    "id": "cmfp3jd88005a8obhl10xlawq",
+    "code": "VA",
+    "name": "Virginia",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T07:35:42.008Z",
+    "updatedAt": "2025-09-18T07:35:42.008Z"
+  },
+  {
+    "id": "cmfp3jd9k005c8obhrif5s5uc",
+    "code": "MD",
+    "name": "Maryland",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T07:35:42.057Z",
+    "updatedAt": "2025-09-18T07:35:42.057Z"
+  },
+  {
+    "id": "cmfp3jdav005e8obh8u2qcvvh",
+    "code": "NJ",
+    "name": "New Jersey",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 12,
+    "createdAt": "2025-09-18T07:35:42.103Z",
+    "updatedAt": "2025-09-18T07:35:42.103Z"
+  },
+  {
+    "id": "cmfp3jdcc005g8obhhjtdzfhd",
+    "code": "CT",
+    "name": "Connecticut",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 13,
+    "createdAt": "2025-09-18T07:35:42.156Z",
+    "updatedAt": "2025-09-18T07:35:42.156Z"
+  },
+  {
+    "id": "cmfp3jdds005i8obhpt2rkb99",
+    "code": "WA",
+    "name": "Washington",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 14,
+    "createdAt": "2025-09-18T07:35:42.209Z",
+    "updatedAt": "2025-09-18T07:35:42.209Z"
+  },
+  {
+    "id": "cmfp3jdf7005k8obhfaft3537",
+    "code": "OR",
+    "name": "Oregon",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 15,
+    "createdAt": "2025-09-18T07:35:42.260Z",
+    "updatedAt": "2025-09-18T07:35:42.260Z"
+  },
+  {
+    "id": "cmfp3jdgp005m8obhmydxhae4",
+    "code": "CO",
+    "name": "Colorado",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 16,
+    "createdAt": "2025-09-18T07:35:42.314Z",
+    "updatedAt": "2025-09-18T07:35:42.314Z"
+  },
+  {
+    "id": "cmfp3jdi3005o8obhi2kn7a2v",
+    "code": "AZ",
+    "name": "Arizona",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 17,
+    "createdAt": "2025-09-18T07:35:42.363Z",
+    "updatedAt": "2025-09-18T07:35:42.363Z"
+  },
+  {
+    "id": "cmfp3jdjc005q8obh0rjb2oxx",
+    "code": "MI",
+    "name": "Michigan",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 18,
+    "createdAt": "2025-09-18T07:35:42.408Z",
+    "updatedAt": "2025-09-18T07:35:42.408Z"
+  },
+  {
+    "id": "cmfp3jdkk005s8obhxdv0ofe3",
+    "code": "MN",
+    "name": "Minnesota",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 19,
+    "createdAt": "2025-09-18T07:35:42.452Z",
+    "updatedAt": "2025-09-18T07:35:42.452Z"
+  },
+  {
+    "id": "cmfp3je3a006e8obha1zkf491",
+    "code": "NSW",
+    "name": "New South Wales",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T07:35:43.121Z",
+    "updatedAt": "2025-09-18T07:35:43.121Z"
+  },
+  {
+    "id": "cmfp3je4m006g8obh75umk7fq",
+    "code": "VIC",
+    "name": "Victoria",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T07:35:43.174Z",
+    "updatedAt": "2025-09-18T07:35:43.174Z"
+  },
+  {
+    "id": "cmfp3je61006i8obhc15k3um4",
+    "code": "QLD",
+    "name": "Queensland",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T07:35:43.225Z",
+    "updatedAt": "2025-09-18T07:35:43.225Z"
+  },
+  {
+    "id": "cmfp3je7b006k8obhoz00yhtz",
+    "code": "WA",
+    "name": "Western Australia",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T07:35:43.271Z",
+    "updatedAt": "2025-09-18T07:35:43.271Z"
+  },
+  {
+    "id": "cmfp3je8o006m8obh91wpnycf",
+    "code": "SA",
+    "name": "South Australia",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T07:35:43.320Z",
+    "updatedAt": "2025-09-18T07:35:43.320Z"
+  },
+  {
+    "id": "cmfp3je9x006o8obhwsrd49pz",
+    "code": "TAS",
+    "name": "Tasmania",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T07:35:43.365Z",
+    "updatedAt": "2025-09-18T07:35:43.365Z"
+  },
+  {
+    "id": "cmfp3jeb8006q8obhk12xqbny",
+    "code": "ACT",
+    "name": "Australian Capital Territory",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T07:35:43.412Z",
+    "updatedAt": "2025-09-18T07:35:43.412Z"
+  },
+  {
+    "id": "cmfp3jecp006s8obhh2qf2jz5",
+    "code": "NT",
+    "name": "Northern Territory",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T07:35:43.466Z",
+    "updatedAt": "2025-09-18T07:35:43.466Z"
+  },
+  {
+    "id": "cmfpamgey006tr3gavtaykpt3",
+    "code": "MANAMA",
+    "name": "Manama",
+    "countryId": "cmfralwst000ir388mpsratzu",
+    "displayOrder": 15,
+    "createdAt": "2025-09-18T10:54:03.419Z",
+    "updatedAt": "2025-09-19T19:47:41.492Z"
+  },
+  {
+    "id": "cmfpamjhr01dnr3gatr1pc7vy",
+    "code": "GLOUCE",
+    "name": "Gloucestershire",
+    "countryId": "cmfralyy8000qr388ejwbvun0",
+    "displayOrder": 27,
+    "createdAt": "2025-09-18T10:54:07.408Z",
+    "updatedAt": "2025-09-18T10:55:19.329Z"
+  },
+  {
+    "id": "cmfpamqz604bzr3gaz0k7p0s1",
+    "code": "GOTHEN",
+    "name": "Gothenburg",
+    "countryId": "cmfram4l6001jr3880j5n5kur",
+    "displayOrder": 73,
+    "createdAt": "2025-09-18T10:54:17.106Z",
+    "updatedAt": "2025-09-19T19:47:44.221Z"
+  },
+  {
+    "id": "cmfpamtuk05ijr3ganeydee67",
+    "code": "KUWAIT",
+    "name": "Kuwait City",
+    "countryId": "cmfram6rm001tr3884t5ug18g",
+    "displayOrder": 91,
+    "createdAt": "2025-09-18T10:54:20.828Z",
+    "updatedAt": "2025-09-19T19:47:41.677Z"
+  },
+  {
+    "id": "cmfpaml6701yvr3gabwo77es5",
+    "code": "CHRIST",
+    "name": "Christchurch¬†",
+    "countryId": "cmfram0730013r388jegrf3yg",
+    "displayOrder": 39,
+    "createdAt": "2025-09-18T10:54:09.584Z",
+    "updatedAt": "2025-09-19T19:47:44.502Z"
+  },
+  {
+    "id": "cmfpamnld02xjr3gaxazb6gtn",
+    "code": "DARMST",
+    "name": "Darmstadt",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 55,
+    "createdAt": "2025-09-18T10:54:12.722Z",
+    "updatedAt": "2025-09-19T19:47:43.232Z"
+  },
+  {
+    "id": "cmfpamq6n040br3gaxijmrz9y",
+    "code": "LUXEMB",
+    "name": "Luxembourg",
+    "countryId": "cmfram3yn001fr388ekp0fkfo",
+    "displayOrder": 66,
+    "createdAt": "2025-09-18T10:54:16.079Z",
+    "updatedAt": "2025-09-19T19:47:43.565Z"
+  },
+  {
+    "id": "cmfpamg56002rr3ga669d3lt0",
+    "code": "NORTHE",
+    "name": "Northeast Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T10:54:03.066Z",
+    "updatedAt": "2025-09-19T19:47:41.229Z"
+  },
+  {
+    "id": "cmfpamrhw04jnr3gawbg6uhcu",
+    "code": "HONG_K",
+    "name": "Hong Kong",
+    "countryId": "cmfralyig000lr388en0zpdy5",
+    "displayOrder": 80,
+    "createdAt": "2025-09-18T10:54:17.780Z",
+    "updatedAt": "2025-09-19T19:47:40.634Z"
+  },
+  {
+    "id": "cmfpamoi303b5r3gad5abqrj7",
+    "code": "EDINBU",
+    "name": "Edinburgh",
+    "countryId": "cmfram0320011r3882ugoajg0",
+    "displayOrder": 59,
+    "createdAt": "2025-09-18T10:54:13.899Z",
+    "updatedAt": "2025-09-18T10:54:55.833Z"
+  },
+  {
+    "id": "cmfpamga5004rr3gaqc4wwc8n",
+    "code": "AMSTER",
+    "name": "Amsterdam",
+    "countryId": "cmfralwky000br3885s6p9juy",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T10:54:03.245Z",
+    "updatedAt": "2025-09-19T19:47:43.681Z"
+  },
+  {
+    "id": "cmfpamiyv015pr3gahb7rs82h",
+    "code": "BEIJIN",
+    "name": "Beijing",
+    "countryId": "cmfralyig000lr388en0zpdy5",
+    "displayOrder": 22,
+    "createdAt": "2025-09-18T10:54:06.727Z",
+    "updatedAt": "2025-09-19T19:47:40.667Z"
+  },
+  {
+    "id": "cmfpamngx02vvr3ga3jy00lyx",
+    "code": "DAEGU",
+    "name": "Daegu",
+    "countryId": "cmfram1ri0017r388bzsp45b7",
+    "displayOrder": 52,
+    "createdAt": "2025-09-18T10:54:12.561Z",
+    "updatedAt": "2025-09-19T19:47:41.003Z"
+  },
+  {
+    "id": "cmfpamq6r040nr3galhusgd75",
+    "code": "ARTHON",
+    "name": "Arthon",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 66,
+    "createdAt": "2025-09-18T10:54:16.083Z",
+    "updatedAt": "2025-09-19T19:47:42.775Z"
+  },
+  {
+    "id": "cmfpamikx00zzr3gazfoh83xm",
+    "code": "MID_AT",
+    "name": "Mid-Atlantic Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 19,
+    "createdAt": "2025-09-18T10:54:06.226Z",
+    "updatedAt": "2025-09-19T19:47:41.250Z"
+  },
+  {
+    "id": "cmfpamlfg022jr3gay2ik7frk",
+    "code": "MUSCAT",
+    "name": "Muscat",
+    "countryId": "cmfram0bw0015r388ewzmebji",
+    "displayOrder": 42,
+    "createdAt": "2025-09-18T10:54:09.916Z",
+    "updatedAt": "2025-09-19T19:47:41.730Z"
+  },
+  {
+    "id": "cmfpamjon01fbr3gazrzahqir",
+    "code": "BUCHAR",
+    "name": "Bucharest",
+    "countryId": "cmfralz3s000sr388c6w517zm",
+    "displayOrder": 28,
+    "createdAt": "2025-09-18T10:54:07.655Z",
+    "updatedAt": "2025-09-19T19:47:44.019Z"
+  },
+  {
+    "id": "cmfpamn0g02ptr3ga0nkjm1yt",
+    "code": "ZAGREB",
+    "name": "Zagreb",
+    "countryId": "cmfr8cad00015r3hau02crng6",
+    "displayOrder": 51,
+    "createdAt": "2025-09-18T10:54:11.968Z",
+    "updatedAt": "2025-09-19T19:47:42.522Z"
+  },
+  {
+    "id": "cmfpamj88019lr3gaygr7ijrr",
+    "code": "BORDEA",
+    "name": "Bordeaux",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 24,
+    "createdAt": "2025-09-18T10:54:07.064Z",
+    "updatedAt": "2025-09-19T19:47:42.742Z"
+  },
+  {
+    "id": "cmfpamq1y03ydr3gakvii23pt",
+    "code": "FRANKF",
+    "name": "Frankfurt",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 65,
+    "createdAt": "2025-09-18T10:54:15.911Z",
+    "updatedAt": "2025-09-19T19:47:43.175Z"
+  },
+  {
+    "id": "cmfpamjxz01jdr3ga5ivg5gks",
+    "code": "PHNOM_",
+    "name": "Phnom Penh",
+    "countryId": "cmfralzai000ur38873rsem3l",
+    "displayOrder": 32,
+    "createdAt": "2025-09-18T10:54:07.991Z",
+    "updatedAt": "2025-09-18T10:54:49.998Z"
+  },
+  {
+    "id": "cmfpaml1601wpr3gad0mstzl3",
+    "code": "SOUTHE",
+    "name": "Southeast Division",
+    "countryId": "cmfram01x000zr388yykdsx78",
+    "displayOrder": 38,
+    "createdAt": "2025-09-18T10:54:09.402Z",
+    "updatedAt": "2025-09-19T19:47:42.246Z"
+  },
+  {
+    "id": "cmfpamp0j03ivr3gakapnmqi8",
+    "code": "LANCAS",
+    "name": "Lancashire",
+    "countryId": "cmfram2z5001br388p0rb5bd9",
+    "displayOrder": 62,
+    "createdAt": "2025-09-18T10:54:14.563Z",
+    "updatedAt": "2025-09-18T10:54:56.525Z"
+  },
+  {
+    "id": "cmfpamjt801h7r3gamvlyw1nd",
+    "code": "DEN_HA",
+    "name": "Den Haag",
+    "countryId": "cmfralwky000br3885s6p9juy",
+    "displayOrder": 30,
+    "createdAt": "2025-09-18T10:54:07.821Z",
+    "updatedAt": "2025-09-19T19:47:43.698Z"
+  },
+  {
+    "id": "cmfpamga5004tr3gaqccmx4c2",
+    "code": "BRUSSE",
+    "name": "Brussels",
+    "countryId": "cmfralwm9000dr388z3yflc48",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T10:54:03.246Z",
+    "updatedAt": "2025-09-19T19:47:42.446Z"
+  },
+  {
+    "id": "cmfpamloz026jr3gapoy108lv",
+    "code": "CLERMO",
+    "name": "Clermont",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 45,
+    "createdAt": "2025-09-18T10:54:10.259Z",
+    "updatedAt": "2025-09-19T19:47:42.759Z"
+  },
+  {
+    "id": "cmfpamomo03d1r3ga6av059hz",
+    "code": "LEUVEN",
+    "name": "Leuven",
+    "countryId": "cmfralwm9000dr388z3yflc48",
+    "displayOrder": 60,
+    "createdAt": "2025-09-18T10:54:14.064Z",
+    "updatedAt": "2025-09-19T19:47:42.465Z"
+  },
+  {
+    "id": "cmfpammme02k1r3gaa85p387a",
+    "code": "COPENH",
+    "name": "Copenhagen",
+    "countryId": "cmfr8ca600013r3hafp363d3o",
+    "displayOrder": 48,
+    "createdAt": "2025-09-18T10:54:11.462Z",
+    "updatedAt": "2025-09-19T19:47:42.572Z"
+  },
+  {
+    "id": "cmfpamh5p00gnr3gavcl0yshx",
+    "code": "VALBON",
+    "name": "Valbonne",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 18,
+    "createdAt": "2025-09-18T10:54:04.381Z",
+    "updatedAt": "2025-09-19T19:47:42.699Z"
+  },
+  {
+    "id": "cmfpamga7004zr3gat6jzcuza",
+    "code": "ANGERS",
+    "name": "Angers",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 11,
+    "createdAt": "2025-09-18T10:54:03.248Z",
+    "updatedAt": "2025-09-19T19:47:42.723Z"
+  },
+  {
+    "id": "cmfpamw2u06ffr3gas0c3rrc8",
+    "code": "MUNICH",
+    "name": "Munich",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 106,
+    "createdAt": "2025-09-18T10:54:23.719Z",
+    "updatedAt": "2025-09-19T19:47:43.192Z"
+  },
+  {
+    "id": "cmfpamjxx01j7r3gasgruubwa",
+    "code": "SIEM_R",
+    "name": "Siem Reap",
+    "countryId": "cmfralzai000ur38873rsem3l",
+    "displayOrder": 32,
+    "createdAt": "2025-09-18T10:54:07.989Z",
+    "updatedAt": "2025-09-18T10:54:49.995Z"
+  },
+  {
+    "id": "cmfpamk2m01l5r3ga019iberc",
+    "code": "CANBER",
+    "name": "Canberra",
+    "countryId": "cmfralwot000gr3886unj7ojp",
+    "displayOrder": 37,
+    "createdAt": "2025-09-18T10:54:08.158Z",
+    "updatedAt": "2025-09-18T10:54:50.168Z"
+  },
+  {
+    "id": "cmfpamiyq015lr3gaxjd5q0nn",
+    "code": "BERLIN",
+    "name": "Berlin",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 22,
+    "createdAt": "2025-09-18T10:54:06.723Z",
+    "updatedAt": "2025-09-19T19:47:43.209Z"
+  },
+  {
+    "id": "cmfpamqkv0469r3gapnhkp8a4",
+    "code": "GIBRAL",
+    "name": "Gibraltar",
+    "countryId": "cmfr8cmse0005r3ij48ghooww",
+    "displayOrder": 71,
+    "createdAt": "2025-09-18T10:54:16.591Z",
+    "updatedAt": "2025-09-19T19:47:43.357Z"
+  },
+  {
+    "id": "cmfpamngu02vnr3ganomxt89d",
+    "code": "WARSAW",
+    "name": "Warsaw",
+    "countryId": "cmfr8caks0017r3hafizm3f52",
+    "displayOrder": 52,
+    "createdAt": "2025-09-18T10:54:12.558Z",
+    "updatedAt": "2025-09-19T19:47:43.915Z"
+  },
+  {
+    "id": "cmfpamvow069tr3galbi5ba7n",
+    "code": "MOSCOW",
+    "name": "Moscow",
+    "countryId": "cmfr8cq2j000kr3ijvg2h3nph",
+    "displayOrder": 105,
+    "createdAt": "2025-09-18T10:54:23.216Z",
+    "updatedAt": "2025-09-19T19:47:44.070Z"
+  },
+  {
+    "id": "cmfpammvn02ntr3gaf1uv4j9b",
+    "code": "MARBEL",
+    "name": "Marbella",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 50,
+    "createdAt": "2025-09-18T10:54:11.795Z",
+    "updatedAt": "2025-09-18T10:54:53.682Z"
+  },
+  {
+    "id": "cmfpamiu7013tr3gabbmlu56i",
+    "code": "BASEL",
+    "name": "Basel",
+    "countryId": "cmfram46x001hr388srqa5igk",
+    "displayOrder": 21,
+    "createdAt": "2025-09-18T10:54:06.559Z",
+    "updatedAt": "2025-09-19T19:47:44.365Z"
+  },
+  {
+    "id": "cmfpamngv02vrr3gap79rjeyv",
+    "code": "ABERDE",
+    "name": "Aberdeen",
+    "countryId": "cmfram0320011r3882ugoajg0",
+    "displayOrder": 52,
+    "createdAt": "2025-09-18T10:54:12.560Z",
+    "updatedAt": "2025-09-18T10:54:54.359Z"
+  },
+  {
+    "id": "cmfpampo403sjr3gavsczb8fo",
+    "code": "GALICI",
+    "name": "Galicia",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 64,
+    "createdAt": "2025-09-18T10:54:15.413Z",
+    "updatedAt": "2025-09-18T10:54:57.361Z"
+  },
+  {
+    "id": "cmfpamipk011tr3gao58vf3st",
+    "code": "CATALO",
+    "name": "Catalonia",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 20,
+    "createdAt": "2025-09-18T10:54:06.393Z",
+    "updatedAt": "2025-09-18T10:54:58.034Z"
+  },
+  {
+    "id": "cmfpamui405sdr3ga0zaf6ft8",
+    "code": "MEXICO",
+    "name": "Mexico City",
+    "countryId": "cmfram7es001yr388pl74wo3y",
+    "displayOrder": 96,
+    "createdAt": "2025-09-18T10:54:21.677Z",
+    "updatedAt": "2025-09-18T10:55:03.864Z"
+  },
+  {
+    "id": "cmfpf5js200mrr39e23wzrcjm",
+    "code": "ANT",
+    "name": "Antrim",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 24,
+    "createdAt": "2025-09-18T13:00:52.707Z",
+    "updatedAt": "2025-09-18T13:00:52.707Z"
+  },
+  {
+    "id": "cmfpf5k2600oxr39erwlqx10n",
+    "code": "ARM",
+    "name": "Armagh",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 25,
+    "createdAt": "2025-09-18T13:00:53.070Z",
+    "updatedAt": "2025-09-18T13:00:53.070Z"
+  },
+  {
+    "id": "cmfpf5kbi00qxr39efror0l3u",
+    "code": "DOW",
+    "name": "Down",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 26,
+    "createdAt": "2025-09-18T13:00:53.406Z",
+    "updatedAt": "2025-09-18T13:00:53.406Z"
+  },
+  {
+    "id": "cmfpf5kmk00tdr39ekdiliroa",
+    "code": "FER",
+    "name": "Fermanagh",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 27,
+    "createdAt": "2025-09-18T13:00:53.804Z",
+    "updatedAt": "2025-09-18T13:00:53.804Z"
+  },
+  {
+    "id": "cmfpamg030019r3gamjtxmf5n",
+    "code": "MUNSTE",
+    "name": "Munster",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T10:54:02.883Z",
+    "updatedAt": "2025-09-18T10:55:19.774Z"
+  },
+  {
+    "id": "cmfpf5ks500ulr39ehs01byc7",
+    "code": "DER",
+    "name": "Derry",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 28,
+    "createdAt": "2025-09-18T13:00:54.005Z",
+    "updatedAt": "2025-09-18T13:00:54.005Z"
+  },
+  {
+    "id": "cmfpf5kzh00w7r39ew0hbmmdn",
+    "code": "TYR",
+    "name": "Tyrone",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 29,
+    "createdAt": "2025-09-18T13:00:54.269Z",
+    "updatedAt": "2025-09-18T13:00:54.269Z"
+  },
+  {
+    "id": "cmfpams0l04rlr3gaggjekgca",
+    "code": "JOHOR_",
+    "name": "Johor Bahru",
+    "countryId": "cmfram5j6001rr388wl59wsvl",
+    "displayOrder": 86,
+    "createdAt": "2025-09-18T10:54:18.454Z",
+    "updatedAt": "2025-09-19T19:47:40.917Z"
+  },
+  {
+    "id": "cmfpamgok00alr3gasu9855d4",
+    "code": "SOUTHW",
+    "name": "Southwest Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 16,
+    "createdAt": "2025-09-18T10:54:03.765Z",
+    "updatedAt": "2025-09-19T19:47:41.268Z"
+  },
+  {
+    "id": "cmfpamzjh07tzr3ga4harb08h",
+    "code": "WESTER",
+    "name": "Western Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 129,
+    "createdAt": "2025-09-18T10:54:28.206Z",
+    "updatedAt": "2025-09-19T19:47:41.310Z"
+  },
+  {
+    "id": "cmfpamxp2072tr3ga2uil2zyb",
+    "code": "OULU",
+    "name": "Oulu",
+    "countryId": "cmfram4vw001lr388hb6ord98",
+    "displayOrder": 116,
+    "createdAt": "2025-09-18T10:54:25.815Z",
+    "updatedAt": "2025-09-19T19:47:42.626Z"
+  },
+  {
+    "id": "cmfpamr8k04g7r3gae2h17tqx",
+    "code": "HAMBUR",
+    "name": "Hamburg",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 74,
+    "createdAt": "2025-09-18T10:54:17.444Z",
+    "updatedAt": "2025-09-19T19:47:43.252Z"
+  },
+  {
+    "id": "cmfpamzeu07rzr3gafrm305rk",
+    "code": "MONSEL",
+    "name": "Monselice",
+    "countryId": "cmfram9xb0028r388d03jicpd",
+    "displayOrder": 127,
+    "createdAt": "2025-09-18T10:54:28.038Z",
+    "updatedAt": "2025-09-19T19:47:43.409Z"
+  },
+  {
+    "id": "cmfpan1gv08n5r3gagc8q7iw8",
+    "code": "CARDIF",
+    "name": "Cardiff",
+    "countryId": "cmframf0c002kr388ee0kv7s4",
+    "displayOrder": 138,
+    "createdAt": "2025-09-18T10:54:30.703Z",
+    "updatedAt": "2025-09-18T10:55:13.325Z"
+  },
+  {
+    "id": "cmfpfkvjo0001r3rsp2ocbuvd",
+    "code": "WALES",
+    "name": "Wales",
+    "countryId": "cmframf0c002kr388ee0kv7s4",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T13:12:47.797Z",
+    "updatedAt": "2025-09-18T13:12:47.797Z"
+  },
+  {
+    "id": "cmfpamui405sbr3gamveleki0",
+    "code": "SANTIA",
+    "name": "Santiago",
+    "countryId": "cmfram7dn001wr388p9wta8ys",
+    "displayOrder": 96,
+    "createdAt": "2025-09-18T10:54:21.676Z",
+    "updatedAt": "2025-09-19T19:47:22.442Z"
+  },
+  {
+    "id": "cmfpamz5k07o5r3gapodd4biu",
+    "code": "AUGSBU",
+    "name": "Augsburg",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 126,
+    "createdAt": "2025-09-18T10:54:27.704Z",
+    "updatedAt": "2025-09-19T19:47:43.271Z"
+  },
+  {
+    "id": "cmfpamr8j04g1r3gaiofttvka",
+    "code": "GRONIN",
+    "name": "Groningen",
+    "countryId": "cmfralwky000br3885s6p9juy",
+    "displayOrder": 74,
+    "createdAt": "2025-09-18T10:54:17.444Z",
+    "updatedAt": "2025-09-19T19:47:43.717Z"
+  },
+  {
+    "id": "cmfpamxke0711r3gaood46fib",
+    "code": "OSLO",
+    "name": "Oslo",
+    "countryId": "cmfram9rw0026r388lnay0ldo",
+    "displayOrder": 113,
+    "createdAt": "2025-09-18T10:54:25.647Z",
+    "updatedAt": "2025-09-19T19:47:43.858Z"
+  },
+  {
+    "id": "cmfpamod90397r3gaii9qdni4",
+    "code": "DUBAI",
+    "name": "Dubai",
+    "countryId": "cmfralwaq0003r3886ns700df",
+    "displayOrder": 58,
+    "createdAt": "2025-09-18T10:54:13.726Z",
+    "updatedAt": "2025-09-18T10:54:55.663Z"
+  },
+  {
+    "id": "cmfpamfzz0013r3gafpwa9a6q",
+    "code": "LEINST",
+    "name": "Leinster",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T10:54:02.879Z",
+    "updatedAt": "2025-09-18T10:55:19.940Z"
+  },
+  {
+    "id": "cmfpamjxz01jfr3gaa4wmnpn2",
+    "code": "HERTFO",
+    "name": "Hertfordshire",
+    "countryId": "cmfralyy8000qr388ejwbvun0",
+    "displayOrder": 32,
+    "createdAt": "2025-09-18T10:54:07.991Z",
+    "updatedAt": "2025-09-18T10:55:14.333Z"
+  },
+  {
+    "id": "cmfpg7vio0001r34q1f47wocm",
+    "code": "BOSTON",
+    "name": "Boston",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T13:30:40.849Z",
+    "updatedAt": "2025-09-18T13:30:40.849Z"
+  },
+  {
+    "id": "cmfpg7voi0017r34qsg7ni5v0",
+    "code": "CHICAG",
+    "name": "Chicago",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T13:30:41.058Z",
+    "updatedAt": "2025-09-18T13:30:41.058Z"
+  },
+  {
+    "id": "cmfpg7vrk001vr34qkn7nk44z",
+    "code": "PHILAD",
+    "name": "Philadelphia",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 4,
+    "createdAt": "2025-09-18T13:30:41.169Z",
+    "updatedAt": "2025-09-18T13:30:41.169Z"
+  },
+  {
+    "id": "cmfpg7vu3002fr34q2jelh97h",
+    "code": "SAN FR",
+    "name": "San Francisco",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 5,
+    "createdAt": "2025-09-18T13:30:41.260Z",
+    "updatedAt": "2025-09-18T13:30:41.260Z"
+  },
+  {
+    "id": "cmfpg7vw9002vr34q6eck7h2x",
+    "code": "MID-AT",
+    "name": "Mid-Atlantic",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 8,
+    "createdAt": "2025-09-18T13:30:41.337Z",
+    "updatedAt": "2025-09-18T13:30:41.337Z"
+  },
+  {
+    "id": "cmfpg7vxv0037r34q1pdghiyu",
+    "code": "MIDWES",
+    "name": "Midwest",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 6,
+    "createdAt": "2025-09-18T13:30:41.395Z",
+    "updatedAt": "2025-09-18T13:30:41.395Z"
+  },
+  {
+    "id": "cmfpg7vzq003lr34qamhiv3y6",
+    "code": "NORTHW",
+    "name": "Northwest",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 13,
+    "createdAt": "2025-09-18T13:30:41.462Z",
+    "updatedAt": "2025-09-18T13:30:41.462Z"
+  },
+  {
+    "id": "cmfpg7w0m003rr34qae2az6ev",
+    "code": "SOUTH",
+    "name": "South",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 7,
+    "createdAt": "2025-09-18T13:30:41.495Z",
+    "updatedAt": "2025-09-18T13:30:41.495Z"
+  },
+  {
+    "id": "cmfpg7w290043r34qbok9uhvh",
+    "code": "SOUTH ",
+    "name": "South Central",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 10,
+    "createdAt": "2025-09-18T13:30:41.553Z",
+    "updatedAt": "2025-09-18T13:30:41.553Z"
+  },
+  {
+    "id": "cmfpg7w3k004dr34qn4tmufjt",
+    "code": "SOUTHW",
+    "name": "Southwest",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T13:30:41.600Z",
+    "updatedAt": "2025-09-18T13:30:41.600Z"
+  },
+  {
+    "id": "cmfpg7w4w004nr34qjjvxraxd",
+    "code": "TWIN C",
+    "name": "Twin Cities",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 12,
+    "createdAt": "2025-09-18T13:30:41.648Z",
+    "updatedAt": "2025-09-18T13:30:41.648Z"
+  },
+  {
+    "id": "cmfpg7w6x0051r34q6b1tbqh4",
+    "code": "MEXICO",
+    "name": "Mexico",
+    "countryId": "cmfralwie0008r3882nin260u",
+    "displayOrder": 14,
+    "createdAt": "2025-09-18T13:30:41.722Z",
+    "updatedAt": "2025-09-18T13:30:41.722Z"
+  },
+  {
+    "id": "cmfpan0b9085nr3gaj3hffdvf",
+    "code": "SHENZH",
+    "name": "Shenzhen",
+    "countryId": "cmfralyig000lr388en0zpdy5",
+    "displayOrder": 133,
+    "createdAt": "2025-09-18T10:54:29.205Z",
+    "updatedAt": "2025-09-19T19:47:40.750Z"
+  },
+  {
+    "id": "cmfpamgy400ejr3gadl865lfm",
+    "code": "SOUTHE",
+    "name": "Southeast Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 17,
+    "createdAt": "2025-09-18T10:54:04.109Z",
+    "updatedAt": "2025-09-19T19:47:41.330Z"
+  },
+  {
+    "id": "cmfpan0kh089jr3gaaopsboft",
+    "code": "BRATIS",
+    "name": "Bratislava",
+    "countryId": "cmfr8ctfz0010r3ijhnxm2hh0",
+    "displayOrder": 136,
+    "createdAt": "2025-09-18T10:54:29.538Z",
+    "updatedAt": "2025-09-19T19:47:44.118Z"
+  },
+  {
+    "id": "cmfpamw2u06fhr3galyu0xjkq",
+    "code": "YANGON",
+    "name": "Yangon",
+    "countryId": "cmfram8iw0020r388n0q4ixf9",
+    "displayOrder": 106,
+    "createdAt": "2025-09-18T10:54:23.719Z",
+    "updatedAt": "2025-09-18T10:55:06.118Z"
+  },
+  {
+    "id": "cmfpaml6701yrr3ga8lgntj5n",
+    "code": "GLASGO",
+    "name": "Glasgow",
+    "countryId": "cmfram0320011r3882ugoajg0",
+    "displayOrder": 39,
+    "createdAt": "2025-09-18T10:54:09.584Z",
+    "updatedAt": "2025-09-18T10:55:18.062Z"
+  },
+  {
+    "id": "cmfpamfyr000cr3gaw24evekp",
+    "code": "CONNAC",
+    "name": "Connacht",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 0,
+    "createdAt": "2025-09-18T10:54:02.835Z",
+    "updatedAt": "2025-09-18T10:55:19.337Z"
+  },
+  {
+    "id": "cmfpamg020015r3ga5osm3xbj",
+    "code": "ULSTER",
+    "name": "Ulster",
+    "countryId": "cmfp3j7ua000a8obhpucs24q6",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T10:54:02.883Z",
+    "updatedAt": "2025-09-18T10:55:19.776Z"
+  },
+  {
+    "id": "cmfphka170001r3e376f3p5ba",
+    "code": "TORONTO",
+    "name": "Toronto",
+    "countryId": "cmfralzcy000xr388p6ot79ip",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:08:19.148Z",
+    "updatedAt": "2025-09-18T14:08:19.148Z"
+  },
+  {
+    "id": "cmfphka40000jr3e325xujlez",
+    "code": "WESTERN CA",
+    "name": "Western Canada",
+    "countryId": "cmfralzcy000xr388p6ot79ip",
+    "displayOrder": 3,
+    "createdAt": "2025-09-18T14:08:19.249Z",
+    "updatedAt": "2025-09-18T14:08:19.249Z"
+  },
+  {
+    "id": "cmfpamr8h04fvr3gax2htjiht",
+    "code": "GUERNS",
+    "name": "Guernsey",
+    "countryId": "cmfpamr8204f7r3gafrdfw7k9",
+    "displayOrder": 74,
+    "createdAt": "2025-09-18T10:54:17.442Z",
+    "updatedAt": "2025-09-18T10:54:59.429Z"
+  },
+  {
+    "id": "cmfphka6c0011r3e38vics5ln",
+    "code": "EASTERN CA",
+    "name": "Eastern Canada",
+    "countryId": "cmfralzcy000xr388p6ot79ip",
+    "displayOrder": 2,
+    "createdAt": "2025-09-18T14:08:19.332Z",
+    "updatedAt": "2025-09-18T14:08:19.332Z"
+  },
+  {
+    "id": "cmfpan4wo0a19r3ga6z3sm9ve",
+    "code": "BANGKO",
+    "name": "Bangkok",
+    "countryId": "cmframi1f002or38818ny21p3",
+    "displayOrder": 146,
+    "createdAt": "2025-09-18T10:54:35.160Z",
+    "updatedAt": "2025-09-19T19:47:41.118Z"
+  },
+  {
+    "id": "cmfpamrrb04nlr3ga1l4axr5q",
+    "code": "JAKART",
+    "name": "Jakarta",
+    "countryId": "cmfram588001nr388yl7a8j6r",
+    "displayOrder": 82,
+    "createdAt": "2025-09-18T10:54:18.119Z",
+    "updatedAt": "2025-09-18T10:55:00.160Z"
+  },
+  {
+    "id": "cmfpamg5b002xr3gaxx53a19b",
+    "code": "ULSTER",
+    "name": "Ulster",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 9,
+    "createdAt": "2025-09-18T10:54:03.071Z",
+    "updatedAt": "2025-09-19T19:47:41.348Z"
+  },
+  {
+    "id": "cmfpamxkh0713r3ga31hgz1qz",
+    "code": "DOHA",
+    "name": "Doha",
+    "countryId": "cmfram9qs0024r3883fgmcwx4",
+    "displayOrder": 113,
+    "createdAt": "2025-09-18T10:54:25.650Z",
+    "updatedAt": "2025-09-19T19:47:41.892Z"
+  },
+  {
+    "id": "cmfpamq6q040jr3gaz4d4fao1",
+    "code": "BREST",
+    "name": "Brest",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 66,
+    "createdAt": "2025-09-18T10:54:16.082Z",
+    "updatedAt": "2025-09-19T19:47:42.793Z"
+  },
+  {
+    "id": "cmfpan56l0a5fr3ga3os1vqyk",
+    "code": "TOULOU",
+    "name": "Toulouse",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 147,
+    "createdAt": "2025-09-18T10:54:35.517Z",
+    "updatedAt": "2025-09-19T19:47:42.809Z"
+  },
+  {
+    "id": "cmfpamxtv074tr3gan78c9xc0",
+    "code": "PARIS",
+    "name": "Paris",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 118,
+    "createdAt": "2025-09-18T10:54:25.988Z",
+    "updatedAt": "2025-09-19T19:47:42.827Z"
+  },
+  {
+    "id": "cmfpamore03f7r3gaq9zvu4do",
+    "code": "EINDHO",
+    "name": "Eindhoven",
+    "countryId": "cmfralwky000br3885s6p9juy",
+    "displayOrder": 61,
+    "createdAt": "2025-09-18T10:54:14.235Z",
+    "updatedAt": "2025-09-19T19:47:43.735Z"
+  },
+  {
+    "id": "cmfpan6hc0ao4r3gab606qr6d",
+    "code": "ZURICH",
+    "name": "Zurich",
+    "countryId": "cmfram46x001hr388srqa5igk",
+    "displayOrder": 151,
+    "createdAt": "2025-09-18T10:54:37.200Z",
+    "updatedAt": "2025-09-19T19:47:44.383Z"
+  },
+  {
+    "id": "cmfpamzey07s7r3gabywfaou7",
+    "code": "HO_CHI",
+    "name": "Ho Chi Minh City",
+    "countryId": "cmframbcy002er388t8wmtnz9",
+    "displayOrder": 127,
+    "createdAt": "2025-09-18T10:54:28.043Z",
+    "updatedAt": "2025-09-18T10:55:10.485Z"
+  },
+  {
+    "id": "cmfpi0vsj0001r36xf0nh1ih8",
+    "code": "HONG KONG",
+    "name": "Hong Kong",
+    "countryId": "cmfp3j9iq001g8obhc16tvtgn",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:13.843Z",
+    "updatedAt": "2025-09-18T14:21:13.843Z"
+  },
+  {
+    "id": "cmfpamzjj07u5r3gaj69j1402",
+    "code": "LANARK",
+    "name": "Lanarkshire¬†",
+    "countryId": "cmfram0320011r3882ugoajg0",
+    "displayOrder": 129,
+    "createdAt": "2025-09-18T10:54:28.207Z",
+    "updatedAt": "2025-09-18T10:55:10.665Z"
+  },
+  {
+    "id": "cmfpi0vue0009r36xlatg5b9z",
+    "code": "SHANGHAI",
+    "name": "Shanghai",
+    "countryId": "cmfralyig000lr388en0zpdy5",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:13.910Z",
+    "updatedAt": "2025-09-18T14:21:13.910Z"
+  },
+  {
+    "id": "cmfpi0vvq000hr36xr9kpdn5l",
+    "code": "SUZHOU",
+    "name": "Suzhou",
+    "countryId": "cmfralyig000lr388en0zpdy5",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:13.958Z",
+    "updatedAt": "2025-09-18T14:21:13.958Z"
+  },
+  {
+    "id": "cmfpi0vwd000lr36x2ne1dce4",
+    "code": "GUANGZHOU",
+    "name": "Guangzhou",
+    "countryId": "cmfralyig000lr388en0zpdy5",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:13.982Z",
+    "updatedAt": "2025-09-18T14:21:13.982Z"
+  },
+  {
+    "id": "cmfpi0vx6000pr36xkmu1ednx",
+    "code": "SINGAPORE",
+    "name": "Singapore",
+    "countryId": "cmfp3j9f6001e8obhc7vdiye6",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.010Z",
+    "updatedAt": "2025-09-18T14:21:14.010Z"
+  },
+  {
+    "id": "cmfpi0vxx000tr36x6ccssq51",
+    "code": "JAPAN",
+    "name": "Japan",
+    "countryId": "cmfram59v001pr3885dizeyhe",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.038Z",
+    "updatedAt": "2025-09-18T14:21:14.038Z"
+  },
+  {
+    "id": "cmfpan6hc0ao3r3ga3nlta3z5",
+    "code": "ZARAGO",
+    "name": "Zaragoza",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 151,
+    "createdAt": "2025-09-18T10:54:37.200Z",
+    "updatedAt": "2025-09-18T10:55:19.941Z"
+  },
+  {
+    "id": "cmfpi0vyk000xr36xldwcz0m5",
+    "code": "TOKYO",
+    "name": "Tokyo",
+    "countryId": "cmfram59v001pr3885dizeyhe",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.061Z",
+    "updatedAt": "2025-09-18T14:21:14.061Z"
+  },
+  {
+    "id": "cmfpi0vz80011r36x4pcx44px",
+    "code": "OSAKA",
+    "name": "Osaka",
+    "countryId": "cmfram59v001pr3885dizeyhe",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.084Z",
+    "updatedAt": "2025-09-18T14:21:14.084Z"
+  },
+  {
+    "id": "cmfpi0vzz0015r36x5prrhnek",
+    "code": "SEOUL",
+    "name": "Seoul",
+    "countryId": "cmfram1ri0017r388bzsp45b7",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.112Z",
+    "updatedAt": "2025-09-18T14:21:14.112Z"
+  },
+  {
+    "id": "cmfpamp0j03ixr3gaycoggrie",
+    "code": "SEVILL",
+    "name": "Sevilla",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 62,
+    "createdAt": "2025-09-18T10:54:14.563Z",
+    "updatedAt": "2025-09-18T10:54:56.525Z"
+  },
+  {
+    "id": "cmfpi0w0u0019r36xl5czman6",
+    "code": "KUALA LUMP",
+    "name": "Kuala Lumpur",
+    "countryId": "cmfram5j6001rr388wl59wsvl",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.142Z",
+    "updatedAt": "2025-09-18T14:21:14.142Z"
+  },
+  {
+    "id": "cmfpi0w1g001dr36xqxad0fd7",
+    "code": "PENANG",
+    "name": "Penang",
+    "countryId": "cmfram5j6001rr388wl59wsvl",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.165Z",
+    "updatedAt": "2025-09-18T14:21:14.165Z"
+  },
+  {
+    "id": "cmfpamurd05w7r3gasgiyrvvi",
+    "code": "MADRID",
+    "name": "Madrid",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 100,
+    "createdAt": "2025-09-18T10:54:22.009Z",
+    "updatedAt": "2025-09-18T10:55:04.205Z"
+  },
+  {
+    "id": "cmfpi0w2v001lr36xoqkk5uuk",
+    "code": "PHUKET",
+    "name": "Phuket",
+    "countryId": "cmframi1f002or38818ny21p3",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.215Z",
+    "updatedAt": "2025-09-18T14:21:14.215Z"
+  },
+  {
+    "id": "cmfpi0w5p001xr36x4khktcei",
+    "code": "MUMBAI",
+    "name": "Mumbai",
+    "countryId": "cmfp3j9s2001m8obhavbzdxvl",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.318Z",
+    "updatedAt": "2025-09-18T14:21:14.318Z"
+  },
+  {
+    "id": "cmfpi0w6v0023r36xnkh1dj43",
+    "code": "LAHORE",
+    "name": "Lahore",
+    "countryId": "cmfpi0w6b0021r36x3dlpe8sx",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:21:14.359Z",
+    "updatedAt": "2025-09-18T14:21:14.359Z"
+  },
+  {
+    "id": "cmfpamwc606jdr3ga486131i0",
+    "code": "RIYADH",
+    "name": "Riyadh",
+    "countryId": "cmfram8pv0022r388gtykjd7s",
+    "displayOrder": 108,
+    "createdAt": "2025-09-18T10:54:24.054Z",
+    "updatedAt": "2025-09-19T19:47:42.003Z"
+  },
+  {
+    "id": "cmfpamqg8044dr3ga7y085sd0",
+    "code": "GENEVA",
+    "name": "Geneva",
+    "countryId": "cmfram46x001hr388srqa5igk",
+    "displayOrder": 70,
+    "createdAt": "2025-09-18T10:54:16.424Z",
+    "updatedAt": "2025-09-19T19:47:44.400Z"
+  },
+  {
+    "id": "cmfpi8mdh0001r3iy9hx5ow15",
+    "code": "JOHANNESBU",
+    "name": "Johannesburg",
+    "countryId": "cmfp3jae300208obhy586o99e",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:27:14.886Z",
+    "updatedAt": "2025-09-18T14:27:14.886Z"
+  },
+  {
+    "id": "cmfpi8mex0005r3iymgjvat17",
+    "code": "PRETORIA",
+    "name": "Pretoria",
+    "countryId": "cmfp3jae300208obhy586o99e",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:27:14.938Z",
+    "updatedAt": "2025-09-18T14:27:14.938Z"
+  },
+  {
+    "id": "cmfpi8mfx0009r3iydd5gkf30",
+    "code": "DURBAN",
+    "name": "Durban",
+    "countryId": "cmfp3jae300208obhy586o99e",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:27:14.973Z",
+    "updatedAt": "2025-09-18T14:27:14.973Z"
+  },
+  {
+    "id": "cmfpi8mgu000dr3iygx4vexxy",
+    "code": "CAPE TOWN",
+    "name": "Cape Town",
+    "countryId": "cmfp3jae300208obhy586o99e",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:27:15.007Z",
+    "updatedAt": "2025-09-18T14:27:15.007Z"
+  },
+  {
+    "id": "cmfpi8mif000jr3iymx3hxwfc",
+    "code": "KAMPALA",
+    "name": "Kampala",
+    "countryId": "cmfpi8mhl000hr3iyr028hfub",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:27:15.063Z",
+    "updatedAt": "2025-09-18T14:27:15.063Z"
+  },
+  {
+    "id": "cmfpan0g1087pr3gaxac9tj5n",
+    "code": "SIGNAP",
+    "name": "Signapore",
+    "countryId": "cmframe1v002ir3885fk3017k",
+    "displayOrder": 135,
+    "createdAt": "2025-09-18T10:54:29.378Z",
+    "updatedAt": "2025-09-18T10:55:11.864Z"
+  },
+  {
+    "id": "cmfpi8mjj000nr3iy9pcucuzq",
+    "code": "BUENOS AIR",
+    "name": "Buenos Aires",
+    "countryId": "cmframbgc002gr388iqrgdygf",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T14:27:15.103Z",
+    "updatedAt": "2025-09-18T14:27:15.103Z"
+  },
+  {
+    "id": "cmfpamy8s07anr3gakj8256q3",
+    "code": "PENNSY",
+    "name": "Pennsylvania",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 123,
+    "createdAt": "2025-09-18T10:54:26.525Z",
+    "updatedAt": "2025-09-19T19:47:41.365Z"
+  },
+  {
+    "id": "cmfpamq6p040fr3ga6fl83btq",
+    "code": "SAINT_",
+    "name": "Saint-Brieuc",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 66,
+    "createdAt": "2025-09-18T10:54:16.081Z",
+    "updatedAt": "2025-09-19T19:47:42.844Z"
+  },
+  {
+    "id": "cmfpamqkt0465r3ga19vokz0a",
+    "code": "AIX_EN",
+    "name": "Aix-en-Provence",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 71,
+    "createdAt": "2025-09-18T10:54:16.590Z",
+    "updatedAt": "2025-09-19T19:47:42.864Z"
+  },
+  {
+    "id": "cmfpamui405s9r3gai7rpuley",
+    "code": "LORIEN",
+    "name": "Lorient",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 96,
+    "createdAt": "2025-09-18T10:54:21.676Z",
+    "updatedAt": "2025-09-19T19:47:42.882Z"
+  },
+  {
+    "id": "cmfpamump05u9r3gao0aw9eky",
+    "code": "LYON",
+    "name": "Lyon",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 99,
+    "createdAt": "2025-09-18T10:54:21.841Z",
+    "updatedAt": "2025-09-19T19:47:42.900Z"
+  },
+  {
+    "id": "cmfpan4br09tjr3gawja35dhl",
+    "code": "STRASB",
+    "name": "Strasbourg",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 139,
+    "createdAt": "2025-09-18T10:54:34.408Z",
+    "updatedAt": "2025-09-19T19:47:42.919Z"
+  },
+  {
+    "id": "cmfpamrhy04jrr3gaxsli4zms",
+    "code": "YORKSH",
+    "name": "Yorkshire",
+    "countryId": "cmfralyy8000qr388ejwbvun0",
+    "displayOrder": 80,
+    "createdAt": "2025-09-18T10:54:17.782Z",
+    "updatedAt": "2025-09-18T10:55:12.732Z"
+  },
+  {
+    "id": "cmfpamurd05w5r3ga694uyqlv",
+    "code": "MAASTR",
+    "name": "Maastricht",
+    "countryId": "cmfralwky000br3885s6p9juy",
+    "displayOrder": 100,
+    "createdAt": "2025-09-18T10:54:22.009Z",
+    "updatedAt": "2025-09-19T19:47:43.753Z"
+  },
+  {
+    "id": "cmfpan4nj09xjr3gabqswml3m",
+    "code": "TAIPEI",
+    "name": "Taipei",
+    "countryId": "cmframhtv002mr388ejumv5th",
+    "displayOrder": 144,
+    "createdAt": "2025-09-18T10:54:34.831Z",
+    "updatedAt": "2025-09-18T10:55:17.394Z"
+  },
+  {
+    "id": "cmfpan5yx0ah1r3ga472xp7hi",
+    "code": "WELLIN",
+    "name": "Wellington",
+    "countryId": "cmfram0730013r388jegrf3yg",
+    "displayOrder": 150,
+    "createdAt": "2025-09-18T10:54:36.537Z",
+    "updatedAt": "2025-09-19T19:47:44.519Z"
+  },
+  {
+    "id": "cmfpamjoz01frr3gas8c32jdn",
+    "code": "LONDON",
+    "name": "London",
+    "countryId": "cmfralyy8000qr388ejwbvun0",
+    "displayOrder": 29,
+    "createdAt": "2025-09-18T10:54:07.667Z",
+    "updatedAt": "2025-09-18T10:55:19.149Z"
+  },
+  {
+    "id": "cmfpamrrg04ntr3ga8udpqvf1",
+    "code": "JERSEY",
+    "name": "Jersey",
+    "countryId": "cmfpamr8204f7r3gafrdfw7k9",
+    "displayOrder": 82,
+    "createdAt": "2025-09-18T10:54:18.124Z",
+    "updatedAt": "2025-09-18T10:55:00.171Z"
+  },
+  {
+    "id": "cmfpams5904tfr3gazfktitf7",
+    "code": "VIGO",
+    "name": "Vigo",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 89,
+    "createdAt": "2025-09-18T10:54:18.621Z",
+    "updatedAt": "2025-09-18T10:55:00.695Z"
+  },
+  {
+    "id": "cmfpamws806p9r3ga5nqtglcz",
+    "code": "NEW_YO",
+    "name": "New York",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 109,
+    "createdAt": "2025-09-18T10:54:24.633Z",
+    "updatedAt": "2025-09-19T19:47:41.382Z"
+  },
+  {
+    "id": "cmfpamjtb01hbr3gappx8amxe",
+    "code": "NORTH_",
+    "name": "North Western Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 30,
+    "createdAt": "2025-09-18T10:54:07.823Z",
+    "updatedAt": "2025-09-19T19:47:41.400Z"
+  },
+  {
+    "id": "cmfpamx1j06t7r3gapfuaujfg",
+    "code": "NIORT",
+    "name": "Niort",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 112,
+    "createdAt": "2025-09-18T10:54:24.968Z",
+    "updatedAt": "2025-09-19T19:47:42.935Z"
+  },
+  {
+    "id": "cmfpan0p408bhr3ga7v3pxc8m",
+    "code": "ROME",
+    "name": "Rome",
+    "countryId": "cmfram9xb0028r388d03jicpd",
+    "displayOrder": 137,
+    "createdAt": "2025-09-18T10:54:29.704Z",
+    "updatedAt": "2025-09-19T19:47:43.429Z"
+  },
+  {
+    "id": "cmfpamuwc05y3r3gacwodl4i8",
+    "code": "MALM__",
+    "name": "Malm√∂",
+    "countryId": "cmfram4l6001jr3880j5n5kur",
+    "displayOrder": 103,
+    "createdAt": "2025-09-18T10:54:22.188Z",
+    "updatedAt": "2025-09-19T19:47:44.237Z"
+  },
+  {
+    "id": "cmfpan5u40aezr3ga6d7vt07s",
+    "code": "HANOI",
+    "name": "Hanoi",
+    "countryId": "cmframbcy002er388t8wmtnz9",
+    "displayOrder": 148,
+    "createdAt": "2025-09-18T10:54:36.365Z",
+    "updatedAt": "2025-09-18T10:55:18.908Z"
+  },
+  {
+    "id": "cmfpammmg02k5r3gaq33rvppo",
+    "code": "WARWIC",
+    "name": "Warwickshire",
+    "countryId": "cmfralyy8000qr388ejwbvun0",
+    "displayOrder": 48,
+    "createdAt": "2025-09-18T10:54:11.465Z",
+    "updatedAt": "2025-09-18T10:55:19.145Z"
+  },
+  {
+    "id": "cmfpan0ba085pr3gagszfyl0r",
+    "code": "SHARJA",
+    "name": "Sharjah¬†",
+    "countryId": "cmfralwaq0003r3886ns700df",
+    "displayOrder": 133,
+    "createdAt": "2025-09-18T10:54:29.206Z",
+    "updatedAt": "2025-09-18T10:55:11.696Z"
+  },
+  {
+    "id": "cmfpamtzi05kjr3gajk6evogl",
+    "code": "BUSAN",
+    "name": "Busan",
+    "countryId": "cmfram1ri0017r388bzsp45b7",
+    "displayOrder": 92,
+    "createdAt": "2025-09-18T10:54:21.006Z",
+    "updatedAt": "2025-09-19T19:47:41.026Z"
+  },
+  {
+    "id": "cmfpams0l04rjr3ga6nacjmpp",
+    "code": "LANCAS",
+    "name": "Lancashire",
+    "countryId": "cmfralyy8000qr388ejwbvun0",
+    "displayOrder": 86,
+    "createdAt": "2025-09-18T10:54:18.454Z",
+    "updatedAt": "2025-09-18T10:55:12.575Z"
+  },
+  {
+    "id": "cmfpamrd704hpr3ga4dm9o1v9",
+    "code": "HELSIN",
+    "name": "Helsinki",
+    "countryId": "cmfram4vw001lr388hb6ord98",
+    "displayOrder": 78,
+    "createdAt": "2025-09-18T10:54:17.612Z",
+    "updatedAt": "2025-09-19T19:47:42.646Z"
+  },
+  {
+    "id": "cmfpamr8j04g3r3gaegvn5ece",
+    "code": "VANNES",
+    "name": "Vannes",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 74,
+    "createdAt": "2025-09-18T10:54:17.444Z",
+    "updatedAt": "2025-09-19T19:47:42.953Z"
+  },
+  {
+    "id": "cmfpamu8q05odr3gasb3wuqjq",
+    "code": "LILLE",
+    "name": "Lille",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 95,
+    "createdAt": "2025-09-18T10:54:21.339Z",
+    "updatedAt": "2025-09-19T19:47:42.969Z"
+  },
+  {
+    "id": "cmfpamydm07clr3gacpa79jmt",
+    "code": "LISBON",
+    "name": "Lisbon",
+    "countryId": "cmframahe002cr3882v753nto",
+    "displayOrder": 124,
+    "createdAt": "2025-09-18T10:54:26.699Z",
+    "updatedAt": "2025-09-19T19:47:43.969Z"
+  },
+  {
+    "id": "cmfpamxtv074rr3gazcm8s9zq",
+    "code": "ASUNCI",
+    "name": "Asunción",
+    "countryId": "cmframa0o002ar388hib0n5sq",
+    "displayOrder": 118,
+    "createdAt": "2025-09-18T10:54:25.987Z",
+    "updatedAt": "2025-09-18T10:55:08.437Z"
+  },
+  {
+    "id": "cmfpamloy026fr3gat5u85ded",
+    "code": "HEARTL",
+    "name": "Heartland Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 45,
+    "createdAt": "2025-09-18T10:54:10.259Z",
+    "updatedAt": "2025-09-19T19:47:41.416Z"
+  },
+  {
+    "id": "cmfpaml6901z3r3gaw0zmnfym",
+    "code": "CENTRA",
+    "name": "Central Division",
+    "countryId": "cmfralwe30005r3885l6l8776",
+    "displayOrder": 39,
+    "createdAt": "2025-09-18T10:54:09.586Z",
+    "updatedAt": "2025-09-19T19:47:41.435Z"
+  },
+  {
+    "id": "cmfpams5804tdr3gaq3zlu09h",
+    "code": "QUIMPE",
+    "name": "Quimper",
+    "countryId": "cmfralyr0000nr388mrvduspe",
+    "displayOrder": 89,
+    "createdAt": "2025-09-18T10:54:18.620Z",
+    "updatedAt": "2025-09-19T19:47:42.986Z"
+  },
+  {
+    "id": "cmfpamfzn000xr3gagd6nixdu",
+    "code": "ABU_DH",
+    "name": "Abu Dhabi",
+    "countryId": "cmfralwaq0003r3886ns700df",
+    "displayOrder": 1,
+    "createdAt": "2025-09-18T10:54:02.868Z",
+    "updatedAt": "2025-09-18T10:54:45.266Z"
+  },
+  {
+    "id": "cmfpan4gc09vfr3ga59rmbqme",
+    "code": "STUTTG",
+    "name": "Stuttgart",
+    "countryId": "cmfram3sd001dr388ekgqrcer",
+    "displayOrder": 141,
+    "createdAt": "2025-09-18T10:54:34.573Z",
+    "updatedAt": "2025-09-19T19:47:43.288Z"
+  },
+  {
+    "id": "cmfpan5u70af5r3ga63xpu139",
+    "code": "VALENC",
+    "name": "Valencia",
+    "countryId": "cmfram2xl0019r388ada0ndmd",
+    "displayOrder": 148,
+    "createdAt": "2025-09-18T10:54:36.368Z",
+    "updatedAt": "2025-09-18T10:55:18.908Z"
+  },
+  {
+    "id": "cmfpamxp2072xr3gam69mgota",
+    "code": "PADUA",
+    "name": "Padua",
+    "countryId": "cmfram9xb0028r388d03jicpd",
+    "displayOrder": 116,
+    "createdAt": "2025-09-18T10:54:25.815Z",
+    "updatedAt": "2025-09-19T19:47:43.447Z"
+  },
+  {
+    "id": "cmfpan4bx09ttr3gajf6clf23",
+    "code": "STOCKH",
+    "name": "Stockholm",
+    "countryId": "cmfram4l6001jr3880j5n5kur",
+    "displayOrder": 139,
+    "createdAt": "2025-09-18T10:54:34.413Z",
+    "updatedAt": "2025-09-19T19:47:44.257Z"
+  }
+]
