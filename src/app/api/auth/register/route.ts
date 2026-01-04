@@ -11,6 +11,27 @@ async function registrationHandler(request: NextRequest) {
   // Get the raw body first to extract additional fields
   const body = await request.json();
 
+  // Honeypot check - if the hidden "website" field is filled, it's a bot
+  // Silently reject but return success to not reveal the trap
+  if (body.website && body.website.trim() !== "") {
+    console.log("🤖 Bot detected via honeypot field, rejecting registration");
+    return NextResponse.json(
+      {
+        success: true,
+        user: {
+          id: "blocked",
+          email: body.email,
+          username: body.username,
+          name: body.name,
+          role: "USER",
+          accountStatus: "APPROVED",
+        },
+        message: "Account created successfully!",
+      },
+      { status: 201 }
+    );
+  }
+
   // Validate required fields using Zod schema
   const { email, username, password, name } = await validateBody(
     { json: async () => body } as NextRequest,

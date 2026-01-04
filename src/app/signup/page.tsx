@@ -18,9 +18,11 @@ export default function SignUp() {
   const { trackSignUp } = useAnalytics();
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showPasswordRequirements, setShowPasswordRequirements] = useState(false);
+  const [showPasswordRequirements, setShowPasswordRequirements] =
+    useState(false);
   const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
-  const [showUsernameRequirements, setShowUsernameRequirements] = useState(false);
+  const [showUsernameRequirements, setShowUsernameRequirements] =
+    useState(false);
   const [usernameErrors, setUsernameErrors] = useState<string[]>([]);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -45,22 +47,23 @@ export default function SignUp() {
     name: "",
     clubId: null as string | null,
     isClubMember: false,
+    website: "", // Honeypot field - bots will fill this, humans won't see it
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
 
     // Real-time password validation
-    if (name === 'password') {
+    if (name === "password") {
       validatePassword(value);
     }
-    
+
     // Real-time username validation
-    if (name === 'username') {
+    if (name === "username") {
       validateUsername(value);
     }
   };
@@ -70,7 +73,7 @@ export default function SignUp() {
       passwordSchema.parse(password);
       setPasswordErrors([]);
     } catch (error) {
-      if (error && typeof error === 'object' && 'errors' in error) {
+      if (error && typeof error === "object" && "errors" in error) {
         const zodError = error as { errors: Array<{ message: string }> };
         setPasswordErrors(zodError.errors.map((err) => err.message));
       }
@@ -82,7 +85,7 @@ export default function SignUp() {
       usernameSchema.parse(username);
       setUsernameErrors([]);
     } catch (error) {
-      if (error && typeof error === 'object' && 'errors' in error) {
+      if (error && typeof error === "object" && "errors" in error) {
         const zodError = error as { errors: Array<{ message: string }> };
         setUsernameErrors(zodError.errors.map((err) => err.message));
       }
@@ -111,7 +114,6 @@ export default function SignUp() {
     }
   };
 
-
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsLoading(true);
@@ -129,7 +131,7 @@ export default function SignUp() {
     try {
       usernameSchema.parse(formData.username);
     } catch (error) {
-      if (error && typeof error === 'object' && 'errors' in error) {
+      if (error && typeof error === "object" && "errors" in error) {
         const zodError = error as { errors: Array<{ message: string }> };
         if (zodError.errors && zodError.errors.length > 0) {
           const errorMsg = zodError.errors[0].message;
@@ -145,7 +147,7 @@ export default function SignUp() {
     try {
       passwordSchema.parse(formData.password);
     } catch (error) {
-      if (error && typeof error === 'object' && 'errors' in error) {
+      if (error && typeof error === "object" && "errors" in error) {
         const zodError = error as { errors: Array<{ message: string }> };
         if (zodError.errors && zodError.errors.length > 0) {
           const errorMsg = zodError.errors[0].message;
@@ -170,6 +172,7 @@ export default function SignUp() {
           name: formData.name,
           clubId: formData.clubId,
           isClubMember: formData.isClubMember,
+          website: formData.website, // Honeypot field
         }),
       });
 
@@ -178,18 +181,22 @@ export default function SignUp() {
       if (!response.ok) {
         // Handle both simple string errors and complex error objects
         let errorMessage = "Failed to create account";
-        if (typeof data.error === 'string') {
+        if (typeof data.error === "string") {
           errorMessage = data.error;
-        } else if (data.error && typeof data.error === 'object' && data.error.message) {
+        } else if (
+          data.error &&
+          typeof data.error === "object" &&
+          data.error.message
+        ) {
           errorMessage = data.error.message;
         }
         setError(errorMessage);
         toast.error(errorMessage);
       } else {
         // Track successful signup
-        trackSignUp('credentials');
-        toast.success('Account created successfully! Signing you in...');
-        
+        trackSignUp("credentials");
+        toast.success("Account created successfully! Signing you in...");
+
         // Registration successful - now automatically sign in the user
         try {
           const signInResult = await signIn("credentials", {
@@ -200,27 +207,34 @@ export default function SignUp() {
 
           if (signInResult?.error) {
             // Auto sign-in failed - redirect to signin page
-            toast.error('Account created but auto sign-in failed. Please sign in manually.');
-            router.push('/signin?registered=true');
+            toast.error(
+              "Account created but auto sign-in failed. Please sign in manually."
+            );
+            router.push("/signin?registered=true");
           } else {
             // Sign in successful - check for redirect path or go home with welcome
-            const redirectPath = typeof window !== 'undefined' ? sessionStorage.getItem('redirectAfterSignIn') : null;
-            
+            const redirectPath =
+              typeof window !== "undefined"
+                ? sessionStorage.getItem("redirectAfterSignIn")
+                : null;
+
             if (redirectPath) {
-              sessionStorage.removeItem('redirectAfterSignIn');
+              sessionStorage.removeItem("redirectAfterSignIn");
               router.push(redirectPath);
             } else {
               // Redirect to home with welcome message
-              toast.success('Welcome to PlayAway!');
-              router.push('/?welcome=true');
+              toast.success("Welcome to PlayAway!");
+              router.push("/?welcome=true");
             }
             router.refresh();
           }
         } catch (signInError) {
-          console.error('Auto sign-in exception:', signInError);
+          console.error("Auto sign-in exception:", signInError);
           // Fallback to signin page
-          toast.error('Account created but auto sign-in failed. Please sign in manually.');
-          router.push('/signin?registered=true');
+          toast.error(
+            "Account created but auto sign-in failed. Please sign in manually."
+          );
+          router.push("/signin?registered=true");
         }
       }
     } catch {
@@ -306,6 +320,29 @@ export default function SignUp() {
                     />
                   </motion.div>
 
+                  {/* Honeypot field - hidden from humans, bots will fill it */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      position: "absolute",
+                      left: "-9999px",
+                      opacity: 0,
+                      height: 0,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <label htmlFor="website">Website</label>
+                    <input
+                      type="text"
+                      id="website"
+                      name="website"
+                      value={formData.website}
+                      onChange={handleInputChange}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
                   {/* Username */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -326,9 +363,13 @@ export default function SignUp() {
                       required
                       className="w-full border-2 border-gray-200 rounded-lg px-3 py-2.5 text-base bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                     />
-                    <UsernameRequirements 
-                      username={formData.username} 
-                      isVisible={showUsernameRequirements || (formData.username.length > 0 && usernameErrors.length > 0)}
+                    <UsernameRequirements
+                      username={formData.username}
+                      isVisible={
+                        showUsernameRequirements ||
+                        (formData.username.length > 0 &&
+                          usernameErrors.length > 0)
+                      }
                     />
                   </motion.div>
 
@@ -339,7 +380,8 @@ export default function SignUp() {
                     transition={{ delay: 0.5 }}
                   >
                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">
-                      Full Name <span className="text-gray-400">(Optional)</span>
+                      Full Name{" "}
+                      <span className="text-gray-400">(Optional)</span>
                     </label>
                     <input
                       name="name"
@@ -371,40 +413,71 @@ export default function SignUp() {
                         placeholder="Create a secure password"
                         required
                         className={`w-full border-2 rounded-lg px-3 py-2.5 pr-10 text-base bg-gray-50/50 text-gray-900 focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
-                          passwordErrors.length > 0 ? 'border-red-300 focus:border-red-400' : 
-                          formData.password && passwordErrors.length === 0 ? 'border-green-300 focus:border-green-400' :
-                          'border-gray-200 focus:border-primary'
+                          passwordErrors.length > 0
+                            ? "border-red-300 focus:border-red-400"
+                            : formData.password && passwordErrors.length === 0
+                              ? "border-green-300 focus:border-green-400"
+                              : "border-gray-200 focus:border-primary"
                         }`}
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
-                        aria-label={showPassword ? "Hide password" : "Show password"}
+                        aria-label={
+                          showPassword ? "Hide password" : "Show password"
+                        }
                       >
                         {showPassword ? (
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932" />
+                          <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932"
+                            />
                           </svg>
                         ) : (
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
                           </svg>
                         )}
                       </button>
                     </div>
-                    
+
                     {/* Password Strength Meter */}
-                    <PasswordStrengthMeter 
-                      password={formData.password} 
+                    <PasswordStrengthMeter
+                      password={formData.password}
                       show={formData.password.length > 0}
                     />
-                    
+
                     {/* Password Requirements */}
-                    <PasswordRequirements 
+                    <PasswordRequirements
                       password={formData.password}
-                      show={showPasswordRequirements || passwordErrors.length > 0}
+                      show={
+                        showPasswordRequirements || passwordErrors.length > 0
+                      }
                     />
                   </motion.div>
 
@@ -426,30 +499,65 @@ export default function SignUp() {
                         placeholder="Confirm your password"
                         required
                         className={`w-full border-2 rounded-lg px-3 py-2.5 pr-10 text-base bg-gray-50/50 text-gray-900 focus:ring-2 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500 ${
-                          formData.confirmPassword && formData.password !== formData.confirmPassword ? 'border-red-300 focus:border-red-400' :
-                          formData.confirmPassword && formData.password === formData.confirmPassword ? 'border-green-300 focus:border-green-400' :
-                          'border-gray-200 focus:border-primary'
+                          formData.confirmPassword &&
+                          formData.password !== formData.confirmPassword
+                            ? "border-red-300 focus:border-red-400"
+                            : formData.confirmPassword &&
+                                formData.password === formData.confirmPassword
+                              ? "border-green-300 focus:border-green-400"
+                              : "border-gray-200 focus:border-primary"
                         }`}
                       />
                       <button
                         type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
                         className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors"
-                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                        aria-label={
+                          showConfirmPassword
+                            ? "Hide password"
+                            : "Show password"
+                        }
                       >
                         {showConfirmPassword ? (
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932" />
+                          <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21m-5.757-5.757a9.97 9.97 0 01-6.478 1.932"
+                            />
                           </svg>
                         ) : (
-                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          <svg
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                            />
                           </svg>
                         )}
                       </button>
                     </div>
-                    
+
                     {/* Password Match Indicator */}
                     {formData.confirmPassword && (
                       <motion.div
@@ -460,20 +568,44 @@ export default function SignUp() {
                         {formData.password === formData.confirmPassword ? (
                           <>
                             <div className="w-4 h-4 bg-green-100 rounded-full flex items-center justify-center">
-                              <svg className="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              <svg
+                                className="w-3 h-3 text-green-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
                               </svg>
                             </div>
-                            <span className="text-sm text-green-600 font-medium">Passwords match</span>
+                            <span className="text-sm text-green-600 font-medium">
+                              Passwords match
+                            </span>
                           </>
                         ) : (
                           <>
                             <div className="w-4 h-4 bg-red-100 rounded-full flex items-center justify-center">
-                              <svg className="w-3 h-3 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              <svg
+                                className="w-3 h-3 text-red-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M6 18L18 6M6 6l12 12"
+                                />
                               </svg>
                             </div>
-                            <span className="text-sm text-red-600">Passwords do not match</span>
+                            <span className="text-sm text-red-600">
+                              Passwords do not match
+                            </span>
                           </>
                         )}
                       </motion.div>
@@ -491,10 +623,10 @@ export default function SignUp() {
                   <SimpleClubSelector
                     value={formData.clubId}
                     onChange={(clubId, isClubMember) => {
-                      setFormData(prev => ({
+                      setFormData((prev) => ({
                         ...prev,
                         clubId,
-                        isClubMember
+                        isClubMember,
                       }));
                     }}
                   />
@@ -538,7 +670,9 @@ export default function SignUp() {
                       <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                      <span className="px-2 bg-white text-gray-500">
+                        Or continue with
+                      </span>
                     </div>
                   </div>
 
@@ -579,11 +713,17 @@ export default function SignUp() {
                   className="text-center text-sm text-gray-500"
                 >
                   By creating an account, you agree to our{" "}
-                  <Link href="/terms" className="text-primary hover:text-primary-dark transition-colors">
+                  <Link
+                    href="/terms"
+                    className="text-primary hover:text-primary-dark transition-colors"
+                  >
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link href="/privacy" className="text-primary hover:text-primary-dark transition-colors">
+                  <Link
+                    href="/privacy"
+                    className="text-primary hover:text-primary-dark transition-colors"
+                  >
                     Privacy Policy
                   </Link>
                 </motion.div>
