@@ -63,13 +63,14 @@ export default function TestimonialSection({
           {!showForm ? (
             <div className="text-center">
               <button
+                type="button"
                 onClick={() => setShowForm(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors shadow-md hover:shadow-lg"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                <MessageSquarePlus className="w-5 h-5" />
+                <MessageSquarePlus className="w-4 h-4" />
                 {userTestimonial
                   ? "Edit Your Testimonial"
-                  : "Add a Testimonial"}
+                  : "Share Your Experience"}
               </button>
             </div>
           ) : (

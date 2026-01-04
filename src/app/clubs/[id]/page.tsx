@@ -7,9 +7,7 @@ import {
   StructuredData,
   generateClubStructuredData,
 } from "@/components/StructuredData";
-import ClubEvents from "@/components/ClubEvents";
 import ClubContactForm from "@/components/ClubContactForm";
-import CompactCalendarWidget from "@/components/club/CompactCalendarWidget";
 import ClubCalendar from "@/components/club/ClubCalendar";
 import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
 import { getServerSession } from "@/lib/auth-helpers";
@@ -17,7 +15,13 @@ import VerifiedBadge, {
   VerifiedTooltip,
 } from "@/components/club/VerifiedBadge";
 import TestimonialSection from "@/components/testimonials/TestimonialSection";
-import ClubInterestCTAWrapper from "@/components/club/ClubInterestCTAWrapper";
+import ClubProfileNav from "@/components/club/ClubProfileNav";
+import ClubAboutSection from "@/components/club/ClubAboutSection";
+import ClubStatsCard from "@/components/club/ClubStatsCard";
+import ClubContactCard from "@/components/club/ClubContactCard";
+import ClubFriendsSection from "@/components/club/ClubFriendsSection";
+import ClubPhotoGallery from "@/components/club/ClubPhotoGallery";
+import ClubTournamentsSection from "@/components/club/ClubTournamentsSection";
 
 export async function generateMetadata({
   params,
@@ -57,9 +61,9 @@ export async function generateMetadata({
         "camogie",
       ].filter(Boolean),
       openGraph: {
-        title: `${title} | GAA Trips`,
+        title: `${title} | PlayAway`,
         description,
-        url: `https://gaa-trips.vercel.app/clubs/${id}`,
+        url: `https://playaway.vercel.app/clubs/${id}`,
         type: "website",
         images: club.imageUrl
           ? [
@@ -73,18 +77,18 @@ export async function generateMetadata({
           : [],
       },
       twitter: {
-        title: `${title} | GAA Trips`,
+        title: `${title} | PlayAway`,
         description,
         images: club.imageUrl ? [club.imageUrl] : [],
       },
       alternates: {
-        canonical: `https://gaa-trips.vercel.app/clubs/${id}`,
+        canonical: `https://playaway.vercel.app/clubs/${id}`,
       },
     };
   } catch (error) {
     console.error("Error generating club metadata:", error);
     return {
-      title: "GAA Club | GAA Trips",
+      title: "GAA Club | PlayAway",
       description: "Discover GAA clubs worldwide.",
     };
   }
@@ -97,7 +101,6 @@ export default async function ClubDetailsPage({
 }) {
   const { id } = await params;
 
-  // Get session and club data
   const session = await getServerSession();
 
   const club = await prisma.club.findUnique({
@@ -107,6 +110,11 @@ export default async function ClubDetailsPage({
         orderBy: {
           startDate: "asc",
         },
+        include: {
+          _count: {
+            select: { teams: true },
+          },
+        },
       },
       admins: {
         select: {
@@ -115,10 +123,17 @@ export default async function ClubDetailsPage({
           email: true,
         },
       },
+      twinClub: {
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          location: true,
+        },
+      },
     },
   });
 
-  // Fetch testimonials
   const testimonials = await prisma.testimonial.findMany({
     where: {
       clubId: id,
@@ -146,15 +161,12 @@ export default async function ClubDetailsPage({
     ? testimonials.find((t) => t.userId === session.user.id)
     : null;
 
-  // Get user's admin request if they're logged in
   let adminRequest = null;
   let isCurrentAdmin = false;
 
   if (session?.user && club) {
-    // Check if user is already an admin
     isCurrentAdmin = club.admins.some((admin) => admin.id === session.user.id);
 
-    // Get user's admin request if they're not already an admin
     if (!isCurrentAdmin) {
       adminRequest = await prisma.clubAdminRequest.findUnique({
         where: {
@@ -170,24 +182,42 @@ export default async function ClubDetailsPage({
   if (!club) {
     return <div className="text-red-600">Club not found.</div>;
   }
+
+  const now = new Date();
+  const upcomingEvents = club.events.filter(
+    (event) => new Date(event.startDate) >= now
+  );
+  const pastEventsForDisplay = club.events
+    .filter((event) => new Date(event.startDate) < now)
+    .map((event) => ({
+      id: event.id,
+      title: event.title,
+      startDate: event.startDate.toISOString(),
+      location: event.location,
+      eventType: event.eventType,
+      teamsCount: event._count.teams,
+    }));
+
   return (
     <>
       <StructuredData
         data={generateClubStructuredData({
-          ...club,
-          region: club.region || null,
-          website: club.website || null,
-          facebook: club.facebook || null,
-          instagram: club.instagram || null,
+          id: club.id,
+          name: club.name,
+          location: club.location || null,
           imageUrl: club.imageUrl || null,
+          website: club.website || null,
+          teamTypes: club.teamTypes || [],
+          sportsSupported: club.sportsSupported || [],
         })}
       />
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-primary to-primary-light text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* Club Image */}
+
+      {/* Hero Section - Clean white design */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="container mx-auto px-4 py-8">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              {/* Crest */}
               <div className="flex-shrink-0">
                 <Image
                   src={
@@ -195,32 +225,54 @@ export default async function ClubDetailsPage({
                     "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
                   }
                   alt={club.name}
-                  width={200}
-                  height={200}
-                  className="w-48 h-48 rounded-full shadow-xl object-contain"
+                  width={120}
+                  height={120}
+                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-lg object-contain bg-gray-50 p-2"
+                  unoptimized
                 />
               </div>
 
               {/* Club Info */}
-              <div className="flex-1 text-center md:text-left">
-                <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
-                  <h1 className="text-4xl md:text-5xl font-bold">
+              <div className="flex-1 text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                     {club.name}
                   </h1>
                   {club.verificationStatus === "VERIFIED" && (
                     <VerifiedTooltip>
-                      <div className="bg-white/20 backdrop-blur-sm rounded-full p-2">
-                        <VerifiedBadge size="lg" showText={false} />
-                      </div>
+                      <VerifiedBadge size="md" showText={false} />
                     </VerifiedTooltip>
                   )}
                 </div>
 
-                {/* Location Badge */}
-                {club.location && (
-                  <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
+                <div className="space-y-1 mb-4">
+                  {club.location && (
+                    <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-1.5">
+                      <svg
+                        className="w-4 h-4 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      {club.location}
+                    </p>
+                  )}
+                  <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-1.5">
                     <svg
-                      className="w-5 h-5"
+                      className="w-4 h-4 text-gray-400"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -229,35 +281,14 @@ export default async function ClubDetailsPage({
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
-                    <span className="text-xl font-medium">{club.location}</span>
-                  </div>
-                )}
+                    {club.foundedYear ? `Est. ${club.foundedYear}` : "Est. —"}
+                  </p>
+                </div>
 
-                {/* Team Types */}
-                {club.teamTypes && club.teamTypes.length > 0 && (
-                  <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
-                    {club.teamTypes.map((teamType) => (
-                      <span
-                        key={teamType}
-                        className="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium"
-                      >
-                        {teamType}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
                   <ClubContactForm
                     clubId={club.id}
                     clubName={club.name}
@@ -286,322 +317,141 @@ export default async function ClubDetailsPage({
         </div>
       </div>
 
-      {/* Main Content Section */}
-      <div className="py-12 bg-gray-50">
+      {/* Section Navigation */}
+      <ClubProfileNav />
+
+      {/* Main Content */}
+      <div className="bg-gray-50 py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            {/* Quick Info Bar */}
-            <div className="bg-white rounded-lg shadow p-4 mb-6">
-              <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-                {club.location && (
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    <span className="font-medium">{club.location}</span>
-                  </div>
-                )}
-                {club.teamTypes && club.teamTypes.length > 0 && (
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                      />
-                    </svg>
-                    <span className="font-medium">
-                      {club.teamTypes.join(", ")}
-                    </span>
-                  </div>
-                )}
-                {club.admins && club.admins.length > 0 && (
-                  <div className="flex items-center gap-2">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                      />
-                    </svg>
-                    <span className="font-medium">
-                      {club.admins.length} Admin
-                      {club.admins.length !== 1 ? "s" : ""}
-                    </span>
-                  </div>
-                )}
-                {(club.website || club.facebook || club.instagram) && (
-                  <div className="flex items-center gap-3">
-                    {club.website && (
-                      <a
-                        href={club.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-blue-600 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"
-                          />
-                        </svg>
-                      </a>
-                    )}
-                    {club.facebook && (
-                      <a
-                        href={club.facebook}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-blue-600 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                        </svg>
-                      </a>
-                    )}
-                    {club.instagram && (
-                      <a
-                        href={club.instagram}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-400 hover:text-pink-600 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                        </svg>
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
+          <div className="max-w-6xl mx-auto space-y-12">
+            {/* About Section */}
+            <ClubAboutSection
+              clubId={club.id}
+              clubName={club.name}
+              bio={club.bio}
+              foundedYear={club.foundedYear}
+              teamTypes={club.teamTypes}
+              isOpenToVisitors={club.isOpenToVisitors}
+              preferredWeekends={club.preferredWeekends as string[] | null}
+            />
+
+            {/* Stats and Contact Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ClubStatsCard clubId={club.id} />
+              <ClubContactCard
+                contactEmail={club.contactEmail}
+                contactPhone={club.contactPhone}
+                contactCountryCode={club.contactCountryCode}
+                contactFirstName={club.contactFirstName}
+                contactLastName={club.contactLastName}
+                website={club.website}
+                facebook={club.facebook}
+                instagram={club.instagram}
+                twitter={club.twitter}
+                tiktok={club.tiktok}
+              />
             </div>
 
-            {/* Two Column Layout */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Left Column - Club Details */}
-              <div className="lg:col-span-2 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:items-center">
-                  {/* Center CTA - Desktop Only */}
-                  <div className="md:col-span-1 flex items-center justify-center">
-                    <ClubInterestCTAWrapper
-                      clubId={club.id}
-                      clubName={club.name}
-                      userId={session?.user?.id}
-                    />
-                  </div>
+            {/* Tournaments Section */}
+            <section id="events" className="scroll-mt-24">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2">
+                  <ClubTournamentsSection
+                    upcomingEvents={upcomingEvents}
+                    pastEvents={pastEventsForDisplay}
+                  />
+                </div>
 
-                  {/* Club Admins and Contact Combined */}
-                  {(club.admins && club.admins.length > 0) ||
-                  club.contactFirstName ||
-                  club.contactEmail ||
-                  club.contactPhone ? (
-                    <div className="bg-white rounded-lg shadow-md border border-gray-200 p-6 md:col-span-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                        <svg
-                          className="w-5 h-5 mr-2 text-primary"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                          />
-                        </svg>
-                        Contact & Admin
-                      </h3>
-
-                      {/* Contact Details */}
-                      {(club.contactFirstName ||
-                        club.contactEmail ||
-                        club.contactPhone) && (
-                        <div className="space-y-2 mb-4 pb-4 border-b border-gray-200">
-                          {(club.contactFirstName || club.contactLastName) && (
-                            <div className="flex items-center space-x-2">
-                              <span className="text-sm font-medium text-gray-500">
-                                Contact:
-                              </span>
-                              <span className="text-sm text-gray-900">
-                                {[club.contactFirstName, club.contactLastName]
-                                  .filter(Boolean)
-                                  .join(" ")}
-                              </span>
-                            </div>
-                          )}
-                          {club.contactEmail && (
-                            <div className="flex items-center space-x-2">
-                              <span className="text-sm font-medium text-gray-500">
-                                Email:
-                              </span>
-                              <a
-                                href={`mailto:${club.contactEmail}`}
-                                className="text-sm text-primary hover:text-primary/80"
-                              >
-                                {club.contactEmail}
-                              </a>
-                            </div>
-                          )}
-                          {club.contactPhone && (
-                            <div className="flex items-center space-x-2">
-                              <span className="text-sm font-medium text-gray-500">
-                                Phone:
-                              </span>
-                              <a
-                                href={`tel:${club.contactPhone}`}
-                                className="text-sm text-primary hover:text-primary/80"
-                              >
-                                {club.contactCountryCode &&
-                                  `+${club.contactCountryCode} `}
-                                {club.contactPhone}
-                              </a>
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Admins */}
+                {/* Club Admin Section */}
+                <div className="lg:col-span-1">
+                  {((club.admins && club.admins.length > 0) ||
+                    (isCurrentAdmin &&
+                      club.verificationStatus !== "VERIFIED")) && (
+                    <div className="bg-white rounded-lg border border-gray-200 p-6">
                       {club.admins && club.admins.length > 0 && (
-                        <div className="space-y-2">
-                          <p className="text-sm font-medium text-gray-500 mb-2">
-                            Administrators:
-                          </p>
-                          {club.admins.map((admin) => (
-                            <div
-                              key={admin.id}
-                              className="flex items-center space-x-3"
+                        <div className="mb-4">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                            <svg
+                              className="w-5 h-5 text-gray-400"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
                             >
-                              <div className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-                                <span className="text-xs font-medium">
-                                  {admin.name
-                                    ? admin.name.charAt(0).toUpperCase()
-                                    : admin.email.charAt(0).toUpperCase()}
-                                </span>
-                              </div>
-                              <div>
-                                <p className="text-sm font-medium text-gray-900">
-                                  {admin.name || "Club Admin"}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {admin.email}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Club Admin Verification Section */}
-                      {isCurrentAdmin &&
-                        club.verificationStatus !== "VERIFIED" && (
-                          <div className="mt-4 pt-4 border-t border-gray-200">
-                            <div className="bg-amber-50 p-4 rounded-lg">
-                              <div className="flex items-center justify-between">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                              />
+                            </svg>
+                            Club Admins
+                          </h3>
+                          <div className="space-y-2">
+                            {club.admins.map((admin) => (
+                              <div
+                                key={admin.id}
+                                className="flex items-center gap-3"
+                              >
+                                <div className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                                  <span className="text-xs font-medium">
+                                    {admin.name
+                                      ? admin.name.charAt(0).toUpperCase()
+                                      : admin.email.charAt(0).toUpperCase()}
+                                  </span>
+                                </div>
                                 <div>
-                                  <h4 className="text-sm font-medium text-amber-800">
-                                    Club Verification
-                                  </h4>
-                                  <p className="text-sm text-amber-700 mt-1">
-                                    Complete your club verification to unlock
-                                    premium features
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {admin.name || "Club Admin"}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {admin.email}
                                   </p>
                                 </div>
-                                <Link
-                                  href={`/club-admin/${club.id}`}
-                                  className="inline-flex items-center px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
-                                >
-                                  Complete Club Verification
-                                </Link>
                               </div>
-                            </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {isCurrentAdmin &&
+                        club.verificationStatus !== "VERIFIED" && (
+                          <div className="bg-amber-50 p-4 rounded-lg">
+                            <h4 className="text-sm font-medium text-amber-800">
+                              Club Verification
+                            </h4>
+                            <p className="text-sm text-amber-700 mt-1">
+                              Complete verification to unlock premium features
+                            </p>
+                            <Link
+                              href={`/club-admin/${club.id}`}
+                              className="inline-flex items-center mt-3 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
+                            >
+                              Complete Verification
+                            </Link>
                           </div>
                         )}
                     </div>
-                  ) : null}
-                </div>
-
-                {/* Events Section */}
-                {club.events && club.events.length > 0 && (
-                  <div className="bg-white rounded-lg shadow p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                      <svg
-                        className="w-5 h-5 mr-2 text-primary"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                      Recent Events
-                    </h3>
-                    <ClubEvents events={club.events} compact={true} />
-                  </div>
-                )}
-              </div>
-
-              {/* Right Column - Events Widget */}
-              <div className="lg:col-span-1">
-                <div className="lg:sticky lg:top-4">
-                  <CompactCalendarWidget
-                    clubId={club.id}
-                    clubName={club.name}
-                    userId={session?.user?.id}
-                  />
+                  )}
                 </div>
               </div>
-            </div>
+            </section>
+
+            {/* Friends & Twin Club Section */}
+            <ClubFriendsSection
+              clubId={club.id}
+              clubName={club.name}
+              isAdmin={isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"}
+              twinClub={club.twinClub}
+            />
+
+            {/* Photo Gallery */}
+            <ClubPhotoGallery
+              clubId={club.id}
+              isAdmin={isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"}
+            />
 
             {/* Testimonials Section */}
-            <div className="mt-12">
+            <section id="testimonials" className="scroll-mt-24">
               <TestimonialSection
                 clubId={club.id}
                 clubName={club.name}
@@ -621,10 +471,10 @@ export default async function ClubDetailsPage({
                 }
                 isAuthenticated={!!session?.user}
               />
-            </div>
+            </section>
 
-            {/* Back to Clubs Link */}
-            <div className="text-center mt-8">
+            {/* Back Link */}
+            <div className="text-center">
               <Link
                 href="/clubs"
                 className="inline-flex items-center text-primary hover:text-primary/80 font-medium"
@@ -650,16 +500,29 @@ export default async function ClubDetailsPage({
       </div>
 
       {/* Full Calendar Section */}
-      <div id="full-calendar" className="py-12 bg-white">
+      <section id="calendar" className="scroll-mt-24 py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+              <svg
+                className="w-7 h-7 text-primary"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
               Club Calendar
             </h2>
             <ClubCalendar clubId={club.id} clubName={club.name} />
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

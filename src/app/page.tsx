@@ -56,7 +56,6 @@ export default function HomePage() {
   const statsRef = useRef(null);
   const isInView = useInView(statsRef, { once: true });
 
-
   const isEventPast = (dateString: string) => {
     return new Date(dateString) < new Date();
   };
@@ -247,89 +246,404 @@ export default function HomePage() {
               </motion.div>
             </div>
 
-            {/* Right Column - Europe Map */}
+            {/* Right Column - Europe Map with Flying Hurl */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 1, delay: 0.8 }}
-              className="relative flex items-center justify-center"
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-[60%] lg:w-[55%]"
             >
               <Image
                 src="/Europe-map.png.png"
                 alt="Europe Map"
                 width={1600}
                 height={1200}
-                className="w-full h-auto max-w-6xl opacity-60"
+                className="w-full h-auto opacity-50 scale-150 translate-x-[15%]"
                 unoptimized
               />
+
+              {/* Flying Hurl Animations */}
+              <div className="absolute inset-0 pointer-events-none">
+                {/* First Hurl - Northern route, left to right */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-16 h-auto md:w-20 lg:w-24"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 1, 0],
+                    left: ["5%", "25%", "45%", "65%", "85%"],
+                    top: ["25%", "18%", "22%", "15%", "20%"],
+                    rotate: [0, -3, -8, -5, 0],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 2,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    left: {
+                      delay: 2,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    top: {
+                      delay: 2,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    rotate: {
+                      delay: 2,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  }}
+                />
+                {/* Second Hurl - Central route, right to left (flipped) */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-14 h-auto md:w-18 lg:w-22"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 1, 0],
+                    left: ["90%", "70%", "50%", "30%", "10%"],
+                    top: ["40%", "45%", "38%", "42%", "35%"],
+                    rotate: [0, 5, -5, 8, 0],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 4,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    left: {
+                      delay: 4,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    top: {
+                      delay: 4,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    rotate: {
+                      delay: 4,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                    scaleX: -1,
+                  }}
+                />
+                {/* Third Hurl - Southern route, right to left (flipped) */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-12 h-auto md:w-16 lg:w-20"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 1, 0],
+                    left: ["90%", "70%", "50%", "30%", "10%"],
+                    top: ["70%", "75%", "68%", "72%", "65%"],
+                    rotate: [0, 8, -4, 6, 0],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 6,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    left: {
+                      delay: 6,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    top: {
+                      delay: 6,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    rotate: {
+                      delay: 6,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                    scaleX: -1,
+                  }}
+                />
+                {/* Fourth Hurl - Diagonal route, bottom-left to top-right */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-14 h-auto md:w-18 lg:w-22"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 1, 0],
+                    left: ["10%", "30%", "50%", "70%", "85%"],
+                    top: ["80%", "65%", "50%", "35%", "20%"],
+                    rotate: [-30, -35, -28, -32, -30],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 8,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    left: {
+                      delay: 8,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    top: {
+                      delay: 8,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    rotate: {
+                      delay: 8,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  }}
+                />
+                {/* Fifth Hurl - Diagonal route, top-right to bottom-left (flipped) */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-12 h-auto md:w-16 lg:w-20"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 1, 0],
+                    left: ["85%", "65%", "45%", "25%", "10%"],
+                    top: ["15%", "30%", "45%", "60%", "75%"],
+                    rotate: [30, 35, 28, 32, 30],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 10,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    left: {
+                      delay: 10,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    top: {
+                      delay: 10,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    rotate: {
+                      delay: 10,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                    scaleX: -1,
+                  }}
+                />
+                {/* Sixth Hurl - Mid-level left to right */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-14 h-auto md:w-18 lg:w-22"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 1, 1, 1, 0],
+                    left: ["8%", "28%", "48%", "68%", "88%"],
+                    top: ["52%", "48%", "55%", "50%", "53%"],
+                    rotate: [0, -4, 3, -2, 0],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 3,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    left: {
+                      delay: 3,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    top: {
+                      delay: 3,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                    rotate: {
+                      delay: 3,
+                      duration: 15,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 5,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  }}
+                />
+              </div>
             </motion.div>
           </div>
 
-          {/* Mobile Layout - Text with simple background */}
+          {/* Mobile Layout - Text with flying hurls */}
           <div className="md:hidden relative w-full h-screen flex items-center justify-center overflow-hidden">
-            {/* Subtle floating shapes background */}
-            <div className="absolute inset-0">
-              <svg
-                className="absolute inset-0 w-full h-full"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <defs>
-                  <filter id="blur">
-                    <feGaussianBlur in="SourceGraphic" stdDeviation="30" />
-                  </filter>
-                </defs>
-                <ellipse
-                  cx="20%"
-                  cy="20%"
-                  rx="150"
-                  ry="80"
-                  fill="rgba(255,255,255,0.1)"
-                  filter="url(#blur)"
-                >
-                  <animateTransform
-                    attributeName="transform"
-                    type="translate"
-                    from="0 0"
-                    to="300 0"
-                    dur="40s"
-                    repeatCount="indefinite"
-                  />
-                </ellipse>
-                <ellipse
-                  cx="60%"
-                  cy="40%"
-                  rx="200"
-                  ry="100"
-                  fill="rgba(255,255,255,0.08)"
-                  filter="url(#blur)"
-                >
-                  <animateTransform
-                    attributeName="transform"
-                    type="translate"
-                    from="0 0"
-                    to="250 0"
-                    dur="50s"
-                    repeatCount="indefinite"
-                  />
-                </ellipse>
-                <ellipse
-                  cx="30%"
-                  cy="70%"
-                  rx="180"
-                  ry="90"
-                  fill="rgba(255,255,255,0.12)"
-                  filter="url(#blur)"
-                >
-                  <animateTransform
-                    attributeName="transform"
-                    type="translate"
-                    from="0 0"
-                    to="280 0"
-                    dur="45s"
-                    repeatCount="indefinite"
-                  />
-                </ellipse>
-              </svg>
+            {/* Flying Hurls - Above and Below Text */}
+            <div className="absolute inset-0 pointer-events-none">
+              {/* Upper Hurl - Left to right */}
+              <motion.img
+                src="/flying-hurl.png.png"
+                alt="Flying Hurl"
+                className="absolute w-44 h-auto"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: [0, 0.7, 0.7, 0.7, 0],
+                  left: ["5%", "30%", "50%", "70%", "95%"],
+                  top: ["18%", "18%", "18%", "18%", "18%"],
+                  rotate: [0, 0, 0, 0, 0],
+                }}
+                transition={{
+                  opacity: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                  left: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                  top: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                  rotate: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                }}
+                style={{
+                  filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                }}
+              />
+              {/* Lower Hurl - Right to left (flipped) */}
+              <motion.img
+                src="/flying-hurl.png.png"
+                alt="Flying Hurl"
+                className="absolute w-44 h-auto"
+                initial={{ opacity: 0 }}
+                animate={{
+                  opacity: [0, 0.7, 0.7, 0.7, 0],
+                  left: ["95%", "70%", "50%", "30%", "5%"],
+                  top: ["68%", "68%", "68%", "68%", "68%"],
+                  rotate: [0, 0, 0, 0, 0],
+                }}
+                transition={{
+                  opacity: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                  left: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                  top: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                  rotate: {
+                    delay: 2,
+                    duration: 12,
+                    ease: "easeInOut",
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                  },
+                }}
+                style={{
+                  filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  scaleX: -1,
+                }}
+              />
             </div>
 
             {/* Foreground Text Content */}

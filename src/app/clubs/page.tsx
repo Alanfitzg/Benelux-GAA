@@ -471,32 +471,29 @@ export default function ClubsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="group bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
                 >
                   <Link href={`/clubs/${club.id}`} className="block">
-                    {/* Club image - square format */}
+                    {/* Club image */}
                     <div className="relative aspect-square bg-gray-50">
                       {club.imageUrl ? (
                         <Image
                           src={club.imageUrl}
                           alt={club.name}
                           fill
-                          className="object-contain group-hover:scale-105 transition-transform duration-300"
+                          className="object-contain p-4"
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <div className="text-center text-gray-400">
-                            <div className="text-6xl mb-2">🏟️</div>
-                          </div>
+                        <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">
+                          🏟️
                         </div>
                       )}
-
                       {/* Verified badge */}
                       {club.verificationStatus === "VERIFIED" && (
-                        <div className="absolute top-2 right-2 md:top-4 md:right-4">
+                        <div className="absolute top-2 right-2 md:top-3 md:right-3">
                           <VerifiedTooltip>
-                            <div className="bg-white rounded-full shadow-lg p-1 md:p-1.5">
+                            <div className="bg-white rounded-full shadow-md p-1">
                               <VerifiedBadge size="sm" showText={false} />
                             </div>
                           </VerifiedTooltip>
@@ -504,28 +501,20 @@ export default function ClubsPage() {
                       )}
                     </div>
 
-                    {/* Club details section */}
-                    <div className="p-2 md:p-5">
-                      {/* Club name */}
-                      <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">
+                    {/* Club details */}
+                    <div className="p-2 md:p-4">
+                      <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-1 line-clamp-2">
                         {club.name}
                       </h3>
-
-                      {/* Location */}
                       {club.location && (
-                        <p className="text-xs md:text-sm text-gray-600 mb-1 line-clamp-1">
-                          <span className="font-medium hidden md:inline">
-                            City:
-                          </span>{" "}
-                          {club.location.split(",")[0]}
+                        <p className="text-xs md:text-sm text-gray-500 truncate">
+                          City: {club.location.split(",")[0]}
                         </p>
                       )}
-
-                      {/* Team types */}
                       {club.teamTypes.length > 0 && (
-                        <p className="text-xs md:text-sm text-gray-600 hidden md:block">
-                          <span className="font-medium">Grades:</span>{" "}
-                          {club.teamTypes.join(" | ")}
+                        <p className="hidden md:block text-xs text-gray-400 mt-1 truncate">
+                          Grades: {club.teamTypes.slice(0, 3).join(", ")}
+                          {club.teamTypes.length > 3 && "..."}
                         </p>
                       )}
                     </div>
@@ -733,32 +722,29 @@ export default function ClubsPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="group bg-white rounded-lg shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden"
+                        className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
                       >
                         <Link href={`/clubs/${club.id}`} className="block">
-                          {/* Club image - constrained size */}
-                          <div className="relative h-32 md:h-40 bg-gray-50 flex items-center justify-center p-4">
+                          {/* Club image */}
+                          <div className="relative aspect-square bg-gray-50">
                             {club.imageUrl ? (
-                              <div className="relative w-20 h-20 md:w-24 md:h-24">
-                                <Image
-                                  src={club.imageUrl}
-                                  alt={club.name}
-                                  fill
-                                  className="object-contain group-hover:scale-105 transition-transform duration-300"
-                                  unoptimized
-                                />
-                              </div>
+                              <Image
+                                src={club.imageUrl}
+                                alt={club.name}
+                                fill
+                                className="object-contain p-4"
+                                unoptimized
+                              />
                             ) : (
-                              <div className="text-center text-gray-400">
-                                <div className="text-4xl md:text-5xl">🏟️</div>
+                              <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">
+                                🏟️
                               </div>
                             )}
-
                             {/* Verified badge */}
                             {club.verificationStatus === "VERIFIED" && (
-                              <div className="absolute top-2 right-2 md:top-4 md:right-4">
+                              <div className="absolute top-2 right-2 md:top-3 md:right-3">
                                 <VerifiedTooltip>
-                                  <div className="bg-white rounded-full shadow-lg p-1 md:p-1.5">
+                                  <div className="bg-white rounded-full shadow-md p-1">
                                     <VerifiedBadge size="sm" showText={false} />
                                   </div>
                                 </VerifiedTooltip>
@@ -766,28 +752,20 @@ export default function ClubsPage() {
                             )}
                           </div>
 
-                          {/* Club details section */}
-                          <div className="p-2 md:p-5">
-                            {/* Club name */}
-                            <h3 className="text-xs md:text-lg font-bold text-gray-900 mb-1 md:mb-2 line-clamp-2">
+                          {/* Club details */}
+                          <div className="p-2 md:p-4">
+                            <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-1 line-clamp-2">
                               {club.name}
                             </h3>
-
-                            {/* Location */}
                             {club.location && (
-                              <p className="text-xs md:text-sm text-gray-600 mb-1 line-clamp-1">
-                                <span className="font-medium hidden md:inline">
-                                  City:
-                                </span>{" "}
-                                {club.location.split(",")[0]}
+                              <p className="text-xs md:text-sm text-gray-500 truncate">
+                                City: {club.location.split(",")[0]}
                               </p>
                             )}
-
-                            {/* Team types */}
                             {club.teamTypes.length > 0 && (
-                              <p className="text-xs md:text-sm text-gray-600 hidden md:block">
-                                <span className="font-medium">Grades:</span>{" "}
-                                {club.teamTypes.join(" | ")}
+                              <p className="hidden md:block text-xs text-gray-400 mt-1 truncate">
+                                Grades: {club.teamTypes.slice(0, 3).join(", ")}
+                                {club.teamTypes.length > 3 && "..."}
                               </p>
                             )}
                           </div>

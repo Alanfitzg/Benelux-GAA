@@ -50,92 +50,65 @@ export default function TestimonialCarousel({
     setCurrentIndex((prevIndex) => (prevIndex + 1) % testimonials.length);
   };
 
-  const goToSlide = (index: number) => {
-    setIsAutoPlaying(false);
-    setCurrentIndex(index);
-  };
-
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <div className="bg-gradient-to-br from-primary to-primary-light rounded-xl p-8 relative">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex items-start mb-6">
-          <Quote className="w-10 h-10 text-white/80 flex-shrink-0 mt-2" />
-          <h2 className="text-2xl font-bold text-white ml-3">
-            What People Say About This Club
-          </h2>
-        </div>
+    <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="flex items-center gap-2 mb-4">
+        <Quote className="w-5 h-5 text-gray-400" />
+        <h3 className="text-lg font-semibold text-gray-900">
+          What Visitors Say
+        </h3>
+      </div>
 
-        <div className="relative">
-          {testimonials.length > 1 && (
-            <>
-              <button
-                onClick={goToPrevious}
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow z-10"
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-700" />
-              </button>
-              <button
-                onClick={goToNext}
-                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 bg-white rounded-full p-2 shadow-lg hover:shadow-xl transition-shadow z-10"
-                aria-label="Next testimonial"
-              >
-                <ChevronRight className="w-5 h-5 text-gray-700" />
-              </button>
-            </>
-          )}
+      <div className="relative">
+        <div className="min-h-[120px]">
+          <p className="text-gray-600 leading-relaxed italic">
+            &ldquo;{currentTestimonial.content}&rdquo;
+          </p>
 
-          <div className="rounded-lg p-6 min-h-[200px]">
-            <div className="space-y-4">
-              <p className="text-white text-lg leading-relaxed italic">
-                &ldquo;{currentTestimonial.content}&rdquo;
+          <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+            <div>
+              <p className="text-sm font-medium text-gray-900">
+                {currentTestimonial.user.name ||
+                  currentTestimonial.user.username}
               </p>
-
-              <div className="flex items-center justify-between pt-4 border-t border-white/20">
-                <div>
-                  <p className="font-medium text-white">
-                    {currentTestimonial.user.name ||
-                      currentTestimonial.user.username}
-                  </p>
-                  <p className="text-sm text-white/80">
-                    {new Date(
-                      currentTestimonial.submittedAt
-                    ).toLocaleDateString("en-IE", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                </div>
-
-                {testimonials.length > 1 && (
-                  <div className="text-sm text-white/80">
-                    {currentIndex + 1} of {testimonials.length}
-                  </div>
+              <p className="text-xs text-gray-500">
+                {new Date(currentTestimonial.submittedAt).toLocaleDateString(
+                  "en-IE",
+                  {
+                    year: "numeric",
+                    month: "short",
+                  }
                 )}
-              </div>
+              </p>
             </div>
+
+            {testimonials.length > 1 && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={goToPrevious}
+                  className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft className="w-4 h-4 text-gray-500" />
+                </button>
+                <span className="text-xs text-gray-400">
+                  {currentIndex + 1}/{testimonials.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={goToNext}
+                  className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight className="w-4 h-4 text-gray-500" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
-
-        {testimonials.length > 1 && (
-          <div className="flex justify-center mt-6 space-x-2">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentIndex
-                    ? "bg-white w-8"
-                    : "bg-white/40 hover:bg-white/60"
-                }`}
-                aria-label={`Go to testimonial ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );

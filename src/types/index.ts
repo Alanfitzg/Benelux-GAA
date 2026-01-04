@@ -11,6 +11,7 @@ export interface Club {
   facebook?: string | null;
   instagram?: string | null;
   website?: string | null;
+  twitter?: string | null;
   codes?: string | null;
   imageUrl?: string | null;
   location?: string | null;
@@ -26,8 +27,51 @@ export interface Club {
   contactCountryCode?: string | null;
   isContactWilling?: boolean;
   verificationStatus?: string;
+  foundedYear?: number | null;
+  bio?: string | null;
+  isOpenToVisitors?: boolean;
+  preferredWeekends?: string[] | null;
+  twinClubId?: string | null;
+  twinClub?: Club | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  photos?: ClubPhoto[];
+  clubFriends?: ClubFriend[];
+}
+
+export interface ClubPhoto {
+  id: string;
+  clubId: string;
+  url: string;
+  caption?: string | null;
+  order: number;
+  createdAt: string;
+}
+
+export interface ClubFriend {
+  id: string;
+  clubId: string;
+  friendClubId: string;
+  visitYear?: number | null;
+  notes?: string | null;
+  createdAt: string;
+  friendClub?: Club;
+}
+
+export interface ClubStats {
+  yearsActive: number;
+  eventsHosted: number;
+  teamsWelcomed: number;
+}
+
+export interface FriendClub {
+  id: string;
+  name: string;
+  imageUrl?: string | null;
+  location?: string | null;
+  visitCount: number;
+  lastVisitYear?: number | null;
+  isManual: boolean;
 }
 
 export interface Event {
@@ -43,23 +87,27 @@ export interface Event {
   description?: string;
   isRecurring?: boolean;
   imageUrl?: string;
-  
+
   // Tournament-specific fields
   minTeams?: number;
   maxTeams?: number;
   acceptedTeamTypes?: string[];
-  visibility?: 'PUBLIC' | 'PRIVATE';
-  status?: 'UPCOMING' | 'ACTIVE' | 'CLOSED';
-  bracketType?: 'SINGLE_ELIMINATION' | 'DOUBLE_ELIMINATION' | 'ROUND_ROBIN' | 'GROUP_STAGE';
+  visibility?: "PUBLIC" | "PRIVATE";
+  status?: "UPCOMING" | "ACTIVE" | "CLOSED";
+  bracketType?:
+    | "SINGLE_ELIMINATION"
+    | "DOUBLE_ELIMINATION"
+    | "ROUND_ROBIN"
+    | "GROUP_STAGE";
   bracketData?: unknown;
   divisions?: string[];
   maxTeamsPerClub?: number;
-  
+
   createdAt?: string;
   updatedAt?: string;
   clubId?: string;
   club?: Club;
-  
+
   // Tournament relations
   teams?: TournamentTeam[];
   matches?: Match[];
@@ -103,6 +151,11 @@ export interface Match {
   updatedAt: string;
 }
 
-export type TeamStatus = 'REGISTERED' | 'CONFIRMED' | 'WITHDRAWN';
-export type MatchStatus = 'SCHEDULED' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED' | 'POSTPONED';
-export type TournamentVisibility = 'PUBLIC' | 'PRIVATE'; 
+export type TeamStatus = "REGISTERED" | "CONFIRMED" | "WITHDRAWN";
+export type MatchStatus =
+  | "SCHEDULED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED"
+  | "POSTPONED";
+export type TournamentVisibility = "PUBLIC" | "PRIVATE";

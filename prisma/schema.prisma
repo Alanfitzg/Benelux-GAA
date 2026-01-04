@@ -113,6 +113,15 @@ model Club {
   lastVerificationCheck DateTime?
   verificationExpiry  DateTime?
   isMainlandEurope    Boolean              @default(false) // For geo-restriction
+  foundedYear         Int?
+  bio                 String?              @db.Text
+  twitter             String?
+  tiktok              String?
+  isOpenToVisitors    Boolean              @default(true)
+  preferredWeekends   Json?                // Array of specific date strings for preferred hosting weekends
+  twinClubId          String?              // Reference to twinned Irish club (GAA twinning initiative)
+  twinClub            Club?                @relation("TwinClub", fields: [twinClubId], references: [id])
+  twinnedBy           Club[]               @relation("TwinClub")
   availabilitySlots   AvailabilitySlot[]
   bookings            Booking[]
   clubAdminRequests   ClubAdminRequest[]
@@ -135,6 +144,9 @@ model Club {
   internationalUnit   InternationalUnit?   @relation(fields: [internationalUnitId], references: [id])
   country             Country?             @relation(fields: [countryId], references: [id])
   regionRecord        Region?              @relation(fields: [regionId], references: [id])
+  photos              ClubPhoto[]
+  clubFriends         ClubFriend[]         @relation("ClubFriends")
+  friendOf            ClubFriend[]         @relation("FriendOf")
 
   @@index([status])
   @@index([location])
@@ -1001,4 +1013,33 @@ enum CrestType {
 enum HolidayType {
   PUBLIC
   SCHOOL
+}
+
+model ClubPhoto {
+  id        String   @id @default(cuid())
+  clubId    String
+  url       String
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  club      Club     @relation(fields: [clubId], references: [id], onDelete: Cascade)
+
+  @@index([clubId])
+}
+
+model ClubFriend {
+  id            String   @id @default(cuid())
+  clubId        String
+  friendClubId  String
+  visitYear     Int?
+  notes         String?
+  createdAt     DateTime @default(now())
+
+  club          Club     @relation("ClubFriends", fields: [clubId], references: [id], onDelete: Cascade)
+  friendClub    Club     @relation("FriendOf", fields: [friendClubId], references: [id], onDelete: Cascade)
+
+  @@unique([clubId, friendClubId])
+  @@index([clubId])
+  @@index([friendClubId])
 }
