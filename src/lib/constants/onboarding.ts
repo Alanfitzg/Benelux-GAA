@@ -1,145 +1,144 @@
 export const TRAVEL_MOTIVATIONS = {
-  weather_sun: {
-    id: 'weather_sun',
-    label: 'Sun & Warmth',
-    icon: '☀️',
-    description: 'Warm weather destinations'
+  sun_beach: {
+    id: "sun_beach",
+    label: "Sun & Beach",
+    icon: "☀️",
+    description: "Warm weather destinations",
+  },
+  city_break: {
+    id: "city_break",
+    label: "City Break",
+    icon: "🏙️",
+    description: "Urban destinations & nightlife",
   },
   budget: {
-    id: 'budget',
-    label: 'Budget-Friendly',
-    icon: '💰',
-    description: 'Affordable trips'
+    id: "budget",
+    label: "Budget Trip",
+    icon: "💰",
+    description: "Cheapest option available",
   },
-  specific_location: {
-    id: 'specific_location',
-    label: 'Specific Place',
-    icon: '📍',
-    description: 'City or club in mind'
+  big_event: {
+    id: "big_event",
+    label: "Big Event",
+    icon: "🎉",
+    description: "Align with sports/music events",
   },
-  activities: {
-    id: 'activities',
-    label: 'Activities',
-    icon: '🏄',
-    description: 'Sports & adventures'
+  competitive: {
+    id: "competitive",
+    label: "Competitive",
+    icon: "🏆",
+    description: "Serious tournament, results matter",
   },
-  social: {
-    id: 'social',
-    label: 'Social & Craic',
-    icon: '🍺',
-    description: 'Nightlife & fun'
+  long_haul: {
+    id: "long_haul",
+    label: "Long Haul",
+    icon: "🌍",
+    description: "USA, Australia, etc.",
+    note: "Not currently offering",
   },
-  tournament: {
-    id: 'tournament',
-    label: 'Top Tournaments',
-    icon: '🏆',
-    description: 'Competitive events'
-  },
-  short_trip: {
-    id: 'short_trip',
-    label: 'Quick Getaway',
-    icon: '✈️',
-    description: 'Short travel time'
-  },
-  culture: {
-    id: 'culture',
-    label: 'Culture',
-    icon: '🏛️',
-    description: 'Local experiences'
-  },
-  friends: {
-    id: 'friends',
-    label: 'Follow Friends',
-    icon: '👥',
-    description: 'Where teams are going'
-  }
 } as const;
 
 export const COMPETITIVE_LEVELS = {
-  social_tournament: {
-    id: 'social_tournament',
-    label: 'Social Tournament',
-    description: 'More interested in the trip than competitive games - focus on fun, culture, and craic'
-  },
-  competitive_friendly: {
-    id: 'competitive_friendly',
-    label: 'Competitive Friendly',
-    description: 'High-level teams (usually Irish) looking to play against other strong teams'
-  },
   training_camp: {
-    id: 'training_camp',
-    label: 'Training Camp Abroad',
-    description: 'Focused on team preparation with training facilities and practice matches'
-  }
+    id: "training_camp",
+    label: "Training Camp",
+    description:
+      "Team preparation with training facilities and practice matches",
+  },
+  friendly_tournament: {
+    id: "friendly_tournament",
+    label: "Friendly Tournament",
+    description: "Competitive games in a relaxed, social atmosphere",
+  },
+  fifteen_a_side: {
+    id: "fifteen_a_side",
+    label: "15-a-Side",
+    description: "Full format competitive matches against local teams",
+  },
+  social_gaa: {
+    id: "social_gaa",
+    label: "Social GAA",
+    description: "Focus on fun, culture, and craic - results secondary",
+  },
+  blitz_tournament: {
+    id: "blitz_tournament",
+    label: "Blitz Tournament",
+    description: "Multiple short games in round-robin format",
+  },
+  exhibition_match: {
+    id: "exhibition_match",
+    label: "Exhibition Match",
+    description: "One-off showcase game against a local team",
+  },
 } as const;
 
 export const BUDGET_RANGES = {
   budget: {
-    id: 'budget',
-    label: 'Budget',
-    description: '€0-200 per person'
+    id: "budget",
+    label: "Budget",
+    description: "€0-200 per person",
   },
-  'mid-range': {
-    id: 'mid-range',
-    label: 'Mid-Range',
-    description: '€200-500 per person'
+  "mid-range": {
+    id: "mid-range",
+    label: "Mid-Range",
+    description: "€200-500 per person",
   },
   premium: {
-    id: 'premium',
-    label: 'Premium',
-    description: '€500+ per person'
-  }
+    id: "premium",
+    label: "Premium",
+    description: "€500+ per person",
+  },
 } as const;
 
 export const MONTHS = [
-  { id: 'january', label: 'January' },
-  { id: 'february', label: 'February' },
-  { id: 'march', label: 'March' },
-  { id: 'april', label: 'April' },
-  { id: 'may', label: 'May' },
-  { id: 'june', label: 'June' },
-  { id: 'july', label: 'July' },
-  { id: 'august', label: 'August' },
-  { id: 'september', label: 'September' },
-  { id: 'october', label: 'October' },
-  { id: 'november', label: 'November' },
-  { id: 'december', label: 'December' }
+  { id: "january", label: "January" },
+  { id: "february", label: "February" },
+  { id: "march", label: "March" },
+  { id: "april", label: "April" },
+  { id: "may", label: "May" },
+  { id: "june", label: "June" },
+  { id: "july", label: "July" },
+  { id: "august", label: "August" },
+  { id: "september", label: "September" },
+  { id: "october", label: "October" },
+  { id: "november", label: "November" },
+  { id: "december", label: "December" },
 ] as const;
 
 export const SEASONS = [
-  { 
-    id: 'spring', 
-    label: 'Spring', 
-    icon: '🌸',
-    months: ['march', 'april', 'may']
+  {
+    id: "spring",
+    label: "Spring",
+    icon: "🌸",
+    months: ["march", "april", "may"],
   },
-  { 
-    id: 'summer', 
-    label: 'Summer', 
-    icon: '☀️',
-    months: ['june', 'july', 'august']
+  {
+    id: "summer",
+    label: "Summer",
+    icon: "☀️",
+    months: ["june", "july", "august"],
   },
-  { 
-    id: 'autumn', 
-    label: 'Autumn', 
-    icon: '🍂',
-    months: ['september', 'october', 'november']
+  {
+    id: "autumn",
+    label: "Autumn",
+    icon: "🍂",
+    months: ["september", "october", "november"],
   },
-  { 
-    id: 'winter', 
-    label: 'Winter', 
-    icon: '❄️',
-    months: ['december', 'january', 'february']
-  }
+  {
+    id: "winter",
+    label: "Winter",
+    icon: "❄️",
+    months: ["december", "january", "february"],
+  },
 ] as const;
 
 export const ACTIVITIES = {
-  surfing: { id: 'surfing', label: 'Surfing', icon: '🏄' },
-  hiking: { id: 'hiking', label: 'Hiking', icon: '🥾' },
-  swimming: { id: 'swimming', label: 'Swimming', icon: '🏊' },
-  skiing: { id: 'skiing', label: 'Skiing', icon: '⛷️' },
-  cycling: { id: 'cycling', label: 'Cycling', icon: '🚴' },
-  golf: { id: 'golf', label: 'Golf', icon: '⛳' },
-  fishing: { id: 'fishing', label: 'Fishing', icon: '🎣' },
-  sailing: { id: 'sailing', label: 'Sailing', icon: '⛵' }
+  surfing: { id: "surfing", label: "Surfing", icon: "🏄" },
+  hiking: { id: "hiking", label: "Hiking", icon: "🥾" },
+  swimming: { id: "swimming", label: "Swimming", icon: "🏊" },
+  skiing: { id: "skiing", label: "Skiing", icon: "⛷️" },
+  cycling: { id: "cycling", label: "Cycling", icon: "🚴" },
+  golf: { id: "golf", label: "Golf", icon: "⛳" },
+  fishing: { id: "fishing", label: "Fishing", icon: "🎣" },
+  sailing: { id: "sailing", label: "Sailing", icon: "⛵" },
 } as const;
