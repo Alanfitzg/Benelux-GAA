@@ -51,7 +51,7 @@ export default function ClubFriendsSection({
     return (
       <section id="friends" className="scroll-mt-24">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-6">
+          <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
             <div className="animate-pulse">
               <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -64,7 +64,7 @@ export default function ClubFriendsSection({
               </div>
             </div>
           </div>
-          <div className="lg:col-span-1 bg-white rounded-lg border border-gray-200 p-6">
+          <div className="lg:col-span-1 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
             <div className="animate-pulse">
               <div className="h-6 bg-gray-200 rounded w-32 mb-4"></div>
               <div className="w-16 h-16 bg-gray-200 rounded-full mx-auto"></div>
@@ -79,7 +79,7 @@ export default function ClubFriendsSection({
     <section id="friends" className="scroll-mt-24">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Friends Section */}
-        <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
+        <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
             <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
               <svg
@@ -185,7 +185,7 @@ export default function ClubFriendsSection({
         {/* Twin Club Section */}
         <div
           id="twin-club"
-          className="lg:col-span-1 bg-white rounded-lg border border-gray-200 p-4 sm:p-6 scroll-mt-24"
+          className="lg:col-span-1 bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-6 scroll-mt-24"
         >
           <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
             <svg

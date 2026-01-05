@@ -1,16 +1,16 @@
-import { NextResponse } from "next/server"
-import { getServerSession } from "@/lib/auth-helpers"
-import { prisma } from "@/lib/prisma"
-import { UserRole } from "@prisma/client"
+import { NextResponse } from "next/server";
+import { getServerSession } from "@/lib/auth-helpers";
+import { prisma } from "@/lib/prisma";
+import { UserRole } from "@prisma/client";
 
 export async function GET() {
-  const session = await getServerSession()
-  
+  const session = await getServerSession();
+
   if (!session?.user) {
     return NextResponse.json(
       { error: "Authentication required" },
       { status: 401 }
-    )
+    );
   }
 
   try {
@@ -24,17 +24,17 @@ export async function GET() {
           imageUrl: true,
         },
         orderBy: {
-          name: 'asc'
-        }
-      })
+          name: "asc",
+        },
+      });
 
       // Map all clubs with admin role for super admin
-      const clubs = allClubs.map(club => ({
+      const clubs = allClubs.map((club) => ({
         ...club,
         role: "admin" as const,
-      }))
+      }));
 
-      return NextResponse.json({ clubs })
+      return NextResponse.json({ clubs });
     }
     // Get user with their club associations
     const user = await prisma.user.findUnique({
@@ -72,59 +72,79 @@ export async function GET() {
           },
         },
       },
-    })
+    });
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found" },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Format the response
-    const clubs = []
-    
+    type ClubWithRole = {
+      id: string;
+      name: string;
+      location: string | null;
+      imageUrl: string | null;
+      role: string;
+      pendingRequest?: {
+        id: string;
+        status: string;
+        requestedAt: Date;
+      };
+    };
+    const clubs: ClubWithRole[] = [];
+
     // Add member club if exists
     if (user.club) {
       clubs.push({
         ...user.club,
         role: "member",
-      })
+      });
     }
-    
+
     // Add admin clubs
     for (const club of user.adminOfClubs) {
-      const existingClub = clubs.find(c => c.id === club.id)
+      const existingClub = clubs.find((c) => c.id === club.id);
       if (existingClub) {
         // User is both member and admin
-        existingClub.role = "admin"
+        existingClub.role = "admin";
       } else {
         clubs.push({
           ...club,
           role: "admin",
-        })
+        });
       }
     }
-    
-    // Add pending admin requests
+
+    // Add pending admin requests (only if not already in the list)
     for (const request of user.clubAdminRequests) {
-      clubs.push({
-        ...request.club,
-        role: "pending",
-        pendingRequest: {
+      const existingClub = clubs.find((c) => c.id === request.club.id);
+      if (existingClub) {
+        // User is already member/admin but also has a pending request - show pending status
+        existingClub.role = "pending";
+        existingClub.pendingRequest = {
           id: request.id,
           status: request.status,
           requestedAt: request.requestedAt,
-        },
-      })
+        };
+      } else {
+        clubs.push({
+          ...request.club,
+          role: "pending",
+          pendingRequest: {
+            id: request.id,
+            status: request.status,
+            requestedAt: request.requestedAt,
+          },
+        });
+      }
     }
 
-    return NextResponse.json({ clubs })
+    return NextResponse.json({ clubs });
   } catch (error) {
-    console.error("Error fetching user clubs:", error)
+    console.error("Error fetching user clubs:", error);
     return NextResponse.json(
       { error: "Failed to fetch clubs" },
       { status: 500 }
-    )
+    );
   }
 }

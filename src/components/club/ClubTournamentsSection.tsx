@@ -58,7 +58,7 @@ export default function ClubTournamentsSection({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
       {/* Header with Toggle */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">

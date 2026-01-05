@@ -90,7 +90,7 @@ export default function ClubAvailabilityBadge({
 
   if (!isOpenToVisitors) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
         <h3 className="text-base font-semibold text-gray-900 mb-2 flex items-center gap-2">
           <svg
             className="w-4 h-4 text-gray-400"
@@ -118,7 +118,7 @@ export default function ClubAvailabilityBadge({
   const hasMoreDates = displayWeekends.length > 3;
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-4">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
       <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
         <svg
           className="w-4 h-4 text-gray-400"

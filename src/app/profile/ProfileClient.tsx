@@ -73,7 +73,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
 
   const fetchPrimaryClub = useCallback(async () => {
     if (!user.clubId) return;
-    
+
     setLoadingPrimaryClub(true);
     try {
       const response = await fetch(`/api/clubs/${user.clubId}`);
@@ -83,7 +83,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
           id: club.id,
           name: club.name,
           location: club.location,
-          imageUrl: club.imageUrl
+          imageUrl: club.imageUrl,
         });
       }
     } catch (error) {
@@ -133,15 +133,23 @@ export default function ProfileClient({ user }: ProfileClientProps) {
 
   const getRoleBadge = (role: UserRole) => {
     const roleConfig = {
-      SUPER_ADMIN: { label: "Super Admin", color: "bg-purple-100 text-purple-800" },
+      SUPER_ADMIN: {
+        label: "Super Admin",
+        color: "bg-purple-100 text-purple-800",
+      },
       CLUB_ADMIN: { label: "Club Admin", color: "bg-blue-100 text-blue-800" },
-      GUEST_ADMIN: { label: "Guest Admin", color: "bg-green-100 text-green-800" },
+      GUEST_ADMIN: {
+        label: "Guest Admin",
+        color: "bg-green-100 text-green-800",
+      },
       USER: { label: "User", color: "bg-gray-100 text-gray-800" },
     };
 
     const config = roleConfig[role];
     return (
-      <span className={`px-3 py-1 rounded-full text-sm font-medium ${config.color}`}>
+      <span
+        className={`px-3 py-1 rounded-full text-sm font-medium ${config.color}`}
+      >
         {config.label}
       </span>
     );
@@ -176,8 +184,8 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className={`mb-6 p-4 rounded-lg ${
-                  message.includes("Error") 
-                    ? "bg-red-50 text-red-800" 
+                  message.includes("Error")
+                    ? "bg-red-50 text-red-800"
                     : "bg-green-50 text-green-800"
                 }`}
               >
@@ -194,14 +202,14 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     </label>
                     <p className="text-gray-900 font-medium">{user.username}</p>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-2">
                       Email
                     </label>
                     <p className="text-gray-900 font-medium">{user.email}</p>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-2">
                       Full Name
@@ -210,23 +218,22 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                       {user.name || "Not provided"}
                     </p>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-2">
                       Member Since
                     </label>
                     <p className="text-gray-900 font-medium">
-                      {user.createdAt 
+                      {user.createdAt
                         ? new Date(user.createdAt).toLocaleDateString("en-US", {
                             year: "numeric",
                             month: "long",
                             day: "numeric",
                           })
-                        : "Not available"
-                      }
+                        : "Not available"}
                     </p>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-2">
                       Club Membership
@@ -249,15 +256,29 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                           />
                         ) : (
                           <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                            <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            <svg
+                              className="w-4 h-4 text-gray-400"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                              />
                             </svg>
                           </div>
                         )}
                         <div>
-                          <p className="text-gray-900 font-medium">{primaryClub.name}</p>
+                          <p className="text-gray-900 font-medium">
+                            {primaryClub.name}
+                          </p>
                           {primaryClub.location && (
-                            <p className="text-xs text-gray-500">{primaryClub.location}</p>
+                            <p className="text-xs text-gray-500">
+                              {primaryClub.location}
+                            </p>
                           )}
                         </div>
                       </div>
@@ -270,25 +291,38 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                 </div>
 
                 <div className="flex justify-end pt-6 border-t border-gray-200 space-x-3">
-                  {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
-                    <div className="flex gap-2">
-                      {clubs
-                        .filter(club => club.role === "admin")
-                        .slice(0, 1) // Show only first club dashboard button in this section
-                        .map(club => (
-                          <button
-                            key={club.id}
-                            onClick={() => router.push(`/club-admin/${club.id}`)}
-                            className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-medium rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg flex items-center space-x-2"
-                          >
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                            </svg>
-                            <span>Host Dashboard</span>
-                          </button>
-                      ))}
-                    </div>
-                  )}
+                  {user.role === "CLUB_ADMIN" &&
+                    clubs.some((club) => club.role === "admin") && (
+                      <div className="flex gap-2">
+                        {clubs
+                          .filter((club) => club.role === "admin")
+                          .slice(0, 1) // Show only first club dashboard button in this section
+                          .map((club) => (
+                            <button
+                              key={club.id}
+                              onClick={() =>
+                                router.push(`/club-admin/${club.id}`)
+                              }
+                              className="px-6 py-2.5 bg-gradient-to-r from-green-500 to-green-600 text-white font-medium rounded-xl hover:from-green-600 hover:to-green-700 transition-all shadow-md hover:shadow-lg flex items-center space-x-2"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                                />
+                              </svg>
+                              <span>Host Dashboard</span>
+                            </button>
+                          ))}
+                      </div>
+                    )}
                   <button
                     onClick={() => setIsEditing(true)}
                     className="px-6 py-2.5 bg-primary text-white font-medium rounded-xl hover:bg-primary/90 transition-colors"
@@ -311,7 +345,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
                     />
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-600 mb-2">
                       Email
@@ -319,12 +353,14 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     <input
                       type="email"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       required
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                   </div>
-                  
+
                   <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-600 mb-2">
                       Full Name
@@ -332,7 +368,9 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     <input
                       type="text"
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       placeholder="Enter your full name"
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
@@ -372,8 +410,10 @@ export default function ProfileClient({ user }: ProfileClientProps) {
           transition={{ delay: 0.2 }}
           className="mt-8 bg-white rounded-xl shadow-lg p-8"
         >
-          <h3 className="text-xl font-bold text-gray-900 mb-4">Associated Clubs</h3>
-          
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            Associated Clubs
+          </h3>
+
           {loadingClubs ? (
             <div className="flex items-center justify-center py-8">
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
@@ -399,87 +439,131 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                       />
                     ) : (
                       <div className="w-12 h-12 bg-gray-200 rounded-full flex items-center justify-center">
-                        <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <svg
+                          className="w-6 h-6 text-gray-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
                         </svg>
                       </div>
                     )}
                     <div>
-                      <h4 className="font-semibold text-gray-900">{club.name}</h4>
+                      <h4 className="font-semibold text-gray-900">
+                        {club.name}
+                      </h4>
                       {club.location && (
                         <p className="text-sm text-gray-600">{club.location}</p>
                       )}
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      club.role === "admin" 
-                        ? "bg-blue-100 text-blue-800" 
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        club.role === "admin"
+                          ? "bg-blue-100 text-blue-800"
+                          : club.role === "pending"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {club.role === "admin"
+                        ? "Club Admin"
                         : club.role === "pending"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-gray-100 text-gray-800"
-                    }`}>
-                      {club.role === "admin" 
-                        ? "Club Admin" 
-                        : club.role === "pending"
-                        ? "Admin Request Pending"
-                        : "Member"}
+                          ? "Admin Request Pending"
+                          : "Member"}
                     </span>
                     <Link
                       href={`/clubs/${club.id}`}
                       className="text-primary hover:text-primary-dark transition-colors"
                     >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
                       </svg>
                     </Link>
                   </div>
                 </motion.div>
               ))}
-              
+
               <div className="mt-6 pt-6 border-t border-gray-200 flex gap-3 flex-wrap">
-                {user.role === "CLUB_ADMIN" && clubs.some(club => club.role === "admin") && (
-                  <>
-                    {clubs
-                      .filter(club => club.role === "admin")
-                      .map(club => (
-                        <button
-                          key={club.id}
-                          onClick={() => router.push(`/club-admin/${club.id}`)}
-                          className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-xl hover:from-primary-dark hover:to-primary transition-all shadow-md hover:shadow-lg transform hover:scale-105"
-                        >
-                          <span className="flex items-center space-x-2">
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span>Host Dashboard - {club.name}</span>
-                          </span>
-                        </button>
-                      ))}
-                    <button
-                      onClick={() => router.push("/admin/clubs")}
-                      className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
-                    >
-                      Manage My Clubs
-                    </button>
-                  </>
-                )}
-                <button
-                  onClick={() => setShowClubSelectionModal(true)}
-                  className="px-6 py-2.5 border border-primary text-primary font-medium rounded-xl hover:bg-primary/5 transition-colors"
-                >
-                  Request Admin for Another Club
-                </button>
+                {user.role === "CLUB_ADMIN" &&
+                  clubs.some((club) => club.role === "admin") && (
+                    <>
+                      {clubs
+                        .filter((club) => club.role === "admin")
+                        .map((club) => (
+                          <button
+                            key={club.id}
+                            onClick={() =>
+                              router.push(`/club-admin/${club.id}`)
+                            }
+                            className="px-6 py-2.5 bg-gradient-to-r from-primary to-primary-light text-white font-medium rounded-xl hover:from-primary-dark hover:to-primary transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+                          >
+                            <span className="flex items-center space-x-2">
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+                                />
+                              </svg>
+                              <span>Host Dashboard - {club.name}</span>
+                            </span>
+                          </button>
+                        ))}
+                      <button
+                        onClick={() => router.push("/admin/clubs")}
+                        className="px-6 py-2.5 bg-secondary text-white font-medium rounded-xl hover:bg-secondary/90 transition-colors"
+                      >
+                        Manage My Clubs
+                      </button>
+                    </>
+                  )}
               </div>
             </div>
           ) : (
             <div className="text-center py-8">
-              <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              <svg
+                className="w-12 h-12 text-gray-300 mx-auto mb-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                />
               </svg>
-              <p className="text-gray-600 mb-2">You&apos;re not associated with any clubs yet.</p>
+              <p className="text-gray-600 mb-2">
+                You&apos;re not associated with any clubs yet.
+              </p>
               <p className="text-sm text-gray-500 mb-6">
-                Browse clubs to find your GAA community and request admin access.
+                Browse clubs to find your GAA community and request admin
+                access.
               </p>
               <button
                 onClick={() => setShowClubSelectionModal(true)}
@@ -490,7 +574,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
             </div>
           )}
         </motion.div>
-        
+
         {/* Travel Preferences Section */}
         <PreferencesSection />
       </motion.div>

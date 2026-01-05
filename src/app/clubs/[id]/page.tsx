@@ -321,7 +321,7 @@ export default async function ClubDetailsPage({
       <ClubProfileNav />
 
       {/* Main Content */}
-      <div className="bg-gray-50 py-12">
+      <div className="bg-gray-100 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-12">
             {/* About Section */}
@@ -367,7 +367,7 @@ export default async function ClubDetailsPage({
                   {((club.admins && club.admins.length > 0) ||
                     (isCurrentAdmin &&
                       club.verificationStatus !== "VERIFIED")) && (
-                    <div className="bg-white rounded-lg border border-gray-200 p-6">
+                    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                       {club.admins && club.admins.length > 0 && (
                         <div className="mb-4">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">

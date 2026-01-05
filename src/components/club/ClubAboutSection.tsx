@@ -27,7 +27,7 @@ export default function ClubAboutSection({
     <section id="about" className="scroll-mt-24">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <svg
                 className="w-5 h-5 text-gray-400"

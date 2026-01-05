@@ -18,7 +18,10 @@ export async function DELETE(
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     // Check if user exists and get their role
@@ -44,12 +47,55 @@ export async function DELETE(
       where: { id },
       data: {
         adminOfClubs: {
-          set: [] // This disconnects from all clubs
-        }
-      }
+          set: [], // This disconnects from all clubs
+        },
+      },
     });
 
-    // Delete the user (this will cascade and delete related records)
+    // Delete related records that don't have cascade delete
+    await prisma.clubAdminRequest.deleteMany({ where: { userId: id } });
+    await prisma.clubAdminRequest.updateMany({
+      where: { reviewedBy: id },
+      data: { reviewedBy: null },
+    });
+    await prisma.pitchRequest.deleteMany({ where: { userId: id } });
+    await prisma.tournamentInterest.deleteMany({ where: { userId: id } });
+    await prisma.testimonial.deleteMany({ where: { userId: id } });
+
+    // Update testimonials that reference this user as approver (set to null)
+    await prisma.testimonial.updateMany({
+      where: { superAdminApprovedBy: id },
+      data: { superAdminApprovedBy: null },
+    });
+    await prisma.testimonial.updateMany({
+      where: { clubAdminApprovedBy: id },
+      data: { clubAdminApprovedBy: null },
+    });
+
+    // Delete event reports created by this user
+    await prisma.eventReport.deleteMany({ where: { createdBy: id } });
+
+    // Delete pitch locations created by this user
+    await prisma.pitchLocation.deleteMany({ where: { createdBy: id } });
+
+    // Update clubs where this user is submitter/reviewer/verifier
+    await prisma.club.updateMany({
+      where: { submittedBy: id },
+      data: { submittedBy: null },
+    });
+    await prisma.club.updateMany({
+      where: { reviewedBy: id },
+      data: { reviewedBy: null },
+    });
+    await prisma.club.updateMany({
+      where: { verifiedBy: id },
+      data: { verifiedBy: null },
+    });
+
+    // Delete user preferences
+    await prisma.userPreferences.deleteMany({ where: { userId: id } });
+
+    // Delete the user (sessions, accounts, password tokens will cascade)
     await prisma.user.delete({
       where: { id },
     });
@@ -77,10 +123,22 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { email, username, name, role, accountStatus, clubId, adminOfClubIds, newPassword } = body;
+    const {
+      email,
+      username,
+      name,
+      role,
+      accountStatus,
+      clubId,
+      adminOfClubIds,
+      newPassword,
+    } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "User ID is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "User ID is required" },
+        { status: 400 }
+      );
     }
 
     // Check if user exists
@@ -99,10 +157,7 @@ export async function PUT(
           AND: [
             { id: { not: id } },
             {
-              OR: [
-                { email: email },
-                { username: username },
-              ],
+              OR: [{ email: email }, { username: username }],
             },
           ],
         },
@@ -174,9 +229,9 @@ export async function PUT(
         where: { id },
         data: {
           adminOfClubs: {
-            set: [] // This disconnects from all clubs
-          }
-        }
+            set: [], // This disconnects from all clubs
+          },
+        },
       });
 
       // Assign to selected clubs
@@ -185,9 +240,9 @@ export async function PUT(
           where: { id },
           data: {
             adminOfClubs: {
-              connect: adminOfClubIds.map(clubId => ({ id: clubId }))
-            }
-          }
+              connect: adminOfClubIds.map((clubId) => ({ id: clubId })),
+            },
+          },
         });
       }
     } else if (role !== UserRole.CLUB_ADMIN) {
@@ -196,9 +251,9 @@ export async function PUT(
         where: { id },
         data: {
           adminOfClubs: {
-            set: [] // This disconnects from all clubs
-          }
-        }
+            set: [], // This disconnects from all clubs
+          },
+        },
       });
     }
 
@@ -206,8 +261,8 @@ export async function PUT(
     const adminOfClubsResult = await prisma.club.findMany({
       where: {
         admins: {
-          some: { id }
-        }
+          some: { id },
+        },
       },
       select: {
         id: true,

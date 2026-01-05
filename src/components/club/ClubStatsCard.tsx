@@ -31,7 +31,7 @@ export default function ClubStatsCard({ clubId }: ClubStatsCardProps) {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
         <div className="animate-pulse">
           <div className="h-5 bg-gray-200 rounded w-24 mb-4"></div>
           <div className="grid grid-cols-3 gap-4">
@@ -112,7 +112,7 @@ export default function ClubStatsCard({ clubId }: ClubStatsCardProps) {
   ];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 p-6">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
         <svg
           className="w-5 h-5 text-gray-400"
