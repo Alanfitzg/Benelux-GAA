@@ -144,6 +144,7 @@ export async function PATCH(
         instagram: data.instagram,
         website: data.website,
         twitter: data.twitter,
+        tiktok: data.tiktok,
         codes: data.codes,
         imageUrl: data.imageUrl,
         teamTypes: data.teamTypes || [],
