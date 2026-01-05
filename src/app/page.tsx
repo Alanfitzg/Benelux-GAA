@@ -262,9 +262,9 @@ export default function HomePage() {
                 unoptimized
               />
 
-              {/* Flying Hurl Animations */}
+              {/* Flying Hurl Animations - Smooth gliding paths */}
               <div className="absolute inset-0 pointer-events-none">
-                {/* First Hurl - Northern route, left to right */}
+                {/* First Hurl - From Ireland heading east (gentle arc) */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -272,45 +272,45 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["5%", "25%", "45%", "65%", "85%"],
-                    top: ["25%", "18%", "22%", "15%", "20%"],
-                    rotate: [0, -3, -8, -5, 0],
+                    left: ["58%", "65%", "75%", "85%", "95%"],
+                    top: ["28%", "24%", "20%", "18%", "16%"],
+                    rotate: [-8, -5, -3, -1, 2],
                   }}
                   transition={{
                     opacity: {
-                      delay: 2,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 0,
+                      duration: 16,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 6,
                     },
                     left: {
-                      delay: 2,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 0,
+                      duration: 16,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 6,
                     },
                     top: {
-                      delay: 2,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 0,
+                      duration: 16,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 6,
                     },
                     rotate: {
-                      delay: 2,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 0,
+                      duration: 16,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 6,
                     },
                   }}
                   style={{
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Second Hurl - Central route, right to left (flipped) */}
+                {/* Second Hurl - From Ireland heading southeast (faster, slight descent) */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -318,46 +318,45 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["90%", "70%", "50%", "30%", "10%"],
-                    top: ["40%", "45%", "38%", "42%", "35%"],
-                    rotate: [0, 5, -5, 8, 0],
+                    left: ["55%", "62%", "72%", "82%", "92%"],
+                    top: ["32%", "38%", "45%", "52%", "58%"],
+                    rotate: [8, 10, 12, 14, 16],
                   }}
                   transition={{
                     opacity: {
-                      delay: 4,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 7,
+                      duration: 14,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                     left: {
-                      delay: 4,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 7,
+                      duration: 14,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                     top: {
-                      delay: 4,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 7,
+                      duration: 14,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                     rotate: {
-                      delay: 4,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 7,
+                      duration: 14,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                   }}
                   style={{
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
-                    scaleX: -1,
                   }}
                 />
-                {/* Third Hurl - Southern route, right to left (flipped) */}
+                {/* Third Hurl - Southern route, right to left (flipped, gentle climb) */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -365,38 +364,38 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["90%", "70%", "50%", "30%", "10%"],
-                    top: ["70%", "75%", "68%", "72%", "65%"],
-                    rotate: [0, 8, -4, 6, 0],
+                    left: ["92%", "68%", "42%", "18%", "5%"],
+                    top: ["72%", "68%", "65%", "63%", "62%"],
+                    rotate: [-4, -3, -2, -2, -3],
                   }}
                   transition={{
                     opacity: {
-                      delay: 6,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 4,
+                      duration: 20,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 3,
                     },
                     left: {
-                      delay: 6,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 4,
+                      duration: 20,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 3,
                     },
                     top: {
-                      delay: 6,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 4,
+                      duration: 20,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 3,
                     },
                     rotate: {
-                      delay: 6,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 4,
+                      duration: 20,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 3,
                     },
                   }}
                   style={{
@@ -404,7 +403,7 @@ export default function HomePage() {
                     scaleX: -1,
                   }}
                 />
-                {/* Fourth Hurl - Diagonal route, bottom-left to top-right */}
+                {/* Fourth Hurl - Diagonal route, bottom-left to top-right (steady climb) */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -413,44 +412,44 @@ export default function HomePage() {
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
                     left: ["10%", "30%", "50%", "70%", "85%"],
-                    top: ["80%", "65%", "50%", "35%", "20%"],
-                    rotate: [-30, -35, -28, -32, -30],
+                    top: ["75%", "60%", "45%", "30%", "18%"],
+                    rotate: [-28, -28, -28, -28, -28],
                   }}
                   transition={{
                     opacity: {
-                      delay: 8,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 11,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                     left: {
-                      delay: 8,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 11,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                     top: {
-                      delay: 8,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 11,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                     rotate: {
-                      delay: 8,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 11,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                   }}
                   style={{
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Fifth Hurl - Diagonal route, top-right to bottom-left (flipped) */}
+                {/* Fifth Hurl - Diagonal route, top-right to bottom-left (flipped, steady descent) */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -459,37 +458,37 @@ export default function HomePage() {
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
                     left: ["85%", "65%", "45%", "25%", "10%"],
-                    top: ["15%", "30%", "45%", "60%", "75%"],
-                    rotate: [30, 35, 28, 32, 30],
+                    top: ["20%", "35%", "50%", "62%", "72%"],
+                    rotate: [28, 28, 28, 28, 28],
                   }}
                   transition={{
                     opacity: {
-                      delay: 10,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 14,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                     left: {
-                      delay: 10,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 14,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                     top: {
-                      delay: 10,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 14,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                     rotate: {
-                      delay: 10,
-                      duration: 15,
-                      ease: "easeInOut",
+                      delay: 14,
+                      duration: 18,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 4,
                     },
                   }}
                   style={{
@@ -497,7 +496,7 @@ export default function HomePage() {
                     scaleX: -1,
                   }}
                 />
-                {/* Sixth Hurl - Mid-level left to right */}
+                {/* Sixth Hurl - Mid-level left to right (straight cruising) */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -506,37 +505,224 @@ export default function HomePage() {
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
                     left: ["8%", "28%", "48%", "68%", "88%"],
-                    top: ["52%", "48%", "55%", "50%", "53%"],
-                    rotate: [0, -4, 3, -2, 0],
+                    top: ["52%", "51%", "52%", "51%", "52%"],
+                    rotate: [0, 0, 0, 0, 0],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 0,
+                      duration: 18,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 4,
+                    },
+                    left: {
+                      delay: 0,
+                      duration: 18,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 4,
+                    },
+                    top: {
+                      delay: 0,
+                      duration: 18,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 4,
+                    },
+                    rotate: {
+                      delay: 0,
+                      duration: 18,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 4,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  }}
+                />
+
+                {/* Continental Hurls - Stay within visible area, fade while visible */}
+                {/* Seventh Hurl - Short continental hop, upper region */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-12 h-auto md:w-14 lg:w-16"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 0.9, 0.9, 0.5, 0],
+                    left: ["20%", "35%", "50%", "60%", "65%"],
+                    top: ["30%", "28%", "27%", "28%", "30%"],
+                    rotate: [-5, -3, 0, 3, 5],
                   }}
                   transition={{
                     opacity: {
                       delay: 3,
-                      duration: 15,
+                      duration: 12,
                       ease: "easeInOut",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                     left: {
                       delay: 3,
-                      duration: 15,
-                      ease: "easeInOut",
+                      duration: 12,
+                      ease: "linear",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                     top: {
                       delay: 3,
-                      duration: 15,
+                      duration: 12,
                       ease: "easeInOut",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
                     },
                     rotate: {
                       delay: 3,
-                      duration: 15,
+                      duration: 12,
                       ease: "easeInOut",
                       repeat: Infinity,
-                      repeatDelay: 5,
+                      repeatDelay: 8,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  }}
+                />
+                {/* Eighth Hurl - Short continental hop, mid-lower region, right to left */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-10 h-auto md:w-12 lg:w-14"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 0.85, 0.85, 0.4, 0],
+                    left: ["70%", "55%", "40%", "30%", "25%"],
+                    top: ["55%", "53%", "52%", "53%", "55%"],
+                    rotate: [3, 1, 0, -1, -3],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 7,
+                      duration: 10,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 10,
+                    },
+                    left: {
+                      delay: 7,
+                      duration: 10,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 10,
+                    },
+                    top: {
+                      delay: 7,
+                      duration: 10,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 10,
+                    },
+                    rotate: {
+                      delay: 7,
+                      duration: 10,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 10,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                    scaleX: -1,
+                  }}
+                />
+                {/* Ninth Hurl - Short diagonal continental, lower left to mid */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-11 h-auto md:w-13 lg:w-15"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 0.8, 0.8, 0.3, 0],
+                    left: ["25%", "38%", "48%", "55%", "58%"],
+                    top: ["65%", "55%", "48%", "44%", "42%"],
+                    rotate: [-18, -18, -18, -18, -18],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 12,
+                      duration: 11,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 9,
+                    },
+                    left: {
+                      delay: 12,
+                      duration: 11,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 9,
+                    },
+                    top: {
+                      delay: 12,
+                      duration: 11,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 9,
+                    },
+                    rotate: {
+                      delay: 12,
+                      duration: 11,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 9,
+                    },
+                  }}
+                  style={{
+                    filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
+                  }}
+                />
+                {/* Tenth Hurl - Short continental, upper right area */}
+                <motion.img
+                  src="/flying-hurl.png.png"
+                  alt="Flying Hurl"
+                  className="absolute w-10 h-auto md:w-12 lg:w-14"
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: [0, 0.75, 0.75, 0.35, 0],
+                    left: ["55%", "62%", "68%", "72%", "75%"],
+                    top: ["35%", "38%", "40%", "41%", "42%"],
+                    rotate: [12, 12, 12, 12, 12],
+                  }}
+                  transition={{
+                    opacity: {
+                      delay: 16,
+                      duration: 9,
+                      ease: "easeInOut",
+                      repeat: Infinity,
+                      repeatDelay: 11,
+                    },
+                    left: {
+                      delay: 16,
+                      duration: 9,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 11,
+                    },
+                    top: {
+                      delay: 16,
+                      duration: 9,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 11,
+                    },
+                    rotate: {
+                      delay: 16,
+                      duration: 9,
+                      ease: "linear",
+                      repeat: Infinity,
+                      repeatDelay: 11,
                     },
                   }}
                   style={{
@@ -549,9 +735,9 @@ export default function HomePage() {
 
           {/* Mobile Layout - Text with flying hurls */}
           <div className="md:hidden relative w-full h-screen flex items-center justify-center overflow-hidden">
-            {/* Flying Hurls - Above and Below Text */}
+            {/* Flying Hurls - Above and Below Text (smooth gliding) */}
             <div className="absolute inset-0 pointer-events-none">
-              {/* Upper Hurl - Left to right */}
+              {/* Upper Hurl - Left to right (gentle descent) */}
               <motion.img
                 src="/flying-hurl.png.png"
                 alt="Flying Hurl"
@@ -560,44 +746,44 @@ export default function HomePage() {
                 animate={{
                   opacity: [0, 0.7, 0.7, 0.7, 0],
                   left: ["5%", "30%", "50%", "70%", "95%"],
-                  top: ["18%", "18%", "18%", "18%", "18%"],
-                  rotate: [0, 0, 0, 0, 0],
+                  top: ["17%", "18%", "19%", "20%", "21%"],
+                  rotate: [1, 0, 0, 0, 1],
                 }}
                 transition={{
                   opacity: {
                     delay: 2,
-                    duration: 12,
-                    ease: "easeInOut",
+                    duration: 16,
+                    ease: "linear",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                   left: {
                     delay: 2,
-                    duration: 12,
-                    ease: "easeInOut",
+                    duration: 16,
+                    ease: "linear",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                   top: {
                     delay: 2,
-                    duration: 12,
-                    ease: "easeInOut",
+                    duration: 16,
+                    ease: "linear",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                   rotate: {
                     delay: 2,
-                    duration: 12,
+                    duration: 16,
                     ease: "easeInOut",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                 }}
                 style={{
                   filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                 }}
               />
-              {/* Lower Hurl - Right to left (flipped) */}
+              {/* Lower Hurl - Right to left (flipped, slight climb) */}
               <motion.img
                 src="/flying-hurl.png.png"
                 alt="Flying Hurl"
@@ -606,37 +792,37 @@ export default function HomePage() {
                 animate={{
                   opacity: [0, 0.7, 0.7, 0.7, 0],
                   left: ["95%", "70%", "50%", "30%", "5%"],
-                  top: ["68%", "68%", "68%", "68%", "68%"],
-                  rotate: [0, 0, 0, 0, 0],
+                  top: ["70%", "69%", "68%", "67%", "66%"],
+                  rotate: [-1, 0, 0, 0, -1],
                 }}
                 transition={{
                   opacity: {
                     delay: 2,
-                    duration: 12,
-                    ease: "easeInOut",
+                    duration: 16,
+                    ease: "linear",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                   left: {
                     delay: 2,
-                    duration: 12,
-                    ease: "easeInOut",
+                    duration: 16,
+                    ease: "linear",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                   top: {
                     delay: 2,
-                    duration: 12,
-                    ease: "easeInOut",
+                    duration: 16,
+                    ease: "linear",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                   rotate: {
                     delay: 2,
-                    duration: 12,
+                    duration: 16,
                     ease: "easeInOut",
                     repeat: Infinity,
-                    repeatDelay: 3,
+                    repeatDelay: 4,
                   },
                 }}
                 style={{

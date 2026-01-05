@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import type { Event, TournamentTeam, Match } from "@/types";
 import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
@@ -23,9 +23,57 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
   const [isClubAdmin, setIsClubAdmin] = useState(false);
+  const [isWatched, setIsWatched] = useState(false);
+  const [watchLoading, setWatchLoading] = useState(false);
 
   const { data: session } = useSession();
   const { cityImage } = useCityDefaultImage(event?.location);
+
+  const checkWatchStatus = useCallback(async () => {
+    if (!session?.user) return;
+    try {
+      const response = await fetch("/api/user/watchlist");
+      if (response.ok) {
+        const data = await response.json();
+        const watched = data.events.some(
+          (e: { id: string }) => e.id === eventId
+        );
+        setIsWatched(watched);
+      }
+    } catch (error) {
+      console.error("Error checking watch status:", error);
+    }
+  }, [session?.user, eventId]);
+
+  const toggleWatch = async () => {
+    if (!session?.user) return;
+    setWatchLoading(true);
+    try {
+      if (isWatched) {
+        await fetch(`/api/user/watchlist?eventId=${eventId}`, {
+          method: "DELETE",
+        });
+        setIsWatched(false);
+      } else {
+        await fetch("/api/user/watchlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventId }),
+        });
+        setIsWatched(true);
+      }
+    } catch (error) {
+      console.error("Error toggling watch:", error);
+    } finally {
+      setWatchLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (session?.user) {
+      checkWatchStatus();
+    }
+  }, [session?.user, checkWatchStatus]);
 
   useEffect(() => {
     const fetchEventData = async () => {
@@ -622,6 +670,39 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                   </div>
                 )}
               </div>
+
+              {/* Watchlist Button - Only for authenticated users */}
+              {session?.user && (
+                <button
+                  type="button"
+                  onClick={toggleWatch}
+                  disabled={watchLoading}
+                  className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-medium transition-all ${
+                    isWatched
+                      ? "bg-amber-100 text-amber-700 border-2 border-amber-300 hover:bg-amber-200"
+                      : "bg-white text-gray-700 border-2 border-gray-200 hover:border-amber-300 hover:bg-amber-50"
+                  } disabled:opacity-50`}
+                >
+                  {watchLoading ? (
+                    <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <svg
+                      className={`w-5 h-5 ${isWatched ? "fill-amber-500" : ""}`}
+                      fill={isWatched ? "currentColor" : "none"}
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+                      />
+                    </svg>
+                  )}
+                  {isWatched ? "On Watchlist" : "Add to Watchlist"}
+                </button>
+              )}
 
               {/* Custom Trip CTA */}
               <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 border border-primary/20">

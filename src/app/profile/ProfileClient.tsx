@@ -7,6 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import type { UserRole } from "@prisma/client";
 import PreferencesSection from "@/components/profile/PreferencesSection";
+import CompletedTripsSection from "@/components/profile/CompletedTripsSection";
+import WatchlistSection from "@/components/profile/WatchlistSection";
 import ClubSelectionModal from "@/components/profile/ClubSelectionModal";
 
 interface User {
@@ -285,7 +287,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     ) : user.isClubMember ? (
                       <p className="text-gray-900 font-medium">Club Member</p>
                     ) : (
-                      <p className="text-gray-500">Independent Member</p>
+                      <p className="text-gray-500">Member</p>
                     )}
                   </div>
                 </div>
@@ -479,6 +481,17 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                           ? "Admin Request Pending"
                           : "Member"}
                     </span>
+                    {club.role === "member" && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          router.push(`/clubs/${club.id}?requestAdmin=true`)
+                        }
+                        className="px-2.5 py-1 text-xs font-medium text-blue-700 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors"
+                      >
+                        Apply as Admin
+                      </button>
+                    )}
                     <Link
                       href={`/clubs/${club.id}`}
                       className="text-primary hover:text-primary-dark transition-colors"
@@ -574,6 +587,12 @@ export default function ProfileClient({ user }: ProfileClientProps) {
             </div>
           )}
         </motion.div>
+
+        {/* Completed Trips & Watchlist Row */}
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CompletedTripsSection compact />
+          <WatchlistSection compact />
+        </div>
 
         {/* Travel Preferences Section */}
         <PreferencesSection />

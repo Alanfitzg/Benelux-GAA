@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, X, Send, CheckCircle, Clock, AlertCircle } from "lucide-react";
 
@@ -26,7 +26,20 @@ export default function ClubAdminRequestButton({
 }: ClubAdminRequestButtonProps) {
   const { data: session } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (
+      searchParams.get("requestAdmin") === "true" &&
+      session &&
+      !isCurrentAdmin &&
+      !initialRequest
+    ) {
+      setIsModalOpen(true);
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, [searchParams, session, isCurrentAdmin, initialRequest]);
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -73,7 +86,7 @@ export default function ClubAdminRequestButton({
         status: "PENDING",
         requestedAt: data.request.requestedAt || new Date().toISOString(),
       });
-      
+
       setTimeout(() => {
         setIsModalOpen(false);
         setSuccess(false);

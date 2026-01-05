@@ -392,6 +392,7 @@ export interface WelcomeEmailData {
   isApproved: boolean;
   clubName?: string | null;
   clubImageUrl?: string | null;
+  baseUrl?: string;
 }
 
 export function generateWelcomeEmail(data: WelcomeEmailData): {
@@ -399,7 +400,8 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   html: string;
   text: string;
 } {
-  const subject = `Cead mile Failte ${data.userName} - Welcome to PlayAway! 🇮🇪`;
+  const subject = `Welcome to PlayAway, ${data.userName}!`;
+  const baseUrl = data.baseUrl || data.loginUrl.replace(/\/signin$/, "");
 
   const html = `
     <!DOCTYPE html>
@@ -408,392 +410,156 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Welcome to PlayAway</title>
-      <style>
-        body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #f4f4f4;
-        }
-        .email-wrapper {
-          max-width: 600px;
-          margin: 0 auto;
-          background-color: #ffffff;
-        }
-        .header {
-          background-color: #4472C4;
-          color: white;
-          padding: 30px 20px;
-          text-align: center;
-          border-radius: 8px 8px 0 0;
-        }
-        .header h1 {
-          font-size: 36px;
-          font-weight: bold;
-          margin: 0;
-          font-style: italic;
-        }
-        .content {
-          padding: 30px 20px;
-          background-color: #ffffff;
-        }
-        .greeting {
-          text-align: center;
-          margin-bottom: 30px;
-        }
-        .greeting h2 {
-          font-size: 26px;
-          font-weight: normal;
-          margin: 0 0 10px 0;
-          color: #333333;
-        }
-        .greeting h3 {
-          font-size: 22px;
-          font-weight: bold;
-          margin: 0 0 20px 0;
-          color: #4472C4;
-        }
-        .club-profile {
-          display: inline-flex;
-          align-items: center;
-          justify-content: flex-start;
-          margin: 15px auto;
-          padding: 10px 15px;
-          background-color: #f8f9fa;
-          border-radius: 8px;
-          border: 2px solid #4472C4;
-          max-width: 400px;
-        }
-        .club-crest {
-          width: 50px;
-          height: 50px;
-          object-fit: contain;
-          border-radius: 6px;
-          margin-right: 12px;
-          background-color: white;
-          padding: 4px;
-          border: 1px solid #e9ecef;
-          flex-shrink: 0;
-        }
-        .club-info {
-          text-align: left;
-          flex: 1;
-        }
-        .club-info h4 {
-          font-size: 16px;
-          font-weight: bold;
-          margin: 0 0 3px 0;
-          color: #4472C4;
-        }
-        .club-info p {
-          font-size: 13px;
-          margin: 0;
-          color: #6c757d;
-        }
-        .welcome-section {
-          text-align: center;
-          margin-bottom: 30px;
-        }
-        .welcome-section h2 {
-          font-size: 32px;
-          font-weight: bold;
-          margin: 0 0 15px 0;
-          color: #333333;
-        }
-        .welcome-section em {
-          color: #4472C4;
-          font-style: italic;
-        }
-        .welcome-section p {
-          font-size: 17px;
-          line-height: 1.7;
-          margin: 0 0 10px 0;
-          color: #555555;
-        }
-        .info-box {
-          background-color: #e8f1ff;
-          border-radius: 12px;
-          padding: 25px;
-          margin-bottom: 20px;
-          border: 2px solid #4472C4;
-        }
-        .info-box h3 {
-          background-color: #4472C4;
-          color: white;
-          padding: 10px 20px;
-          border-radius: 20px;
-          font-size: 19px;
-          font-weight: bold;
-          margin: 0 0 15px 0;
-          display: inline-block;
-        }
-        .info-box p, .info-box ul, .info-box li {
-          color: #333333;
-          font-size: 16px;
-        }
-        .info-box p {
-          font-size: 15px;
-          line-height: 1.6;
-          margin: 0;
-        }
-        .info-box ul {
-          font-size: 15px;
-          line-height: 1.6;
-          margin: 0;
-          padding-left: 20px;
-        }
-        .info-box strong {
-          font-weight: bold;
-        }
-        .quick-start {
-          margin-bottom: 30px;
-        }
-        .quick-start h3 {
-          font-size: 20px;
-          font-weight: bold;
-          color: #d32f2f;
-          margin: 0 0 15px 0;
-        }
-        .step {
-          background-color: #f8f9fa;
-          padding: 15px;
-          border-radius: 8px;
-          border-left: 4px solid #4472C4;
-          margin-bottom: 10px;
-        }
-        .destinations-box {
-          background-color: #f0f4f8;
-          border: 2px solid #4472C4;
-          border-radius: 8px;
-          padding: 15px;
-          margin-top: 20px;
-        }
-        .destinations-box h4 {
-          font-size: 16px;
-          font-weight: bold;
-          color: #4472C4;
-          margin: 0 0 10px 0;
-        }
-        .destinations-box p {
-          font-size: 14px;
-          line-height: 1.5;
-          margin: 0 0 5px 0;
-        }
-        .help-section {
-          background-color: #fff3cd;
-          border: 1px solid #ffeaa7;
-          border-radius: 8px;
-          padding: 20px;
-          margin-bottom: 30px;
-        }
-        .help-section p {
-          font-size: 16px;
-          margin: 0;
-          line-height: 1.6;
-          color: #333333;
-        }
-        .footer-section {
-          text-align: center;
-          margin-top: 40px;
-        }
-        .footer-section p {
-          font-size: 17px;
-          margin: 0 0 8px 0;
-          color: #333333;
-        }
-        .footer-section .signature {
-          font-weight: bold;
-          color: #4472C4;
-        }
-        .footer-branding {
-          background-color: #f8f9fa;
-          padding: 25px 20px;
-          text-align: center;
-          border-top: 1px solid #e9ecef;
-          border-radius: 0 0 8px 8px;
-        }
-        .footer-branding p {
-          font-size: 13px;
-          color: #6c757d;
-          margin: 0;
-        }
-      </style>
     </head>
-    <body>
-      <!-- Wrapper -->
-      <div class="email-wrapper" style="background-color: #ffffff; max-width: 600px; margin: 0 auto;">
-        <div class="header">
-          <h1>PlayAway</h1>
-        </div>
+    <body style="margin: 0; padding: 0; background-color: #1a3352; font-family: Arial, sans-serif;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #1a3352;">
+        <tr>
+          <td align="center" style="padding: 40px 20px;">
+            <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px;">
 
-        <div class="content">
-        <div class="welcome-section">
-          <h2>Welcome to <em>PlayAway</em></h2>
-          <p>The travel platform built by and for the global Gaelic Games community.</p>
-          <p>Whether you're a player, coach, volunteer, or just love being part of GAA life abroad, PlayAway makes it easier to travel, connect, and compete — while supporting the clubs that keep our community alive.</p>
-        </div>
+              <!-- Header -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+                  <img src="${baseUrl}/logo.png" alt="PlayAway" width="180" height="auto" style="width: 180px; height: auto; margin-bottom: 12px;" />
+                  <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Your passport to Gaelic Games worldwide</p>
+                </td>
+              </tr>
 
-        <div class="greeting">
-          <h2>Dear ${data.userName}</h2>
-          <h3>Cead mile Failte</h3>
+              <!-- Main Content -->
+              <tr>
+                <td style="background-color: #264673; padding: 40px 30px;">
 
-          <!-- Account Details Box -->
-          <div style="background-color: #f0f4f8; border-left: 4px solid #4472C4; border-radius: 8px; padding: 20px; margin: 20px auto; max-width: 500px; text-align: left;">
-            <p style="margin: 0 0 12px 0; font-size: 15px; color: #6c757d; font-weight: 600;">Your Account Details:</p>
-            <p style="margin: 0 0 8px 0; font-size: 15px; color: #374151;"><strong>Email:</strong> ${data.userEmail}</p>
-            ${data.clubName ? `<p style="margin: 0 0 8px 0; font-size: 15px; color: #374151;"><strong>Club:</strong> ${data.clubName}</p>` : ""}
-            <p style="margin: 0; font-size: 14px; color: #6c757d; font-style: italic;">You can use your email to log in at any time</p>
-          </div>
-        </div>
+                  <!-- User & Club Identification -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 32px;">
+                        ${
+                          data.clubImageUrl
+                            ? `
+                        <div style="background-color: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                          <img src="${data.clubImageUrl}" alt="${data.clubName || "Club"} crest" width="72" height="72" style="width: 72px; height: 72px; object-fit: contain; display: block;" />
+                        </div>
+                        `
+                            : ""
+                        }
+                        <h2 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 600; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Welcome, ${data.userName}</h2>
+                        ${data.clubName ? `<p style="margin: 0; font-size: 16px; color: rgba(255,255,255,0.9); font-weight: 500;">${data.clubName}</p>` : ""}
+                      </td>
+                    </tr>
+                  </table>
 
-        <div class="info-box">
-          <h3>What is the PlayAway platform?</h3>
-          <p>PlayAway is the first platform designed to simplify GAA travel across Europe and beyond. From tournaments to training camps, we help clubs list their events, take bookings in advance, and welcome teams from around the world — reducing risk, and costs</p>
-        </div>
+                  <!-- Welcome Message -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding: 0 10px 32px 10px;">
+                        <p style="margin: 0 0 16px 0; font-size: 22px; line-height: 1.6; color: #ffffff; font-weight: 600; font-style: italic; text-shadow: 0 1px 3px rgba(0,0,0,0.2);">Céad Míle Fáilte</p>
+                        <p style="margin: 0; font-size: 15px; line-height: 1.8; color: rgba(255,255,255,0.85);">You're now part of the global Gaelic Games travel community. Discover tournaments, connect with clubs worldwide, and plan your next adventure.</p>
+                      </td>
+                    </tr>
+                  </table>
 
-        <div class="info-box">
-          <h3>Why does it matter?</h3>
-          <p style="margin-bottom: 15px;">Tourism around Gaelic Games is already happening - but without structure, opportunities are lost.</p>
-          <p style="font-weight: bold; margin-bottom: 10px;">PlayAway changes that by:</p>
-          <ul>
-            <li>Investigating events and promoting opportunities to travel</li>
-            <li>Creating new revenue streams for local clubs and communities</li>
-            <li>Strengthening club links worldwide</li>
-            <li><strong>Protecting both the clubs and the hosts by offering rules and guidelines for both traveling teams and hosts, while ensuring the best bang for buck for the customers!</strong></li>
-          </ul>
-        </div>
+                  <!-- Primary CTA Button -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 24px;">
+                        <a href="${baseUrl}/events" style="display: inline-block; background-color: #ffffff; color: #264673; padding: 16px 40px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">Find Your Next Adventure</a>
+                      </td>
+                    </tr>
+                  </table>
 
-        <!-- First Steps Checklist -->
-        <div style="background-color: #f0f4f8; border: 2px solid #4472C4; border-radius: 12px; padding: 25px; margin-bottom: 30px;">
-          <h3 style="font-size: 24px; font-weight: bold; color: #4472C4; margin: 0 0 20px 0;">Your First Steps:</h3>
+                  <!-- Divider -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 24px;"></td>
+                    </tr>
+                  </table>
 
-          <div style="display: table; width: 100%; margin-bottom: 18px;">
-            <div style="display: table-cell; width: 30px; vertical-align: top; padding-top: 2px;">
-              <div style="width: 22px; height: 22px; border: 3px solid #4472C4; border-radius: 4px; background-color: white;"></div>
-            </div>
-            <div style="display: table-cell; vertical-align: top; padding-left: 12px;">
-              <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #333333;">
-                <a href="${data.loginUrl}/profile-builder" style="color: #4472C4; text-decoration: underline; font-weight: 600;">Complete Profile Builder</a>
-                <br><span style="font-size: 15px; color: #6c757d;">Tell us your interests to get personalized event recommendations</span>
-              </p>
-            </div>
-          </div>
+                  <!-- Secondary CTA - Club Admin -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 24px;">
+                        <p style="margin: 0 0 16px 0; font-size: 15px; color: rgba(255,255,255,0.9); font-weight: 500;">Are you a coach, committee member, or trip organiser?</p>
+                        <p style="margin: 0 0 16px 0; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6;">Discover how PlayAway can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.</p>
+                        <a href="${baseUrl}/how-it-works" style="display: inline-block; background-color: transparent; color: #ffffff; padding: 14px 32px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 6px; border: 2px solid rgba(255,255,255,0.5);">See How It Works</a>
+                      </td>
+                    </tr>
+                  </table>
 
-          <div style="display: table; width: 100%; margin-bottom: 18px;">
-            <div style="display: table-cell; width: 30px; vertical-align: top; padding-top: 2px;">
-              <div style="width: 22px; height: 22px; border: 3px solid #4472C4; border-radius: 4px; background-color: white;"></div>
-            </div>
-            <div style="display: table-cell; vertical-align: top; padding-left: 12px;">
-              <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #333333;">
-                <a href="${data.loginUrl}/events" style="color: #4472C4; text-decoration: underline; font-weight: 600;">Browse events in your region</a>
-                <br><span style="font-size: 15px; color: #6c757d;">Discover tournaments and GAA activities near you</span>
-              </p>
-            </div>
-          </div>
+                  <!-- Help Text -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center">
+                        <p style="margin: 0; font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.6);">Questions? Just reply to this email — we're here to help.</p>
+                      </td>
+                    </tr>
+                  </table>
 
-          <div style="display: table; width: 100%;">
-            <div style="display: table-cell; width: 30px; vertical-align: top; padding-top: 2px;">
-              <div style="width: 22px; height: 22px; border: 3px solid #4472C4; border-radius: 4px; background-color: white;"></div>
-            </div>
-            <div style="display: table-cell; vertical-align: top; padding-left: 12px;">
-              <p style="margin: 0; font-size: 17px; line-height: 1.6; color: #333333;">
-                <strong style="color: #4472C4; font-weight: 600;">Follow us on social media</strong>
-                <br><span style="font-size: 15px; color: #6c757d;">Stay updated with the latest GAA travel opportunities</span>
-              </p>
-            </div>
-          </div>
-        </div>
+                </td>
+              </tr>
 
-        <div class="help-section">
-          <p><strong>Need Help?</strong> Our team is here to assist with tournament registrations, travel planning, or connecting with clubs.</p>
-          <p style="margin: 10px 0 0 0;">Contact us at: <a href="mailto:alan@gaelictrips.com" style="color: #4472C4; text-decoration: none; font-weight: 600;">alan@gaelictrips.com</a></p>
-        </div>
+              <!-- Footer -->
+              <tr>
+                <td style="background-color: #1a3352; padding: 30px; text-align: center; border-radius: 0 0 12px 12px;">
 
-        <!-- Social Media Links -->
-        <div style="background-color: #f0f4f8; border: 2px solid #4472C4; border-radius: 12px; padding: 25px; text-align: center; margin: 30px 0;">
-          <p style="margin: 0 0 20px 0; font-weight: 600; color: #4472C4; font-size: 20px;">Follow us on social media</p>
-          <div style="margin-bottom: 0;">
-            <a href="https://www.facebook.com/playaway.ie" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on Facebook">
-              <span style="display: inline-block; background: #3b5998; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 24px; font-weight: bold;">f</span>
-            </a>
-            <a href="https://www.instagram.com/playaway.ie" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on Instagram">
-              <span style="display: inline-block; background: #E4405F; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 24px; font-weight: bold;">📷</span>
-            </a>
-            <a href="https://www.tiktok.com/@playaway.ie" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on TikTok">
-              <span style="display: inline-block; background: #000000; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 20px; font-weight: bold;">TT</span>
-            </a>
-            <a href="https://www.linkedin.com/company/playaway" style="display: inline-block; margin: 0 10px; text-decoration: none;" title="Follow us on LinkedIn">
-              <span style="display: inline-block; background: #0077B5; color: white; border-radius: 50%; width: 44px; height: 44px; line-height: 44px; text-align: center; font-size: 24px; font-weight: bold;">in</span>
-            </a>
-          </div>
-        </div>
+                  <!-- Social Icons -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto 20px auto;">
+                    <tr>
+                      <td style="padding: 0 8px;">
+                        <a href="https://instagram.com/playaway.ie" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
+                          <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" width="18" height="18" style="vertical-align: middle;" />
+                        </a>
+                      </td>
+                      <td style="padding: 0 8px;">
+                        <a href="https://facebook.com/playaway.ie" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
+                          <img src="https://cdn-icons-png.flaticon.com/512/174/174848.png" alt="Facebook" width="18" height="18" style="vertical-align: middle;" />
+                        </a>
+                      </td>
+                      <td style="padding: 0 8px;">
+                        <a href="https://twitter.com/playaway_ie" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
+                          <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" width="18" height="18" style="vertical-align: middle;" />
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
 
-        <div class="footer-section">
-          <p>Looking forward to seeing you on pitches around the world!</p>
-          <p class="signature">Slán go fóill,</p>
-          <p class="signature">The PlayAway Team</p>
-        </div>
-      </div>
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">Slán go fóill,</p>
+                  <p style="margin: 0 0 16px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">The PlayAway Team</p>
+                  <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.5);">© 2025 PlayAway · Connecting GAA Communities Worldwide</p>
+                </td>
+              </tr>
 
-        <div class="footer-branding">
-          <p style="margin: 0;">© 2025 PlayAway - Connecting GAA Communities Worldwide</p>
-        </div>
-      </div>
-      <!-- End wrapper -->
+            </table>
+          </td>
+        </tr>
+      </table>
     </body>
     </html>
   `;
 
-  const text = `
-Cead mile Failte ${data.userName} - Welcome to PlayAway!
+  const text = `Welcome to PlayAway, ${data.userName}!
 
-Dear ${data.userName},
+Céad Míle Fáilte
 
-Cead mile Failte
+${data.clubName ? `Club: ${data.clubName}\n` : ""}
+You're now part of the global Gaelic Games travel community. Discover tournaments, connect with clubs worldwide, and plan your next adventure.
 
-Welcome to PlayAway
+Find your next adventure: ${baseUrl}/events
 
-The travel platform built by and for the global Gaelic Games community.
+Are you a coach, committee member, or trip organiser?
+Discover how PlayAway can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.
+See how it works: ${baseUrl}/how-it-works
 
-Whether you're a player, coach, volunteer, or just love being part of GAA life abroad, PlayAway makes it easier to travel, connect, and compete — while supporting the clubs that keep our community alive.
+Questions? Just reply to this email — we're here to help.
 
-What is PlayAway?
-
-PlayAway is the first platform designed to simplify GAA travel across Europe and beyond. From tournaments to training camps, we help clubs list their events, take bookings in advance, and welcome teams from around the world — reducing risk, and costs
-
-Why does it matter?
-
-Tourism around Gaelic Games is already happening - but without structure, opportunities are lost.
-
-PlayAway changes that by:
-• Investigating events and promoting opportunities to travel
-• Creating new revenue streams for local clubs and communities
-• Strengthening club links worldwide
-• Protecting both the clubs and the hosts by offering rules and guidelines for both traveling teams and hosts, while ensuring the best bang for buck for the customers!
-
-Quick Start Guide:
-
-Step 1: Complete your player profile with position, skill level, and travel preferences
-Step 2: Browse tournaments by date, location, or competition level
-Step 3: Connect with clubs for training sessions or friendly matches
-Step 4: Use our trip planner to create your perfect GAA adventure
-
-Popular Destinations This Season:
-Ireland: Experience GAA at its source with 500+ clubs
-USA & Canada: Join the thriving North American GAA scene
-Australia: Combine GAA with incredible travel experiences
-Europe: Play in tournaments from Barcelona to Berlin
-Middle East & Asia: Discover emerging GAA communities
-
-Need Help? Our team is here to assist with tournament registrations, travel planning, or connecting with clubs. Just reply to this email!
-
-Looking forward to seeing you on pitches around the world!
+Follow us:
+Instagram: https://instagram.com/playaway.ie
+Facebook: https://facebook.com/playaway.ie
+Twitter: https://twitter.com/playaway_ie
 
 Slán go fóill,
 The PlayAway Team
 
----
-© 2024 PlayAway - Connecting GAA Communities Worldwide
+© 2025 PlayAway · Connecting GAA Communities Worldwide
   `;
 
   return { subject, html, text };

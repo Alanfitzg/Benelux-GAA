@@ -17,406 +17,322 @@ export function WelcomeEmail({
         fontFamily: "Arial, sans-serif",
         maxWidth: "600px",
         margin: "0 auto",
-        backgroundColor: "#ffffff",
-        color: "#333333",
+        backgroundColor: "#1a3352",
       }}
     >
       {/* Header */}
       <div
         style={{
-          backgroundColor: "#4472C4",
-          color: "white",
-          padding: "30px 20px",
+          background: "linear-gradient(135deg, #264673 0%, #1a3352 100%)",
+          padding: "40px 30px 30px 30px",
           textAlign: "center",
-          borderRadius: "8px 8px 0 0",
+          borderRadius: "12px 12px 0 0",
         }}
       >
-        <h1
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://playaway.ie/logo.png"
+          alt="PlayAway"
           style={{
-            fontSize: "36px",
-            fontWeight: "bold",
-            margin: "0 0 10px 0",
-            fontStyle: "italic",
+            width: "180px",
+            height: "auto",
+            marginBottom: "12px",
           }}
-        >
-          PlayAway
-        </h1>
+        />
         <p
           style={{
-            fontSize: "16px",
             margin: "0",
-            fontWeight: "300",
+            fontSize: "14px",
+            color: "rgba(255,255,255,0.8)",
+            letterSpacing: "1px",
           }}
         >
-          A travel platform that connects Global Gaelic Games communities
+          Your passport to Gaelic Games worldwide
         </p>
       </div>
 
       {/* Main Content */}
-      <div style={{ padding: "30px 20px" }}>
-        {/* Greeting */}
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <h2
-            style={{
-              fontSize: "24px",
-              fontWeight: "normal",
-              margin: "0 0 10px 0",
-            }}
-          >
-            Dear {userName}
-          </h2>
-          <h3
-            style={{
-              fontSize: "20px",
-              fontWeight: "bold",
-              margin: "0 0 20px 0",
-              color: "#4472C4",
-            }}
-          >
-            Cead mile Failte
-          </h3>
-
-          {/* Club Crest */}
+      <div style={{ backgroundColor: "#264673", padding: "40px 30px" }}>
+        {/* User & Club Identification */}
+        <div style={{ textAlign: "center", marginBottom: "32px" }}>
           {clubCrestUrl && (
-            <div style={{ margin: "20px 0" }}>
+            <div
+              style={{
+                backgroundColor: "#ffffff",
+                padding: "12px",
+                borderRadius: "12px",
+                display: "inline-block",
+                marginBottom: "20px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+              }}
+            >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={clubCrestUrl}
-                alt={`${clubName} crest`}
+                alt={clubName ? `${clubName} crest` : "Club crest"}
                 style={{
-                  width: "80px",
-                  height: "80px",
+                  width: "72px",
+                  height: "72px",
                   objectFit: "contain",
-                  border: "2px solid #4472C4",
-                  borderRadius: "8px",
-                  padding: "8px",
-                  backgroundColor: "#f8f9fa",
+                  display: "block",
                 }}
               />
             </div>
           )}
-        </div>
-
-        {/* Welcome Section */}
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
           <h2
             style={{
               fontSize: "28px",
-              fontWeight: "bold",
-              margin: "0 0 15px 0",
+              fontWeight: "600",
+              margin: "0 0 8px 0",
+              color: "#ffffff",
+              textShadow: "0 2px 4px rgba(0,0,0,0.2)",
             }}
           >
-            Welcome to <em style={{ color: "#4472C4" }}>PlayAway</em>
+            Welcome, {userName}
           </h2>
-          <p
-            style={{
-              fontSize: "16px",
-              lineHeight: "1.6",
-              margin: "0 0 10px 0",
-            }}
-          >
-            The travel platform built by and for the global Gaelic Games
-            community.
-          </p>
-          <p
-            style={{
-              fontSize: "16px",
-              lineHeight: "1.6",
-              margin: "0",
-            }}
-          >
-            Whether you&apos;re a player, coach, volunteer, or just love being
-            part of GAA life abroad, PlayAway makes it easier to travel,
-            connect, and compete — while supporting the clubs that keep our
-            community alive.
-          </p>
-        </div>
-
-        {/* What is PlayAway Section */}
-        <div
-          style={{
-            backgroundColor: "#e8f1ff",
-            borderRadius: "12px",
-            padding: "20px",
-            marginBottom: "20px",
-            border: "2px solid #4472C4",
-          }}
-        >
-          <h3
-            style={{
-              backgroundColor: "#4472C4",
-              color: "white",
-              padding: "10px 20px",
-              borderRadius: "20px",
-              fontSize: "18px",
-              fontWeight: "bold",
-              margin: "0 0 15px 0",
-              display: "inline-block",
-            }}
-          >
-            What is PlayAway?
-          </h3>
-          <p
-            style={{
-              fontSize: "15px",
-              lineHeight: "1.6",
-              margin: "0",
-            }}
-          >
-            PlayAway is the first platform designed to simplify GAA travel
-            across Europe and beyond. From tournaments to training camps, we
-            help clubs list their events, take bookings in advance, and welcome
-            teams from around the world — reducing risk, and costs
-          </p>
-        </div>
-
-        {/* Why does it matter Section */}
-        <div
-          style={{
-            backgroundColor: "#e8f1ff",
-            borderRadius: "12px",
-            padding: "20px",
-            marginBottom: "30px",
-            border: "2px solid #4472C4",
-          }}
-        >
-          <h3
-            style={{
-              backgroundColor: "#4472C4",
-              color: "white",
-              padding: "10px 20px",
-              borderRadius: "20px",
-              fontSize: "18px",
-              fontWeight: "bold",
-              margin: "0 0 15px 0",
-              display: "inline-block",
-            }}
-          >
-            Why does it matter?
-          </h3>
-          <p
-            style={{
-              fontSize: "15px",
-              lineHeight: "1.6",
-              margin: "0 0 15px 0",
-            }}
-          >
-            Tourism around Gaelic Games is already happening - but without
-            structure, opportunities are lost.
-          </p>
-          <p
-            style={{
-              fontSize: "15px",
-              fontWeight: "bold",
-              margin: "0 0 10px 0",
-            }}
-          >
-            PlayAway changes that by:
-          </p>
-          <ul
-            style={{
-              fontSize: "15px",
-              lineHeight: "1.6",
-              margin: "0",
-              paddingLeft: "20px",
-            }}
-          >
-            <li>Investigating events and promoting opportunities to travel</li>
-            <li>
-              Creating new revenue streams for local clubs and communities
-            </li>
-            <li>Strengthening club links worldwide</li>
-            <li>
-              <strong>
-                Protecting both the clubs and the hosts by offering rules and
-                guidelines for both traveling teams and hosts, while ensuring
-                the best bang for buck for the customers!
-              </strong>
-            </li>
-          </ul>
-        </div>
-
-        {/* Quick Start Guide */}
-        <div style={{ marginBottom: "30px" }}>
-          <h3
-            style={{
-              fontSize: "20px",
-              fontWeight: "bold",
-              color: "#d32f2f",
-              margin: "0 0 15px 0",
-            }}
-          >
-            Quick Start Guide:
-          </h3>
-
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-          >
-            <div
-              style={{
-                backgroundColor: "#f8f9fa",
-                padding: "15px",
-                borderRadius: "8px",
-                borderLeft: "4px solid #4472C4",
-              }}
-            >
-              <strong>Step 1:</strong> Complete your player profile with
-              position, skill level, and travel preferences
-            </div>
-            <div
-              style={{
-                backgroundColor: "#f8f9fa",
-                padding: "15px",
-                borderRadius: "8px",
-                borderLeft: "4px solid #4472C4",
-              }}
-            >
-              <strong>Step 2:</strong> Browse tournaments by date, location, or
-              competition level
-            </div>
-            <div
-              style={{
-                backgroundColor: "#f8f9fa",
-                padding: "15px",
-                borderRadius: "8px",
-                borderLeft: "4px solid #4472C4",
-              }}
-            >
-              <strong>Step 3:</strong> Connect with clubs for training sessions
-              or friendly matches
-            </div>
-            <div
-              style={{
-                backgroundColor: "#f8f9fa",
-                padding: "15px",
-                borderRadius: "8px",
-                borderLeft: "4px solid #4472C4",
-              }}
-            >
-              <strong>Step 4:</strong> Use our trip planner to create your
-              perfect GAA adventure
-            </div>
-          </div>
-
-          {/* Popular Destinations Sidebar */}
-          <div
-            style={{
-              backgroundColor: "#f0f4f8",
-              border: "2px solid #4472C4",
-              borderRadius: "8px",
-              padding: "15px",
-              marginTop: "20px",
-            }}
-          >
-            <h4
+          {clubName && (
+            <p
               style={{
                 fontSize: "16px",
-                fontWeight: "bold",
-                color: "#4472C4",
-                margin: "0 0 10px 0",
+                margin: "0",
+                color: "rgba(255,255,255,0.9)",
+                fontWeight: "500",
               }}
             >
-              Popular Destinations This Season:
-            </h4>
-            <div style={{ fontSize: "14px", lineHeight: "1.5" }}>
-              <p style={{ margin: "0 0 5px 0" }}>
-                <strong>Ireland:</strong> Experience GAA at its source with 500+
-                clubs
-              </p>
-              <p style={{ margin: "0 0 5px 0" }}>
-                <strong>USA & Canada:</strong> Join the thriving North American
-                GAA scene
-              </p>
-              <p style={{ margin: "0 0 5px 0" }}>
-                <strong>Australia:</strong> Combine GAA with incredible travel
-                experiences
-              </p>
-              <p style={{ margin: "0 0 5px 0" }}>
-                <strong>Europe:</strong> Play in tournaments from Barcelona to
-                Berlin
-              </p>
-              <p style={{ margin: "0" }}>
-                <strong>Middle East & Asia:</strong> Discover emerging GAA
-                communities
-              </p>
-            </div>
-          </div>
+              {clubName}
+            </p>
+          )}
         </div>
 
-        {/* Help Section */}
+        {/* Welcome Message */}
         <div
           style={{
-            backgroundColor: "#fff3cd",
-            border: "1px solid #ffeaa7",
-            borderRadius: "8px",
-            padding: "20px",
-            marginBottom: "30px",
+            textAlign: "center",
+            marginBottom: "32px",
+            padding: "0 10px",
           }}
         >
           <p
             style={{
-              fontSize: "16px",
+              fontSize: "22px",
+              lineHeight: "1.6",
+              margin: "0 0 16px 0",
+              color: "#ffffff",
+              fontWeight: "600",
+              fontStyle: "italic",
+              textShadow: "0 1px 3px rgba(0,0,0,0.2)",
+            }}
+          >
+            Céad Míle Fáilte
+          </p>
+          <p
+            style={{
+              fontSize: "15px",
+              lineHeight: "1.8",
               margin: "0",
+              color: "rgba(255,255,255,0.85)",
+            }}
+          >
+            You&apos;re now part of the global Gaelic Games travel community.
+            Discover tournaments, connect with clubs worldwide, and plan your
+            next adventure.
+          </p>
+        </div>
+
+        {/* Primary CTA Button */}
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <a
+            href="https://playaway.ie/events"
+            style={{
+              display: "inline-block",
+              backgroundColor: "#ffffff",
+              color: "#264673",
+              padding: "16px 40px",
+              fontSize: "16px",
+              fontWeight: "700",
+              textDecoration: "none",
+              borderRadius: "8px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+            }}
+          >
+            Find Your Next Adventure
+          </a>
+        </div>
+
+        {/* Divider */}
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.2)",
+            margin: "0 0 24px 0",
+            paddingTop: "24px",
+          }}
+        />
+
+        {/* Secondary CTA - Club Admin */}
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <p
+            style={{
+              margin: "0 0 16px 0",
+              fontSize: "15px",
+              color: "rgba(255,255,255,0.9)",
+              fontWeight: "500",
+            }}
+          >
+            Are you a coach, committee member, or trip organiser?
+          </p>
+          <p
+            style={{
+              margin: "0 0 16px 0",
+              fontSize: "13px",
+              color: "rgba(255,255,255,0.7)",
               lineHeight: "1.6",
             }}
           >
-            <strong>Need Help?</strong> Our team is here to assist with
-            tournament registrations, travel planning, or connecting with clubs.
-            Just reply to this email!
+            Discover how PlayAway can help you plan tournaments, find host
+            clubs, and organise unforgettable GAA trips abroad.
           </p>
+          <a
+            href="https://playaway.ie/how-it-works"
+            style={{
+              display: "inline-block",
+              backgroundColor: "transparent",
+              color: "#ffffff",
+              padding: "14px 32px",
+              fontSize: "14px",
+              fontWeight: "600",
+              textDecoration: "none",
+              borderRadius: "6px",
+              border: "2px solid rgba(255,255,255,0.5)",
+            }}
+          >
+            See How It Works
+          </a>
         </div>
 
-        {/* Footer */}
-        <div style={{ textAlign: "center", marginTop: "40px" }}>
-          <p
-            style={{
-              fontSize: "16px",
-              margin: "0 0 5px 0",
-            }}
-          >
-            Looking forward to seeing you on pitches around the world!
-          </p>
-          <p
-            style={{
-              fontSize: "16px",
-              fontWeight: "bold",
-              margin: "0 0 5px 0",
-              color: "#4472C4",
-            }}
-          >
-            Slán go fóill,
-          </p>
-          <p
-            style={{
-              fontSize: "16px",
-              fontWeight: "bold",
-              margin: "0",
-              color: "#4472C4",
-            }}
-          >
-            The PlayAway Team
-          </p>
-        </div>
-      </div>
-
-      {/* Footer Branding */}
-      <div
-        style={{
-          backgroundColor: "#f8f9fa",
-          padding: "20px",
-          textAlign: "center",
-          borderTop: "1px solid #e9ecef",
-          borderRadius: "0 0 8px 8px",
-        }}
-      >
+        {/* Help Text */}
         <p
           style={{
-            fontSize: "12px",
-            color: "#6c757d",
+            fontSize: "13px",
+            lineHeight: "1.6",
+            margin: "0",
+            color: "rgba(255,255,255,0.6)",
+            textAlign: "center",
+          }}
+        >
+          Questions? Just reply to this email — we&apos;re here to help.
+        </p>
+      </div>
+
+      {/* Footer */}
+      <div
+        style={{
+          backgroundColor: "#1a3352",
+          padding: "30px",
+          textAlign: "center",
+          borderRadius: "0 0 12px 12px",
+        }}
+      >
+        {/* Social Icons */}
+        <div style={{ marginBottom: "20px" }}>
+          <a
+            href="https://instagram.com/playaway.ie"
+            style={{
+              display: "inline-block",
+              width: "36px",
+              height: "36px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderRadius: "50%",
+              textAlign: "center",
+              lineHeight: "36px",
+              textDecoration: "none",
+              margin: "0 8px",
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/174/174855.png"
+              alt="Instagram"
+              width="18"
+              height="18"
+              style={{ verticalAlign: "middle" }}
+            />
+          </a>
+          <a
+            href="https://facebook.com/playaway.ie"
+            style={{
+              display: "inline-block",
+              width: "36px",
+              height: "36px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderRadius: "50%",
+              textAlign: "center",
+              lineHeight: "36px",
+              textDecoration: "none",
+              margin: "0 8px",
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/174/174848.png"
+              alt="Facebook"
+              width="18"
+              height="18"
+              style={{ verticalAlign: "middle" }}
+            />
+          </a>
+          <a
+            href="https://twitter.com/playaway_ie"
+            style={{
+              display: "inline-block",
+              width: "36px",
+              height: "36px",
+              backgroundColor: "rgba(255,255,255,0.1)",
+              borderRadius: "50%",
+              textAlign: "center",
+              lineHeight: "36px",
+              textDecoration: "none",
+              margin: "0 8px",
+            }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/733/733579.png"
+              alt="Twitter"
+              width="18"
+              height="18"
+              style={{ verticalAlign: "middle" }}
+            />
+          </a>
+        </div>
+
+        <p
+          style={{
+            fontSize: "14px",
+            color: "rgba(255,255,255,0.9)",
+            margin: "0 0 8px 0",
+            fontWeight: "500",
+          }}
+        >
+          Slán go fóill,
+        </p>
+        <p
+          style={{
+            fontSize: "14px",
+            color: "rgba(255,255,255,0.9)",
+            margin: "0 0 16px 0",
+            fontWeight: "500",
+          }}
+        >
+          The PlayAway Team
+        </p>
+        <p
+          style={{
+            fontSize: "11px",
+            color: "rgba(255,255,255,0.5)",
             margin: "0",
           }}
         >
-          © 2025 PlayAway - Connecting GAA Communities Worldwide
+          © 2025 PlayAway · Connecting GAA Communities Worldwide
         </p>
       </div>
     </div>

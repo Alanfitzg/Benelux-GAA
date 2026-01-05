@@ -20,6 +20,8 @@ interface ClubSelectionModalProps {
   onRequestSubmit?: () => void;
 }
 
+type RoleType = "member" | "admin" | null;
+
 export default function ClubSelectionModal({
   isOpen,
   onClose,
@@ -31,6 +33,7 @@ export default function ClubSelectionModal({
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
+  const [selectedRole, setSelectedRole] = useState<RoleType>(null);
   const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -47,10 +50,9 @@ export default function ClubSelectionModal({
   useEffect(() => {
     const filtered = clubs.filter(
       (club) =>
-        !userClubs.includes(club.id) && (
-          club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          club.location?.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+        !userClubs.includes(club.id) &&
+        (club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          club.location?.toLowerCase().includes(searchTerm.toLowerCase()))
     );
     setFilteredClubs(filtered);
   }, [searchTerm, clubs, userClubs]);
@@ -136,10 +138,56 @@ export default function ClubSelectionModal({
     setSearchTerm("");
   };
 
+  const handleRoleSelect = (role: RoleType) => {
+    setSelectedRole(role);
+  };
+
   const handleBack = () => {
-    setSelectedClub(null);
-    setReason("");
+    if (selectedRole) {
+      setSelectedRole(null);
+      setReason("");
+      setError("");
+    } else {
+      setSelectedClub(null);
+    }
+  };
+
+  const handleJoinAsMember = async () => {
+    if (!selectedClub) return;
+
+    setIsSubmitting(true);
     setError("");
+
+    try {
+      const response = await fetch("/api/user/clubs/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clubId: selectedClub.id }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to join club");
+      }
+
+      setSuccess(true);
+      setTimeout(() => {
+        onClose();
+        setSuccess(false);
+        setSelectedClub(null);
+        setSelectedRole(null);
+        setSearchTerm("");
+        if (onRequestSubmit) {
+          onRequestSubmit();
+        }
+        window.location.reload();
+      }, 2000);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -161,7 +209,11 @@ export default function ClubSelectionModal({
           >
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h3 className="text-xl font-bold text-gray-900">
-                {selectedClub ? "Request Admin Access" : "Select a Club"}
+                {selectedRole === "admin"
+                  ? "Request Admin Access"
+                  : selectedClub
+                    ? "Choose Your Role"
+                    : "Select a Club"}
               </h3>
               <button
                 onClick={onClose}
@@ -180,20 +232,34 @@ export default function ClubSelectionModal({
                 >
                   <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
                   <h4 className="text-lg font-semibold text-green-600 mb-2">
-                    Request Submitted!
+                    {selectedRole === "member"
+                      ? "Joined Successfully!"
+                      : "Request Submitted!"}
                   </h4>
                   <p className="text-gray-600">
-                    Your request has been sent to the administrators for review.
+                    {selectedRole === "member"
+                      ? `You are now a member of ${selectedClub?.name}.`
+                      : "Your request has been sent to the administrators for review."}
                   </p>
                 </motion.div>
-              ) : selectedClub ? (
+              ) : selectedClub && selectedRole === "admin" ? (
                 <div>
                   <button
                     onClick={handleBack}
                     className="text-primary hover:text-primary-dark mb-4 flex items-center gap-2"
                   >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
                     </svg>
                     Back to clubs
                   </button>
@@ -210,13 +276,25 @@ export default function ClubSelectionModal({
                       />
                     ) : (
                       <div className="w-15 h-15 bg-gray-200 rounded-lg flex items-center justify-center">
-                        <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <svg
+                          className="w-8 h-8 text-gray-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
                         </svg>
                       </div>
                     )}
                     <div>
-                      <h4 className="font-semibold text-gray-900">{selectedClub.name}</h4>
+                      <h4 className="font-semibold text-gray-900">
+                        {selectedClub.name}
+                      </h4>
                       {selectedClub.location && (
                         <p className="text-sm text-gray-600 flex items-center gap-1">
                           <MapPin className="w-3 h-3" />
@@ -229,7 +307,8 @@ export default function ClubSelectionModal({
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Reason for Request <span className="text-red-500">*</span>
+                        Reason for Request{" "}
+                        <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         value={reason}
@@ -275,6 +354,177 @@ export default function ClubSelectionModal({
                     </div>
                   </form>
                 </div>
+              ) : selectedClub && !selectedRole ? (
+                <div>
+                  <button
+                    onClick={handleBack}
+                    className="text-primary hover:text-primary-dark mb-4 flex items-center gap-2"
+                  >
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                    Back to clubs
+                  </button>
+
+                  <div className="flex items-center gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+                    {selectedClub.imageUrl ? (
+                      <Image
+                        src={selectedClub.imageUrl}
+                        alt={selectedClub.name}
+                        width={60}
+                        height={60}
+                        className="w-15 h-15 rounded-lg object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-15 h-15 bg-gray-200 rounded-lg flex items-center justify-center">
+                        <svg
+                          className="w-8 h-8 text-gray-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                    <div>
+                      <h4 className="font-semibold text-gray-900">
+                        {selectedClub.name}
+                      </h4>
+                      {selectedClub.location && (
+                        <p className="text-sm text-gray-600 flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          {selectedClub.location}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <p className="text-gray-600 mb-4">
+                    How would you like to join this club?
+                  </p>
+
+                  {error && (
+                    <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg mb-4">
+                      {error}
+                    </div>
+                  )}
+
+                  <div className="space-y-3">
+                    <button
+                      type="button"
+                      onClick={handleJoinAsMember}
+                      disabled={isSubmitting}
+                      className="w-full text-left p-4 border-2 border-gray-200 rounded-xl hover:border-primary hover:bg-primary/5 transition-all group disabled:opacity-50"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                          <svg
+                            className="w-6 h-6 text-blue-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                            />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">
+                            Join as Member
+                          </h4>
+                          <p className="text-sm text-gray-500">
+                            Associate yourself with this club as a regular
+                            member
+                          </p>
+                        </div>
+                        {isSubmitting ? (
+                          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                        ) : (
+                          <svg
+                            className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        )}
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => handleRoleSelect("admin")}
+                      className="w-full text-left p-4 border-2 border-gray-200 rounded-xl hover:border-amber-400 hover:bg-amber-50/50 transition-all group"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center group-hover:bg-amber-200 transition-colors">
+                          <svg
+                            className="w-6 h-6 text-amber-600"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                            />
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900">
+                            Apply as Admin
+                          </h4>
+                          <p className="text-sm text-gray-500">
+                            Request admin access to manage this club (requires
+                            approval)
+                          </p>
+                        </div>
+                        <svg
+                          className="w-5 h-5 text-gray-400 group-hover:text-amber-500 transition-colors"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <div>
                   <div className="mb-4">
@@ -316,13 +566,25 @@ export default function ClubSelectionModal({
                               />
                             ) : (
                               <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                                <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                <svg
+                                  className="w-6 h-6 text-gray-400"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                                  />
                                 </svg>
                               </div>
                             )}
                             <div className="flex-1">
-                              <h4 className="font-medium text-gray-900">{club.name}</h4>
+                              <h4 className="font-medium text-gray-900">
+                                {club.name}
+                              </h4>
                               {club.location && (
                                 <p className="text-sm text-gray-600 flex items-center gap-1">
                                   <MapPin className="w-3 h-3" />
@@ -335,8 +597,18 @@ export default function ClubSelectionModal({
                                 </p>
                               )}
                             </div>
-                            <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            <svg
+                              className="w-5 h-5 text-gray-400"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
                             </svg>
                           </div>
                         </motion.button>
@@ -344,7 +616,9 @@ export default function ClubSelectionModal({
                     </div>
                   ) : (
                     <div className="text-center py-8">
-                      <p className="text-gray-600">No clubs found matching your search.</p>
+                      <p className="text-gray-600">
+                        No clubs found matching your search.
+                      </p>
                     </div>
                   )}
                 </div>

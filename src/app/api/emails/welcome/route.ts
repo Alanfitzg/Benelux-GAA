@@ -36,7 +36,15 @@ export async function POST(request: NextRequest) {
       ) {
         absoluteClubCrestUrl = user.club.imageUrl;
       } else {
-        absoluteClubCrestUrl = `${baseUrl}${user.club.imageUrl.startsWith("/") ? "" : "/"}${user.club.imageUrl}`;
+        // Build the URL and encode the path to handle spaces and special characters
+        const path = user.club.imageUrl.startsWith("/")
+          ? user.club.imageUrl
+          : `/${user.club.imageUrl}`;
+        const encodedPath = path
+          .split("/")
+          .map((segment) => encodeURIComponent(segment))
+          .join("/");
+        absoluteClubCrestUrl = `${baseUrl}${encodedPath}`;
       }
     }
 

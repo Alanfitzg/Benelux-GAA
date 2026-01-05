@@ -134,8 +134,23 @@ async function sendWelcomeEmail(
           ) {
             absoluteClubImageUrl = clubInfo.imageUrl;
           } else {
-            absoluteClubImageUrl = `${baseUrl}${clubInfo.imageUrl.startsWith("/") ? "" : "/"}${clubInfo.imageUrl}`;
+            // Build the URL and encode the path to handle spaces and special characters
+            const path = clubInfo.imageUrl.startsWith("/")
+              ? clubInfo.imageUrl
+              : `/${clubInfo.imageUrl}`;
+            const encodedPath = path
+              .split("/")
+              .map((segment) => encodeURIComponent(segment))
+              .join("/");
+            absoluteClubImageUrl = `${baseUrl}${encodedPath}`;
           }
+          console.log(
+            `📧 Welcome email - Club crest URL: ${absoluteClubImageUrl}`
+          );
+        } else {
+          console.log(
+            `📧 Welcome email - No club image URL found for club: ${clubInfo?.name || "unknown"}`
+          );
         }
       } catch (error) {
         console.error("Error fetching club info for welcome email:", error);
@@ -149,6 +164,7 @@ async function sendWelcomeEmail(
       isApproved,
       clubName: clubInfo?.name || null,
       clubImageUrl: absoluteClubImageUrl,
+      baseUrl,
     };
 
     const { subject, html, text } = generateWelcomeEmail(emailData);

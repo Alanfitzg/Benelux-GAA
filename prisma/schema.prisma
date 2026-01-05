@@ -42,6 +42,7 @@ model Event {
   surveyResponses   SurveyResponse[]
   teams             TournamentTeam[]
   report            EventReport?
+  watchers          EventWatchlist[]
 
   @@index([startDate])
   @@index([eventType])
@@ -197,6 +198,7 @@ model User {
   submittedClubs        Club[]               @relation("ClubSubmitter")
   reviewedClubs         Club[]               @relation("ClubReviewer")
   verifiedClubs         Club[]               @relation("ClubVerifier")
+  watchedEvents         EventWatchlist[]
 
   @@index([accountStatus])
   @@index([role])
@@ -1042,4 +1044,18 @@ model ClubFriend {
   @@unique([clubId, friendClubId])
   @@index([clubId])
   @@index([friendClubId])
+}
+
+model EventWatchlist {
+  id        String   @id @default(cuid())
+  userId    String
+  eventId   String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@index([userId])
+  @@index([eventId])
 }
