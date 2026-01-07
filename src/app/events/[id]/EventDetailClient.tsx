@@ -21,6 +21,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [isWatched, setIsWatched] = useState(false);
   const [watchLoading, setWatchLoading] = useState(false);
   const [showWatchlistSignup, setShowWatchlistSignup] = useState(false);
+  const [showPrivateEventModal, setShowPrivateEventModal] = useState(false);
 
   const { data: session } = useSession();
   const { cityImage } = useCityDefaultImage(event?.location);
@@ -575,7 +576,9 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
               <button
                 type="button"
                 onClick={() => {
-                  if (session?.user) {
+                  if (event?.visibility === "PRIVATE") {
+                    setShowPrivateEventModal(true);
+                  } else if (session?.user) {
                     toggleWatch();
                   } else {
                     setShowWatchlistSignup(true);
@@ -663,6 +666,46 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                           Maybe Later
                         </button>
                       </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Private Event Modal */}
+              {showPrivateEventModal && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                  <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+                    <div className="text-center">
+                      <div className="mx-auto w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                        <svg
+                          className="w-8 h-8 text-gray-500"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        Private Event
+                      </h3>
+                      <p className="text-gray-600 mb-6">
+                        This is a private event that requires an invitation to
+                        attend. If you&apos;re interested, please contact the
+                        organising club directly.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => setShowPrivateEventModal(false)}
+                        className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+                      >
+                        Got it
+                      </button>
                     </div>
                   </div>
                 </div>
