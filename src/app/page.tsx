@@ -736,7 +736,7 @@ export default function HomePage() {
           {/* Mobile Layout - Text with flying hurls */}
           <div className="md:hidden relative w-full h-screen flex items-center justify-center overflow-hidden">
             {/* Flying Hurls - Above and Below Text (smooth gliding) */}
-            <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
               {/* Upper Hurl - Left to right (gentle descent) */}
               <motion.img
                 src="/flying-hurl.png.png"
@@ -745,8 +745,8 @@ export default function HomePage() {
                 initial={{ opacity: 0 }}
                 animate={{
                   opacity: [0, 0.7, 0.7, 0.7, 0],
-                  left: ["5%", "30%", "50%", "70%", "95%"],
-                  top: ["17%", "18%", "19%", "20%", "21%"],
+                  left: ["-15%", "20%", "50%", "80%", "110%"],
+                  top: ["10%", "11%", "12%", "13%", "14%"],
                   rotate: [1, 0, 0, 0, 1],
                 }}
                 transition={{
