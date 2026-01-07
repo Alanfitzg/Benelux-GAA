@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import type { Event } from "@/types";
+import type { Event, TournamentTeam } from "@/types";
 import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 
 export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [event, setEvent] = useState<Event | null>(null);
+  const [teams, setTeams] = useState<TournamentTeam[]>([]);
   const [loading, setLoading] = useState(true);
   const [isWatched, setIsWatched] = useState(false);
   const [watchLoading, setWatchLoading] = useState(false);
@@ -86,6 +87,19 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
         const eventData = await eventRes.json();
         console.log("Event data received:", eventData);
         setEvent(eventData);
+
+        // Fetch teams for tournaments
+        if (eventData.eventType === "Tournament") {
+          try {
+            const teamsRes = await fetch(`/api/tournaments/${eventId}/teams`);
+            if (teamsRes.ok) {
+              const teamsData = await teamsRes.json();
+              setTeams(teamsData);
+            }
+          } catch (teamsError) {
+            console.warn("Error fetching teams:", teamsError);
+          }
+        }
       } catch (error) {
         console.error("Error fetching event data:", error);
       } finally {
@@ -209,6 +223,14 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             >
               Overview
             </a>
+            {event?.eventType === "Tournament" && (
+              <a
+                href="#teams"
+                className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
+              >
+                Teams
+              </a>
+            )}
             <a
               href="#included"
               className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
@@ -245,6 +267,76 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                     : "Create an account to see event details.")}
               </p>
             </section>
+
+            {/* Teams Section - Only for tournaments */}
+            {event?.eventType === "Tournament" && (
+              <section id="teams" className="bg-white rounded-xl shadow-md p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-bold">Confirmed Teams</h2>
+                  <span className="text-sm text-gray-500">
+                    {teams.filter((t) => t.status === "CONFIRMED").length} teams
+                    {event.maxTeams && ` / ${event.maxTeams} max`}
+                  </span>
+                </div>
+
+                {session?.user ? (
+                  <>
+                    {teams.filter((t) => t.status === "CONFIRMED").length >
+                    0 ? (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {teams
+                          .filter((t) => t.status === "CONFIRMED")
+                          .map((team) => (
+                            <div
+                              key={team.id}
+                              className="bg-gray-50 rounded-lg p-3 flex items-center gap-3"
+                            >
+                              <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span className="text-primary font-bold text-sm">
+                                  {team.teamName?.charAt(0) || "T"}
+                                </span>
+                              </div>
+                              <div className="min-w-0">
+                                <p className="font-medium text-gray-900 truncate">
+                                  {team.teamName}
+                                </p>
+                                {team.club?.name && (
+                                  <p className="text-sm text-gray-500 truncate">
+                                    {team.club.name}
+                                  </p>
+                                )}
+                              </div>
+                              <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                                {team.teamType}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 bg-gray-50 rounded-lg">
+                        <p className="text-gray-500">No teams confirmed yet</p>
+                        <p className="text-sm text-gray-400 mt-1">
+                          Check back soon for team announcements
+                        </p>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <SignUpGate
+                    title="See Confirmed Teams"
+                    description="View all teams registered for this tournament. Create a free account to see the full lineup."
+                    previewHeight="h-24"
+                  >
+                    <div className="text-center py-8">
+                      <p className="text-gray-500">
+                        {teams.filter((t) => t.status === "CONFIRMED").length}{" "}
+                        teams confirmed
+                      </p>
+                    </div>
+                  </SignUpGate>
+                )}
+              </section>
+            )}
 
             {/* What's Included Section */}
             <section id="included">
@@ -396,6 +488,17 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                         : MESSAGES.DEFAULTS.PLACEHOLDER}
                     </span>
                   </div>
+
+                  {/* Teams count - For tournaments */}
+                  {event?.eventType === "Tournament" && (
+                    <div className="flex justify-between py-2 border-b">
+                      <span className="text-gray-600">Teams</span>
+                      <span className="font-medium">
+                        {teams.filter((t) => t.status === "CONFIRMED").length}
+                        {event.maxTeams && ` / ${event.maxTeams}`}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Pricing - Hidden for non-authenticated users */}
                   <div className="flex justify-between py-2">
