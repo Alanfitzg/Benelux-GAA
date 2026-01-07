@@ -22,6 +22,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [watchLoading, setWatchLoading] = useState(false);
   const [showWatchlistSignup, setShowWatchlistSignup] = useState(false);
   const [showPrivateEventModal, setShowPrivateEventModal] = useState(false);
+  const [showInterestForm, setShowInterestForm] = useState(false);
 
   const { data: session } = useSession();
   const { cityImage } = useCityDefaultImage(event?.location);
@@ -420,51 +421,108 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 id="interest"
                 className="bg-white rounded-xl shadow-md p-4 sm:p-6"
               >
-                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-                  {MESSAGES.BUTTONS.REGISTER_INTEREST}
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {MESSAGES.FORM.NAME}
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                        required
-                      />
+                {!showInterestForm ? (
+                  <div className="text-center py-4 sm:py-6">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg
+                        className="w-7 h-7 sm:w-8 sm:h-8 text-primary"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
-                        {MESSAGES.FORM.EMAIL}
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                        required
-                      />
+                    <h2 className="text-xl sm:text-2xl font-bold mb-2">
+                      Interested in this event?
+                    </h2>
+                    <p className="text-gray-600 mb-6 max-w-md mx-auto text-sm sm:text-base">
+                      Let the organisers know you&apos;re interested and
+                      they&apos;ll get in touch with more details.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowInterestForm(true)}
+                      className="bg-primary hover:bg-primary/90 text-white font-bold py-3 px-8 rounded-lg transition"
+                    >
+                      {MESSAGES.BUTTONS.REGISTER_INTEREST}
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                      <h2 className="text-xl sm:text-2xl font-bold">
+                        {MESSAGES.BUTTONS.REGISTER_INTEREST}
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={() => setShowInterestForm(false)}
+                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                      >
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
                     </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2">
-                      {MESSAGES.FORM.MESSAGE}
-                    </label>
-                    <textarea
-                      name="message"
-                      rows={4}
-                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                    ></textarea>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg transition"
-                  >
-                    {MESSAGES.BUTTONS.SUBMIT}
-                  </button>
-                </form>
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium mb-2">
+                            {MESSAGES.FORM.NAME}
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-2">
+                            {MESSAGES.FORM.EMAIL}
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">
+                          {MESSAGES.FORM.MESSAGE}
+                        </label>
+                        <textarea
+                          name="message"
+                          rows={4}
+                          className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        ></textarea>
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg transition"
+                      >
+                        {MESSAGES.BUTTONS.SUBMIT}
+                      </button>
+                    </form>
+                  </>
+                )}
               </section>
             )}
           </div>
