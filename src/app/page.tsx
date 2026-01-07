@@ -920,9 +920,9 @@ export default function HomePage() {
                             </div>
                           )}
 
-                        {/* Event Status Badge */}
+                        {/* Event Status Badge - Bottom right to avoid overlap with sport badges */}
                         {isEventPast(event.startDate) && (
-                          <div className="absolute top-3 right-3 z-10">
+                          <div className="absolute bottom-3 right-3 z-10">
                             <span className="text-xs font-semibold text-red-600 bg-white/95 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm italic">
                               Past Event
                             </span>
