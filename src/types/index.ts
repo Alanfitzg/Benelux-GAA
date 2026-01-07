@@ -45,6 +45,7 @@ export interface ClubPhoto {
   url: string;
   caption?: string | null;
   order: number;
+  isCoverPhoto: boolean;
   createdAt: string;
 }
 

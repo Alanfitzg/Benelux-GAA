@@ -193,7 +193,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
-    const { photoId, caption, order } = await req.json();
+    const { photoId, caption, order, isCoverPhoto } = await req.json();
 
     if (!photoId) {
       return NextResponse.json(
@@ -211,9 +211,22 @@ export async function PATCH(
       return NextResponse.json({ error: "Photo not found" }, { status: 404 });
     }
 
-    const updateData: { caption?: string | null; order?: number } = {};
+    // If setting as cover photo, unset any existing cover photo first
+    if (isCoverPhoto === true) {
+      await prisma.clubPhoto.updateMany({
+        where: { clubId: id, isCoverPhoto: true },
+        data: { isCoverPhoto: false },
+      });
+    }
+
+    const updateData: {
+      caption?: string | null;
+      order?: number;
+      isCoverPhoto?: boolean;
+    } = {};
     if (caption !== undefined) updateData.caption = caption;
     if (order !== undefined) updateData.order = order;
+    if (isCoverPhoto !== undefined) updateData.isCoverPhoto = isCoverPhoto;
 
     const updatedPhoto = await prisma.clubPhoto.update({
       where: { id: photoId },

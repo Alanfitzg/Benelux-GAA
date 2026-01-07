@@ -5,9 +5,13 @@ import type { ClubStats } from "@/types";
 
 interface ClubStatsCardProps {
   clubId: string;
+  isMainlandEurope?: boolean;
 }
 
-export default function ClubStatsCard({ clubId }: ClubStatsCardProps) {
+export default function ClubStatsCard({
+  clubId,
+  isMainlandEurope = false,
+}: ClubStatsCardProps) {
   const [stats, setStats] = useState<ClubStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,6 +55,23 @@ export default function ClubStatsCard({ clubId }: ClubStatsCardProps) {
     return null;
   }
 
+  // Labels change based on whether club is a host (European) or traveller (non-European)
+  const eventsLabel = isMainlandEurope
+    ? stats.eventsHosted === 1
+      ? "Event Hosted"
+      : "Events Hosted"
+    : stats.eventsHosted === 1
+      ? "Trip Completed"
+      : "Trips Completed";
+
+  const teamsLabel = isMainlandEurope
+    ? stats.teamsWelcomed === 1
+      ? "Club Welcomed"
+      : "Clubs Welcomed"
+    : stats.teamsWelcomed === 1
+      ? "Club Visited"
+      : "Clubs Visited";
+
   const statItems = [
     {
       value: stats.yearsActive,
@@ -73,7 +94,7 @@ export default function ClubStatsCard({ clubId }: ClubStatsCardProps) {
     },
     {
       value: stats.eventsHosted,
-      label: stats.eventsHosted === 1 ? "Event Hosted" : "Events Hosted",
+      label: eventsLabel,
       icon: (
         <svg
           className="w-6 h-6"
@@ -92,7 +113,7 @@ export default function ClubStatsCard({ clubId }: ClubStatsCardProps) {
     },
     {
       value: stats.teamsWelcomed,
-      label: stats.teamsWelcomed === 1 ? "Club Welcomed" : "Clubs Welcomed",
+      label: teamsLabel,
       icon: (
         <svg
           className="w-6 h-6"

@@ -46,10 +46,16 @@ interface EventsPageClientProps {
   sportTypes: readonly string[];
   usedSportTypes: string[];
   mainlandEuropeClubs?: Club[];
-  clubPermissions?: Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canViewInterestIdentities: boolean }>;
+  clubPermissions?: Record<
+    string,
+    {
+      canViewCalendar: boolean;
+      canCreateEvents: boolean;
+      canViewInterestIdentities: boolean;
+    }
+  >;
   userId?: string | null;
 }
-
 
 export default function EventsPageClient({
   initialEvents,
@@ -70,19 +76,27 @@ export default function EventsPageClient({
 
   // State for filters
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [selectedEventType, setSelectedEventType] = useState(searchParams.get("type") || "");
-  const [selectedCountry, setSelectedCountry] = useState(searchParams.get("country") || "");
-  const [selectedMonth, setSelectedMonth] = useState(searchParams.get("month") || "");
-  const [visibility, setVisibility] = useState(searchParams.get("visibility") || "");
+  const [selectedEventType, setSelectedEventType] = useState(
+    searchParams.get("type") || ""
+  );
+  const [selectedCountry, setSelectedCountry] = useState(
+    searchParams.get("country") || ""
+  );
+  const [selectedMonth, setSelectedMonth] = useState(
+    searchParams.get("month") || ""
+  );
+  const [visibility, setVisibility] = useState(
+    searchParams.get("visibility") || ""
+  );
   const [selectedSportTypes, setSelectedSportTypes] = useState<string[]>(() => {
     const sports = searchParams.get("sports");
     return sports ? sports.split(",") : [];
   });
   const [showFilters, setShowFilters] = useState(false);
-  
+
   // Debounced search
   const [debouncedSearch, setDebouncedSearch] = useState(searchQuery);
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchQuery);
@@ -108,7 +122,9 @@ export default function EventsPageClient({
 
     // Event type filter
     if (selectedEventType) {
-      filtered = filtered.filter((event) => event.eventType === selectedEventType);
+      filtered = filtered.filter(
+        (event) => event.eventType === selectedEventType
+      );
     }
 
     // Country filter
@@ -123,7 +139,9 @@ export default function EventsPageClient({
       const [year, month] = selectedMonth.split("-").map(Number);
       filtered = filtered.filter((event) => {
         const eventDate = new Date(event.startDate);
-        return eventDate.getFullYear() === year && eventDate.getMonth() === month - 1;
+        return (
+          eventDate.getFullYear() === year && eventDate.getMonth() === month - 1
+        );
       });
     }
 
@@ -139,7 +157,7 @@ export default function EventsPageClient({
           return false;
         }
         // Check if event contains ALL selected sport types
-        return selectedSportTypes.every(sportType => 
+        return selectedSportTypes.every((sportType) =>
           event.acceptedTeamTypes!.includes(sportType)
         );
       });
@@ -169,10 +187,13 @@ export default function EventsPageClient({
     if (selectedCountry) params.set("country", selectedCountry);
     if (selectedMonth) params.set("month", selectedMonth);
     if (visibility) params.set("visibility", visibility);
-    if (selectedSportTypes.length > 0) params.set("sports", selectedSportTypes.join(","));
+    if (selectedSportTypes.length > 0)
+      params.set("sports", selectedSportTypes.join(","));
 
     const queryString = params.toString();
-    router.push(`/events${queryString ? `?${queryString}` : ""}`, { scroll: false });
+    router.push(`/events${queryString ? `?${queryString}` : ""}`, {
+      scroll: false,
+    });
   }, [
     debouncedSearch,
     selectedEventType,
@@ -211,17 +232,20 @@ export default function EventsPageClient({
   const getMonthOptions = () => {
     const months = [];
     const today = new Date();
-    
+
     for (let i = 0; i < 12; i++) {
       const date = new Date(today.getFullYear(), today.getMonth() + i, 1);
       const value = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      const label = date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+      const label = date.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
       months.push({ value, label });
     }
-    
+
     return months;
   };
-  
+
   const monthOptions = getMonthOptions();
 
   return (
@@ -229,7 +253,9 @@ export default function EventsPageClient({
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-2xl md:text-5xl font-bold mb-4">Tournaments & Events</h1>
+          <h1 className="text-2xl md:text-5xl font-bold mb-4">
+            Tournaments & Events
+          </h1>
           <p className="text-lg md:text-2xl mb-2">
             Discover GAA events across Europe
           </p>
@@ -372,7 +398,7 @@ export default function EventsPageClient({
                       <label
                         key={sport}
                         className={`flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors ${
-                          !isUsed ? 'opacity-50' : ''
+                          !isUsed ? "opacity-50" : ""
                         }`}
                       >
                         <input
@@ -380,16 +406,25 @@ export default function EventsPageClient({
                           checked={selectedSportTypes.includes(sport)}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setSelectedSportTypes([...selectedSportTypes, sport]);
+                              setSelectedSportTypes([
+                                ...selectedSportTypes,
+                                sport,
+                              ]);
                             } else {
-                              setSelectedSportTypes(selectedSportTypes.filter(s => s !== sport));
+                              setSelectedSportTypes(
+                                selectedSportTypes.filter((s) => s !== sport)
+                              );
                             }
                           }}
                           className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
                         />
                         <span className="text-sm text-gray-700">
                           {sport}
-                          {!isUsed && <span className="text-xs text-gray-400 ml-1">(no events)</span>}
+                          {!isUsed && (
+                            <span className="text-xs text-gray-400 ml-1">
+                              (no events)
+                            </span>
+                          )}
                         </span>
                       </label>
                     );
@@ -405,44 +440,46 @@ export default function EventsPageClient({
                   </button>
                 )}
               </div>
-
             </div>
           </aside>
 
           {/* Main Content */}
           <div className="flex-1">
-            {/* View Toggle and Club Selector */}
+            {/* View Toggle and Club Selector - Desktop only */}
             {mainlandEuropeClubs.length > 0 && (
-              <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
-                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                  <div className="flex items-center gap-2">
+              <div className="hidden lg:block bg-white rounded-lg shadow-sm p-4 mb-4">
+                <div className="flex gap-4 items-center justify-between">
+                  <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
                     <button
                       onClick={() => setViewMode("list")}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors text-sm ${
                         viewMode === "list"
-                          ? "bg-green-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          ? "bg-green-600 text-white shadow-sm"
+                          : "text-gray-600 hover:bg-gray-200"
                       }`}
                     >
                       <List className="w-4 h-4" />
-                      List View
+                      List
                     </button>
                     <button
                       onClick={() => setViewMode("calendar")}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors text-sm ${
                         viewMode === "calendar"
-                          ? "bg-green-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          ? "bg-green-600 text-white shadow-sm"
+                          : "text-gray-600 hover:bg-gray-200"
                       }`}
                     >
                       <Calendar className="w-4 h-4" />
-                      Calendar View
+                      Calendar
                     </button>
                   </div>
 
                   {viewMode === "calendar" && (
                     <div className="flex items-center gap-2">
-                      <label htmlFor="club-select" className="text-sm font-medium text-gray-700">
+                      <label
+                        htmlFor="club-select"
+                        className="text-sm font-medium text-gray-700"
+                      >
                         Select Club:
                       </label>
                       <select
@@ -465,8 +502,33 @@ export default function EventsPageClient({
             )}
 
             {/* Mobile Filter Bar */}
-            <div className="lg:hidden bg-white rounded-lg shadow-sm p-4 mb-4">
-              <div className="flex items-center gap-3">
+            <div className="lg:hidden bg-white rounded-lg shadow-sm p-3 mb-4">
+              <div className="flex items-center gap-2">
+                {/* View Toggle - Mobile */}
+                {mainlandEuropeClubs.length > 0 && (
+                  <div className="flex items-center gap-0.5 bg-gray-100 rounded-lg p-0.5">
+                    <button
+                      onClick={() => setViewMode("list")}
+                      className={`p-2 rounded-md transition-colors ${
+                        viewMode === "list"
+                          ? "bg-green-600 text-white shadow-sm"
+                          : "text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      <List className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setViewMode("calendar")}
+                      className={`p-2 rounded-md transition-colors ${
+                        viewMode === "calendar"
+                          ? "bg-green-600 text-white shadow-sm"
+                          : "text-gray-600 hover:bg-gray-200"
+                      }`}
+                    >
+                      <Calendar className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
                 <div className="flex-1 relative">
                   <input
                     type="text"
@@ -566,7 +628,7 @@ export default function EventsPageClient({
                           ))}
                         </select>
                       </div>
-                      
+
                       {/* Sport Types for Mobile */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -584,7 +646,7 @@ export default function EventsPageClient({
                               <label
                                 key={sport}
                                 className={`flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors ${
-                                  !isUsed ? 'opacity-50' : ''
+                                  !isUsed ? "opacity-50" : ""
                                 }`}
                               >
                                 <input
@@ -592,23 +654,34 @@ export default function EventsPageClient({
                                   checked={selectedSportTypes.includes(sport)}
                                   onChange={(e) => {
                                     if (e.target.checked) {
-                                      setSelectedSportTypes([...selectedSportTypes, sport]);
+                                      setSelectedSportTypes([
+                                        ...selectedSportTypes,
+                                        sport,
+                                      ]);
                                     } else {
-                                      setSelectedSportTypes(selectedSportTypes.filter(s => s !== sport));
+                                      setSelectedSportTypes(
+                                        selectedSportTypes.filter(
+                                          (s) => s !== sport
+                                        )
+                                      );
                                     }
                                   }}
                                   className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
                                 />
                                 <span className="text-xs text-gray-700">
                                   {sport}
-                                  {!isUsed && <span className="text-xs text-gray-400 ml-1">(no events)</span>}
+                                  {!isUsed && (
+                                    <span className="text-xs text-gray-400 ml-1">
+                                      (no events)
+                                    </span>
+                                  )}
                                 </span>
                               </label>
                             );
                           })}
                         </div>
                       </div>
-                      
+
                       <div className="flex justify-end">
                         <button
                           onClick={clearFilters}
@@ -626,8 +699,10 @@ export default function EventsPageClient({
             {/* Results Header */}
             <div className="flex items-center justify-between mb-4">
               <p className="text-gray-600">
-                Showing <span className="font-semibold">{filteredEvents.length}</span> of{" "}
-                <span className="font-semibold">{initialEvents.length}</span> events
+                Showing{" "}
+                <span className="font-semibold">{filteredEvents.length}</span>{" "}
+                of <span className="font-semibold">{initialEvents.length}</span>{" "}
+                events
               </p>
               <CreateEventButton />
             </div>
@@ -642,7 +717,11 @@ export default function EventsPageClient({
                       onClick={() => setSearchQuery("")}
                       className="hover:bg-primary/20 rounded-full p-0.5"
                     >
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <svg
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -659,7 +738,11 @@ export default function EventsPageClient({
                       onClick={() => setSelectedEventType("")}
                       className="hover:bg-primary/20 rounded-full p-0.5"
                     >
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <svg
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -671,14 +754,19 @@ export default function EventsPageClient({
                 )}
                 {selectedMonth && (
                   <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                    Month: {monthOptions.find(m => m.value === selectedMonth)?.label}
+                    Month:{" "}
+                    {monthOptions.find((m) => m.value === selectedMonth)?.label}
                     <button
                       onClick={() => {
                         setSelectedMonth("");
                       }}
                       className="hover:bg-primary/20 rounded-full p-0.5"
                     >
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <svg
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -689,13 +777,24 @@ export default function EventsPageClient({
                   </span>
                 )}
                 {selectedSportTypes.map((sport) => (
-                  <span key={sport} className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
+                  <span
+                    key={sport}
+                    className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm"
+                  >
                     Sport: {sport}
                     <button
-                      onClick={() => setSelectedSportTypes(selectedSportTypes.filter(s => s !== sport))}
+                      onClick={() =>
+                        setSelectedSportTypes(
+                          selectedSportTypes.filter((s) => s !== sport)
+                        )
+                      }
                       className="hover:bg-primary/20 rounded-full p-0.5"
                     >
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                      <svg
+                        className="w-3 h-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
                         <path
                           fillRule="evenodd"
                           d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
@@ -714,7 +813,12 @@ export default function EventsPageClient({
               filteredEvents.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredEvents.map((event, index) => (
-                    <EventCard key={event.id} event={event} index={index} searchQuery={debouncedSearch} />
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      index={index}
+                      searchQuery={debouncedSearch}
+                    />
                   ))}
                 </div>
               ) : (
@@ -723,19 +827,18 @@ export default function EventsPageClient({
                   <h3 className="text-xl font-semibold text-gray-700 mb-2">
                     No events found
                   </h3>
-                <p className="text-gray-500 mb-6">
-                  Try adjusting your filters or search query
-                </p>
-                <button
-                  onClick={clearFilters}
-                  className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
-                >
-                  Clear All Filters
-                </button>
-              </div>
-            )
-          ) : (
-            // Calendar View
+                  <p className="text-gray-500 mb-6">
+                    Try adjusting your filters or search query
+                  </p>
+                  <button
+                    onClick={clearFilters}
+                    className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
+              )
+            ) : // Calendar View
             selectedClub === "all" ? (
               <UnifiedCalendarView
                 mainlandEuropeClubs={mainlandEuropeClubs}
@@ -745,23 +848,29 @@ export default function EventsPageClient({
             ) : (
               <CalendarView
                 clubId={selectedClub}
-                clubName={mainlandEuropeClubs.find(c => c.id === selectedClub)?.name || ""}
+                clubName={
+                  mainlandEuropeClubs.find((c) => c.id === selectedClub)
+                    ?.name || ""
+                }
                 permissions={{
-                  canViewCalendar: clubPermissions[selectedClub]?.canViewCalendar || false,
-                  canCreateEvents: clubPermissions[selectedClub]?.canCreateEvents || false,
+                  canViewCalendar:
+                    clubPermissions[selectedClub]?.canViewCalendar || false,
+                  canCreateEvents:
+                    clubPermissions[selectedClub]?.canCreateEvents || false,
                   canEditAllEvents: false,
                   canBlockWeekends: false,
                   canFlagPriorityWeekends: false,
-                  canViewInterestIdentities: clubPermissions[selectedClub]?.canViewInterestIdentities || false,
+                  canViewInterestIdentities:
+                    clubPermissions[selectedClub]?.canViewInterestIdentities ||
+                    false,
                   canSubmitInterest: false,
                   canViewAllCalendars: false,
                   canManageHolidays: false,
-                  canAccessDigest: false
+                  canAccessDigest: false,
                 }}
                 isMainlandEurope={true}
               />
-            )
-          )}
+            )}
           </div>
         </div>
       </div>
@@ -769,7 +878,15 @@ export default function EventsPageClient({
   );
 }
 
-function EventCard({ event, index, searchQuery }: { event: Event; index: number; searchQuery: string }) {
+function EventCard({
+  event,
+  index,
+  searchQuery,
+}: {
+  event: Event;
+  index: number;
+  searchQuery: string;
+}) {
   // Highlight search terms
   const highlightText = (text: string) => {
     if (!searchQuery) return text;
@@ -850,7 +967,7 @@ function EventCard({ event, index, searchQuery }: { event: Event; index: number;
           <p className="text-gray-600 text-sm mb-2 line-clamp-1">
             📍 {searchQuery ? highlightText(event.location) : event.location}
           </p>
-          
+
           {/* Sport Types Display */}
           {event.acceptedTeamTypes && event.acceptedTeamTypes.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-2">
@@ -864,18 +981,24 @@ function EventCard({ event, index, searchQuery }: { event: Event; index: number;
               ))}
             </div>
           )}
-          
+
           {event.cost !== null && (
             <p className="text-primary font-semibold">
               {event.cost === 0 ? "Free" : `€${event.cost}`}
-              <span className="text-xs text-gray-500 font-normal ml-1">per person</span>
+              <span className="text-xs text-gray-500 font-normal ml-1">
+                per person
+              </span>
             </p>
           )}
-          {event.description && searchQuery && event.description.toLowerCase().includes(searchQuery.toLowerCase()) && (
-            <p className="text-gray-500 text-sm mt-2 line-clamp-2">
-              {highlightText(event.description)}
-            </p>
-          )}
+          {event.description &&
+            searchQuery &&
+            event.description
+              .toLowerCase()
+              .includes(searchQuery.toLowerCase()) && (
+              <p className="text-gray-500 text-sm mt-2 line-clamp-2">
+                {highlightText(event.description)}
+              </p>
+            )}
         </div>
       </Link>
     </motion.div>

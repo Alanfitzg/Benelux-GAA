@@ -144,7 +144,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
         label: "Guest Admin",
         color: "bg-green-100 text-green-800",
       },
-      USER: { label: "User", color: "bg-gray-100 text-gray-800" },
+      USER: { label: "Regular GAA Member", color: "bg-gray-100 text-gray-800" },
     };
 
     const config = roleConfig[role];
@@ -169,9 +169,12 @@ export default function ProfileClient({ user }: ProfileClientProps) {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           <div className="bg-gradient-to-r from-primary to-secondary p-8">
             <div className="flex items-center space-x-6">
-              <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl font-bold text-primary">
-                {user.username.charAt(0).toUpperCase()}
-              </div>
+              {/* Avatar only shown for elevated roles (admins) */}
+              {user.role !== "USER" && (
+                <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center text-4xl font-bold text-primary">
+                  {user.username.charAt(0).toUpperCase()}
+                </div>
+              )}
               <div className="text-white">
                 <h2 className="text-2xl font-bold">{user.username}</h2>
                 <p className="text-white/80 mt-1">{user.email}</p>
@@ -287,7 +290,16 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     ) : user.isClubMember ? (
                       <p className="text-gray-900 font-medium">Club Member</p>
                     ) : (
-                      <p className="text-gray-500">Member</p>
+                      <div className="flex items-center gap-2">
+                        <span className="px-3 py-1 text-sm font-medium bg-gray-100 text-gray-800 rounded-full">
+                          Member
+                        </span>
+                        {clubs.some((club) => club.role === "admin") && (
+                          <span className="px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full">
+                            Admin
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>

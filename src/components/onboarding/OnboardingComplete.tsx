@@ -1,13 +1,16 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { CheckCircle } from 'lucide-react';
-import { TRAVEL_MOTIVATIONS, COMPETITIVE_LEVELS } from '@/lib/constants/onboarding';
+import { motion } from "framer-motion";
+import { CheckCircle } from "lucide-react";
+import {
+  TRAVEL_MOTIVATIONS,
+  COMPETITIVE_LEVELS,
+} from "@/lib/constants/onboarding";
 
 interface OnboardingCompleteProps {
   preferences: {
     motivations: string[];
-    competitiveLevel: string;
+    competitiveLevels: string[];
     preferredCities: string[];
     preferredCountries: string[];
     preferredClubs: string[];
@@ -17,12 +20,21 @@ interface OnboardingCompleteProps {
   isSubmitting: boolean;
 }
 
-export default function OnboardingComplete({ preferences, isSubmitting }: OnboardingCompleteProps) {
+export default function OnboardingComplete({
+  preferences,
+  isSubmitting,
+}: OnboardingCompleteProps) {
   const selectedMotivations = preferences.motivations
-    .map((id: string) => TRAVEL_MOTIVATIONS[id as keyof typeof TRAVEL_MOTIVATIONS])
+    .map(
+      (id: string) => TRAVEL_MOTIVATIONS[id as keyof typeof TRAVEL_MOTIVATIONS]
+    )
     .filter(Boolean);
-    
-  const competitiveLevel = COMPETITIVE_LEVELS[preferences.competitiveLevel as keyof typeof COMPETITIVE_LEVELS];
+
+  const selectedLevels = preferences.competitiveLevels
+    .map(
+      (id: string) => COMPETITIVE_LEVELS[id as keyof typeof COMPETITIVE_LEVELS]
+    )
+    .filter(Boolean);
 
   return (
     <div className="space-y-6 text-center">
@@ -42,7 +54,8 @@ export default function OnboardingComplete({ preferences, isSubmitting }: Onboar
       >
         <h3 className="text-2xl font-bold text-gray-900">Perfect!</h3>
         <p className="text-gray-600 mt-2">
-          We&apos;ve got everything we need to personalize your PlayAway experience.
+          We&apos;ve got everything we need to personalize your PlayAway
+          experience.
         </p>
       </motion.div>
 
@@ -52,11 +65,15 @@ export default function OnboardingComplete({ preferences, isSubmitting }: Onboar
         transition={{ delay: 0.4 }}
         className="bg-gray-50 rounded-xl p-6 text-left space-y-4"
       >
-        <h4 className="font-semibold text-gray-900">Your Preferences Summary:</h4>
-        
+        <h4 className="font-semibold text-gray-900">
+          Your Preferences Summary:
+        </h4>
+
         {selectedMotivations.length > 0 && (
           <div>
-            <p className="text-sm text-gray-600 mb-2">Travel Priorities (ranked):</p>
+            <p className="text-sm text-gray-600 mb-2">
+              Travel Priorities (ranked):
+            </p>
             <div className="space-y-2">
               {selectedMotivations.map((motivation, index) => (
                 <div
@@ -73,18 +90,27 @@ export default function OnboardingComplete({ preferences, isSubmitting }: Onboar
             </div>
           </div>
         )}
-        
-        {competitiveLevel && (
+
+        {selectedLevels.length > 0 && (
           <div>
-            <p className="text-sm text-gray-600 mb-1">Competitive Level:</p>
-            <p className="font-medium">{competitiveLevel.label}</p>
+            <p className="text-sm text-gray-600 mb-2">Interested In:</p>
+            <div className="flex flex-wrap gap-2">
+              {selectedLevels.map((level) => (
+                <span
+                  key={level.id}
+                  className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full"
+                >
+                  {level.label}
+                </span>
+              ))}
+            </div>
           </div>
         )}
-        
+
         {preferences.preferredCities.length > 0 && (
           <div>
             <p className="text-sm text-gray-600 mb-1">Preferred Cities:</p>
-            <p className="text-sm">{preferences.preferredCities.join(', ')}</p>
+            <p className="text-sm">{preferences.preferredCities.join(", ")}</p>
           </div>
         )}
       </motion.div>

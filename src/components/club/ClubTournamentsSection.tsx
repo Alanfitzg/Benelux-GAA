@@ -27,13 +27,20 @@ interface PastEvent {
 interface ClubTournamentsSectionProps {
   upcomingEvents: Event[];
   pastEvents: PastEvent[];
+  isMainlandEurope?: boolean;
 }
 
 export default function ClubTournamentsSection({
   upcomingEvents,
   pastEvents,
+  isMainlandEurope = false,
 }: ClubTournamentsSectionProps) {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
+
+  // Labels change based on whether club is a host (European) or traveller (non-European)
+  const sectionTitle = isMainlandEurope ? "Tournaments" : "Tournaments";
+  const upcomingLabel = isMainlandEurope ? "Upcoming" : "Future";
+  const pastLabel = isMainlandEurope ? "Past" : "Attended";
 
   const formatDate = (date: Date | string) => {
     const d = typeof date === "string" ? new Date(date) : date;
@@ -75,7 +82,7 @@ export default function ClubTournamentsSection({
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          Tournaments
+          {sectionTitle}
         </h2>
 
         {/* Toggle Switch */}
@@ -89,7 +96,7 @@ export default function ClubTournamentsSection({
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            Upcoming
+            {upcomingLabel}
           </button>
           <button
             type="button"
@@ -100,7 +107,7 @@ export default function ClubTournamentsSection({
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            Past
+            {pastLabel}
           </button>
         </div>
       </div>
@@ -193,9 +200,15 @@ export default function ClubTournamentsSection({
                 />
               </svg>
             </div>
-            <p className="text-gray-500">No upcoming tournaments scheduled</p>
+            <p className="text-gray-500">
+              {isMainlandEurope
+                ? "No upcoming tournaments scheduled"
+                : "No future tournaments planned"}
+            </p>
             <p className="text-sm text-gray-400 mt-1">
-              Express interest to help organise one!
+              {isMainlandEurope
+                ? "Express interest to help organise one!"
+                : "Browse tournaments to find your next trip!"}
             </p>
           </div>
         )
@@ -291,9 +304,15 @@ export default function ClubTournamentsSection({
               />
             </svg>
           </div>
-          <p className="text-gray-500">No past tournaments yet</p>
+          <p className="text-gray-500">
+            {isMainlandEurope
+              ? "No past tournaments yet"
+              : "No tournaments attended yet"}
+          </p>
           <p className="text-sm text-gray-400 mt-1">
-            Tournament history will appear here
+            {isMainlandEurope
+              ? "Tournament history will appear here"
+              : "Trip history will appear here"}
           </p>
         </div>
       )}

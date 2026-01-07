@@ -420,7 +420,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
               <!-- Header -->
               <tr>
                 <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
-                  <img src="${baseUrl}/logo.png" alt="PlayAway" width="180" height="auto" style="width: 180px; height: auto; margin-bottom: 12px;" />
+                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">PlayAway</h1>
                   <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Your passport to Gaelic Games worldwide</p>
                 </td>
               </tr>
@@ -433,15 +433,6 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
                   <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="center" style="padding-bottom: 32px;">
-                        ${
-                          data.clubImageUrl
-                            ? `
-                        <div style="background-color: #ffffff; padding: 12px; border-radius: 12px; display: inline-block; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                          <img src="${data.clubImageUrl}" alt="${data.clubName || "Club"} crest" width="72" height="72" style="width: 72px; height: 72px; object-fit: contain; display: block;" />
-                        </div>
-                        `
-                            : ""
-                        }
                         <h2 style="margin: 0 0 8px 0; font-size: 28px; font-weight: 600; color: #ffffff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Welcome, ${data.userName}</h2>
                         ${data.clubName ? `<p style="margin: 0; font-size: 16px; color: rgba(255,255,255,0.9); font-weight: 500;">${data.clubName}</p>` : ""}
                       </td>

@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Settings, Edit2 } from 'lucide-react';
-import { isFeatureEnabled } from '@/lib/featureFlags';
-import OnboardingModal from '@/components/onboarding/OnboardingModal';
-import { TRAVEL_MOTIVATIONS, COMPETITIVE_LEVELS } from '@/lib/constants/onboarding';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Settings, Edit2 } from "lucide-react";
+import { isFeatureEnabled } from "@/lib/featureFlags";
+import OnboardingModal from "@/components/onboarding/OnboardingModal";
+import {
+  TRAVEL_MOTIVATIONS,
+  COMPETITIVE_LEVELS,
+} from "@/lib/constants/onboarding";
 
 interface UserPreferences {
   motivations: string[];
-  competitiveLevel: string;
+  competitiveLevels: string[];
   preferredCities: string[];
   preferredCountries: string[];
   preferredClubs: string[];
@@ -23,7 +26,7 @@ export default function PreferencesSection() {
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [loading, setLoading] = useState(true);
   const [isEditingPreferences, setIsEditingPreferences] = useState(false);
-  const showPreferences = isFeatureEnabled('USER_ONBOARDING');
+  const showPreferences = isFeatureEnabled("USER_ONBOARDING");
 
   useEffect(() => {
     if (showPreferences) {
@@ -33,13 +36,13 @@ export default function PreferencesSection() {
 
   const fetchPreferences = async () => {
     try {
-      const response = await fetch('/api/user/preferences');
+      const response = await fetch("/api/user/preferences");
       if (response.ok) {
         const data = await response.json();
         setPreferences(data.preferences);
       }
     } catch (error) {
-      console.error('Error fetching preferences:', error);
+      console.error("Error fetching preferences:", error);
     } finally {
       setLoading(false);
     }
@@ -54,7 +57,9 @@ export default function PreferencesSection() {
     return null;
   }
 
-  const hasPreferences = preferences && (preferences.onboardingCompleted || preferences.onboardingSkipped);
+  const hasPreferences =
+    preferences &&
+    (preferences.onboardingCompleted || preferences.onboardingSkipped);
 
   return (
     <>
@@ -74,7 +79,7 @@ export default function PreferencesSection() {
             className="text-primary hover:text-primary-dark transition-colors flex items-center gap-1"
           >
             <Edit2 className="w-4 h-4" />
-            {hasPreferences ? 'Edit' : 'Set'} Preferences
+            {hasPreferences ? "Edit" : "Set"} Preferences
           </button>
         </div>
 
@@ -93,7 +98,8 @@ export default function PreferencesSection() {
         ) : preferences.onboardingSkipped ? (
           <div className="text-center py-8">
             <p className="text-gray-600 mb-4">
-              You skipped setting preferences. Set them now to get personalized recommendations!
+              You skipped setting preferences. Set them now to get personalized
+              recommendations!
             </p>
             <button
               onClick={() => setIsEditingPreferences(true)}
@@ -107,51 +113,79 @@ export default function PreferencesSection() {
             {/* Travel Motivations */}
             {preferences.motivations?.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Travel Priorities (ranked)</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Travel Priorities (ranked)
+                </h3>
                 <div className="space-y-2">
-                  {preferences.motivations.map((motivationId: string, index: number) => {
-                    const motivation = TRAVEL_MOTIVATIONS[motivationId as keyof typeof TRAVEL_MOTIVATIONS];
-                    if (!motivation) return null;
+                  {preferences.motivations.map(
+                    (motivationId: string, index: number) => {
+                      const motivation =
+                        TRAVEL_MOTIVATIONS[
+                          motivationId as keyof typeof TRAVEL_MOTIVATIONS
+                        ];
+                      if (!motivation) return null;
+                      return (
+                        <div
+                          key={motivationId}
+                          className="flex items-center gap-2 text-sm"
+                        >
+                          <span className="w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center text-xs font-medium">
+                            {index + 1}
+                          </span>
+                          <span>{motivation.icon}</span>
+                          <span>{motivation.label}</span>
+                        </div>
+                      );
+                    }
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Competitive Levels */}
+            {preferences.competitiveLevels?.length > 0 && (
+              <div>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Interested In
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {preferences.competitiveLevels.map((levelId: string) => {
+                    const level =
+                      COMPETITIVE_LEVELS[
+                        levelId as keyof typeof COMPETITIVE_LEVELS
+                      ];
+                    if (!level) return null;
                     return (
-                      <div
-                        key={motivationId}
-                        className="flex items-center gap-2 text-sm"
+                      <span
+                        key={levelId}
+                        className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full"
                       >
-                        <span className="w-5 h-5 bg-primary text-white rounded-full flex items-center justify-center text-xs font-medium">
-                          {index + 1}
-                        </span>
-                        <span>{motivation.icon}</span>
-                        <span>{motivation.label}</span>
-                      </div>
+                        {level.label}
+                      </span>
                     );
                   })}
                 </div>
               </div>
             )}
 
-            {/* Competitive Level */}
-            {preferences.competitiveLevel && (
-              <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-1">Competitive Level</h3>
-                <p className="text-sm">
-                  {COMPETITIVE_LEVELS[preferences.competitiveLevel as keyof typeof COMPETITIVE_LEVELS]?.label}
-                </p>
-              </div>
-            )}
-
             {/* Preferred Destinations */}
-            {(preferences.preferredCities?.length > 0 || preferences.preferredCountries?.length > 0) && (
+            {(preferences.preferredCities?.length > 0 ||
+              preferences.preferredCountries?.length > 0) && (
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-2">Preferred Destinations</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-2">
+                  Preferred Destinations
+                </h3>
                 <div className="space-y-1">
                   {preferences.preferredCities?.length > 0 && (
                     <p className="text-sm">
-                      <span className="font-medium">Cities:</span> {preferences.preferredCities.join(', ')}
+                      <span className="font-medium">Cities:</span>{" "}
+                      {preferences.preferredCities.join(", ")}
                     </p>
                   )}
                   {preferences.preferredCountries?.length > 0 && (
                     <p className="text-sm">
-                      <span className="font-medium">Countries:</span> {preferences.preferredCountries.join(', ')}
+                      <span className="font-medium">Countries:</span>{" "}
+                      {preferences.preferredCountries.join(", ")}
                     </p>
                   )}
                 </div>
@@ -161,17 +195,23 @@ export default function PreferencesSection() {
             {/* Budget Range */}
             {preferences.budgetRange && (
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-1">Budget Range</h3>
-                <p className="text-sm capitalize">{preferences.budgetRange.replace('-', ' ')}</p>
+                <h3 className="text-sm font-medium text-gray-700 mb-1">
+                  Budget Range
+                </h3>
+                <p className="text-sm capitalize">
+                  {preferences.budgetRange.replace("-", " ")}
+                </p>
               </div>
             )}
 
             {/* Travel Months */}
             {preferences.preferredMonths?.length > 0 && (
               <div>
-                <h3 className="text-sm font-medium text-gray-700 mb-1">Preferred Travel Months</h3>
+                <h3 className="text-sm font-medium text-gray-700 mb-1">
+                  Preferred Travel Months
+                </h3>
                 <p className="text-sm capitalize">
-                  {preferences.preferredMonths.join(', ')}
+                  {preferences.preferredMonths.join(", ")}
                 </p>
               </div>
             )}

@@ -8,7 +8,7 @@ import {
   generateClubStructuredData,
 } from "@/components/StructuredData";
 import ClubContactForm from "@/components/ClubContactForm";
-import ClubCalendar from "@/components/club/ClubCalendar";
+import ClubCalendarModal from "@/components/club/ClubCalendarModal";
 import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
 import { getServerSession } from "@/lib/auth-helpers";
 import VerifiedBadge, {
@@ -17,11 +17,11 @@ import VerifiedBadge, {
 import TestimonialSection from "@/components/testimonials/TestimonialSection";
 import ClubProfileNav from "@/components/club/ClubProfileNav";
 import ClubAboutSection from "@/components/club/ClubAboutSection";
-import ClubStatsCard from "@/components/club/ClubStatsCard";
 import ClubContactCard from "@/components/club/ClubContactCard";
 import ClubFriendsSection from "@/components/club/ClubFriendsSection";
 import ClubPhotoGallery from "@/components/club/ClubPhotoGallery";
 import ClubTournamentsSection from "@/components/club/ClubTournamentsSection";
+import ClubCoverPhotoBanner from "@/components/club/ClubCoverPhotoBanner";
 
 export async function generateMetadata({
   params,
@@ -212,6 +212,9 @@ export default async function ClubDetailsPage({
         })}
       />
 
+      {/* Cover Photo Banner */}
+      <ClubCoverPhotoBanner clubId={club.id} />
+
       {/* Hero Section - Clean white design */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-8">
@@ -294,22 +297,66 @@ export default async function ClubDetailsPage({
                     clubName={club.name}
                     type="contact"
                   />
-                  <ClubAdminRequestButton
-                    clubId={club.id}
-                    clubName={club.name}
-                    existingRequest={
-                      adminRequest
-                        ? {
-                            id: adminRequest.id,
-                            status: adminRequest.status,
-                            requestedAt: adminRequest.requestedAt.toISOString(),
-                            rejectionReason:
-                              adminRequest.rejectionReason || undefined,
-                          }
-                        : undefined
-                    }
-                    isCurrentAdmin={isCurrentAdmin}
-                  />
+                  {isCurrentAdmin || session?.user?.role === "SUPER_ADMIN" ? (
+                    <>
+                      <Link
+                        href={`/clubs/${club.id}/edit`}
+                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          />
+                        </svg>
+                        Edit Page
+                      </Link>
+                      <Link
+                        href={`/club-admin/${club.id}`}
+                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                          />
+                        </svg>
+                        Dashboard
+                      </Link>
+                    </>
+                  ) : (
+                    <ClubAdminRequestButton
+                      clubId={club.id}
+                      clubName={club.name}
+                      existingRequest={
+                        adminRequest
+                          ? {
+                              id: adminRequest.id,
+                              status: adminRequest.status,
+                              requestedAt:
+                                adminRequest.requestedAt.toISOString(),
+                              rejectionReason:
+                                adminRequest.rejectionReason || undefined,
+                            }
+                          : undefined
+                      }
+                      isCurrentAdmin={isCurrentAdmin}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -323,7 +370,7 @@ export default async function ClubDetailsPage({
       {/* Main Content */}
       <div className="bg-gray-100 py-12">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto space-y-12">
+          <div className="max-w-6xl mx-auto space-y-8">
             {/* About Section */}
             <ClubAboutSection
               clubId={club.id}
@@ -333,107 +380,94 @@ export default async function ClubDetailsPage({
               teamTypes={club.teamTypes}
               isOpenToVisitors={club.isOpenToVisitors}
               preferredWeekends={club.preferredWeekends as string[] | null}
+              isMainlandEurope={club.isMainlandEurope}
+              website={club.website}
+              facebook={club.facebook}
+              instagram={club.instagram}
+              twitter={club.twitter}
+              tiktok={club.tiktok}
             />
 
-            {/* Stats and Contact Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ClubStatsCard clubId={club.id} />
+            {/* Contact card only for super admins */}
+            {session?.user?.role === "SUPER_ADMIN" && (
               <ClubContactCard
                 contactEmail={club.contactEmail}
                 contactPhone={club.contactPhone}
                 contactCountryCode={club.contactCountryCode}
                 contactFirstName={club.contactFirstName}
                 contactLastName={club.contactLastName}
-                website={club.website}
-                facebook={club.facebook}
-                instagram={club.instagram}
-                twitter={club.twitter}
-                tiktok={club.tiktok}
+                isSuperAdmin={true}
               />
-            </div>
+            )}
 
             {/* Tournaments Section */}
             <section id="events" className="scroll-mt-24">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
-                  <ClubTournamentsSection
-                    upcomingEvents={upcomingEvents}
-                    pastEvents={pastEventsForDisplay}
-                  />
-                </div>
-
-                {/* Club Admin Section */}
-                <div className="lg:col-span-1">
-                  {((club.admins && club.admins.length > 0) ||
-                    (isCurrentAdmin &&
-                      club.verificationStatus !== "VERIFIED")) && (
+              {session?.user?.role === "SUPER_ADMIN" &&
+              club.admins &&
+              club.admins.length > 0 ? (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                  <div className="lg:col-span-2">
+                    <ClubTournamentsSection
+                      upcomingEvents={upcomingEvents}
+                      pastEvents={pastEventsForDisplay}
+                      isMainlandEurope={club.isMainlandEurope}
+                    />
+                  </div>
+                  <div className="lg:col-span-1">
                     <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-                      {club.admins && club.admins.length > 0 && (
-                        <div className="mb-4">
-                          <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                            <svg
-                              className="w-5 h-5 text-gray-400"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                              />
-                            </svg>
-                            Club Admins
-                          </h3>
-                          <div className="space-y-2">
-                            {club.admins.map((admin) => (
-                              <div
-                                key={admin.id}
-                                className="flex items-center gap-3"
-                              >
-                                <div className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
-                                  <span className="text-xs font-medium">
-                                    {admin.name
-                                      ? admin.name.charAt(0).toUpperCase()
-                                      : admin.email.charAt(0).toUpperCase()}
-                                  </span>
-                                </div>
-                                <div>
-                                  <p className="text-sm font-medium text-gray-900">
-                                    {admin.name || "Club Admin"}
-                                  </p>
-                                  <p className="text-xs text-gray-500">
-                                    {admin.email}
-                                  </p>
-                                </div>
-                              </div>
-                            ))}
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                        <svg
+                          className="w-5 h-5 text-gray-400"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                          />
+                        </svg>
+                        Club Admins
+                        <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded">
+                          Admin Only
+                        </span>
+                      </h3>
+                      <div className="space-y-2">
+                        {club.admins.map((admin) => (
+                          <div
+                            key={admin.id}
+                            className="flex items-center gap-3"
+                          >
+                            <div className="w-8 h-8 bg-primary/10 text-primary rounded-full flex items-center justify-center">
+                              <span className="text-xs font-medium">
+                                {admin.name
+                                  ? admin.name.charAt(0).toUpperCase()
+                                  : admin.email.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-gray-900">
+                                {admin.name || "Club Admin"}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {admin.email}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      )}
-
-                      {isCurrentAdmin &&
-                        club.verificationStatus !== "VERIFIED" && (
-                          <div className="bg-amber-50 p-4 rounded-lg">
-                            <h4 className="text-sm font-medium text-amber-800">
-                              Club Verification
-                            </h4>
-                            <p className="text-sm text-amber-700 mt-1">
-                              Complete verification to unlock premium features
-                            </p>
-                            <Link
-                              href={`/club-admin/${club.id}`}
-                              className="inline-flex items-center mt-3 px-4 py-2 bg-primary text-white text-sm font-medium rounded-md hover:bg-primary-dark transition-colors"
-                            >
-                              Complete Verification
-                            </Link>
-                          </div>
-                        )}
+                        ))}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <ClubTournamentsSection
+                  upcomingEvents={upcomingEvents}
+                  pastEvents={pastEventsForDisplay}
+                  isMainlandEurope={club.isMainlandEurope}
+                />
+              )}
             </section>
 
             {/* Friends & Twin Club Section */}
@@ -499,27 +533,14 @@ export default async function ClubDetailsPage({
         </div>
       </div>
 
-      {/* Full Calendar Section */}
-      <section id="calendar" className="scroll-mt-24 py-12 bg-white">
+      {/* Calendar Modal Trigger - Fixed at bottom or in a section */}
+      <section
+        id="calendar"
+        className="scroll-mt-24 py-8 bg-white border-t border-gray-200"
+      >
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <svg
-                className="w-7 h-7 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              Club Calendar
-            </h2>
-            <ClubCalendar clubId={club.id} clubName={club.name} />
+          <div className="max-w-2xl mx-auto">
+            <ClubCalendarModal clubId={club.id} clubName={club.name} />
           </div>
         </div>
       </section>

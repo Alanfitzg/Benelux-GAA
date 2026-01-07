@@ -50,7 +50,7 @@ export default function ClubFriendsSection({
   if (loading) {
     return (
       <section id="friends" className="scroll-mt-24">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
             <div className="animate-pulse">
               <div className="h-6 bg-gray-200 rounded w-48 mb-6"></div>
@@ -77,7 +77,7 @@ export default function ClubFriendsSection({
 
   return (
     <section id="friends" className="scroll-mt-24">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Friends Section */}
         <div className="lg:col-span-2 bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4 sm:mb-6">
@@ -139,8 +139,9 @@ export default function ClubFriendsSection({
               <h3 className="text-sm sm:text-base font-medium text-gray-900 mb-1">
                 No visiting clubs yet
               </h3>
-              <p className="text-xs sm:text-sm text-gray-500">
-                Clubs that visit for events will appear here.
+              <p className="text-xs sm:text-sm text-gray-500 max-w-xs mx-auto">
+                When clubs visit for tournaments, they&apos;ll appear here -
+                showcasing this club&apos;s global GAA friends network.
               </p>
             </div>
           ) : (

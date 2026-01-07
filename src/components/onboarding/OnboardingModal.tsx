@@ -1,35 +1,38 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import { useAnalytics } from '@/hooks/useAnalytics';
-import MotivationSelector from './MotivationSelector';
-import CompetitiveSelector from './CompetitiveSelector';
-import DetailPreferences from './DetailPreferences';
-import OnboardingComplete from './OnboardingComplete';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
+import { useAnalytics } from "@/hooks/useAnalytics";
+import MotivationSelector from "./MotivationSelector";
+import CompetitiveSelector from "./CompetitiveSelector";
+import DetailPreferences from "./DetailPreferences";
+import OnboardingComplete from "./OnboardingComplete";
 
 interface OnboardingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProps) {
+export default function OnboardingModal({
+  isOpen,
+  onClose,
+}: OnboardingModalProps) {
   const router = useRouter();
   const { trackOnboardingComplete, trackOnboardingSkip } = useAnalytics();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     motivations: [] as string[],
-    competitiveLevel: '',
+    competitiveLevels: [] as string[],
     preferredCities: [] as string[],
     preferredCountries: [] as string[],
     preferredClubs: [] as string[],
-    budgetRange: '',
-    preferredMonths: [] as string[]
+    budgetRange: "",
+    preferredMonths: [] as string[],
   });
 
   const totalSteps = 4;
@@ -49,49 +52,51 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
   const handleSkip = async () => {
     try {
       trackOnboardingSkip();
-      await fetch('/api/user/preferences', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ onboardingSkipped: true })
+      await fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ onboardingSkipped: true }),
       });
       onClose();
     } catch (error) {
-      console.error('Error skipping onboarding:', error);
+      console.error("Error skipping onboarding:", error);
     }
   };
 
   const handleComplete = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/user/preferences', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/user/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          onboardingCompleted: true
-        })
+          onboardingCompleted: true,
+        }),
       });
 
       if (response.ok) {
         trackOnboardingComplete(formData);
-        toast.success('Preferences saved! We\'ll use these to personalize your experience.');
+        toast.success(
+          "Preferences saved! We'll use these to personalize your experience."
+        );
         setTimeout(() => {
           onClose();
           router.refresh();
         }, 2000);
       } else {
-        throw new Error('Failed to save preferences');
+        throw new Error("Failed to save preferences");
       }
     } catch (error) {
-      console.error('Error saving preferences:', error);
-      toast.error('Failed to save preferences. Please try again.');
+      console.error("Error saving preferences:", error);
+      toast.error("Failed to save preferences. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const updateFormData = (updates: Partial<typeof formData>) => {
-    setFormData(prev => ({ ...prev, ...updates }));
+    setFormData((prev) => ({ ...prev, ...updates }));
   };
 
   return (
@@ -138,7 +143,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
             <div className="h-2 bg-gray-100">
               <motion.div
                 className="h-full bg-gradient-to-r from-primary to-primary-dark"
-                initial={{ width: '0%' }}
+                initial={{ width: "0%" }}
                 animate={{ width: `${(currentStep / totalSteps) * 100}%` }}
                 transition={{ duration: 0.3 }}
               />
@@ -152,21 +157,23 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
                   onUpdate={(motivations) => updateFormData({ motivations })}
                 />
               )}
-              
+
               {currentStep === 2 && (
                 <CompetitiveSelector
-                  selectedLevel={formData.competitiveLevel}
-                  onUpdate={(competitiveLevel) => updateFormData({ competitiveLevel })}
+                  selectedLevels={formData.competitiveLevels}
+                  onUpdate={(competitiveLevels) =>
+                    updateFormData({ competitiveLevels })
+                  }
                 />
               )}
-              
+
               {currentStep === 3 && (
                 <DetailPreferences
                   formData={formData}
                   onUpdate={updateFormData}
                 />
               )}
-              
+
               {currentStep === 4 && (
                 <OnboardingComplete
                   preferences={formData}
@@ -183,7 +190,7 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
               >
                 Skip for now
               </button>
-              
+
               <div className="flex gap-3">
                 {currentStep > 1 && currentStep < 4 && (
                   <button
@@ -193,20 +200,22 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
                     Back
                   </button>
                 )}
-                
+
                 {currentStep < 3 && (
                   <button
                     onClick={handleNext}
                     disabled={
-                      (currentStep === 1 && formData.motivations.length === 0) ||
-                      (currentStep === 2 && !formData.competitiveLevel)
+                      (currentStep === 1 &&
+                        formData.motivations.length === 0) ||
+                      (currentStep === 2 &&
+                        formData.competitiveLevels.length === 0)
                     }
                     className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
                 )}
-                
+
                 {currentStep === 3 && (
                   <button
                     onClick={handleNext}
@@ -215,14 +224,14 @@ export default function OnboardingModal({ isOpen, onClose }: OnboardingModalProp
                     Continue
                   </button>
                 )}
-                
+
                 {currentStep === 4 && (
                   <button
                     onClick={handleComplete}
                     disabled={isSubmitting}
                     className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Saving...' : 'Complete'}
+                    {isSubmitting ? "Saving..." : "Complete"}
                   </button>
                 )}
               </div>

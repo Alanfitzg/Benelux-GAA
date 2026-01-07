@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 interface Club {
   id: string;
   name: string;
 }
 
-export default function ClubAdminLinks({ 
-  className, 
-  onClick 
-}: { 
+export default function ClubAdminLinks({
+  className,
+  onClick,
+}: {
   className?: string;
   onClick?: () => void;
 }) {
@@ -28,23 +28,23 @@ export default function ClubAdminLinks({
 
   const fetchAdminClubs = async () => {
     try {
-      const response = await fetch('/api/user/admin-clubs');
+      const response = await fetch("/api/user/admin-clubs");
       if (response.ok) {
         const data = await response.json();
         setAdminClubs(data.clubs || []);
       }
     } catch (error) {
-      console.error('Error fetching admin clubs:', error);
+      console.error("Error fetching admin clubs:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (!session?.user || session.user.role === 'USER' || loading) {
+  if (!session?.user || loading) {
     return null;
   }
 
-  if (adminClubs.length === 0 && session.user.role === 'CLUB_ADMIN') {
+  if (adminClubs.length === 0) {
     return null;
   }
 

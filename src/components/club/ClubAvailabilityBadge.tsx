@@ -90,10 +90,43 @@ export default function ClubAvailabilityBadge({
 
   if (!isOpenToVisitors) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-        <h3 className="text-base font-semibold text-gray-900 mb-2 flex items-center gap-2">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border-2 border-gray-200 shadow-md p-6">
+        <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-3">
+          <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center">
+            <svg
+              className="w-5 h-5 text-gray-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          Available Dates
+        </h3>
+        <p className="text-base text-gray-500">
+          Not currently hosting visitors.
+        </p>
+      </div>
+    );
+  }
+
+  const visibleDates = showAllDates
+    ? displayWeekends
+    : displayWeekends.slice(0, 3);
+  const hasMoreDates = displayWeekends.length > 3;
+
+  return (
+    <div className="bg-gradient-to-br from-primary/5 to-green-50 rounded-xl border-2 border-primary/30 shadow-lg p-6">
+      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
+        <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
           <svg
-            className="w-4 h-4 text-gray-400"
+            className="w-6 h-6 text-primary"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -105,47 +138,35 @@ export default function ClubAvailabilityBadge({
               d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
             />
           </svg>
-          Available Dates
-        </h3>
-        <p className="text-sm text-gray-500">Not currently hosting visitors.</p>
-      </div>
-    );
-  }
-
-  const visibleDates = showAllDates
-    ? displayWeekends
-    : displayWeekends.slice(0, 3);
-  const hasMoreDates = displayWeekends.length > 3;
-
-  return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
-      <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
-        <svg
-          className="w-4 h-4 text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-        Available Dates
+        </div>
+        <span>Available Dates</span>
       </h3>
 
       {!showInterestForm ? (
-        <div className="space-y-3">
-          <p className="text-xs text-gray-500">Weekends open for hosting:</p>
+        <div className="space-y-4">
+          <p className="text-base text-gray-700 font-medium">
+            This club is open to hosting a tournament on these weekends:
+          </p>
 
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-2">
             {visibleDates.map((date, index) => (
               <span
                 key={index}
-                className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                className="inline-flex items-center px-4 py-2 rounded-lg text-base font-semibold bg-white text-primary border-2 border-primary/30 shadow-sm"
               >
+                <svg
+                  className="w-4 h-4 mr-2 text-primary/70"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
                 {formatWeekendCompact(date)}
               </span>
             ))}
@@ -153,26 +174,31 @@ export default function ClubAvailabilityBadge({
               <button
                 type="button"
                 onClick={() => setShowAllDates(true)}
-                className="inline-flex items-center px-2 py-1 rounded text-xs font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                className="inline-flex items-center px-4 py-2 rounded-lg text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-white/80 border-2 border-dashed border-gray-300"
               >
                 +{displayWeekends.length - 3} more
               </button>
             )}
           </div>
 
+          <p className="text-sm text-gray-600 leading-relaxed bg-white/50 rounded-lg p-3 border border-gray-200">
+            If any of these dates suit your club, register your interest. When
+            clubs see demand, they&apos;re more likely to organise an event!
+          </p>
+
           <button
             type="button"
             onClick={() => setShowInterestForm(true)}
-            className="w-full px-3 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors"
+            className="w-full px-4 py-3 bg-primary text-white rounded-xl text-lg font-bold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
           >
             Register Interest
           </button>
         </div>
       ) : success ? (
-        <div className="text-center py-3">
-          <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
+        <div className="text-center py-6">
+          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
-              className="w-5 h-5 text-primary"
+              className="w-8 h-8 text-green-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -185,30 +211,32 @@ export default function ClubAvailabilityBadge({
               />
             </svg>
           </div>
-          <p className="text-primary text-sm font-medium">
+          <p className="text-green-700 text-lg font-bold mb-1">
             Interest registered!
           </p>
-          <p className="text-gray-500 text-xs">{clubName} will be notified.</p>
+          <p className="text-gray-600 text-base">
+            {clubName} will be notified.
+          </p>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-3">
           <input
             type="text"
             placeholder="Your name"
             required
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
           <input
             type="text"
-            placeholder="Name your club"
+            placeholder="Your club name"
             required
             value={formData.clubName}
             onChange={(e) =>
               setFormData({ ...formData, clubName: e.target.value })
             }
-            className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
           <input
             type="email"
@@ -218,30 +246,30 @@ export default function ClubAvailabilityBadge({
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }
-            className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
           <textarea
             placeholder="Which dates interest you?"
-            rows={2}
+            rows={3}
             value={formData.message}
             onChange={(e) =>
               setFormData({ ...formData, message: e.target.value })
             }
-            className="w-full px-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            className="w-full px-4 py-3 text-base border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
           />
-          {error && <p className="text-red-600 text-xs">{error}</p>}
-          <div className="flex gap-2">
+          {error && <p className="text-red-600 text-sm font-medium">{error}</p>}
+          <div className="flex gap-3 pt-1">
             <button
               type="button"
               onClick={() => setShowInterestForm(false)}
-              className="flex-1 px-3 py-1.5 text-sm border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
+              className="flex-1 px-4 py-3 text-base font-medium border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 px-3 py-1.5 text-sm bg-primary text-white rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-3 text-base font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {loading ? "Sending..." : "Submit"}
             </button>

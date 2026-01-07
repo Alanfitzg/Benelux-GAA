@@ -25,7 +25,7 @@ interface Event {
   startDate: string;
   location?: string;
   imageUrl?: string;
-  sportType?: string;
+  acceptedTeamTypes?: string[];
 }
 
 interface Testimonial {
@@ -783,53 +783,6 @@ export default function HomePage() {
                   filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                 }}
               />
-              {/* Lower Hurl - Right to left (flipped, slight climb) */}
-              <motion.img
-                src="/flying-hurl.png.png"
-                alt="Flying Hurl"
-                className="absolute w-44 h-auto"
-                initial={{ opacity: 0 }}
-                animate={{
-                  opacity: [0, 0.7, 0.7, 0.7, 0],
-                  left: ["95%", "70%", "50%", "30%", "5%"],
-                  top: ["70%", "69%", "68%", "67%", "66%"],
-                  rotate: [-1, 0, 0, 0, -1],
-                }}
-                transition={{
-                  opacity: {
-                    delay: 2,
-                    duration: 16,
-                    ease: "linear",
-                    repeat: Infinity,
-                    repeatDelay: 4,
-                  },
-                  left: {
-                    delay: 2,
-                    duration: 16,
-                    ease: "linear",
-                    repeat: Infinity,
-                    repeatDelay: 4,
-                  },
-                  top: {
-                    delay: 2,
-                    duration: 16,
-                    ease: "linear",
-                    repeat: Infinity,
-                    repeatDelay: 4,
-                  },
-                  rotate: {
-                    delay: 2,
-                    duration: 16,
-                    ease: "easeInOut",
-                    repeat: Infinity,
-                    repeatDelay: 4,
-                  },
-                }}
-                style={{
-                  filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
-                  scaleX: -1,
-                }}
-              />
             </div>
 
             {/* Foreground Text Content */}
@@ -945,14 +898,27 @@ export default function HomePage() {
                           </div>
                         )}
 
-                        {/* Sport Type Badge */}
-                        {event.sportType && (
-                          <div className="absolute top-3 left-3 z-10">
-                            <span className="text-xs font-semibold text-white bg-primary/90 px-2.5 py-1 rounded-md shadow-sm backdrop-blur-sm">
-                              {event.sportType}
-                            </span>
-                          </div>
-                        )}
+                        {/* Sport Type Badges */}
+                        {event.acceptedTeamTypes &&
+                          event.acceptedTeamTypes.length > 0 && (
+                            <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-1">
+                              {event.acceptedTeamTypes
+                                .slice(0, 3)
+                                .map((sport) => (
+                                  <span
+                                    key={sport}
+                                    className="text-xs font-semibold text-white bg-primary/90 px-2 py-0.5 rounded-md shadow-sm backdrop-blur-sm"
+                                  >
+                                    {sport}
+                                  </span>
+                                ))}
+                              {event.acceptedTeamTypes.length > 3 && (
+                                <span className="text-xs font-semibold text-white bg-primary/90 px-2 py-0.5 rounded-md shadow-sm backdrop-blur-sm">
+                                  +{event.acceptedTeamTypes.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          )}
 
                         {/* Event Status Badge */}
                         {isEventPast(event.startDate) && (

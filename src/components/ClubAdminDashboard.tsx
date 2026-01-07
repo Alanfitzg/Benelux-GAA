@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import Link from "next/link";
-import ClubVerificationCard from "@/components/club/ClubVerificationCard";
 import PitchManagement from "@/components/pitch/PitchManagement";
 import CreateEventButton from "@/components/CreateEventButton";
 import TestimonialsDashboardWidget from "@/components/testimonials/TestimonialsDashboardWidget";
@@ -22,7 +21,6 @@ import {
   Users,
   CalendarDays,
   Euro,
-  ShieldCheck,
   Info,
   Image,
 } from "lucide-react";
@@ -82,7 +80,6 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
-  const [showVerification, setShowVerification] = useState(false);
   const [activeSection, setActiveSection] =
     useState<DashboardSection>("overview");
   const [showInterestsInfo, setShowInterestsInfo] = useState(false);
@@ -308,34 +305,6 @@ export default function ClubAdminDashboard({ clubId }: { clubId: string }) {
             </div>
           </div>
         </div>
-      </div>
-
-      {/* Verification Status - Collapsible */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <button
-          type="button"
-          onClick={() => setShowVerification(!showVerification)}
-          className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <div className="bg-blue-100 rounded-full p-2">
-              <ShieldCheck className="w-5 h-5 text-blue-600" />
-            </div>
-            <span className="text-lg font-semibold text-gray-900">
-              Club Verification
-            </span>
-          </div>
-          {showVerification ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
-          )}
-        </button>
-        {showVerification && (
-          <div className="px-6 pb-6 border-t border-gray-100">
-            <ClubVerificationCard clubId={clubId} />
-          </div>
-        )}
       </div>
 
       {/* Tab Navigation */}

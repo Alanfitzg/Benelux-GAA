@@ -454,7 +454,7 @@ model UserPreferences {
   id                  String   @id @default(cuid())
   userId              String   @unique
   motivations         String[]
-  competitiveLevel    String?
+  competitiveLevels   String[]
   preferredCities     String[]
   preferredCountries  String[]
   preferredClubs      String[]
@@ -1018,12 +1018,13 @@ enum HolidayType {
 }
 
 model ClubPhoto {
-  id        String   @id @default(cuid())
-  clubId    String
-  url       String
-  caption   String?
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
+  id           String   @id @default(cuid())
+  clubId       String
+  url          String
+  caption      String?
+  order        Int      @default(0)
+  isCoverPhoto Boolean  @default(false)
+  createdAt    DateTime @default(now())
 
   club      Club     @relation(fields: [clubId], references: [id], onDelete: Cascade)
 
