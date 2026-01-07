@@ -478,21 +478,23 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                   Quick Facts
                 </h3>
                 <div className="space-y-3">
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Type</span>
-                    <span className="font-medium">
+                  <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+                    <span className="text-gray-600 flex-shrink-0">Type</span>
+                    <span className="font-medium text-right">
                       {event?.eventType || MESSAGES.DEFAULTS.PLACEHOLDER}
                     </span>
                   </div>
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Location</span>
-                    <span className="font-medium">
+                  <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+                    <span className="text-gray-600 flex-shrink-0">
+                      Location
+                    </span>
+                    <span className="font-medium text-right">
                       {event?.location || MESSAGES.DEFAULTS.LOCATION}
                     </span>
                   </div>
-                  <div className="flex justify-between py-2 border-b">
-                    <span className="text-gray-600">Date</span>
-                    <span className="font-medium">
+                  <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+                    <span className="text-gray-600 flex-shrink-0">Date</span>
+                    <span className="font-medium text-right">
                       {event
                         ? formatEventDate(event.startDate)
                         : MESSAGES.DEFAULTS.PLACEHOLDER}
@@ -501,9 +503,9 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
 
                   {/* Teams count - For tournaments */}
                   {event?.eventType === "Tournament" && (
-                    <div className="flex justify-between py-2 border-b">
-                      <span className="text-gray-600">Teams</span>
-                      <span className="font-medium">
+                    <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+                      <span className="text-gray-600 flex-shrink-0">Teams</span>
+                      <span className="font-medium text-right">
                         {teams.filter((t) => t.status === "CONFIRMED").length}
                         {event.maxTeams && ` / ${event.maxTeams}`}
                       </span>
@@ -511,8 +513,10 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                   )}
 
                   {/* Pricing - Hidden for non-authenticated users */}
-                  <div className="flex justify-between py-2">
-                    <span className="text-gray-600">Cost per person</span>
+                  <div className="flex justify-between items-start gap-3 py-2">
+                    <span className="text-gray-600 flex-shrink-0">
+                      Cost per person
+                    </span>
                     {session?.user ? (
                       <span className="font-medium text-primary text-xl">
                         {event?.cost
