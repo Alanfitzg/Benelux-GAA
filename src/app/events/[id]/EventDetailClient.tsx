@@ -156,7 +156,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
       )}
 
       {/* Hero Section with Background Image */}
-      <div className="relative h-96 w-full overflow-hidden">
+      <div className="relative h-64 sm:h-80 md:h-96 w-full overflow-hidden">
         <Image
           src={event?.imageUrl || cityImage || URLS.PLACEHOLDER_CREST}
           alt={event?.title || "Event Image"}
@@ -165,12 +165,12 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/30" />
-        <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
+        <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 md:p-8 text-white">
           <div className="max-w-7xl mx-auto">
-            <h1 className="text-5xl font-extrabold mb-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-2">
               {event?.title || "Event Title"}
             </h1>
-            <div className="flex flex-wrap gap-4 items-center text-lg">
+            <div className="flex flex-wrap gap-2 sm:gap-4 items-center text-sm sm:text-base md:text-lg">
               <span className="flex items-center gap-2">
                 <svg
                   className="w-5 h-5"
