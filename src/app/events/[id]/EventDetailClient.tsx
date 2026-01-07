@@ -100,7 +100,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             const userData = await userRes.json();
             const isAdmin =
               userData.role === "SUPER_ADMIN" ||
-              userData.role === "CLUB_ADMIN" ||
               (eventData.clubId &&
                 userData.adminOfClubs?.some(
                   (club: { id: string; name: string }) =>
