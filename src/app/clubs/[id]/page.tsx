@@ -18,10 +18,12 @@ import TestimonialSection from "@/components/testimonials/TestimonialSection";
 import ClubProfileNav from "@/components/club/ClubProfileNav";
 import ClubAboutSection from "@/components/club/ClubAboutSection";
 import ClubContactCard from "@/components/club/ClubContactCard";
+import SportsBadges from "@/components/club/SportsBadges";
 import ClubFriendsSection from "@/components/club/ClubFriendsSection";
 import ClubPhotoGallery from "@/components/club/ClubPhotoGallery";
 import ClubTournamentsSection from "@/components/club/ClubTournamentsSection";
 import ClubCoverPhotoBanner from "@/components/club/ClubCoverPhotoBanner";
+import SocialMediaIcons from "@/components/club/SocialMediaIcons";
 
 export async function generateMetadata({
   params,
@@ -215,12 +217,12 @@ export default async function ClubDetailsPage({
       {/* Cover Photo Banner */}
       <ClubCoverPhotoBanner clubId={club.id} />
 
-      {/* Hero Section - Clean white design */}
+      {/* Hero Section - Merged with About content */}
       <div className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-              {/* Crest */}
+            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+              {/* Larger Crest */}
               <div className="flex-shrink-0">
                 <Image
                   src={
@@ -228,17 +230,17 @@ export default async function ClubDetailsPage({
                     "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
                   }
                   alt={club.name}
-                  width={120}
-                  height={120}
-                  className="w-24 h-24 sm:w-28 sm:h-28 rounded-lg object-contain bg-gray-50 p-2"
+                  width={180}
+                  height={180}
+                  className="w-36 h-36 sm:w-44 sm:h-44 rounded-xl object-contain bg-gray-50 p-3 shadow-sm"
                   unoptimized
                 />
               </div>
 
               {/* Club Info */}
-              <div className="flex-1 text-center sm:text-left">
-                <div className="flex items-center justify-center sm:justify-start gap-2 mb-1">
-                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              <div className="flex-1 text-center lg:text-left">
+                <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
+                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
                     {club.name}
                   </h1>
                   {club.verificationStatus === "VERIFIED" && (
@@ -248,9 +250,9 @@ export default async function ClubDetailsPage({
                   )}
                 </div>
 
-                <div className="space-y-1 mb-4">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-gray-600 mb-4">
                   {club.location && (
-                    <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-1.5">
+                    <span className="flex items-center gap-1.5">
                       <svg
                         className="w-4 h-4 text-gray-400"
                         fill="none"
@@ -271,27 +273,44 @@ export default async function ClubDetailsPage({
                         />
                       </svg>
                       {club.location}
-                    </p>
+                    </span>
                   )}
-                  <p className="text-gray-600 flex items-center justify-center sm:justify-start gap-1.5">
-                    <svg
-                      className="w-4 h-4 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                    {club.foundedYear ? `Est. ${club.foundedYear}` : "Est. —"}
-                  </p>
+                  {club.foundedYear && (
+                    <span className="flex items-center gap-1.5">
+                      <svg
+                        className="w-4 h-4 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                      Est. {club.foundedYear}
+                    </span>
+                  )}
                 </div>
 
-                <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
+                {/* Bio/Description */}
+                {club.bio && (
+                  <p className="text-gray-700 leading-relaxed mb-4 max-w-2xl whitespace-pre-line">
+                    {club.bio}
+                  </p>
+                )}
+
+                {/* Sports Badges */}
+                {club.teamTypes && club.teamTypes.length > 0 && (
+                  <div className="mb-5">
+                    <SportsBadges teamTypes={club.teamTypes} size="md" />
+                  </div>
+                )}
+
+                {/* Action Buttons and Social Icons */}
+                <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
                   <ClubContactForm
                     clubId={club.id}
                     clubName={club.name}
@@ -357,6 +376,15 @@ export default async function ClubDetailsPage({
                       isCurrentAdmin={isCurrentAdmin}
                     />
                   )}
+
+                  {/* Social Media Icons */}
+                  <SocialMediaIcons
+                    website={club.website}
+                    facebook={club.facebook}
+                    instagram={club.instagram}
+                    twitter={club.twitter}
+                    tiktok={club.tiktok}
+                  />
                 </div>
               </div>
             </div>
@@ -371,22 +399,36 @@ export default async function ClubDetailsPage({
       <div className="bg-gray-100 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-8">
-            {/* About Section */}
-            <ClubAboutSection
-              clubId={club.id}
-              clubName={club.name}
-              bio={club.bio}
-              foundedYear={club.foundedYear}
-              teamTypes={club.teamTypes}
-              isOpenToVisitors={club.isOpenToVisitors}
-              preferredWeekends={club.preferredWeekends as string[] | null}
-              isMainlandEurope={club.isMainlandEurope}
-              website={club.website}
-              facebook={club.facebook}
-              instagram={club.instagram}
-              twitter={club.twitter}
-              tiktok={club.tiktok}
-            />
+            {/* Available Dates + Photo Gallery */}
+            <section id="gallery" className="scroll-mt-24">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                {club.isMainlandEurope && (
+                  <div className="lg:col-span-1">
+                    <ClubAboutSection
+                      clubId={club.id}
+                      clubName={club.name}
+                      isOpenToVisitors={club.isOpenToVisitors}
+                      preferredWeekends={
+                        club.preferredWeekends as string[] | null
+                      }
+                      isMainlandEurope={club.isMainlandEurope}
+                    />
+                  </div>
+                )}
+                <div
+                  className={
+                    club.isMainlandEurope ? "lg:col-span-2" : "lg:col-span-3"
+                  }
+                >
+                  <ClubPhotoGallery
+                    clubId={club.id}
+                    isAdmin={
+                      isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"
+                    }
+                  />
+                </div>
+              </div>
+            </section>
 
             {/* Contact card only for super admins */}
             {session?.user?.role === "SUPER_ADMIN" && (
@@ -476,12 +518,6 @@ export default async function ClubDetailsPage({
               clubName={club.name}
               isAdmin={isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"}
               twinClub={club.twinClub}
-            />
-
-            {/* Photo Gallery */}
-            <ClubPhotoGallery
-              clubId={club.id}
-              isAdmin={isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"}
             />
 
             {/* Testimonials Section */}

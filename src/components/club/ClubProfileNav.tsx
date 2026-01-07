@@ -8,7 +8,6 @@ interface Section {
 }
 
 const sections: Section[] = [
-  { id: "about", label: "About" },
   { id: "events", label: "Tournaments" },
   { id: "friends", label: "Friends" },
   { id: "gallery", label: "Gallery" },
@@ -18,7 +17,7 @@ const sections: Section[] = [
 ];
 
 export default function ClubProfileNav() {
-  const [activeSection, setActiveSection] = useState<string>("about");
+  const [activeSection, setActiveSection] = useState<string>("events");
 
   useEffect(() => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
