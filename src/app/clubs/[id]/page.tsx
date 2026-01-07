@@ -295,13 +295,6 @@ export default async function ClubDetailsPage({
                   )}
                 </div>
 
-                {/* Bio/Description */}
-                {club.bio && (
-                  <p className="text-gray-700 leading-relaxed mb-4 max-w-2xl whitespace-pre-line">
-                    {club.bio}
-                  </p>
-                )}
-
                 {/* Sports Badges */}
                 {club.teamTypes && club.teamTypes.length > 0 && (
                   <div className="mb-5">
