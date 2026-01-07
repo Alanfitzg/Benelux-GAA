@@ -34,7 +34,12 @@ export default function TournamentManager({
       return;
     }
 
-    if (event.bracketType && !confirm("This will regenerate the bracket. Existing bracket data will be lost. Continue?")) {
+    if (
+      event.bracketType &&
+      !confirm(
+        "This will regenerate the bracket. Existing bracket data will be lost. Continue?"
+      )
+    ) {
       return;
     }
 
@@ -68,62 +73,68 @@ export default function TournamentManager({
     }
   };
 
-  const tabs: { id: TabType; label: string; icon: string; description: string }[] = [
-    { 
-      id: "teams", 
-      label: "Teams", 
+  const tabs: {
+    id: TabType;
+    label: string;
+    icon: string;
+    description: string;
+  }[] = [
+    {
+      id: "teams",
+      label: "Teams",
       icon: "👥",
-      description: "Manage registered teams"
+      description: "Manage registered teams",
     },
-    { 
-      id: "bracket", 
-      label: "Bracket", 
+    {
+      id: "bracket",
+      label: "Bracket",
       icon: "🏆",
-      description: "View and generate tournament brackets"
+      description: "View and generate tournament brackets",
     },
-    { 
-      id: "matches", 
-      label: "Matches", 
+    {
+      id: "matches",
+      label: "Matches",
       icon: "⚽",
-      description: "Schedule and manage matches"
+      description: "Schedule and manage matches",
     },
-    { 
-      id: "settings", 
-      label: "Settings", 
+    {
+      id: "settings",
+      label: "Settings",
       icon: "⚙️",
-      description: "Tournament configuration"
+      description: "Tournament configuration",
     },
   ];
 
   const getTeamStats = () => {
     const byDivision: { [key: string]: number } = {};
     const byTeamType: { [key: string]: number } = {};
-    
-    teams.forEach(team => {
+
+    teams.forEach((team) => {
       const division = team.division || "Open";
       const teamType = team.teamType;
-      
+
       byDivision[division] = (byDivision[division] || 0) + 1;
       byTeamType[teamType] = (byTeamType[teamType] || 0) + 1;
     });
-    
+
     return { byDivision, byTeamType };
   };
 
   const stats = getTeamStats();
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border">
+    <div className="bg-white rounded-xl shadow-md">
       {/* Header */}
-      <div className="border-b px-6 py-4">
+      <div className="border-b border-gray-100 px-6 py-4">
         <h2 className="text-xl font-bold">Tournament Management</h2>
         <p className="text-sm text-gray-600 mt-1">
-          {teams.length} teams registered {event.maxTeams && `/ ${event.maxTeams} max`}
+          {teams.length} teams registered{" "}
+          {event.maxTeams && `/ ${event.maxTeams} max`}
         </p>
       </div>
 
       {/* Tab Navigation */}
-      <div className="border-b bg-gray-50">
+      <div className="border-b border-gray-100 bg-gray-50/50">
         <div className="flex space-x-1 px-6">
           {tabs.map((tab) => (
             <button
@@ -131,9 +142,10 @@ export default function TournamentManager({
               onClick={() => setActiveTab(tab.id)}
               className={`
                 px-4 py-3 text-sm font-medium border-b-2 transition-colors
-                ${activeTab === tab.id
-                  ? "text-primary border-primary bg-white"
-                  : "text-gray-600 border-transparent hover:text-gray-900"
+                ${
+                  activeTab === tab.id
+                    ? "text-primary border-primary bg-white"
+                    : "text-gray-600 border-transparent hover:text-gray-900"
                 }
               `}
             >
@@ -165,18 +177,27 @@ export default function TournamentManager({
               <h3 className="text-lg font-semibold mb-4">Team Overview</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">By Division</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">
+                    By Division
+                  </h4>
                   <div className="space-y-1">
-                    {Object.entries(stats.byDivision).map(([division, count]) => (
-                      <div key={division} className="flex justify-between text-sm">
-                        <span className="text-gray-600">{division}</span>
-                        <span className="font-medium">{count} teams</span>
-                      </div>
-                    ))}
+                    {Object.entries(stats.byDivision).map(
+                      ([division, count]) => (
+                        <div
+                          key={division}
+                          className="flex justify-between text-sm"
+                        >
+                          <span className="text-gray-600">{division}</span>
+                          <span className="font-medium">{count} teams</span>
+                        </div>
+                      )
+                    )}
                   </div>
                 </div>
                 <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">By Sport Type</h4>
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">
+                    By Sport Type
+                  </h4>
                   <div className="space-y-1">
                     {Object.entries(stats.byTeamType).map(([type, count]) => (
                       <div key={type} className="flex justify-between text-sm">
@@ -195,19 +216,26 @@ export default function TournamentManager({
               {teams.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {teams.map((team) => (
-                    <div key={team.id} className="border rounded-lg p-3 hover:shadow-md transition">
+                    <div
+                      key={team.id}
+                      className="bg-gray-50 rounded-lg p-3 hover:shadow-md hover:bg-white transition"
+                    >
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium text-sm">{team.teamName}</p>
-                          <p className="text-xs text-gray-600">{team.club?.name}</p>
+                          <p className="text-xs text-gray-600">
+                            {team.club?.name}
+                          </p>
                         </div>
-                        <span className={`px-2 py-1 rounded text-xs font-medium ${
-                          team.status === 'CONFIRMED' 
-                            ? 'bg-green-100 text-green-800'
-                            : team.status === 'WITHDRAWN'
-                            ? 'bg-red-100 text-red-800' 
-                            : 'bg-yellow-100 text-yellow-800'
-                        }`}>
+                        <span
+                          className={`px-2 py-1 rounded text-xs font-medium ${
+                            team.status === "CONFIRMED"
+                              ? "bg-green-100 text-green-800"
+                              : team.status === "WITHDRAWN"
+                                ? "bg-red-100 text-red-800"
+                                : "bg-yellow-100 text-yellow-800"
+                          }`}
+                        >
                           {team.status}
                         </span>
                       </div>
@@ -242,12 +270,14 @@ export default function TournamentManager({
           <div className="space-y-6">
             {/* Bracket Generation Controls (Admin Only) */}
             {isAdmin && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-blue-50/50 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-semibold text-blue-900">Bracket Generation</h3>
+                    <h3 className="text-sm font-semibold text-blue-900">
+                      Bracket Generation
+                    </h3>
                     <p className="text-xs text-blue-700 mt-1">
-                      {event.bracketType 
+                      {event.bracketType
                         ? `Current: ${event.bracketType.replace(/_/g, " ")}`
                         : "No bracket generated yet"}
                     </p>
@@ -258,7 +288,12 @@ export default function TournamentManager({
                     disabled={isGeneratingBracket || teams.length < 2}
                     className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 text-sm font-medium"
                   >
-                    {isGeneratingBracket ? "Generating..." : event.bracketType ? "Regenerate" : "Generate"} Bracket
+                    {isGeneratingBracket
+                      ? "Generating..."
+                      : event.bracketType
+                        ? "Regenerate"
+                        : "Generate"}{" "}
+                    Bracket
                   </button>
                 </div>
               </div>
@@ -267,7 +302,9 @@ export default function TournamentManager({
             {/* Bracket Visualization */}
             {matches.length > 0 ? (
               <div>
-                <h3 className="text-lg font-semibold mb-4">Tournament Bracket</h3>
+                <h3 className="text-lg font-semibold mb-4">
+                  Tournament Bracket
+                </h3>
                 <BracketVisualization
                   matches={matches}
                   teams={teams}
@@ -279,7 +316,8 @@ export default function TournamentManager({
                 <p className="text-gray-500">No bracket generated yet</p>
                 {isAdmin && teams.length >= 2 && (
                   <p className="text-sm text-gray-400 mt-2">
-                    Click &quot;Generate Bracket&quot; above to create the tournament bracket
+                    Click &quot;Generate Bracket&quot; above to create the
+                    tournament bracket
                   </p>
                 )}
                 {teams.length < 2 && (
@@ -298,26 +336,34 @@ export default function TournamentManager({
             {matches.length > 0 ? (
               <div className="space-y-3">
                 {matches.map((match) => (
-                  <div key={match.id} className="border rounded-lg p-4">
+                  <div key={match.id} className="bg-gray-50 rounded-lg p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <span className="text-sm font-medium text-primary">{match.round}</span>
-                      <span className={`px-2 py-1 rounded text-xs font-medium ${
-                        match.status === 'COMPLETED'
-                          ? 'bg-green-100 text-green-800'
-                          : match.status === 'IN_PROGRESS'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-gray-100 text-gray-800'
-                      }`}>
+                      <span className="text-sm font-medium text-primary">
+                        {match.round}
+                      </span>
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${
+                          match.status === "COMPLETED"
+                            ? "bg-green-100 text-green-800"
+                            : match.status === "IN_PROGRESS"
+                              ? "bg-blue-100 text-blue-800"
+                              : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
                         {match.status}
                       </span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">{match.homeTeam?.teamName || 'TBD'}</span>
+                      <span className="text-sm">
+                        {match.homeTeam?.teamName || "TBD"}
+                      </span>
                       <span className="text-xs text-gray-500">vs</span>
-                      <span className="text-sm">{match.awayTeam?.teamName || 'TBD'}</span>
+                      <span className="text-sm">
+                        {match.awayTeam?.teamName || "TBD"}
+                      </span>
                     </div>
                     {(match.venue || match.matchDate) && (
-                      <div className="mt-2 pt-2 border-t text-xs text-gray-500">
+                      <div className="mt-2 pt-2 border-t border-gray-100 text-xs text-gray-500">
                         {match.venue && <span>📍 {match.venue}</span>}
                         {match.matchDate && (
                           <span className="ml-4">
@@ -345,39 +391,64 @@ export default function TournamentManager({
             <h3 className="text-lg font-semibold mb-4">Tournament Settings</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Tournament Type</h4>
-                <p className="text-sm text-gray-600">{event.bracketType || "Not set"}</p>
-              </div>
-              <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Team Limits</h4>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                  Tournament Type
+                </h4>
                 <p className="text-sm text-gray-600">
-                  Min: {event.minTeams || "None"} / Max: {event.maxTeams || "Unlimited"}
+                  {event.bracketType || "Not set"}
                 </p>
               </div>
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Divisions</h4>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                  Team Limits
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Min: {event.minTeams || "None"} / Max:{" "}
+                  {event.maxTeams || "Unlimited"}
+                </p>
+              </div>
+              <div>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                  Divisions
+                </h4>
                 <div className="flex flex-wrap gap-1">
                   {event.divisions?.map((div) => (
-                    <span key={div} className="text-xs bg-gray-100 px-2 py-1 rounded">
+                    <span
+                      key={div}
+                      className="text-xs bg-gray-100 px-2 py-1 rounded"
+                    >
                       {div}
                     </span>
-                  )) || <span className="text-sm text-gray-600">No divisions set</span>}
+                  )) || (
+                    <span className="text-sm text-gray-600">
+                      No divisions set
+                    </span>
+                  )}
                 </div>
               </div>
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Accepted Team Types</h4>
+                <h4 className="text-sm font-medium text-gray-700 mb-2">
+                  Accepted Team Types
+                </h4>
                 <div className="flex flex-wrap gap-1">
                   {event.acceptedTeamTypes?.map((type) => (
-                    <span key={type} className="text-xs bg-gray-100 px-2 py-1 rounded">
+                    <span
+                      key={type}
+                      className="text-xs bg-gray-100 px-2 py-1 rounded"
+                    >
                       {type}
                     </span>
-                  )) || <span className="text-sm text-gray-600">All types accepted</span>}
+                  )) || (
+                    <span className="text-sm text-gray-600">
+                      All types accepted
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
-            
+
             {isAdmin && (
-              <div className="pt-6 border-t">
+              <div className="pt-6 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => router.push(`/admin/events/${event.id}/edit`)}

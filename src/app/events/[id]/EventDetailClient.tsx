@@ -330,7 +330,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {/* Overview Section */}
             <section
               id="overview"
-              className="bg-white rounded-xl shadow-sm border p-6"
+              className="bg-white rounded-xl shadow-md p-6"
             >
               <h2 className="text-2xl font-bold mb-4">Event Overview</h2>
               <p className="text-gray-700 leading-relaxed">
@@ -344,7 +344,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {/* Team Management Section */}
             {event?.eventType === "Tournament" && isClubAdmin && (
               <section id="team-management" className="space-y-6">
-                <div className="bg-white rounded-xl shadow-sm border p-6">
+                <div className="bg-white rounded-xl shadow-md p-6">
                   <h2 className="text-2xl font-bold mb-4">Team Management</h2>
                   <EnhancedTeamRegistration
                     event={event}
@@ -371,7 +371,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                     title="Tournament Details & Brackets"
                     description="See team lineups, brackets, match schedules and live results. Create a free account to access full tournament information."
                     previewHeight="h-40"
-                    className="bg-white rounded-xl shadow-sm border"
+                    className="bg-white rounded-xl shadow-md"
                   >
                     <div className="p-6">
                       <TournamentManager
@@ -390,7 +390,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {/* What's Included Section */}
             <section id="included">
               {session?.user ? (
-                <div className="bg-white rounded-xl shadow-sm border p-6">
+                <div className="bg-white rounded-xl shadow-md p-6">
                   <h2 className="text-2xl font-bold mb-4">
                     What&apos;s Included
                   </h2>
@@ -420,7 +420,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                   title="See Everything That's Included"
                   description="View the complete list of accommodations, meals, transport options, and activities included in your trip package."
                   previewHeight="h-32"
-                  className="bg-white rounded-xl shadow-sm border"
+                  className="bg-white rounded-xl shadow-md"
                 >
                   <div className="p-6">
                     <h2 className="text-2xl font-bold mb-4">
@@ -459,7 +459,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {event?.visibility !== "PRIVATE" && (
               <section
                 id="interest"
-                className="bg-white rounded-xl shadow-sm border p-6"
+                className="bg-white rounded-xl shadow-md p-6"
               >
                 <h2 className="text-2xl font-bold mb-6">
                   {MESSAGES.BUTTONS.REGISTER_INTEREST}
@@ -514,7 +514,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               {/* Quick Facts Card */}
-              <div className="bg-white rounded-xl shadow-sm border p-6">
+              <div className="bg-white rounded-xl shadow-md p-6">
                 <h3 className="text-xl font-bold mb-4">Quick Facts</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between py-2 border-b">
