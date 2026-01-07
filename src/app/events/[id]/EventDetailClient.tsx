@@ -258,9 +258,11 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {/* Overview Section */}
             <section
               id="overview"
-              className="bg-white rounded-xl shadow-md p-6"
+              className="bg-white rounded-xl shadow-md p-4 sm:p-6"
             >
-              <h2 className="text-2xl font-bold mb-4">Event Overview</h2>
+              <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+                Event Overview
+              </h2>
               <p className="text-gray-700 leading-relaxed">
                 {event?.description ||
                   (session
@@ -271,10 +273,15 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
 
             {/* Teams Section - Only for tournaments */}
             {event?.eventType === "Tournament" && (
-              <section id="teams" className="bg-white rounded-xl shadow-md p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-bold">Confirmed Teams</h2>
-                  <span className="text-sm text-gray-500">
+              <section
+                id="teams"
+                className="bg-white rounded-xl shadow-md p-4 sm:p-6"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 mb-4">
+                  <h2 className="text-xl sm:text-2xl font-bold">
+                    Confirmed Teams
+                  </h2>
+                  <span className="text-xs sm:text-sm text-gray-500">
                     {teams.filter((t) => t.status === "CONFIRMED").length} teams
                     {event.maxTeams && ` / ${event.maxTeams} max`}
                   </span>
@@ -342,8 +349,8 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {/* What's Included Section */}
             <section id="included">
               {session?.user ? (
-                <div className="bg-white rounded-xl shadow-md p-6">
-                  <h2 className="text-2xl font-bold mb-4">
+                <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
                     What&apos;s Included
                   </h2>
                   <div className="space-y-3">
@@ -411,9 +418,9 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {event?.visibility !== "PRIVATE" && (
               <section
                 id="interest"
-                className="bg-white rounded-xl shadow-md p-6"
+                className="bg-white rounded-xl shadow-md p-4 sm:p-6"
               >
-                <h2 className="text-2xl font-bold mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
                   {MESSAGES.BUTTONS.REGISTER_INTEREST}
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
@@ -466,8 +473,10 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
               {/* Quick Facts Card */}
-              <div className="bg-white rounded-xl shadow-md p-6">
-                <h3 className="text-xl font-bold mb-4">Quick Facts</h3>
+              <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-bold mb-3 sm:mb-4">
+                  Quick Facts
+                </h3>
                 <div className="space-y-3">
                   <div className="flex justify-between py-2 border-b">
                     <span className="text-gray-600">Type</span>
@@ -712,8 +721,10 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
               )}
 
               {/* Custom Trip CTA */}
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 border border-primary/20">
-                <h3 className="text-lg font-bold mb-2">Want a Custom Trip?</h3>
+              <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-4 sm:p-6 border border-primary/20">
+                <h3 className="text-base sm:text-lg font-bold mb-2">
+                  Want a Custom Trip?
+                </h3>
                 <p className="text-gray-700 text-sm mb-4">
                   Create a personalized GAA trip experience for your club
                 </p>

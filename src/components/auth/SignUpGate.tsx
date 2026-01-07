@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { UserPlus, Lock, Eye, EyeOff } from 'lucide-react';
-import { useState } from 'react';
+import Link from "next/link";
+import { UserPlus, Lock, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 interface SignUpGateProps {
   title: string;
@@ -37,60 +37,92 @@ export default function SignUpGate({
 
       {/* Sign-up Gate Overlay */}
       {!showContent && (
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-8 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="bg-green-100 rounded-full p-3">
-              <Lock className="w-8 h-8 text-green-600" />
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-200 rounded-xl p-4 sm:p-6 md:p-8 text-center">
+          <div className="flex justify-center mb-3 sm:mb-4">
+            <div className="bg-green-100 rounded-full p-2 sm:p-3">
+              <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
             </div>
           </div>
-          
-          <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-          <p className="text-gray-600 mb-6 max-w-md mx-auto">
+
+          <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2">
+            {title}
+          </h3>
+          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 max-w-md mx-auto">
             {description}
           </p>
-          
-          <div className="space-y-3 max-w-xs mx-auto">
+
+          <div className="space-y-2 sm:space-y-3 max-w-xs mx-auto">
             <Link
               href="/signup"
-              className="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors text-sm sm:text-base"
             >
-              <UserPlus className="w-5 h-5" />
+              <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />
               Create Free Account
             </Link>
-            
+
             <Link
               href="/signin"
-              className="w-full inline-flex items-center justify-center gap-2 border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-3 px-6 rounded-lg transition-colors"
+              className="w-full inline-flex items-center justify-center gap-2 border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors text-sm sm:text-base"
             >
               Already have an account? Sign In
             </Link>
-            
+
             <button
               onClick={() => setShowContent(true)}
-              className="w-full inline-flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 font-medium py-2 transition-colors text-sm"
+              className="w-full inline-flex items-center justify-center gap-2 text-gray-600 hover:text-gray-800 font-medium py-2 transition-colors text-xs sm:text-sm"
             >
               <Eye className="w-4 h-4" />
               View without signing up
             </button>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-green-200">
-            <div className="flex items-center justify-center gap-6 text-sm text-gray-600">
+          <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-green-200">
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600">
               <div className="flex items-center gap-1">
-                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-3 h-3 sm:w-4 sm:h-4 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 Free forever
               </div>
               <div className="flex items-center gap-1">
-                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-3 h-3 sm:w-4 sm:h-4 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 No spam
               </div>
               <div className="flex items-center gap-1">
-                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="w-3 h-3 sm:w-4 sm:h-4 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 Instant access
               </div>
@@ -113,7 +145,7 @@ export default function SignUpGate({
                 <p className="text-sm text-yellow-700 mt-1">
                   <Link href="/signup" className="underline hover:no-underline">
                     Create a free account
-                  </Link>{' '}
+                  </Link>{" "}
                   to unlock additional features and save your preferences.
                 </p>
               </div>
