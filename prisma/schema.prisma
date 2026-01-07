@@ -57,16 +57,22 @@ model Event {
 }
 
 model Interest {
-  id          String   @id @default(cuid())
-  eventId     String
-  name        String
-  email       String
-  message     String?
-  submittedAt DateTime @default(now())
-  event       Event    @relation(fields: [eventId], references: [id])
+  id                String              @id @default(cuid())
+  eventId           String
+  name              String
+  email             String
+  message           String?
+  submittedAt       DateTime            @default(now())
+  applicantClubId   String?             // The club submitting the interest (for Irish clubs applying to tournaments)
+  applicantClubName String?             // Name of the applying club (for display)
+  status            ApplicationStatus   @default(PENDING)
+  event             Event               @relation(fields: [eventId], references: [id])
+  applicantClub     Club?               @relation("ClubApplications", fields: [applicantClubId], references: [id])
 
   @@index([eventId])
   @@index([submittedAt])
+  @@index([applicantClubId])
+  @@index([status])
 }
 
 model Club {
@@ -148,6 +154,7 @@ model Club {
   photos              ClubPhoto[]
   clubFriends         ClubFriend[]         @relation("ClubFriends")
   friendOf            ClubFriend[]         @relation("FriendOf")
+  applications        Interest[]           @relation("ClubApplications")
 
   @@index([status])
   @@index([location])
@@ -559,6 +566,14 @@ enum InterestStatus {
   APPROVED
   REJECTED
   CANCELLED
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  WAITLISTED
+  REJECTED
+  WITHDRAWN
 }
 
 enum ClubVerificationStatus {

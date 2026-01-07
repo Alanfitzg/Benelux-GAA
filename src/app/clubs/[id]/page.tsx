@@ -9,7 +9,6 @@ import {
 } from "@/components/StructuredData";
 import ClubContactForm from "@/components/ClubContactForm";
 import ClubCalendarModal from "@/components/club/ClubCalendarModal";
-import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
 import { getServerSession } from "@/lib/auth-helpers";
 import VerifiedBadge, {
   VerifiedTooltip,
@@ -163,22 +162,10 @@ export default async function ClubDetailsPage({
     ? testimonials.find((t) => t.userId === session.user.id)
     : null;
 
-  let adminRequest = null;
   let isCurrentAdmin = false;
 
   if (session?.user && club) {
     isCurrentAdmin = club.admins.some((admin) => admin.id === session.user.id);
-
-    if (!isCurrentAdmin) {
-      adminRequest = await prisma.clubAdminRequest.findUnique({
-        where: {
-          userId_clubId: {
-            userId: session.user.id,
-            clubId: id,
-          },
-        },
-      });
-    }
   }
 
   if (!club) {
@@ -309,7 +296,8 @@ export default async function ClubDetailsPage({
                     clubName={club.name}
                     type="contact"
                   />
-                  {isCurrentAdmin || session?.user?.role === "SUPER_ADMIN" ? (
+                  {(isCurrentAdmin ||
+                    session?.user?.role === "SUPER_ADMIN") && (
                     <>
                       <Link
                         href={`/clubs/${club.id}/edit`}
@@ -350,24 +338,6 @@ export default async function ClubDetailsPage({
                         Dashboard
                       </Link>
                     </>
-                  ) : (
-                    <ClubAdminRequestButton
-                      clubId={club.id}
-                      clubName={club.name}
-                      existingRequest={
-                        adminRequest
-                          ? {
-                              id: adminRequest.id,
-                              status: adminRequest.status,
-                              requestedAt:
-                                adminRequest.requestedAt.toISOString(),
-                              rejectionReason:
-                                adminRequest.rejectionReason || undefined,
-                            }
-                          : undefined
-                      }
-                      isCurrentAdmin={isCurrentAdmin}
-                    />
                   )}
 
                   {/* Social Media Icons */}
@@ -392,50 +362,7 @@ export default async function ClubDetailsPage({
       <div className="bg-gray-100 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-8">
-            {/* Available Dates + Photo Gallery */}
-            <section id="gallery" className="scroll-mt-24">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                {club.isMainlandEurope && (
-                  <div className="lg:col-span-1">
-                    <ClubAboutSection
-                      clubId={club.id}
-                      clubName={club.name}
-                      isOpenToVisitors={club.isOpenToVisitors}
-                      preferredWeekends={
-                        club.preferredWeekends as string[] | null
-                      }
-                      isMainlandEurope={club.isMainlandEurope}
-                    />
-                  </div>
-                )}
-                <div
-                  className={
-                    club.isMainlandEurope ? "lg:col-span-2" : "lg:col-span-3"
-                  }
-                >
-                  <ClubPhotoGallery
-                    clubId={club.id}
-                    isAdmin={
-                      isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"
-                    }
-                  />
-                </div>
-              </div>
-            </section>
-
-            {/* Contact card only for super admins */}
-            {session?.user?.role === "SUPER_ADMIN" && (
-              <ClubContactCard
-                contactEmail={club.contactEmail}
-                contactPhone={club.contactPhone}
-                contactCountryCode={club.contactCountryCode}
-                contactFirstName={club.contactFirstName}
-                contactLastName={club.contactLastName}
-                isSuperAdmin={true}
-              />
-            )}
-
-            {/* Tournaments Section */}
+            {/* Tournaments Section - First for European clubs */}
             <section id="events" className="scroll-mt-24">
               {session?.user?.role === "SUPER_ADMIN" &&
               club.admins &&
@@ -504,6 +431,49 @@ export default async function ClubDetailsPage({
                 />
               )}
             </section>
+
+            {/* Available Dates + Photo Gallery */}
+            <section id="gallery" className="scroll-mt-24">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                {club.isMainlandEurope && (
+                  <div className="lg:col-span-1">
+                    <ClubAboutSection
+                      clubId={club.id}
+                      clubName={club.name}
+                      isOpenToVisitors={club.isOpenToVisitors}
+                      preferredWeekends={
+                        club.preferredWeekends as string[] | null
+                      }
+                      isMainlandEurope={club.isMainlandEurope}
+                    />
+                  </div>
+                )}
+                <div
+                  className={
+                    club.isMainlandEurope ? "lg:col-span-2" : "lg:col-span-3"
+                  }
+                >
+                  <ClubPhotoGallery
+                    clubId={club.id}
+                    isAdmin={
+                      isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"
+                    }
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Contact card only for super admins */}
+            {session?.user?.role === "SUPER_ADMIN" && (
+              <ClubContactCard
+                contactEmail={club.contactEmail}
+                contactPhone={club.contactPhone}
+                contactCountryCode={club.contactCountryCode}
+                contactFirstName={club.contactFirstName}
+                contactLastName={club.contactLastName}
+                isSuperAdmin={true}
+              />
+            )}
 
             {/* Friends & Twin Club Section */}
             <ClubFriendsSection
