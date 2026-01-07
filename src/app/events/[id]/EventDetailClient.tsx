@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
-import type { Event, TournamentTeam, Match } from "@/types";
+import type { Event } from "@/types";
 import { URLS, MESSAGES, EVENT_CONSTANTS } from "@/lib/constants";
 import { formatEventDate } from "@/lib/utils";
 import { DetailPageSkeleton } from "@/components/ui/Skeleton";
@@ -11,18 +11,12 @@ import {
   generateEventStructuredData,
 } from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
-import UnifiedEventDashboard from "@/components/events/UnifiedEventDashboard";
-import EnhancedTeamRegistration from "@/components/tournaments/EnhancedTeamRegistration";
-import TournamentManager from "@/components/tournaments/TournamentManager";
 import SignUpGate from "@/components/auth/SignUpGate";
 import { useSession } from "next-auth/react";
 
 export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [event, setEvent] = useState<Event | null>(null);
-  const [teams, setTeams] = useState<TournamentTeam[]>([]);
-  const [matches, setMatches] = useState<Match[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isClubAdmin, setIsClubAdmin] = useState(false);
   const [isWatched, setIsWatched] = useState(false);
   const [watchLoading, setWatchLoading] = useState(false);
   const [showWatchlistSignup, setShowWatchlistSignup] = useState(false);
@@ -92,55 +86,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
         const eventData = await eventRes.json();
         console.log("Event data received:", eventData);
         setEvent(eventData);
-
-        // Check if user can admin this event
-        if (session?.user?.email) {
-          const userRes = await fetch("/api/user/current");
-          if (userRes.ok) {
-            const userData = await userRes.json();
-            const isAdmin =
-              userData.role === "SUPER_ADMIN" ||
-              (eventData.clubId &&
-                userData.adminOfClubs?.some(
-                  (club: { id: string; name: string }) =>
-                    club.id === eventData.clubId
-                ));
-            setIsClubAdmin(isAdmin);
-            console.log("Admin check result:", {
-              userRole: userData.role,
-              eventClubId: eventData.clubId,
-              adminOfClubs: userData.adminOfClubs,
-              isAdmin,
-            });
-          }
-        }
-
-        // If it's a tournament, fetch teams and matches
-        if (eventData.eventType === "Tournament") {
-          try {
-            const [teamsRes, matchesRes] = await Promise.all([
-              fetch(`/api/tournaments/${eventId}/teams`),
-              fetch(`/api/tournaments/${eventId}/matches`),
-            ]);
-
-            if (teamsRes.ok) {
-              const teamsData = await teamsRes.json();
-              setTeams(teamsData);
-            } else {
-              console.warn("Failed to fetch teams:", teamsRes.status);
-            }
-
-            if (matchesRes.ok) {
-              const matchesData = await matchesRes.json();
-              setMatches(matchesData);
-            } else {
-              console.warn("Failed to fetch matches:", matchesRes.status);
-            }
-          } catch (tournamentError) {
-            console.warn("Error fetching tournament data:", tournamentError);
-            // Continue loading the page even if tournament data fails
-          }
-        }
       } catch (error) {
         console.error("Error fetching event data:", error);
       } finally {
@@ -150,20 +95,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
 
     fetchEventData();
   }, [eventId, session]);
-
-  const refreshTeams = async () => {
-    if (event?.eventType === "Tournament") {
-      try {
-        const teamsRes = await fetch(`/api/tournaments/${eventId}/teams`);
-        if (teamsRes.ok) {
-          const teamsData = await teamsRes.json();
-          setTeams(teamsData);
-        }
-      } catch (error) {
-        console.error("Error refreshing teams:", error);
-      }
-    }
-  };
 
   const handleSubmit = async (eventForm: React.FormEvent<HTMLFormElement>) => {
     eventForm.preventDefault();
@@ -278,22 +209,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             >
               Overview
             </a>
-            {event?.eventType === "Tournament" && (
-              <a
-                href="#tournament"
-                className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
-              >
-                Tournament
-              </a>
-            )}
-            {event?.eventType === "Tournament" && isClubAdmin && (
-              <a
-                href="#team-management"
-                className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
-              >
-                Team Management
-              </a>
-            )}
             <a
               href="#included"
               className="py-4 px-2 border-b-2 border-transparent hover:border-primary whitespace-nowrap"
@@ -314,16 +229,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Unified Event Dashboard (for admins) */}
-        {event && isClubAdmin && (
-          <UnifiedEventDashboard
-            event={event}
-            teams={teams}
-            matches={matches}
-            isClubAdmin={isClubAdmin}
-          />
-        )}
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content Area */}
           <div className="lg:col-span-2 space-y-8">
@@ -340,52 +245,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                     : "Create an account to see event details.")}
               </p>
             </section>
-
-            {/* Team Management Section */}
-            {event?.eventType === "Tournament" && isClubAdmin && (
-              <section id="team-management" className="space-y-6">
-                <div className="bg-white rounded-xl shadow-md p-6">
-                  <h2 className="text-2xl font-bold mb-4">Team Management</h2>
-                  <EnhancedTeamRegistration
-                    event={event}
-                    onTeamsAdded={refreshTeams}
-                    isAdmin={isClubAdmin}
-                  />
-                </div>
-              </section>
-            )}
-
-            {/* Tournament Management Section */}
-            {event?.eventType === "Tournament" && (
-              <section id="tournament" className="space-y-0">
-                {session?.user ? (
-                  <TournamentManager
-                    event={event}
-                    teams={teams}
-                    matches={matches}
-                    isAdmin={isClubAdmin}
-                    onTeamUpdate={refreshTeams}
-                  />
-                ) : (
-                  <SignUpGate
-                    title="Tournament Details & Brackets"
-                    description="See team lineups, brackets, match schedules and live results. Create a free account to access full tournament information."
-                    previewHeight="h-40"
-                    className="bg-white rounded-xl shadow-md"
-                  >
-                    <div className="p-6">
-                      <TournamentManager
-                        event={event}
-                        teams={teams}
-                        matches={matches}
-                        isAdmin={isClubAdmin}
-                        onTeamUpdate={refreshTeams}
-                      />
-                    </div>
-                  </SignUpGate>
-                )}
-              </section>
-            )}
 
             {/* What's Included Section */}
             <section id="included">
@@ -537,68 +396,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                         : MESSAGES.DEFAULTS.PLACEHOLDER}
                     </span>
                   </div>
-
-                  {/* Tournament Details - Hidden for non-authenticated users */}
-                  {event?.eventType === "Tournament" && (
-                    <>
-                      {session?.user ? (
-                        <>
-                          {event.acceptedTeamTypes &&
-                            event.acceptedTeamTypes.length > 0 && (
-                              <div className="py-2 border-b">
-                                <span className="text-gray-600 block mb-1">
-                                  Accepted Team Categories
-                                </span>
-                                <div className="flex flex-wrap gap-1">
-                                  {event.acceptedTeamTypes.map((type, idx) => (
-                                    <span
-                                      key={idx}
-                                      className="inline-block px-2 py-1 bg-primary/10 text-primary text-xs rounded-full"
-                                    >
-                                      {type}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          <div className="flex justify-between py-2 border-b">
-                            <span className="text-gray-600">
-                              Teams Registered
-                            </span>
-                            <span className="font-medium">
-                              {teams.length}
-                              {event.minTeams && ` (min: ${event.minTeams})`}
-                              {event.maxTeams && ` / ${event.maxTeams}`}
-                            </span>
-                          </div>
-                        </>
-                      ) : (
-                        <div className="py-2 border-b">
-                          <div className="flex justify-between items-center">
-                            <span className="text-gray-600">
-                              Tournament Details
-                            </span>
-                            <div className="flex items-center gap-1 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                              <svg
-                                className="w-3 h-3"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                                />
-                              </svg>
-                              Sign in to view
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )}
 
                   {/* Pricing - Hidden for non-authenticated users */}
                   <div className="flex justify-between py-2">
