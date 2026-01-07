@@ -125,11 +125,11 @@ export default function ClubAvailabilityBadge({
   const hasMoreDates = displayWeekends.length > 3;
 
   return (
-    <div className="bg-gradient-to-br from-primary/5 to-green-50 rounded-xl border-2 border-primary/30 shadow-lg p-6">
-      <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-        <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center">
+    <div className="bg-gradient-to-br from-primary/5 to-green-50 rounded-xl border-2 border-primary/30 shadow-lg p-4 sm:p-6">
+      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2 sm:gap-3">
+        <div className="w-10 h-10 sm:w-12 sm:h-12 bg-primary/20 rounded-full flex items-center justify-center flex-shrink-0">
           <svg
-            className="w-6 h-6 text-primary"
+            className="w-5 h-5 sm:w-6 sm:h-6 text-primary"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -146,19 +146,19 @@ export default function ClubAvailabilityBadge({
       </h3>
 
       {!showInterestForm ? (
-        <div className="space-y-4">
-          <p className="text-base text-gray-700 font-medium">
+        <div className="space-y-3 sm:space-y-4">
+          <p className="text-sm sm:text-base text-gray-700 font-medium">
             This club is open to hosting a tournament on these weekends:
           </p>
 
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2">
             {visibleDates.map((date, index) => (
               <span
                 key={index}
-                className="inline-flex items-center px-4 py-2 rounded-lg text-base font-semibold bg-white text-primary border-2 border-primary/30 shadow-sm"
+                className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base font-semibold bg-white text-primary border-2 border-primary/30 shadow-sm"
               >
                 <svg
-                  className="w-4 h-4 mr-2 text-primary/70"
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5 sm:mr-2 text-primary/70"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -177,7 +177,7 @@ export default function ClubAvailabilityBadge({
               <button
                 type="button"
                 onClick={() => setShowAllDates(true)}
-                className="inline-flex items-center px-4 py-2 rounded-lg text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-white/80 border-2 border-dashed border-gray-300"
+                className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-white/80 border-2 border-dashed border-gray-300"
               >
                 +{displayWeekends.length - 3} more
               </button>
@@ -185,8 +185,8 @@ export default function ClubAvailabilityBadge({
           </div>
 
           {isUsingPlaceholders ? (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-              <p className="text-sm text-amber-800 font-medium flex items-start gap-2">
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 sm:p-3">
+              <p className="text-xs sm:text-sm text-amber-800 font-medium flex items-start gap-2">
                 <svg
                   className="w-4 h-4 mt-0.5 flex-shrink-0"
                   fill="currentColor"
@@ -206,7 +206,7 @@ export default function ClubAvailabilityBadge({
             </div>
           ) : (
             <>
-              <p className="text-sm text-gray-600 leading-relaxed bg-white/50 rounded-lg p-3 border border-gray-200">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed bg-white/50 rounded-lg p-2.5 sm:p-3 border border-gray-200">
                 If any of these dates suit your club, register your interest.
                 When clubs see demand, they&apos;re more likely to organise an
                 event!
@@ -215,7 +215,7 @@ export default function ClubAvailabilityBadge({
               <button
                 type="button"
                 onClick={() => setShowInterestForm(true)}
-                className="w-full px-4 py-3 bg-primary text-white rounded-xl text-lg font-bold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
+                className="w-full px-4 py-2.5 sm:py-3 bg-primary text-white rounded-xl text-base sm:text-lg font-bold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
               >
                 Register Interest
               </button>
