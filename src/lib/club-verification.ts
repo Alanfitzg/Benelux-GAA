@@ -1,4 +1,4 @@
-import { Club } from '@prisma/client';
+import { Club } from "@prisma/client";
 
 export interface VerificationRequirements {
   hasTeamTypes: boolean;
@@ -8,13 +8,19 @@ export interface VerificationRequirements {
   profileCompleteness: number;
 }
 
-export function checkVerificationRequirements(club: Partial<Club>): VerificationRequirements {
+export function checkVerificationRequirements(
+  club: Partial<Club>
+): VerificationRequirements {
   const requirements: VerificationRequirements = {
     hasTeamTypes: (club.teamTypes?.length ?? 0) > 0,
-    hasContactInfo: !!(club.contactEmail && club.contactFirstName && club.contactLastName),
+    hasContactInfo: !!(
+      club.contactEmail &&
+      club.contactFirstName &&
+      club.contactLastName
+    ),
     hasLocation: !!(club.location && club.latitude && club.longitude),
     hasLogo: !!club.imageUrl,
-    profileCompleteness: 0
+    profileCompleteness: 0,
   };
 
   // Calculate profile completeness (excluding social media)
@@ -27,11 +33,11 @@ export function checkVerificationRequirements(club: Partial<Club>): Verification
     club.contactLastName,
     club.contactPhone,
     club.imageUrl,
-    club.codes || club.map
   ];
-  
+
   const completedFields = fields.filter(Boolean).length;
-  requirements.profileCompleteness = Math.round((completedFields / fields.length) * 100 * 100) / 100;
+  requirements.profileCompleteness =
+    Math.round((completedFields / fields.length) * 100 * 100) / 100;
 
   return requirements;
 }
@@ -50,41 +56,41 @@ export function getVerificationStatusDisplay(status: string): {
   icon: string;
 } {
   switch (status) {
-    case 'VERIFIED':
+    case "VERIFIED":
       return {
-        label: 'Verified',
-        color: 'text-green-600 bg-green-50',
-        icon: '✓'
+        label: "Verified",
+        color: "text-green-600 bg-green-50",
+        icon: "✓",
       };
-    case 'PENDING_VERIFICATION':
+    case "PENDING_VERIFICATION":
       return {
-        label: 'Pending Verification',
-        color: 'text-yellow-600 bg-yellow-50',
-        icon: '⏳'
+        label: "Pending Verification",
+        color: "text-yellow-600 bg-yellow-50",
+        icon: "⏳",
       };
-    case 'UNVERIFIED':
+    case "UNVERIFIED":
       return {
-        label: 'Not Verified',
-        color: 'text-gray-600 bg-gray-50',
-        icon: '○'
+        label: "Not Verified",
+        color: "text-gray-600 bg-gray-50",
+        icon: "○",
       };
-    case 'EXPIRED':
+    case "EXPIRED":
       return {
-        label: 'Verification Expired',
-        color: 'text-red-600 bg-red-50',
-        icon: '⚠'
+        label: "Verification Expired",
+        color: "text-red-600 bg-red-50",
+        icon: "⚠",
       };
-    case 'DISPUTED':
+    case "DISPUTED":
       return {
-        label: 'Disputed',
-        color: 'text-orange-600 bg-orange-50',
-        icon: '!'
+        label: "Disputed",
+        color: "text-orange-600 bg-orange-50",
+        icon: "!",
       };
     default:
       return {
-        label: 'Unknown',
-        color: 'text-gray-600 bg-gray-50',
-        icon: '?'
+        label: "Unknown",
+        color: "text-gray-600 bg-gray-50",
+        icon: "?",
       };
   }
 }

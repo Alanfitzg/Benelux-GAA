@@ -192,39 +192,60 @@ export default function ClubPhotoGallery({
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {photos.map((photo) => (
-              <div key={photo.id} className="relative group">
+          <div
+            className={
+              photos.length === 1
+                ? "max-w-2xl"
+                : photos.length === 2
+                  ? "grid grid-cols-1 sm:grid-cols-2 gap-4"
+                  : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            }
+          >
+            {photos.map((photo, index) => (
+              <div
+                key={photo.id}
+                className={`relative group ${
+                  photos.length === 3 && index === 0
+                    ? "sm:col-span-2 lg:col-span-1"
+                    : ""
+                }`}
+              >
                 <button
                   type="button"
                   onClick={() => setSelectedPhoto(photo)}
-                  className={`w-full aspect-video relative rounded-lg overflow-hidden bg-gray-100 ${photo.isCoverPhoto ? "ring-2 ring-primary ring-offset-2" : ""}`}
+                  className={`w-full relative rounded-xl overflow-hidden bg-gray-100 shadow-md hover:shadow-lg transition-shadow ${
+                    photos.length === 1
+                      ? "aspect-[16/9]"
+                      : photos.length === 2
+                        ? "aspect-[4/3]"
+                        : "aspect-[4/3]"
+                  } ${photo.isCoverPhoto ? "ring-2 ring-primary ring-offset-2" : ""}`}
                 >
                   <Image
                     src={photo.url}
                     alt={photo.caption || "Club photo"}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                     unoptimized
                   />
                   {photo.isCoverPhoto && (
-                    <span className="absolute top-2 left-2 px-2 py-1 bg-primary text-white text-xs font-medium rounded">
+                    <span className="absolute top-3 left-3 px-2.5 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-medium rounded-full">
                       Cover Photo
                     </span>
                   )}
                 </button>
                 {isAdmin && (
-                  <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                     {!photo.isCoverPhoto && (
                       <button
                         type="button"
                         onClick={() => handleSetCover(photo.id)}
                         disabled={settingCover === photo.id}
-                        className="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center disabled:opacity-50"
+                        className="w-9 h-9 bg-white/90 backdrop-blur-sm text-primary rounded-full flex items-center justify-center disabled:opacity-50 shadow-md hover:bg-white transition-colors"
                         title="Set as cover photo"
                       >
                         {settingCover === photo.id ? (
-                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                         ) : (
                           <svg
                             className="w-4 h-4"
@@ -245,7 +266,7 @@ export default function ClubPhotoGallery({
                     <button
                       type="button"
                       onClick={() => handleDelete(photo.id)}
-                      className="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center"
+                      className="w-9 h-9 bg-white/90 backdrop-blur-sm text-red-500 rounded-full flex items-center justify-center shadow-md hover:bg-white transition-colors"
                       title="Delete photo"
                     >
                       <svg
@@ -265,7 +286,7 @@ export default function ClubPhotoGallery({
                   </div>
                 )}
                 {photo.caption && (
-                  <p className="mt-2 text-sm text-gray-600 truncate">
+                  <p className="mt-3 text-sm text-gray-700 font-medium">
                     {photo.caption}
                   </p>
                 )}

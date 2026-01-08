@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { Upload, MapPin, Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import ClubVerificationCard from "./ClubVerificationCard";
+import ClubPhotoGallery from "./ClubPhotoGallery";
 
 interface Club {
   id: string;
@@ -22,7 +23,6 @@ interface Club {
   twitter?: string | null;
   tiktok?: string | null;
   website?: string | null;
-  codes?: string | null;
   teamTypes: string[];
   contactFirstName?: string | null;
   contactLastName?: string | null;
@@ -63,7 +63,6 @@ export default function ClubEditForm({ club }: { club: Club }) {
     twitter: club.twitter || "",
     tiktok: club.tiktok || "",
     website: club.website || "",
-    codes: club.codes || "",
     teamTypes: club.teamTypes || [],
     contactFirstName: club.contactFirstName || "",
     contactLastName: club.contactLastName || "",
@@ -181,7 +180,6 @@ export default function ClubEditForm({ club }: { club: Club }) {
         facebook: updateData.facebook || null,
         instagram: updateData.instagram || null,
         website: updateData.website || null,
-        codes: updateData.codes || null,
         preferredWeekends: (updateData.preferredWeekends as string[]).filter(
           (d) => d !== ""
         ),
@@ -373,6 +371,22 @@ export default function ClubEditForm({ club }: { club: Club }) {
             </div>
           </div>
 
+          {/* Photo Gallery */}
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Photo Gallery
+            </h3>
+            <p className="text-sm text-gray-500 mb-4">
+              Add up to 3 photos to showcase your club. These will appear on
+              your public profile.
+            </p>
+            <ClubPhotoGallery
+              clubId={club.id}
+              isAdmin={true}
+              isMainlandEurope={true}
+            />
+          </div>
+
           {/* Team Types */}
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -543,20 +557,6 @@ export default function ClubEditForm({ club }: { club: Club }) {
                   value={formData.website}
                   onChange={handleInputChange}
                   placeholder="https://yourclub.com"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Club Codes
-                </label>
-                <input
-                  type="text"
-                  name="codes"
-                  value={formData.codes}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Training times, special codes"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>

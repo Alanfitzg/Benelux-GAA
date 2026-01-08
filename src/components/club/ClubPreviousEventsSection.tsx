@@ -114,6 +114,9 @@ export default function ClubPreviousEventsSection({
                 >
                   {event.eventType}
                 </span>
+                <span className="px-2 py-1 text-xs font-semibold text-white bg-amber-500 rounded-full">
+                  Demo Date
+                </span>
                 {event.teamsCount !== undefined && event.teamsCount > 0 && (
                   <span className="text-xs text-gray-500">
                     {event.teamsCount} team{event.teamsCount !== 1 ? "s" : ""}

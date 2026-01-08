@@ -18,6 +18,7 @@ model Event {
   startDate         DateTime
   endDate           DateTime?
   cost              Float?
+  platformFee       Float                @default(5)
   description       String?
   isRecurring       Boolean              @default(false)
   imageUrl          String?
@@ -26,6 +27,10 @@ model Event {
   acceptedTeamTypes String[]             @default([])
   visibility        TournamentVisibility @default(PUBLIC)
   status            EventStatus          @default(UPCOMING)
+  approvalStatus    EventApprovalStatus  @default(PENDING)
+  rejectionReason   String?
+  approvedAt        DateTime?
+  approvedBy        String?
   bracketType       BracketType?
   bracketData       Json?
   divisions         String[]             @default([])
@@ -54,6 +59,7 @@ model Event {
   @@index([visibility])
   @@index([pitchLocationId])
   @@index([status])
+  @@index([approvalStatus])
 }
 
 model Interest {
@@ -127,6 +133,7 @@ model Club {
   isOpenToVisitors    Boolean              @default(true)
   preferredWeekends   Json?                // Array of specific date strings for preferred hosting weekends
   twinClubId          String?              // Reference to twinned Irish club (GAA twinning initiative)
+  clubType            ClubType             @default(CLUB)
   twinClub            Club?                @relation("TwinClub", fields: [twinClubId], references: [id])
   twinnedBy           Club[]               @relation("TwinClub")
   availabilitySlots   AvailabilitySlot[]
@@ -170,6 +177,7 @@ model Club {
   @@index([countryId])
   @@index([regionId])
   @@index([dataSource])
+  @@index([clubType])
 }
 
 model User {
@@ -621,6 +629,12 @@ enum EventStatus {
   UPCOMING
   ACTIVE
   CLOSED
+}
+
+enum EventApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 enum BracketType {
@@ -1157,6 +1171,13 @@ enum EmailStatus {
   SENT
   FAILED
   BOUNCED
+}
+
+enum ClubType {
+  CLUB
+  UNIVERSITY
+  SCHOOL
+  COUNTY
 }
 
 // Neutral venues for hosting future events (admin-only)

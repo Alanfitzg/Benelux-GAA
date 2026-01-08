@@ -228,6 +228,9 @@ export default function WatchlistSection({
                             {event.location} • {formatDate(event.startDate)}
                           </span>
                           {getStatusBadge(event.status, event.startDate)}
+                          <span className="px-1.5 py-0.5 text-xs font-semibold text-white bg-amber-500 rounded">
+                            Demo
+                          </span>
                         </div>
                       </Link>
                       <button

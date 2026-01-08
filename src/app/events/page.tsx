@@ -45,6 +45,9 @@ export const dynamic = "force-dynamic";
 
 async function getAllEvents() {
   return await prisma.event.findMany({
+    where: {
+      approvalStatus: "APPROVED",
+    },
     orderBy: { startDate: "asc" },
     select: {
       id: true,
@@ -54,12 +57,14 @@ async function getAllEvents() {
       startDate: true,
       endDate: true,
       cost: true,
+      platformFee: true,
       description: true,
       imageUrl: true,
       latitude: true,
       longitude: true,
       visibility: true,
       acceptedTeamTypes: true,
+      approvalStatus: true,
       club: {
         select: {
           id: true,
@@ -73,12 +78,15 @@ async function getAllEvents() {
 
 async function getFilterOptions() {
   const events = await prisma.event.findMany({
+    where: {
+      approvalStatus: "APPROVED",
+    },
     select: {
       location: true,
       acceptedTeamTypes: true,
-    }
+    },
   });
-  
+
   const countries = Array.from(
     new Set(
       events.map((e: { location: string }) =>
@@ -88,16 +96,16 @@ async function getFilterOptions() {
   )
     .filter(Boolean)
     .sort() as string[];
-  
+
   // Get all unique sport types that are actually used in events
   const usedSportTypes = Array.from(
     new Set(
-      events.flatMap((e: { acceptedTeamTypes: string[] }) => 
-        e.acceptedTeamTypes || []
+      events.flatMap(
+        (e: { acceptedTeamTypes: string[] }) => e.acceptedTeamTypes || []
       )
     )
   ).sort() as string[];
-    
+
   return {
     eventTypes: EVENT_TYPES,
     countries,
@@ -119,15 +127,15 @@ export default async function EventsPage() {
       events.map(async (event) => {
         if (!event.imageUrl && event.location) {
           const cityImage = await getCityDefaultImage(event.location);
-          return { 
-            ...event, 
+          return {
+            ...event,
             cityDefaultImage: cityImage,
             startDate: event.startDate.toISOString(),
             endDate: event.endDate?.toISOString() || null,
           };
         }
-        return { 
-          ...event, 
+        return {
+          ...event,
           cityDefaultImage: null,
           startDate: event.startDate.toISOString(),
           endDate: event.endDate?.toISOString() || null,
@@ -188,8 +196,19 @@ export default async function EventsPage() {
     };
 
     // Get all mainland Europe clubs for calendar access (with fallback)
-    let mainlandEuropeClubs: { id: string; name: string; isMainlandEurope: boolean }[] = [];
-    let clubPermissions: Record<string, { canViewCalendar: boolean; canCreateEvents: boolean; canViewInterestIdentities: boolean }> = {};
+    let mainlandEuropeClubs: {
+      id: string;
+      name: string;
+      isMainlandEurope: boolean;
+    }[] = [];
+    let clubPermissions: Record<
+      string,
+      {
+        canViewCalendar: boolean;
+        canCreateEvents: boolean;
+        canViewInterestIdentities: boolean;
+      }
+    > = {};
 
     try {
       mainlandEuropeClubs = await prisma.club.findMany({
@@ -197,7 +216,7 @@ export default async function EventsPage() {
         select: {
           id: true,
           name: true,
-          isMainlandEurope: true
+          isMainlandEurope: true,
         },
       });
 
@@ -205,10 +224,10 @@ export default async function EventsPage() {
       const fallbackPermissions = {
         canViewCalendar: true,
         canCreateEvents: false,
-        canViewInterestIdentities: false
+        canViewInterestIdentities: false,
       };
 
-      mainlandEuropeClubs.forEach(club => {
+      mainlandEuropeClubs.forEach((club) => {
         clubPermissions[club.id] = fallbackPermissions;
       });
     } catch (error) {

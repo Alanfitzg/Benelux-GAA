@@ -18,6 +18,7 @@ type ClubListItem = {
   website: string | null;
   codes: string | null;
   teamTypes: string[];
+  clubType: "CLUB" | "UNIVERSITY" | "SCHOOL" | "COUNTY";
   country?: {
     name: string;
   } | null;
@@ -29,16 +30,27 @@ type ClubListItem = {
   } | null;
 };
 
+const clubTypeLabels: Record<string, string> = {
+  CLUB: "Club",
+  UNIVERSITY: "University",
+  SCHOOL: "School",
+  COUNTY: "County",
+};
+
 type Props = {
   initialClubs: ClubListItem[];
   deleteClub: (formData: FormData) => Promise<void>;
 };
 
-export default function ClubsManagementClient({ initialClubs, deleteClub }: Props) {
+export default function ClubsManagementClient({
+  initialClubs,
+  deleteClub,
+}: Props) {
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [dataQualityFilter, setDataQualityFilter] = useState<string>("all");
+  const [clubTypeFilter, setClubTypeFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("name");
   const clubs = initialClubs;
 
@@ -46,7 +58,7 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
   const regions = useMemo(() => {
     const regionSet = new Set<string>();
 
-    clubs.forEach(club => {
+    clubs.forEach((club) => {
       // Priority order: internationalUnit > country > regionRecord > legacy region field
       if (club.internationalUnit?.name) {
         regionSet.add(club.internationalUnit.name);
@@ -64,13 +76,15 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
   // Filter clubs based on selected region, search term, location filter, and data quality
   const filteredClubs = useMemo(() => {
-    const filtered = clubs.filter(club => {
+    const filtered = clubs.filter((club) => {
       // Region filter
       if (selectedRegion !== "all") {
-        const clubRegion = club.internationalUnit?.name ||
-                          club.country?.name ||
-                          club.regionRecord?.name ||
-                          club.region || "";
+        const clubRegion =
+          club.internationalUnit?.name ||
+          club.country?.name ||
+          club.regionRecord?.name ||
+          club.region ||
+          "";
 
         if (clubRegion !== selectedRegion) {
           return false;
@@ -89,13 +103,19 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
       // Search filter (name, region, subRegion)
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
-        const matches = (
+        const matches =
           club.name.toLowerCase().includes(searchLower) ||
           club.region?.toLowerCase().includes(searchLower) ||
           club.subRegion?.toLowerCase().includes(searchLower) ||
-          club.country?.name.toLowerCase().includes(searchLower)
-        );
+          club.country?.name.toLowerCase().includes(searchLower);
         if (!matches) return false;
+      }
+
+      // Club type filter
+      if (clubTypeFilter !== "all") {
+        if (club.clubType !== clubTypeFilter) {
+          return false;
+        }
       }
 
       // Data quality filter
@@ -105,10 +125,23 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
             if (club.location && club.location.trim() !== "") return false;
             break;
           case "missing-region":
-            if (club.internationalUnit?.name || club.country?.name || club.regionRecord?.name || club.region) return false;
+            if (
+              club.internationalUnit?.name ||
+              club.country?.name ||
+              club.regionRecord?.name ||
+              club.region
+            )
+              return false;
             break;
           case "missing-both":
-            if ((club.location && club.location.trim() !== "") || club.internationalUnit?.name || club.country?.name || club.regionRecord?.name || club.region) return false;
+            if (
+              (club.location && club.location.trim() !== "") ||
+              club.internationalUnit?.name ||
+              club.country?.name ||
+              club.regionRecord?.name ||
+              club.region
+            )
+              return false;
             break;
           case "no-image":
             if (club.imageUrl) return false;
@@ -118,7 +151,12 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
             break;
           case "incomplete":
             const hasLocation = club.location && club.location.trim() !== "";
-            const hasRegion = !!(club.internationalUnit?.name || club.country?.name || club.regionRecord?.name || club.region);
+            const hasRegion = !!(
+              club.internationalUnit?.name ||
+              club.country?.name ||
+              club.regionRecord?.name ||
+              club.region
+            );
             const hasImage = !!club.imageUrl;
             if (hasLocation && hasRegion && hasImage) return false;
             break;
@@ -136,8 +174,18 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
         case "location":
           return (a.location || "zzz").localeCompare(b.location || "zzz");
         case "region":
-          const regionA = a.internationalUnit?.name || a.country?.name || a.regionRecord?.name || a.region || "zzz";
-          const regionB = b.internationalUnit?.name || b.country?.name || b.regionRecord?.name || b.region || "zzz";
+          const regionA =
+            a.internationalUnit?.name ||
+            a.country?.name ||
+            a.regionRecord?.name ||
+            a.region ||
+            "zzz";
+          const regionB =
+            b.internationalUnit?.name ||
+            b.country?.name ||
+            b.regionRecord?.name ||
+            b.region ||
+            "zzz";
           return regionA.localeCompare(regionB);
         case "completeness":
           const scoreA = calculateCompletenessScore(a);
@@ -149,18 +197,31 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
     });
 
     return filtered;
-  }, [clubs, selectedRegion, searchTerm, locationFilter, dataQualityFilter, sortBy]);
+  }, [
+    clubs,
+    selectedRegion,
+    searchTerm,
+    locationFilter,
+    clubTypeFilter,
+    dataQualityFilter,
+    sortBy,
+  ]);
 
   // Helper function to calculate completeness score
   const calculateCompletenessScore = (club: ClubListItem): number => {
     let score = 0;
     if (club.location && club.location.trim() !== "") score++;
-    if (club.internationalUnit?.name || club.country?.name || club.regionRecord?.name || club.region) score++;
+    if (
+      club.internationalUnit?.name ||
+      club.country?.name ||
+      club.regionRecord?.name ||
+      club.region
+    )
+      score++;
     if (club.imageUrl) score++;
     if (club.website || club.facebook || club.instagram) score++;
     return score;
   };
-
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -184,10 +245,13 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
       {/* Filters Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
           {/* Region Filter */}
           <div>
-            <label htmlFor="region-filter" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="region-filter"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               🌍 International Unit / Region
             </label>
             <select
@@ -197,12 +261,14 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
               className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
             >
               <option value="all">All Regions ({initialClubs.length})</option>
-              {regions.map(region => {
-                const count = initialClubs.filter(club => {
-                  const clubRegion = club.internationalUnit?.name ||
-                                    club.country?.name ||
-                                    club.regionRecord?.name ||
-                                    club.region || "";
+              {regions.map((region) => {
+                const count = initialClubs.filter((club) => {
+                  const clubRegion =
+                    club.internationalUnit?.name ||
+                    club.country?.name ||
+                    club.regionRecord?.name ||
+                    club.region ||
+                    "";
                   return clubRegion === region;
                 }).length;
 
@@ -217,7 +283,10 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
           {/* Search Filter */}
           <div>
-            <label htmlFor="search-filter" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="search-filter"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               🔍 Search by Name / Country
             </label>
             <input
@@ -232,7 +301,10 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
           {/* Location Filter */}
           <div>
-            <label htmlFor="location-filter" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="location-filter"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               📍 Filter by Location
             </label>
             <input
@@ -245,9 +317,35 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
             />
           </div>
 
+          {/* Club Type Filter */}
+          <div>
+            <label
+              htmlFor="type-filter"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
+              🏛️ Club Type
+            </label>
+            <select
+              id="type-filter"
+              value={clubTypeFilter}
+              onChange={(e) => setClubTypeFilter(e.target.value)}
+              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+            >
+              <option value="all">All Types</option>
+              {Object.entries(clubTypeLabels).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Data Quality Filter */}
           <div>
-            <label htmlFor="quality-filter" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="quality-filter"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               ⚠️ Data Quality
             </label>
             <select
@@ -268,7 +366,10 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
 
           {/* Sort By */}
           <div>
-            <label htmlFor="sort-by" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label
+              htmlFor="sort-by"
+              className="block text-sm font-semibold text-gray-700 mb-2"
+            >
               🔽 Sort By
             </label>
             <select
@@ -327,6 +428,19 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
                 </button>
               </span>
             )}
+            {clubTypeFilter !== "all" && (
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-sm">
+                Type: {clubTypeLabels[clubTypeFilter]}
+                <button
+                  type="button"
+                  onClick={() => setClubTypeFilter("all")}
+                  className="hover:bg-purple-100 rounded-full p-0.5 transition"
+                  aria-label="Clear type filter"
+                >
+                  ✕
+                </button>
+              </span>
+            )}
             {dataQualityFilter !== "all" && (
               <span className="inline-flex items-center gap-1 px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-sm">
                 Quality: {dataQualityFilter.replace(/-/g, " ")}
@@ -340,13 +454,18 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
                 </button>
               </span>
             )}
-            {(selectedRegion !== "all" || searchTerm || locationFilter || dataQualityFilter !== "all") && (
+            {(selectedRegion !== "all" ||
+              searchTerm ||
+              locationFilter ||
+              clubTypeFilter !== "all" ||
+              dataQualityFilter !== "all") && (
               <button
                 type="button"
                 onClick={() => {
                   setSelectedRegion("all");
                   setSearchTerm("");
                   setLocationFilter("");
+                  setClubTypeFilter("all");
                   setDataQualityFilter("all");
                 }}
                 className="text-sm text-gray-600 hover:text-gray-900 underline ml-2"
@@ -368,24 +487,38 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Club</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Region</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Team Types</th>
-                <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Club
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Location
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Region
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Team Types
+                </th>
+                <th className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredClubs.length > 0 ? (
                 filteredClubs.map((club: ClubListItem) => {
-                  const displayRegion = club.internationalUnit?.name ||
-                                      club.country?.name ||
-                                      club.regionRecord?.name ||
-                                      club.region ||
-                                      "-";
+                  const displayRegion =
+                    club.internationalUnit?.name ||
+                    club.country?.name ||
+                    club.regionRecord?.name ||
+                    club.region ||
+                    "-";
 
                   return (
-                    <tr key={club.id} className="hover:bg-gray-50 transition-colors">
+                    <tr
+                      key={club.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           {club.imageUrl && (
@@ -398,32 +531,41 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
                               unoptimized
                             />
                           )}
-                          <div className="text-sm font-medium text-gray-900">{club.name}</div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {club.name}
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600">
                         {club.location ? (
                           <span>📍 {club.location}</span>
                         ) : (
-                          <span className="text-red-500 font-medium">⚠️ Missing</span>
+                          <span className="text-red-500 font-medium">
+                            ⚠️ Missing
+                          </span>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                         {displayRegion === "-" ? (
-                          <span className="text-red-500 font-medium">⚠️ Missing</span>
+                          <span className="text-red-500 font-medium">
+                            ⚠️ Missing
+                          </span>
                         ) : (
                           displayRegion
                         )}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-600">
                         <div className="flex flex-wrap gap-1">
-                          {club.teamTypes.length > 0 ?
-                            club.teamTypes.map((type, idx) => (
-                              <span key={idx} className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary">
-                                {type}
-                              </span>
-                            )) : "-"
-                          }
+                          {club.teamTypes.length > 0
+                            ? club.teamTypes.map((type, idx) => (
+                                <span
+                                  key={idx}
+                                  className="px-2 py-1 text-xs rounded-full bg-primary/10 text-primary"
+                                >
+                                  {type}
+                                </span>
+                              ))
+                            : "-"}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
@@ -434,14 +576,21 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
                           Edit
                         </Link>
                         <span className="text-gray-300">|</span>
-                        <DeleteButton id={club.id} onDelete={deleteClub} itemType="club" />
+                        <DeleteButton
+                          id={club.id}
+                          onDelete={deleteClub}
+                          itemType="club"
+                        />
                       </td>
                     </tr>
                   );
                 })
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-6 py-12 text-center text-gray-500"
+                  >
                     No clubs found matching your filters
                   </td>
                 </tr>
@@ -450,7 +599,6 @@ export default function ClubsManagementClient({ initialClubs, deleteClub }: Prop
           </table>
         </div>
       </div>
-
     </div>
   );
 }

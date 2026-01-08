@@ -85,6 +85,7 @@ export interface Event {
   latitude?: number;
   longitude?: number;
   cost?: number;
+  platformFee?: number;
   description?: string;
   isRecurring?: boolean;
   imageUrl?: string;
@@ -95,6 +96,10 @@ export interface Event {
   acceptedTeamTypes?: string[];
   visibility?: "PUBLIC" | "PRIVATE";
   status?: "UPCOMING" | "ACTIVE" | "CLOSED";
+  approvalStatus?: "PENDING" | "APPROVED" | "REJECTED";
+  rejectionReason?: string;
+  approvedAt?: string;
+  approvedBy?: string;
   bracketType?:
     | "SINGLE_ELIMINATION"
     | "DOUBLE_ELIMINATION"

@@ -28,6 +28,7 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
+  FileText,
 } from "lucide-react";
 
 interface ClubStats {
@@ -42,6 +43,7 @@ interface ClubStats {
     totalEvents: number;
     upcomingEvents: number;
     pastEvents: number;
+    pendingEvents: number;
     totalInterests: number;
     averageInterestsPerEvent: string;
     yearEarnings: number;
@@ -54,6 +56,8 @@ interface ClubStats {
     startDate: string;
     location: string;
     interestCount: number;
+    approvalStatus: "PENDING" | "APPROVED" | "REJECTED";
+    rejectionReason?: string;
     interests: Array<{
       name: string;
       email: string;
@@ -456,6 +460,96 @@ export default function ClubAdminDashboard({
         </div>
       )}
 
+      {/* Pending Events Alert */}
+      {stats.overview.pendingEvents > 0 && (
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <div className="bg-amber-100 rounded-full p-2 flex-shrink-0">
+              <Clock className="w-5 h-5 text-amber-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-amber-800">
+                {stats.overview.pendingEvents} Event
+                {stats.overview.pendingEvents !== 1 ? "s" : ""} Pending Approval
+              </h3>
+              <p className="text-sm text-amber-700 mt-1">
+                Your event{stats.overview.pendingEvents !== 1 ? "s are" : " is"}{" "}
+                awaiting review by an administrator. Once approved,{" "}
+                {stats.overview.pendingEvents !== 1 ? "they" : "it"} will be
+                visible on the public events page.
+              </p>
+              <div className="mt-3 space-y-2">
+                {stats.events
+                  .filter((e) => e.approvalStatus === "PENDING")
+                  .slice(0, 3)
+                  .map((event) => (
+                    <div
+                      key={event.id}
+                      className="flex items-center gap-2 text-sm"
+                    >
+                      <AlertCircle className="w-4 h-4 text-amber-500" />
+                      <span className="font-medium text-amber-900">
+                        {event.title}
+                      </span>
+                      <span className="text-amber-600">
+                        ({new Date(event.startDate).toLocaleDateString()})
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Rejected Events Alert */}
+      {stats.events.some((e) => e.approvalStatus === "REJECTED") && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <div className="bg-red-100 rounded-full p-2 flex-shrink-0">
+              <XCircle className="w-5 h-5 text-red-600" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-semibold text-red-800">
+                Event
+                {stats.events.filter((e) => e.approvalStatus === "REJECTED")
+                  .length !== 1
+                  ? "s"
+                  : ""}{" "}
+                Rejected
+              </h3>
+              <p className="text-sm text-red-700 mt-1">
+                The following event
+                {stats.events.filter((e) => e.approvalStatus === "REJECTED")
+                  .length !== 1
+                  ? "s were"
+                  : " was"}{" "}
+                rejected by an administrator.
+              </p>
+              <div className="mt-3 space-y-2">
+                {stats.events
+                  .filter((e) => e.approvalStatus === "REJECTED")
+                  .map((event) => (
+                    <div key={event.id} className="text-sm">
+                      <div className="flex items-center gap-2">
+                        <XCircle className="w-4 h-4 text-red-500" />
+                        <span className="font-medium text-red-900">
+                          {event.title}
+                        </span>
+                      </div>
+                      {event.rejectionReason && (
+                        <p className="ml-6 text-red-600 text-xs mt-1">
+                          Reason: {event.rejectionReason}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab Navigation */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200">
         <div className="border-b border-gray-200">
@@ -475,6 +569,16 @@ export default function ClubAdminDashboard({
                 {isIrishClub && tab.irishLabel ? tab.irishLabel : tab.label}
               </button>
             ))}
+            {/* Host Terms - European clubs only */}
+            {!isIrishClub && (
+              <Link
+                href="/host-terms"
+                className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap ml-auto border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-amber-50 transition-colors"
+              >
+                <FileText className="w-4 h-4" />
+                Host Terms
+              </Link>
+            )}
           </nav>
         </div>
 
@@ -546,15 +650,20 @@ export default function ClubAdminDashboard({
                                   ).toLocaleDateString()}
                                 </p>
                               </div>
-                              <span
-                                className={`px-3 py-1 text-xs font-medium rounded-full ${
-                                  isPast
-                                    ? "bg-gray-100 text-gray-600"
-                                    : "bg-green-100 text-green-700"
-                                }`}
-                              >
-                                {isPast ? "Completed" : "Upcoming"}
-                              </span>
+                              <div className="flex flex-col items-end gap-1">
+                                <span
+                                  className={`px-3 py-1 text-xs font-medium rounded-full ${
+                                    isPast
+                                      ? "bg-gray-100 text-gray-600"
+                                      : "bg-green-100 text-green-700"
+                                  }`}
+                                >
+                                  {isPast ? "Completed" : "Upcoming"}
+                                </span>
+                                <span className="px-2 py-0.5 text-xs font-semibold text-white bg-amber-500 rounded-full">
+                                  Demo Date
+                                </span>
+                              </div>
                             </div>
                           );
                         })}
@@ -649,11 +758,11 @@ export default function ClubAdminDashboard({
                     <div className="text-center py-12 bg-gray-50 rounded-lg">
                       <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                       <h3 className="text-lg font-medium text-gray-900 mb-1">
-                        No recent interests
+                        No recent expressions of interest
                       </h3>
                       <p className="text-gray-500">
-                        Interest submissions from the last 30 days will appear
-                        here.
+                        Expressions of interest from the last 30 days will
+                        appear here.
                       </p>
                     </div>
                   )}

@@ -19,6 +19,7 @@ interface Event {
   startDate: string;
   endDate: string | null;
   cost: number | null;
+  platformFee?: number;
   description: string | null;
   imageUrl: string | null;
   cityDefaultImage?: string | null;
@@ -26,6 +27,7 @@ interface Event {
   longitude: number | null;
   visibility: "PUBLIC" | "PRIVATE";
   acceptedTeamTypes?: string[];
+  approvalStatus?: "PENDING" | "APPROVED" | "REJECTED";
   club: {
     id: string;
     name: string;
@@ -958,6 +960,13 @@ function EventCard({
               </p>
             </div>
           </div>
+
+          {/* Demo Notice Badge */}
+          <div className="absolute bottom-2 right-2">
+            <div className="bg-amber-500 text-white px-2 py-1 rounded text-xs font-semibold">
+              Demo Date
+            </div>
+          </div>
         </div>
 
         <div className="p-4">
@@ -984,7 +993,9 @@ function EventCard({
 
           {event.cost !== null && (
             <p className="text-primary font-semibold">
-              {event.cost === 0 ? "Free" : `€${event.cost}`}
+              {event.cost === 0
+                ? "Free"
+                : `€${(event.cost + (event.platformFee || 5)).toFixed(0)}`}
               <span className="text-xs text-gray-500 font-normal ml-1">
                 per person
               </span>

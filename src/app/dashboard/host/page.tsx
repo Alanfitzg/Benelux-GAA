@@ -14,6 +14,7 @@ import {
   Package,
   MessageSquare,
   ChevronRight,
+  FileText,
 } from "lucide-react";
 
 interface DashboardStats {
@@ -163,6 +164,12 @@ export default function HostDashboard() {
           )}
         </div>
         <div className="flex gap-2">
+          <Link href="/host-terms">
+            <Button variant="outline">
+              <FileText className="w-4 h-4 mr-2" />
+              Host Terms
+            </Button>
+          </Link>
           <Button variant="outline">
             <Package className="w-4 h-4 mr-2" />
             Manage Packages

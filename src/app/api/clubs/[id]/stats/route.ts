@@ -98,6 +98,8 @@ export async function GET(
       startDate: event.startDate.toISOString(),
       location: event.location,
       interestCount: event._count.interests,
+      approvalStatus: event.approvalStatus,
+      rejectionReason: event.rejectionReason,
       interests: event.interests.map((interest) => ({
         name: interest.name,
         email: interest.email,
@@ -105,6 +107,11 @@ export async function GET(
         message: interest.message,
       })),
     }));
+
+    // Count pending events
+    const pendingEvents = club.events.filter(
+      (event) => event.approvalStatus === "PENDING"
+    );
 
     // Get recent interests (last 30 days)
     const thirtyDaysAgo = new Date();
@@ -170,6 +177,7 @@ export async function GET(
         totalEvents: club.events.length,
         upcomingEvents: upcomingEvents.length,
         pastEvents: pastEvents.length,
+        pendingEvents: pendingEvents.length,
         totalInterests: totalEventInterests,
         averageInterestsPerEvent:
           club.events.length > 0

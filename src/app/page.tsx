@@ -928,6 +928,13 @@ export default function HomePage() {
                             </span>
                           </div>
                         )}
+
+                        {/* Demo Notice Badge */}
+                        <div className="absolute bottom-3 left-3 z-10">
+                          <span className="text-xs font-semibold text-white bg-amber-500 px-2 py-1 rounded-md shadow-sm">
+                            Demo Date
+                          </span>
+                        </div>
                       </div>
 
                       {/* Content Section */}

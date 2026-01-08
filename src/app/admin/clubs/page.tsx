@@ -72,7 +72,10 @@ export default async function AdminClubsPage() {
       revalidatePath("/admin/clubs");
     } catch (error) {
       console.error("Error deleting club:", error);
-      if (error instanceof Error && error.message === "Club not found or already deleted") {
+      if (
+        error instanceof Error &&
+        error.message === "Club not found or already deleted"
+      ) {
         // If club doesn't exist, just revalidate and return success
         revalidatePath("/admin/clubs");
         return;
@@ -96,21 +99,22 @@ export default async function AdminClubsPage() {
       website: true,
       codes: true,
       teamTypes: true,
+      clubType: true,
       country: {
         select: {
           name: true,
-        }
+        },
       },
       internationalUnit: {
         select: {
           name: true,
-        }
+        },
       },
       regionRecord: {
         select: {
           name: true,
-        }
-      }
+        },
+      },
     },
   });
 
