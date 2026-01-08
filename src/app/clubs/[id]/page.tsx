@@ -359,7 +359,7 @@ export default async function ClubDetailsPage({
       <ClubProfileNav />
 
       {/* Main Content */}
-      <div className="bg-gray-100 py-12">
+      <div className="bg-gray-200 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Tournaments Section - First for European clubs */}
@@ -458,6 +458,7 @@ export default async function ClubDetailsPage({
                     isAdmin={
                       isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"
                     }
+                    isMainlandEurope={club.isMainlandEurope}
                   />
                 </div>
               </div>

@@ -264,7 +264,7 @@ export default function HomePage() {
 
               {/* Flying Hurl Animations - Smooth gliding paths */}
               <div className="absolute inset-0 pointer-events-none">
-                {/* First Hurl - From Ireland heading east (gentle arc) */}
+                {/* First Hurl - Northern route to Scandinavia */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -272,8 +272,8 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["58%", "65%", "75%", "85%", "95%"],
-                    top: ["28%", "24%", "20%", "18%", "16%"],
+                    left: ["58%", "68%", "78%", "88%", "98%"],
+                    top: ["15%", "12%", "10%", "8%", "6%"],
                     rotate: [-8, -5, -3, -1, 2],
                   }}
                   transition={{
@@ -310,7 +310,7 @@ export default function HomePage() {
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Second Hurl - From Ireland heading southeast (faster, slight descent) */}
+                {/* Second Hurl - Central route to Eastern Europe */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -318,9 +318,9 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["55%", "62%", "72%", "82%", "92%"],
-                    top: ["32%", "38%", "45%", "52%", "58%"],
-                    rotate: [8, 10, 12, 14, 16],
+                    left: ["55%", "65%", "75%", "85%", "95%"],
+                    top: ["38%", "36%", "34%", "33%", "32%"],
+                    rotate: [-5, -4, -3, -2, -1],
                   }}
                   transition={{
                     opacity: {
@@ -356,7 +356,7 @@ export default function HomePage() {
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Third Hurl - Southern route, right to left (flipped, gentle climb) */}
+                {/* Third Hurl - Mediterranean/Southern route, right to left */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -364,8 +364,8 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["92%", "68%", "42%", "18%", "5%"],
-                    top: ["72%", "68%", "65%", "63%", "62%"],
+                    left: ["92%", "70%", "48%", "26%", "5%"],
+                    top: ["82%", "78%", "75%", "73%", "72%"],
                     rotate: [-4, -3, -2, -2, -3],
                   }}
                   transition={{
@@ -403,7 +403,7 @@ export default function HomePage() {
                     scaleX: -1,
                   }}
                 />
-                {/* Fourth Hurl - Diagonal route, bottom-left to top-right (steady climb) */}
+                {/* Fourth Hurl - Iberia to Baltic diagonal climb */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -411,9 +411,9 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["10%", "30%", "50%", "70%", "85%"],
-                    top: ["75%", "60%", "45%", "30%", "18%"],
-                    rotate: [-28, -28, -28, -28, -28],
+                    left: ["15%", "35%", "55%", "75%", "90%"],
+                    top: ["85%", "65%", "45%", "25%", "10%"],
+                    rotate: [-32, -32, -32, -32, -32],
                   }}
                   transition={{
                     opacity: {
@@ -449,7 +449,7 @@ export default function HomePage() {
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Fifth Hurl - Diagonal route, top-right to bottom-left (flipped, steady descent) */}
+                {/* Fifth Hurl - Nordic to France descent */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -457,9 +457,9 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
-                    left: ["85%", "65%", "45%", "25%", "10%"],
-                    top: ["20%", "35%", "50%", "62%", "72%"],
-                    rotate: [28, 28, 28, 28, 28],
+                    left: ["88%", "68%", "48%", "28%", "12%"],
+                    top: ["8%", "28%", "48%", "65%", "78%"],
+                    rotate: [32, 32, 32, 32, 32],
                   }}
                   transition={{
                     opacity: {
@@ -496,7 +496,7 @@ export default function HomePage() {
                     scaleX: -1,
                   }}
                 />
-                {/* Sixth Hurl - Mid-level left to right (straight cruising) */}
+                {/* Sixth Hurl - Mid-Europe horizontal cruise */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -505,7 +505,7 @@ export default function HomePage() {
                   animate={{
                     opacity: [0, 1, 1, 1, 0],
                     left: ["8%", "28%", "48%", "68%", "88%"],
-                    top: ["52%", "51%", "52%", "51%", "52%"],
+                    top: ["55%", "54%", "55%", "54%", "55%"],
                     rotate: [0, 0, 0, 0, 0],
                   }}
                   transition={{
@@ -544,7 +544,7 @@ export default function HomePage() {
                 />
 
                 {/* Continental Hurls - Stay within visible area, fade while visible */}
-                {/* Seventh Hurl - Short continental hop, upper region */}
+                {/* Seventh Hurl - Short hop over Germany/Poland */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -552,8 +552,8 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 0.9, 0.9, 0.5, 0],
-                    left: ["20%", "35%", "50%", "60%", "65%"],
-                    top: ["30%", "28%", "27%", "28%", "30%"],
+                    left: ["45%", "55%", "65%", "72%", "78%"],
+                    top: ["22%", "20%", "19%", "20%", "22%"],
                     rotate: [-5, -3, 0, 3, 5],
                   }}
                   transition={{
@@ -590,7 +590,7 @@ export default function HomePage() {
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Eighth Hurl - Short continental hop, mid-lower region, right to left */}
+                {/* Eighth Hurl - Short hop over Italy/Alps region */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -598,8 +598,8 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 0.85, 0.85, 0.4, 0],
-                    left: ["70%", "55%", "40%", "30%", "25%"],
-                    top: ["55%", "53%", "52%", "53%", "55%"],
+                    left: ["65%", "55%", "45%", "38%", "32%"],
+                    top: ["68%", "65%", "63%", "62%", "63%"],
                     rotate: [3, 1, 0, -1, -3],
                   }}
                   transition={{
@@ -637,7 +637,7 @@ export default function HomePage() {
                     scaleX: -1,
                   }}
                 />
-                {/* Ninth Hurl - Short diagonal continental, lower left to mid */}
+                {/* Ninth Hurl - Short hop over France/Benelux */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -645,9 +645,9 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 0.8, 0.8, 0.3, 0],
-                    left: ["25%", "38%", "48%", "55%", "58%"],
-                    top: ["65%", "55%", "48%", "44%", "42%"],
-                    rotate: [-18, -18, -18, -18, -18],
+                    left: ["22%", "32%", "42%", "50%", "55%"],
+                    top: ["48%", "42%", "38%", "36%", "35%"],
+                    rotate: [-15, -15, -15, -15, -15],
                   }}
                   transition={{
                     opacity: {
@@ -683,7 +683,7 @@ export default function HomePage() {
                     filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.3))",
                   }}
                 />
-                {/* Tenth Hurl - Short continental, upper right area */}
+                {/* Tenth Hurl - Short hop over Spain/Portugal */}
                 <motion.img
                   src="/flying-hurl.png.png"
                   alt="Flying Hurl"
@@ -691,9 +691,9 @@ export default function HomePage() {
                   initial={{ opacity: 0 }}
                   animate={{
                     opacity: [0, 0.75, 0.75, 0.35, 0],
-                    left: ["55%", "62%", "68%", "72%", "75%"],
-                    top: ["35%", "38%", "40%", "41%", "42%"],
-                    rotate: [12, 12, 12, 12, 12],
+                    left: ["18%", "28%", "38%", "45%", "50%"],
+                    top: ["72%", "70%", "69%", "70%", "72%"],
+                    rotate: [-5, -3, 0, 3, 5],
                   }}
                   transition={{
                     opacity: {

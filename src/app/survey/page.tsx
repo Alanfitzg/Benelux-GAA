@@ -96,10 +96,13 @@ export default function SurveyPage({
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            Custom Trip
+          </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Tell us about your club&apos;s travel preferences and we&apos;ll try
-            to create the perfect custom GAA experience tailored to your needs
-            and budget.
+            to create the perfect custom experience tailored to your needs and
+            budget.
           </p>
           <div className="mt-4 text-sm text-gray-500">
             <span className="inline-flex items-center">

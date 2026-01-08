@@ -54,7 +54,6 @@ const COUNTRIES = [
   "Other",
 ];
 
-
 export default function SurveyForm({ eventId }: SurveyFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<SurveyData>(INITIAL_DATA);
@@ -70,7 +69,6 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
   };
-
 
   const validateStep = (step: number): boolean => {
     const stepErrors: Record<string, string> = {};
@@ -183,7 +181,7 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  City (optional)
+                  City/County (optional)
                 </label>
                 <input
                   type="text"
@@ -214,15 +212,15 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
               </label>
               <select
                 value={data.travelFrequency}
-                onChange={(e) =>
-                  updateData("travelFrequency", e.target.value)
-                }
+                onChange={(e) => updateData("travelFrequency", e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               >
                 <option value="">Select...</option>
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
-                <option value="Planning first trip">Planning our first trip</option>
+                <option value="Planning first trip">
+                  Planning our first trip
+                </option>
               </select>
             </div>
           </div>
@@ -237,7 +235,8 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Please tell us about your group, and your preferences. Also, please type any questions.
+                Please tell us about your group, and your preferences. Also,
+                please type any questions.
               </label>
               <textarea
                 value={data.groupAndPreferences}
@@ -245,17 +244,20 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
                   updateData("groupAndPreferences", e.target.value)
                 }
                 rows={6}
-                placeholder="Tell us about your team size, travel preferences, budget considerations, destinations you&apos;re interested in, and any questions you have about organizing GAA trips..."
+                placeholder="Tell us about your team size, travel preferences, budget considerations, destinations you're interested in, and any questions you have about organizing GAA trips..."
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               />
             </div>
 
             <div className="border-t pt-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Contact Information
+              </h3>
               <p className="text-sm text-gray-600 mb-4">
-                We&apos;ll use this information to follow up with relevant opportunities and updates.
+                We&apos;ll use this information to follow up with relevant
+                opportunities and updates.
               </p>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">

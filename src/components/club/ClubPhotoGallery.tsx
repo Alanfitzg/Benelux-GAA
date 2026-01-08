@@ -7,12 +7,14 @@ import type { ClubPhoto } from "@/types";
 interface ClubPhotoGalleryProps {
   clubId: string;
   isAdmin?: boolean;
+  isMainlandEurope?: boolean;
   onCoverPhotoChange?: (photo: ClubPhoto | null) => void;
 }
 
 export default function ClubPhotoGallery({
   clubId,
   isAdmin = false,
+  isMainlandEurope = false,
   onCoverPhotoChange,
 }: ClubPhotoGalleryProps) {
   const [photos, setPhotos] = useState<ClubPhoto[]>([]);
@@ -154,6 +156,7 @@ export default function ClubPhotoGallery({
         {showAddForm && isAdmin && (
           <AddPhotoForm
             clubId={clubId}
+            isMainlandEurope={isMainlandEurope}
             onAdded={(newPhoto) => {
               setPhotos([...photos, newPhoto]);
               setShowAddForm(false);
@@ -322,70 +325,214 @@ export default function ClubPhotoGallery({
 
 interface AddPhotoFormProps {
   clubId: string;
+  isMainlandEurope: boolean;
   onAdded: (photo: ClubPhoto) => void;
   onCancel: () => void;
 }
 
-function AddPhotoForm({ clubId, onAdded, onCancel }: AddPhotoFormProps) {
+function AddPhotoForm({
+  clubId,
+  isMainlandEurope,
+  onAdded,
+  onCancel,
+}: AddPhotoFormProps) {
   const [url, setUrl] = useState("");
   const [caption, setCaption] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [uploadMode, setUploadMode] = useState<"file" | "url">(
+    isMainlandEurope ? "file" : "url"
+  );
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
+    if (!allowedTypes.includes(file.type)) {
+      setError("Please select a JPEG, PNG, or WebP image");
+      return;
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      setError("File size must be less than 5MB");
+      return;
+    }
+
+    setError("");
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
-    if (!url) {
-      setError("Photo URL is required");
-      return;
-    }
-
-    try {
-      new URL(url);
-    } catch {
-      setError("Please enter a valid URL");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/clubs/${clubId}/photos`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, caption: caption || null }),
-      });
-
-      if (response.ok) {
-        const photo = await response.json();
-        onAdded(photo);
-      } else {
-        const data = await response.json();
-        setError(data.error || "Failed to add photo");
+    if (uploadMode === "file" && isMainlandEurope) {
+      // Direct file upload for European clubs
+      if (!selectedFile) {
+        setError("Please select a photo to upload");
+        return;
       }
-    } catch (err) {
-      console.error("Error adding photo:", err);
-      setError("Failed to add photo");
-    } finally {
-      setLoading(false);
+
+      setLoading(true);
+      try {
+        // First upload to S3
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        formData.append("type", "club-photo");
+
+        const uploadResponse = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          const uploadError = await uploadResponse.json();
+          setError(uploadError.error || "Failed to upload photo");
+          return;
+        }
+
+        const { url: uploadedUrl } = await uploadResponse.json();
+
+        // Then save to club photos
+        const response = await fetch(`/api/clubs/${clubId}/photos`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url: uploadedUrl, caption: caption || null }),
+        });
+
+        if (response.ok) {
+          const photo = await response.json();
+          onAdded(photo);
+        } else {
+          const data = await response.json();
+          setError(data.error || "Failed to add photo");
+        }
+      } catch (err) {
+        console.error("Error uploading photo:", err);
+        setError("Failed to upload photo");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // URL-based upload
+      if (!url) {
+        setError("Photo URL is required");
+        return;
+      }
+
+      try {
+        new URL(url);
+      } catch {
+        setError("Please enter a valid URL");
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const response = await fetch(`/api/clubs/${clubId}/photos`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, caption: caption || null }),
+        });
+
+        if (response.ok) {
+          const photo = await response.json();
+          onAdded(photo);
+        } else {
+          const data = await response.json();
+          setError(data.error || "Failed to add photo");
+        }
+      } catch (err) {
+        console.error("Error adding photo:", err);
+        setError("Failed to add photo");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="bg-gray-50 rounded-lg p-4 mb-6">
       <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Photo URL
-          </label>
-          <input
-            type="url"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="https://example.com/photo.jpg"
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-          />
-        </div>
+        {/* Upload mode toggle - only for European clubs */}
+        {isMainlandEurope && (
+          <div className="flex gap-2 mb-2">
+            <button
+              type="button"
+              onClick={() => setUploadMode("file")}
+              className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                uploadMode === "file"
+                  ? "bg-primary text-white"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              Upload from Device
+            </button>
+            <button
+              type="button"
+              onClick={() => setUploadMode("url")}
+              className={`flex-1 px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                uploadMode === "url"
+                  ? "bg-primary text-white"
+                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              Paste URL
+            </button>
+          </div>
+        )}
+
+        {uploadMode === "file" && isMainlandEurope ? (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Select Photo
+            </label>
+            <div className="relative">
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleFileChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary file:mr-4 file:py-1 file:px-3 file:rounded file:border-0 file:text-sm file:font-medium file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+              />
+            </div>
+            <p className="mt-1 text-xs text-gray-500">
+              JPEG, PNG, or WebP. Max 5MB.
+            </p>
+            {previewUrl && (
+              <div className="mt-3">
+                <p className="text-xs text-gray-500 mb-2">Preview:</p>
+                <div className="relative w-32 h-20 rounded-lg overflow-hidden bg-gray-100">
+                  <Image
+                    src={previewUrl}
+                    alt="Preview"
+                    fill
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Photo URL
+            </label>
+            <input
+              type="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://example.com/photo.jpg"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+        )}
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -415,7 +562,7 @@ function AddPhotoForm({ clubId, onAdded, onCancel }: AddPhotoFormProps) {
             disabled={loading}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? "Adding..." : "Add Photo"}
+            {loading ? "Uploading..." : "Add Photo"}
           </button>
         </div>
       </div>

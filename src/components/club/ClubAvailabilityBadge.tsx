@@ -23,6 +23,7 @@ export default function ClubAvailabilityBadge({
   preferredWeekends,
 }: ClubAvailabilityBadgeProps) {
   const [showAllDates, setShowAllDates] = useState(false);
+  const [showWarningPopup, setShowWarningPopup] = useState(false);
   const [showInterestForm, setShowInterestForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -191,11 +192,68 @@ export default function ClubAvailabilityBadge({
 
           <button
             type="button"
-            onClick={() => setShowInterestForm(true)}
+            onClick={() => {
+              if (isUsingPlaceholders) {
+                setShowWarningPopup(true);
+              } else {
+                setShowInterestForm(true);
+              }
+            }}
             className="w-full px-4 py-2.5 sm:py-3 bg-primary text-white rounded-xl text-base sm:text-lg font-bold hover:bg-primary/90 transition-all shadow-md hover:shadow-lg"
           >
             Register Interest
           </button>
+
+          {showWarningPopup && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-amber-600"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      Please Note
+                    </h3>
+                    <p className="text-gray-700">
+                      These dates are placeholders. Real availability coming
+                      soon - please do not register interest for these specific
+                      dates yet.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setShowWarningPopup(false)}
+                    className="flex-1 px-4 py-2.5 text-base font-medium border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    Close
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowWarningPopup(false);
+                      setShowInterestForm(true);
+                    }}
+                    className="flex-1 px-4 py-2.5 text-base font-bold bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                  >
+                    Continue Anyway
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       ) : success ? (
         <div className="text-center py-6">
@@ -223,27 +281,6 @@ export default function ClubAvailabilityBadge({
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3">
-          {isUsingPlaceholders && (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-2.5 sm:p-3 mb-1">
-              <p className="text-xs sm:text-sm text-amber-800 font-medium flex items-start gap-2">
-                <svg
-                  className="w-4 h-4 mt-0.5 flex-shrink-0"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span>
-                  These dates are placeholders. Please do not register interest
-                  yet - real availability coming soon.
-                </span>
-              </p>
-            </div>
-          )}
           <input
             type="text"
             placeholder="Your name"

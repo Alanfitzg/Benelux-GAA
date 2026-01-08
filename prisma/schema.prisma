@@ -344,13 +344,31 @@ model Booking {
 model Payment {
   id              String        @id @default(cuid())
   bookingId       String
-  amount          Float
+  amount          Float         // Total amount collected
   type            PaymentType
   status          PaymentStatus @default(PENDING)
   stripePaymentId String?
   processedAt     DateTime?
+  releasedAt      DateTime?     // When funds were released to host
+  withheldAt      DateTime?     // When funds were withheld
+  withheldReason  String?       // Reason for withholding
   createdAt       DateTime      @default(now())
+
+  // Financial breakdown
+  hostEarnings      Float?      // Amount going to host club
+  platformFee       Float?      // Amount going to GGE platform
+  platformFeeShare  Float?      // Host's share of platform fee (€2.50 for day passes)
+
+  // For day passes, track quantities
+  quantity          Int?        // Number of teams or players
+  unitPrice         Float?      // Price per unit (set by club for day passes)
+
   booking         Booking       @relation(fields: [bookingId], references: [id])
+
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+  @@index([bookingId])
 }
 
 model TournamentTeam {
@@ -523,6 +541,8 @@ enum PaymentType {
   DEPOSIT
   FULL_PAYMENT
   REFUND
+  TEAM_TICKET       // Per team fee (price set by host, platform takes fixed fee)
+  DAY_PASS          // Per player fee (price set by host + platform fee split 50/50)
 }
 
 enum PaymentStatus {
@@ -531,6 +551,8 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+  RELEASED    // Funds released to host after successful trip
+  WITHHELD    // Funds withheld due to dispute
 }
 
 enum TeamStatus {
@@ -1074,4 +1096,114 @@ model EventWatchlist {
   @@unique([userId, eventId])
   @@index([userId])
   @@index([eventId])
+}
+
+// Email automation system
+model EmailTemplate {
+  id          String            @id @default(cuid())
+  type        EmailTemplateType @unique
+  name        String
+  subject     String
+  body        String            @db.Text
+  isActive    Boolean           @default(true)
+  variables   String[]          @default([]) // Available template variables like {{userName}}, {{tripDate}}
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  logs        EmailLog[]
+
+  @@index([type])
+  @@index([isActive])
+}
+
+model EmailLog {
+  id          String          @id @default(cuid())
+  templateId  String?
+  templateType EmailTemplateType?
+  recipientEmail String
+  recipientName  String?
+  subject     String
+  status      EmailStatus     @default(PENDING)
+  sentAt      DateTime?
+  errorMessage String?
+  metadata    Json?           // Store context like bookingId, eventId, etc.
+  createdAt   DateTime        @default(now())
+
+  template    EmailTemplate?  @relation(fields: [templateId], references: [id])
+
+  @@index([templateId])
+  @@index([templateType])
+  @@index([recipientEmail])
+  @@index([status])
+  @@index([createdAt])
+  @@index([sentAt])
+}
+
+enum EmailTemplateType {
+  WELCOME                    // New user registration
+  BOOKING_CONFIRMATION       // Booking confirmed
+  BOOKING_REMINDER           // Reminder before trip
+  PRE_DEPARTURE              // Pre-departure info pack
+  POST_TRIP_FEEDBACK         // Request for review/feedback after trip
+  ADMIN_NEW_BOOKING          // Admin notification of new booking
+  ADMIN_NEW_USER             // Admin notification of new user
+  CLUB_ADMIN_NEW_INTEREST    // Club admin notification of new interest
+  PASSWORD_RESET             // Password reset email
+  TOURNAMENT_REGISTRATION    // Tournament registration confirmation
+}
+
+enum EmailStatus {
+  PENDING
+  SENT
+  FAILED
+  BOUNCED
+}
+
+// Neutral venues for hosting future events (admin-only)
+model NeutralVenue {
+  id              String   @id @default(cuid())
+  name            String
+  city            String
+  country         String
+  address         String?
+  latitude        Float?
+  longitude       Float?
+
+  // Pitch details
+  numberOfPitches Int?
+  surfaceType     String?  // Grass, artificial, hybrid
+  pitchSize       String?  // Full size, 3/4, etc.
+  hasFloodlights  Boolean  @default(false)
+
+  // Facilities
+  changingRooms   String?
+  parking         String?
+  spectatorCapacity Int?
+  cateringOnSite  Boolean  @default(false)
+  accommodationNearby String?
+
+  // Contact information
+  contactName     String?
+  contactEmail    String?
+  contactPhone    String?
+  contactRole     String?  // e.g., "Facilities Manager", "Groundskeeper"
+
+  // Booking & availability
+  typicalCost     String?  // e.g., "€500/day", "Negotiable"
+  bookingNotes    String?  @db.Text
+  bestTimeToContact String?
+
+  // Admin notes
+  notes           String?  @db.Text
+  lastContacted   DateTime?
+  relationshipStatus String? // e.g., "Cold", "In talks", "Good relationship", "Used before"
+
+  // Metadata
+  addedBy         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([country])
+  @@index([city])
+  @@index([createdAt])
 }

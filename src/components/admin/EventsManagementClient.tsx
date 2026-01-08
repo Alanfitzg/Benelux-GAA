@@ -12,6 +12,7 @@ type EventListItem = {
   location: string;
   startDate: Date;
   visibility: string;
+  acceptedTeamTypes: string[];
   club?: {
     id: string;
     name: string;
@@ -39,16 +40,23 @@ export default function EventsManagementClient({
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedEventType, setSelectedEventType] = useState<string>("all");
+  const [selectedSport, setSelectedSport] = useState<string>("all");
 
-  // Extract unique countries and event types for filter dropdowns
-  const { countries, eventTypes } = useMemo(() => {
+  // Extract unique countries, event types, and sports for filter dropdowns
+  const { countries, eventTypes, sports } = useMemo(() => {
     const countrySet = new Set<string>();
     const eventTypeSet = new Set<string>();
+    const sportSet = new Set<string>();
 
     initialEvents.forEach((event) => {
       // Add event type
       if (event.eventType) {
         eventTypeSet.add(event.eventType);
+      }
+
+      // Add sports/codes
+      if (event.acceptedTeamTypes && event.acceptedTeamTypes.length > 0) {
+        event.acceptedTeamTypes.forEach((sport) => sportSet.add(sport));
       }
 
       // Extract country from club data
@@ -76,6 +84,7 @@ export default function EventsManagementClient({
     return {
       countries: Array.from(countrySet).sort(),
       eventTypes: Array.from(eventTypeSet).sort(),
+      sports: Array.from(sportSet).sort(),
     };
   }, [initialEvents]);
 
@@ -113,6 +122,16 @@ export default function EventsManagementClient({
         return false;
       }
 
+      // Sport filter
+      if (selectedSport !== "all") {
+        if (
+          !event.acceptedTeamTypes ||
+          !event.acceptedTeamTypes.includes(selectedSport)
+        ) {
+          return false;
+        }
+      }
+
       // Search filter
       if (searchTerm) {
         const searchLower = searchTerm.toLowerCase();
@@ -126,7 +145,13 @@ export default function EventsManagementClient({
 
       return true;
     });
-  }, [initialEvents, selectedCountry, selectedEventType, searchTerm]);
+  }, [
+    initialEvents,
+    selectedCountry,
+    selectedEventType,
+    selectedSport,
+    searchTerm,
+  ]);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -152,7 +177,7 @@ export default function EventsManagementClient({
 
       {/* Filters Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* Country Filter */}
           <div>
             <label
@@ -227,6 +252,34 @@ export default function EventsManagementClient({
             </select>
           </div>
 
+          {/* Sport Filter */}
+          <div>
+            <label
+              htmlFor="sport-filter"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Filter by Sport
+            </label>
+            <select
+              id="sport-filter"
+              value={selectedSport}
+              onChange={(e) => setSelectedSport(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+            >
+              <option value="all">All Sports</option>
+              {sports.map((sport) => {
+                const count = initialEvents.filter((event) =>
+                  event.acceptedTeamTypes?.includes(sport)
+                ).length;
+                return (
+                  <option key={sport} value={sport}>
+                    {sport} ({count})
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
           {/* Search Filter */}
           <div>
             <label
@@ -266,6 +319,9 @@ export default function EventsManagementClient({
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Type
+                </th>
+                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Sport
                 </th>
                 <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Visibility
@@ -324,6 +380,23 @@ export default function EventsManagementClient({
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
+                        {event.acceptedTeamTypes &&
+                        event.acceptedTeamTypes.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {event.acceptedTeamTypes.map((sport) => (
+                              <span
+                                key={sport}
+                                className="px-2 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700"
+                              >
+                                {sport}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <span className="text-gray-400 text-xs">—</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
                         {event.eventType === "Tournament" ? (
                           <span
                             className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold ${
@@ -369,7 +442,7 @@ export default function EventsManagementClient({
               ) : (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={8}
                     className="px-6 py-12 text-center text-gray-500"
                   >
                     No events found matching your filters
