@@ -85,6 +85,14 @@ const EMAIL_TEMPLATES = [
     priority: "MEDIUM",
     status: "placeholder",
   },
+  {
+    type: "WELCOME_EUROPEAN_ADMIN",
+    name: "Welcome European Admin",
+    description: "Sent when a European club admin application is approved",
+    trigger: "Admin approved",
+    priority: "HIGH",
+    status: "configured",
+  },
 ];
 
 export default function EmailsAdminPage() {
@@ -454,8 +462,16 @@ export default function EmailsAdminPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600">
-                        Not configured
+                      <span
+                        className={`px-2 py-1 text-xs font-medium rounded-full ${
+                          template.status === "configured"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {template.status === "configured"
+                          ? "Configured"
+                          : "Not configured"}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
