@@ -56,6 +56,14 @@ export default function Footer() {
                   Create Event
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/products"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  Products
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -139,6 +139,40 @@ export default function HostTermsPage() {
             </div>
           </div>
 
+          {/* Products Link */}
+          <div className="bg-gradient-to-r from-[#1a3352] to-[#264673] rounded-2xl p-6 mb-10">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="text-white">
+                <h3 className="text-lg font-semibold mb-1">
+                  Understanding Our Products
+                </h3>
+                <p className="text-blue-100 text-sm">
+                  Learn about Team Tickets and Player Day-Passes - the two ways
+                  to earn from hosting.
+                </p>
+              </div>
+              <Link
+                href="/products"
+                className="inline-flex items-center justify-center gap-2 bg-white text-[#1a3352] px-5 py-2.5 rounded-lg font-semibold hover:bg-gray-100 transition-colors whitespace-nowrap"
+              >
+                View Products Guide
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </Link>
+            </div>
+          </div>
+
           {/* Sections */}
           <div className="space-y-8">
             {/* Platform Fee Structure */}
