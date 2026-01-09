@@ -4,7 +4,16 @@ import { useState } from "react";
 import Link from "next/link";
 
 // Email template types with their descriptions and trigger points
+// Configured templates first, then placeholders
 const EMAIL_TEMPLATES = [
+  {
+    type: "WELCOME_EUROPEAN_ADMIN",
+    name: "Welcome European Admin",
+    description: "Sent when a European club admin application is approved",
+    trigger: "Admin approved",
+    priority: "HIGH",
+    status: "configured",
+  },
   {
     type: "WELCOME",
     name: "Welcome Email",
@@ -85,19 +94,11 @@ const EMAIL_TEMPLATES = [
     priority: "MEDIUM",
     status: "placeholder",
   },
-  {
-    type: "WELCOME_EUROPEAN_ADMIN",
-    name: "Welcome European Admin",
-    description: "Sent when a European club admin application is approved",
-    trigger: "Admin approved",
-    priority: "HIGH",
-    status: "configured",
-  },
 ];
 
 export default function EmailsAdminPage() {
   const [activeTab, setActiveTab] = useState<"templates" | "logs" | "setup">(
-    "setup"
+    "templates"
   );
 
   return (
@@ -114,39 +115,31 @@ export default function EmailsAdminPage() {
         </Link>
       </div>
 
-      {/* Setup Instructions Banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-6">
+      {/* Progress Banner */}
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
         <div className="flex items-start gap-3">
-          <div className="text-2xl">⚠️</div>
-          <div>
-            <h2 className="font-semibold text-amber-800 text-lg mb-2">
-              Email System Setup Required
-            </h2>
-            <p className="text-amber-700 mb-4">
-              This section manages automated emails for your platform. The
-              database models are ready, but you need to configure an email
-              provider before emails can be sent.
+          <div className="text-2xl">📧</div>
+          <div className="flex-1">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="font-semibold text-blue-800 text-lg">
+                Email System Progress
+              </h2>
+              <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-1 rounded-full">
+                1 of {EMAIL_TEMPLATES.length} configured
+              </span>
+            </div>
+            <p className="text-blue-700 mb-3">
+              The email system is partially set up. The Welcome European Admin
+              email is ready to send. See the Setup Guide tab for remaining
+              configuration steps.
             </p>
-            <div className="bg-white/50 rounded-lg p-4 text-sm text-amber-800">
-              <p className="font-medium mb-2">Next Steps:</p>
-              <ol className="list-decimal list-inside space-y-1">
-                <li>
-                  Choose an email provider (Resend, SendGrid, or AWS SES
-                  recommended)
-                </li>
-                <li>Add provider API key to environment variables</li>
-                <li>
-                  Implement the email sending service in{" "}
-                  <code className="bg-amber-100 px-1 rounded">
-                    /src/lib/email.ts
-                  </code>
-                </li>
-                <li>Create API endpoints to trigger each email type</li>
-                <li>
-                  Set up cron jobs for scheduled emails (reminders, post-trip
-                  feedback)
-                </li>
-              </ol>
+            <div className="w-full bg-blue-200 rounded-full h-2">
+              <div
+                className="bg-blue-600 h-2 rounded-full"
+                style={{
+                  width: `${(EMAIL_TEMPLATES.filter((t) => t.status === "configured").length / EMAIL_TEMPLATES.length) * 100}%`,
+                }}
+              ></div>
             </div>
           </div>
         </div>
