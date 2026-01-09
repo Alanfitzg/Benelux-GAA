@@ -255,6 +255,14 @@ export async function PUT(
           },
         },
       });
+
+      // Also delete any approved ClubAdminRequest records since user is no longer an admin
+      await prisma.clubAdminRequest.deleteMany({
+        where: {
+          userId: id,
+          status: "APPROVED",
+        },
+      });
     }
 
     // Get admin clubs for the updated user
