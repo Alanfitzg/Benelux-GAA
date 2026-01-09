@@ -223,7 +223,7 @@ export async function PUT(
     });
 
     // Handle club admin assignments
-    if (role === UserRole.CLUB_ADMIN && Array.isArray(adminOfClubIds)) {
+    if (role === "CLUB_ADMIN" && Array.isArray(adminOfClubIds)) {
       // Remove from all clubs first
       await prisma.user.update({
         where: { id },
@@ -245,7 +245,7 @@ export async function PUT(
           },
         });
       }
-    } else if (role !== UserRole.CLUB_ADMIN) {
+    } else if (role !== "CLUB_ADMIN") {
       // Remove from all clubs if not a club admin
       await prisma.user.update({
         where: { id },
@@ -288,9 +288,8 @@ export async function PUT(
     return NextResponse.json({ user: updatedUser });
   } catch (error) {
     console.error("Error updating user:", error);
-    return NextResponse.json(
-      { error: "Failed to update user" },
-      { status: 500 }
-    );
+    const errorMessage =
+      error instanceof Error ? error.message : "Failed to update user";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
