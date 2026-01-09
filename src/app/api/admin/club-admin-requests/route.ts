@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { UserRole, ClubAdminRequestStatus } from "@prisma/client";
+import { sendEuropeanAdminWelcomeEmail } from "@/lib/emails/european-admin-welcome-email";
 
 export async function GET(request: NextRequest) {
   try {
@@ -142,6 +143,21 @@ export async function POST(request: NextRequest) {
             role: UserRole.CLUB_ADMIN,
           },
         });
+      }
+
+      // Send welcome email to the new admin
+      try {
+        await sendEuropeanAdminWelcomeEmail({
+          to: adminRequest.user.email,
+          userName: adminRequest.user.name || adminRequest.user.username,
+          clubName: adminRequest.club.name,
+        });
+        console.log(
+          `Welcome email sent to ${adminRequest.user.email} for club ${adminRequest.club.name}`
+        );
+      } catch (emailError) {
+        // Log but don't fail the approval if email fails
+        console.error("Failed to send welcome email:", emailError);
       }
 
       return NextResponse.json({

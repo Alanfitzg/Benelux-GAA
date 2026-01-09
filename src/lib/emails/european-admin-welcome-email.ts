@@ -41,6 +41,14 @@ export async function sendEuropeanAdminWelcomeEmail({
       },
     });
 
+    if (data.error) {
+      console.error("Resend API error:", data.error);
+      return {
+        success: false,
+        error: data.error.message,
+      };
+    }
+
     console.log("European admin welcome email sent successfully:", data);
     return { success: true, emailId: data.data?.id };
   } catch (error) {
