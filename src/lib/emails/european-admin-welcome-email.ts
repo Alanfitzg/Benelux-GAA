@@ -1,19 +1,11 @@
-import { Resend } from "resend";
 import { WelcomeEuropeanAdminEmail } from "@/components/emails/WelcomeEuropeanAdminEmail";
 import { render } from "@react-email/render";
+import { sendEmail } from "@/lib/email";
 
 interface SendEuropeanAdminWelcomeEmailParams {
   to: string;
   userName: string;
   clubName: string;
-}
-
-function getResendClient() {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    throw new Error("RESEND_API_KEY environment variable is not set");
-  }
-  return new Resend(apiKey);
 }
 
 export async function sendEuropeanAdminWelcomeEmail({
@@ -22,8 +14,6 @@ export async function sendEuropeanAdminWelcomeEmail({
   clubName,
 }: SendEuropeanAdminWelcomeEmailParams) {
   try {
-    const resend = getResendClient();
-
     const emailHtml = await render(
       WelcomeEuropeanAdminEmail({
         userName,
@@ -31,26 +21,22 @@ export async function sendEuropeanAdminWelcomeEmail({
       })
     );
 
-    const data = await resend.emails.send({
-      from: "PlayAway <welcome@playaway.ie>",
-      to: [to],
+    const success = await sendEmail({
+      to,
       subject: `Welcome Club Admin! You're now hosting on PlayAway 🎉`,
       html: emailHtml,
-      headers: {
-        "X-Entity-Ref-ID": new Date().getTime().toString(),
-      },
     });
 
-    if (data.error) {
-      console.error("Resend API error:", data.error);
+    if (!success) {
+      console.error("Failed to send European admin welcome email");
       return {
         success: false,
-        error: data.error.message,
+        error: "Failed to send email",
       };
     }
 
-    console.log("European admin welcome email sent successfully:", data);
-    return { success: true, emailId: data.data?.id };
+    console.log("European admin welcome email sent successfully to:", to);
+    return { success: true };
   } catch (error) {
     console.error("Error sending European admin welcome email:", error);
     return {

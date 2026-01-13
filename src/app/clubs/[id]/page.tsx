@@ -861,6 +861,60 @@ export default async function ClubDetailsPage({
               />
             </section>
 
+            {/* Calendar Section */}
+            <section id="calendar" className="scroll-mt-24">
+              <div className="max-w-2xl mx-auto">
+                <ClubCalendarModal clubId={club.id} clubName={club.name} />
+              </div>
+            </section>
+
+            {/* How It Works Link */}
+            <section className="max-w-2xl mx-auto">
+              <Link
+                href="/how-it-works"
+                className="block p-4 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                    <svg
+                      className="w-5 h-5 text-primary"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-semibold text-gray-900">
+                      New to PlayAway?
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Learn how it works for travelling teams
+                    </p>
+                  </div>
+                  <svg
+                    className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </Link>
+            </section>
+
             {/* Back Link */}
             <div className="text-center">
               <Link
@@ -886,18 +940,6 @@ export default async function ClubDetailsPage({
           </div>
         </div>
       </div>
-
-      {/* Calendar Modal Trigger - Fixed at bottom or in a section */}
-      <section
-        id="calendar"
-        className="scroll-mt-24 py-8 bg-white border-t border-gray-200"
-      >
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <ClubCalendarModal clubId={club.id} clubName={club.name} />
-          </div>
-        </div>
-      </section>
     </>
   );
 }

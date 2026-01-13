@@ -29,6 +29,7 @@ import {
   XCircle,
   AlertCircle,
   FileText,
+  Package,
 } from "lucide-react";
 
 interface ClubStats {
@@ -569,15 +570,24 @@ export default function ClubAdminDashboard({
                 {isIrishClub && tab.irishLabel ? tab.irishLabel : tab.label}
               </button>
             ))}
-            {/* Host Terms - European clubs only */}
+            {/* European clubs only links */}
             {!isIrishClub && (
-              <Link
-                href="/host-terms"
-                className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap ml-auto border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-amber-50 transition-colors"
-              >
-                <FileText className="w-4 h-4" />
-                Host Terms
-              </Link>
+              <div className="flex items-center ml-auto">
+                <Link
+                  href="/products"
+                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-primary hover:text-primary-dark hover:bg-primary/5 transition-colors"
+                >
+                  <Package className="w-4 h-4" />
+                  Products
+                </Link>
+                <Link
+                  href="/host-terms"
+                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-amber-50 transition-colors"
+                >
+                  <FileText className="w-4 h-4" />
+                  Host Terms
+                </Link>
+              </div>
             )}
           </nav>
         </div>

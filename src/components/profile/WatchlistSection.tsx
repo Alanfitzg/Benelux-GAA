@@ -129,25 +129,32 @@ export default function WatchlistSection({
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between cursor-pointer hover:bg-gray-50 -m-2 p-2 rounded-lg transition-colors"
       >
-        <h3
-          className={`font-bold text-gray-900 flex items-center gap-2 ${compact ? "text-base" : "text-xl"}`}
-        >
-          <svg
-            className={`text-amber-500 ${compact ? "w-5 h-5" : "w-6 h-6"}`}
-            fill="currentColor"
-            viewBox="0 0 24 24"
+        <div>
+          <h3
+            className={`font-bold text-gray-900 flex items-center gap-2 ${compact ? "text-base" : "text-xl"}`}
           >
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-          Watchlist
-          {!loading && events.length > 0 && (
-            <span className="text-xs text-gray-500 font-normal ml-2">
-              ({events.length})
-            </span>
-          )}
-        </h3>
+            <svg
+              className={`text-amber-500 ${compact ? "w-5 h-5" : "w-6 h-6"}`}
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+            </svg>
+            Watchlist
+            {!loading && events.length > 0 && (
+              <span className="text-xs text-gray-500 font-normal ml-2">
+                ({events.length})
+              </span>
+            )}
+          </h3>
+          <p
+            className={`text-gray-500 text-left mt-0.5 ${compact ? "text-xs" : "text-sm"}`}
+          >
+            Events you want to keep an eye on
+          </p>
+        </div>
         <svg
-          className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+          className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ${isExpanded ? "rotate-180" : ""}`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

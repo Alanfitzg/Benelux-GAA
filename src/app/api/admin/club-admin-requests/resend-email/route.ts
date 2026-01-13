@@ -57,7 +57,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: "Welcome email sent successfully",
-      emailId: result.emailId,
     });
   } catch (error) {
     console.error("Error resending welcome email:", error);

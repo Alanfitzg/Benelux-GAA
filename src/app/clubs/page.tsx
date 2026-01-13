@@ -27,13 +27,6 @@ type ClubListItem = {
   verifiedAt?: string | null;
 };
 
-const clubTypeLabels: Record<string, string> = {
-  CLUB: "Club",
-  UNIVERSITY: "University",
-  SCHOOL: "School",
-  COUNTY: "County",
-};
-
 export const dynamic = "force-dynamic";
 
 // Country flag mapping - using flag emoji or flag icon URLs
@@ -135,7 +128,6 @@ export default function ClubsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedTeamType, setSelectedTeamType] = useState("");
-  const [selectedClubType, setSelectedClubType] = useState("");
   const [viewMode, setViewMode] = useState<"countries" | "list">("countries");
 
   // European countries filter
@@ -166,15 +158,13 @@ export default function ClubsPage() {
   const country = searchParams.get("country") || "";
   const teamType = searchParams.get("teamType") || "";
   const search = searchParams.get("search") || "";
-  const clubType = searchParams.get("clubType") || "";
 
   // Initialize form fields with URL parameters
   useEffect(() => {
     setSearchTerm(search);
     setSelectedCountry(country);
     setSelectedTeamType(teamType);
-    setSelectedClubType(clubType);
-  }, [search, country, teamType, clubType]);
+  }, [search, country, teamType]);
 
   // Fetch clubs data
   useEffect(() => {
@@ -185,7 +175,6 @@ export default function ClubsPage() {
         if (country) params.append("country", country);
         if (teamType) params.append("teamType", teamType);
         if (search) params.append("search", search);
-        if (clubType) params.append("clubType", clubType);
 
         const response = await fetch(`/api/clubs?${params.toString()}`);
         const data = await response.json();
@@ -201,7 +190,7 @@ export default function ClubsPage() {
     };
 
     fetchClubs();
-  }, [country, teamType, search, clubType]);
+  }, [country, teamType, search]);
 
   // Filter clubs based on search, team type, and European countries only
   const filteredClubs = clubs.filter((club) => {
@@ -254,7 +243,6 @@ export default function ClubsPage() {
     if (searchTerm) params.append("search", searchTerm);
     if (selectedCountry) params.append("country", selectedCountry);
     if (selectedTeamType) params.append("teamType", selectedTeamType);
-    if (selectedClubType) params.append("clubType", selectedClubType);
     router.push(`/clubs?${params.toString()}`);
   };
 
@@ -262,7 +250,6 @@ export default function ClubsPage() {
     setSearchTerm("");
     setSelectedCountry("");
     setSelectedTeamType("");
-    setSelectedClubType("");
     setViewMode("countries");
     router.push("/clubs");
   };
@@ -367,7 +354,7 @@ export default function ClubsPage() {
             {/* Search and Filter Controls */}
             <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-center">
               {/* Mobile: filters in grid */}
-              <div className="grid grid-cols-3 md:flex gap-2 md:gap-4 w-full md:w-auto">
+              <div className="grid grid-cols-2 md:flex gap-2 md:gap-4 w-full md:w-auto">
                 <select
                   value={selectedCountry}
                   onChange={(e) => setSelectedCountry(e.target.value)}
@@ -391,18 +378,6 @@ export default function ClubsPage() {
                   {teamTypes.map((type: string) => (
                     <option key={type} value={type}>
                       {type}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={selectedClubType}
-                  onChange={(e) => setSelectedClubType(e.target.value)}
-                  className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                >
-                  <option value="">All Types</option>
-                  {Object.entries(clubTypeLabels).map(([value, label]) => (
-                    <option key={value} value={value}>
-                      {label}
                     </option>
                   ))}
                 </select>

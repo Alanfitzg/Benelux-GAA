@@ -49,6 +49,30 @@ type ClubMapItem = {
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
 
+// European countries that should be shown on the map
+const EUROPEAN_COUNTRIES = [
+  "France",
+  "Romania",
+  "Denmark",
+  "Croatia",
+  "Poland",
+  "Germany",
+  "Italy",
+  "Netherlands",
+  "Belgium",
+  "Switzerland",
+  "Austria",
+  "Luxembourg",
+  "Spain",
+  "Gibraltar",
+  "Sweden",
+  "Finland",
+  "Russia",
+  "Norway",
+  "Portugal",
+  "Slovenia",
+];
+
 // Extract unique countries from clubs
 const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
   const countries = new Set<string>();
@@ -66,8 +90,13 @@ const getCountriesFromClubs = (clubs: ClubMapItem[]) => {
 };
 
 function MapContent() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const searchParams = useSearchParams();
+
+  // Check if user is admin (SUPER_ADMIN or CLUB_ADMIN)
+  const isAdmin =
+    session?.user?.role === "SUPER_ADMIN" ||
+    session?.user?.role === "CLUB_ADMIN";
   const [events, setEvents] = useState<Event[]>([]);
   const [clubs, setClubs] = useState<ClubMapItem[]>([]);
   const [showWelcome, setShowWelcome] = useState(false);
@@ -187,6 +216,14 @@ function MapContent() {
 
   const filteredClubs = useMemo(() => {
     return clubs.filter((club) => {
+      // First, only include European clubs
+      const isEuropeanClub =
+        club.location &&
+        EUROPEAN_COUNTRIES.some((country) =>
+          club.location!.toLowerCase().includes(country.toLowerCase())
+        );
+      if (!isEuropeanClub) return false;
+
       const matchesCountry =
         selectedCountry === "all" ||
         (club.location &&
@@ -252,7 +289,11 @@ function MapContent() {
     });
   }, [filteredClubs]);
 
-  const countries = useMemo(() => getCountriesFromClubs(clubs), [clubs]);
+  // Only show European countries in the dropdown
+  const countries = useMemo(
+    () => getCountriesFromClubs(filteredClubs),
+    [filteredClubs]
+  );
 
   const handleSidebarClick = (event: Event) => {
     if (hasValidCoordinates(event)) {
@@ -642,10 +683,10 @@ function MapContent() {
               className="text-center px-6"
             >
               <h1 className="text-3xl font-bold mb-2 text-white">
-                International Club Map
+                European Club Map
               </h1>
               <p className="text-sm text-white/90 font-light">
-                No clubs on the island of Ireland are displayed
+                Discover GAA clubs across mainland Europe
               </p>
             </motion.div>
           </div>
@@ -828,6 +869,7 @@ function MapContent() {
                           >
                             <div
                               className={`w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center border-3 ${
+                                isAdmin &&
                                 club.verificationStatus === "VERIFIED"
                                   ? "border-green-500"
                                   : "border-primary"
@@ -844,6 +886,7 @@ function MapContent() {
                               ) : (
                                 <div
                                   className={`w-8 h-8 ${
+                                    isAdmin &&
                                     club.verificationStatus === "VERIFIED"
                                       ? "bg-green-500"
                                       : "bg-primary"
@@ -859,22 +902,23 @@ function MapContent() {
                                 <div className="absolute inset-0 rounded-full border-2 border-primary animate-pulse"></div>
                               )}
                             </div>
-                            {/* Verified badge */}
-                            {club.verificationStatus === "VERIFIED" && (
-                              <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5">
-                                <svg
-                                  className="w-3 h-3 text-white"
-                                  fill="currentColor"
-                                  viewBox="0 0 20 20"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              </div>
-                            )}
+                            {/* Verified badge - only visible to admins */}
+                            {isAdmin &&
+                              club.verificationStatus === "VERIFIED" && (
+                                <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5">
+                                  <svg
+                                    className="w-3 h-3 text-white"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                </div>
+                              )}
                           </motion.div>
                         </Marker>
                       );
@@ -968,24 +1012,25 @@ function MapContent() {
                               <h3 className="font-bold text-lg text-gray-900">
                                 {club.name}
                               </h3>
-                              {club.verificationStatus === "VERIFIED" && (
-                                <div className="flex items-center gap-1 text-green-600 text-xs">
-                                  <svg
-                                    className="w-3 h-3"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  <span className="font-medium">
-                                    Verified Club
-                                  </span>
-                                </div>
-                              )}
+                              {isAdmin &&
+                                club.verificationStatus === "VERIFIED" && (
+                                  <div className="flex items-center gap-1 text-green-600 text-xs">
+                                    <svg
+                                      className="w-3 h-3"
+                                      fill="currentColor"
+                                      viewBox="0 0 20 20"
+                                    >
+                                      <path
+                                        fillRule="evenodd"
+                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                        clipRule="evenodd"
+                                      />
+                                    </svg>
+                                    <span className="font-medium">
+                                      Verified Club
+                                    </span>
+                                  </div>
+                                )}
                             </div>
                           </div>
                           <div className="space-y-2 text-sm text-gray-600">
@@ -1068,7 +1113,7 @@ function MapContent() {
               </div>
               {viewMode === "clubs" && (
                 <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-500">
-                  * All Ireland (incl. NI) & UK clubs hidden
+                  * Showing mainland European clubs only
                 </div>
               )}
             </motion.div>
