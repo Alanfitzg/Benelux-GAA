@@ -357,19 +357,19 @@ export default function SimpleClubSelector({
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-5 md:space-y-8">
       {/* Header */}
       <div
-        className="bg-emerald-50/80 rounded-2xl p-6 border border-emerald-200 shadow-sm"
+        className="bg-emerald-50/80 rounded-2xl p-4 md:p-6 border border-emerald-200 shadow-sm"
         style={{ borderLeft: "4px solid #1e40af" }}
       >
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-              <Building className="w-6 h-6 text-primary" />
+            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
+              <Building className="w-5 h-5 text-primary" />
               Club Membership
             </h3>
-            <p className="text-gray-700">
+            <p className="text-sm text-gray-700">
               Connect with your GAA community worldwide
             </p>
           </div>
@@ -394,9 +394,9 @@ export default function SimpleClubSelector({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-2xl border-2 border-gray-100 p-6 shadow-sm"
+        className="bg-white rounded-2xl border-2 border-gray-100 p-4 md:p-6 shadow-sm"
       >
-        <label className="block text-lg font-semibold text-gray-800 mb-6">
+        <label className="block text-base md:text-lg font-semibold text-gray-800 mb-4 md:mb-6">
           Are you currently a member of a GAA club?
         </label>
 
@@ -470,7 +470,7 @@ export default function SimpleClubSelector({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
-            className="bg-blue-900 rounded-2xl p-8 shadow-2xl border border-blue-700"
+            className="bg-blue-900 rounded-2xl p-4 md:p-8 shadow-2xl border border-blue-700"
           >
             <div className="space-y-6">
               {/* Progress Steps */}
