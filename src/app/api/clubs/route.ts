@@ -4,6 +4,10 @@ import { requireAuth, getServerSession } from "@/lib/auth-helpers";
 import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { geocodeLocation } from "@/lib/utils/geocoding";
 import { unstable_cache, revalidateTag } from "next/cache";
+import { TEAM_TYPES } from "@/lib/constants/teams";
+
+// Valid team types for filtering (excludes legacy/invalid values from database)
+const VALID_TEAM_TYPES = new Set(TEAM_TYPES);
 
 // Cached function for club filter options (countries and team types)
 const getCachedFilterOptions = unstable_cache(
@@ -22,9 +26,14 @@ const getCachedFilterOptions = unstable_cache(
       )
     ).sort() as string[];
 
+    // Filter to only include valid team types (excludes legacy values like "Men's Football")
     const teamTypes = Array.from(
       new Set(allClubs.flatMap((club) => club.teamTypes))
-    ).sort();
+    )
+      .filter((type) =>
+        VALID_TEAM_TYPES.has(type as (typeof TEAM_TYPES)[number])
+      )
+      .sort();
 
     return { countries, teamTypes };
   },
@@ -224,9 +233,14 @@ async function getClubsHandler(req: NextRequest) {
           )
         ).sort() as string[];
 
+        // Filter to only include valid team types (excludes legacy values)
         const teamTypes = Array.from(
           new Set(approvedClubs.flatMap((club) => club.teamTypes))
-        ).sort();
+        )
+          .filter((type) =>
+            VALID_TEAM_TYPES.has(type as (typeof TEAM_TYPES)[number])
+          )
+          .sort();
 
         filterOptions = { countries, teamTypes };
         console.log(
