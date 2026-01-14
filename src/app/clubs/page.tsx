@@ -298,7 +298,7 @@ export default function ClubsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-200">
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
         <div className="container mx-auto px-4 text-center">
@@ -412,41 +412,43 @@ export default function ClubsPage() {
                 className="w-full md:min-w-[250px] text-sm md:text-base px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
 
-              {/* Price Filter */}
-              <div className="flex items-center gap-3 w-full md:w-auto bg-gray-50 px-3 py-2 rounded-lg border border-gray-200">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={priceFilterEnabled}
-                    onChange={(e) => {
-                      setPriceFilterEnabled(e.target.checked);
-                      if (e.target.checked && maxPrice === null) {
-                        setMaxPrice(Math.round(maxAvailablePrice));
-                      }
-                    }}
-                    className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
-                  />
-                  <span className="text-sm text-gray-600 whitespace-nowrap">
-                    Activate Price Filter
-                  </span>
-                </label>
-                {priceFilterEnabled && (
-                  <div className="flex items-center gap-2">
+              {/* Price Filter - Only show when viewing clubs (not country cards) */}
+              {(viewMode === "list" || selectedCountry || country) && (
+                <div className="flex items-center gap-3 w-full md:w-auto bg-gray-50 px-3 py-2 rounded-lg border border-gray-200">
+                  <label className="flex items-center gap-2 cursor-pointer">
                     <input
-                      type="range"
-                      min={5}
-                      max={Math.round(maxAvailablePrice)}
-                      step={5}
-                      value={maxPrice || Math.round(maxAvailablePrice)}
-                      onChange={(e) => setMaxPrice(Number(e.target.value))}
-                      className="w-20 md:w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                      type="checkbox"
+                      checked={priceFilterEnabled}
+                      onChange={(e) => {
+                        setPriceFilterEnabled(e.target.checked);
+                        if (e.target.checked && maxPrice === null) {
+                          setMaxPrice(Math.round(maxAvailablePrice));
+                        }
+                      }}
+                      className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
                     />
-                    <span className="text-sm font-semibold text-green-600 min-w-[50px]">
-                      &euro;{maxPrice || Math.round(maxAvailablePrice)}
+                    <span className="text-sm text-gray-600 whitespace-nowrap">
+                      Activate Price Filter
                     </span>
-                  </div>
-                )}
-              </div>
+                  </label>
+                  {priceFilterEnabled && (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="range"
+                        min={5}
+                        max={Math.round(maxAvailablePrice)}
+                        step={5}
+                        value={maxPrice || Math.round(maxAvailablePrice)}
+                        onChange={(e) => setMaxPrice(Number(e.target.value))}
+                        className="w-20 md:w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                      />
+                      <span className="text-sm font-semibold text-green-600 min-w-[50px]">
+                        &euro;{maxPrice || Math.round(maxAvailablePrice)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Buttons */}
               <div className="flex gap-2 w-full md:w-auto">
@@ -528,7 +530,7 @@ export default function ClubsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white rounded md:rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
+                  className="bg-white rounded md:rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden border border-gray-200"
                 >
                   <Link href={`/clubs/${club.id}`} className="block">
                     {/* Club image */}
@@ -559,7 +561,7 @@ export default function ClubsPage() {
                     </div>
 
                     {/* Club details */}
-                    <div className="p-1 md:p-2">
+                    <div className="p-1 md:p-2 text-center md:text-left">
                       <h3 className="text-[8px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {club.name}
                       </h3>
@@ -653,7 +655,7 @@ export default function ClubsPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-1 md:gap-6">
+            <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2 md:gap-6">
               {sortedCountries.map((country) => (
                 <motion.div
                   key={country}
@@ -664,7 +666,7 @@ export default function ClubsPage() {
                 >
                   <Link
                     href={`/clubs?country=${encodeURIComponent(country)}`}
-                    className="block bg-white rounded md:rounded-lg p-1.5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 text-center group-hover:scale-105"
+                    className="block bg-white rounded md:rounded-lg p-1.5 md:p-6 shadow-lg hover:shadow-2xl transition-all duration-300 text-center group-hover:scale-105 border border-gray-200"
                   >
                     <div className="mb-0.5 md:mb-4">
                       {countryFlags[country] ? (
@@ -759,7 +761,7 @@ export default function ClubsPage() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white rounded md:rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
+                  className="bg-white rounded md:rounded-lg shadow-md hover:shadow-xl transition-shadow overflow-hidden border border-gray-200"
                 >
                   <Link href={`/clubs/${club.id}`} className="block">
                     {/* Club image */}
@@ -790,7 +792,7 @@ export default function ClubsPage() {
                     </div>
 
                     {/* Club details */}
-                    <div className="p-1 md:p-2">
+                    <div className="p-1 md:p-2 text-center md:text-left">
                       <h3 className="text-[8px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {club.name}
                       </h3>
