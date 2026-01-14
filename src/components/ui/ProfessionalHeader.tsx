@@ -240,6 +240,28 @@ const ProfessionalHeader = () => {
                                 </svg>
                                 Admin Panel
                               </Link>
+                              {session.user.role === "SUPER_ADMIN" && (
+                                <Link
+                                  href="/admin/data-center"
+                                  onClick={() => setProfileDropdownOpen(false)}
+                                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                >
+                                  <svg
+                                    className="w-4 h-4 mr-3"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                                    />
+                                  </svg>
+                                  Data Center
+                                </Link>
+                              )}
                               <Link
                                 href="/dashboard/host"
                                 onClick={() => setProfileDropdownOpen(false)}
@@ -450,30 +472,58 @@ const ProfessionalHeader = () => {
 
                       {(session.user.role === "SUPER_ADMIN" ||
                         session.user.role === "GUEST_ADMIN") && (
-                        <Link
-                          href="/admin"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                            scrolled
-                              ? "text-gray-700 hover:bg-gray-100"
-                              : "text-white hover:bg-white/10"
-                          }`}
-                        >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                        <>
+                          <Link
+                            href="/admin"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                              scrolled
+                                ? "text-gray-700 hover:bg-gray-100"
+                                : "text-white hover:bg-white/10"
+                            }`}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
-                            />
-                          </svg>
-                          <span className="font-medium">Admin Panel</span>
-                        </Link>
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                              />
+                            </svg>
+                            <span className="font-medium">Admin Panel</span>
+                          </Link>
+                          {session.user.role === "SUPER_ADMIN" && (
+                            <Link
+                              href="/admin/data-center"
+                              onClick={() => setMobileMenuOpen(false)}
+                              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                                scrolled
+                                  ? "text-gray-700 hover:bg-gray-100"
+                                  : "text-white hover:bg-white/10"
+                              }`}
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                                />
+                              </svg>
+                              <span className="font-medium">Data Center</span>
+                            </Link>
+                          )}
+                        </>
                       )}
 
                       <ClubAdminLinks

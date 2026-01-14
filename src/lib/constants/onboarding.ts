@@ -45,11 +45,6 @@ export const COMPETITIVE_LEVELS = {
     description:
       "Team preparation with training facilities and practice matches",
   },
-  friendly_tournament: {
-    id: "friendly_tournament",
-    label: "Friendly Tournament",
-    description: "Competitive games in a relaxed, social atmosphere",
-  },
   fifteen_a_side: {
     id: "fifteen_a_side",
     label: "15-a-Side",

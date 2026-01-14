@@ -339,7 +339,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
           >
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <h3 className="text-base md:text-xl font-bold text-gray-900 flex items-center gap-2">
                   <svg
                     className="w-5 h-5 text-primary"
                     fill="none"
@@ -355,7 +355,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                   </svg>
                   Associated Clubs
                 </h3>
-                <p className="text-gray-500 text-sm mt-0.5">
+                <p className="text-gray-500 text-xs md:text-sm mt-0.5">
                   Clubs you&apos;re connected with
                 </p>
               </div>
@@ -529,7 +529,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
           </div>
 
           {/* Travel Preferences Section - hidden for European club admins */}
-          {!isEuropeanClubAdmin && <PreferencesSection />}
+          {!isEuropeanClubAdmin && <PreferencesSection compact />}
         </motion.div>
 
         {/* Club Selection Modal */}

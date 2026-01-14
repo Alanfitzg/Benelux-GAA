@@ -225,14 +225,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             >
               Overview
             </a>
-            {event?.eventType === "Tournament" && (
-              <a
-                href="#teams"
-                className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
-              >
-                Teams
-              </a>
-            )}
             <a
               href="#included"
               className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
@@ -245,6 +237,14 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
               >
                 Register Interest
+              </a>
+            )}
+            {event?.eventType === "Tournament" && (
+              <a
+                href="#teams"
+                className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
+              >
+                Teams
               </a>
             )}
           </nav>
@@ -272,99 +272,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                       : "Create an account to see event details.")}
                 </p>
               </section>
-
-              {/* Teams Section - Only for tournaments */}
-              {event?.eventType === "Tournament" && (
-                <section
-                  id="teams"
-                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 mb-4">
-                    <h2 className="text-xl sm:text-2xl font-bold">
-                      Confirmed Teams
-                    </h2>
-                    <span className="text-xs sm:text-sm text-gray-500">
-                      {teams.filter((t) => t.status === "CONFIRMED").length}{" "}
-                      teams
-                      {event.maxTeams && ` / ${event.maxTeams} max`}
-                    </span>
-                  </div>
-
-                  {session?.user ? (
-                    <>
-                      {teams.filter((t) => t.status === "CONFIRMED").length >
-                      0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          {teams
-                            .filter((t) => t.status === "CONFIRMED")
-                            .map((team) => (
-                              <div
-                                key={team.id}
-                                className="bg-gray-50 rounded-lg p-3 flex items-center gap-3"
-                              >
-                                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                                  <span className="text-primary font-bold text-sm">
-                                    {team.teamName?.charAt(0) || "T"}
-                                  </span>
-                                </div>
-                                <div className="min-w-0">
-                                  <p className="font-medium text-gray-900 truncate">
-                                    {team.teamName}
-                                  </p>
-                                  {team.club?.name && (
-                                    <p className="text-sm text-gray-500 truncate">
-                                      {team.club.name}
-                                    </p>
-                                  )}
-                                </div>
-                                <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded flex-shrink-0">
-                                  {team.teamType}
-                                </span>
-                              </div>
-                            ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-10 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-100">
-                          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg
-                              className="w-8 h-8 text-primary/60"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                              />
-                            </svg>
-                          </div>
-                          <p className="text-gray-600 font-medium">
-                            No teams confirmed yet
-                          </p>
-                          <p className="text-sm text-gray-400 mt-1">
-                            Be the first to register your team!
-                          </p>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <SignUpGate
-                      title="See Confirmed Teams"
-                      description="View all teams registered for this tournament. Create a free account to see the full lineup."
-                      previewHeight="h-24"
-                    >
-                      <div className="text-center py-8">
-                        <p className="text-gray-500">
-                          {teams.filter((t) => t.status === "CONFIRMED").length}{" "}
-                          teams confirmed
-                        </p>
-                      </div>
-                    </SignUpGate>
-                  )}
-                </section>
-              )}
 
               {/* What's Included Section */}
               <section id="included">
@@ -544,6 +451,99 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                   )}
                 </section>
               )}
+
+              {/* Teams Section - Only for tournaments */}
+              {event?.eventType === "Tournament" && (
+                <section
+                  id="teams"
+                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 mb-4">
+                    <h2 className="text-xl sm:text-2xl font-bold">
+                      Confirmed Teams
+                    </h2>
+                    <span className="text-xs sm:text-sm text-gray-500">
+                      {teams.filter((t) => t.status === "CONFIRMED").length}{" "}
+                      teams
+                      {event.maxTeams && ` / ${event.maxTeams} max`}
+                    </span>
+                  </div>
+
+                  {session?.user ? (
+                    <>
+                      {teams.filter((t) => t.status === "CONFIRMED").length >
+                      0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {teams
+                            .filter((t) => t.status === "CONFIRMED")
+                            .map((team) => (
+                              <div
+                                key={team.id}
+                                className="bg-gray-50 rounded-lg p-3 flex items-center gap-3"
+                              >
+                                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                  <span className="text-primary font-bold text-sm">
+                                    {team.teamName?.charAt(0) || "T"}
+                                  </span>
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="font-medium text-gray-900 truncate">
+                                    {team.teamName}
+                                  </p>
+                                  {team.club?.name && (
+                                    <p className="text-sm text-gray-500 truncate">
+                                      {team.club.name}
+                                    </p>
+                                  )}
+                                </div>
+                                <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                                  {team.teamType}
+                                </span>
+                              </div>
+                            ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-100">
+                          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <svg
+                              className="w-6 h-6 text-primary/60"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={1.5}
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                              />
+                            </svg>
+                          </div>
+                          <p className="text-gray-600 font-medium text-sm">
+                            No teams confirmed yet
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            Be the first to register your team!
+                          </p>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <SignUpGate
+                      title="See Confirmed Teams"
+                      description="View all teams registered for this tournament. Create a free account to see the full lineup."
+                      previewHeight="h-24"
+                    >
+                      <div className="text-center py-8">
+                        <p className="text-gray-500">
+                          {teams.filter((t) => t.status === "CONFIRMED").length}{" "}
+                          teams confirmed
+                        </p>
+                      </div>
+                    </SignUpGate>
+                  )}
+                </section>
+              )}
             </div>
 
             {/* Sidebar */}
@@ -553,7 +553,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 <div className="bg-white rounded-xl shadow-md overflow-hidden">
                   {/* Card Header with Gradient */}
                   <div className="bg-gradient-to-r from-primary to-primary/80 px-4 sm:px-6 py-3">
-                    <h3 className="text-lg font-bold text-white">
+                    <h3 className="text-base sm:text-lg font-bold text-white">
                       Quick Facts
                     </h3>
                   </div>

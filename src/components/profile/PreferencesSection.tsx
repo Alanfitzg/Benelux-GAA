@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Settings, Edit2 } from "lucide-react";
+import { Settings, Edit2, CheckCircle } from "lucide-react";
 import { isFeatureEnabled } from "@/lib/featureFlags";
 import OnboardingModal from "@/components/onboarding/OnboardingModal";
 import {
@@ -29,7 +29,7 @@ interface PreferencesSectionProps {
 
 export default function PreferencesSection({
   compact = false,
-  defaultExpanded = true,
+  defaultExpanded = false,
 }: PreferencesSectionProps) {
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [loading, setLoading] = useState(true);
@@ -91,6 +91,9 @@ export default function PreferencesSection({
                 className={`text-primary ${compact ? "w-5 h-5" : "w-6 h-6"}`}
               />
               Travel Preferences
+              {preferences?.onboardingCompleted && (
+                <CheckCircle className="w-5 h-5 text-green-500" />
+              )}
             </h3>
             <p
               className={`text-gray-500 text-left mt-0.5 ${compact ? "text-xs" : "text-sm"}`}

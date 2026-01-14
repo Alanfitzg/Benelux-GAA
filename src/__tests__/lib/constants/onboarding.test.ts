@@ -89,7 +89,6 @@ describe("Onboarding Constants", () => {
     it("should contain all expected competitive level keys", () => {
       const expectedKeys = [
         "training_camp",
-        "friendly_tournament",
         "fifteen_a_side",
         "social_gaa",
         "blitz_tournament",
@@ -97,7 +96,7 @@ describe("Onboarding Constants", () => {
       ];
       const actualKeys = Object.keys(COMPETITIVE_LEVELS);
       expect(actualKeys).toEqual(expect.arrayContaining(expectedKeys));
-      expect(actualKeys).toHaveLength(6);
+      expect(actualKeys).toHaveLength(5);
     });
 
     it("should have valid structure for each level", () => {
@@ -128,15 +127,6 @@ describe("Onboarding Constants", () => {
       expect(training.label).toBe("Training Camp");
       expect(training.description).toBe(
         "Team preparation with training facilities and practice matches"
-      );
-    });
-
-    it("should have friendly_tournament level with correct properties", () => {
-      const friendly = COMPETITIVE_LEVELS.friendly_tournament;
-      expect(friendly.id).toBe("friendly_tournament");
-      expect(friendly.label).toBe("Friendly Tournament");
-      expect(friendly.description).toBe(
-        "Competitive games in a relaxed, social atmosphere"
       );
     });
 

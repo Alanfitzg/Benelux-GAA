@@ -124,7 +124,7 @@ export default function OnboardingModal({
                 <p className="text-sm text-gray-600 mt-1">
                   {currentStep === 1 && "What brings you to PlayAway?"}
                   {currentStep === 2 && "Your competitive level"}
-                  {currentStep === 3 && "Tell us more (optional)"}
+                  {currentStep === 3 && "Optional extras"}
                   {currentStep === 4 && "All set!"}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">

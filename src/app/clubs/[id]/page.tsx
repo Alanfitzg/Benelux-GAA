@@ -180,9 +180,21 @@ export default async function ClubDetailsPage({
 
   let isCurrentAdmin = false;
   let existingAdminRequest = null;
+  let userAlreadyHasClub = false;
 
   if (session?.user && club) {
     isCurrentAdmin = club.admins.some((admin) => admin.id === session.user.id);
+
+    // Check if user is already associated with a different club
+    const currentUser = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { clubId: true, isClubMember: true },
+    });
+
+    // User already has a club if they have a clubId AND it's different from this club
+    userAlreadyHasClub = !!(
+      currentUser?.clubId && currentUser.clubId !== club.id
+    );
 
     // Fetch existing admin request if user is not already an admin
     if (!isCurrentAdmin) {
@@ -711,27 +723,29 @@ export default async function ClubDetailsPage({
                   tiktok={club.tiktok}
                 />
 
-                {/* Admin Request Button - for non-admins */}
-                <ClubAdminRequestButton
-                  clubId={club.id}
-                  clubName={club.name}
-                  existingRequest={
-                    existingAdminRequest
-                      ? {
-                          id: existingAdminRequest.id,
-                          status: existingAdminRequest.status as
-                            | "PENDING"
-                            | "APPROVED"
-                            | "REJECTED",
-                          requestedAt:
-                            existingAdminRequest.requestedAt.toISOString(),
-                          rejectionReason:
-                            existingAdminRequest.rejectionReason || undefined,
-                        }
-                      : undefined
-                  }
-                  isCurrentAdmin={isCurrentAdmin}
-                />
+                {/* Admin Request Button - for non-admins who aren't already associated with another club */}
+                {!userAlreadyHasClub && (
+                  <ClubAdminRequestButton
+                    clubId={club.id}
+                    clubName={club.name}
+                    existingRequest={
+                      existingAdminRequest
+                        ? {
+                            id: existingAdminRequest.id,
+                            status: existingAdminRequest.status as
+                              | "PENDING"
+                              | "APPROVED"
+                              | "REJECTED",
+                            requestedAt:
+                              existingAdminRequest.requestedAt.toISOString(),
+                            rejectionReason:
+                              existingAdminRequest.rejectionReason || undefined,
+                          }
+                        : undefined
+                    }
+                    isCurrentAdmin={isCurrentAdmin}
+                  />
+                )}
               </div>
             </div>
           </div>

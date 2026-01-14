@@ -1037,14 +1037,14 @@ export default function HomePage() {
               <div className="text-xl md:text-3xl font-bold text-gray-900 mb-1">
                 {displayStats.clubs}+
               </div>
-              <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
+              <h3 className="text-xs sm:text-sm md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
                 Clubs
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Connect with GAA communities across {displayStats.countries}+
                 countries
               </p>
-              <p className="text-gray-600 text-[9px] sm:text-[10px] leading-tight md:hidden">
+              <p className="text-gray-600 text-[10px] sm:text-xs leading-tight md:hidden">
                 GAA communities worldwide
               </p>
             </motion.div>
@@ -1062,13 +1062,13 @@ export default function HomePage() {
               <div className="text-xl md:text-3xl font-bold text-gray-900 mb-1">
                 {displayStats.tournaments}+
               </div>
-              <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
+              <h3 className="text-xs sm:text-sm md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
                 Tournaments
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Browse approved events in Spain, Germany, France & beyond
               </p>
-              <p className="text-gray-600 text-[9px] sm:text-[10px] leading-tight md:hidden">
+              <p className="text-gray-600 text-[10px] sm:text-xs leading-tight md:hidden">
                 European events
               </p>
             </motion.div>
@@ -1086,13 +1086,13 @@ export default function HomePage() {
               <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1">
                 Custom Trip
               </div>
-              <h3 className="text-[10px] sm:text-xs md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
+              <h3 className="text-xs sm:text-sm md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
                 Tailored for You
               </h3>
               <p className="text-gray-600 text-xs md:text-sm hidden md:block">
                 Can&apos;t find what you need? We&apos;ll plan it for you
               </p>
-              <p className="text-gray-600 text-[10px] leading-tight md:hidden">
+              <p className="text-gray-600 text-[10px] sm:text-xs leading-tight md:hidden">
                 Tailored trips
               </p>
             </motion.div>
@@ -1126,7 +1126,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="bg-primary/5 rounded-lg md:rounded-xl p-3 md:p-5 border-2 border-primary/20 hover:border-primary/40 transition-all"
             >
-              <h3 className="text-base md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
                 For Travelling Teams
               </h3>
               <ul className="space-y-2 md:space-y-3 mb-4">
@@ -1134,7 +1134,7 @@ export default function HomePage() {
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
-                  <span className="text-gray-700 text-xs md:text-sm">
+                  <span className="text-gray-700 text-sm md:text-base">
                     Browse European tournaments
                   </span>
                 </li>
@@ -1142,7 +1142,7 @@ export default function HomePage() {
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
-                  <span className="text-gray-700 text-xs md:text-sm">
+                  <span className="text-gray-700 text-sm md:text-base">
                     Connect with international clubs
                   </span>
                 </li>
@@ -1150,7 +1150,7 @@ export default function HomePage() {
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
-                  <span className="text-gray-700 text-xs md:text-sm">
+                  <span className="text-gray-700 text-sm md:text-base">
                     Create unforgettable memories
                   </span>
                 </li>
@@ -1183,7 +1183,7 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="bg-gray-50 rounded-lg md:rounded-xl p-3 md:p-5 border-2 border-gray-200 hover:border-gray-300 transition-all"
             >
-              <h3 className="text-base md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
                 For Host Clubs
               </h3>
               <ul className="space-y-2 md:space-y-3 mb-4">
@@ -1191,7 +1191,7 @@ export default function HomePage() {
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
-                  <span className="text-gray-700 text-xs md:text-sm">
+                  <span className="text-gray-700 text-sm md:text-base">
                     Welcome visiting teams
                   </span>
                 </li>
@@ -1199,7 +1199,7 @@ export default function HomePage() {
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
-                  <span className="text-gray-700 text-xs md:text-sm">
+                  <span className="text-gray-700 text-sm md:text-base">
                     Create tournaments & events
                   </span>
                 </li>
@@ -1207,7 +1207,7 @@ export default function HomePage() {
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
-                  <span className="text-gray-700 text-xs md:text-sm">
+                  <span className="text-gray-700 text-sm md:text-base">
                     Grow your club & community
                   </span>
                 </li>
