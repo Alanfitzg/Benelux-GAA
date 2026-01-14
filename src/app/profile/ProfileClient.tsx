@@ -162,8 +162,8 @@ export default function ProfileClient({ user }: ProfileClientProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#264673] to-[#1a3352] flex flex-col">
-      <div className="container mx-auto px-4 py-6 pb-12 md:py-8 md:pb-16 max-w-4xl flex-1">
+    <div className="min-h-screen bg-gradient-to-br from-[#264673] to-[#1a3352]">
+      <div className="container mx-auto px-4 py-6 pb-24 md:py-8 md:pb-32 max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
