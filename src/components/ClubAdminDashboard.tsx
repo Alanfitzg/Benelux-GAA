@@ -30,6 +30,8 @@ import {
   AlertCircle,
   FileText,
   Package,
+  Ticket,
+  ArrowRight,
 } from "lucide-react";
 
 interface ClubStats {
@@ -455,6 +457,60 @@ export default function ClubAdminDashboard({
               </div>
               <div className="bg-gray-100 rounded-full p-3">
                 <TrendingUp className="w-5 h-5 text-gray-600" />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Day-Pass Configuration Card - European Clubs Only */}
+      {!isIrishClub && (
+        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 overflow-hidden">
+          <div className="p-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              <div className="flex items-start gap-4">
+                <div className="bg-emerald-500 rounded-xl p-3 flex-shrink-0">
+                  <Ticket className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-emerald-900">
+                    Day-Pass Configuration
+                  </h3>
+                  <p className="text-emerald-700 mt-1 text-sm">
+                    Set your per-player hospitality fee to recover hosting costs
+                    when teams visit.
+                  </p>
+                  <div className="flex items-center gap-4 mt-3">
+                    <div className="flex items-center gap-2 text-sm text-emerald-800">
+                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                      <span>You set the price</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-emerald-800">
+                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                      <span>Cover all hosting costs</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-emerald-800">
+                      <CheckCircle className="w-4 h-4 text-emerald-600" />
+                      <span>Earn from platform fee</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:flex-shrink-0">
+                <Link
+                  href="/products#day-pass"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-emerald-700 bg-white border border-emerald-300 rounded-lg hover:bg-emerald-50 transition-colors"
+                >
+                  <FileText className="w-4 h-4" />
+                  Learn More
+                </Link>
+                <Link
+                  href={`/clubs/${clubId}/edit#day-pass`}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
+                >
+                  Configure Day-Pass
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
             </div>
           </div>
