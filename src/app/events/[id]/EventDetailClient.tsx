@@ -671,12 +671,12 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
               <button
                 type="button"
                 onClick={() => {
-                  if (event?.visibility === "PRIVATE") {
-                    setShowPrivateEventModal(true);
-                  } else if (session?.user) {
-                    toggleWatch();
-                  } else {
+                  if (!session?.user) {
                     setShowWatchlistSignup(true);
+                  } else if (event?.visibility === "PRIVATE" && !isWatched) {
+                    setShowPrivateEventModal(true);
+                  } else {
+                    toggleWatch();
                   }
                 }}
                 disabled={watchLoading}
@@ -789,18 +789,42 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                       <h3 className="text-xl font-bold text-gray-900 mb-2">
                         Private Event
                       </h3>
-                      <p className="text-gray-600 mb-6">
+                      <p className="text-gray-600 mb-4">
                         This is a private event that requires an invitation to
                         attend. If you&apos;re interested, please contact the
                         organising club directly.
                       </p>
-                      <button
-                        type="button"
-                        onClick={() => setShowPrivateEventModal(false)}
-                        className="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
-                      >
-                        Got it
-                      </button>
+                      <p className="text-sm text-gray-500 mb-6 bg-gray-50 p-3 rounded-lg">
+                        You can still add this event to your watchlist for
+                        reference, but you won&apos;t receive updates or
+                        notifications about it.
+                      </p>
+                      <div className="space-y-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            toggleWatch();
+                            setShowPrivateEventModal(false);
+                          }}
+                          className="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                          </svg>
+                          Add to Watchlist Anyway
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setShowPrivateEventModal(false)}
+                          className="w-full text-gray-500 hover:text-gray-700 font-medium py-2 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
