@@ -1,7 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import {
+  Send,
+  Users,
+  Globe,
+  CheckSquare,
+  Square,
+  Loader2,
+  Mail,
+} from "lucide-react";
 
 // Email template types with their descriptions and trigger points
 // Configured templates first, then placeholders
@@ -96,10 +105,149 @@ const EMAIL_TEMPLATES = [
   },
 ];
 
+interface DistributionGroup {
+  id: string;
+  name: string;
+  description: string;
+  clubCount: number;
+}
+
+const DISTRIBUTION_GROUPS: DistributionGroup[] = [
+  {
+    id: "mainland-europe",
+    name: "Mainland Europe",
+    description: "All clubs in continental Europe",
+    clubCount: 0,
+  },
+  {
+    id: "uk-ireland",
+    name: "UK & Ireland",
+    description: "Clubs in United Kingdom and Ireland",
+    clubCount: 0,
+  },
+  {
+    id: "north-america",
+    name: "North America",
+    description: "Clubs in USA and Canada",
+    clubCount: 0,
+  },
+  {
+    id: "asia-pacific",
+    name: "Asia Pacific",
+    description: "Clubs in Asia, Australia, and New Zealand",
+    clubCount: 0,
+  },
+  {
+    id: "middle-east-africa",
+    name: "Middle East & Africa",
+    description: "Clubs in Middle East and Africa",
+    clubCount: 0,
+  },
+  {
+    id: "all-clubs",
+    name: "All Clubs",
+    description: "Every club in the system with admins",
+    clubCount: 0,
+  },
+];
+
 export default function EmailsAdminPage() {
-  const [activeTab, setActiveTab] = useState<"templates" | "logs" | "setup">(
-    "templates"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "broadcast" | "templates" | "logs" | "setup"
+  >("broadcast");
+  const [distributionGroups, setDistributionGroups] =
+    useState<DistributionGroup[]>(DISTRIBUTION_GROUPS);
+  const [loadingGroups, setLoadingGroups] = useState(true);
+  const [selectedGroups, setSelectedGroups] = useState<Set<string>>(new Set());
+  const [broadcastSubject, setBroadcastSubject] = useState("");
+  const [broadcastMessage, setBroadcastMessage] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sendSuccess, setSendSuccess] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchDistributionGroupStats();
+  }, []);
+
+  const fetchDistributionGroupStats = async () => {
+    try {
+      const response = await fetch("/api/admin/distribution-groups");
+      if (response.ok) {
+        const data = await response.json();
+        setDistributionGroups(data.groups);
+      }
+    } catch (error) {
+      console.error("Error fetching distribution groups:", error);
+    } finally {
+      setLoadingGroups(false);
+    }
+  };
+
+  const toggleGroup = (groupId: string) => {
+    const newSelected = new Set(selectedGroups);
+    if (newSelected.has(groupId)) {
+      newSelected.delete(groupId);
+    } else {
+      newSelected.add(groupId);
+    }
+    setSelectedGroups(newSelected);
+  };
+
+  const getTotalRecipients = () => {
+    if (selectedGroups.has("all-clubs")) {
+      const allClubs = distributionGroups.find((g) => g.id === "all-clubs");
+      return allClubs?.clubCount || 0;
+    }
+    return distributionGroups
+      .filter((g) => selectedGroups.has(g.id))
+      .reduce((sum, g) => sum + g.clubCount, 0);
+  };
+
+  const handleSendBroadcast = async () => {
+    if (selectedGroups.size === 0) {
+      setSendError("Please select at least one distribution group");
+      return;
+    }
+    if (!broadcastSubject.trim()) {
+      setSendError("Please enter a subject");
+      return;
+    }
+    if (!broadcastMessage.trim()) {
+      setSendError("Please enter a message");
+      return;
+    }
+
+    setSending(true);
+    setSendError(null);
+
+    try {
+      const response = await fetch("/api/admin/broadcast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          groupIds: Array.from(selectedGroups),
+          subject: broadcastSubject.trim(),
+          message: broadcastMessage.trim(),
+        }),
+      });
+
+      if (response.ok) {
+        setSendSuccess(true);
+        setBroadcastSubject("");
+        setBroadcastMessage("");
+        setSelectedGroups(new Set());
+        setTimeout(() => setSendSuccess(false), 5000);
+      } else {
+        const errorData = await response.json();
+        setSendError(errorData.error || "Failed to send broadcast");
+      }
+    } catch (error) {
+      console.error("Error sending broadcast:", error);
+      setSendError("Failed to send broadcast. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -150,6 +298,18 @@ export default function EmailsAdminPage() {
         <nav className="-mb-px flex space-x-8">
           <button
             type="button"
+            onClick={() => setActiveTab("broadcast")}
+            className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
+              activeTab === "broadcast"
+                ? "border-primary text-primary"
+                : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+            }`}
+          >
+            <Send className="w-4 h-4" />
+            Broadcast
+          </button>
+          <button
+            type="button"
             onClick={() => setActiveTab("setup")}
             className={`py-4 px-1 border-b-2 font-medium text-sm ${
               activeTab === "setup"
@@ -183,6 +343,169 @@ export default function EmailsAdminPage() {
           </button>
         </nav>
       </div>
+
+      {/* Broadcast Tab */}
+      {activeTab === "broadcast" && (
+        <div className="space-y-6">
+          {/* Info Box */}
+          <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-6">
+            <div className="flex items-start gap-3">
+              <Mail className="w-6 h-6 text-purple-600 flex-shrink-0" />
+              <div>
+                <h2 className="font-semibold text-purple-900 text-lg mb-2">
+                  Club Network Broadcast
+                </h2>
+                <p className="text-purple-700">
+                  Send messages to club admins across different regions. Select
+                  one or more distribution groups and compose your message. This
+                  is useful for platform announcements, tournament promotions,
+                  or important updates.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Distribution Groups */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Globe className="w-5 h-5 text-purple-600" />
+                Distribution Groups
+              </h3>
+
+              {loadingGroups ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {distributionGroups.map((group) => (
+                    <button
+                      key={group.id}
+                      type="button"
+                      onClick={() => toggleGroup(group.id)}
+                      className={`w-full p-4 rounded-lg border transition-colors text-left ${
+                        selectedGroups.has(group.id)
+                          ? "bg-purple-50 border-purple-300"
+                          : "bg-gray-50 border-gray-200 hover:border-gray-300"
+                      }`}
+                    >
+                      <div className="flex items-start gap-3">
+                        {selectedGroups.has(group.id) ? (
+                          <CheckSquare className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                        ) : (
+                          <Square className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between">
+                            <span className="font-medium text-gray-900">
+                              {group.name}
+                            </span>
+                            <span className="text-sm text-gray-500">
+                              {group.clubCount} club
+                              {group.clubCount !== 1 ? "s" : ""}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-500 mt-0.5">
+                            {group.description}
+                          </p>
+                        </div>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {selectedGroups.size > 0 && (
+                <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-600">Total recipients:</span>
+                    <span className="font-semibold text-purple-600">
+                      ~{getTotalRecipients()} club admins
+                    </span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Compose Message */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Users className="w-5 h-5 text-purple-600" />
+                Compose Message
+              </h3>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Subject *
+                  </label>
+                  <input
+                    type="text"
+                    value={broadcastSubject}
+                    onChange={(e) => setBroadcastSubject(e.target.value)}
+                    placeholder="e.g., New Tournament Opportunity in Amsterdam"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Message *
+                  </label>
+                  <textarea
+                    value={broadcastMessage}
+                    onChange={(e) => setBroadcastMessage(e.target.value)}
+                    placeholder="Write your message here..."
+                    rows={8}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    This message will be sent to all club admins in the selected
+                    distribution groups.
+                  </p>
+                </div>
+
+                {sendError && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+                    {sendError}
+                  </div>
+                )}
+
+                {sendSuccess && (
+                  <div className="bg-green-50 border border-green-200 rounded-lg p-3 text-sm text-green-700">
+                    Broadcast sent successfully!
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleSendBroadcast}
+                  disabled={
+                    sending ||
+                    selectedGroups.size === 0 ||
+                    !broadcastSubject.trim() ||
+                    !broadcastMessage.trim()
+                  }
+                  className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+                >
+                  {sending ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Sending Broadcast...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      Send Broadcast
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Setup Guide Tab */}
       {activeTab === "setup" && (

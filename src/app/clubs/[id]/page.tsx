@@ -245,30 +245,16 @@ export default async function ClubDetailsPage({
         {/* Cover Photo Banner */}
         <ClubCoverPhotoBanner clubId={club.id} />
 
-        {/* Hero Section - Limited view */}
-        <div className="bg-white border-b border-gray-200">
-          <div className="container mx-auto px-4 py-8">
+        {/* Blue Header Banner with Crest - Limited view */}
+        <div className="bg-gradient-to-br from-[#264673] to-[#1a3352] py-6 sm:py-8">
+          <div className="container mx-auto px-4">
             <div className="max-w-6xl mx-auto">
-              <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-                {/* Crest */}
-                <div className="flex-shrink-0">
-                  <Image
-                    src={
-                      club.imageUrl ||
-                      "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
-                    }
-                    alt={club.name}
-                    width={180}
-                    height={180}
-                    className="w-36 h-36 sm:w-44 sm:h-44 rounded-xl object-contain bg-gray-50 p-3 shadow-sm"
-                    unoptimized
-                  />
-                </div>
-
-                {/* Club Info */}
-                <div className="flex-1 text-center lg:text-left">
-                  <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
-                    <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              <div className="flex flex-row items-center gap-4 sm:gap-6">
+                {/* Text Content - Left Side */}
+                <div className="flex-1 min-w-0">
+                  {/* Club Name and Verification Badge */}
+                  <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                    <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-white truncate">
                       {club.name}
                     </h1>
                     {club.verificationStatus === "VERIFIED" && (
@@ -278,11 +264,12 @@ export default async function ClubDetailsPage({
                     )}
                   </div>
 
-                  <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-gray-600 mb-4">
+                  {/* Location and Founded Year */}
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-white/80 text-sm sm:text-base">
                     {club.location && (
-                      <span className="flex items-center gap-1.5">
+                      <span className="flex items-center gap-1 sm:gap-1.5">
                         <svg
-                          className="w-4 h-4 text-gray-400"
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/60 flex-shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -300,13 +287,13 @@ export default async function ClubDetailsPage({
                             d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                           />
                         </svg>
-                        {club.location}
+                        <span className="truncate">{club.location}</span>
                       </span>
                     )}
                     {club.foundedYear && (
-                      <span className="flex items-center gap-1.5">
+                      <span className="flex items-center gap-1 sm:gap-1.5">
                         <svg
-                          className="w-4 h-4 text-gray-400"
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/60 flex-shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -322,24 +309,48 @@ export default async function ClubDetailsPage({
                       </span>
                     )}
                   </div>
+                </div>
 
-                  {/* Sports Badges */}
-                  {club.teamTypes && club.teamTypes.length > 0 && (
-                    <div className="mb-5">
-                      <SportsBadges teamTypes={club.teamTypes} size="md" />
-                    </div>
-                  )}
+                {/* Crest - Right Side */}
+                <div className="flex-shrink-0">
+                  <Image
+                    src={
+                      club.imageUrl ||
+                      "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
+                    }
+                    alt={club.name}
+                    width={140}
+                    height={140}
+                    className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl object-contain bg-white p-2 sm:p-3 shadow-lg"
+                    unoptimized
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                  {/* Social Media Icons - Show even to non-authenticated */}
-                  <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
-                    <SocialMediaIcons
-                      website={club.website}
-                      facebook={club.facebook}
-                      instagram={club.instagram}
-                      twitter={club.twitter}
-                      tiktok={club.tiktok}
-                    />
+        {/* Content Card - Limited view */}
+        <div className="bg-gray-200">
+          <div className="container mx-auto px-4 py-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                {/* Sports Badges */}
+                {club.teamTypes && club.teamTypes.length > 0 && (
+                  <div className="mb-5">
+                    <SportsBadges teamTypes={club.teamTypes} size="md" />
                   </div>
+                )}
+
+                {/* Social Media Icons - Show even to non-authenticated */}
+                <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+                  <SocialMediaIcons
+                    website={club.website}
+                    facebook={club.facebook}
+                    instagram={club.instagram}
+                    twitter={club.twitter}
+                    tiktok={club.tiktok}
+                  />
                 </div>
               </div>
             </div>
@@ -506,30 +517,16 @@ export default async function ClubDetailsPage({
       {/* Cover Photo Banner */}
       <ClubCoverPhotoBanner clubId={club.id} />
 
-      {/* Hero Section - Merged with About content */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-8">
+      {/* Blue Header Banner with Crest */}
+      <div className="bg-gradient-to-br from-[#264673] to-[#1a3352] py-6 sm:py-8">
+        <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center lg:items-start gap-8">
-              {/* Larger Crest */}
-              <div className="flex-shrink-0">
-                <Image
-                  src={
-                    club.imageUrl ||
-                    "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
-                  }
-                  alt={club.name}
-                  width={180}
-                  height={180}
-                  className="w-36 h-36 sm:w-44 sm:h-44 rounded-xl object-contain bg-gray-50 p-3 shadow-sm"
-                  unoptimized
-                />
-              </div>
-
-              {/* Club Info */}
-              <div className="flex-1 text-center lg:text-left">
-                <div className="flex items-center justify-center lg:justify-start gap-2 mb-2">
-                  <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <div className="flex flex-row items-center gap-4 sm:gap-6">
+              {/* Text Content - Left Side */}
+              <div className="flex-1 min-w-0">
+                {/* Club Name and Verification Badge */}
+                <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
+                  <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-white truncate">
                     {club.name}
                   </h1>
                   {club.verificationStatus === "VERIFIED" && (
@@ -539,11 +536,12 @@ export default async function ClubDetailsPage({
                   )}
                 </div>
 
-                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-gray-600 mb-4">
+                {/* Location and Founded Year */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-white/80 text-sm sm:text-base">
                   {club.clubType && club.clubType !== "CLUB" && (
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full">
+                    <span className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-0.5 sm:py-1 bg-white/20 text-white text-xs sm:text-sm font-medium rounded-full">
                       <svg
-                        className="w-3.5 h-3.5"
+                        className="w-3 h-3 sm:w-3.5 sm:h-3.5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -579,9 +577,9 @@ export default async function ClubDetailsPage({
                     </span>
                   )}
                   {club.location && (
-                    <span className="flex items-center gap-1.5">
+                    <span className="flex items-center gap-1 sm:gap-1.5">
                       <svg
-                        className="w-4 h-4 text-gray-400"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/60 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -599,13 +597,13 @@ export default async function ClubDetailsPage({
                           d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                         />
                       </svg>
-                      {club.location}
+                      <span className="truncate">{club.location}</span>
                     </span>
                   )}
                   {club.foundedYear && (
-                    <span className="flex items-center gap-1.5">
+                    <span className="flex items-center gap-1 sm:gap-1.5">
                       <svg
-                        className="w-4 h-4 text-gray-400"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/60 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -621,96 +619,119 @@ export default async function ClubDetailsPage({
                     </span>
                   )}
                 </div>
+              </div>
 
-                {/* Sports Badges */}
-                {club.teamTypes && club.teamTypes.length > 0 && (
-                  <div className="mb-5">
-                    <SportsBadges teamTypes={club.teamTypes} size="md" />
-                  </div>
+              {/* Crest - Right Side */}
+              <div className="flex-shrink-0">
+                <Image
+                  src={
+                    club.imageUrl ||
+                    "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
+                  }
+                  alt={club.name}
+                  width={140}
+                  height={140}
+                  className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl object-contain bg-white p-2 sm:p-3 shadow-lg"
+                  unoptimized
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Content Card */}
+      <div className="bg-gray-200">
+        <div className="container mx-auto px-4 py-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+              {/* Sports Badges */}
+              {club.teamTypes && club.teamTypes.length > 0 && (
+                <div className="mb-5">
+                  <SportsBadges teamTypes={club.teamTypes} size="md" />
+                </div>
+              )}
+
+              {/* Action Buttons and Social Icons */}
+              <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+                <ClubContactForm
+                  clubId={club.id}
+                  clubName={club.name}
+                  type="contact"
+                />
+                {(isCurrentAdmin || session?.user?.role === "SUPER_ADMIN") && (
+                  <>
+                    <Link
+                      href={`/clubs/${club.id}/edit`}
+                      className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                        />
+                      </svg>
+                      Edit Page
+                    </Link>
+                    <Link
+                      href={`/club-admin/${club.id}`}
+                      className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                        />
+                      </svg>
+                      Dashboard
+                    </Link>
+                  </>
                 )}
 
-                {/* Action Buttons and Social Icons */}
-                <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
-                  <ClubContactForm
-                    clubId={club.id}
-                    clubName={club.name}
-                    type="contact"
-                  />
-                  {(isCurrentAdmin ||
-                    session?.user?.role === "SUPER_ADMIN") && (
-                    <>
-                      <Link
-                        href={`/clubs/${club.id}/edit`}
-                        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                          />
-                        </svg>
-                        Edit Page
-                      </Link>
-                      <Link
-                        href={`/club-admin/${club.id}`}
-                        className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                          />
-                        </svg>
-                        Dashboard
-                      </Link>
-                    </>
-                  )}
+                {/* Social Media Icons */}
+                <SocialMediaIcons
+                  website={club.website}
+                  facebook={club.facebook}
+                  instagram={club.instagram}
+                  twitter={club.twitter}
+                  tiktok={club.tiktok}
+                />
 
-                  {/* Social Media Icons */}
-                  <SocialMediaIcons
-                    website={club.website}
-                    facebook={club.facebook}
-                    instagram={club.instagram}
-                    twitter={club.twitter}
-                    tiktok={club.tiktok}
-                  />
-
-                  {/* Admin Request Button - for non-admins */}
-                  <ClubAdminRequestButton
-                    clubId={club.id}
-                    clubName={club.name}
-                    existingRequest={
-                      existingAdminRequest
-                        ? {
-                            id: existingAdminRequest.id,
-                            status: existingAdminRequest.status as
-                              | "PENDING"
-                              | "APPROVED"
-                              | "REJECTED",
-                            requestedAt:
-                              existingAdminRequest.requestedAt.toISOString(),
-                            rejectionReason:
-                              existingAdminRequest.rejectionReason || undefined,
-                          }
-                        : undefined
-                    }
-                    isCurrentAdmin={isCurrentAdmin}
-                  />
-                </div>
+                {/* Admin Request Button - for non-admins */}
+                <ClubAdminRequestButton
+                  clubId={club.id}
+                  clubName={club.name}
+                  existingRequest={
+                    existingAdminRequest
+                      ? {
+                          id: existingAdminRequest.id,
+                          status: existingAdminRequest.status as
+                            | "PENDING"
+                            | "APPROVED"
+                            | "REJECTED",
+                          requestedAt:
+                            existingAdminRequest.requestedAt.toISOString(),
+                          rejectionReason:
+                            existingAdminRequest.rejectionReason || undefined,
+                        }
+                      : undefined
+                  }
+                  isCurrentAdmin={isCurrentAdmin}
+                />
               </div>
             </div>
           </div>
@@ -718,10 +739,16 @@ export default async function ClubDetailsPage({
       </div>
 
       {/* Section Navigation */}
-      <ClubProfileNav />
+      <div className="bg-gray-200 pt-4">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <ClubProfileNav />
+          </div>
+        </div>
+      </div>
 
       {/* Main Content */}
-      <div className="bg-gray-200 py-12">
+      <div className="bg-gray-200 py-6">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-8">
             {/* Hero Section: Tournaments (main) + Open to Hosting (sidebar for European clubs) */}
@@ -866,53 +893,6 @@ export default async function ClubDetailsPage({
               <div className="max-w-2xl mx-auto">
                 <ClubCalendarModal clubId={club.id} clubName={club.name} />
               </div>
-            </section>
-
-            {/* How It Works Link */}
-            <section className="max-w-2xl mx-auto">
-              <Link
-                href="/how-it-works"
-                className="block p-4 bg-gray-50 hover:bg-gray-100 rounded-xl border border-gray-200 transition-colors group"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <svg
-                      className="w-5 h-5 text-primary"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-semibold text-gray-900">
-                      New to PlayAway?
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Learn how it works for travelling teams
-                    </p>
-                  </div>
-                  <svg
-                    className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                </div>
-              </Link>
             </section>
 
             {/* Back Link */}

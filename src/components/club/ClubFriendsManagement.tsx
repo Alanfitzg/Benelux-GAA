@@ -13,6 +13,11 @@ import {
   X,
   Link2,
   Unlink,
+  Send,
+  Mail,
+  CheckSquare,
+  Square,
+  Loader2,
 } from "lucide-react";
 
 interface FriendClub {
@@ -32,6 +37,14 @@ interface TwinClub {
   location?: string | null;
 }
 
+interface UpcomingEvent {
+  id: string;
+  title: string;
+  startDate: string;
+  location: string;
+  eventType: string;
+}
+
 interface ClubFriendsManagementProps {
   clubId: string;
   clubName: string;
@@ -48,11 +61,36 @@ export default function ClubFriendsManagement({
   const [showTwinForm, setShowTwinForm] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [unlinkingTwin, setUnlinkingTwin] = useState(false);
+  const [showInviteForm, setShowInviteForm] = useState(false);
+  const [selectedFriends, setSelectedFriends] = useState<Set<string>>(
+    new Set()
+  );
+  const [upcomingEvents, setUpcomingEvents] = useState<UpcomingEvent[]>([]);
+  const [loadingEvents, setLoadingEvents] = useState(false);
 
   useEffect(() => {
     fetchFriends();
     fetchTwinClub();
+    fetchUpcomingEvents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clubId]);
+
+  const fetchUpcomingEvents = async () => {
+    setLoadingEvents(true);
+    try {
+      const response = await fetch(
+        `/api/events?hostClubId=${clubId}&status=OPEN`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setUpcomingEvents(data.events || []);
+      }
+    } catch (error) {
+      console.error("Error fetching upcoming events:", error);
+    } finally {
+      setLoadingEvents(false);
+    }
+  };
 
   const fetchFriends = async () => {
     try {
@@ -441,6 +479,82 @@ export default function ClubFriendsManagement({
           </p>
         </div>
       )}
+
+      {/* Divider */}
+      {friends.length > 0 && <div className="border-t border-gray-200 mt-6" />}
+
+      {/* Send Invitations Section */}
+      {friends.length > 0 && (
+        <div className="bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 rounded-xl p-5 mt-6">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Mail className="w-5 h-5 text-purple-600" />
+              <h3 className="text-lg font-semibold text-gray-900">
+                Notify Friend Clubs
+              </h3>
+            </div>
+            {!showInviteForm && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowInviteForm(true);
+                  setSelectedFriends(new Set(friends.map((f) => f.id)));
+                }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+              >
+                <Send className="w-4 h-4" />
+                Send Invitations
+              </button>
+            )}
+            {showInviteForm && (
+              <button
+                type="button"
+                onClick={() => {
+                  setShowInviteForm(false);
+                  setSelectedFriends(new Set());
+                }}
+                className="inline-flex items-center gap-2 px-3 py-1.5 text-gray-600 hover:text-gray-800 transition-colors text-sm"
+              >
+                <X className="w-4 h-4" />
+                Cancel
+              </button>
+            )}
+          </div>
+
+          <p className="text-sm text-purple-700 mb-4">
+            Send a custom message to your friend clubs about upcoming
+            tournaments or events. Perfect for inviting them to participate in
+            your next competition!
+          </p>
+
+          {showInviteForm ? (
+            <SendInvitationsForm
+              clubId={clubId}
+              clubName={clubName}
+              friends={friends}
+              selectedFriends={selectedFriends}
+              setSelectedFriends={setSelectedFriends}
+              upcomingEvents={upcomingEvents}
+              loadingEvents={loadingEvents}
+              onClose={() => {
+                setShowInviteForm(false);
+                setSelectedFriends(new Set());
+              }}
+            />
+          ) : (
+            <div className="text-center py-4 bg-white/50 rounded-lg border border-purple-100">
+              <Send className="w-8 h-8 text-purple-300 mx-auto mb-2" />
+              <p className="text-sm text-gray-600">
+                Reach out to {friends.length} friend club
+                {friends.length !== 1 ? "s" : ""} in your network
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                You can exclude individual clubs before sending
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -816,6 +930,263 @@ function SetTwinClubForm({ clubId, onSet, onCancel }: SetTwinClubFormProps) {
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {loading ? "Setting..." : "Set as Twin Club"}
+          </button>
+        </div>
+      </div>
+    </form>
+  );
+}
+
+interface SendInvitationsFormProps {
+  clubId: string;
+  clubName: string;
+  friends: FriendClub[];
+  selectedFriends: Set<string>;
+  setSelectedFriends: React.Dispatch<React.SetStateAction<Set<string>>>;
+  upcomingEvents: UpcomingEvent[];
+  loadingEvents: boolean;
+  onClose: () => void;
+}
+
+function SendInvitationsForm({
+  clubId,
+  clubName,
+  friends,
+  selectedFriends,
+  setSelectedFriends,
+  upcomingEvents,
+  loadingEvents,
+  onClose,
+}: SendInvitationsFormProps) {
+  const [message, setMessage] = useState("");
+  const [selectedEventId, setSelectedEventId] = useState<string>("");
+  const [sending, setSending] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const toggleFriend = (friendId: string) => {
+    const newSelected = new Set(selectedFriends);
+    if (newSelected.has(friendId)) {
+      newSelected.delete(friendId);
+    } else {
+      newSelected.add(friendId);
+    }
+    setSelectedFriends(newSelected);
+  };
+
+  const selectAll = () => {
+    setSelectedFriends(new Set(friends.map((f) => f.id)));
+  };
+
+  const deselectAll = () => {
+    setSelectedFriends(new Set());
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-IE", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  };
+
+  const handleSend = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedFriends.size === 0) {
+      setError("Please select at least one club to send invitations to");
+      return;
+    }
+    if (!message.trim()) {
+      setError("Please enter a message");
+      return;
+    }
+
+    setSending(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/clubs/${clubId}/friends/invite`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          friendClubIds: Array.from(selectedFriends),
+          message: message.trim(),
+          eventId: selectedEventId || null,
+        }),
+      });
+
+      if (response.ok) {
+        setSuccess(true);
+        setTimeout(() => {
+          onClose();
+        }, 2000);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.error || "Failed to send invitations");
+      }
+    } catch (err) {
+      console.error("Error sending invitations:", err);
+      setError("Failed to send invitations. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  if (success) {
+    return (
+      <div className="bg-white rounded-lg p-6 border border-purple-200 text-center">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckSquare className="w-8 h-8 text-green-600" />
+        </div>
+        <h4 className="text-lg font-semibold text-gray-900 mb-2">
+          Invitations Sent!
+        </h4>
+        <p className="text-gray-600">
+          Your message has been sent to {selectedFriends.size} club
+          {selectedFriends.size !== 1 ? "s" : ""}.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form
+      onSubmit={handleSend}
+      className="bg-white rounded-lg p-5 border border-purple-200"
+    >
+      <div className="space-y-5">
+        {/* Select Recipients */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Select Recipients ({selectedFriends.size} of {friends.length})
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={selectAll}
+                className="text-xs text-purple-600 hover:text-purple-800"
+              >
+                Select All
+              </button>
+              <span className="text-gray-300">|</span>
+              <button
+                type="button"
+                onClick={deselectAll}
+                className="text-xs text-gray-500 hover:text-gray-700"
+              >
+                Deselect All
+              </button>
+            </div>
+          </div>
+          <div className="max-h-48 overflow-y-auto bg-gray-50 rounded-lg border border-gray-200 divide-y divide-gray-100">
+            {friends.map((friend) => (
+              <button
+                key={friend.id}
+                type="button"
+                onClick={() => toggleFriend(friend.id)}
+                className={`w-full px-4 py-3 flex items-center gap-3 hover:bg-gray-100 transition-colors ${
+                  selectedFriends.has(friend.id) ? "bg-purple-50" : ""
+                }`}
+              >
+                {selectedFriends.has(friend.id) ? (
+                  <CheckSquare className="w-5 h-5 text-purple-600 flex-shrink-0" />
+                ) : (
+                  <Square className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                )}
+                <div className="flex-1 text-left min-w-0">
+                  <p className="font-medium text-gray-900 truncate">
+                    {friend.name}
+                  </p>
+                  {friend.location && (
+                    <p className="text-xs text-gray-500 truncate">
+                      {friend.location}
+                    </p>
+                  )}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Select Event (Optional) */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Link to Event (Optional)
+          </label>
+          {loadingEvents ? (
+            <div className="flex items-center gap-2 text-gray-500 text-sm py-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Loading events...
+            </div>
+          ) : upcomingEvents.length > 0 ? (
+            <select
+              value={selectedEventId}
+              onChange={(e) => setSelectedEventId(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+            >
+              <option value="">No event selected</option>
+              {upcomingEvents.map((event) => (
+                <option key={event.id} value={event.id}>
+                  {event.title} - {formatDate(event.startDate)}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <p className="text-sm text-gray-500 py-2">
+              No upcoming events. You can still send a custom message.
+            </p>
+          )}
+        </div>
+
+        {/* Custom Message */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Your Message *
+          </label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder={`Write your invitation message here...\n\nExample:\nWe'd love to invite your club to our upcoming tournament! It's a great opportunity to compete, meet other clubs, and explore the area.`}
+            rows={5}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 resize-none"
+          />
+          <p className="text-xs text-gray-500 mt-1">
+            This message will be sent from {clubName} to all selected clubs.
+          </p>
+        </div>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
+        <div className="flex justify-end gap-3 pt-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={sending || selectedFriends.size === 0}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            {sending ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              <>
+                <Send className="w-4 h-4" />
+                Send to {selectedFriends.size} Club
+                {selectedFriends.size !== 1 ? "s" : ""}
+              </>
+            )}
           </button>
         </div>
       </div>

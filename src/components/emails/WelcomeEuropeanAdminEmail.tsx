@@ -341,7 +341,7 @@ export function WelcomeEuropeanAdminEmail({
             Please review these documents to understand how hosting works:
           </p>
 
-          {/* Document Links */}
+          {/* Document Links - Stacked layout for better mobile */}
           <a
             href="https://playaway.ie/products"
             style={{
@@ -356,36 +356,31 @@ export function WelcomeEuropeanAdminEmail({
             <table style={{ width: "100%" }}>
               <tbody>
                 <tr>
-                  <td style={{ width: "40px", verticalAlign: "top" }}>
-                    <span style={{ fontSize: "24px" }}>📄</span>
-                  </td>
                   <td style={{ verticalAlign: "top" }}>
-                    <span
-                      style={{
-                        color: "#1a3352",
-                        fontWeight: "600",
-                        fontSize: "15px",
-                      }}
-                    >
-                      Products Guide
-                    </span>
+                    <div style={{ marginBottom: "12px" }}>
+                      <span style={{ fontSize: "24px", marginRight: "8px" }}>
+                        📄
+                      </span>
+                      <span
+                        style={{
+                          color: "#1a3352",
+                          fontWeight: "600",
+                          fontSize: "15px",
+                        }}
+                      >
+                        Products Guide
+                      </span>
+                    </div>
                     <p
                       style={{
-                        margin: "4px 0 0 0",
+                        margin: "0 0 12px 0",
                         fontSize: "13px",
                         color: "#6b7280",
+                        lineHeight: "1.5",
                       }}
                     >
                       Learn about Team Tickets and Player Day-Passes
                     </p>
-                  </td>
-                  <td
-                    style={{
-                      width: "100px",
-                      textAlign: "right",
-                      verticalAlign: "middle",
-                    }}
-                  >
                     <span
                       style={{
                         display: "inline-block",
@@ -393,11 +388,11 @@ export function WelcomeEuropeanAdminEmail({
                         color: "#ffffff",
                         fontSize: "12px",
                         fontWeight: "600",
-                        padding: "6px 12px",
+                        padding: "8px 16px",
                         borderRadius: "4px",
                       }}
                     >
-                      View PDF
+                      View PDF →
                     </span>
                   </td>
                 </tr>
@@ -419,36 +414,31 @@ export function WelcomeEuropeanAdminEmail({
             <table style={{ width: "100%" }}>
               <tbody>
                 <tr>
-                  <td style={{ width: "40px", verticalAlign: "top" }}>
-                    <span style={{ fontSize: "24px" }}>📋</span>
-                  </td>
                   <td style={{ verticalAlign: "top" }}>
-                    <span
-                      style={{
-                        color: "#1a3352",
-                        fontWeight: "600",
-                        fontSize: "15px",
-                      }}
-                    >
-                      Host Terms & Conditions
-                    </span>
+                    <div style={{ marginBottom: "12px" }}>
+                      <span style={{ fontSize: "24px", marginRight: "8px" }}>
+                        📋
+                      </span>
+                      <span
+                        style={{
+                          color: "#1a3352",
+                          fontWeight: "600",
+                          fontSize: "15px",
+                        }}
+                      >
+                        Host Terms & Conditions
+                      </span>
+                    </div>
                     <p
                       style={{
-                        margin: "4px 0 0 0",
+                        margin: "0 0 12px 0",
                         fontSize: "13px",
                         color: "#6b7280",
+                        lineHeight: "1.5",
                       }}
                     >
                       Platform fees, payouts, and your responsibilities
                     </p>
-                  </td>
-                  <td
-                    style={{
-                      width: "100px",
-                      textAlign: "right",
-                      verticalAlign: "middle",
-                    }}
-                  >
                     <span
                       style={{
                         display: "inline-block",
@@ -456,11 +446,11 @@ export function WelcomeEuropeanAdminEmail({
                         color: "#ffffff",
                         fontSize: "12px",
                         fontWeight: "600",
-                        padding: "6px 12px",
+                        padding: "8px 16px",
                         borderRadius: "4px",
                       }}
                     >
-                      View PDF
+                      View PDF →
                     </span>
                   </td>
                 </tr>
@@ -481,36 +471,31 @@ export function WelcomeEuropeanAdminEmail({
             <table style={{ width: "100%" }}>
               <tbody>
                 <tr>
-                  <td style={{ width: "40px", verticalAlign: "top" }}>
-                    <span style={{ fontSize: "24px" }}>⚖️</span>
-                  </td>
                   <td style={{ verticalAlign: "top" }}>
-                    <span
-                      style={{
-                        color: "#1a3352",
-                        fontWeight: "600",
-                        fontSize: "15px",
-                      }}
-                    >
-                      Platform Rules & Laws
-                    </span>
+                    <div style={{ marginBottom: "12px" }}>
+                      <span style={{ fontSize: "24px", marginRight: "8px" }}>
+                        ⚖️
+                      </span>
+                      <span
+                        style={{
+                          color: "#1a3352",
+                          fontWeight: "600",
+                          fontSize: "15px",
+                        }}
+                      >
+                        Platform Rules & Laws
+                      </span>
+                    </div>
                     <p
                       style={{
-                        margin: "4px 0 0 0",
+                        margin: "0 0 12px 0",
                         fontSize: "13px",
                         color: "#6b7280",
+                        lineHeight: "1.5",
                       }}
                     >
                       Legal requirements and EU compliance
                     </p>
-                  </td>
-                  <td
-                    style={{
-                      width: "100px",
-                      textAlign: "right",
-                      verticalAlign: "middle",
-                    }}
-                  >
                     <span
                       style={{
                         display: "inline-block",
@@ -518,11 +503,11 @@ export function WelcomeEuropeanAdminEmail({
                         color: "#ffffff",
                         fontSize: "12px",
                         fontWeight: "600",
-                        padding: "6px 12px",
+                        padding: "8px 16px",
                         borderRadius: "4px",
                       }}
                     >
-                      View PDF
+                      View PDF →
                     </span>
                   </td>
                 </tr>

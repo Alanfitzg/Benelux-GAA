@@ -555,3 +555,295 @@ The PlayAway Team
 
   return { subject, html, text };
 }
+
+// Friend club invitation email template
+export interface FriendInvitationEmailData {
+  senderClubName: string;
+  senderClubLocation: string | null;
+  senderClubImageUrl: string | null;
+  senderName: string;
+  message: string;
+  event: {
+    title: string;
+    startDate: string;
+    endDate: string | null;
+    location: string;
+    eventType: string;
+    eventUrl: string;
+  } | null;
+  baseUrl: string;
+}
+
+export function generateFriendInvitationEmail(
+  data: FriendInvitationEmailData
+): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const subject = data.event
+    ? `${data.senderClubName} invites you to ${data.event.title}`
+    : `Message from ${data.senderClubName}`;
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-IE", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
+  const eventSection = data.event
+    ? `
+      <!-- Event Card -->
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin: 24px 0;">
+        <tr>
+          <td style="background-color: rgba(255,255,255,0.1); border-radius: 12px; padding: 24px; border: 1px solid rgba(255,255,255,0.2);">
+            <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+              <tr>
+                <td>
+                  <p style="margin: 0 0 4px 0; font-size: 12px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px;">${data.event.eventType}</p>
+                  <h3 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 600; color: #ffffff;">${data.event.title}</h3>
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9);">
+                    <strong>When:</strong> ${formatDate(data.event.startDate)}${data.event.endDate ? ` - ${formatDate(data.event.endDate)}` : ""}
+                  </p>
+                  <p style="margin: 0 0 16px 0; font-size: 14px; color: rgba(255,255,255,0.9);">
+                    <strong>Where:</strong> ${data.event.location}
+                  </p>
+                  <a href="${data.event.eventUrl}" style="display: inline-block; background-color: #ffffff; color: #264673; padding: 12px 24px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 6px;">View Event Details</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    `
+    : "";
+
+  const eventTextSection = data.event
+    ? `
+EVENT DETAILS
+-------------
+${data.event.eventType}: ${data.event.title}
+When: ${formatDate(data.event.startDate)}${data.event.endDate ? ` - ${formatDate(data.event.endDate)}` : ""}
+Where: ${data.event.location}
+View event: ${data.event.eventUrl}
+`
+    : "";
+
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${subject}</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #1a3352; font-family: Arial, sans-serif;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #1a3352;">
+        <tr>
+          <td align="center" style="padding: 40px 20px;">
+            <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px;">
+
+              <!-- Header -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">PlayAway</h1>
+                  <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Club Network Invitation</p>
+                </td>
+              </tr>
+
+              <!-- Main Content -->
+              <tr>
+                <td style="background-color: #264673; padding: 40px 30px;">
+
+                  <!-- From Club -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 24px;">
+                        <p style="margin: 0 0 8px 0; font-size: 12px; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 1px;">Message from</p>
+                        <h2 style="margin: 0 0 4px 0; font-size: 24px; font-weight: 600; color: #ffffff;">${data.senderClubName}</h2>
+                        ${data.senderClubLocation ? `<p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8);">${data.senderClubLocation}</p>` : ""}
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Message -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="background-color: rgba(255,255,255,0.95); border-radius: 8px; padding: 24px;">
+                        <p style="margin: 0 0 16px 0; font-size: 14px; color: #666;">Hello {{recipientName}},</p>
+                        <div style="font-size: 15px; line-height: 1.7; color: #333; white-space: pre-wrap;">${data.message.replace(/\n/g, "<br>")}</div>
+                        <p style="margin: 16px 0 0 0; font-size: 14px; color: #666;">Best regards,<br><strong>${data.senderName}</strong><br>${data.senderClubName}</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  ${eventSection}
+
+                  <!-- CTA -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-top: 16px;">
+                        <a href="${data.baseUrl}/events" style="display: inline-block; background-color: transparent; color: #ffffff; padding: 14px 32px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 6px; border: 2px solid rgba(255,255,255,0.5);">Browse All Events</a>
+                      </td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td style="background-color: #1a3352; padding: 30px; text-align: center; border-radius: 0 0 12px 12px;">
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">PlayAway</p>
+                  <p style="margin: 0 0 16px 0; font-size: 12px; color: rgba(255,255,255,0.6);">Connecting GAA Communities Worldwide</p>
+                  <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.4);">
+                    This invitation was sent via PlayAway from ${data.senderClubName}.
+                  </p>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const text = `
+${subject}
+
+Message from ${data.senderClubName}${data.senderClubLocation ? ` (${data.senderClubLocation})` : ""}
+
+Hello {{recipientName}},
+
+${data.message}
+
+Best regards,
+${data.senderName}
+${data.senderClubName}
+
+${eventTextSection}
+
+Browse all events: ${data.baseUrl}/events
+
+---
+PlayAway - Connecting GAA Communities Worldwide
+This invitation was sent via PlayAway from ${data.senderClubName}.
+  `;
+
+  return { subject, html, text };
+}
+
+// Broadcast email template for super admin
+export interface BroadcastEmailData {
+  subject: string;
+  message: string;
+  senderName: string;
+  baseUrl: string;
+}
+
+export function generateBroadcastEmail(data: BroadcastEmailData): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const html = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>${data.subject}</title>
+    </head>
+    <body style="margin: 0; padding: 0; background-color: #1a3352; font-family: Arial, sans-serif;">
+      <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #1a3352;">
+        <tr>
+          <td align="center" style="padding: 40px 20px;">
+            <table role="presentation" width="600" cellspacing="0" cellpadding="0" style="max-width: 600px;">
+
+              <!-- Header -->
+              <tr>
+                <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
+                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">PlayAway</h1>
+                  <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Platform Announcement</p>
+                </td>
+              </tr>
+
+              <!-- Main Content -->
+              <tr>
+                <td style="background-color: #264673; padding: 40px 30px;">
+
+                  <!-- Subject Line -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 24px;">
+                        <h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #ffffff;">${data.subject}</h2>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Message -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="background-color: rgba(255,255,255,0.95); border-radius: 8px; padding: 24px;">
+                        <p style="margin: 0 0 16px 0; font-size: 14px; color: #666;">Hello {{recipientName}},</p>
+                        <div style="font-size: 15px; line-height: 1.7; color: #333; white-space: pre-wrap;">${data.message.replace(/\n/g, "<br>")}</div>
+                        <p style="margin: 24px 0 0 0; font-size: 14px; color: #666;">Best regards,<br><strong>${data.senderName}</strong><br>The PlayAway Team</p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- CTA -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-top: 24px;">
+                        <a href="${data.baseUrl}/events" style="display: inline-block; background-color: #ffffff; color: #264673; padding: 14px 32px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 6px;">Explore Events</a>
+                      </td>
+                    </tr>
+                  </table>
+
+                </td>
+              </tr>
+
+              <!-- Footer -->
+              <tr>
+                <td style="background-color: #1a3352; padding: 30px; text-align: center; border-radius: 0 0 12px 12px;">
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">PlayAway</p>
+                  <p style="margin: 0 0 16px 0; font-size: 12px; color: rgba(255,255,255,0.6);">Connecting GAA Communities Worldwide</p>
+                  <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.4);">
+                    You received this message because you are a club administrator on PlayAway.
+                  </p>
+                </td>
+              </tr>
+
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>
+    </html>
+  `;
+
+  const text = `
+${data.subject}
+
+Hello {{recipientName}},
+
+${data.message}
+
+Best regards,
+${data.senderName}
+The PlayAway Team
+
+Explore events: ${data.baseUrl}/events
+
+---
+PlayAway - Connecting GAA Communities Worldwide
+You received this message because you are a club administrator on PlayAway.
+  `;
+
+  return { subject: data.subject, html, text };
+}
