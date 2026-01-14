@@ -62,11 +62,11 @@ export default function ClubContactForm({
     }
   };
 
-  const buttonText = type === "contact" ? "Contact Club" : "Express Interest";
+  const buttonText = type === "contact" ? "Contact Club" : "Register Interest";
   const modalTitle =
     type === "contact"
       ? `Contact ${clubName}`
-      : `Express Interest in ${clubName}`;
+      : `Register Interest in ${clubName}`;
   const placeholder =
     type === "contact"
       ? "Ask about organising a friendly match, tournament availability, or anything else..."

@@ -305,9 +305,30 @@ export default function ClubsPage() {
           <h1 className="text-2xl md:text-5xl font-bold mb-4">
             European GAA Clubs
           </h1>
-          <p className="text-lg md:text-2xl mb-2">
+          <p className="text-lg md:text-2xl mb-4">
             Discover GAA clubs across Europe
           </p>
+          {/* Day-Pass Explainer */}
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
+            <svg
+              className="w-5 h-5 text-green-300 flex-shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"
+              />
+            </svg>
+            <span className="text-white/90">
+              <strong className="text-green-300">Day-Pass</strong> = per-person
+              contribution to help European clubs cover pitch rental &amp;
+              facilities
+            </span>
+          </div>
         </div>
       </div>
 
@@ -523,7 +544,7 @@ export default function ClubsPage() {
             </div>
 
             {/* Clubs grid */}
-            <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-3">
               {selectedCountryClubs.map((club) => (
                 <motion.div
                   key={club.id}
@@ -561,8 +582,8 @@ export default function ClubsPage() {
                     </div>
 
                     {/* Club details */}
-                    <div className="p-1 md:p-2 text-center md:text-left">
-                      <h3 className="text-[8px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
+                    <div className="p-1.5 md:p-2 text-center md:text-left">
+                      <h3 className="text-[10px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {club.name}
                       </h3>
                       {club.location && (
@@ -572,11 +593,11 @@ export default function ClubsPage() {
                       )}
                       {club.dayPassPrice && (
                         <div className="mt-1 md:mt-2">
-                          <span className="text-xs md:text-base font-bold text-green-600">
+                          <span className="text-sm md:text-base font-bold text-green-600">
                             {club.dayPassCurrency === "GBP" ? "£" : "€"}
                             {club.dayPassPrice}
                           </span>
-                          <span className="text-[10px] md:text-sm text-gray-500 ml-0.5">
+                          <span className="text-xs md:text-sm text-gray-500 ml-0.5">
                             /person
                           </span>
                         </div>
@@ -655,7 +676,7 @@ export default function ClubsPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2 md:gap-6">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-2 md:gap-6">
               {sortedCountries.map((country) => (
                 <motion.div
                   key={country}
@@ -681,10 +702,10 @@ export default function ClubsPage() {
                         </div>
                       )}
                     </div>
-                    <h3 className="text-[8px] md:text-lg font-semibold text-gray-800 leading-tight line-clamp-1">
+                    <h3 className="text-[10px] md:text-lg font-semibold text-gray-800 leading-tight line-clamp-1">
                       {country}
                     </h3>
-                    <p className="text-[8px] md:text-2xl font-bold text-primary">
+                    <p className="text-xs md:text-2xl font-bold text-primary">
                       ({clubsByCountry[country].length})
                     </p>
                   </Link>
@@ -754,7 +775,7 @@ export default function ClubsPage() {
             )}
 
             {/* All clubs in a flat grid */}
-            <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-3">
+            <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-3">
               {filteredClubs.map((club) => (
                 <motion.div
                   key={club.id}
@@ -792,8 +813,8 @@ export default function ClubsPage() {
                     </div>
 
                     {/* Club details */}
-                    <div className="p-1 md:p-2 text-center md:text-left">
-                      <h3 className="text-[8px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
+                    <div className="p-1.5 md:p-2 text-center md:text-left">
+                      <h3 className="text-[10px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {club.name}
                       </h3>
                       {club.location && (
@@ -803,11 +824,11 @@ export default function ClubsPage() {
                       )}
                       {club.dayPassPrice && (
                         <div className="mt-1 md:mt-2">
-                          <span className="text-xs md:text-base font-bold text-green-600">
+                          <span className="text-sm md:text-base font-bold text-green-600">
                             {club.dayPassCurrency === "GBP" ? "£" : "€"}
                             {club.dayPassPrice}
                           </span>
-                          <span className="text-[10px] md:text-sm text-gray-500 ml-0.5">
+                          <span className="text-xs md:text-sm text-gray-500 ml-0.5">
                             /person
                           </span>
                         </div>

@@ -368,7 +368,7 @@ export default function ClubTournamentsSection({
               </h3>
               <p className="text-xs text-gray-500 max-w-xs mx-auto mb-4">
                 {isMainlandEurope
-                  ? "Express interest to help organise one!"
+                  ? "Register interest to help organise one!"
                   : "Browse tournaments to find your next trip."}
               </p>
               <Link
