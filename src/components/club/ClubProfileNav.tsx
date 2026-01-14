@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Section {
   id: string;
@@ -18,6 +18,23 @@ const sections: Section[] = [
 
 export default function ClubProfileNav() {
   const [activeSection, setActiveSection] = useState<string>("events");
+  const [showRightFade, setShowRightFade] = useState(false);
+  const [showLeftFade, setShowLeftFade] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftFade(scrollLeft > 0);
+      setShowRightFade(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener("resize", checkScroll);
+    return () => window.removeEventListener("resize", checkScroll);
+  }, []);
 
   useEffect(() => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
@@ -55,8 +72,17 @@ export default function ClubProfileNav() {
   return (
     <nav className="sticky top-16 z-40 bg-gray-50 border-b border-gray-200">
       <div className="container mx-auto px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-hide">
+        <div className="max-w-6xl mx-auto relative">
+          {/* Left fade indicator */}
+          {showLeftFade && (
+            <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none" />
+          )}
+
+          <div
+            ref={scrollRef}
+            onScroll={checkScroll}
+            className="flex items-center gap-1 overflow-x-auto py-2 scrollbar-hide"
+          >
             {sections.map(({ id, label }) => (
               <button
                 key={id}
@@ -75,6 +101,11 @@ export default function ClubProfileNav() {
               </button>
             ))}
           </div>
+
+          {/* Right fade indicator */}
+          {showRightFade && (
+            <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none" />
+          )}
         </div>
       </div>
     </nav>

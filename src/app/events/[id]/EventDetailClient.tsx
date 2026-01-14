@@ -13,6 +13,190 @@ import {
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
 import SignUpGate from "@/components/auth/SignUpGate";
 import { useSession } from "next-auth/react";
+import type { Session } from "next-auth";
+
+interface KeyInfoCardProps {
+  event: Event | null;
+  teams: TournamentTeam[];
+  session: Session | null;
+  isWatched: boolean;
+  watchLoading: boolean;
+  toggleWatch: () => void;
+  setShowWatchlistSignup: (show: boolean) => void;
+  setShowPrivateEventModal: (show: boolean) => void;
+}
+
+function KeyInfoCard({
+  event,
+  teams,
+  session,
+  isWatched,
+  watchLoading,
+  toggleWatch,
+  setShowWatchlistSignup,
+  setShowPrivateEventModal,
+}: KeyInfoCardProps) {
+  return (
+    <div className="space-y-4">
+      <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
+        <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Key Info</h2>
+        <div className="space-y-3">
+          <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+            <span className="text-gray-500 text-sm flex-shrink-0">Type</span>
+            <span className="font-medium text-right">
+              {event?.eventType || MESSAGES.DEFAULTS.PLACEHOLDER}
+            </span>
+          </div>
+          <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+            <span className="text-gray-500 text-sm flex-shrink-0">
+              Location
+            </span>
+            <span className="font-medium text-right">
+              {event?.location || MESSAGES.DEFAULTS.LOCATION}
+            </span>
+          </div>
+          <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
+            <span className="text-gray-500 text-sm flex-shrink-0">Date</span>
+            <span className="font-medium text-right">
+              {event
+                ? formatEventDate(event.startDate)
+                : MESSAGES.DEFAULTS.PLACEHOLDER}
+            </span>
+          </div>
+
+          {event?.eventType === "Tournament" && (
+            <div className="py-2 border-b border-gray-100">
+              <div className="flex justify-between items-center gap-3 mb-2">
+                <span className="text-gray-500 text-sm flex-shrink-0">
+                  Teams
+                </span>
+                <span className="font-medium text-right">
+                  {teams.filter((t) => t.status === "CONFIRMED").length}
+                  {event.maxTeams ? `/${event.maxTeams}` : ""}
+                </span>
+              </div>
+              {event.maxTeams && (
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className="bg-primary h-2 rounded-full transition-all duration-300"
+                    style={{
+                      width: `${Math.min((teams.filter((t) => t.status === "CONFIRMED").length / event.maxTeams) * 100, 100)}%`,
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="pt-3">
+            <span className="text-gray-500 text-sm block mb-1">
+              Cost per person
+            </span>
+            {session?.user ? (
+              <span className="font-bold text-primary text-3xl">
+                {event?.cost
+                  ? `€${(event.cost + (event.platformFee || 5)).toFixed(0)}`
+                  : MESSAGES.DEFAULTS.PLACEHOLDER}
+              </span>
+            ) : (
+              <div className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2 py-1 rounded w-fit">
+                <svg
+                  className="w-3 h-3"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                  />
+                </svg>
+                Sign in to view pricing
+              </div>
+            )}
+          </div>
+        </div>
+
+        {session?.user ? (
+          event?.visibility !== "PRIVATE" && (
+            <a
+              href="#interest"
+              className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
+            >
+              {MESSAGES.BUTTONS.REGISTER_INTEREST}
+            </a>
+          )
+        ) : (
+          <div className="mt-6 space-y-2">
+            <a
+              href="/signup"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-center block transition flex items-center justify-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                />
+              </svg>
+              Create Free Account
+            </a>
+            <a
+              href="/signin"
+              className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2 rounded-lg text-center block transition text-sm"
+            >
+              Already have an account? Sign In
+            </a>
+          </div>
+        )}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => {
+          if (!session?.user) {
+            setShowWatchlistSignup(true);
+          } else if (event?.visibility === "PRIVATE" && !isWatched) {
+            setShowPrivateEventModal(true);
+          } else {
+            toggleWatch();
+          }
+        }}
+        disabled={watchLoading}
+        className={`w-full flex items-center justify-center gap-2.5 py-4 px-4 rounded-xl font-semibold transition-all shadow-md ${
+          isWatched
+            ? "bg-amber-100 text-amber-800 border-2 border-amber-300"
+            : "bg-white text-gray-700 border-2 border-gray-200 hover:border-amber-300 hover:bg-amber-50"
+        }`}
+      >
+        <svg
+          className={`w-6 h-6 ${isWatched ? "text-amber-500 fill-amber-500" : "text-gray-400"}`}
+          fill={isWatched ? "currentColor" : "none"}
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+          />
+        </svg>
+        <span className="text-base">
+          {isWatched ? "Watching This Event" : "Add to Watchlist"}
+        </span>
+      </button>
+    </div>
+  );
+}
 
 export default function EventDetailClient({ eventId }: { eventId: string }) {
   const [event, setEvent] = useState<Event | null>(null);
@@ -218,7 +402,10 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
       {/* Sticky Navigation */}
       <div className="sticky top-0 z-10 bg-white border-b shadow-sm">
         <div className="max-w-7xl mx-auto px-4">
-          <nav className="flex gap-6 overflow-x-auto">
+          <nav
+            className="flex gap-6 overflow-x-auto scrollbar-hide"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
             <a
               href="#overview"
               className="py-3 px-1 border-b-2 border-primary text-primary font-medium whitespace-nowrap text-sm"
@@ -234,17 +421,9 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {event?.visibility !== "PRIVATE" && (
               <a
                 href="#interest"
-                className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
+                className="hidden lg:block py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
               >
                 Register Interest
-              </a>
-            )}
-            {event?.eventType === "Tournament" && (
-              <a
-                href="#teams"
-                className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
-              >
-                Teams
               </a>
             )}
           </nav>
@@ -271,10 +450,80 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                       ? "No description available for this event."
                       : "Create an account to see event details.")}
                 </p>
+
+                {/* Hosted by - inline in Overview */}
+                {event?.club && (
+                  <div className="mt-6 pt-6 border-t border-gray-100">
+                    <p className="text-sm text-gray-500 mb-3">Hosted by</p>
+                    <div className="flex items-center gap-3">
+                      {event.club.imageUrl ? (
+                        <Image
+                          src={event.club.imageUrl}
+                          alt={event.club.name}
+                          width={48}
+                          height={48}
+                          className="rounded-lg object-contain bg-gray-50"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                          <span className="text-primary font-bold text-lg">
+                            {event.club.name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="min-w-0 flex-1">
+                        <p className="font-semibold text-gray-900 truncate">
+                          {event.club.name}
+                        </p>
+                        {event.club.location && (
+                          <p className="text-sm text-gray-500 truncate">
+                            {event.club.location}
+                          </p>
+                        )}
+                      </div>
+                      <a
+                        href={`/clubs/${event.club.id}`}
+                        className="text-sm text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1 flex-shrink-0"
+                      >
+                        View Profile
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                )}
               </section>
 
-              {/* What's Included Section */}
-              <section id="included">
+              {/* Key Info - Mobile Only (shows after Overview on mobile) */}
+              <div className="lg:hidden">
+                <KeyInfoCard
+                  event={event}
+                  teams={teams}
+                  session={session}
+                  isWatched={isWatched}
+                  watchLoading={watchLoading}
+                  toggleWatch={toggleWatch}
+                  setShowWatchlistSignup={setShowWatchlistSignup}
+                  setShowPrivateEventModal={setShowPrivateEventModal}
+                />
+              </div>
+
+              {/* What's Included Section - Hidden on mobile for non-authenticated users */}
+              <section
+                id="included"
+                className={!session?.user ? "hidden lg:block" : ""}
+              >
                 {session?.user ? (
                   <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
                     <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
@@ -341,11 +590,11 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 )}
               </section>
 
-              {/* Interest Form Section - Only show for public events */}
+              {/* Interest Form Section - Only show for public events, hidden on mobile */}
               {event?.visibility !== "PRIVATE" && (
                 <section
                   id="interest"
-                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
+                  className="hidden lg:block bg-white rounded-xl shadow-md p-4 sm:p-6"
                 >
                   {!showInterestForm ? (
                     <div className="text-center py-4 sm:py-6">
@@ -452,11 +701,11 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 </section>
               )}
 
-              {/* Teams Section - Only for tournaments */}
+              {/* Teams Section - Only for tournaments, hidden on mobile for non-authenticated users */}
               {event?.eventType === "Tournament" && (
                 <section
                   id="teams"
-                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
+                  className={`bg-white rounded-xl shadow-md p-4 sm:p-6 ${!session?.user ? "hidden lg:block" : ""}`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 mb-4">
                     <h2 className="text-xl sm:text-2xl font-bold">
@@ -549,184 +798,19 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
-                {/* Quick Facts Card */}
-                <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                  {/* Card Header with Gradient */}
-                  <div className="bg-gradient-to-r from-primary to-primary/80 px-4 sm:px-6 py-3">
-                    <h3 className="text-base sm:text-lg font-bold text-white">
-                      Quick Facts
-                    </h3>
-                  </div>
-
-                  <div className="p-4 sm:p-6">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
-                        <span className="text-gray-500 text-sm flex-shrink-0">
-                          Type
-                        </span>
-                        <span className="font-medium text-right">
-                          {event?.eventType || MESSAGES.DEFAULTS.PLACEHOLDER}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
-                        <span className="text-gray-500 text-sm flex-shrink-0">
-                          Location
-                        </span>
-                        <span className="font-medium text-right">
-                          {event?.location || MESSAGES.DEFAULTS.LOCATION}
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-start gap-3 py-2 border-b border-gray-100">
-                        <span className="text-gray-500 text-sm flex-shrink-0">
-                          Date
-                        </span>
-                        <span className="font-medium text-right">
-                          {event
-                            ? formatEventDate(event.startDate)
-                            : MESSAGES.DEFAULTS.PLACEHOLDER}
-                        </span>
-                      </div>
-
-                      {/* Teams count with progress - For tournaments */}
-                      {event?.eventType === "Tournament" && (
-                        <div className="py-2 border-b border-gray-100">
-                          <div className="flex justify-between items-center gap-3 mb-2">
-                            <span className="text-gray-500 text-sm flex-shrink-0">
-                              Teams
-                            </span>
-                            <span className="font-medium text-right">
-                              {
-                                teams.filter((t) => t.status === "CONFIRMED")
-                                  .length
-                              }
-                              {event.maxTeams && ` / ${event.maxTeams}`}
-                            </span>
-                          </div>
-                          {event.maxTeams && (
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-primary h-2 rounded-full transition-all duration-300"
-                                style={{
-                                  width: `${Math.min((teams.filter((t) => t.status === "CONFIRMED").length / event.maxTeams) * 100, 100)}%`,
-                                }}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      )}
-
-                      {/* Pricing - Prominent styling */}
-                      <div className="pt-3">
-                        <span className="text-gray-500 text-sm block mb-1">
-                          Cost per person
-                        </span>
-                        {session?.user ? (
-                          <span className="font-bold text-primary text-3xl">
-                            {event?.cost
-                              ? `€${(event.cost + (event.platformFee || 5)).toFixed(0)}`
-                              : MESSAGES.DEFAULTS.PLACEHOLDER}
-                          </span>
-                        ) : (
-                          <div className="flex items-center gap-1 text-xs text-green-600 bg-green-100 px-2 py-1 rounded w-fit">
-                            <svg
-                              className="w-3 h-3"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                              />
-                            </svg>
-                            Sign in to view pricing
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Sign up CTA or Interest Button */}
-                  {session?.user ? (
-                    event?.visibility !== "PRIVATE" && (
-                      <a
-                        href="#interest"
-                        className="mt-6 w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-lg text-center block transition"
-                      >
-                        {MESSAGES.BUTTONS.REGISTER_INTEREST}
-                      </a>
-                    )
-                  ) : (
-                    <div className="mt-6 space-y-2">
-                      <a
-                        href="/signup"
-                        className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg text-center block transition flex items-center justify-center gap-2"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                          />
-                        </svg>
-                        Create Free Account
-                      </a>
-                      <a
-                        href="/signin"
-                        className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2 rounded-lg text-center block transition text-sm"
-                      >
-                        Already have an account? Sign In
-                      </a>
-                    </div>
-                  )}
+                {/* Key Info Card - Desktop Only (hidden on mobile, shown in main content on mobile) */}
+                <div className="hidden lg:block">
+                  <KeyInfoCard
+                    event={event}
+                    teams={teams}
+                    session={session}
+                    isWatched={isWatched}
+                    watchLoading={watchLoading}
+                    toggleWatch={toggleWatch}
+                    setShowWatchlistSignup={setShowWatchlistSignup}
+                    setShowPrivateEventModal={setShowPrivateEventModal}
+                  />
                 </div>
-
-                {/* Watchlist Button - More Prominent */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!session?.user) {
-                      setShowWatchlistSignup(true);
-                    } else if (event?.visibility === "PRIVATE" && !isWatched) {
-                      setShowPrivateEventModal(true);
-                    } else {
-                      toggleWatch();
-                    }
-                  }}
-                  disabled={watchLoading}
-                  className={`w-full flex items-center justify-center gap-2.5 py-4 px-4 rounded-xl font-semibold transition-all shadow-md ${
-                    isWatched
-                      ? "bg-gradient-to-r from-amber-400 to-amber-500 text-white hover:from-amber-500 hover:to-amber-600"
-                      : "bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:from-amber-600 hover:to-amber-700"
-                  } disabled:opacity-50`}
-                >
-                  {watchLoading ? (
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <svg
-                      className="w-5 h-5"
-                      fill={isWatched ? "currentColor" : "none"}
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={isWatched ? 0 : 2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
-                      />
-                    </svg>
-                  )}
-                  {isWatched ? "On Your Watchlist ✓" : "Add to Watchlist"}
-                </button>
 
                 {/* Watchlist Signup Prompt Modal */}
                 {showWatchlistSignup && (
@@ -851,107 +935,6 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                     </div>
                   </div>
                 )}
-
-                {/* Host Club Card */}
-                {event?.club && (
-                  <div className="bg-white rounded-xl shadow-md overflow-hidden">
-                    <div className="bg-gradient-to-r from-gray-700 to-gray-600 px-4 py-3">
-                      <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                          />
-                        </svg>
-                        Hosted by
-                      </h3>
-                    </div>
-                    <div className="p-4">
-                      <div className="flex items-center gap-3">
-                        {event.club.imageUrl ? (
-                          <Image
-                            src={event.club.imageUrl}
-                            alt={event.club.name}
-                            width={48}
-                            height={48}
-                            className="rounded-lg object-contain bg-gray-50"
-                          />
-                        ) : (
-                          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <span className="text-primary font-bold text-lg">
-                              {event.club.name.charAt(0)}
-                            </span>
-                          </div>
-                        )}
-                        <div className="min-w-0">
-                          <p className="font-semibold text-gray-900 truncate">
-                            {event.club.name}
-                          </p>
-                          {event.club.location && (
-                            <p className="text-sm text-gray-500 truncate">
-                              {event.club.location}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                      <a
-                        href={`/clubs/${event.club.id}`}
-                        className="mt-3 text-sm text-primary hover:text-primary/80 font-medium inline-flex items-center gap-1"
-                      >
-                        View Club Profile
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                )}
-
-                {/* Custom Trip CTA */}
-                <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-                  <h3 className="text-base sm:text-lg font-bold mb-2">
-                    Want a Custom Trip?
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4">
-                    Create a personalized GAA trip experience for your club
-                  </p>
-                  <a
-                    href={`/survey?eventId=${eventId}`}
-                    className="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors"
-                  >
-                    <svg
-                      className="w-5 h-5 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      />
-                    </svg>
-                    Plan Your Trip
-                  </a>
-                </div>
               </div>
             </div>
           </div>

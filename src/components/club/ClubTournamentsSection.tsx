@@ -94,59 +94,57 @@ export default function ClubTournamentsSection({
   const hasPast = pastEvents.length > 0;
 
   return (
-    <div className="bg-gradient-to-br from-primary/5 via-white to-green-50 rounded-2xl border-2 border-primary/20 shadow-xl overflow-hidden">
-      {/* Hero Header */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-5">
+    <div className="bg-white rounded-xl border border-primary/30 shadow-sm overflow-hidden">
+      {/* Header */}
+      <div className="bg-primary/10 px-4 py-3 border-b border-primary/20">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
-                />
-              </svg>
-            </div>
+          <h2 className="text-base sm:text-lg font-semibold text-primary flex items-center gap-2">
+            <svg
+              className="w-5 h-5 text-primary"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              />
+            </svg>
             Tournaments
           </h2>
 
           {/* Toggle Switch */}
-          <div className="flex items-center bg-white/20 rounded-lg p-1">
+          <div className="flex items-center bg-primary/20 rounded-md p-0.5">
             <button
               type="button"
               onClick={() => setActiveTab("upcoming")}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+              className={`px-2.5 py-1 text-xs font-medium rounded transition-all ${
                 activeTab === "upcoming"
                   ? "bg-white text-primary shadow-sm"
-                  : "text-white/80 hover:text-white"
+                  : "text-primary/70 hover:text-primary"
               }`}
             >
-              {upcomingLabel} {hasUpcoming && `(${upcomingEvents.length})`}
+              {upcomingLabel}
             </button>
             <button
               type="button"
               onClick={() => setActiveTab("past")}
-              className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${
+              className={`px-2.5 py-1 text-xs font-medium rounded transition-all ${
                 activeTab === "past"
                   ? "bg-white text-primary shadow-sm"
-                  : "text-white/80 hover:text-white"
+                  : "text-primary/70 hover:text-primary"
               }`}
             >
-              {pastLabel} {hasPast && `(${pastEvents.length})`}
+              {pastLabel}
             </button>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="p-4 sm:p-6 min-h-[350px]">
+      <div className="p-4">
         {activeTab === "upcoming" ? (
           hasUpcoming ? (
             <div className="space-y-4">
@@ -347,10 +345,10 @@ export default function ClubTournamentsSection({
               })}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center py-6">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                 <svg
-                  className="w-10 h-10 text-primary/50"
+                  className="w-6 h-6 text-primary/50"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -363,23 +361,23 @@ export default function ClubTournamentsSection({
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-sm font-semibold text-gray-900 mb-1">
                 {isMainlandEurope
                   ? "No Upcoming Tournaments"
                   : "No Future Tournaments"}
               </h3>
-              <p className="text-gray-500 max-w-md mx-auto">
+              <p className="text-xs text-gray-500 max-w-xs mx-auto mb-4">
                 {isMainlandEurope
-                  ? "This club hasn't scheduled any tournaments yet. Express interest to help organise one!"
-                  : "No upcoming tournaments planned. Browse tournaments to find your next trip!"}
+                  ? "Express interest to help organise one!"
+                  : "Browse tournaments to find your next trip."}
               </p>
               <Link
                 href="/events"
-                className="inline-flex items-center gap-2 mt-6 px-5 py-2.5 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-sm font-medium rounded-lg hover:bg-primary/90 transition-colors"
               >
-                Browse All Tournaments
+                Browse Tournaments
                 <svg
-                  className="w-4 h-4"
+                  className="w-3.5 h-3.5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -472,10 +470,10 @@ export default function ClubTournamentsSection({
             )}
           </div>
         ) : (
-          <div className="flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200">
-            <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+          <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
               <svg
-                className="w-8 h-8 text-gray-400"
+                className="w-5 h-5 text-gray-400"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -489,15 +487,15 @@ export default function ClubTournamentsSection({
               </svg>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900">
+              <h4 className="text-sm font-medium text-gray-900">
                 {isMainlandEurope
                   ? "No Past Tournaments"
                   : "No Tournaments Attended"}
               </h4>
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-xs text-gray-500">
                 {isMainlandEurope
-                  ? "Tournament history will appear here once events are completed."
-                  : "Trip history will appear here as you attend tournaments."}
+                  ? "History will appear here once events complete."
+                  : "Your trip history will appear here."}
               </p>
             </div>
           </div>

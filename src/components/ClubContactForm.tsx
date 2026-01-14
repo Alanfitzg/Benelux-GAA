@@ -6,12 +6,14 @@ interface ClubContactFormProps {
   clubId: string;
   clubName: string;
   type: "contact" | "interest";
+  compact?: boolean;
 }
 
 export default function ClubContactForm({
   clubId,
   clubName,
   type,
+  compact = false,
 }: ClubContactFormProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -73,11 +75,16 @@ export default function ClubContactForm({
   return (
     <>
       <button
+        type="button"
         onClick={() => setIsOpen(true)}
-        className={`px-4 py-2 text-sm rounded-lg font-medium transition-colors ${
-          type === "contact"
-            ? "bg-primary text-white hover:bg-primary/90"
-            : "bg-green-600 text-white hover:bg-green-700"
+        className={`rounded-lg font-medium transition-colors ${
+          compact
+            ? "px-3 py-1.5 text-xs bg-white/20 text-white hover:bg-white/30"
+            : `px-4 py-2 text-sm ${
+                type === "contact"
+                  ? "bg-primary text-white hover:bg-primary/90"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`
         }`}
       >
         {buttonText}

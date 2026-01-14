@@ -177,6 +177,8 @@ async function getClubsHandler(req: NextRequest) {
             verifiedAt: true,
             createdAt: true,
             submittedBy: true,
+            dayPassPrice: true,
+            dayPassCurrency: true,
           },
         });
         break; // Success, exit retry loop

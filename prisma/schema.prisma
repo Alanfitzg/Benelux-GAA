@@ -131,6 +131,8 @@ model Club {
   twitter             String?
   tiktok              String?
   isOpenToVisitors    Boolean              @default(true)
+  dayPassPrice        Float?               // Per-person day pass price for visiting teams
+  dayPassCurrency     String?              @default("EUR") // Currency for day pass pricing
   preferredWeekends   Json?                // Array of specific date strings for preferred hosting weekends
   twinClubId          String?              // Reference to twinned Irish club (GAA twinning initiative)
   clubType            ClubType             @default(CLUB)

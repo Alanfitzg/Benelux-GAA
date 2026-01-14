@@ -15,7 +15,6 @@ import VerifiedBadge, {
 } from "@/components/club/VerifiedBadge";
 import TestimonialSection from "@/components/testimonials/TestimonialSection";
 import ClubProfileNav from "@/components/club/ClubProfileNav";
-import ClubAboutSection from "@/components/club/ClubAboutSection";
 import ClubContactCard from "@/components/club/ClubContactCard";
 import SportsBadges from "@/components/club/SportsBadges";
 import ClubFriendsSection from "@/components/club/ClubFriendsSection";
@@ -25,6 +24,7 @@ import ClubCoverPhotoBanner from "@/components/club/ClubCoverPhotoBanner";
 import SocialMediaIcons from "@/components/club/SocialMediaIcons";
 import AuthGateButtons from "@/components/club/AuthGateButtons";
 import ClubAdminRequestButton from "@/components/club/ClubAdminRequestButton";
+import VisitClubCard from "@/components/club/VisitClubCard";
 
 export async function generateMetadata({
   params,
@@ -533,12 +533,12 @@ export default async function ClubDetailsPage({
       <div className="bg-gradient-to-br from-[#264673] to-[#1a3352] py-6 sm:py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="flex flex-row items-center gap-4 sm:gap-6">
+            <div className="flex flex-row items-start gap-4 sm:gap-6">
               {/* Text Content - Left Side */}
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 pr-2">
                 {/* Club Name and Verification Badge */}
-                <div className="flex items-center gap-2 sm:gap-3 mb-1 sm:mb-2">
-                  <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-white truncate">
+                <div className="flex items-start gap-2 sm:gap-3 mb-1 sm:mb-2">
+                  <h1 className="text-xl sm:text-3xl md:text-4xl font-bold text-white line-clamp-2 sm:line-clamp-1">
                     {club.name}
                   </h1>
                   {club.verificationStatus === "VERIFIED" && (
@@ -631,6 +631,24 @@ export default async function ClubDetailsPage({
                     </span>
                   )}
                 </div>
+
+                {/* Contact Button and Social Icons - In Header */}
+                <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                  <ClubContactForm
+                    clubId={club.id}
+                    clubName={club.name}
+                    type="contact"
+                    compact
+                  />
+                  <SocialMediaIcons
+                    website={club.website}
+                    facebook={club.facebook}
+                    instagram={club.instagram}
+                    twitter={club.twitter}
+                    tiktok={club.tiktok}
+                    compact
+                  />
+                </div>
               </div>
 
               {/* Crest - Right Side */}
@@ -652,105 +670,110 @@ export default async function ClubDetailsPage({
         </div>
       </div>
 
-      {/* Content Card */}
-      <div className="bg-gray-200">
-        <div className="container mx-auto px-4 py-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-              {/* Sports Badges */}
-              {club.teamTypes && club.teamTypes.length > 0 && (
-                <div className="mb-5">
-                  <SportsBadges teamTypes={club.teamTypes} size="md" />
-                </div>
-              )}
-
-              {/* Action Buttons and Social Icons */}
-              <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
-                <ClubContactForm
-                  clubId={club.id}
-                  clubName={club.name}
-                  type="contact"
-                />
-                {(isCurrentAdmin || session?.user?.role === "SUPER_ADMIN") && (
-                  <>
-                    <Link
-                      href={`/clubs/${club.id}/edit`}
-                      className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                        />
-                      </svg>
-                      Edit Page
-                    </Link>
-                    <Link
-                      href={`/club-admin/${club.id}`}
-                      className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                        />
-                      </svg>
-                      Dashboard
-                    </Link>
-                  </>
+      {/* Content Card - Only show if there's content (sports badges or admin buttons) */}
+      {((club.teamTypes && club.teamTypes.length > 0) ||
+        isCurrentAdmin ||
+        session?.user?.role === "SUPER_ADMIN" ||
+        !userAlreadyHasClub) && (
+        <div className="bg-gray-200">
+          <div className="container mx-auto px-4 py-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                {/* Sports Badges */}
+                {club.teamTypes && club.teamTypes.length > 0 && (
+                  <div
+                    className={
+                      isCurrentAdmin ||
+                      session?.user?.role === "SUPER_ADMIN" ||
+                      !userAlreadyHasClub
+                        ? "mb-5"
+                        : ""
+                    }
+                  >
+                    <SportsBadges teamTypes={club.teamTypes} size="md" />
+                  </div>
                 )}
 
-                {/* Social Media Icons */}
-                <SocialMediaIcons
-                  website={club.website}
-                  facebook={club.facebook}
-                  instagram={club.instagram}
-                  twitter={club.twitter}
-                  tiktok={club.tiktok}
-                />
+                {/* Admin Action Buttons */}
+                {(isCurrentAdmin ||
+                  session?.user?.role === "SUPER_ADMIN" ||
+                  !userAlreadyHasClub) && (
+                  <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+                    {(isCurrentAdmin ||
+                      session?.user?.role === "SUPER_ADMIN") && (
+                      <>
+                        <Link
+                          href={`/clubs/${club.id}/edit`}
+                          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                            />
+                          </svg>
+                          Edit Page
+                        </Link>
+                        <Link
+                          href={`/club-admin/${club.id}`}
+                          className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                            />
+                          </svg>
+                          Dashboard
+                        </Link>
+                      </>
+                    )}
 
-                {/* Admin Request Button - for non-admins who aren't already associated with another club */}
-                {!userAlreadyHasClub && (
-                  <ClubAdminRequestButton
-                    clubId={club.id}
-                    clubName={club.name}
-                    existingRequest={
-                      existingAdminRequest
-                        ? {
-                            id: existingAdminRequest.id,
-                            status: existingAdminRequest.status as
-                              | "PENDING"
-                              | "APPROVED"
-                              | "REJECTED",
-                            requestedAt:
-                              existingAdminRequest.requestedAt.toISOString(),
-                            rejectionReason:
-                              existingAdminRequest.rejectionReason || undefined,
-                          }
-                        : undefined
-                    }
-                    isCurrentAdmin={isCurrentAdmin}
-                  />
+                    {/* Admin Request Button - for non-admins who aren't already associated with another club */}
+                    {!userAlreadyHasClub && (
+                      <ClubAdminRequestButton
+                        clubId={club.id}
+                        clubName={club.name}
+                        existingRequest={
+                          existingAdminRequest
+                            ? {
+                                id: existingAdminRequest.id,
+                                status: existingAdminRequest.status as
+                                  | "PENDING"
+                                  | "APPROVED"
+                                  | "REJECTED",
+                                requestedAt:
+                                  existingAdminRequest.requestedAt.toISOString(),
+                                rejectionReason:
+                                  existingAdminRequest.rejectionReason ||
+                                  undefined,
+                              }
+                            : undefined
+                        }
+                        isCurrentAdmin={isCurrentAdmin}
+                      />
+                    )}
+                  </div>
                 )}
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Section Navigation */}
       <div className="bg-gray-200 pt-4">
@@ -765,10 +788,26 @@ export default async function ClubDetailsPage({
       <div className="bg-gray-200 py-6">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-8">
-            {/* Hero Section: Tournaments (main) + Open to Hosting (sidebar for European clubs) */}
+            {/* Hero Section: Tournaments (main) + Visit Card (sidebar for European clubs) */}
             <section id="events" className="scroll-mt-24">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                {/* Tournaments - Hero/Main Section */}
+                {/* Visit Club Card - Mobile Only (shown first on mobile) */}
+                {club.isMainlandEurope && (
+                  <div className="lg:hidden">
+                    <VisitClubCard
+                      clubId={club.id}
+                      clubName={club.name}
+                      dayPassPrice={club.dayPassPrice}
+                      dayPassCurrency={club.dayPassCurrency}
+                      isOpenToVisitors={club.isOpenToVisitors}
+                      preferredWeekends={
+                        club.preferredWeekends as string[] | null
+                      }
+                    />
+                  </div>
+                )}
+
+                {/* Tournaments - Main Section */}
                 <div
                   className={
                     club.isMainlandEurope ? "lg:col-span-2" : "lg:col-span-3"
@@ -781,18 +820,22 @@ export default async function ClubDetailsPage({
                   />
                 </div>
 
-                {/* Open to Hosting - Sidebar for European clubs */}
+                {/* Sidebar for European clubs - Visit Card + Admin Info */}
                 {club.isMainlandEurope && (
                   <div className="lg:col-span-1 space-y-6">
-                    <ClubAboutSection
-                      clubId={club.id}
-                      clubName={club.name}
-                      isOpenToVisitors={club.isOpenToVisitors}
-                      preferredWeekends={
-                        club.preferredWeekends as string[] | null
-                      }
-                      isMainlandEurope={club.isMainlandEurope}
-                    />
+                    {/* Visit Club Card - Desktop Only (in sidebar) */}
+                    <div className="hidden lg:block">
+                      <VisitClubCard
+                        clubId={club.id}
+                        clubName={club.name}
+                        dayPassPrice={club.dayPassPrice}
+                        dayPassCurrency={club.dayPassCurrency}
+                        isOpenToVisitors={club.isOpenToVisitors}
+                        preferredWeekends={
+                          club.preferredWeekends as string[] | null
+                        }
+                      />
+                    </div>
 
                     {/* Club Admins - Only for Super Admin */}
                     {session?.user?.role === "SUPER_ADMIN" &&

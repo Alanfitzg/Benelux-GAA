@@ -25,6 +25,8 @@ type ClubListItem = {
   clubType: "CLUB" | "UNIVERSITY" | "SCHOOL" | "COUNTY";
   verificationStatus?: string;
   verifiedAt?: string | null;
+  dayPassPrice?: number | null;
+  dayPassCurrency?: string | null;
 };
 
 export const dynamic = "force-dynamic";
@@ -129,6 +131,8 @@ export default function ClubsPage() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedTeamType, setSelectedTeamType] = useState("");
   const [viewMode, setViewMode] = useState<"countries" | "list">("countries");
+  const [maxPrice, setMaxPrice] = useState<number | null>(null);
+  const [priceFilterEnabled, setPriceFilterEnabled] = useState(false);
 
   // European countries filter
   const europeanCountries = [
@@ -192,7 +196,15 @@ export default function ClubsPage() {
     fetchClubs();
   }, [country, teamType, search]);
 
-  // Filter clubs based on search, team type, and European countries only
+  // Calculate max price from clubs with day pass prices
+  const maxAvailablePrice = Math.max(
+    ...clubs
+      .filter((club) => club.dayPassPrice != null)
+      .map((club) => club.dayPassPrice as number),
+    50
+  );
+
+  // Filter clubs based on search, team type, price, and European countries only
   const filteredClubs = clubs.filter((club) => {
     const matchesSearch =
       !search ||
@@ -209,7 +221,13 @@ export default function ClubsPage() {
     const clubCountry = club.location?.split(",").pop()?.trim() || "Unknown";
     const isEuropean = europeanCountries.includes(clubCountry);
 
-    return matchesSearch && matchesTeamType && isEuropean;
+    // Price filter - only show clubs with day pass price at or below max
+    const matchesPrice =
+      !priceFilterEnabled ||
+      maxPrice === null ||
+      (club.dayPassPrice != null && club.dayPassPrice <= maxPrice);
+
+    return matchesSearch && matchesTeamType && isEuropean && matchesPrice;
   });
 
   // Group filtered clubs by country
@@ -250,6 +268,8 @@ export default function ClubsPage() {
     setSearchTerm("");
     setSelectedCountry("");
     setSelectedTeamType("");
+    setMaxPrice(null);
+    setPriceFilterEnabled(false);
     setViewMode("countries");
     router.push("/clubs");
   };
@@ -392,6 +412,42 @@ export default function ClubsPage() {
                 className="w-full md:min-w-[250px] text-sm md:text-base px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
 
+              {/* Price Filter */}
+              <div className="flex items-center gap-3 w-full md:w-auto bg-gray-50 px-3 py-2 rounded-lg border border-gray-200">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={priceFilterEnabled}
+                    onChange={(e) => {
+                      setPriceFilterEnabled(e.target.checked);
+                      if (e.target.checked && maxPrice === null) {
+                        setMaxPrice(Math.round(maxAvailablePrice));
+                      }
+                    }}
+                    className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                  />
+                  <span className="text-sm text-gray-600 whitespace-nowrap">
+                    Activate Price Filter
+                  </span>
+                </label>
+                {priceFilterEnabled && (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="range"
+                      min={5}
+                      max={Math.round(maxAvailablePrice)}
+                      step={5}
+                      value={maxPrice || Math.round(maxAvailablePrice)}
+                      onChange={(e) => setMaxPrice(Number(e.target.value))}
+                      className="w-20 md:w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
+                    <span className="text-sm font-semibold text-green-600 min-w-[50px]">
+                      &euro;{maxPrice || Math.round(maxAvailablePrice)}
+                    </span>
+                  </div>
+                )}
+              </div>
+
               {/* Buttons */}
               <div className="flex gap-2 w-full md:w-auto">
                 <button
@@ -465,14 +521,14 @@ export default function ClubsPage() {
             </div>
 
             {/* Clubs grid */}
-            <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
+            <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-3">
               {selectedCountryClubs.map((club) => (
                 <motion.div
                   key={club.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
+                  className="bg-white rounded md:rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
                 >
                   <Link href={`/clubs/${club.id}`} className="block">
                     {/* Club image */}
@@ -482,19 +538,19 @@ export default function ClubsPage() {
                           src={club.imageUrl}
                           alt={club.name}
                           fill
-                          className="object-contain p-4"
+                          className="object-contain p-1 md:p-2"
                           unoptimized
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">
+                        <div className="w-full h-full flex items-center justify-center text-lg md:text-2xl text-gray-300">
                           🏟️
                         </div>
                       )}
                       {/* Verified badge */}
                       {club.verificationStatus === "VERIFIED" && (
-                        <div className="absolute top-2 right-2 md:top-3 md:right-3">
+                        <div className="absolute top-0.5 right-0.5 md:top-1 md:right-1">
                           <VerifiedTooltip>
-                            <div className="bg-white rounded-full shadow-md p-1">
+                            <div className="bg-white rounded-full shadow-md p-0.5">
                               <VerifiedBadge size="sm" showText={false} />
                             </div>
                           </VerifiedTooltip>
@@ -503,20 +559,25 @@ export default function ClubsPage() {
                     </div>
 
                     {/* Club details */}
-                    <div className="p-2 md:p-4">
-                      <h3 className="text-sm md:text-base font-semibold text-gray-900 mb-1 line-clamp-2">
+                    <div className="p-1 md:p-2">
+                      <h3 className="text-[8px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
                         {club.name}
                       </h3>
                       {club.location && (
-                        <p className="text-xs md:text-sm text-gray-500 truncate">
-                          City: {club.location.split(",")[0]}
+                        <p className="hidden md:block text-xs text-gray-500 truncate">
+                          {club.location.split(",")[0]}
                         </p>
                       )}
-                      {club.teamTypes.length > 0 && (
-                        <p className="hidden md:block text-xs text-gray-400 mt-1 truncate">
-                          Grades: {club.teamTypes.slice(0, 3).join(", ")}
-                          {club.teamTypes.length > 3 && "..."}
-                        </p>
+                      {club.dayPassPrice && (
+                        <div className="mt-1 md:mt-2">
+                          <span className="text-xs md:text-base font-bold text-green-600">
+                            {club.dayPassCurrency === "GBP" ? "£" : "€"}
+                            {club.dayPassPrice}
+                          </span>
+                          <span className="text-[10px] md:text-sm text-gray-500 ml-0.5">
+                            /person
+                          </span>
+                        </div>
                       )}
                     </div>
                   </Link>
@@ -592,7 +653,7 @@ export default function ClubsPage() {
               </div>
             )}
 
-            <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-6">
+            <div className="grid grid-cols-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-1 md:gap-6">
               {sortedCountries.map((country) => (
                 <motion.div
                   key={country}
@@ -603,25 +664,25 @@ export default function ClubsPage() {
                 >
                   <Link
                     href={`/clubs?country=${encodeURIComponent(country)}`}
-                    className="block bg-white rounded-lg p-3 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 text-center group-hover:scale-105"
+                    className="block bg-white rounded md:rounded-lg p-1.5 md:p-6 shadow-md hover:shadow-xl transition-all duration-300 text-center group-hover:scale-105"
                   >
-                    <div className="mb-2 md:mb-4">
+                    <div className="mb-0.5 md:mb-4">
                       {countryFlags[country] ? (
-                        <div className="text-3xl md:text-6xl mb-1 md:mb-3">
+                        <div className="text-xl md:text-6xl">
                           {countryFlags[country]}
                         </div>
                       ) : (
-                        <div className="w-12 h-8 md:w-16 md:h-12 bg-gray-200 rounded mx-auto mb-1 md:mb-3 flex items-center justify-center">
-                          <span className="text-gray-500 text-xs md:text-sm">
+                        <div className="w-6 h-4 md:w-16 md:h-12 bg-gray-200 rounded mx-auto flex items-center justify-center">
+                          <span className="text-gray-500 text-[6px] md:text-sm">
                             Flag
                           </span>
                         </div>
                       )}
                     </div>
-                    <h3 className="text-sm md:text-lg font-semibold text-gray-800 mb-1 md:mb-2">
+                    <h3 className="text-[8px] md:text-lg font-semibold text-gray-800 leading-tight line-clamp-1">
                       {country}
                     </h3>
-                    <p className="text-lg md:text-2xl font-bold text-primary">
+                    <p className="text-[8px] md:text-2xl font-bold text-primary">
                       ({clubsByCountry[country].length})
                     </p>
                   </Link>
@@ -690,91 +751,68 @@ export default function ClubsPage() {
               </div>
             )}
 
-            {/* Clubs organized by country */}
-            <div className="space-y-8">
-              {sortedCountries.map((country) => (
-                <div
-                  key={country}
-                  className="border-b border-gray-200 pb-8 last:border-b-0"
+            {/* All clubs in a flat grid */}
+            <div className="grid grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-2 md:gap-3">
+              {filteredClubs.map((club) => (
+                <motion.div
+                  key={club.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white rounded md:rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
                 >
-                  {/* Country header */}
-                  <div className="flex items-center gap-4 mb-6">
-                    {countryFlags[country] && (
-                      <div className="text-3xl md:text-4xl">
-                        {countryFlags[country]}
-                      </div>
-                    )}
-                    <div>
-                      <h2 className="text-lg md:text-2xl font-bold text-gray-900">
-                        {country}
-                      </h2>
-                      <p className="text-sm md:text-base text-gray-600">
-                        {clubsByCountry[country].length} club
-                        {clubsByCountry[country].length !== 1 ? "s" : ""}
-                      </p>
+                  <Link href={`/clubs/${club.id}`} className="block">
+                    {/* Club image */}
+                    <div className="relative aspect-square bg-gray-50">
+                      {club.imageUrl ? (
+                        <Image
+                          src={club.imageUrl}
+                          alt={club.name}
+                          fill
+                          className="object-contain p-1 md:p-2"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-lg md:text-2xl text-gray-300">
+                          🏟️
+                        </div>
+                      )}
+                      {/* Verified badge */}
+                      {club.verificationStatus === "VERIFIED" && (
+                        <div className="absolute top-0.5 right-0.5 md:top-1 md:right-1">
+                          <VerifiedTooltip>
+                            <div className="bg-white rounded-full shadow-md p-0.5">
+                              <VerifiedBadge size="sm" showText={false} />
+                            </div>
+                          </VerifiedTooltip>
+                        </div>
+                      )}
                     </div>
-                  </div>
 
-                  {/* Clubs grid for this country */}
-                  <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 md:gap-6">
-                    {clubsByCountry[country].map((club) => (
-                      <motion.div
-                        key={club.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100"
-                      >
-                        <Link href={`/clubs/${club.id}`} className="block">
-                          {/* Club image */}
-                          <div className="relative aspect-square bg-gray-50">
-                            {club.imageUrl ? (
-                              <Image
-                                src={club.imageUrl}
-                                alt={club.name}
-                                fill
-                                className="object-contain p-4"
-                                unoptimized
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-4xl text-gray-300">
-                                🏟️
-                              </div>
-                            )}
-                            {/* Verified badge */}
-                            {club.verificationStatus === "VERIFIED" && (
-                              <div className="absolute top-2 right-2 md:top-3 md:right-3">
-                                <VerifiedTooltip>
-                                  <div className="bg-white rounded-full shadow-md p-1">
-                                    <VerifiedBadge size="sm" showText={false} />
-                                  </div>
-                                </VerifiedTooltip>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Club details */}
-                          <div className="p-2 md:p-4">
-                            <h3 className="text-xs md:text-base font-semibold text-gray-900 mb-1 line-clamp-2">
-                              {club.name}
-                            </h3>
-                            {club.location && (
-                              <p className="text-xs md:text-sm text-gray-500 truncate">
-                                City: {club.location.split(",")[0]}
-                              </p>
-                            )}
-                            {club.teamTypes.length > 0 && (
-                              <p className="hidden md:block text-xs text-gray-400 mt-1 truncate">
-                                Grades: {club.teamTypes.slice(0, 3).join(", ")}
-                                {club.teamTypes.length > 3 && "..."}
-                              </p>
-                            )}
-                          </div>
-                        </Link>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
+                    {/* Club details */}
+                    <div className="p-1 md:p-2">
+                      <h3 className="text-[8px] md:text-sm font-semibold text-gray-900 line-clamp-2 leading-tight">
+                        {club.name}
+                      </h3>
+                      {club.location && (
+                        <p className="hidden md:block text-xs text-gray-500 truncate">
+                          {club.location.split(",")[0]}
+                        </p>
+                      )}
+                      {club.dayPassPrice && (
+                        <div className="mt-1 md:mt-2">
+                          <span className="text-xs md:text-base font-bold text-green-600">
+                            {club.dayPassCurrency === "GBP" ? "£" : "€"}
+                            {club.dayPassPrice}
+                          </span>
+                          <span className="text-[10px] md:text-sm text-gray-500 ml-0.5">
+                            /person
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
             </div>
 
