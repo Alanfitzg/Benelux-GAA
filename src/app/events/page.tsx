@@ -200,6 +200,7 @@ export default async function EventsPage() {
       id: string;
       name: string;
       isMainlandEurope: boolean;
+      country: { name: string; code: string } | null;
     }[] = [];
     let clubPermissions: Record<
       string,
@@ -217,6 +218,12 @@ export default async function EventsPage() {
           id: true,
           name: true,
           isMainlandEurope: true,
+          country: {
+            select: {
+              name: true,
+              code: true,
+            },
+          },
         },
       });
 
@@ -249,6 +256,7 @@ export default async function EventsPage() {
           mainlandEuropeClubs={mainlandEuropeClubs}
           clubPermissions={clubPermissions}
           userId={session?.user?.id || null}
+          userRole={session?.user?.role || null}
         />
       </>
     );

@@ -1,32 +1,28 @@
 "use client";
 
+import { Globe, Lock } from "lucide-react";
+
 export default function CalendarLegend() {
   return (
-    <div className="p-4 border-t border-gray-200 bg-gray-50">
-      <div className="flex items-center justify-center gap-6 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-blue-600"></div>
-          <span>Europe GAA Fixture</span>
+    <div className="px-6 py-3 border-t border-gray-100 bg-gray-50/50">
+      <div className="flex items-center justify-center gap-4 md:gap-6 text-xs flex-wrap">
+        <div className="flex items-center gap-1.5">
+          <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+            <Globe className="w-3 h-3 text-white" />
+          </div>
+          <span className="text-gray-600">Public</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 rounded-full bg-green-600"></div>
-          <span>Club Event</span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-5 h-5 rounded-full bg-primary/80 flex items-center justify-center">
+            <Lock className="w-3 h-3 text-white" />
+          </div>
+          <span className="text-gray-600">Private</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gradient-to-br from-green-200 to-green-400 rounded"></div>
-          <span>Interest Level</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-purple-200 rounded"></div>
-          <span>Holiday</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-200 rounded"></div>
-          <span>Blocked</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-yellow-200 rounded"></div>
-          <span>Priority Weekend</span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-5 h-5 rounded bg-white shadow-sm ring-2 ring-primary flex items-center justify-center">
+            <span className="text-primary text-[9px] font-bold">14</span>
+          </div>
+          <span className="text-gray-600">Today</span>
         </div>
       </div>
     </div>

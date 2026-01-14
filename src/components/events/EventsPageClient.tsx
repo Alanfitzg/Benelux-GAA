@@ -39,6 +39,7 @@ interface Club {
   id: string;
   name: string;
   isMainlandEurope: boolean;
+  country: { name: string; code: string } | null;
 }
 
 interface EventsPageClientProps {
@@ -57,6 +58,7 @@ interface EventsPageClientProps {
     }
   >;
   userId?: string | null;
+  userRole?: string | null;
 }
 
 export default function EventsPageClient({
@@ -68,6 +70,7 @@ export default function EventsPageClient({
   mainlandEuropeClubs = [],
   clubPermissions = {},
   userId = null,
+  userRole = null,
 }: EventsPageClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -456,7 +459,7 @@ export default function EventsPageClient({
                       onClick={() => setViewMode("list")}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors text-sm ${
                         viewMode === "list"
-                          ? "bg-green-600 text-white shadow-sm"
+                          ? "bg-primary text-white shadow-sm"
                           : "text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -467,7 +470,7 @@ export default function EventsPageClient({
                       onClick={() => setViewMode("calendar")}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md transition-colors text-sm ${
                         viewMode === "calendar"
-                          ? "bg-green-600 text-white shadow-sm"
+                          ? "bg-primary text-white shadow-sm"
                           : "text-gray-600 hover:bg-gray-200"
                       }`}
                     >
@@ -488,7 +491,7 @@ export default function EventsPageClient({
                         id="club-select"
                         value={selectedClub}
                         onChange={(e) => setSelectedClub(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       >
                         <option value="all">All European Clubs</option>
                         {mainlandEuropeClubs.map((club) => (
@@ -506,31 +509,7 @@ export default function EventsPageClient({
             {/* Mobile Filter Bar */}
             <div className="lg:hidden bg-white rounded-lg shadow-sm p-3 mb-4">
               <div className="flex items-center gap-2">
-                {/* View Toggle - Mobile */}
-                {mainlandEuropeClubs.length > 0 && (
-                  <div className="flex items-center gap-0.5 bg-gray-100 rounded-lg p-0.5">
-                    <button
-                      onClick={() => setViewMode("list")}
-                      className={`p-2 rounded-md transition-colors ${
-                        viewMode === "list"
-                          ? "bg-green-600 text-white shadow-sm"
-                          : "text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      <List className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => setViewMode("calendar")}
-                      className={`p-2 rounded-md transition-colors ${
-                        viewMode === "calendar"
-                          ? "bg-green-600 text-white shadow-sm"
-                          : "text-gray-600 hover:bg-gray-200"
-                      }`}
-                    >
-                      <Calendar className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
+                {/* Calendar view is disabled on mobile - only list view available */}
                 <div className="flex-1 relative">
                   <input
                     type="text"
@@ -840,38 +819,84 @@ export default function EventsPageClient({
                   </button>
                 </div>
               )
-            ) : // Calendar View
-            selectedClub === "all" ? (
-              <UnifiedCalendarView
-                mainlandEuropeClubs={mainlandEuropeClubs}
-                clubPermissions={clubPermissions}
-                userId={userId}
-              />
             ) : (
-              <CalendarView
-                clubId={selectedClub}
-                clubName={
-                  mainlandEuropeClubs.find((c) => c.id === selectedClub)
-                    ?.name || ""
-                }
-                permissions={{
-                  canViewCalendar:
-                    clubPermissions[selectedClub]?.canViewCalendar || false,
-                  canCreateEvents:
-                    clubPermissions[selectedClub]?.canCreateEvents || false,
-                  canEditAllEvents: false,
-                  canBlockWeekends: false,
-                  canFlagPriorityWeekends: false,
-                  canViewInterestIdentities:
-                    clubPermissions[selectedClub]?.canViewInterestIdentities ||
-                    false,
-                  canSubmitInterest: false,
-                  canViewAllCalendars: false,
-                  canManageHolidays: false,
-                  canAccessDigest: false,
-                }}
-                isMainlandEurope={true}
-              />
+              // Calendar View - Desktop only, fallback to list on mobile
+              <>
+                {/* Mobile fallback - show list view */}
+                <div className="lg:hidden">
+                  {filteredEvents.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {filteredEvents.map((event, index) => (
+                        <EventCard
+                          key={event.id}
+                          event={event}
+                          index={index}
+                          searchQuery={debouncedSearch}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-16 bg-white rounded-lg">
+                      <div className="text-6xl mb-4">🔍</div>
+                      <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                        No events found
+                      </h3>
+                      <p className="text-gray-500 mb-6">
+                        Try adjusting your filters or search query
+                      </p>
+                      <button
+                        onClick={clearFilters}
+                        className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
+                      >
+                        Clear All Filters
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Desktop calendar view */}
+                <div className="hidden lg:block">
+                  {selectedClub === "all" ? (
+                    <UnifiedCalendarView
+                      mainlandEuropeClubs={mainlandEuropeClubs}
+                      clubPermissions={clubPermissions}
+                      userId={userId}
+                      isAdmin={
+                        userRole === "SUPER_ADMIN" || userRole === "CLUB_ADMIN"
+                      }
+                      selectedCountry={selectedCountry}
+                      selectedSportTypes={selectedSportTypes}
+                    />
+                  ) : (
+                    <CalendarView
+                      clubId={selectedClub}
+                      clubName={
+                        mainlandEuropeClubs.find((c) => c.id === selectedClub)
+                          ?.name || ""
+                      }
+                      permissions={{
+                        canViewCalendar:
+                          clubPermissions[selectedClub]?.canViewCalendar ||
+                          false,
+                        canCreateEvents:
+                          clubPermissions[selectedClub]?.canCreateEvents ||
+                          false,
+                        canEditAllEvents: false,
+                        canBlockWeekends: false,
+                        canFlagPriorityWeekends: false,
+                        canViewInterestIdentities:
+                          clubPermissions[selectedClub]
+                            ?.canViewInterestIdentities || false,
+                        canSubmitInterest: false,
+                        canViewAllCalendars: false,
+                        canManageHolidays: false,
+                        canAccessDigest: false,
+                      }}
+                      isMainlandEurope={true}
+                    />
+                  )}
+                </div>
+              </>
             )}
           </div>
         </div>

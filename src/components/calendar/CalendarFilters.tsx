@@ -1,22 +1,26 @@
 "use client";
 
-import { Trophy, Calendar, Users } from "lucide-react";
+import { Globe, Lock, Users } from "lucide-react";
 
 interface CalendarFiltersProps {
   filters: {
-    showFixtures: boolean;
-    showEvents: boolean;
+    showPublic: boolean;
+    showPrivate: boolean;
     showInterest: boolean;
   };
   onFiltersChange: (filters: {
-    showFixtures: boolean;
-    showEvents: boolean;
+    showPublic: boolean;
+    showPrivate: boolean;
     showInterest: boolean;
   }) => void;
-  showInterestFilter?: boolean; // Hide interest filter for non-logged-in users
+  showInterestFilter?: boolean;
 }
 
-export default function CalendarFilters({ filters, onFiltersChange, showInterestFilter = true }: CalendarFiltersProps) {
+export default function CalendarFilters({
+  filters,
+  onFiltersChange,
+  showInterestFilter = true,
+}: CalendarFiltersProps) {
   const toggleFilter = (key: keyof typeof filters) => {
     onFiltersChange({
       ...filters,
@@ -25,44 +29,45 @@ export default function CalendarFilters({ filters, onFiltersChange, showInterest
   };
 
   return (
-    <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg">
-      <span className="text-sm font-medium text-gray-700">Show:</span>
-
+    <div className="flex items-center gap-2">
       <button
-        onClick={() => toggleFilter("showFixtures")}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-          filters.showFixtures
-            ? "bg-blue-100 text-blue-700 border border-blue-300"
-            : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+        type="button"
+        onClick={() => toggleFilter("showPublic")}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+          filters.showPublic
+            ? "bg-primary text-white shadow-sm"
+            : "bg-white text-gray-500 border border-gray-200 hover:border-gray-300 hover:text-gray-700"
         }`}
       >
-        <Trophy className="w-4 h-4" />
-        Fixtures
+        <Globe className="w-3.5 h-3.5" />
+        Public
       </button>
 
       <button
-        onClick={() => toggleFilter("showEvents")}
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
-          filters.showEvents
-            ? "bg-green-100 text-green-700 border border-green-300"
-            : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+        type="button"
+        onClick={() => toggleFilter("showPrivate")}
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+          filters.showPrivate
+            ? "bg-primary/90 text-white shadow-sm"
+            : "bg-white text-gray-500 border border-gray-200 hover:border-gray-300 hover:text-gray-700"
         }`}
       >
-        <Calendar className="w-4 h-4" />
-        Invitational Events
+        <Lock className="w-3.5 h-3.5" />
+        Private
       </button>
 
       {showInterestFilter && (
         <button
+          type="button"
           onClick={() => toggleFilter("showInterest")}
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
             filters.showInterest
-              ? "bg-yellow-100 text-yellow-700 border border-yellow-300"
-              : "bg-white text-gray-600 border border-gray-300 hover:bg-gray-50"
+              ? "bg-amber-500 text-white shadow-sm"
+              : "bg-white text-gray-500 border border-gray-200 hover:border-gray-300 hover:text-gray-700"
           }`}
         >
-          <Users className="w-4 h-4" />
-          Interest Heatmap
+          <Users className="w-3.5 h-3.5" />
+          Interest
         </button>
       )}
     </div>
