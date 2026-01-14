@@ -76,7 +76,7 @@ export default function PreferencesSection({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className={`bg-white rounded-xl shadow-lg ${compact ? "p-5 mt-0" : "mt-8 p-6"}`}
+        className={`bg-white rounded-xl shadow-lg ${compact ? "p-5 mt-6" : "mt-8 p-6"}`}
       >
         <button
           type="button"
