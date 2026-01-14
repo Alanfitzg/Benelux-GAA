@@ -155,7 +155,57 @@ export function WelcomeEmail({
               boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
             }}
           >
-            Find Your Next Adventure
+            Browse European Tournaments
+          </a>
+        </div>
+
+        {/* Divider */}
+        <div
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.2)",
+            margin: "0 0 24px 0",
+            paddingTop: "24px",
+          }}
+        />
+
+        {/* Complete Your Profile CTA */}
+        <div style={{ textAlign: "center", marginBottom: "24px" }}>
+          <p
+            style={{
+              margin: "0 0 16px 0",
+              fontSize: "15px",
+              color: "rgba(255,255,255,0.9)",
+              fontWeight: "500",
+            }}
+          >
+            Complete your profile
+          </p>
+          <p
+            style={{
+              margin: "0 0 16px 0",
+              fontSize: "13px",
+              color: "rgba(255,255,255,0.7)",
+              lineHeight: "1.6",
+            }}
+          >
+            Add your trip preferences so we can recommend the perfect
+            tournaments and destinations for you.
+          </p>
+          <a
+            href="https://playaway.ie/profile"
+            style={{
+              display: "inline-block",
+              backgroundColor: "transparent",
+              color: "#ffffff",
+              padding: "14px 32px",
+              fontSize: "14px",
+              fontWeight: "600",
+              textDecoration: "none",
+              borderRadius: "6px",
+              border: "2px solid rgba(255,255,255,0.5)",
+            }}
+          >
+            Add Trip Preferences
           </a>
         </div>
 

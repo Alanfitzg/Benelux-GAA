@@ -453,7 +453,25 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
                   <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
                     <tr>
                       <td align="center" style="padding-bottom: 24px;">
-                        <a href="${baseUrl}/events" style="display: inline-block; background-color: #ffffff; color: #264673; padding: 16px 40px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">Find Your Next Adventure</a>
+                        <a href="${baseUrl}/events" style="display: inline-block; background-color: #ffffff; color: #264673; padding: 16px 40px; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">Browse European Tournaments</a>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Divider -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 24px;"></td>
+                    </tr>
+                  </table>
+
+                  <!-- Complete Your Profile CTA -->
+                  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" style="padding-bottom: 24px;">
+                        <p style="margin: 0 0 16px 0; font-size: 15px; color: rgba(255,255,255,0.9); font-weight: 500;">Complete your profile</p>
+                        <p style="margin: 0 0 16px 0; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6;">Add your trip preferences so we can recommend the perfect tournaments and destinations for you.</p>
+                        <a href="${baseUrl}/profile" style="display: inline-block; background-color: transparent; color: #ffffff; padding: 14px 32px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 6px; border: 2px solid rgba(255,255,255,0.5);">Add Trip Preferences</a>
                       </td>
                     </tr>
                   </table>
@@ -534,7 +552,11 @@ Céad Míle Fáilte
 ${data.clubName ? `Club: ${data.clubName}\n` : ""}
 You're now part of the global Gaelic Games travel community. Discover tournaments, connect with clubs worldwide, and plan your next adventure.
 
-Find your next adventure: ${baseUrl}/events
+Browse European tournaments: ${baseUrl}/events
+
+Complete your profile:
+Add your trip preferences so we can recommend the perfect tournaments and destinations for you.
+Add trip preferences: ${baseUrl}/profile
 
 Are you a coach, committee member, or trip organiser?
 Discover how PlayAway can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.
