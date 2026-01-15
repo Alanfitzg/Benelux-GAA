@@ -116,10 +116,10 @@ export default function ClubFriendsSection({
                     />
                   </svg>
                 </div>
-                <h3 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">
+                <h3 className="text-sm font-medium text-gray-900 mb-1">
                   No visiting clubs yet
                 </h3>
-                <p className="text-[10px] sm:text-xs text-gray-500 max-w-xs mx-auto">
+                <p className="text-xs text-gray-500 max-w-xs mx-auto">
                   When clubs visit for tournaments, they&apos;ll appear here -
                   showcasing this club&apos;s global GAA friends network.
                 </p>
@@ -231,10 +231,10 @@ export default function ClubFriendsSection({
                     />
                   </svg>
                 </div>
-                <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">
+                <h4 className="text-sm font-medium text-gray-900 mb-1">
                   No Twin Club Yet
                 </h4>
-                <p className="text-[10px] sm:text-xs text-gray-500">
+                <p className="text-xs text-gray-500">
                   Not yet twinned with an Irish or British club.
                 </p>
               </div>
