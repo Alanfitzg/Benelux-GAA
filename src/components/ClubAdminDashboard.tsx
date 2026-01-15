@@ -32,6 +32,7 @@ import {
   Package,
   Ticket,
   ArrowRight,
+  Inbox,
 } from "lucide-react";
 
 interface ClubStats {
@@ -119,6 +120,7 @@ export default function ClubAdminDashboard({
   const [activeSection, setActiveSection] =
     useState<DashboardSection>("overview");
   const [showInterestsInfo, setShowInterestsInfo] = useState(false);
+  const [unreadInquiries, setUnreadInquiries] = useState(0);
   const interestsInfoRef = useRef<HTMLDivElement>(null);
 
   // Close tooltip when clicking outside
@@ -156,9 +158,24 @@ export default function ClubAdminDashboard({
     }
   }, [clubId]);
 
+  const fetchUnreadInquiries = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `/api/clubs/${clubId}/inquiries?filter=active`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setUnreadInquiries(data.stats?.unread || 0);
+      }
+    } catch {
+      // Silently fail - not critical
+    }
+  }, [clubId]);
+
   useEffect(() => {
     fetchStats();
-  }, [fetchStats]);
+    fetchUnreadInquiries();
+  }, [fetchStats, fetchUnreadInquiries]);
 
   if (loading) {
     return (
@@ -242,6 +259,18 @@ export default function ClubAdminDashboard({
 
           {/* Quick Actions */}
           <div className="flex flex-wrap items-center gap-3">
+            <Link
+              href={`/club-admin/${clubId}/inquiries`}
+              className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <Inbox className="w-4 h-4" />
+              Inbox
+              {unreadInquiries > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {unreadInquiries > 9 ? "9+" : unreadInquiries}
+                </span>
+              )}
+            </Link>
             <Link
               href={`/clubs/${clubId}`}
               className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"

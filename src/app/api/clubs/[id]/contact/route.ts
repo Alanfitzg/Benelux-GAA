@@ -9,7 +9,7 @@ export async function POST(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { name, email, message, type } = body;
+    const { name, email, message, type, clubName: visitorClubName } = body;
 
     // Validate required fields
     if (!name || !email || !type) {
@@ -50,6 +50,7 @@ export async function POST(
         clubId: id,
         name,
         email,
+        clubName: visitorClubName || null,
         message: message || null,
         type, // 'contact' or 'interest'
       },
@@ -75,6 +76,7 @@ export async function POST(
 
           <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <p style="margin: 0 0 10px 0;"><strong>From:</strong> ${name}</p>
+            ${visitorClubName ? `<p style="margin: 0 0 10px 0;"><strong>Club:</strong> ${visitorClubName}</p>` : ""}
             <p style="margin: 0 0 10px 0;"><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
             ${message ? `<p style="margin: 0;"><strong>Message:</strong></p><p style="margin: 5px 0 0 0; white-space: pre-wrap;">${message}</p>` : '<p style="margin: 0; color: #666;"><em>No message provided</em></p>'}
           </div>

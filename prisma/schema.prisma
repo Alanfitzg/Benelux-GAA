@@ -281,14 +281,21 @@ model SurveyResponse {
 }
 
 model ClubInterest {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   clubId      String
   name        String
   email       String
+  clubName    String?
   message     String?
   type        String
-  submittedAt DateTime @default(now())
-  club        Club     @relation(fields: [clubId], references: [id])
+  isRead      Boolean   @default(false)
+  isArchived  Boolean   @default(false)
+  respondedAt DateTime?
+  submittedAt DateTime  @default(now())
+  club        Club      @relation(fields: [clubId], references: [id])
+
+  @@index([clubId])
+  @@index([clubId, isArchived])
 }
 
 model ClubAdminRequest {
