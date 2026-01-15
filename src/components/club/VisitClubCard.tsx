@@ -193,7 +193,7 @@ export default function VisitClubCard({
             {isDayPassExpanded && (
               <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600 space-y-3">
                 <p>
-                  Unlike clubs back home, most European GAA clubs don&apos;t own
+                  Unlike clubs back home, European GAA clubs don&apos;t own
                   their own facilities - so this contribution helps cover:
                 </p>
                 <ul className="space-y-2">
