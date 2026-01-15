@@ -1073,29 +1073,31 @@ export default function HomePage() {
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.5 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-lg text-center"
-            >
-              <div className="inline-flex items-center justify-center w-8 h-8 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
-                <Plane className="w-4 h-4 md:w-7 md:h-7 text-primary" />
-              </div>
-              <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1">
-                Custom Trip
-              </div>
-              <h3 className="text-xs sm:text-sm md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
-                Tailored for You
-              </h3>
-              <p className="text-gray-600 text-xs md:text-sm hidden md:block">
-                Can&apos;t find what you need? We&apos;ll plan it for you
-              </p>
-              <p className="text-gray-600 text-[10px] sm:text-xs leading-tight md:hidden">
-                Tailored trips
-              </p>
-            </motion.div>
+            <Link href="/survey">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.5 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-xl md:rounded-2xl p-3 md:p-6 shadow-lg text-center cursor-pointer hover:shadow-xl hover:scale-[1.02] transition-all"
+              >
+                <div className="inline-flex items-center justify-center w-8 h-8 md:w-14 md:h-14 bg-primary/10 rounded-full mb-2 md:mb-3">
+                  <Plane className="w-4 h-4 md:w-7 md:h-7 text-primary" />
+                </div>
+                <div className="text-lg md:text-3xl font-bold text-gray-900 mb-1">
+                  Custom Trip
+                </div>
+                <h3 className="text-xs sm:text-sm md:text-lg font-semibold text-gray-900 mb-1 whitespace-nowrap">
+                  Tailored for You
+                </h3>
+                <p className="text-gray-600 text-xs md:text-sm hidden md:block">
+                  Can&apos;t find what you need? We&apos;ll plan it for you
+                </p>
+                <p className="text-gray-600 text-[10px] sm:text-xs leading-tight md:hidden">
+                  Tailored trips
+                </p>
+              </motion.div>
+            </Link>
           </div>
         </div>
       </section>
@@ -1129,8 +1131,8 @@ export default function HomePage() {
               <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 text-center md:text-left">
                 For Travelling Teams
               </h3>
-              <ul className="space-y-2 md:space-y-3 mb-4">
-                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
+              <ul className="space-y-2 md:space-y-3 mb-4 flex flex-col items-center md:items-start">
+                <li className="flex items-center gap-2">
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1138,7 +1140,7 @@ export default function HomePage() {
                     Browse European tournaments
                   </span>
                 </li>
-                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
+                <li className="flex items-center gap-2">
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1146,7 +1148,7 @@ export default function HomePage() {
                     Connect with international clubs
                   </span>
                 </li>
-                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
+                <li className="flex items-center gap-2">
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1188,8 +1190,8 @@ export default function HomePage() {
               <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 text-center md:text-left">
                 For Host Clubs
               </h3>
-              <ul className="space-y-2 md:space-y-3 mb-4">
-                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
+              <ul className="space-y-2 md:space-y-3 mb-4 flex flex-col items-center md:items-start">
+                <li className="flex items-center gap-2">
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1197,7 +1199,7 @@ export default function HomePage() {
                     Welcome visiting teams
                   </span>
                 </li>
-                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
+                <li className="flex items-center gap-2">
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1205,7 +1207,7 @@ export default function HomePage() {
                     Create tournaments & events
                   </span>
                 </li>
-                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
+                <li className="flex items-center gap-2">
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>

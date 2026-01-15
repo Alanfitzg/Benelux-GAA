@@ -202,13 +202,15 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
   return (
     <div className="bg-white rounded-xl shadow-lg border border-primary/20 overflow-hidden">
       {/* Premium Blue Header */}
-      <div className="bg-gradient-to-r from-primary to-[#1a3352] p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold flex items-center gap-3 text-white">
-            <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-              <CalendarIcon className="w-5 h-5 text-white" />
+      <div className="bg-gradient-to-r from-primary to-[#1a3352] p-3 sm:p-6">
+        {/* Mobile: Stacked layout */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-3 sm:mb-4">
+          <h2 className="text-base sm:text-xl font-bold flex items-center gap-2 sm:gap-3 text-white">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white/20 rounded-lg flex items-center justify-center">
+              <CalendarIcon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            Club Calendar
+            <span className="hidden sm:inline">Club Calendar</span>
+            <span className="sm:hidden">Calendar</span>
             <div className="relative">
               <button
                 type="button"
@@ -237,23 +239,24 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
             <button
               type="button"
               onClick={() => setView(view === "month" ? "list" : "month")}
-              className="px-4 py-2 text-sm font-medium bg-white/10 text-white border border-white/30 rounded-lg hover:bg-white/20 transition-colors"
+              className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium bg-white/10 text-white border border-white/30 rounded-lg hover:bg-white/20 transition-colors"
             >
-              {view === "month" ? "List View" : "Month View"}
+              {view === "month" ? "List" : "Month"}
             </button>
             <button
               type="button"
               onClick={handleExpressInterest}
-              className="px-5 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-sm font-semibold shadow-md hover:shadow-lg transition-all"
+              className="px-3 sm:px-5 py-1.5 sm:py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all"
             >
-              Express Interest
+              <span className="hidden sm:inline">Express Interest</span>
+              <span className="sm:hidden">Interest</span>
             </button>
           </div>
         </div>
 
-        {/* Info Banner - styled for blue header */}
+        {/* Info Banner - styled for blue header, hidden on mobile */}
         {showInfoBanner && (
-          <div className="mb-4 p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg relative">
+          <div className="hidden sm:block mb-4 p-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg relative">
             <button
               type="button"
               onClick={() => setShowInfoBanner(false)}
@@ -287,7 +290,7 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
         )}
 
         {/* Month Navigation */}
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-2 sm:gap-4">
           <button
             type="button"
             onClick={() =>
@@ -295,12 +298,12 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
                 new Date(currentDate.getFullYear(), currentDate.getMonth() - 1)
               )
             }
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-1.5 sm:p-2 hover:bg-white/20 rounded-lg transition-colors"
           >
-            <ChevronLeft className="w-5 h-5 text-white" />
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
-          <div className="px-6 py-2 bg-white/20 rounded-full">
-            <h3 className="text-lg font-semibold text-white">
+          <div className="px-4 sm:px-6 py-1.5 sm:py-2 bg-white/20 rounded-full">
+            <h3 className="text-sm sm:text-lg font-semibold text-white">
               {format(currentDate, "MMMM yyyy")}
             </h3>
           </div>
@@ -311,9 +314,9 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
                 new Date(currentDate.getFullYear(), currentDate.getMonth() + 1)
               )
             }
-            className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+            className="p-1.5 sm:p-2 hover:bg-white/20 rounded-lg transition-colors"
           >
-            <ChevronRight className="w-5 h-5 text-white" />
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </button>
         </div>
       </div>
@@ -326,23 +329,24 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
           </div>
         </div>
       ) : view === "month" ? (
-        <div className="p-6 bg-gradient-to-b from-primary/5 to-white">
+        <div className="p-2 sm:p-6 bg-gradient-to-b from-primary/5 to-white">
           {/* Day Headers */}
-          <div className="grid grid-cols-7 gap-1 mb-3">
+          <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-2 sm:mb-3">
             {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
               <div
                 key={day}
-                className="text-center text-sm font-semibold text-primary py-2 bg-primary/10 rounded-lg"
+                className="text-center text-[10px] sm:text-sm font-semibold text-primary py-1 sm:py-2 bg-primary/10 rounded sm:rounded-lg"
               >
-                {day}
+                <span className="hidden sm:inline">{day}</span>
+                <span className="sm:hidden">{day.charAt(0)}</span>
               </div>
             ))}
           </div>
           {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-0.5 sm:gap-2">
             {getDaysInMonth().map((date, index) => {
               if (!date) {
-                return <div key={`empty-${index}`} className="h-24" />;
+                return <div key={`empty-${index}`} className="h-12 sm:h-24" />;
               }
 
               const {
@@ -356,7 +360,7 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
               return (
                 <motion.div
                   key={date.toISOString()}
-                  className={`h-24 p-2 border-2 rounded-xl transition-all ${
+                  className={`h-12 sm:h-24 p-1 sm:p-2 border sm:border-2 rounded-lg sm:rounded-xl transition-all ${
                     hasContent
                       ? "border-primary/30 bg-white shadow-sm"
                       : "border-gray-200 bg-white/80"
@@ -364,11 +368,24 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
                   whileHover={{ scale: 1.02 }}
                 >
                   <div
-                    className={`text-sm font-semibold mb-1 ${hasContent ? "text-primary" : "text-gray-700"}`}
+                    className={`text-[10px] sm:text-sm font-semibold mb-0.5 sm:mb-1 ${hasContent ? "text-primary" : "text-gray-700"}`}
                   >
                     {format(date, "d")}
                   </div>
-                  <div className="space-y-1">
+                  {/* Mobile: Show dots only */}
+                  <div className="sm:hidden flex gap-0.5 flex-wrap">
+                    {availability && (
+                      <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
+                    )}
+                    {dayInterests.length > 0 && (
+                      <div className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
+                    )}
+                    {dayEvents.length > 0 && (
+                      <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+                    )}
+                  </div>
+                  {/* Desktop: Show full labels */}
+                  <div className="hidden sm:block space-y-1">
                     {availability && (
                       <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full w-fit">
                         <CheckCircle className="w-3 h-3" />
@@ -466,19 +483,19 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
       )}
 
       {/* Legend Footer */}
-      <div className="p-4 bg-gradient-to-r from-primary/10 to-primary/5 border-t border-primary/20">
-        <div className="flex items-center justify-center gap-6 text-sm">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-green-500 rounded-full shadow-sm" />
-            <span className="text-gray-700 font-medium">Available Dates</span>
+      <div className="p-2 sm:p-4 bg-gradient-to-r from-primary/10 to-primary/5 border-t border-primary/20">
+        <div className="flex items-center justify-center gap-3 sm:gap-6 text-xs sm:text-sm">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full shadow-sm" />
+            <span className="text-gray-700 font-medium">Available</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-amber-500 rounded-full shadow-sm" />
-            <span className="text-gray-700 font-medium">Team Interest</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-amber-500 rounded-full shadow-sm" />
+            <span className="text-gray-700 font-medium">Interest</span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-primary rounded-full shadow-sm" />
-            <span className="text-gray-700 font-medium">Tournaments</span>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <div className="w-2 h-2 sm:w-3 sm:h-3 bg-primary rounded-full shadow-sm" />
+            <span className="text-gray-700 font-medium">Events</span>
           </div>
         </div>
       </div>

@@ -228,6 +228,26 @@ export default function ClubAdminDashboard({
 
   return (
     <div className="space-y-6">
+      {/* Hero Header Section - Dark Theme */}
+      <div className="relative p-4 md:p-8 mb-4 md:mb-6">
+        {/* Header with icon */}
+        <div className="flex items-center gap-3 mb-3 md:mb-4">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+            <span className="text-xl md:text-2xl">🏠</span>
+          </div>
+          <div>
+            <h1 className="text-lg md:text-2xl font-bold text-white">
+              Host Dashboard
+            </h1>
+            <p className="text-xs md:text-sm text-white/60">
+              {isIrishClub
+                ? "Travelling Club"
+                : "Viewing aggregated data from all clubs"}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Header with Quick Actions */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border-b border-gray-100 px-6 py-5">

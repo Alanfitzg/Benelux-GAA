@@ -9,50 +9,43 @@ import {
   Building2,
   BarChart3,
   Loader2,
+  Flame,
+  MapPinOff,
+  UserCheck,
+  Trophy,
 } from "lucide-react";
 
 interface ReportCard {
   id: string;
   title: string;
+  narrativeQuestion: string;
   description: string;
   icon: React.ReactNode;
   gradient: string;
   endpoint: string;
-  type: "export" | "view";
+  type: "export" | "view" | "dual";
+  exportEndpoint?: string;
+  viewEndpoint?: string;
   includes?: string[];
 }
 
 const reports: ReportCard[] = [
   {
     id: "user-preferences",
-    title: "User Preferences Export",
+    title: "Customer Preferences",
+    narrativeQuestion: "What do our customers want?",
     description:
-      "Export all user onboarding preferences including travel motivations, competitive levels, and destinations.",
+      "User onboarding data showing travel motivations, competitive levels, destinations, and engagement metrics.",
     icon: <Users className="w-5 h-5 text-white" />,
     gradient: "from-blue-500 to-indigo-500",
-    endpoint: "/api/admin/users/export-preferences",
-    type: "export",
-    includes: [
-      "Travel motivations",
-      "Competitive levels",
-      "Preferred destinations",
-      "Budget preferences",
-      "Preferred travel months",
-    ],
-  },
-  {
-    id: "onboarding-summary",
-    title: "Onboarding Summary",
-    description:
-      "Aggregated view of user preferences showing most popular choices and completion rates.",
-    icon: <BarChart3 className="w-5 h-5 text-white" />,
-    gradient: "from-violet-500 to-purple-500",
     endpoint: "/api/admin/reports/onboarding-summary",
-    type: "view",
+    type: "dual",
+    exportEndpoint: "/api/admin/users/export-preferences",
+    viewEndpoint: "/api/admin/reports/onboarding-summary",
     includes: [
-      "Completion vs skip rate",
-      "Top motivations",
-      "Popular destinations",
+      "Onboarding completion rates",
+      "Top travel motivations",
+      "Preferred destinations",
       "Budget distribution",
       "Seasonal preferences",
     ],
@@ -60,6 +53,7 @@ const reports: ReportCard[] = [
   {
     id: "interest-trends",
     title: "Interest Submission Trends",
+    narrativeQuestion: "Where do teams want to go?",
     description:
       "Analysis of event and tournament interest submissions with conversion tracking.",
     icon: <TrendingUp className="w-5 h-5 text-white" />,
@@ -77,6 +71,7 @@ const reports: ReportCard[] = [
   {
     id: "event-performance",
     title: "Event Performance",
+    narrativeQuestion: "Which tournaments are thriving?",
     description:
       "Tournament and event analytics including registration rates and capacity utilization.",
     icon: <Calendar className="w-5 h-5 text-white" />,
@@ -94,6 +89,7 @@ const reports: ReportCard[] = [
   {
     id: "club-health",
     title: "Club Health Report",
+    narrativeQuestion: "How strong is our club network?",
     description:
       "Overview of club registrations, verification status, and profile completeness.",
     icon: <Building2 className="w-5 h-5 text-white" />,
@@ -111,6 +107,7 @@ const reports: ReportCard[] = [
   {
     id: "calendar-patterns",
     title: "Calendar Interest Patterns",
+    narrativeQuestion: "When do teams want to travel?",
     description:
       "Scheduling demand analysis showing peak periods and booking lead times.",
     icon: <Calendar className="w-5 h-5 text-white" />,
@@ -125,6 +122,96 @@ const reports: ReportCard[] = [
       "Blocked periods",
     ],
   },
+  {
+    id: "hot-leads",
+    title: "Hot Leads",
+    narrativeQuestion: "Who's ready to book?",
+    description:
+      "Users who completed onboarding and expressed interest but haven't booked yet - your warmest prospects.",
+    icon: <Flame className="w-5 h-5 text-white" />,
+    gradient: "from-red-500 to-orange-500",
+    endpoint: "/api/admin/reports/hot-leads",
+    type: "view",
+    includes: [
+      "Users with complete profiles",
+      "Interest submissions without bookings",
+      "Time since last activity",
+      "Preferred destinations",
+      "Contact readiness score",
+    ],
+  },
+  {
+    id: "trending",
+    title: "Trending Analysis",
+    narrativeQuestion: "What's trending?",
+    description:
+      "Rising destinations, clubs, and travel months based on recent interest vs historical patterns.",
+    icon: <TrendingUp className="w-5 h-5 text-white" />,
+    gradient: "from-violet-500 to-purple-500",
+    endpoint: "/api/admin/reports/trending",
+    type: "view",
+    includes: [
+      "Rising destinations (30-day trend)",
+      "Emerging club popularity",
+      "Seasonal momentum shifts",
+      "New vs returning interest",
+      "Growth rate comparisons",
+    ],
+  },
+  {
+    id: "unmet-demand",
+    title: "Unmet Demand",
+    narrativeQuestion: "Where's the untapped demand?",
+    description:
+      "Destinations users want to visit but where no clubs or events currently exist - expansion opportunities.",
+    icon: <MapPinOff className="w-5 h-5 text-white" />,
+    gradient: "from-amber-500 to-yellow-500",
+    endpoint: "/api/admin/reports/unmet-demand",
+    type: "view",
+    includes: [
+      "Requested destinations without clubs",
+      "High-interest areas with no events",
+      "Geographic gap analysis",
+      "User demand by region",
+      "Partnership opportunities",
+    ],
+  },
+  {
+    id: "club-engagement",
+    title: "Club Engagement",
+    narrativeQuestion: "How active are our clubs?",
+    description:
+      "Registered users, admins, and login activity per club - understand which clubs are most engaged.",
+    icon: <UserCheck className="w-5 h-5 text-white" />,
+    gradient: "from-sky-500 to-cyan-500",
+    endpoint: "/api/admin/reports/club-engagement",
+    type: "view",
+    includes: [
+      "Members & admins per club",
+      "Recent login activity",
+      "User role distribution",
+      "Monthly membership growth",
+      "Top engaged clubs",
+    ],
+  },
+  {
+    id: "sport-performance",
+    title: "Sport Performance",
+    narrativeQuestion: "Which sports are thriving?",
+    description:
+      "Performance breakdown by sport - see which GAA codes drive the most engagement across the platform.",
+    icon: <Trophy className="w-5 h-5 text-white" />,
+    gradient: "from-green-500 to-emerald-500",
+    endpoint: "/api/admin/reports/sport-performance",
+    type: "view",
+    includes: [
+      "Clubs per sport",
+      "Events per sport",
+      "Team registrations by sport",
+      "Interest trends by sport",
+      "Regional sport distribution",
+    ],
+  },
 ];
 
 export default function DataCenterPage() {
@@ -133,6 +220,12 @@ export default function DataCenterPage() {
   const [reportData, setReportData] = useState<Record<string, unknown> | null>(
     null
   );
+  const [selectedReport, setSelectedReport] = useState<string | null>(null);
+
+  // Filter reports based on selection
+  const displayedReports = selectedReport
+    ? reports.filter((r) => r.id === selectedReport)
+    : reports;
 
   const handleExport = async (reportId: string, endpoint: string) => {
     setLoading(reportId);
@@ -167,124 +260,184 @@ export default function DataCenterPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-4 md:py-6">
-      <div className="mb-4 text-center md:text-left">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-          Data Center
-        </h1>
-        <p className="text-gray-600 text-sm md:text-base mt-1 md:mt-2">
-          Export and analyze platform data for insights and reporting
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800 relative">
+      {/* Background pattern for entire page */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-cyan-400 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-60 h-60 bg-indigo-400 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-500 rounded-full blur-3xl opacity-50"></div>
       </div>
 
-      {/* Unique Data Asset Overview */}
-      <div className="bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 border border-primary/20 rounded-xl md:rounded-2xl p-4 md:p-6 mb-6 md:mb-8">
-        <h2 className="text-base md:text-xl font-semibold text-primary mb-2 md:mb-3 text-center md:text-left">
-          First-Party Data: A Unique GAA Asset
-        </h2>
-        <p className="text-gray-700 text-xs md:text-base leading-relaxed mb-3 md:mb-4 text-center md:text-left">
-          This data has{" "}
-          <strong>never been systematically captured before</strong> in the
-          history of Gaelic Games abroad. For the first time, we can see exactly
-          how many teams and individuals are actively planning international
-          trips, which destinations they prefer, their budgets, and when they
-          want to travel. This intelligence enables accurate demand forecasting,
-          revenue projections, and strategic partnership opportunities.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 text-sm">
-          <div className="bg-white/60 rounded-lg p-3 md:p-4 border border-primary/10">
-            <div className="font-semibold text-primary text-sm md:text-base mb-1 text-center md:text-left">
-              Travel Intent Data
+      <div className="relative z-10 container mx-auto px-4 py-4 md:py-6 max-w-6xl">
+        {/* Hero Header Section */}
+        <div className="relative p-4 md:p-8 mb-4 md:mb-6 text-center">
+          {/* Header with icon */}
+          <div className="flex items-center justify-center gap-3 mb-3 md:mb-4">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <span className="text-xl md:text-2xl">📊</span>
             </div>
-            <p className="text-gray-600 text-xs text-center md:text-left">
-              Real booking intentions from clubs and individuals, not estimates.
-              See exact team sizes, preferred dates, and destination interests.
-            </p>
-          </div>
-          <div className="bg-white/60 rounded-lg p-3 md:p-4 border border-secondary/10">
-            <div className="font-semibold text-secondary text-sm md:text-base mb-1 text-center md:text-left">
-              Revenue Forecasting
+            <div className="text-left">
+              <h1 className="text-lg md:text-2xl font-bold text-white">
+                PlayAway Intelligence Hub
+              </h1>
+              <p className="text-xs md:text-sm text-white/60">
+                Data Center &amp; Analytics
+              </p>
             </div>
-            <p className="text-gray-600 text-xs text-center md:text-left">
-              Transform interest data into projected revenue. Calculate
-              potential earnings from registrations, platform fees, and
-              partnership opportunities.
-            </p>
           </div>
-          <div className="bg-white/60 rounded-lg p-3 md:p-4 border border-primary/10">
-            <div className="font-semibold text-primary text-sm md:text-base mb-1 text-center md:text-left">
-              Market Intelligence
-            </div>
-            <p className="text-gray-600 text-xs text-center md:text-left">
-              Understand seasonal patterns, popular routes, competitive level
-              distribution, and emerging markets for strategic planning.
-            </p>
-          </div>
+
+          {/* Tagline */}
+          <p className="text-sm md:text-lg text-cyan-300 font-semibold mb-2 md:mb-3">
+            First-of-its-kind GAA travel intelligence
+          </p>
+
+          {/* Description */}
+          <p className="text-xs md:text-base text-white/80 leading-relaxed max-w-3xl mx-auto">
+            This data has{" "}
+            <strong className="text-white">
+              never been systematically captured before
+            </strong>{" "}
+            in the history of Gaelic Games abroad. See exactly how many teams
+            are planning trips, where they want to go, their budgets, and when
+            they want to travel.
+          </p>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {reports.map((report) => (
-          <div
-            key={report.id}
-            className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
-          >
-            <div className={`bg-gradient-to-r ${report.gradient} px-6 py-4`}>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                  {report.icon}
-                </div>
-                <h2 className="text-lg font-semibold text-white">
-                  {report.title}
-                </h2>
-              </div>
-            </div>
-            <div className="p-6">
-              <p className="text-gray-600 text-sm mb-4">{report.description}</p>
-              {report.includes && (
-                <div className="text-xs text-gray-500 mb-4">
-                  <p className="font-medium mb-1">Includes:</p>
-                  <ul className="list-disc list-inside ml-1 space-y-0.5">
-                    {report.includes.map((item, idx) => (
-                      <li key={idx}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+        {/* Tab Navigation */}
+        <div className="mb-6 md:mb-8">
+          <div className="flex flex-wrap gap-3 md:gap-4 justify-center">
+            <button
+              type="button"
+              onClick={() => setSelectedReport(null)}
+              className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all bg-white/10 text-white/80 hover:bg-white/20`}
+            >
+              All Reports
+            </button>
+            {reports.map((report) => (
               <button
+                key={report.id}
                 type="button"
-                onClick={() =>
-                  report.type === "export"
-                    ? handleExport(report.id, report.endpoint)
-                    : handleViewReport(report.id, report.endpoint)
-                }
-                disabled={loading === report.id}
-                className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 ${
-                  report.type === "export"
-                    ? "bg-blue-600 text-white hover:bg-blue-700"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                onClick={() => setSelectedReport(report.id)}
+                className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all ${
+                  selectedReport === report.id
+                    ? "bg-cyan-500 text-white shadow-md"
+                    : "bg-white/10 text-white/80 hover:bg-white/20"
                 }`}
               >
-                {loading === report.id ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Download className="w-4 h-4" />
-                )}
-                {report.type === "export" ? "Export CSV" : "View Report"}
+                {report.narrativeQuestion}
               </button>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Report Modal */}
-      {viewingReport && reportData && (
-        <ReportModal
-          reportId={viewingReport}
-          data={reportData}
-          onClose={closeReport}
-        />
-      )}
+        <div
+          className={`grid gap-6 ${selectedReport ? "grid-cols-1 max-w-2xl mx-auto" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}`}
+        >
+          {displayedReports.map((report) => (
+            <div
+              key={report.id}
+              className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
+            >
+              <div className={`bg-gradient-to-r ${report.gradient} px-6 py-4`}>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    {report.icon}
+                  </div>
+                  <h2 className="text-lg font-semibold text-white">
+                    {report.title}
+                  </h2>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-lg font-semibold text-gray-900 mb-2 italic">
+                  &ldquo;{report.narrativeQuestion}&rdquo;
+                </p>
+                <p className="text-gray-600 text-sm mb-4">
+                  {report.description}
+                </p>
+                {report.includes && (
+                  <div className="text-xs text-gray-500 mb-4">
+                    <p className="font-medium mb-1">Includes:</p>
+                    <ul className="list-disc list-inside ml-1 space-y-0.5">
+                      {report.includes.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {report.type === "dual" ? (
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleViewReport(report.id, report.viewEndpoint!)
+                      }
+                      disabled={loading === report.id}
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    >
+                      {loading === report.id ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <BarChart3 className="w-4 h-4" />
+                      )}
+                      Summary
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleExport(
+                          report.id + "-export",
+                          report.exportEndpoint!
+                        )
+                      }
+                      disabled={loading === report.id + "-export"}
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700"
+                    >
+                      {loading === report.id + "-export" ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Download className="w-4 h-4" />
+                      )}
+                      Export
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      report.type === "export"
+                        ? handleExport(report.id, report.endpoint)
+                        : handleViewReport(report.id, report.endpoint)
+                    }
+                    disabled={loading === report.id}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 ${
+                      report.type === "export"
+                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {loading === report.id ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Download className="w-4 h-4" />
+                    )}
+                    {report.type === "export" ? "Export CSV" : "View Report"}
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Report Modal */}
+        {viewingReport && reportData && (
+          <ReportModal
+            reportId={viewingReport}
+            data={reportData}
+            onClose={closeReport}
+          />
+        )}
+      </div>
     </div>
   );
 }
@@ -349,7 +502,7 @@ interface ReportContentProps {
 
 function ReportContent({ reportId, data }: ReportContentProps) {
   switch (reportId) {
-    case "onboarding-summary":
+    case "user-preferences":
       return <OnboardingSummaryReport data={data} />;
     case "interest-trends":
       return <InterestTrendsReport data={data} />;
@@ -359,6 +512,16 @@ function ReportContent({ reportId, data }: ReportContentProps) {
       return <ClubHealthReport data={data} />;
     case "calendar-patterns":
       return <CalendarPatternsReport data={data} />;
+    case "hot-leads":
+      return <HotLeadsReport data={data} />;
+    case "trending":
+      return <TrendingReport data={data} />;
+    case "unmet-demand":
+      return <UnmetDemandReport data={data} />;
+    case "club-engagement":
+      return <ClubEngagementReport data={data} />;
+    case "sport-performance":
+      return <SportPerformanceReport data={data} />;
     default:
       return (
         <pre className="text-xs overflow-auto">
@@ -892,6 +1055,476 @@ function CalendarPatternsReport({ data }: { data: Record<string, unknown> }) {
             .slice(0, 10)
             .map((c) => [c.name, c.country || "-", c.count])}
         />
+      </div>
+    </div>
+  );
+}
+
+function HotLeadsReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalHotLeads: number;
+    completedOnboarding: number;
+    expressedInterest: number;
+    avgDaysSinceActivity: number;
+  };
+  const hotLeads = data.hotLeads as {
+    email: string;
+    name: string | null;
+    club: string | null;
+    onboardingDate: string;
+    lastInterestDate: string;
+    interestCount: number;
+    preferredDestinations: string[];
+  }[];
+  const byDestination = data.byDestination as {
+    destination: string;
+    count: number;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard label="Hot Leads" value={summary?.totalHotLeads || 0} />
+        <StatCard
+          label="Completed Onboarding"
+          value={summary?.completedOnboarding || 0}
+        />
+        <StatCard
+          label="Expressed Interest"
+          value={summary?.expressedInterest || 0}
+        />
+        <StatCard
+          label="Avg Days Since Activity"
+          value={summary?.avgDaysSinceActivity || 0}
+        />
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Top Hot Leads</h3>
+        <DataTable
+          headers={["Email", "Name", "Club", "Interests", "Last Activity"]}
+          rows={(hotLeads || [])
+            .slice(0, 15)
+            .map((l) => [
+              l.email,
+              l.name || "-",
+              l.club || "-",
+              l.interestCount,
+              l.lastInterestDate,
+            ])}
+        />
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Hot Leads by Destination</h3>
+        <DataTable
+          headers={["Destination", "Hot Leads"]}
+          rows={(byDestination || [])
+            .slice(0, 10)
+            .map((d) => [d.destination, d.count])}
+        />
+      </div>
+    </div>
+  );
+}
+
+function TrendingReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalInterestsLast30Days: number;
+    totalInterestsPrevious30Days: number;
+    growthRate: number;
+  };
+  const risingDestinations = data.risingDestinations as {
+    destination: string;
+    recentCount: number;
+    previousCount: number;
+    growthPercent: number;
+  }[];
+  const risingClubs = data.risingClubs as {
+    name: string;
+    country: string | null;
+    recentCount: number;
+    growthPercent: number;
+  }[];
+  const risingMonths = data.risingMonths as {
+    month: string;
+    recentCount: number;
+    previousCount: number;
+    growthPercent: number;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-3 gap-4">
+        <StatCard
+          label="Last 30 Days"
+          value={summary?.totalInterestsLast30Days || 0}
+        />
+        <StatCard
+          label="Previous 30 Days"
+          value={summary?.totalInterestsPrevious30Days || 0}
+        />
+        <StatCard
+          label="Growth Rate"
+          value={`${summary?.growthRate > 0 ? "+" : ""}${summary?.growthRate || 0}%`}
+        />
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Rising Destinations</h3>
+        <DataTable
+          headers={["Destination", "Recent", "Previous", "Growth"]}
+          rows={(risingDestinations || [])
+            .slice(0, 10)
+            .map((d) => [
+              d.destination,
+              d.recentCount,
+              d.previousCount,
+              `${d.growthPercent > 0 ? "+" : ""}${d.growthPercent}%`,
+            ])}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Rising Clubs</h3>
+          <DataTable
+            headers={["Club", "Country", "Recent", "Growth"]}
+            rows={(risingClubs || [])
+              .slice(0, 8)
+              .map((c) => [
+                c.name,
+                c.country || "-",
+                c.recentCount,
+                `${c.growthPercent > 0 ? "+" : ""}${c.growthPercent}%`,
+              ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Rising Travel Months</h3>
+          <DataTable
+            headers={["Month", "Recent", "Previous", "Growth"]}
+            rows={(risingMonths || []).map((m) => [
+              m.month,
+              m.recentCount,
+              m.previousCount,
+              `${m.growthPercent > 0 ? "+" : ""}${m.growthPercent}%`,
+            ])}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function UnmetDemandReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalUnmetDestinations: number;
+    totalUsersAffected: number;
+    topOpportunityRegion: string;
+  };
+  const unmetDestinations = data.unmetDestinations as {
+    destination: string;
+    demandCount: number;
+    hasClub: boolean;
+    hasEvent: boolean;
+  }[];
+  const regionGaps = data.regionGaps as {
+    region: string;
+    demandCount: number;
+    clubCount: number;
+    eventCount: number;
+    gapScore: number;
+  }[];
+  const partnershipOpportunities = data.partnershipOpportunities as {
+    destination: string;
+    demandCount: number;
+    suggestedAction: string;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-3 gap-4">
+        <StatCard
+          label="Unmet Destinations"
+          value={summary?.totalUnmetDestinations || 0}
+        />
+        <StatCard
+          label="Users Affected"
+          value={summary?.totalUsersAffected || 0}
+        />
+        <StatCard
+          label="Top Opportunity"
+          value={summary?.topOpportunityRegion || "-"}
+        />
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Unmet Destination Demand</h3>
+        <DataTable
+          headers={["Destination", "Demand", "Has Club", "Has Event"]}
+          rows={(unmetDestinations || [])
+            .slice(0, 15)
+            .map((d) => [
+              d.destination,
+              d.demandCount,
+              d.hasClub ? "Yes" : "No",
+              d.hasEvent ? "Yes" : "No",
+            ])}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Regional Gap Analysis</h3>
+          <DataTable
+            headers={["Region", "Demand", "Clubs", "Events", "Gap Score"]}
+            rows={(regionGaps || [])
+              .slice(0, 8)
+              .map((r) => [
+                r.region,
+                r.demandCount,
+                r.clubCount,
+                r.eventCount,
+                r.gapScore,
+              ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Partnership Opportunities</h3>
+          <DataTable
+            headers={["Destination", "Demand", "Suggested Action"]}
+            rows={(partnershipOpportunities || [])
+              .slice(0, 8)
+              .map((p) => [p.destination, p.demandCount, p.suggestedAction])}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClubEngagementReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalClubs: number;
+    clubsWithMembers: number;
+    clubsWithAdmins: number;
+    totalMembers: number;
+    totalAdmins: number;
+    recentlyActiveUsers: number;
+  };
+  const topClubsByMembers = data.topClubsByMembers as {
+    name: string;
+    location: string;
+    memberCount: number;
+    adminCount: number;
+    eventCount: number;
+    lastActivity: string;
+  }[];
+  const topClubsByAdmins = data.topClubsByAdmins as {
+    name: string;
+    location: string;
+    memberCount: number;
+    adminCount: number;
+    eventCount: number;
+    lastActivity: string;
+  }[];
+  const roleDistribution = data.roleDistribution as {
+    role: string;
+    count: number;
+  }[];
+  const monthlyGrowth = data.monthlyGrowth as {
+    month: string;
+    newMembers: number;
+  }[];
+  const clubEngagement = data.clubEngagement as {
+    name: string;
+    location: string;
+    memberCount: number;
+    adminCount: number;
+    eventCount: number;
+    lastActivity: string;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <StatCard label="Total Clubs" value={summary?.totalClubs || 0} />
+        <StatCard
+          label="Clubs with Members"
+          value={summary?.clubsWithMembers || 0}
+        />
+        <StatCard
+          label="Clubs with Admins"
+          value={summary?.clubsWithAdmins || 0}
+        />
+        <StatCard label="Total Members" value={summary?.totalMembers || 0} />
+        <StatCard label="Total Admins" value={summary?.totalAdmins || 0} />
+        <StatCard
+          label="Active (30 days)"
+          value={summary?.recentlyActiveUsers || 0}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Top Clubs by Members</h3>
+          <DataTable
+            headers={["Club", "Members", "Admins", "Last Active"]}
+            rows={(topClubsByMembers || [])
+              .slice(0, 8)
+              .map((c) => [
+                c.name,
+                c.memberCount,
+                c.adminCount,
+                c.lastActivity,
+              ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Top Clubs by Admins</h3>
+          <DataTable
+            headers={["Club", "Admins", "Members", "Events"]}
+            rows={(topClubsByAdmins || [])
+              .slice(0, 8)
+              .map((c) => [c.name, c.adminCount, c.memberCount, c.eventCount])}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">User Role Distribution</h3>
+          <DataTable
+            headers={["Role", "Count"]}
+            rows={(roleDistribution || []).map((r) => [r.role, r.count])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Monthly Membership Growth</h3>
+          <DataTable
+            headers={["Month", "New Members"]}
+            rows={(monthlyGrowth || []).map((m) => [m.month, m.newMembers])}
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Club Engagement Overview</h3>
+        <DataTable
+          headers={[
+            "Club",
+            "Location",
+            "Members",
+            "Admins",
+            "Events",
+            "Last Active",
+          ]}
+          rows={(clubEngagement || [])
+            .slice(0, 15)
+            .map((c) => [
+              c.name,
+              c.location,
+              c.memberCount,
+              c.adminCount,
+              c.eventCount,
+              c.lastActivity,
+            ])}
+        />
+      </div>
+    </div>
+  );
+}
+
+function SportPerformanceReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalSports: number;
+    totalClubSportOfferings: number;
+    totalSportEvents: number;
+    topSport: string;
+  };
+  const sportPerformance = data.sportPerformance as {
+    sport: string;
+    clubCount: number;
+    eventCount: number;
+    upcomingEvents: number;
+    completedEvents: number;
+    teamRegistrations: number;
+    interestSubmissions: number;
+    tournamentInterests: number;
+    engagementScore: number;
+  }[];
+  const sportTrends = data.sportTrends as {
+    sport: string;
+    recentInterests: number;
+    previousInterests: number;
+    growthPercent: number;
+  }[];
+  const countryDiversity = data.countryDiversity as {
+    country: string;
+    sportCount: number;
+    topSport: string;
+    clubCount: number;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard label="Sports Tracked" value={summary?.totalSports || 0} />
+        <StatCard
+          label="Club Sport Offerings"
+          value={summary?.totalClubSportOfferings || 0}
+        />
+        <StatCard label="Sport Events" value={summary?.totalSportEvents || 0} />
+        <StatCard label="Top Sport" value={summary?.topSport || "-"} />
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Sport Performance Rankings</h3>
+        <DataTable
+          headers={[
+            "Sport",
+            "Clubs",
+            "Events",
+            "Registrations",
+            "Interests",
+            "Score",
+          ]}
+          rows={(sportPerformance || [])
+            .slice(0, 12)
+            .map((s) => [
+              s.sport,
+              s.clubCount,
+              s.eventCount,
+              s.teamRegistrations,
+              s.tournamentInterests,
+              s.engagementScore,
+            ])}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">30-Day Sport Trends</h3>
+          <DataTable
+            headers={["Sport", "Recent", "Previous", "Growth"]}
+            rows={(sportTrends || []).map((t) => [
+              t.sport,
+              t.recentInterests,
+              t.previousInterests,
+              `${t.growthPercent > 0 ? "+" : ""}${t.growthPercent}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Sport Diversity by Country</h3>
+          <DataTable
+            headers={["Country", "Sports", "Top Sport", "Clubs"]}
+            rows={(countryDiversity || [])
+              .slice(0, 10)
+              .map((c) => [c.country, c.sportCount, c.topSport, c.clubCount])}
+          />
+        </div>
       </div>
     </div>
   );
