@@ -243,8 +243,8 @@ export default function VisitClubCard({
 
         {/* Interest Section */}
         {!showInterestForm ? (
-          <div className="space-y-3">
-            <div className="text-center py-2">
+          <div className="bg-gray-50 rounded-lg p-3 space-y-3">
+            <div className="text-center">
               <p className="text-sm font-medium text-gray-900">
                 Interested in visiting {clubName}?
               </p>
