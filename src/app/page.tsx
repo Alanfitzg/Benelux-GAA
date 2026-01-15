@@ -1126,11 +1126,11 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="bg-primary/5 rounded-lg md:rounded-xl p-3 md:p-5 border-2 border-primary/20 hover:border-primary/40 transition-all"
             >
-              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 text-center md:text-left">
                 For Travelling Teams
               </h3>
               <ul className="space-y-2 md:space-y-3 mb-4">
-                <li className="flex items-start gap-2">
+                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1138,7 +1138,7 @@ export default function HomePage() {
                     Browse European tournaments
                   </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1146,7 +1146,7 @@ export default function HomePage() {
                     Connect with international clubs
                   </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
                   <span className="text-primary font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1155,25 +1155,27 @@ export default function HomePage() {
                   </span>
                 </li>
               </ul>
-              <Link
-                href="/events"
-                className="inline-flex items-center text-primary hover:text-primary/90 font-semibold text-xs md:text-sm"
-              >
-                Explore
-                <svg
-                  className="ml-1 w-3 h-3 md:w-4 md:h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="text-center md:text-left">
+                <Link
+                  href="/events"
+                  className="inline-flex items-center text-primary hover:text-primary/90 font-semibold text-xs md:text-sm"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Link>
+                  Explore
+                  <svg
+                    className="ml-1 w-3 h-3 md:w-4 md:h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
             </motion.div>
 
             <motion.div
@@ -1183,11 +1185,11 @@ export default function HomePage() {
               viewport={{ once: true }}
               className="bg-gray-50 rounded-lg md:rounded-xl p-3 md:p-5 border-2 border-gray-200 hover:border-gray-300 transition-all"
             >
-              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-3 md:mb-4 text-center md:text-left">
                 For Host Clubs
               </h3>
               <ul className="space-y-2 md:space-y-3 mb-4">
-                <li className="flex items-start gap-2">
+                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1195,7 +1197,7 @@ export default function HomePage() {
                     Welcome visiting teams
                   </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1203,7 +1205,7 @@ export default function HomePage() {
                     Create tournaments & events
                   </span>
                 </li>
-                <li className="flex items-start gap-2">
+                <li className="flex items-center md:items-start justify-center md:justify-start gap-2">
                   <span className="text-gray-600 font-bold text-sm md:text-base">
                     ✓
                   </span>
@@ -1212,25 +1214,27 @@ export default function HomePage() {
                   </span>
                 </li>
               </ul>
-              <Link
-                href="/signin"
-                className="inline-flex items-center text-gray-600 hover:text-gray-700 font-semibold text-xs md:text-sm"
-              >
-                Admin Access
-                <svg
-                  className="ml-1 w-3 h-3 md:w-4 md:h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="text-center md:text-left">
+                <Link
+                  href="/signin"
+                  className="inline-flex items-center text-gray-600 hover:text-gray-700 font-semibold text-xs md:text-sm"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </Link>
+                  Admin Access
+                  <svg
+                    className="ml-1 w-3 h-3 md:w-4 md:h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Link>
+              </div>
             </motion.div>
           </div>
         </div>

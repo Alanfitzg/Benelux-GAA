@@ -280,11 +280,11 @@ export default function ClubsPage() {
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-primary to-primary/80 text-white py-8 md:py-12">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Clubs / Cities
+            <h1 className="text-2xl md:text-5xl font-bold mb-4">
+              European GAA Clubs
             </h1>
-            <p className="text-xl md:text-2xl mb-2">
-              Discover the international community of clubs
+            <p className="text-lg md:text-2xl mb-4">
+              Discover GAA clubs across Europe
             </p>
           </div>
         </div>
@@ -308,8 +308,8 @@ export default function ClubsPage() {
           <p className="text-lg md:text-2xl mb-4">
             Discover GAA clubs across Europe
           </p>
-          {/* Day-Pass Explainer */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
+          {/* Day-Pass Explainer - hidden on mobile */}
+          <div className="hidden md:inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-sm">
             <svg
               className="w-5 h-5 text-green-300 flex-shrink-0"
               fill="none"
@@ -333,23 +333,23 @@ export default function ClubsPage() {
       </div>
 
       {/* Search and Filters Section */}
-      <div className="bg-white py-8 shadow-sm">
+      <div className="bg-white py-3 md:py-8 shadow-sm">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2 md:gap-4">
             {/* View Toggle */}
             <div className="flex justify-center">
-              <div className="inline-flex rounded-lg border border-gray-300 bg-gray-50 p-1">
+              <div className="inline-flex rounded-lg border border-gray-300 bg-gray-50 p-0.5 md:p-1">
                 <button
                   onClick={() => setViewMode("countries")}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  className={`px-2 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium rounded-md transition-colors ${
                     viewMode === "countries"
                       ? "bg-primary text-white shadow-sm"
                       : "text-gray-700 hover:text-primary"
                   }`}
                 >
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-1 md:gap-2">
                     <svg
-                      className="w-4 h-4"
+                      className="w-3 h-3 md:w-4 md:h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -361,20 +361,21 @@ export default function ClubsPage() {
                         d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
                       />
                     </svg>
-                    Country Cards
+                    <span className="hidden sm:inline">Country Cards</span>
+                    <span className="sm:hidden">Countries</span>
                   </span>
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  className={`px-2 md:px-4 py-1.5 md:py-2 text-xs md:text-sm font-medium rounded-md transition-colors ${
                     viewMode === "list"
                       ? "bg-primary text-white shadow-sm"
                       : "text-gray-700 hover:text-primary"
                   }`}
                 >
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center gap-1 md:gap-2">
                     <svg
-                      className="w-4 h-4"
+                      className="w-3 h-3 md:w-4 md:h-4"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -386,20 +387,21 @@ export default function ClubsPage() {
                         d="M4 6h16M4 10h16M4 14h16M4 18h16"
                       />
                     </svg>
-                    Club List
+                    <span className="hidden sm:inline">Club List</span>
+                    <span className="sm:hidden">Clubs</span>
                   </span>
                 </button>
               </div>
             </div>
 
             {/* Search and Filter Controls */}
-            <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-center">
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-center justify-center">
               {/* Mobile: filters in grid */}
-              <div className="grid grid-cols-2 md:flex gap-2 md:gap-4 w-full md:w-auto">
+              <div className="grid grid-cols-2 md:flex gap-1.5 md:gap-4 w-full md:w-auto">
                 <select
                   value={selectedCountry}
                   onChange={(e) => setSelectedCountry(e.target.value)}
-                  className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="text-xs md:text-base px-2 md:px-4 py-1.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="">All Countries</option>
                   {countries
@@ -413,7 +415,7 @@ export default function ClubsPage() {
                 <select
                   value={selectedTeamType}
                   onChange={(e) => setSelectedTeamType(e.target.value)}
-                  className="text-sm md:text-base px-2 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="text-xs md:text-base px-2 md:px-4 py-1.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 >
                   <option value="">All Sports</option>
                   {teamTypes.map((type: string) => (
@@ -430,13 +432,13 @@ export default function ClubsPage() {
                 placeholder="Search clubs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full md:min-w-[250px] text-sm md:text-base px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full md:min-w-[250px] text-xs md:text-base px-2 md:px-4 py-1.5 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
 
               {/* Price Filter - Only show when viewing clubs (not country cards) */}
               {(viewMode === "list" || selectedCountry || country) && (
-                <div className="flex items-center gap-3 w-full md:w-auto bg-gray-50 px-3 py-2 rounded-lg border border-gray-200">
-                  <label className="flex items-center gap-2 cursor-pointer">
+                <div className="flex items-center gap-2 md:gap-3 w-full md:w-auto bg-gray-50 px-2 md:px-3 py-1.5 md:py-2 rounded-lg border border-gray-200">
+                  <label className="flex items-center gap-1.5 md:gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={priceFilterEnabled}
@@ -446,14 +448,14 @@ export default function ClubsPage() {
                           setMaxPrice(Math.round(maxAvailablePrice));
                         }
                       }}
-                      className="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary"
+                      className="w-3 h-3 md:w-4 md:h-4 text-primary rounded border-gray-300 focus:ring-primary"
                     />
-                    <span className="text-sm text-gray-600 whitespace-nowrap">
-                      Activate Price Filter
+                    <span className="text-xs md:text-sm text-gray-600 whitespace-nowrap">
+                      Price Filter
                     </span>
                   </label>
                   {priceFilterEnabled && (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 md:gap-2">
                       <input
                         type="range"
                         min={5}
@@ -461,9 +463,9 @@ export default function ClubsPage() {
                         step={5}
                         value={maxPrice || Math.round(maxAvailablePrice)}
                         onChange={(e) => setMaxPrice(Number(e.target.value))}
-                        className="w-20 md:w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
+                        className="w-16 md:w-32 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-primary"
                       />
-                      <span className="text-sm font-semibold text-green-600 min-w-[50px]">
+                      <span className="text-xs md:text-sm font-semibold text-green-600 min-w-[40px] md:min-w-[50px]">
                         &euro;{maxPrice || Math.round(maxAvailablePrice)}
                       </span>
                     </div>
@@ -472,16 +474,16 @@ export default function ClubsPage() {
               )}
 
               {/* Buttons */}
-              <div className="flex gap-2 w-full md:w-auto">
+              <div className="flex gap-1.5 md:gap-2 w-full md:w-auto">
                 <button
                   onClick={handleSearch}
-                  className="flex-1 md:flex-none text-sm md:text-base bg-primary text-white px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
+                  className="flex-1 md:flex-none text-xs md:text-base bg-primary text-white px-3 md:px-6 py-1.5 md:py-3 rounded-lg hover:bg-primary/90 transition font-semibold"
                 >
                   Search
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 md:flex-none text-sm md:text-base bg-gray-500 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-gray-600 transition font-semibold"
+                  className="flex-1 md:flex-none text-xs md:text-base bg-gray-500 text-white px-3 md:px-6 py-1.5 md:py-3 rounded-lg hover:bg-gray-600 transition font-semibold"
                 >
                   Reset
                 </button>

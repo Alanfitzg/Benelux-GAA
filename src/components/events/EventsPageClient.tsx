@@ -44,7 +44,6 @@ interface Club {
 
 interface EventsPageClientProps {
   initialEvents: Event[];
-  eventTypes: readonly string[];
   countries: string[];
   sportTypes: readonly string[];
   usedSportTypes: string[];
@@ -63,7 +62,6 @@ interface EventsPageClientProps {
 
 export default function EventsPageClient({
   initialEvents,
-  eventTypes,
   countries,
   sportTypes,
   usedSportTypes,
@@ -81,9 +79,6 @@ export default function EventsPageClient({
 
   // State for filters
   const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
-  const [selectedEventType, setSelectedEventType] = useState(
-    searchParams.get("type") || ""
-  );
   const [selectedCountry, setSelectedCountry] = useState(
     searchParams.get("country") || ""
   );
@@ -122,13 +117,6 @@ export default function EventsPageClient({
           event.location.toLowerCase().includes(query) ||
           event.description?.toLowerCase().includes(query) ||
           event.club?.name.toLowerCase().includes(query)
-      );
-    }
-
-    // Event type filter
-    if (selectedEventType) {
-      filtered = filtered.filter(
-        (event) => event.eventType === selectedEventType
       );
     }
 
@@ -177,7 +165,6 @@ export default function EventsPageClient({
   }, [
     initialEvents,
     debouncedSearch,
-    selectedEventType,
     selectedCountry,
     selectedMonth,
     visibility,
@@ -188,7 +175,6 @@ export default function EventsPageClient({
   const updateUrlParams = useCallback(() => {
     const params = new URLSearchParams();
     if (debouncedSearch) params.set("q", debouncedSearch);
-    if (selectedEventType) params.set("type", selectedEventType);
     if (selectedCountry) params.set("country", selectedCountry);
     if (selectedMonth) params.set("month", selectedMonth);
     if (visibility) params.set("visibility", visibility);
@@ -201,7 +187,6 @@ export default function EventsPageClient({
     });
   }, [
     debouncedSearch,
-    selectedEventType,
     selectedCountry,
     selectedMonth,
     visibility,
@@ -216,7 +201,6 @@ export default function EventsPageClient({
   // Clear all filters
   const clearFilters = () => {
     setSearchQuery("");
-    setSelectedEventType("");
     setSelectedCountry("");
     setSelectedMonth("");
     setVisibility("");
@@ -226,7 +210,6 @@ export default function EventsPageClient({
   // Count active filters
   const activeFilterCount = [
     searchQuery,
-    selectedEventType,
     selectedCountry,
     selectedMonth,
     visibility,
@@ -332,25 +315,6 @@ export default function EventsPageClient({
                 </select>
               </div>
 
-              {/* Event Type */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Event Type
-                </label>
-                <select
-                  value={selectedEventType}
-                  onChange={(e) => setSelectedEventType(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                >
-                  <option value="">All Types</option>
-                  {eventTypes.map((type) => (
-                    <option key={type} value={type}>
-                      {type}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
               {/* Country */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -373,7 +337,7 @@ export default function EventsPageClient({
               {/* Visibility */}
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tournament Type
+                  Tournament Status
                 </label>
                 <select
                   value={visibility}
@@ -571,18 +535,6 @@ export default function EventsPageClient({
                     <div className="pt-4 space-y-4">
                       <div className="grid grid-cols-2 gap-3">
                         <select
-                          value={selectedEventType}
-                          onChange={(e) => setSelectedEventType(e.target.value)}
-                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
-                        >
-                          <option value="">All Types</option>
-                          {eventTypes.map((type) => (
-                            <option key={type} value={type}>
-                              {type}
-                            </option>
-                          ))}
-                        </select>
-                        <select
                           value={selectedCountry}
                           onChange={(e) => setSelectedCountry(e.target.value)}
                           className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
@@ -593,6 +545,15 @@ export default function EventsPageClient({
                               {country}
                             </option>
                           ))}
+                        </select>
+                        <select
+                          value={visibility}
+                          onChange={(e) => setVisibility(e.target.value)}
+                          className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                        >
+                          <option value="">All Status</option>
+                          <option value="PUBLIC">Public</option>
+                          <option value="PRIVATE">Private</option>
                         </select>
                       </div>
                       <div>
@@ -610,56 +571,50 @@ export default function EventsPageClient({
                         </select>
                       </div>
 
-                      {/* Sport Types for Mobile */}
+                      {/* Sport Types for Mobile - Compact Chips */}
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Sport Types
                           {selectedSportTypes.length > 0 && (
-                            <span className="ml-2 text-xs text-gray-500">
-                              ({selectedSportTypes.length} selected)
-                            </span>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedSportTypes([])}
+                              className="ml-2 text-xs text-primary hover:text-primary/80"
+                            >
+                              Clear ({selectedSportTypes.length})
+                            </button>
                           )}
                         </label>
-                        <div className="space-y-2 max-h-40 overflow-y-auto border border-gray-300 rounded-lg p-3 bg-white">
-                          {sportTypes.map((sport) => {
-                            const isUsed = usedSportTypes.includes(sport);
-                            return (
-                              <label
+                        <div className="flex flex-wrap gap-2">
+                          {sportTypes
+                            .filter((sport) => usedSportTypes.includes(sport))
+                            .map((sport) => (
+                              <button
                                 key={sport}
-                                className={`flex items-center space-x-3 cursor-pointer hover:bg-gray-50 p-2 rounded transition-colors ${
-                                  !isUsed ? "opacity-50" : ""
+                                type="button"
+                                onClick={() => {
+                                  if (selectedSportTypes.includes(sport)) {
+                                    setSelectedSportTypes(
+                                      selectedSportTypes.filter(
+                                        (s) => s !== sport
+                                      )
+                                    );
+                                  } else {
+                                    setSelectedSportTypes([
+                                      ...selectedSportTypes,
+                                      sport,
+                                    ]);
+                                  }
+                                }}
+                                className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
+                                  selectedSportTypes.includes(sport)
+                                    ? "bg-primary text-white border-primary"
+                                    : "bg-white text-gray-700 border-gray-300 hover:border-primary"
                                 }`}
                               >
-                                <input
-                                  type="checkbox"
-                                  checked={selectedSportTypes.includes(sport)}
-                                  onChange={(e) => {
-                                    if (e.target.checked) {
-                                      setSelectedSportTypes([
-                                        ...selectedSportTypes,
-                                        sport,
-                                      ]);
-                                    } else {
-                                      setSelectedSportTypes(
-                                        selectedSportTypes.filter(
-                                          (s) => s !== sport
-                                        )
-                                      );
-                                    }
-                                  }}
-                                  className="w-4 h-4 text-primary border-2 border-gray-300 rounded focus:ring-primary focus:ring-2"
-                                />
-                                <span className="text-xs text-gray-700">
-                                  {sport}
-                                  {!isUsed && (
-                                    <span className="text-xs text-gray-400 ml-1">
-                                      (no events)
-                                    </span>
-                                  )}
-                                </span>
-                              </label>
-                            );
-                          })}
+                                {sport}
+                              </button>
+                            ))}
                         </div>
                       </div>
 
@@ -696,27 +651,6 @@ export default function EventsPageClient({
                     Search: {searchQuery}
                     <button
                       onClick={() => setSearchQuery("")}
-                      className="hover:bg-primary/20 rounded-full p-0.5"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </span>
-                )}
-                {selectedEventType && (
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">
-                    Type: {selectedEventType}
-                    <button
-                      onClick={() => setSelectedEventType("")}
                       className="hover:bg-primary/20 rounded-full p-0.5"
                     >
                       <svg

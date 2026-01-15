@@ -249,7 +249,6 @@ export default async function EventsPage() {
         <StructuredData data={structuredData} />
         <EventsPageClient
           initialEvents={eventsWithCityImages}
-          eventTypes={filterOptions.eventTypes}
           countries={filterOptions.countries}
           sportTypes={filterOptions.sportTypes}
           usedSportTypes={filterOptions.usedSportTypes}
