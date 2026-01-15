@@ -193,10 +193,10 @@ export default function VisitClubCard({
             {isDayPassExpanded && (
               <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600 space-y-3">
                 <p>
-                  Your Day-Pass gives you full access to train with {clubName}{" "}
-                  for a day. Unlike clubs back home, most European GAA clubs
-                  don&apos;t own their own facilities - so this contribution
-                  helps cover:
+                  Planning a casual visit outside of a tournament? The Day-Pass
+                  covers the cost of playing with {clubName} for a day. Unlike
+                  clubs back home, most European GAA clubs don&apos;t own their
+                  own facilities - so this contribution helps cover:
                 </p>
                 <ul className="space-y-2">
                   {[
@@ -206,11 +206,11 @@ export default function VisitClubCard({
                     },
                     {
                       title: "Equipment",
-                      desc: "Balls, cones, bibs, and training gear",
+                      desc: "Balls, cones, bibs, and gear provided",
                     },
                     {
                       title: "Local coordination",
-                      desc: "Club members organising your session",
+                      desc: "Club members organising your visit",
                     },
                   ].map((item) => (
                     <li key={item.title} className="flex items-start gap-2">
@@ -235,8 +235,8 @@ export default function VisitClubCard({
                   ))}
                 </ul>
                 <p className="text-xs text-gray-500 italic">
-                  Many clubs also organise post-training socials - a great way
-                  to connect with the local GAA community!
+                  Many clubs also organise post-match socials - a great way to
+                  connect with the local GAA community!
                 </p>
               </div>
             )}
