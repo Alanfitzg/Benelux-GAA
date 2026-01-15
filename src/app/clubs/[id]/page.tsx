@@ -16,7 +16,9 @@ import VerifiedBadge, {
 import TestimonialSection from "@/components/testimonials/TestimonialSection";
 import ClubProfileNav from "@/components/club/ClubProfileNav";
 import ClubContactCard from "@/components/club/ClubContactCard";
-import SportsBadges from "@/components/club/SportsBadges";
+import SportsBadges, {
+  SportsBadgesHeader,
+} from "@/components/club/SportsBadges";
 import ClubFriendsSection from "@/components/club/ClubFriendsSection";
 import ClubPhotoGallery from "@/components/club/ClubPhotoGallery";
 import ClubTournamentsSection from "@/components/club/ClubTournamentsSection";
@@ -649,6 +651,13 @@ export default async function ClubDetailsPage({
                     compact
                   />
                 </div>
+
+                {/* Sports Badges - In Header */}
+                {club.teamTypes && club.teamTypes.length > 0 && (
+                  <div className="mt-3">
+                    <SportsBadgesHeader teamTypes={club.teamTypes} />
+                  </div>
+                )}
               </div>
 
               {/* Crest - Right Side */}
@@ -670,30 +679,14 @@ export default async function ClubDetailsPage({
         </div>
       </div>
 
-      {/* Content Card - Only show if there's content (sports badges or admin buttons) */}
-      {((club.teamTypes && club.teamTypes.length > 0) ||
-        isCurrentAdmin ||
+      {/* Content Card - Only show if there are admin buttons */}
+      {(isCurrentAdmin ||
         session?.user?.role === "SUPER_ADMIN" ||
         !userAlreadyHasClub) && (
         <div className="bg-gray-200">
           <div className="container mx-auto px-4 py-4">
             <div className="max-w-6xl mx-auto">
               <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
-                {/* Sports Badges */}
-                {club.teamTypes && club.teamTypes.length > 0 && (
-                  <div
-                    className={
-                      isCurrentAdmin ||
-                      session?.user?.role === "SUPER_ADMIN" ||
-                      !userAlreadyHasClub
-                        ? "mb-5"
-                        : ""
-                    }
-                  >
-                    <SportsBadges teamTypes={club.teamTypes} size="md" />
-                  </div>
-                )}
-
                 {/* Admin Action Buttons */}
                 {(isCurrentAdmin ||
                   session?.user?.role === "SUPER_ADMIN" ||
@@ -799,10 +792,6 @@ export default async function ClubDetailsPage({
                       clubName={club.name}
                       dayPassPrice={club.dayPassPrice}
                       dayPassCurrency={club.dayPassCurrency}
-                      isOpenToVisitors={club.isOpenToVisitors}
-                      preferredWeekends={
-                        club.preferredWeekends as string[] | null
-                      }
                     />
                   </div>
                 )}
@@ -830,10 +819,6 @@ export default async function ClubDetailsPage({
                         clubName={club.name}
                         dayPassPrice={club.dayPassPrice}
                         dayPassCurrency={club.dayPassCurrency}
-                        isOpenToVisitors={club.isOpenToVisitors}
-                        preferredWeekends={
-                          club.preferredWeekends as string[] | null
-                        }
                       />
                     </div>
 
@@ -892,8 +877,8 @@ export default async function ClubDetailsPage({
               </div>
             </section>
 
-            {/* Photo Gallery Section */}
-            <section id="gallery" className="scroll-mt-24">
+            {/* Photo Gallery Section - Hidden on mobile */}
+            <section id="gallery" className="scroll-mt-24 hidden sm:block">
               <ClubPhotoGallery
                 clubId={club.id}
                 isAdmin={

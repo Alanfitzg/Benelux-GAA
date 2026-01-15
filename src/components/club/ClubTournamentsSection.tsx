@@ -160,9 +160,98 @@ export default function ClubTournamentsSection({
                     href={`/events/${event.id}`}
                     className="group block bg-white rounded-xl border border-gray-200 shadow-md hover:shadow-xl hover:border-primary/30 transition-all duration-300 overflow-hidden"
                   >
-                    <div className="flex flex-col sm:flex-row">
+                    {/* Mobile Compact View */}
+                    <div className="sm:hidden flex items-center gap-3 p-3">
+                      {/* Thumbnail */}
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                        {event.imageUrl ? (
+                          <Image
+                            src={event.imageUrl}
+                            alt={event.title}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/40 flex items-center justify-center">
+                            <svg
+                              className="w-8 h-8 text-primary/50"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                              />
+                            </svg>
+                          </div>
+                        )}
+                        {/* Event Type Badge - Small */}
+                        <div className="absolute top-1 left-1">
+                          <span
+                            className={`px-1.5 py-0.5 text-[10px] font-bold rounded-full ${eventTypeStyles.bg} ${eventTypeStyles.text}`}
+                          >
+                            {event.eventType}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900 text-sm line-clamp-2 group-hover:text-primary transition-colors">
+                          {event.title}
+                        </h3>
+                        <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                          <svg
+                            className="w-3 h-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                            />
+                          </svg>
+                          {formatDate(event.startDate)}
+                        </div>
+                        {totalCost !== null && (
+                          <div className="mt-1">
+                            <span className="text-sm font-bold text-primary">
+                              €{totalCost.toFixed(0)}
+                            </span>
+                            <span className="text-[10px] text-gray-500">
+                              /person
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Arrow */}
+                      <svg
+                        className="w-5 h-5 text-gray-400 flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+
+                    {/* Desktop Full View */}
+                    <div className="hidden sm:flex flex-row">
                       {/* Event Image */}
-                      <div className="relative w-full sm:w-56 h-40 sm:h-auto flex-shrink-0">
+                      <div className="relative w-56 flex-shrink-0">
                         {event.imageUrl ? (
                           <Image
                             src={event.imageUrl}
@@ -205,11 +294,11 @@ export default function ClubTournamentsSection({
                       </div>
 
                       {/* Event Details */}
-                      <div className="flex-1 p-5 sm:p-6">
+                      <div className="flex-1 p-6">
                         <div className="flex flex-col h-full">
                           {/* Title and Meta */}
                           <div className="flex-1">
-                            <h3 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-primary transition-colors mb-2">
+                            <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors mb-2">
                               {event.title}
                             </h3>
 
