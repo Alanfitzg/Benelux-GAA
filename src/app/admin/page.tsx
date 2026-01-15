@@ -83,6 +83,25 @@ export default function AdminDashboard() {
         </Link>
 
         <Link
+          href="/admin/club-admin-requests"
+          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+        >
+          <div className="flex items-center space-x-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-violet-400/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="text-2xl">🛡️</span>
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                Club Admin Requests
+              </h2>
+              <p className="text-gray-600 mt-1">
+                Review and approve club admin access requests
+              </p>
+            </div>
+          </div>
+        </Link>
+
+        <Link
           href="/admin/images"
           className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
         >
@@ -115,25 +134,6 @@ export default function AdminDashboard() {
               </h2>
               <p className="text-gray-600 mt-1">
                 View and analyze custom trip requests
-              </p>
-            </div>
-          </div>
-        </Link>
-
-        <Link
-          href="/admin/club-admin-requests"
-          className="group bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
-        >
-          <div className="flex items-center space-x-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-violet-400/20 to-purple-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-              <span className="text-2xl">🛡️</span>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
-                Club Admin Requests
-              </h2>
-              <p className="text-gray-600 mt-1">
-                Review and approve club admin access requests
               </p>
             </div>
           </div>

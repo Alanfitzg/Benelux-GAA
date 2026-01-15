@@ -170,6 +170,7 @@ export async function GET(
         id: club.id,
         name: club.name,
         location: club.location,
+        crest: club.imageUrl,
         memberCount: club._count.members,
         eventCount: club._count.events,
       },

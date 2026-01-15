@@ -652,16 +652,16 @@ export default async function ClubDetailsPage({
                   />
                 </div>
 
-                {/* Sports Badges - In Header */}
+                {/* Sports Badges - In Header (hidden on mobile) */}
                 {club.teamTypes && club.teamTypes.length > 0 && (
-                  <div className="mt-3">
+                  <div className="mt-3 hidden sm:block">
                     <SportsBadgesHeader teamTypes={club.teamTypes} />
                   </div>
                 )}
               </div>
 
               {/* Crest - Right Side */}
-              <div className="flex-shrink-0">
+              <div className="flex-shrink-0 flex flex-col items-center">
                 <Image
                   src={
                     club.imageUrl ||
@@ -673,95 +673,113 @@ export default async function ClubDetailsPage({
                   className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-xl object-contain bg-white p-2 sm:p-3 shadow-lg"
                   unoptimized
                 />
+                {/* Compact Admin Request Button - under crest for non-admins (desktop only) */}
+                {session && !isCurrentAdmin && !userAlreadyHasClub && (
+                  <div className="mt-2 hidden sm:block">
+                    <ClubAdminRequestButton
+                      clubId={club.id}
+                      clubName={club.name}
+                      existingRequest={
+                        existingAdminRequest
+                          ? {
+                              id: existingAdminRequest.id,
+                              status: existingAdminRequest.status as
+                                | "PENDING"
+                                | "APPROVED"
+                                | "REJECTED",
+                              requestedAt:
+                                existingAdminRequest.requestedAt.toISOString(),
+                              rejectionReason:
+                                existingAdminRequest.rejectionReason ||
+                                undefined,
+                            }
+                          : undefined
+                      }
+                      isCurrentAdmin={isCurrentAdmin}
+                      compact
+                    />
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* Mobile-only Admin Request - subtle text link at bottom of header */}
+            {session && !isCurrentAdmin && !userAlreadyHasClub && (
+              <div className="sm:hidden mt-3 pt-3 border-t border-white/20">
+                <ClubAdminRequestButton
+                  clubId={club.id}
+                  clubName={club.name}
+                  existingRequest={
+                    existingAdminRequest
+                      ? {
+                          id: existingAdminRequest.id,
+                          status: existingAdminRequest.status as
+                            | "PENDING"
+                            | "APPROVED"
+                            | "REJECTED",
+                          requestedAt:
+                            existingAdminRequest.requestedAt.toISOString(),
+                          rejectionReason:
+                            existingAdminRequest.rejectionReason || undefined,
+                        }
+                      : undefined
+                  }
+                  isCurrentAdmin={isCurrentAdmin}
+                  mobileStyle
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Content Card - Only show if there are admin buttons */}
-      {(isCurrentAdmin ||
-        session?.user?.role === "SUPER_ADMIN" ||
-        !userAlreadyHasClub) && (
+      {/* Content Card - Only show for actual admins */}
+      {(isCurrentAdmin || session?.user?.role === "SUPER_ADMIN") && (
         <div className="bg-gray-200">
           <div className="container mx-auto px-4 py-4">
             <div className="max-w-6xl mx-auto">
               <div className="bg-white rounded-xl shadow-lg p-6 md:p-8">
                 {/* Admin Action Buttons */}
-                {(isCurrentAdmin ||
-                  session?.user?.role === "SUPER_ADMIN" ||
-                  !userAlreadyHasClub) && (
-                  <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
-                    {(isCurrentAdmin ||
-                      session?.user?.role === "SUPER_ADMIN") && (
-                      <>
-                        <Link
-                          href={`/clubs/${club.id}/edit`}
-                          className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                            />
-                          </svg>
-                          Edit Page
-                        </Link>
-                        <Link
-                          href={`/club-admin/${club.id}`}
-                          className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                            />
-                          </svg>
-                          Dashboard
-                        </Link>
-                      </>
-                    )}
-
-                    {/* Admin Request Button - for non-admins who aren't already associated with another club */}
-                    {!userAlreadyHasClub && (
-                      <ClubAdminRequestButton
-                        clubId={club.id}
-                        clubName={club.name}
-                        existingRequest={
-                          existingAdminRequest
-                            ? {
-                                id: existingAdminRequest.id,
-                                status: existingAdminRequest.status as
-                                  | "PENDING"
-                                  | "APPROVED"
-                                  | "REJECTED",
-                                requestedAt:
-                                  existingAdminRequest.requestedAt.toISOString(),
-                                rejectionReason:
-                                  existingAdminRequest.rejectionReason ||
-                                  undefined,
-                              }
-                            : undefined
-                        }
-                        isCurrentAdmin={isCurrentAdmin}
+                <div className="flex flex-wrap items-center gap-3 justify-center lg:justify-start">
+                  <Link
+                    href={`/clubs/${club.id}/edit`}
+                    className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                       />
-                    )}
-                  </div>
-                )}
+                    </svg>
+                    Edit Page
+                  </Link>
+                  <Link
+                    href={`/club-admin/${club.id}`}
+                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                    Dashboard
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

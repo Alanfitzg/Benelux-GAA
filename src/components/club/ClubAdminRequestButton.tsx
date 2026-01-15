@@ -16,6 +16,8 @@ interface ClubAdminRequestButtonProps {
     rejectionReason?: string;
   };
   isCurrentAdmin: boolean;
+  compact?: boolean;
+  mobileStyle?: boolean;
 }
 
 export default function ClubAdminRequestButton({
@@ -23,6 +25,8 @@ export default function ClubAdminRequestButton({
   clubName,
   existingRequest: initialRequest,
   isCurrentAdmin,
+  compact = false,
+  mobileStyle = false,
 }: ClubAdminRequestButtonProps) {
   const { data: session } = useSession();
   const router = useRouter();
@@ -104,6 +108,58 @@ export default function ClubAdminRequestButton({
   const getStatusDisplay = () => {
     if (!existingRequest) return null;
 
+    if (mobileStyle) {
+      switch (existingRequest.status) {
+        case "PENDING":
+          return (
+            <div className="flex items-center justify-center gap-1.5 text-yellow-300 w-full">
+              <Clock className="w-3.5 h-3.5" />
+              <span className="text-xs">Admin request pending</span>
+            </div>
+          );
+        case "APPROVED":
+          return (
+            <div className="flex items-center justify-center gap-1.5 text-green-300 w-full">
+              <CheckCircle className="w-3.5 h-3.5" />
+              <span className="text-xs">Admin request approved</span>
+            </div>
+          );
+        case "REJECTED":
+          return (
+            <div className="flex items-center justify-center gap-1.5 text-red-300 w-full">
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span className="text-xs">Admin request rejected</span>
+            </div>
+          );
+      }
+    }
+
+    if (compact) {
+      switch (existingRequest.status) {
+        case "PENDING":
+          return (
+            <div className="flex items-center gap-1.5 text-yellow-700 bg-yellow-50 border border-yellow-200 px-3 py-1.5 rounded-lg">
+              <Clock className="w-3.5 h-3.5" />
+              <span className="text-xs font-medium">Pending</span>
+            </div>
+          );
+        case "APPROVED":
+          return (
+            <div className="flex items-center gap-1.5 text-green-700 bg-green-50 border border-green-200 px-3 py-1.5 rounded-lg">
+              <CheckCircle className="w-3.5 h-3.5" />
+              <span className="text-xs font-medium">Approved</span>
+            </div>
+          );
+        case "REJECTED":
+          return (
+            <div className="flex items-center gap-1.5 text-red-700 bg-red-50 border border-red-200 px-3 py-1.5 rounded-lg">
+              <AlertCircle className="w-3.5 h-3.5" />
+              <span className="text-xs font-medium">Rejected</span>
+            </div>
+          );
+      }
+    }
+
     switch (existingRequest.status) {
       case "PENDING":
         return (
@@ -133,6 +189,36 @@ export default function ClubAdminRequestButton({
 
   // Show status if there's an existing request
   if (existingRequest) {
+    if (mobileStyle) {
+      return (
+        <div className="text-center w-full">
+          {getStatusDisplay()}
+          {existingRequest.status === "REJECTED" && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="text-xs text-white/50 hover:text-white mt-1"
+            >
+              Request again
+            </button>
+          )}
+        </div>
+      );
+    }
+    if (compact) {
+      return (
+        <div className="text-center">
+          {getStatusDisplay()}
+          {existingRequest.status === "REJECTED" && (
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="text-xs text-primary hover:text-primary-dark mt-1"
+            >
+              Request again
+            </button>
+          )}
+        </div>
+      );
+    }
     return (
       <div className="space-y-2">
         {getStatusDisplay()}
@@ -154,14 +240,19 @@ export default function ClubAdminRequestButton({
     );
   }
 
+  const buttonClassName = mobileStyle
+    ? "flex items-center justify-center gap-1.5 text-xs text-white/70 hover:text-white transition-colors w-full"
+    : compact
+      ? "flex items-center justify-center gap-1.5 text-xs text-primary hover:text-primary/80 border border-primary/30 bg-white/80 px-3 py-1.5 rounded-lg transition-colors"
+      : "flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors";
+
   return (
     <>
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
-      >
-        <Shield className="w-4 h-4" />
-        Request Admin Access
+      <button onClick={() => setIsModalOpen(true)} className={buttonClassName}>
+        <Shield
+          className={compact || mobileStyle ? "w-3.5 h-3.5" : "w-4 h-4"}
+        />
+        {compact || mobileStyle ? "Request Admin" : "Request Admin Access"}
       </button>
 
       <AnimatePresence>

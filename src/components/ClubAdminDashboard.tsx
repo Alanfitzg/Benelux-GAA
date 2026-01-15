@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import NextImage from "next/image";
 import PitchManagement from "@/components/pitch/PitchManagement";
 import CreateEventButton from "@/components/CreateEventButton";
 import TestimonialsDashboardWidget from "@/components/testimonials/TestimonialsDashboardWidget";
@@ -20,7 +21,6 @@ import {
   TrendingUp,
   Users,
   CalendarDays,
-  Euro,
   Info,
   Image,
   Send,
@@ -33,6 +33,7 @@ import {
   Ticket,
   ArrowRight,
   Inbox,
+  Eye,
 } from "lucide-react";
 
 interface ClubStats {
@@ -40,6 +41,7 @@ interface ClubStats {
     id: string;
     name: string;
     location: string | null;
+    crest: string | null;
     memberCount: number;
     eventCount: number;
   };
@@ -119,29 +121,8 @@ export default function ClubAdminDashboard({
   const [expandedEvent, setExpandedEvent] = useState<string | null>(null);
   const [activeSection, setActiveSection] =
     useState<DashboardSection>("overview");
-  const [showInterestsInfo, setShowInterestsInfo] = useState(false);
   const [unreadInquiries, setUnreadInquiries] = useState(0);
-  const interestsInfoRef = useRef<HTMLDivElement>(null);
-
-  // Close tooltip when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        interestsInfoRef.current &&
-        !interestsInfoRef.current.contains(event.target as Node)
-      ) {
-        setShowInterestsInfo(false);
-      }
-    };
-
-    if (showInterestsInfo) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showInterestsInfo]);
+  const [showRevenueInfo, setShowRevenueInfo] = useState(false);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -248,63 +229,80 @@ export default function ClubAdminDashboard({
   return (
     <div className="space-y-6">
       {/* Header with Quick Actions */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">
-              {stats.club.name}
-            </h1>
-            <p className="text-gray-500 mt-1">{stats.club.location}</p>
-          </div>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border-b border-gray-100 px-6 py-5">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex items-center gap-4">
+              {/* Club Crest */}
+              <div className="flex-shrink-0">
+                <NextImage
+                  src={
+                    stats.club.crest ||
+                    "https://gaelic-trips-bucket.s3.eu-west-1.amazonaws.com/placeholder-crest.png"
+                  }
+                  alt={stats.club.name}
+                  width={64}
+                  height={64}
+                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-contain bg-white p-1.5 shadow-sm border border-gray-200"
+                  unoptimized
+                />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {stats.club.name}
+                </h1>
+                <p className="text-gray-500 mt-1">{stats.club.location}</p>
+              </div>
+            </div>
 
-          {/* Quick Actions */}
-          <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href={`/club-admin/${clubId}/inquiries`}
-              className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <Inbox className="w-4 h-4" />
-              Inbox
-              {unreadInquiries > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {unreadInquiries > 9 ? "9+" : unreadInquiries}
-                </span>
-              )}
-            </Link>
-            <Link
-              href={`/clubs/${clubId}`}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <ExternalLink className="w-4 h-4" />
-              View Public Page
-            </Link>
-            <Link
-              href={`/clubs/${clubId}/edit`}
-              className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              <Edit className="w-4 h-4" />
-              Edit Club
-            </Link>
-            {!isIrishClub && <CreateEventButton />}
-            {isIrishClub && (
+            {/* Quick Actions */}
+            <div className="flex flex-wrap items-center gap-3">
               <Link
-                href="/events"
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors"
+                href={`/club-admin/${clubId}/inquiries`}
+                className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
               >
-                <CalendarDays className="w-4 h-4" />
-                Find Tournaments
+                <Inbox className="w-4 h-4" />
+                Inbox
+                {unreadInquiries > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                    {unreadInquiries > 9 ? "9+" : unreadInquiries}
+                  </span>
+                )}
               </Link>
-            )}
+              <Link
+                href={`/clubs/${clubId}`}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+              >
+                <ExternalLink className="w-4 h-4" />
+                View Public Page
+              </Link>
+              <Link
+                href={`/clubs/${clubId}/edit`}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+              >
+                <Edit className="w-4 h-4" />
+                Edit Club
+              </Link>
+              {!isIrishClub && <CreateEventButton />}
+              {isIrishClub && (
+                <Link
+                  href="/events"
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                >
+                  <CalendarDays className="w-4 h-4" />
+                  Find Tournaments
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Key Metrics Row */}
-      {isIrishClub ? (
-        /* Irish Club Stats - Trip-focused */
+      {/* Key Metrics Row - Irish Clubs Only */}
+      {isIrishClub && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Upcoming Trips */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-primary/30 hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">
@@ -322,7 +320,7 @@ export default function ClubAdminDashboard({
           </div>
 
           {/* Trips Taken */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-primary/30 hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">Trips Taken</p>
@@ -340,7 +338,7 @@ export default function ClubAdminDashboard({
           </div>
 
           {/* Total Tournaments Attended */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 hover:border-primary/30 hover:shadow-md transition-all">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-gray-500 text-sm font-medium">
@@ -380,169 +378,6 @@ export default function ClubAdminDashboard({
               </div>
             </div>
           </button>
-        </div>
-      ) : (
-        /* European Club Stats - Host-focused */
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Upcoming Events - Hero Stat */}
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-sm p-5 text-white">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-blue-100 text-sm font-medium">
-                  Upcoming Events
-                </p>
-                <p className="text-4xl font-bold mt-1">
-                  {stats.overview.upcomingEvents}
-                </p>
-              </div>
-              <div className="bg-white/20 rounded-full p-3">
-                <CalendarDays className="w-6 h-6" />
-              </div>
-            </div>
-          </div>
-
-          {/* Total Interests */}
-          <div
-            ref={interestsInfoRef}
-            className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 relative"
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <p className="text-gray-500 text-sm font-medium">
-                    Total Interests
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => setShowInterestsInfo(!showInterestsInfo)}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
-                    aria-label="What are interests?"
-                  >
-                    <Info className="w-4 h-4" />
-                  </button>
-                </div>
-                <p className="text-3xl font-bold text-gray-900 mt-1">
-                  {stats.overview.totalInterests}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">
-                  Avg {stats.overview.averageInterestsPerEvent} per event
-                </p>
-              </div>
-              <div className="bg-purple-100 rounded-full p-3">
-                <Users className="w-5 h-5 text-purple-600" />
-              </div>
-            </div>
-            {/* Info Tooltip */}
-            {showInterestsInfo && (
-              <div className="absolute top-full left-0 right-0 mt-2 z-10">
-                <div className="bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg">
-                  <p className="font-medium mb-1">What are Interests?</p>
-                  <p className="text-gray-300 text-xs leading-relaxed">
-                    When teams browse your events and want to participate, they
-                    submit an &ldquo;interest&rdquo; to let you know. You can
-                    then contact them to confirm their registration.
-                  </p>
-                  <div className="absolute -top-2 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-gray-900"></div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Year Earnings */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-500 text-sm font-medium">
-                  {stats.overview.currentYear} Earnings
-                </p>
-                <p className="text-3xl font-bold text-green-600 mt-1">
-                  €
-                  {stats.overview.yearEarnings.toLocaleString("en-IE", {
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0,
-                  })}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">From registrations</p>
-              </div>
-              <div className="bg-green-100 rounded-full p-3">
-                <Euro className="w-5 h-5 text-green-600" />
-              </div>
-            </div>
-          </div>
-
-          {/* Total Events */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-500 text-sm font-medium">
-                  Total Events
-                </p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">
-                  {stats.overview.totalEvents}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">
-                  {stats.overview.pastEvents} completed
-                </p>
-              </div>
-              <div className="bg-gray-100 rounded-full p-3">
-                <TrendingUp className="w-5 h-5 text-gray-600" />
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Day-Pass Configuration Card - European Clubs Only */}
-      {!isIrishClub && (
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border-2 border-emerald-200 overflow-hidden">
-          <div className="p-6">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-              <div className="flex items-start gap-4">
-                <div className="bg-emerald-500 rounded-xl p-3 flex-shrink-0">
-                  <Ticket className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-emerald-900">
-                    Day-Pass Configuration
-                  </h3>
-                  <p className="text-emerald-700 mt-1 text-sm">
-                    Set your per-player hospitality fee to recover hosting costs
-                    when teams visit.
-                  </p>
-                  <div className="flex items-center gap-4 mt-3">
-                    <div className="flex items-center gap-2 text-sm text-emerald-800">
-                      <CheckCircle className="w-4 h-4 text-emerald-600" />
-                      <span>You set the price</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-emerald-800">
-                      <CheckCircle className="w-4 h-4 text-emerald-600" />
-                      <span>Cover all hosting costs</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-emerald-800">
-                      <CheckCircle className="w-4 h-4 text-emerald-600" />
-                      <span>Earn from platform fee</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 lg:flex-shrink-0">
-                <Link
-                  href="/products#day-pass"
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-emerald-700 bg-white border border-emerald-300 rounded-lg hover:bg-emerald-50 transition-colors"
-                >
-                  <FileText className="w-4 h-4" />
-                  Learn More
-                </Link>
-                <Link
-                  href={`/clubs/${clubId}/edit#day-pass`}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
-                >
-                  Configure Day-Pass
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 
@@ -637,18 +472,18 @@ export default function ClubAdminDashboard({
       )}
 
       {/* Tab Navigation */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-        <div className="border-b border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-gray-50/80 border-b border-gray-200">
           <nav className="flex overflow-x-auto" aria-label="Tabs">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveSection(tab.id)}
-                className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-all ${
                   activeSection === tab.id
-                    ? "border-primary text-primary"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                    ? "border-primary text-primary bg-white"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50"
                 }`}
               >
                 {tab.icon}
@@ -657,17 +492,17 @@ export default function ClubAdminDashboard({
             ))}
             {/* European clubs only links */}
             {!isIrishClub && (
-              <div className="flex items-center ml-auto">
+              <div className="flex items-center ml-auto border-l border-gray-200">
                 <Link
                   href="/products"
-                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-primary hover:text-primary-dark hover:bg-primary/5 transition-colors"
+                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-primary hover:text-primary-dark hover:bg-white/50 transition-all"
                 >
                   <Package className="w-4 h-4" />
                   Products
                 </Link>
                 <Link
                   href="/host-terms"
-                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-amber-50 transition-colors"
+                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-white/50 transition-all"
                 >
                   <FileText className="w-4 h-4" />
                   Host Terms
@@ -774,18 +609,20 @@ export default function ClubAdminDashboard({
                       )}
                     </div>
                   ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg">
-                      <CalendarDays className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">
+                    <div className="text-center py-12 bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10">
+                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <CalendarDays className="w-8 h-8 text-primary" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
                         No trips yet
                       </h3>
-                      <p className="text-gray-500 mb-4">
+                      <p className="text-gray-600 mb-5 max-w-sm mx-auto">
                         Start exploring tournaments to plan your first trip
                         abroad.
                       </p>
                       <Link
                         href="/events"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
                       >
                         <CalendarDays className="w-4 h-4" />
                         Browse Tournaments
@@ -794,74 +631,261 @@ export default function ClubAdminDashboard({
                   )}
                 </div>
               ) : (
-                /* European Club Overview - Host Interests Focus */
-                <>
-                  {stats.recentInterests.length > 0 ? (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Recent Interests (Last 30 Days)
-                      </h3>
-                      <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
-                          <thead className="bg-gray-50">
-                            <tr>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name
-                              </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Email
-                              </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Event
-                              </th>
-                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody className="bg-white divide-y divide-gray-200">
-                            {stats.recentInterests
-                              .slice(0, 5)
-                              .map((interest) => (
-                                <tr key={interest.id}>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {interest.name}
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                    {interest.email}
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-900">
-                                    {interest.eventTitle}
-                                  </td>
-                                  <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-500">
-                                    {new Date(
-                                      interest.submittedAt
-                                    ).toLocaleDateString()}
-                                  </td>
-                                </tr>
-                              ))}
-                          </tbody>
-                        </table>
+                /* European Club Nerve Center */
+                <div className="space-y-6">
+                  {/* Hero Stats - The Numbers That Matter */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {/* Total Interests */}
+                    <div className="bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl p-5 border border-primary/20">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">
+                            Teams Interested
+                          </p>
+                          <p className="text-4xl font-bold text-primary mt-1">
+                            {stats.overview.totalInterests}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Irish clubs wanting to visit
+                          </p>
+                        </div>
+                        <div className="bg-primary/10 rounded-lg p-2">
+                          <Users className="w-5 h-5 text-primary" />
+                        </div>
                       </div>
-                      {stats.recentInterests.length > 5 && (
-                        <p className="text-sm text-gray-500 mt-3">
-                          + {stats.recentInterests.length - 5} more interests
-                        </p>
+                    </div>
+
+                    {/* Potential Revenue */}
+                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200 relative">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <p className="text-sm font-medium text-emerald-700">
+                              Potential Revenue
+                            </p>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setShowRevenueInfo(!showRevenueInfo)
+                              }
+                              className="text-emerald-500 hover:text-emerald-700 transition-colors"
+                              aria-label="How is this calculated?"
+                            >
+                              <Info className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                          <p className="text-4xl font-bold text-emerald-600 mt-1">
+                            €
+                            {(
+                              stats.overview.totalInterests *
+                              15 *
+                              45
+                            ).toLocaleString()}
+                          </p>
+                          <p className="text-xs text-emerald-600 mt-1">
+                            From Day-Pass sales
+                          </p>
+                        </div>
+                        <div className="bg-emerald-100 rounded-lg p-2">
+                          <TrendingUp className="w-5 h-5 text-emerald-600" />
+                        </div>
+                      </div>
+                      {showRevenueInfo && (
+                        <div className="absolute top-full left-0 right-0 mt-2 z-10">
+                          <div className="bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg">
+                            <p className="font-medium mb-1">
+                              How is this calculated?
+                            </p>
+                            <p className="text-gray-300 text-xs leading-relaxed">
+                              {stats.overview.totalInterests} interest
+                              {stats.overview.totalInterests !== 1 ? "s" : ""} ×
+                              15 players × €45 Day-Pass = €
+                              {(
+                                stats.overview.totalInterests *
+                                15 *
+                                45
+                              ).toLocaleString()}
+                            </p>
+                            <div className="absolute -top-2 left-6 w-0 h-0 border-l-8 border-r-8 border-b-8 border-transparent border-b-gray-900"></div>
+                          </div>
+                        </div>
                       )}
                     </div>
-                  ) : (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg">
-                      <Users className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">
-                        No recent expressions of interest
-                      </h3>
-                      <p className="text-gray-500">
-                        Expressions of interest from the last 30 days will
-                        appear here.
-                      </p>
+
+                    {/* Earnings */}
+                    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-sm font-medium text-gray-600">
+                            {stats.overview.currentYear} Earnings
+                          </p>
+                          <p className="text-4xl font-bold text-gray-900 mt-1">
+                            €{stats.overview.yearEarnings.toLocaleString()}
+                          </p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Confirmed revenue
+                          </p>
+                        </div>
+                        <div className="bg-gray-200 rounded-lg p-2">
+                          <BarChart3 className="w-5 h-5 text-gray-600" />
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </>
+                  </div>
+
+                  {/* Day-Pass Foundation - Compact but Clear */}
+                  <div className="bg-white rounded-xl border border-gray-200 p-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Ticket className="w-5 h-5 text-emerald-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            Day-Pass
+                          </h3>
+                          <p className="text-sm text-gray-500">
+                            Your per-player hospitality fee for visiting teams
+                          </p>
+                        </div>
+                      </div>
+                      <Link
+                        href={`/club-admin/${clubId}/day-pass`}
+                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors whitespace-nowrap"
+                      >
+                        Configure
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Recent Interests */}
+                  <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-semibold text-gray-900">
+                          Recent Interests
+                        </h3>
+                        {stats.recentInterests.length > 0 && (
+                          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                        )}
+                      </div>
+                      <Link
+                        href={`/club-admin/${clubId}/inquiries`}
+                        className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+                      >
+                        <Inbox className="w-4 h-4" />
+                        Inbox
+                        {unreadInquiries > 0 && (
+                          <span className="bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                            {unreadInquiries}
+                          </span>
+                        )}
+                      </Link>
+                    </div>
+                    <div className="p-4">
+                      {stats.recentInterests.length > 0 ? (
+                        <div className="space-y-2">
+                          {stats.recentInterests.slice(0, 4).map((interest) => {
+                            const daysAgo = Math.floor(
+                              (Date.now() -
+                                new Date(interest.submittedAt).getTime()) /
+                                (1000 * 60 * 60 * 24)
+                            );
+                            return (
+                              <div
+                                key={interest.id}
+                                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center text-primary font-semibold text-sm">
+                                    {interest.name.charAt(0).toUpperCase()}
+                                  </div>
+                                  <div>
+                                    <p className="font-medium text-gray-900 text-sm">
+                                      {interest.name}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                      {interest.eventTitle}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <a
+                                    href={`mailto:${interest.email}`}
+                                    className="text-xs text-primary hover:underline"
+                                  >
+                                    {interest.email}
+                                  </a>
+                                  <p className="text-xs text-gray-400 mt-0.5">
+                                    {daysAgo === 0
+                                      ? "Today"
+                                      : daysAgo === 1
+                                        ? "Yesterday"
+                                        : `${daysAgo}d ago`}
+                                  </p>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="text-center py-6">
+                          <Users className="w-10 h-10 text-gray-300 mx-auto mb-2" />
+                          <p className="text-sm text-gray-500">
+                            No interests yet
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            Teams visiting your events will appear here
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Quick Links Grid */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <Link
+                      href={`/clubs/${clubId}/edit`}
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all"
+                    >
+                      <Eye className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-700">
+                        Edit Profile
+                      </span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setActiveSection("events")}
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all text-left"
+                    >
+                      <CalendarDays className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-700">
+                        Events ({stats.overview.totalEvents})
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveSection("photos")}
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all text-left"
+                    >
+                      <Image className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-700">
+                        Photos
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setActiveSection("pitches")}
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all text-left"
+                    >
+                      <MapPin className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm font-medium text-gray-700">
+                        Pitches
+                      </span>
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           )}
@@ -972,12 +996,14 @@ export default function ClubAdminDashboard({
                   );
                 })
               ) : (
-                <div className="text-center py-12 bg-gray-50 rounded-lg">
-                  <CalendarDays className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">
+                <div className="text-center py-12 bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10">
+                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CalendarDays className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     {isIrishClub ? "No trips yet" : "No events yet"}
                   </h3>
-                  <p className="text-gray-500 mb-4">
+                  <p className="text-gray-600 mb-5 max-w-sm mx-auto">
                     {isIrishClub
                       ? "Register for tournaments to track your upcoming trips."
                       : "Create your first event to start receiving interest from teams."}
@@ -985,7 +1011,7 @@ export default function ClubAdminDashboard({
                   {isIrishClub ? (
                     <Link
                       href="/events"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                      className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
                     >
                       <CalendarDays className="w-4 h-4" />
                       Browse Tournaments
@@ -1134,18 +1160,20 @@ export default function ClubAdminDashboard({
                   </div>
                 </>
               ) : (
-                <div className="text-center py-12 bg-gray-50 rounded-lg">
-                  <Send className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-1">
+                <div className="text-center py-12 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-100">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Send className="w-8 h-8 text-amber-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
                     No applications yet
                   </h3>
-                  <p className="text-gray-500 mb-4">
+                  <p className="text-gray-600 mb-5 max-w-sm mx-auto">
                     When you register interest in tournaments, your applications
                     will appear here.
                   </p>
                   <Link
                     href="/events"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
                   >
                     <CalendarDays className="w-4 h-4" />
                     Browse Tournaments

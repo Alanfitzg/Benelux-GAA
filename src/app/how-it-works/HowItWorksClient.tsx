@@ -75,47 +75,36 @@ export default function HowItWorksClient() {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -20 }}
         transition={{ duration: 0.6 }}
-        className="py-8"
       >
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-            How it works for Travelling Teams
-          </h2>
-          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-            Everything you need to know about joining tournaments across Europe
-          </p>
-        </div>
-
         {/* Navigation Tags - unified style */}
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-10 sticky top-0 bg-gray-100/95 backdrop-blur-sm py-4 z-10 border-b border-gray-200">
+        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 sticky top-0 bg-gray-200/95 backdrop-blur-sm py-4 z-10 border-b border-gray-300 -mx-4 px-4">
           <button
             onClick={() => scrollToSection("profile")}
-            className="px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-full bg-white text-primary border border-primary/30 hover:bg-primary hover:text-white transition-colors shadow-sm"
           >
             1. Profile
           </button>
           <button
             onClick={() => scrollToSection("express-interest")}
-            className="px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-full bg-white text-primary border border-primary/30 hover:bg-primary hover:text-white transition-colors shadow-sm"
           >
             2. Express Interest
           </button>
           <button
             onClick={() => scrollToSection("registration")}
-            className="px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-full bg-white text-primary border border-primary/30 hover:bg-primary hover:text-white transition-colors shadow-sm"
           >
             3. Registration
           </button>
           <button
             onClick={() => scrollToSection("day-passes")}
-            className="px-4 py-2 text-sm font-medium rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-full bg-white text-primary border border-primary/30 hover:bg-primary hover:text-white transition-colors shadow-sm"
           >
             4. Day-Passes
           </button>
           <button
             onClick={() => scrollToSection("why-playaway")}
-            className="px-4 py-2 text-sm font-medium rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-full bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm"
           >
             Why PlayAway
           </button>
@@ -125,7 +114,7 @@ export default function HowItWorksClient() {
         <div className="space-y-8">
           {/* Step 1 - Your Profile */}
           <section id="profile" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   1
@@ -142,7 +131,7 @@ export default function HowItWorksClient() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                   <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <span className="text-lg">📋</span> What&apos;s in Your
                     Profile
@@ -154,15 +143,11 @@ export default function HowItWorksClient() {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary mt-0.5">•</span>
-                      Team size and codes you play
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-primary mt-0.5">•</span>
                       Travel preferences and availability
                     </li>
                   </ul>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                   <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <span className="text-lg">🎯</span> Why It Matters
                   </h4>
@@ -187,7 +172,7 @@ export default function HowItWorksClient() {
 
           {/* Step 2 - Express Interest */}
           <section id="express-interest" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   2
@@ -207,12 +192,12 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="bg-primary/5 rounded-xl p-5 mb-6">
+              <div className="bg-primary/10 rounded-xl p-5 mb-6 border border-primary/20">
                 <h4 className="font-semibold text-gray-800 mb-4 text-center">
                   How Express Interest Works
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="text-center p-4 bg-white rounded-lg">
+                  <div className="text-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                       <span className="text-primary font-bold">1</span>
                     </div>
@@ -223,7 +208,7 @@ export default function HowItWorksClient() {
                       Find clubs across Europe
                     </p>
                   </div>
-                  <div className="text-center p-4 bg-white rounded-lg">
+                  <div className="text-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                       <span className="text-primary font-bold">2</span>
                     </div>
@@ -234,7 +219,7 @@ export default function HowItWorksClient() {
                       On any club&apos;s calendar
                     </p>
                   </div>
-                  <div className="text-center p-4 bg-white rounded-lg">
+                  <div className="text-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
                     <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
                       <span className="text-primary font-bold">3</span>
                     </div>
@@ -249,7 +234,7 @@ export default function HowItWorksClient() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                   <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <span className="text-lg">📅</span> What You&apos;ll Share
                   </h4>
@@ -272,7 +257,7 @@ export default function HowItWorksClient() {
                     </li>
                   </ul>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                   <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <span className="text-lg">✨</span> Why It&apos;s Useful
                   </h4>
@@ -297,7 +282,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
+              <div className="mt-6 p-4 bg-primary/10 rounded-xl border border-primary/20">
                 <p className="text-sm text-gray-700 text-center">
                   <span className="font-semibold">Pro tip:</span> Expressing
                   interest early gives hosts time to organize events around your
@@ -309,7 +294,7 @@ export default function HowItWorksClient() {
 
           {/* Step 3 - Team Registration */}
           <section id="registration" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   3
@@ -319,13 +304,14 @@ export default function HowItWorksClient() {
                     Register Your Team
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                    Once a tournament is confirmed, secure your spot with a team
-                    registration fee.
+                    Apply to register your team. If your application is
+                    successful, you&apos;ll be required to pay for the team
+                    ticket.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-primary/5 rounded-xl p-6 mb-6">
+              <div className="bg-primary/10 rounded-xl p-6 mb-6 border border-primary/20">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
                     <p className="text-gray-800 font-semibold text-lg">
@@ -347,19 +333,19 @@ export default function HowItWorksClient() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className="bg-gray-100 rounded-xl p-4 text-center border border-gray-200">
                   <div className="text-2xl mb-2">✅</div>
                   <p className="text-sm font-medium text-gray-700">
                     Guaranteed spot
                   </p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className="bg-gray-100 rounded-xl p-4 text-center border border-gray-200">
                   <div className="text-2xl mb-2">📋</div>
                   <p className="text-sm font-medium text-gray-700">
                     Tournament coordination
                   </p>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className="bg-gray-100 rounded-xl p-4 text-center border border-gray-200">
                   <div className="text-2xl mb-2">🏆</div>
                   <p className="text-sm font-medium text-gray-700">
                     Event organization
@@ -371,7 +357,7 @@ export default function HowItWorksClient() {
 
           {/* Step 4 - Player Day-Passes */}
           <section id="day-passes" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   4
@@ -392,19 +378,19 @@ export default function HowItWorksClient() {
 
               {/* What's Included */}
               <div className="grid grid-cols-3 gap-3 md:gap-4 mb-6">
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className="bg-gray-100 rounded-xl p-4 text-center border border-gray-200">
                   <div className="text-3xl md:text-4xl mb-2">🏟️</div>
                   <div className="text-xs md:text-sm font-medium text-gray-700">
                     Pitch rental
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className="bg-gray-100 rounded-xl p-4 text-center border border-gray-200">
                   <div className="text-3xl md:text-4xl mb-2">🍽️</div>
                   <div className="text-xs md:text-sm font-medium text-gray-700">
                     After-match meals
                   </div>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-4 text-center">
+                <div className="bg-gray-100 rounded-xl p-4 text-center border border-gray-200">
                   <div className="text-3xl md:text-4xl mb-2">🥤</div>
                   <div className="text-xs md:text-sm font-medium text-gray-700">
                     Snacks & water
@@ -412,7 +398,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="bg-primary/5 rounded-xl p-6">
+              <div className="bg-primary/10 rounded-xl p-6 border border-primary/20">
                 <h4 className="font-semibold text-gray-800 mb-4 text-center">
                   Example Cost Breakdown
                 </h4>
@@ -493,16 +479,6 @@ export default function HowItWorksClient() {
             </div>
           </section>
         </div>
-
-        {/* Toggle Button */}
-        <div className="text-center mt-12">
-          <button
-            onClick={handleHostClick}
-            className="bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            See how it works for Hosts →
-          </button>
-        </div>
       </motion.div>
     </AnimatePresence>
   );
@@ -564,7 +540,7 @@ export default function HowItWorksClient() {
         <div className="space-y-8">
           {/* Step 1 - Create Club Account & Get Verified */}
           <section id="host-verification" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   1
@@ -580,7 +556,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-5">
+              <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                 <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <span className="text-lg">📝</span> Getting started
                 </h4>
@@ -608,7 +584,7 @@ export default function HowItWorksClient() {
 
           {/* Step 2 - Create Day-Passes */}
           <section id="host-day-passes" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   2
@@ -624,7 +600,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="bg-primary/5 rounded-xl p-5 mb-6">
+              <div className="bg-primary/10 rounded-xl p-5 border border-primary/20 mb-6">
                 <h4 className="font-semibold text-gray-800 mb-4 text-center">
                   How Day-Passes Work
                 </h4>
@@ -666,7 +642,7 @@ export default function HowItWorksClient() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                   <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <span className="text-lg">🎟️</span> What&apos;s a Day-Pass?
                   </h4>
@@ -685,7 +661,7 @@ export default function HowItWorksClient() {
                     </li>
                   </ul>
                 </div>
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                   <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                     <span className="text-lg">📅</span> Year-Round Revenue
                   </h4>
@@ -706,7 +682,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="mt-6 p-4 bg-primary/5 rounded-xl border border-primary/10">
+              <div className="mt-6 p-4 bg-primary/10 rounded-xl border border-primary/20">
                 <p className="text-sm text-gray-700 text-center">
                   <span className="font-semibold">💡 Pro tip:</span> Adjust your
                   day-pass price seasonally - higher during peak travel months,
@@ -718,7 +694,7 @@ export default function HowItWorksClient() {
 
           {/* Step 3 - Create Your Tournament */}
           <section id="host-tournament" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   3
@@ -734,7 +710,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-5">
+              <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                 <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <span className="text-lg">⚙️</span> What you control
                 </h4>
@@ -762,7 +738,7 @@ export default function HowItWorksClient() {
 
           {/* Step 4 - Revenue Streams */}
           <section id="host-revenue" className="scroll-mt-24">
-            <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
+            <div className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg">
               <div className="flex items-start gap-4 mb-6">
                 <div className="bg-primary text-white rounded-full w-10 h-10 flex items-center justify-center font-bold text-lg flex-shrink-0">
                   4
@@ -779,7 +755,7 @@ export default function HowItWorksClient() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
+                <div className="bg-primary/10 rounded-xl p-5 border border-primary/20">
                   <h4 className="font-semibold text-gray-800 mb-2">
                     From Team Registrations
                   </h4>
@@ -790,7 +766,7 @@ export default function HowItWorksClient() {
                     per team that registers
                   </p>
                 </div>
-                <div className="bg-primary/5 rounded-xl p-5 border border-primary/10">
+                <div className="bg-primary/10 rounded-xl p-5 border border-primary/20">
                   <h4 className="font-semibold text-gray-800 mb-2">
                     From Player Day-Passes
                   </h4>
@@ -803,7 +779,7 @@ export default function HowItWorksClient() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-5">
+              <div className="bg-gray-100 rounded-xl p-5 border border-gray-200">
                 <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
                   <span className="text-lg">💰</span> Example tournament with 8
                   teams (120 players)
@@ -888,46 +864,90 @@ export default function HowItWorksClient() {
   );
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
-        {/* Header Section */}
-        <div className="text-center mb-16">
+    <div className="bg-gray-200 min-h-screen">
+      {/* Hero Header */}
+      <div className="bg-gradient-to-br from-primary via-primary/95 to-primary/85 text-white">
+        <div className="container mx-auto px-4 py-10 md:py-14 max-w-5xl">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
+            className="text-center"
           >
-            <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900">
-              How PlayAway Works
-            </h1>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                <svg
+                  className="w-7 h-7 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                  />
+                </svg>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold">
+                How PlayAway Works
+              </h1>
+            </div>
             {currentView !== "initial" && (
               <button
                 onClick={() => setCurrentView("initial")}
-                className="mb-8 text-primary hover:text-primary/80 underline text-sm"
+                className="mt-2 text-white/80 hover:text-white text-sm flex items-center gap-1 mx-auto transition-colors"
               >
-                ← Back to main menu
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+                Back to menu
               </button>
             )}
-
             {currentView === "initial" && (
-              <div className="max-w-4xl mx-auto space-y-6 text-gray-700">
-                <p className="text-lg md:text-xl leading-relaxed">
-                  PlayAway simplifies the travel process for GAA teams while
-                  protecting European clubs who work hard to host events with
-                  very limited resources.
-                </p>
-
-                <p className="text-base md:text-lg leading-relaxed">
-                  European GAA clubs know exactly what a travelling team wants.
-                  They find the best bang for your buck, do all the negotiating
-                  in advance, and ensure high-quality components are included in
-                  every tournament experience. This means better value for
-                  visitors and sustainable income for host clubs.
-                </p>
-              </div>
+              <p className="text-white/90 text-base md:text-lg max-w-2xl mx-auto mt-3">
+                Simplifying GAA travel while supporting European host clubs
+              </p>
             )}
           </motion.div>
         </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        {/* Initial View Extended Description */}
+        {currentView === "initial" && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="bg-white rounded-2xl p-6 md:p-8 border-2 border-gray-300 shadow-lg mb-10"
+          >
+            <div className="max-w-3xl mx-auto space-y-4 text-gray-700 text-center">
+              <p className="text-base md:text-lg leading-relaxed">
+                PlayAway simplifies the travel process for GAA teams while
+                protecting European clubs who work hard to host events with very
+                limited resources.
+              </p>
+              <p className="text-sm md:text-base leading-relaxed text-gray-600">
+                European GAA clubs know exactly what a travelling team wants.
+                They find the best bang for your buck, do all the negotiating in
+                advance, and ensure high-quality components are included in
+                every tournament experience.
+              </p>
+            </div>
+          </motion.div>
+        )}
         {currentView === "initial" && renderInitialView()}
         {currentView === "travelling" && renderTravellingView()}
         {currentView === "host" && renderHostView()}

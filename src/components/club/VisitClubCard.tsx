@@ -115,12 +115,12 @@ export default function VisitClubCard({
   const weekends = getWeekendsInMonth(selectedMonth);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white rounded-xl border border-primary/30 shadow-sm overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-r from-primary to-primary/80 px-4 py-3">
+      <div className="bg-primary/10 px-4 py-3 border-b border-primary/20">
         <div className="flex items-center gap-2">
           <svg
-            className="w-5 h-5 text-white"
+            className="w-5 h-5 text-primary"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -132,7 +132,7 @@ export default function VisitClubCard({
               d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <h3 className="text-base font-semibold text-white">
+          <h3 className="text-base font-semibold text-primary">
             Plan Your Visit
           </h3>
         </div>
@@ -520,16 +520,6 @@ export default function VisitClubCard({
                     desc: "Flights, trains, or car hire",
                     icon: "M12 19l9 2-9-18-9 18 9-2zm0 0v-8",
                   },
-                  {
-                    title: "Food & Drink",
-                    desc: "Meals and refreshments",
-                    icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z",
-                  },
-                  {
-                    title: "Match tickets",
-                    desc: "Entry to professional GAA games",
-                    icon: "M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z",
-                  },
                 ].map((item) => (
                   <li key={item.title} className="flex items-start gap-3">
                     <div className="flex-shrink-0 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
@@ -562,6 +552,22 @@ export default function VisitClubCard({
                   <strong>Tip:</strong> Many clubs can recommend local
                   accommodation and help coordinate group bookings. Just ask
                   when you get in touch!
+                </p>
+              </div>
+
+              <div className="border-t border-gray-200 pt-4 mt-4">
+                <p className="text-xs text-gray-500">
+                  This is in line with{" "}
+                  <a
+                    href="https://europa.eu/youreurope/citizens/travel/holidays/package-travel/index_en.htm"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    EU Package Travel Directive
+                  </a>{" "}
+                  regulations, which distinguish between single travel services
+                  and combined packages.
                 </p>
               </div>
             </div>
