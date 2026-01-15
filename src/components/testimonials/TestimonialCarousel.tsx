@@ -53,27 +53,27 @@ export default function TestimonialCarousel({
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
-      <div className="flex items-center gap-2 mb-4">
-        <Quote className="w-5 h-5 text-gray-400" />
-        <h3 className="text-lg font-semibold text-gray-900">
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 sm:p-6">
+      <div className="flex items-center gap-2 mb-3 sm:mb-4">
+        <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900">
           What Visitors Say
         </h3>
       </div>
 
       <div className="relative">
-        <div className="min-h-[120px]">
-          <p className="text-gray-600 leading-relaxed italic">
+        <div className="min-h-[100px] sm:min-h-[120px]">
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed italic">
             &ldquo;{currentTestimonial.content}&rdquo;
           </p>
 
-          <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+          <div className="flex items-center justify-between mt-3 sm:mt-4 pt-3 border-t border-gray-100">
             <div>
-              <p className="text-sm font-medium text-gray-900">
+              <p className="text-xs sm:text-sm font-medium text-gray-900">
                 {currentTestimonial.user.name ||
                   currentTestimonial.user.username}
               </p>
-              <p className="text-xs text-gray-500">
+              <p className="text-[10px] sm:text-xs text-gray-500">
                 {new Date(currentTestimonial.submittedAt).toLocaleDateString(
                   "en-IE",
                   {
