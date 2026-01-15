@@ -3,6 +3,7 @@ import { getServerSession } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { UserRole, ClubAdminRequestStatus } from "@prisma/client";
 import { sendEuropeanAdminWelcomeEmail } from "@/lib/emails/european-admin-welcome-email";
+import { sendIrishAdminWelcomeEmail } from "@/lib/emails/irish-admin-welcome-email";
 
 export async function GET(request: NextRequest) {
   try {
@@ -145,15 +146,27 @@ export async function POST(request: NextRequest) {
         });
       }
 
-      // Send welcome email to the new admin
+      // Send welcome email to the new admin based on club type
       try {
-        await sendEuropeanAdminWelcomeEmail({
-          to: adminRequest.user.email,
-          userName: adminRequest.user.name || adminRequest.user.username,
-          clubName: adminRequest.club.name,
-        });
+        const isMainlandEurope = adminRequest.club.isMainlandEurope;
+
+        if (isMainlandEurope) {
+          // European clubs can host events and earn revenue
+          await sendEuropeanAdminWelcomeEmail({
+            to: adminRequest.user.email,
+            userName: adminRequest.user.name || adminRequest.user.username,
+            clubName: adminRequest.club.name,
+          });
+        } else {
+          // Irish/UK clubs focus on organising trips
+          await sendIrishAdminWelcomeEmail({
+            to: adminRequest.user.email,
+            userName: adminRequest.user.name || adminRequest.user.username,
+            clubName: adminRequest.club.name,
+          });
+        }
         console.log(
-          `Welcome email sent to ${adminRequest.user.email} for club ${adminRequest.club.name}`
+          `Welcome email sent to ${adminRequest.user.email} for ${isMainlandEurope ? "European" : "Irish/UK"} club ${adminRequest.club.name}`
         );
       } catch (emailError) {
         // Log but don't fail the approval if email fails

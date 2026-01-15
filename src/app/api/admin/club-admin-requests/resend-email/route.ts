@@ -3,6 +3,7 @@ import { getServerSession } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@prisma/client";
 import { sendEuropeanAdminWelcomeEmail } from "@/lib/emails/european-admin-welcome-email";
+import { sendIrishAdminWelcomeEmail } from "@/lib/emails/irish-admin-welcome-email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
       where: { id: requestId },
       include: {
         user: { select: { email: true, name: true, username: true } },
-        club: { select: { name: true } },
+        club: { select: { name: true, isMainlandEurope: true } },
       },
     });
 
@@ -41,11 +42,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await sendEuropeanAdminWelcomeEmail({
-      to: adminRequest.user.email,
-      userName: adminRequest.user.name || adminRequest.user.username,
-      clubName: adminRequest.club.name,
-    });
+    // Send appropriate email based on club type
+    const isMainlandEurope = adminRequest.club.isMainlandEurope;
+    const result = isMainlandEurope
+      ? await sendEuropeanAdminWelcomeEmail({
+          to: adminRequest.user.email,
+          userName: adminRequest.user.name || adminRequest.user.username,
+          clubName: adminRequest.club.name,
+        })
+      : await sendIrishAdminWelcomeEmail({
+          to: adminRequest.user.email,
+          userName: adminRequest.user.name || adminRequest.user.username,
+          clubName: adminRequest.club.name,
+        });
 
     if (!result.success) {
       return NextResponse.json(

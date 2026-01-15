@@ -790,7 +790,11 @@ export default async function ClubDetailsPage({
       <div className="bg-gray-200 pt-4">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <ClubProfileNav />
+            <ClubProfileNav
+              excludeSections={
+                !club.isMainlandEurope ? ["gallery", "calendar"] : []
+              }
+            />
           </div>
         </div>
       </div>
@@ -895,16 +899,18 @@ export default async function ClubDetailsPage({
               </div>
             </section>
 
-            {/* Photo Gallery Section - Hidden on mobile */}
-            <section id="gallery" className="scroll-mt-24 hidden sm:block">
-              <ClubPhotoGallery
-                clubId={club.id}
-                isAdmin={
-                  isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"
-                }
-                isMainlandEurope={club.isMainlandEurope}
-              />
-            </section>
+            {/* Photo Gallery Section - Only for mainland Europe clubs, hidden on mobile */}
+            {club.isMainlandEurope && (
+              <section id="gallery" className="scroll-mt-24 hidden sm:block">
+                <ClubPhotoGallery
+                  clubId={club.id}
+                  isAdmin={
+                    isCurrentAdmin || session?.user?.role === "SUPER_ADMIN"
+                  }
+                  isMainlandEurope={club.isMainlandEurope}
+                />
+              </section>
+            )}
 
             {/* Contact card only for super admins */}
             {session?.user?.role === "SUPER_ADMIN" && (
@@ -948,12 +954,14 @@ export default async function ClubDetailsPage({
               />
             </section>
 
-            {/* Calendar Section */}
-            <section id="calendar" className="scroll-mt-24">
-              <div className="max-w-2xl mx-auto">
-                <ClubCalendarModal clubId={club.id} clubName={club.name} />
-              </div>
-            </section>
+            {/* Calendar Section - Only for mainland Europe clubs */}
+            {club.isMainlandEurope && (
+              <section id="calendar" className="scroll-mt-24">
+                <div className="max-w-2xl mx-auto">
+                  <ClubCalendarModal clubId={club.id} clubName={club.name} />
+                </div>
+              </section>
+            )}
 
             {/* Back Link */}
             <div className="text-center">

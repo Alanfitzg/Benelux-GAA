@@ -190,23 +190,31 @@ export default function ProfileClient({ user }: ProfileClientProps) {
           {/* Profile Card */}
           <div className="bg-white rounded-xl shadow-lg p-5 md:p-6">
             <div className="flex items-center gap-4">
-              {/* Avatar */}
-              {user.isClubMember && primaryClub?.imageUrl ? (
-                <Image
-                  src={primaryClub.imageUrl}
-                  alt={primaryClub.name}
-                  width={80}
-                  height={80}
-                  className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain bg-gray-50 border-2 border-gray-100 flex-shrink-0"
-                  unoptimized
-                />
-              ) : (
-                <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#264673] to-[#1a3352] rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-2xl md:text-3xl font-bold text-white">
-                    {(user.name || user.username).charAt(0).toUpperCase()}
-                  </span>
-                </div>
-              )}
+              {/* Avatar - show club crest if user has any associated club with an image */}
+              {(() => {
+                const clubWithImage = primaryClub?.imageUrl
+                  ? primaryClub
+                  : clubs.find((c) => c.imageUrl);
+                const imageUrl = clubWithImage?.imageUrl
+                  ? encodeURI(clubWithImage.imageUrl)
+                  : null;
+                return imageUrl ? (
+                  <Image
+                    src={imageUrl}
+                    alt={clubWithImage!.name}
+                    width={80}
+                    height={80}
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-full object-contain bg-gray-50 border-2 border-gray-100 flex-shrink-0"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-[#264673] to-[#1a3352] rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-2xl md:text-3xl font-bold text-white">
+                      {(user.name || user.username).charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                );
+              })()}
 
               {/* Name and Role */}
               <div className="flex-1 min-w-0">
@@ -224,14 +232,14 @@ export default function ProfileClient({ user }: ProfileClientProps) {
             <div className="border-t border-gray-100 my-5" />
 
             {/* Info Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
               {/* Club */}
               {(user.isClubMember || primaryClub) && (
-                <div className="bg-gray-50 rounded-xl p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg
-                        className="w-5 h-5 text-[#264673]"
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-[#264673]"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -245,23 +253,27 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                       </svg>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs text-gray-500">Club</p>
+                      <p className="text-[10px] sm:text-xs text-gray-500">
+                        Club
+                      </p>
                       {loadingPrimaryClub ? (
                         <div className="flex items-center gap-2">
                           <div className="w-3 h-3 border-2 border-[#264673] border-t-transparent rounded-full animate-spin"></div>
-                          <span className="text-sm text-gray-400">
+                          <span className="text-xs sm:text-sm text-gray-400">
                             Loading...
                           </span>
                         </div>
                       ) : primaryClub ? (
                         <Link
                           href={`/clubs/${primaryClub.id}`}
-                          className="font-semibold text-gray-900 truncate block hover:text-[#264673] transition-colors"
+                          className="font-semibold text-xs sm:text-base text-gray-900 truncate block hover:text-[#264673] transition-colors"
                         >
                           {primaryClub.name}
                         </Link>
                       ) : (
-                        <p className="font-medium text-gray-900">Club Member</p>
+                        <p className="font-medium text-xs sm:text-base text-gray-900">
+                          Club Member
+                        </p>
                       )}
                     </div>
                   </div>
@@ -269,11 +281,11 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               )}
 
               {/* Email */}
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 col-span-2 sm:col-span-1">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-5 h-5 text-[#264673]"
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-[#264673]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -287,8 +299,10 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     </svg>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs text-gray-500">Email</p>
-                    <p className="font-semibold text-gray-900 truncate">
+                    <p className="text-[10px] sm:text-xs text-gray-500">
+                      Email
+                    </p>
+                    <p className="font-semibold text-xs sm:text-base text-gray-900 truncate">
                       {user.email}
                     </p>
                   </div>
@@ -296,11 +310,11 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               </div>
 
               {/* Member Since */}
-              <div className="bg-gray-50 rounded-xl p-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+              <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 col-span-2 sm:col-span-1">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-5 h-5 text-[#264673]"
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-[#264673]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -314,8 +328,10 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                     </svg>
                   </div>
                   <div className="min-w-0 flex-1">
-                    <p className="text-xs text-gray-500">Joined</p>
-                    <p className="font-semibold text-gray-900">
+                    <p className="text-[10px] sm:text-xs text-gray-500">
+                      Joined
+                    </p>
+                    <p className="font-semibold text-xs sm:text-base text-gray-900">
                       {user.createdAt
                         ? new Date(user.createdAt).toLocaleDateString("en-IE", {
                             month: "short",

@@ -3,6 +3,14 @@ interface SportsBadgesProps {
   size?: "sm" | "md" | "lg";
 }
 
+const sportDisplayNames: Record<string, string> = {
+  "Mens Gaelic Football": "GAA",
+};
+
+const getDisplayName = (sport: string): string => {
+  return sportDisplayNames[sport] || sport;
+};
+
 const sizeClasses = {
   sm: "px-2 py-0.5 text-[10px] gap-1",
   md: "px-2 py-0.5 text-xs gap-1 sm:px-2.5 sm:py-1 sm:text-xs sm:gap-1.5",
@@ -35,7 +43,7 @@ export default function SportsBadges({
           `}
         >
           <SportIcon size={size} />
-          {sport}
+          {getDisplayName(sport)}
         </span>
       ))}
     </div>
@@ -69,7 +77,7 @@ export function SportsBadgesHeader({ teamTypes }: { teamTypes: string[] }) {
           >
             <circle cx="12" cy="12" r="8" />
           </svg>
-          {sport}
+          {getDisplayName(sport)}
         </span>
       ))}
     </div>

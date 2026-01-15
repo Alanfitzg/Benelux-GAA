@@ -7,7 +7,7 @@ interface Section {
   label: string;
 }
 
-const sections: Section[] = [
+const allSections: Section[] = [
   { id: "events", label: "Tournaments" },
   { id: "friends", label: "Friends" },
   { id: "gallery", label: "Gallery" },
@@ -16,7 +16,14 @@ const sections: Section[] = [
   { id: "calendar", label: "Calendar" },
 ];
 
-export default function ClubProfileNav() {
+interface ClubProfileNavProps {
+  excludeSections?: string[];
+}
+
+export default function ClubProfileNav({
+  excludeSections = [],
+}: ClubProfileNavProps) {
+  const sections = allSections.filter((s) => !excludeSections.includes(s.id));
   const [activeSection, setActiveSection] = useState<string>("events");
   const [showRightFade, setShowRightFade] = useState(false);
   const [showLeftFade, setShowLeftFade] = useState(false);

@@ -11,7 +11,6 @@ import {
   generateEventStructuredData,
 } from "@/components/StructuredData";
 import { useCityDefaultImage } from "@/hooks/useCityDefaultImage";
-import SignUpGate from "@/components/auth/SignUpGate";
 import { useSession } from "next-auth/react";
 import type { Session } from "next-auth";
 
@@ -412,16 +411,18 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
             >
               Overview
             </a>
-            <a
-              href="#included"
-              className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
-            >
-              What&apos;s Included
-            </a>
-            {event?.visibility !== "PRIVATE" && (
+            {session?.user && (
+              <a
+                href="#included"
+                className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
+              >
+                What&apos;s Included
+              </a>
+            )}
+            {event?.visibility !== "PRIVATE" && session?.user && (
               <a
                 href="#interest"
-                className="hidden lg:block py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
+                className="py-3 px-1 border-b-2 border-transparent hover:border-primary/50 hover:text-primary whitespace-nowrap text-sm text-gray-600"
               >
                 Register Interest
               </a>
@@ -503,6 +504,37 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                     </div>
                   </div>
                 )}
+
+                {/* Sign up prompt for non-authenticated users */}
+                {!session?.user && (
+                  <div className="mt-6 pt-6 border-t border-gray-100">
+                    <div className="bg-gray-50 rounded-lg p-4 text-center">
+                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg
+                          className="w-5 h-5 text-primary"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                          />
+                        </svg>
+                      </div>
+                      <p className="text-sm text-gray-600 font-medium mb-1">
+                        Full event details are only available to registered
+                        members
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Create a free account to see pricing, what&apos;s
+                        included, and register your interest
+                      </p>
+                    </div>
+                  </div>
+                )}
               </section>
 
               {/* Key Info - Mobile Only (shows after Overview on mobile) */}
@@ -519,82 +551,43 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 />
               </div>
 
-              {/* What's Included Section - Hidden on mobile for non-authenticated users */}
-              <section
-                id="included"
-                className={!session?.user ? "hidden lg:block" : ""}
-              >
-                {session?.user ? (
-                  <div className="bg-white rounded-xl shadow-md p-4 sm:p-6">
-                    <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
-                      What&apos;s Included
-                    </h2>
-                    <div className="space-y-3">
-                      {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
-                        <div key={idx} className="flex gap-3">
-                          <svg
-                            className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span className="text-gray-700">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <SignUpGate
-                    title="See Everything That's Included"
-                    description="View the complete list of accommodations, meals, transport options, and activities included in your trip package."
-                    previewHeight="h-32"
-                    className="bg-white rounded-xl shadow-md"
-                  >
-                    <div className="p-6">
-                      <h2 className="text-2xl font-bold mb-4">
-                        What&apos;s Included
-                      </h2>
-                      <div className="space-y-3">
-                        {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
-                          <div key={idx} className="flex gap-3">
-                            <svg
-                              className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            <span className="text-gray-700">{item}</span>
-                          </div>
-                        ))}
+              {/* What's Included Section - Only show for authenticated users */}
+              {session?.user && (
+                <section
+                  id="included"
+                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
+                >
+                  <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">
+                    What&apos;s Included
+                  </h2>
+                  <div className="space-y-3">
+                    {EVENT_CONSTANTS.DEFAULT_INCLUDES.map((item, idx) => (
+                      <div key={idx} className="flex gap-3">
+                        <svg
+                          className="w-6 h-6 text-green-600 flex-shrink-0 mt-0.5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                        <span className="text-gray-700">{item}</span>
                       </div>
-                      <p className="text-xs text-gray-500 mt-4 italic">
-                        This host club is responsible for selecting and
-                        delivering the components listed
-                      </p>
-                    </div>
-                  </SignUpGate>
-                )}
-              </section>
+                    ))}
+                  </div>
+                </section>
+              )}
 
-              {/* Interest Form Section - Only show for public events, hidden on mobile */}
-              {event?.visibility !== "PRIVATE" && (
+              {/* Interest Form Section - Only show for public events and authenticated users */}
+              {event?.visibility !== "PRIVATE" && session?.user && (
                 <section
                   id="interest"
-                  className="hidden lg:block bg-white rounded-xl shadow-md p-4 sm:p-6"
+                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
                 >
                   {!showInterestForm ? (
                     <div className="text-center py-4 sm:py-6">
@@ -701,11 +694,11 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                 </section>
               )}
 
-              {/* Teams Section - Only for tournaments, hidden on mobile for non-authenticated users */}
-              {event?.eventType === "Tournament" && (
+              {/* Teams Section - Only for tournaments and authenticated users */}
+              {event?.eventType === "Tournament" && session?.user && (
                 <section
                   id="teams"
-                  className={`bg-white rounded-xl shadow-md p-4 sm:p-6 ${!session?.user ? "hidden lg:block" : ""}`}
+                  className="bg-white rounded-xl shadow-md p-4 sm:p-6"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-4 mb-4">
                     <h2 className="text-xl sm:text-2xl font-bold">
@@ -718,78 +711,60 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                     </span>
                   </div>
 
-                  {session?.user ? (
-                    <>
-                      {teams.filter((t) => t.status === "CONFIRMED").length >
-                      0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                          {teams
-                            .filter((t) => t.status === "CONFIRMED")
-                            .map((team) => (
-                              <div
-                                key={team.id}
-                                className="bg-gray-50 rounded-lg p-3 flex items-center gap-3"
-                              >
-                                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                                  <span className="text-primary font-bold text-sm">
-                                    {team.teamName?.charAt(0) || "T"}
-                                  </span>
-                                </div>
-                                <div className="min-w-0">
-                                  <p className="font-medium text-gray-900 truncate">
-                                    {team.teamName}
-                                  </p>
-                                  {team.club?.name && (
-                                    <p className="text-sm text-gray-500 truncate">
-                                      {team.club.name}
-                                    </p>
-                                  )}
-                                </div>
-                                <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded flex-shrink-0">
-                                  {team.teamType}
-                                </span>
-                              </div>
-                            ))}
-                        </div>
-                      ) : (
-                        <div className="text-center py-6 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-100">
-                          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <svg
-                              className="w-6 h-6 text-primary/60"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={1.5}
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                              />
-                            </svg>
+                  {teams.filter((t) => t.status === "CONFIRMED").length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {teams
+                        .filter((t) => t.status === "CONFIRMED")
+                        .map((team) => (
+                          <div
+                            key={team.id}
+                            className="bg-gray-50 rounded-lg p-3 flex items-center gap-3"
+                          >
+                            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-primary font-bold text-sm">
+                                {team.teamName?.charAt(0) || "T"}
+                              </span>
+                            </div>
+                            <div className="min-w-0">
+                              <p className="font-medium text-gray-900 truncate">
+                                {team.teamName}
+                              </p>
+                              {team.club?.name && (
+                                <p className="text-sm text-gray-500 truncate">
+                                  {team.club.name}
+                                </p>
+                              )}
+                            </div>
+                            <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                              {team.teamType}
+                            </span>
                           </div>
-                          <p className="text-gray-600 font-medium text-sm">
-                            No teams confirmed yet
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">
-                            Be the first to register your team!
-                          </p>
-                        </div>
-                      )}
-                    </>
+                        ))}
+                    </div>
                   ) : (
-                    <SignUpGate
-                      title="See Confirmed Teams"
-                      description="View all teams registered for this tournament. Create a free account to see the full lineup."
-                      previewHeight="h-24"
-                    >
-                      <div className="text-center py-8">
-                        <p className="text-gray-500">
-                          {teams.filter((t) => t.status === "CONFIRMED").length}{" "}
-                          teams confirmed
-                        </p>
+                    <div className="text-center py-6 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-100">
+                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <svg
+                          className="w-6 h-6 text-primary/60"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
                       </div>
-                    </SignUpGate>
+                      <p className="text-gray-600 font-medium text-sm">
+                        No teams confirmed yet
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Be the first to register your team!
+                      </p>
+                    </div>
                   )}
                 </section>
               )}

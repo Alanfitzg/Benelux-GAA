@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import EventsManagementClient from "@/components/admin/EventsManagementClient";
+import { sendEventRejectedEmail } from "@/lib/emails/event-rejected-email";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,25 @@ export default async function AdminEventsPage() {
     "use server";
     const id = formData.get("id") as string;
     const reason = formData.get("reason") as string;
+
+    const event = await prisma.event.findUnique({
+      where: { id },
+      select: {
+        title: true,
+        club: {
+          select: {
+            admins: {
+              select: {
+                email: true,
+                name: true,
+                username: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
     await prisma.event.update({
       where: { id },
       data: {
@@ -39,6 +59,23 @@ export default async function AdminEventsPage() {
         rejectionReason: reason || "No reason provided",
       },
     });
+
+    if (event?.club?.admins && event.club.admins.length > 0) {
+      try {
+        for (const admin of event.club.admins) {
+          await sendEventRejectedEmail({
+            to: admin.email,
+            userName: admin.name || admin.username,
+            eventTitle: event.title,
+            rejectionReason: reason || "No reason provided",
+            eventId: id,
+          });
+        }
+      } catch (emailError) {
+        console.error("Failed to send rejection email:", emailError);
+      }
+    }
+
     revalidatePath("/admin/events");
   }
 
