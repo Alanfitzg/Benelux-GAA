@@ -55,12 +55,12 @@ export default async function CalendarManagementPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">
+    <div className="container mx-auto px-4 py-4 sm:py-6">
+      <div className="mb-4 sm:mb-8">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
           Calendar Management
         </h1>
-        <p className="text-gray-600 mt-2">
+        <p className="text-xs sm:text-base text-gray-600 mt-1 sm:mt-2">
           Manage club calendars, events, interest submissions, and calendar data
           across all European clubs
         </p>

@@ -306,68 +306,83 @@ export default function ImageManagement() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Crest Management</h1>
+    <div className="container mx-auto px-4 py-4 sm:py-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 sm:mb-8">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
+          Crest Management
+        </h1>
 
         {/* View Mode Toggle */}
         <div className="flex bg-gray-100 rounded-lg p-1">
           <button
+            type="button"
             onClick={() => setViewMode("smart")}
-            className={`px-4 py-2 rounded-md transition-colors ${
+            className={`flex-1 sm:flex-none px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-md transition-colors ${
               viewMode === "smart"
                 ? "bg-white text-primary shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
-            Smart Matching
+            Smart
           </button>
           <button
+            type="button"
             onClick={() => setViewMode("simple")}
-            className={`px-4 py-2 rounded-md transition-colors ${
+            className={`flex-1 sm:flex-none px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-md transition-colors ${
               viewMode === "simple"
                 ? "bg-white text-primary shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
-            Simple Mode
+            Simple
           </button>
           <button
+            type="button"
             onClick={() => setViewMode("cities")}
-            className={`px-4 py-2 rounded-md transition-colors ${
+            className={`flex-1 sm:flex-none px-2 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm rounded-md transition-colors ${
               viewMode === "cities"
                 ? "bg-white text-primary shadow-sm"
                 : "text-gray-600 hover:text-gray-900"
             }`}
           >
-            City Defaults
+            Cities
           </button>
         </div>
       </div>
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">Total Clubs</h3>
-          <p className="text-2xl font-bold text-primary">{clubs.length}</p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-8">
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">
+            Total Clubs
+          </h3>
+          <p className="text-lg sm:text-2xl font-bold text-primary">
+            {clubs.length}
+          </p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">With Crests</h3>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">
+            With Crests
+          </h3>
+          <p className="text-lg sm:text-2xl font-bold text-green-600">
             {clubsWithImages.length}
           </p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">
             Without Crests
           </h3>
-          <p className="text-2xl font-bold text-red-600">
+          <p className="text-lg sm:text-2xl font-bold text-red-600">
             {clubsWithoutImages.length}
           </p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">S3 Crests</h3>
-          <p className="text-2xl font-bold text-blue-600">{s3Images.length}</p>
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">
+            S3 Crests
+          </h3>
+          <p className="text-lg sm:text-2xl font-bold text-blue-600">
+            {s3Images.length}
+          </p>
         </div>
       </div>
 

@@ -1,18 +1,18 @@
-import { redirect } from 'next/navigation';
-import { getServerSession } from '@/lib/auth-helpers';
-import { prisma } from '@/lib/prisma';
-import TestimonialAdminPanel from './TestimonialAdminPanel';
+import { redirect } from "next/navigation";
+import { getServerSession } from "@/lib/auth-helpers";
+import { prisma } from "@/lib/prisma";
+import TestimonialAdminPanel from "./TestimonialAdminPanel";
 
 export default async function AdminTestimonialsPage() {
   const session = await getServerSession();
-  
-  if (!session?.user?.id || session.user.role !== 'SUPER_ADMIN') {
-    redirect('/');
+
+  if (!session?.user?.id || session.user.role !== "SUPER_ADMIN") {
+    redirect("/");
   }
 
   const testimonials = await prisma.testimonial.findMany({
     where: {
-      status: 'PENDING',
+      status: "PENDING",
     },
     include: {
       user: {
@@ -31,7 +31,7 @@ export default async function AdminTestimonialsPage() {
       },
     },
     orderBy: {
-      submittedAt: 'asc',
+      submittedAt: "asc",
     },
   });
 
@@ -56,21 +56,23 @@ export default async function AdminTestimonialsPage() {
       },
     },
     orderBy: {
-      deleteRequestedAt: 'asc',
+      deleteRequestedAt: "asc",
     },
   });
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Testimonial Management</h1>
-      
-      <TestimonialAdminPanel 
-        pendingTestimonials={testimonials.map(t => ({
+    <div className="container mx-auto px-4 py-4 sm:py-8">
+      <h1 className="text-xl sm:text-3xl font-bold mb-4 sm:mb-8">
+        Testimonial Management
+      </h1>
+
+      <TestimonialAdminPanel
+        pendingTestimonials={testimonials.map((t) => ({
           ...t,
           deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
           submittedAt: t.submittedAt.toISOString(),
         }))}
-        deletionRequests={deletionRequests.map(t => ({
+        deletionRequests={deletionRequests.map((t) => ({
           ...t,
           deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
           submittedAt: t.submittedAt.toISOString(),

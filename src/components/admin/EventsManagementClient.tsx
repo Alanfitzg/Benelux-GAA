@@ -57,7 +57,12 @@ export default function EventsManagementClient({
   const [filterByClashes, setFilterByClashes] = useState(false);
 
   // Extract unique countries, event types, and sports for filter dropdowns
-  const { countries, eventTypes, sports, approvalStatuses } = useMemo(() => {
+  const {
+    countries,
+    eventTypes,
+    sports,
+    approvalStatuses: _approvalStatuses,
+  } = useMemo(() => {
     const countrySet = new Set<string>();
     const eventTypeSet = new Set<string>();
     const sportSet = new Set<string>();
@@ -316,45 +321,52 @@ export default function EventsManagementClient({
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
           Manage Events
         </h1>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <div className="grid grid-cols-3 sm:flex sm:flex-row gap-2 sm:gap-3">
           <button
             type="button"
             onClick={() => setFilterByClashes(!filterByClashes)}
-            className={`relative px-6 py-2.5 rounded-lg transition shadow-sm hover:shadow-md text-center ${
+            className={`relative px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg transition shadow-sm hover:shadow-md text-center ${
               filterByClashes
                 ? "bg-primary text-white ring-2 ring-primary/50"
                 : "bg-secondary text-white hover:bg-secondary/90"
             }`}
           >
-            {filterByClashes ? "Clear Clashes Filter" : "Check Clashes"}
+            <span className="hidden sm:inline">
+              {filterByClashes ? "Clear Clashes Filter" : "Check Clashes"}
+            </span>
+            <span className="sm:hidden">
+              {filterByClashes ? "Clear" : "Clashes"}
+            </span>
             {dateClashes.length > 0 && !filterByClashes && (
-              <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+              <span className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 bg-amber-500 text-white text-[10px] sm:text-xs font-bold rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
                 {dateClashes.length}
               </span>
             )}
           </button>
           <Link
             href="/events/create"
-            className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md text-center"
+            className="bg-primary text-white px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md text-center"
           >
-            Create Event
+            <span className="hidden sm:inline">Create Event</span>
+            <span className="sm:hidden">Create</span>
           </Link>
           <Link
             href="/admin"
-            className="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-300 transition text-center"
+            className="bg-gray-200 text-gray-700 px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg hover:bg-gray-300 transition text-center"
           >
-            Back to Dashboard
+            <span className="hidden sm:inline">Back to Dashboard</span>
+            <span className="sm:hidden">Dashboard</span>
           </Link>
         </div>
       </div>
 
       {/* Clash Filter Active Banner */}
       {filterByClashes && (
-        <div className="bg-secondary/10 border border-secondary/30 rounded-xl p-4 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-secondary/20 rounded-full p-2">
+        <div className="bg-secondary/10 border border-secondary/30 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-secondary/20 rounded-full p-1.5 sm:p-2 flex-shrink-0">
               <svg
-                className="w-5 h-5 text-secondary"
+                className="w-4 h-4 sm:w-5 sm:h-5 text-secondary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -367,12 +379,12 @@ export default function EventsManagementClient({
                 />
               </svg>
             </div>
-            <div>
-              <h3 className="font-semibold text-secondary">
-                Showing {totalClashingEvents} Clashing Events across{" "}
-                {dateClashes.length} Date{dateClashes.length !== 1 ? "s" : ""}
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-secondary text-sm sm:text-base">
+                {totalClashingEvents} Clashing Events ({dateClashes.length} Date
+                {dateClashes.length !== 1 ? "s" : ""})
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">
                 These events share dates with at least one pending event. Review
                 and approve to clear clashes.
               </p>
@@ -380,9 +392,9 @@ export default function EventsManagementClient({
             <button
               type="button"
               onClick={() => setFilterByClashes(false)}
-              className="ml-auto px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition text-sm font-medium"
+              className="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition text-xs sm:text-sm font-medium"
             >
-              Clear Filter
+              Clear
             </button>
           </div>
         </div>
@@ -390,11 +402,11 @@ export default function EventsManagementClient({
 
       {/* Pending Events Alert */}
       {pendingCount > 0 && !filterByClashes && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
-          <div className="flex items-center gap-3">
-            <div className="bg-amber-100 rounded-full p-2">
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="bg-amber-100 rounded-full p-1.5 sm:p-2 flex-shrink-0">
               <svg
-                className="w-5 h-5 text-amber-600"
+                className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -407,12 +419,16 @@ export default function EventsManagementClient({
                 />
               </svg>
             </div>
-            <div>
-              <h3 className="font-semibold text-amber-800">
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-amber-800 text-sm sm:text-base">
                 {pendingCount} Event{pendingCount !== 1 ? "s" : ""} Awaiting
                 Approval
               </h3>
-              <p className="text-sm text-amber-700">
+              <p className="text-xs sm:text-sm text-amber-700 hidden sm:block">
+                Review and approve or reject pending events to make them visible
+                on the public events page.
+              </p>
+              <p className="text-xs text-amber-700 sm:hidden">
                 Review and approve or reject pending events to make them visible
                 on the public events page.
               </p>
@@ -420,7 +436,7 @@ export default function EventsManagementClient({
             <button
               type="button"
               onClick={() => setSelectedApprovalStatus("PENDING")}
-              className="ml-auto px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition text-sm font-medium"
+              className="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition text-xs sm:text-sm font-medium"
             >
               View Pending
             </button>
@@ -429,13 +445,13 @@ export default function EventsManagementClient({
       )}
 
       {/* Filters Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
           {/* Approval Status Filter */}
           <div>
             <label
               htmlFor="approval-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
             >
               Approval Status
             </label>
@@ -443,12 +459,12 @@ export default function EventsManagementClient({
               id="approval-filter"
               value={selectedApprovalStatus}
               onChange={(e) => setSelectedApprovalStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="all">All Status ({initialEvents.length})</option>
-              <option value="PENDING">⏳ Pending ({pendingCount})</option>
-              <option value="APPROVED">✓ Approved ({approvedCount})</option>
-              <option value="REJECTED">✗ Rejected ({rejectedCount})</option>
+              <option value="PENDING">Pending ({pendingCount})</option>
+              <option value="APPROVED">Approved ({approvedCount})</option>
+              <option value="REJECTED">Rejected ({rejectedCount})</option>
             </select>
           </div>
 
@@ -456,7 +472,7 @@ export default function EventsManagementClient({
           <div>
             <label
               htmlFor="country-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
             >
               Country/Region
             </label>
@@ -464,7 +480,7 @@ export default function EventsManagementClient({
               id="country-filter"
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="all">All Countries</option>
               {countries.map((country) => (
@@ -479,7 +495,7 @@ export default function EventsManagementClient({
           <div>
             <label
               htmlFor="type-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
             >
               Event Type
             </label>
@@ -487,7 +503,7 @@ export default function EventsManagementClient({
               id="type-filter"
               value={selectedEventType}
               onChange={(e) => setSelectedEventType(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="all">All Types</option>
               {eventTypes.map((type) => (
@@ -502,7 +518,7 @@ export default function EventsManagementClient({
           <div>
             <label
               htmlFor="sport-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
             >
               Sport
             </label>
@@ -510,7 +526,7 @@ export default function EventsManagementClient({
               id="sport-filter"
               value={selectedSport}
               onChange={(e) => setSelectedSport(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             >
               <option value="all">All Sports</option>
               {sports.map((sport) => (
@@ -525,24 +541,24 @@ export default function EventsManagementClient({
           <div>
             <label
               htmlFor="search-filter"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
             >
               Search
             </label>
             <input
               id="search-filter"
               type="text"
-              placeholder="Search events..."
+              placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
 
           {/* Results Count */}
           <div className="flex items-end">
-            <div className="px-4 py-2 bg-gray-100 rounded-lg w-full text-center">
-              <span className="text-sm text-gray-600">
+            <div className="px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-lg w-full text-center">
+              <span className="text-xs sm:text-sm text-gray-600">
                 {filteredEvents.length} of {initialEvents.length}
               </span>
             </div>

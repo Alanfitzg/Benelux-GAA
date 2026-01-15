@@ -124,14 +124,14 @@ export default function BackupsManagement() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Database Backups</h1>
+    <div className="container mx-auto px-4 py-4 sm:py-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4 sm:mb-8">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Database Backups</h1>
         <div className="flex items-center gap-4">
           {/* Connection Status */}
-          <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${
-            connectionStatus === 'connected' 
-              ? 'bg-green-100 text-green-800' 
+          <div className={`flex items-center gap-2 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
+            connectionStatus === 'connected'
+              ? 'bg-green-100 text-green-800'
               : connectionStatus === 'disconnected'
               ? 'bg-red-100 text-red-800'
               : 'bg-yellow-100 text-yellow-800'
@@ -140,8 +140,14 @@ export default function BackupsManagement() {
               connectionStatus === 'connected' ? 'bg-green-500' :
               connectionStatus === 'disconnected' ? 'bg-red-500' : 'bg-yellow-500'
             }`}></span>
-            {connectionStatus === 'checking' ? 'Checking...' :
-             connectionStatus === 'connected' ? 'Database Connected' : 'Database Disconnected'}
+            <span className="hidden sm:inline">
+              {connectionStatus === 'checking' ? 'Checking...' :
+               connectionStatus === 'connected' ? 'Database Connected' : 'Database Disconnected'}
+            </span>
+            <span className="sm:hidden">
+              {connectionStatus === 'checking' ? '...' :
+               connectionStatus === 'connected' ? 'Connected' : 'Disconnected'}
+            </span>
           </div>
         </div>
       </div>
@@ -157,42 +163,44 @@ export default function BackupsManagement() {
       )}
 
       {/* Statistics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">Total Backups</h3>
-          <p className="text-3xl font-bold text-primary">{backups.length}</p>
+      <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-8">
+        <div className="bg-white p-3 sm:p-6 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">Total Backups</h3>
+          <p className="text-lg sm:text-3xl font-bold text-primary">{backups.length}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">Local Backups</h3>
-          <p className="text-3xl font-bold text-blue-600">{backups.filter(b => b.type === 'local').length}</p>
+        <div className="bg-white p-3 sm:p-6 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">Local Backups</h3>
+          <p className="text-lg sm:text-3xl font-bold text-blue-600">{backups.filter(b => b.type === 'local').length}</p>
         </div>
-        <div className="bg-white p-6 rounded-lg shadow">
-          <h3 className="text-lg font-semibold text-gray-900">S3 Backups</h3>
-          <p className="text-3xl font-bold text-green-600">{backups.filter(b => b.type === 's3').length}</p>
+        <div className="bg-white p-3 sm:p-6 rounded-lg shadow">
+          <h3 className="text-xs sm:text-lg font-semibold text-gray-900">S3 Backups</h3>
+          <p className="text-lg sm:text-3xl font-bold text-green-600">{backups.filter(b => b.type === 's3').length}</p>
         </div>
       </div>
 
       {/* Backup Actions */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-xl font-semibold mb-4">Create New Backup</h2>
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="bg-white rounded-lg shadow-lg p-3 sm:p-6 mb-4 sm:mb-8">
+        <h2 className="text-sm sm:text-xl font-semibold mb-3 sm:mb-4">Create New Backup</h2>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <button
+            type="button"
             onClick={() => createBackup(false)}
             disabled={creating || connectionStatus !== 'connected'}
-            className="flex-1 px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-base bg-primary text-white rounded-lg hover:bg-primary-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {creating ? "Creating..." : "Create Local Backup"}
           </button>
           <button
+            type="button"
             onClick={() => createBackup(true)}
             disabled={creating || connectionStatus !== 'connected'}
-            className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex-1 px-3 sm:px-6 py-2 sm:py-3 text-xs sm:text-base bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {creating ? "Creating..." : "Create Backup + Upload to S3"}
+            {creating ? "Creating..." : "Backup + S3"}
           </button>
         </div>
         {connectionStatus !== 'connected' && (
-          <p className="mt-2 text-sm text-red-600">
+          <p className="mt-2 text-xs sm:text-sm text-red-600">
             Database must be connected to create backups
           </p>
         )}
@@ -200,96 +208,144 @@ export default function BackupsManagement() {
 
       {/* Backups List */}
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold">Available Backups</h2>
+        <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
+          <h2 className="text-sm sm:text-xl font-semibold">Available Backups</h2>
         </div>
-        
+
         {backups.length === 0 ? (
-          <div className="px-6 py-8 text-center text-gray-500">
+          <div className="px-3 sm:px-6 py-6 sm:py-8 text-center text-gray-500 text-sm">
             No backups found. Create your first backup above.
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Filename
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Size
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Created
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Type
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {backups.map((backup, index) => (
-                  <tr key={index} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
+          <>
+            {/* Mobile Cards View */}
+            <div className="sm:hidden divide-y divide-gray-200">
+              {backups.map((backup, index) => (
+                <div key={index} className="p-3">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xs font-medium text-gray-900 truncate">
                         {backup.filename}
                       </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {backup.size}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(backup.created).toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        backup.type === 's3' 
-                          ? 'bg-green-100 text-green-800' 
-                          : 'bg-blue-100 text-blue-800'
-                      }`}>
-                        {backup.type === 's3' ? 'S3' : 'Local'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                      {backup.type === 'local' && (
-                        <>
-                          <button
-                            onClick={() => downloadBackup(backup.filename)}
-                            className="text-primary hover:text-primary-600"
-                          >
-                            Download
-                          </button>
-                          <button
-                            onClick={() => deleteBackup(backup.filename)}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            Delete
-                          </button>
-                        </>
-                      )}
-                      {backup.type === 's3' && (
-                        <span className="text-gray-400">In S3</span>
-                      )}
-                    </td>
+                      <div className="text-xs text-gray-500">
+                        {backup.size} • {new Date(backup.created).toLocaleDateString()}
+                      </div>
+                    </div>
+                    <span className={`ml-2 flex-shrink-0 inline-flex px-2 py-0.5 text-xs font-semibold rounded-full ${
+                      backup.type === 's3'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {backup.type === 's3' ? 'S3' : 'Local'}
+                    </span>
+                  </div>
+                  {backup.type === 'local' && (
+                    <div className="flex gap-2">
+                      <button
+                        type="button"
+                        onClick={() => downloadBackup(backup.filename)}
+                        className="flex-1 py-1.5 text-xs text-center bg-primary text-white rounded hover:bg-primary-600"
+                      >
+                        Download
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => deleteBackup(backup.filename)}
+                        className="flex-1 py-1.5 text-xs text-center bg-red-100 text-red-700 rounded hover:bg-red-200"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden sm:block overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Filename
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Size
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Created
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Type
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {backups.map((backup, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">
+                          {backup.filename}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {backup.size}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {new Date(backup.created).toLocaleString()}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          backup.type === 's3'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-blue-100 text-blue-800'
+                        }`}>
+                          {backup.type === 's3' ? 'S3' : 'Local'}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                        {backup.type === 'local' && (
+                          <>
+                            <button
+                              type="button"
+                              onClick={() => downloadBackup(backup.filename)}
+                              className="text-primary hover:text-primary-600"
+                            >
+                              Download
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => deleteBackup(backup.filename)}
+                              className="text-red-600 hover:text-red-800"
+                            >
+                              Delete
+                            </button>
+                          </>
+                        )}
+                        {backup.type === 's3' && (
+                          <span className="text-gray-400">In S3</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </div>
 
       {/* Backup Information */}
-      <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-blue-900 mb-2">💡 Backup Information</h3>
-        <div className="text-sm text-blue-800 space-y-2">
-          <p><strong>Local Backups:</strong> Stored in the server&apos;s file system. Can be downloaded and deleted from this interface.</p>
-          <p><strong>S3 Backups:</strong> Uploaded to AWS S3 for long-term storage and disaster recovery.</p>
-          <p><strong>Retention:</strong> Local backups are automatically cleaned up (keeping last 7). S3 backups are kept for 30 days.</p>
-          <p><strong>Format:</strong> PostgreSQL dump files, compressed with gzip for space efficiency.</p>
+      <div className="mt-4 sm:mt-8 bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-6">
+        <h3 className="text-sm sm:text-lg font-semibold text-blue-900 mb-2">💡 Backup Information</h3>
+        <div className="text-xs sm:text-sm text-blue-800 space-y-1 sm:space-y-2">
+          <p><strong>Local:</strong> Stored in server file system. Download/delete from here.</p>
+          <p><strong>S3:</strong> Uploaded to AWS S3 for long-term storage.</p>
+          <p><strong>Retention:</strong> Local: last 7 kept. S3: 30 days.</p>
+          <p className="hidden sm:block"><strong>Format:</strong> PostgreSQL dump files, compressed with gzip.</p>
         </div>
       </div>
     </div>
