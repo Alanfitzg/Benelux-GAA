@@ -322,8 +322,8 @@ export default function EventsManagementClient({
             onClick={() => setFilterByClashes(!filterByClashes)}
             className={`relative px-6 py-2.5 rounded-lg transition shadow-sm hover:shadow-md text-center ${
               filterByClashes
-                ? "bg-purple-800 text-white ring-2 ring-purple-400"
-                : "bg-purple-600 text-white hover:bg-purple-700"
+                ? "bg-primary text-white ring-2 ring-primary/50"
+                : "bg-secondary text-white hover:bg-secondary/90"
             }`}
           >
             {filterByClashes ? "Clear Clashes Filter" : "Check Clashes"}
@@ -350,11 +350,11 @@ export default function EventsManagementClient({
 
       {/* Clash Filter Active Banner */}
       {filterByClashes && (
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-6">
+        <div className="bg-secondary/10 border border-secondary/30 rounded-xl p-4 mb-6">
           <div className="flex items-center gap-3">
-            <div className="bg-purple-100 rounded-full p-2">
+            <div className="bg-secondary/20 rounded-full p-2">
               <svg
-                className="w-5 h-5 text-purple-600"
+                className="w-5 h-5 text-secondary"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -368,11 +368,11 @@ export default function EventsManagementClient({
               </svg>
             </div>
             <div>
-              <h3 className="font-semibold text-purple-800">
+              <h3 className="font-semibold text-secondary">
                 Showing {totalClashingEvents} Clashing Events across{" "}
                 {dateClashes.length} Date{dateClashes.length !== 1 ? "s" : ""}
               </h3>
-              <p className="text-sm text-purple-700">
+              <p className="text-sm text-gray-600">
                 These events share dates with at least one pending event. Review
                 and approve to clear clashes.
               </p>
@@ -380,7 +380,7 @@ export default function EventsManagementClient({
             <button
               type="button"
               onClick={() => setFilterByClashes(false)}
-              className="ml-auto px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium"
+              className="ml-auto px-4 py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition text-sm font-medium"
             >
               Clear Filter
             </button>

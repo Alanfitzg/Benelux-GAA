@@ -3,7 +3,22 @@ import Link from "next/link";
 export default function AdminDashboard() {
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Admin Dashboard</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">Admin Dashboard</h1>
+
+      {/* Platform Overview */}
+      <div className="bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 border border-primary/20 rounded-2xl p-6 mb-8">
+        <h2 className="text-xl font-semibold text-primary mb-3">
+          PlayAway Command Centre
+        </h2>
+        <p className="text-gray-700 leading-relaxed">
+          Welcome to the central hub for managing the GAA&apos;s global travel
+          and tournament platform. From here, you have complete oversight of{" "}
+          <strong>2,400+ clubs across 60+ countries</strong>, tournament
+          scheduling, club verification, and user management. The platform
+          connects Irish and UK clubs with European host clubs, facilitating
+          international fixtures, training camps, and cultural exchanges.
+        </p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Link

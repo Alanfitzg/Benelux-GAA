@@ -168,11 +168,57 @@ export default function DataCenterPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <div className="mb-8">
+      <div className="mb-4">
         <h1 className="text-3xl font-bold text-gray-900">Data Center</h1>
         <p className="text-gray-600 mt-2">
           Export and analyze platform data for insights and reporting
         </p>
+      </div>
+
+      {/* Unique Data Asset Overview */}
+      <div className="bg-gradient-to-r from-primary/5 via-secondary/5 to-primary/5 border border-primary/20 rounded-2xl p-6 mb-8">
+        <h2 className="text-xl font-semibold text-primary mb-3">
+          First-Party Data: A Unique GAA Asset
+        </h2>
+        <p className="text-gray-700 leading-relaxed mb-4">
+          This data has{" "}
+          <strong>never been systematically captured before</strong> in the
+          history of Gaelic Games abroad. For the first time, we can see exactly
+          how many teams and individuals are actively planning international
+          trips, which destinations they prefer, their budgets, and when they
+          want to travel. This intelligence enables accurate demand forecasting,
+          revenue projections, and strategic partnership opportunities.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+          <div className="bg-white/60 rounded-lg p-4 border border-primary/10">
+            <div className="font-semibold text-primary mb-1">
+              Travel Intent Data
+            </div>
+            <p className="text-gray-600 text-xs">
+              Real booking intentions from clubs and individuals, not estimates.
+              See exact team sizes, preferred dates, and destination interests.
+            </p>
+          </div>
+          <div className="bg-white/60 rounded-lg p-4 border border-secondary/10">
+            <div className="font-semibold text-secondary mb-1">
+              Revenue Forecasting
+            </div>
+            <p className="text-gray-600 text-xs">
+              Transform interest data into projected revenue. Calculate
+              potential earnings from registrations, platform fees, and
+              partnership opportunities.
+            </p>
+          </div>
+          <div className="bg-white/60 rounded-lg p-4 border border-primary/10">
+            <div className="font-semibold text-primary mb-1">
+              Market Intelligence
+            </div>
+            <p className="text-gray-600 text-xs">
+              Understand seasonal patterns, popular routes, competitive level
+              distribution, and emerging markets for strategic planning.
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
