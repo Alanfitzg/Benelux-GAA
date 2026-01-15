@@ -191,31 +191,53 @@ export default function VisitClubCard({
             </button>
 
             {isDayPassExpanded && (
-              <div className="mt-3 pt-3 border-t border-gray-200 text-xs text-gray-600 space-y-2">
+              <div className="mt-3 pt-3 border-t border-gray-200 text-sm text-gray-600 space-y-3">
                 <p>
-                  European GAA clubs typically don&apos;t own facilities. The
-                  Day-Pass helps cover:
+                  Your Day-Pass gives you full access to train with {clubName}{" "}
+                  for a day. Unlike clubs back home, most European GAA clubs
+                  don&apos;t own their own facilities - so this contribution
+                  helps cover:
                 </p>
-                <ul className="space-y-1 ml-1">
-                  {["Pitch rental", "Equipment", "Local coordination"].map(
-                    (item) => (
-                      <li key={item} className="flex items-center gap-1.5">
-                        <svg
-                          className="w-3 h-3 text-green-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        {item}
-                      </li>
-                    )
-                  )}
+                <ul className="space-y-2">
+                  {[
+                    {
+                      title: "Pitch rental",
+                      desc: "Access to local sports facilities",
+                    },
+                    {
+                      title: "Equipment",
+                      desc: "Balls, cones, bibs, and training gear",
+                    },
+                    {
+                      title: "Local coordination",
+                      desc: "Club members organising your session",
+                    },
+                  ].map((item) => (
+                    <li key={item.title} className="flex items-start gap-2">
+                      <svg
+                        className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <div>
+                        <span className="font-medium text-gray-900">
+                          {item.title}
+                        </span>
+                        <span className="text-gray-500"> - {item.desc}</span>
+                      </div>
+                    </li>
+                  ))}
                 </ul>
+                <p className="text-xs text-gray-500 italic">
+                  Many clubs also organise post-training socials - a great way
+                  to connect with the local GAA community!
+                </p>
               </div>
             )}
           </div>
