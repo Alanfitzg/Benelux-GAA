@@ -36,6 +36,10 @@ import {
   Eye,
   HelpCircle,
   X,
+  Wallet,
+  ShieldCheck,
+  ShieldAlert,
+  ShieldX,
 } from "lucide-react";
 
 interface ClubStats {
@@ -47,6 +51,16 @@ interface ClubStats {
     memberCount: number;
     eventCount: number;
     dayPassPrice: number | null;
+    verificationStatus:
+      | "UNVERIFIED"
+      | "PENDING_VERIFICATION"
+      | "VERIFIED"
+      | "EXPIRED"
+      | "DISPUTED";
+    verificationExpiry: string | null;
+    bio: string | null;
+    twitter: string | null;
+    tiktok: string | null;
   };
   overview: {
     totalEvents: number;
@@ -57,6 +71,10 @@ interface ClubStats {
     averageInterestsPerEvent: string;
     yearEarnings: number;
     currentYear: number;
+    // Hero stats for European host clubs
+    teamsWelcomed: number;
+    playersHosted: number;
+    eventsHosted: number;
   };
   events: Array<{
     id: string;
@@ -267,7 +285,12 @@ export default function ClubAdminDashboard({
       label: "Testimonials",
       icon: <MessageSquare className="w-4 h-4" />,
     },
-    { id: "friends", label: "Friends", icon: <Users className="w-4 h-4" /> },
+    {
+      id: "friends",
+      label: "Partner Clubs",
+      irishLabel: "Friends",
+      icon: <Users className="w-4 h-4" />,
+    },
     { id: "photos", label: "Photos", icon: <Image className="w-4 h-4" /> },
     {
       id: "pitches",
@@ -288,21 +311,47 @@ export default function ClubAdminDashboard({
     <div className="space-y-3 md:space-y-6">
       {/* Hero Header Section - Dark Theme - Hidden on mobile to save space */}
       <div className="relative p-4 md:p-8 mb-2 md:mb-6 hidden md:block">
-        {/* Header with icon */}
-        <div className="flex items-center gap-3 mb-3 md:mb-4">
-          <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
-            <span className="text-xl md:text-2xl">🏠</span>
+        {/* Header with icon and hero stats */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <span className="text-xl md:text-2xl">🏠</span>
+            </div>
+            <div>
+              <h1 className="text-lg md:text-2xl font-bold text-white">
+                Command Center
+              </h1>
+              <p className="text-xs md:text-sm text-white/60">
+                {isIrishClub ? "Travelling Club" : "Your club management hub"}
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-lg md:text-2xl font-bold text-white">
-              Host Dashboard
-            </h1>
-            <p className="text-xs md:text-sm text-white/60">
-              {isIrishClub
-                ? "Travelling Club"
-                : "Viewing aggregated data from all clubs"}
-            </p>
-          </div>
+
+          {/* Hero Stats - European clubs only */}
+          {!isIrishClub && (
+            <div className="flex items-center gap-6">
+              <div className="text-right">
+                <p className="text-2xl font-bold text-white">
+                  {stats.overview.teamsWelcomed}
+                </p>
+                <p className="text-xs text-white/60">Teams Welcomed</p>
+              </div>
+              <div className="w-px h-10 bg-white/20" />
+              <div className="text-right">
+                <p className="text-2xl font-bold text-white">
+                  {stats.overview.playersHosted.toLocaleString()}
+                </p>
+                <p className="text-xs text-white/60">Players Hosted</p>
+              </div>
+              <div className="w-px h-10 bg-white/20" />
+              <div className="text-right">
+                <p className="text-2xl font-bold text-white">
+                  {stats.overview.eventsHosted}
+                </p>
+                <p className="text-xs text-white/60">Events Hosted</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -983,30 +1032,143 @@ export default function ClubAdminDashboard({
               ) : (
                 /* European Club Nerve Center */
                 <div className="space-y-6">
+                  {/* Verification Status Banner */}
+                  {stats.club.verificationStatus !== "VERIFIED" && (
+                    <div
+                      className={`flex items-start gap-3 p-4 rounded-xl border ${
+                        stats.club.verificationStatus === "UNVERIFIED"
+                          ? "bg-amber-50 border-amber-200"
+                          : stats.club.verificationStatus ===
+                              "PENDING_VERIFICATION"
+                            ? "bg-blue-50 border-blue-200"
+                            : stats.club.verificationStatus === "EXPIRED"
+                              ? "bg-orange-50 border-orange-200"
+                              : "bg-red-50 border-red-200"
+                      }`}
+                    >
+                      {stats.club.verificationStatus === "UNVERIFIED" && (
+                        <ShieldAlert className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      {stats.club.verificationStatus ===
+                        "PENDING_VERIFICATION" && (
+                        <ShieldAlert className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      {stats.club.verificationStatus === "EXPIRED" && (
+                        <ShieldX className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      {stats.club.verificationStatus === "DISPUTED" && (
+                        <ShieldX className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                      )}
+                      <div className="flex-1">
+                        <h4
+                          className={`font-semibold text-sm ${
+                            stats.club.verificationStatus === "UNVERIFIED"
+                              ? "text-amber-800"
+                              : stats.club.verificationStatus ===
+                                  "PENDING_VERIFICATION"
+                                ? "text-blue-800"
+                                : stats.club.verificationStatus === "EXPIRED"
+                                  ? "text-orange-800"
+                                  : "text-red-800"
+                          }`}
+                        >
+                          {stats.club.verificationStatus === "UNVERIFIED" &&
+                            "Club Not Verified"}
+                          {stats.club.verificationStatus ===
+                            "PENDING_VERIFICATION" && "Verification Pending"}
+                          {stats.club.verificationStatus === "EXPIRED" &&
+                            "Verification Expired"}
+                          {stats.club.verificationStatus === "DISPUTED" &&
+                            "Verification Disputed"}
+                        </h4>
+                        <p
+                          className={`text-xs mt-1 ${
+                            stats.club.verificationStatus === "UNVERIFIED"
+                              ? "text-amber-700"
+                              : stats.club.verificationStatus ===
+                                  "PENDING_VERIFICATION"
+                                ? "text-blue-700"
+                                : stats.club.verificationStatus === "EXPIRED"
+                                  ? "text-orange-700"
+                                  : "text-red-700"
+                          }`}
+                        >
+                          {stats.club.verificationStatus === "UNVERIFIED" &&
+                            "Verified clubs appear higher in search results and build more trust with travelling teams. Complete your club profile to begin verification."}
+                          {stats.club.verificationStatus ===
+                            "PENDING_VERIFICATION" &&
+                            "Your verification request is being reviewed. This usually takes 1-2 business days."}
+                          {stats.club.verificationStatus === "EXPIRED" &&
+                            "Your verification has expired. Please update your club details to renew."}
+                          {stats.club.verificationStatus === "DISPUTED" &&
+                            "There's an issue with your club verification. Please contact support."}
+                        </p>
+                        {stats.club.verificationStatus === "UNVERIFIED" && (
+                          <Link
+                            href={`/clubs/${clubId}/edit`}
+                            className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 hover:text-amber-900 mt-2"
+                          >
+                            Complete your profile{" "}
+                            <ArrowRight className="w-3 h-3" />
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Verified Badge (show when verified) */}
+                  {stats.club.verificationStatus === "VERIFIED" && (
+                    <div className="flex items-center gap-2 px-3 py-2 bg-emerald-50 border border-emerald-200 rounded-lg w-fit">
+                      <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                      <span className="text-sm font-medium text-emerald-700">
+                        Verified Host Club
+                      </span>
+                      {stats.club.verificationExpiry && (
+                        <span className="text-xs text-emerald-600">
+                          (until{" "}
+                          {new Date(
+                            stats.club.verificationExpiry
+                          ).toLocaleDateString("en-IE", {
+                            month: "short",
+                            year: "numeric",
+                          })}
+                          )
+                        </span>
+                      )}
+                    </div>
+                  )}
+
                   {/* Hero Stats - The Numbers That Matter */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* Total Interests */}
-                    <div className="bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl p-5 border border-primary/20">
+                    {/* Total Interests - Clickable to Demand Insights */}
+                    <Link
+                      href={`/club-admin/${clubId}/demand`}
+                      className="block bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl p-5 border border-primary/20 shadow-md hover:border-primary/40 hover:shadow-lg transition-all group"
+                    >
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className="text-sm font-medium text-gray-600">
+                          <p className="text-sm font-medium text-gray-600 group-hover:text-primary transition-colors">
                             Teams Interested
                           </p>
                           <p className="text-4xl font-bold text-primary mt-1">
                             {stats.overview.totalInterests}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Irish clubs wanting to visit
+                          <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                            View demand insights
+                            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                           </p>
                         </div>
-                        <div className="bg-primary/10 rounded-lg p-2">
+                        <div className="bg-primary/10 rounded-lg p-2 group-hover:bg-primary/20 transition-colors">
                           <Users className="w-5 h-5 text-primary" />
                         </div>
                       </div>
-                    </div>
+                    </Link>
 
-                    {/* Potential Revenue */}
-                    <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200 relative">
+                    {/* Potential Revenue - Clickable */}
+                    <Link
+                      href={`/club-admin/${clubId}/financials`}
+                      className="block bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200 shadow-md relative hover:border-emerald-400 hover:shadow-lg transition-all group"
+                    >
                       <div className="flex items-start justify-between">
                         <div>
                           <div className="flex items-center gap-1.5">
@@ -1015,32 +1177,48 @@ export default function ClubAdminDashboard({
                             </p>
                             <button
                               type="button"
-                              onClick={() =>
-                                setShowRevenueInfo(!showRevenueInfo)
-                              }
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setShowRevenueInfo(!showRevenueInfo);
+                              }}
                               className="text-emerald-500 hover:text-emerald-700 transition-colors"
                               aria-label="How is this calculated?"
                             >
                               <Info className="w-3.5 h-3.5" />
                             </button>
                           </div>
-                          <p className="text-4xl font-bold text-emerald-600 mt-1">
-                            €
-                            {(
-                              stats.overview.totalInterests *
-                              15 *
-                              45
-                            ).toLocaleString()}
-                          </p>
-                          <p className="text-xs text-emerald-600 mt-1">
-                            From Day-Pass sales
-                          </p>
+                          {stats.overview.totalInterests > 0 ? (
+                            <>
+                              <p className="text-4xl font-bold text-emerald-600 mt-1">
+                                €
+                                {(
+                                  stats.overview.totalInterests *
+                                  15 *
+                                  45
+                                ).toLocaleString()}
+                              </p>
+                              <p className="text-xs text-emerald-600 mt-1 flex items-center gap-1">
+                                View financials
+                                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                              </p>
+                            </>
+                          ) : (
+                            <>
+                              <p className="text-2xl font-bold text-emerald-600/60 mt-1">
+                                —
+                              </p>
+                              <p className="text-xs text-emerald-600/70 mt-1">
+                                Host events to see potential
+                              </p>
+                            </>
+                          )}
                         </div>
-                        <div className="bg-emerald-100 rounded-lg p-2">
+                        <div className="bg-emerald-100 rounded-lg p-2 group-hover:bg-emerald-200 transition-colors">
                           <TrendingUp className="w-5 h-5 text-emerald-600" />
                         </div>
                       </div>
-                      {showRevenueInfo && (
+                      {showRevenueInfo && stats.overview.totalInterests > 0 && (
                         <div className="absolute top-full left-0 right-0 mt-2 z-10">
                           <div className="bg-gray-900 text-white text-sm rounded-lg p-3 shadow-lg">
                             <p className="font-medium mb-1">
@@ -1060,10 +1238,13 @@ export default function ClubAdminDashboard({
                           </div>
                         </div>
                       )}
-                    </div>
+                    </Link>
 
-                    {/* Earnings */}
-                    <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+                    {/* Earnings - Clickable */}
+                    <Link
+                      href={`/club-admin/${clubId}/financials`}
+                      className="block bg-gray-50 rounded-xl p-5 border border-gray-200 shadow-md hover:border-gray-400 hover:shadow-lg transition-all group"
+                    >
                       <div className="flex items-start justify-between">
                         <div>
                           <p className="text-sm font-medium text-gray-600">
@@ -1072,22 +1253,26 @@ export default function ClubAdminDashboard({
                           <p className="text-4xl font-bold text-gray-900 mt-1">
                             €{stats.overview.yearEarnings.toLocaleString()}
                           </p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Confirmed revenue
+                          <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                            View financials
+                            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                           </p>
                         </div>
-                        <div className="bg-gray-200 rounded-lg p-2">
+                        <div className="bg-gray-200 rounded-lg p-2 group-hover:bg-gray-300 transition-colors">
                           <BarChart3 className="w-5 h-5 text-gray-600" />
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
 
                   {/* Day-Pass Foundation - Compact but Clear */}
-                  <div className="bg-white rounded-xl border border-gray-200 p-4">
+                  <Link
+                    href={`/club-admin/${clubId}/day-pass`}
+                    className="block bg-white rounded-xl border border-gray-200 shadow-md p-4 hover:border-emerald-300 hover:shadow-lg transition-all group"
+                  >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-200 transition-colors">
                           <Ticket className="w-5 h-5 text-emerald-600" />
                         </div>
                         <div>
@@ -1099,18 +1284,23 @@ export default function ClubAdminDashboard({
                           </p>
                         </div>
                       </div>
-                      <Link
-                        href={`/club-admin/${clubId}/day-pass`}
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors whitespace-nowrap"
-                      >
-                        {stats.club.dayPassPrice ? "View" : "Configure"}
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        {stats.club.dayPassPrice ? (
+                          <span className="text-xl font-bold text-emerald-600">
+                            €{stats.club.dayPassPrice}
+                          </span>
+                        ) : (
+                          <span className="text-sm text-amber-600 font-medium bg-amber-50 px-2 py-1 rounded">
+                            Not set
+                          </span>
+                        )}
+                        <ArrowRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
 
                   {/* Recent Interests */}
-                  <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                  <div className="bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden">
                     <div className="p-4 border-b border-gray-100 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <h3 className="font-semibold text-gray-900">
@@ -1194,10 +1384,12 @@ export default function ClubAdminDashboard({
                   </div>
 
                   {/* Quick Links Grid */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div
+                    className={`grid grid-cols-2 gap-3 ${isMainlandEurope ? "md:grid-cols-5" : "md:grid-cols-4"}`}
+                  >
                     <Link
                       href={`/clubs/${clubId}/edit`}
-                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all"
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-primary/30 hover:bg-gray-50 hover:shadow-md transition-all"
                     >
                       <Eye className="w-4 h-4 text-gray-500" />
                       <span className="text-sm font-medium text-gray-700">
@@ -1207,7 +1399,7 @@ export default function ClubAdminDashboard({
                     <button
                       type="button"
                       onClick={() => setActiveSection("events")}
-                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all text-left"
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-primary/30 hover:bg-gray-50 hover:shadow-md transition-all text-left"
                     >
                       <CalendarDays className="w-4 h-4 text-gray-500" />
                       <span className="text-sm font-medium text-gray-700">
@@ -1217,7 +1409,7 @@ export default function ClubAdminDashboard({
                     <button
                       type="button"
                       onClick={() => setActiveSection("photos")}
-                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all text-left"
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-primary/30 hover:bg-gray-50 hover:shadow-md transition-all text-left"
                     >
                       <Image className="w-4 h-4 text-gray-500" />
                       <span className="text-sm font-medium text-gray-700">
@@ -1227,13 +1419,24 @@ export default function ClubAdminDashboard({
                     <button
                       type="button"
                       onClick={() => setActiveSection("pitches")}
-                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/30 hover:bg-gray-50 transition-all text-left"
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-primary/30 hover:bg-gray-50 hover:shadow-md transition-all text-left"
                     >
                       <MapPin className="w-4 h-4 text-gray-500" />
                       <span className="text-sm font-medium text-gray-700">
                         Pitches
                       </span>
                     </button>
+                    {isMainlandEurope && (
+                      <Link
+                        href={`/club-admin/${clubId}/financials`}
+                        className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 shadow-sm hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-md transition-all"
+                      >
+                        <Wallet className="w-4 h-4 text-emerald-600" />
+                        <span className="text-sm font-medium text-gray-700">
+                          Financials
+                        </span>
+                      </Link>
+                    )}
                   </div>
                 </div>
               )}

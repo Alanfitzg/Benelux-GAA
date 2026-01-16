@@ -143,6 +143,10 @@ model Club {
   isOpenToVisitors    Boolean              @default(true)
   dayPassPrice        Float?               // Per-person day pass price for visiting teams
   dayPassCurrency     String?              @default("EUR") // Currency for day pass pricing
+  bankAccountHolder   String?              // Name on bank account for payouts
+  bankIban            String?              // IBAN for payouts
+  bankBic             String?              // BIC/SWIFT code
+  bankName            String?              // Bank name
   preferredWeekends   Json?                // Array of specific date strings for preferred hosting weekends
   twinClubId          String?              // Reference to twinned Irish club (GAA twinning initiative)
   clubType            ClubType             @default(CLUB)
@@ -1382,4 +1386,26 @@ enum ResolutionType {
   NO_ACTION
   WARNING_ISSUED
   DISMISSED
+}
+
+// GAA Fixtures - Key dates when Irish clubs won't travel
+model GAAFixture {
+  id          String            @id @default(cuid())
+  date        DateTime          // The fixture date
+  endDate     DateTime?         // For multi-day events (e.g., weekend)
+  title       String            // e.g., "All-Ireland Hurling Final"
+  description String?           // Additional context
+  impact      GAAFixtureImpact  @default(HIGH)
+  year        Int               // Year for easy filtering
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([date])
+  @@index([year])
+}
+
+enum GAAFixtureImpact {
+  MEDIUM
+  HIGH
+  CRITICAL
 }

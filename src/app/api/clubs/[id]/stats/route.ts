@@ -167,6 +167,43 @@ export async function GET(
       },
     });
 
+    // Hero stats for European host clubs - teams welcomed and players hosted
+    // Count teams that have registered for this club's events (past events only = completed)
+    const teamsWelcomed = await prisma.tournamentTeam.count({
+      where: {
+        event: {
+          clubId: id,
+          startDate: {
+            lt: new Date(), // Past events only
+          },
+        },
+      },
+    });
+
+    // Get total players hosted from bookings for this club (completed bookings)
+    const bookingsWithPlayers = await prisma.booking.aggregate({
+      where: {
+        clubId: id,
+        status: {
+          in: ["CONFIRMED", "COMPLETED"],
+        },
+      },
+      _sum: {
+        teamSize: true,
+      },
+    });
+
+    // If no booking data, estimate from tournament teams (avg 15 players per team)
+    const playersFromBookings = bookingsWithPlayers._sum.teamSize || 0;
+    const estimatedPlayersFromTeams = teamsWelcomed * 15;
+    const playersHosted =
+      playersFromBookings > 0 ? playersFromBookings : estimatedPlayersFromTeams;
+
+    // Count completed/past events hosted
+    const eventsHosted = pastEvents.filter(
+      (event) => event.approvalStatus === "APPROVED"
+    ).length;
+
     const stats = {
       club: {
         id: club.id,
@@ -176,6 +213,11 @@ export async function GET(
         memberCount: club._count.members,
         eventCount: club._count.events,
         dayPassPrice: club.dayPassPrice,
+        verificationStatus: club.verificationStatus,
+        verificationExpiry: club.verificationExpiry?.toISOString() || null,
+        bio: club.bio,
+        twitter: club.twitter,
+        tiktok: club.tiktok,
       },
       overview: {
         totalEvents: club.events.length,
@@ -189,6 +231,10 @@ export async function GET(
             : "0",
         yearEarnings: yearEarnings,
         currentYear: currentYear,
+        // Hero stats for European host clubs
+        teamsWelcomed,
+        playersHosted,
+        eventsHosted,
       },
       events: eventStats,
       recentInterests: recentInterests.map((interest) => ({

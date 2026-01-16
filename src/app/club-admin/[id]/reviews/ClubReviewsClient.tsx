@@ -194,11 +194,24 @@ export function ClubReviewsClient({ reviews }: ClubReviewsClientProps) {
           <h3 className="text-lg font-medium text-white mb-2">
             No reviews yet
           </h3>
-          <p className="text-gray-400">
+          <p className="text-gray-400 max-w-md mx-auto">
             {filter === "all"
-              ? "Reviews will appear here after clubs submit feedback following events."
+              ? "After teams visit your club for an event, they can leave feedback about their experience. Reviews help build trust and attract more travelling teams to your club."
               : "No reviews match your filter criteria."}
           </p>
+          {filter === "all" && (
+            <div className="mt-6 text-left max-w-md mx-auto bg-white/5 rounded-lg p-4">
+              <h4 className="text-sm font-medium text-white mb-2">
+                How reviews work:
+              </h4>
+              <ol className="text-xs text-gray-400 space-y-1.5 list-decimal list-inside">
+                <li>Teams attend your events or book day passes</li>
+                <li>After the event, they receive a review request</li>
+                <li>Reviews go through a dual-approval process</li>
+                <li>Published reviews appear on your club profile</li>
+              </ol>
+            </div>
+          )}
         </div>
       ) : (
         <div className="space-y-4">

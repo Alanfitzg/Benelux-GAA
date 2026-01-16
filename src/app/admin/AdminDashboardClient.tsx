@@ -413,6 +413,25 @@ export default function AdminDashboardClient({
           </Link>
 
           <Link
+            href="/admin/gaa-fixtures"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-green-300"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-green-400/20 to-emerald-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <span className="text-lg md:text-2xl">🏐</span>
+              </div>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  GAA Fixtures
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Manage major GAA fixture dates for travel warnings
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
             href="/admin/features"
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >

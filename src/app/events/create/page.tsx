@@ -35,6 +35,11 @@ export default function CreateEvent() {
   const [selectedClubId, setSelectedClubId] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");
   const [dateWarning, setDateWarning] = useState<string>("");
+  const [gaaFixtureClash, setGaaFixtureClash] = useState<{
+    hasClash: boolean;
+    fixtures: Array<{ title: string; impact: string; date: string }>;
+    message: string | null;
+  } | null>(null);
   const [selectedPitches, setSelectedPitches] = useState<string[]>([]);
   const [selectedCity, setSelectedCity] = useState<string>("");
   const [coordinates, setCoordinates] = useState<{
@@ -116,6 +121,29 @@ export default function CreateEvent() {
     return null;
   }
 
+  // Check for GAA fixture clashes
+  const checkGAAFixtureClash = async (start: string, end?: string) => {
+    if (!start) {
+      setGaaFixtureClash(null);
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams({ date: start });
+      if (end) params.append("endDate", end);
+
+      const response = await fetch(
+        `/api/admin/gaa-fixtures/check-clash?${params}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setGaaFixtureClash(data);
+      }
+    } catch (error) {
+      console.error("Error checking GAA fixture clash:", error);
+    }
+  };
+
   // Validate dates on change
   const handleStartDateChange = (value: string) => {
     setStartDate(value);
@@ -133,6 +161,10 @@ export default function CreateEvent() {
           setDateWarning(validation.warning);
         }
       }
+      // Check for GAA fixture clash
+      checkGAAFixtureClash(value, endDate);
+    } else {
+      setGaaFixtureClash(null);
     }
   };
 
@@ -152,6 +184,8 @@ export default function CreateEvent() {
           setDateWarning(validation.warning);
         }
       }
+      // Check for GAA fixture clash
+      checkGAAFixtureClash(startDate, value);
     }
   };
 
@@ -375,6 +409,111 @@ export default function CreateEvent() {
                       ? ` Event runs from ${new Date(startDate).toLocaleDateString("en-IE")} to ${new Date(endDate).toLocaleDateString("en-IE")}`
                       : ` Event on ${new Date(startDate).toLocaleDateString("en-IE")}`}
                   </span>
+                </motion.div>
+              )}
+
+              {gaaFixtureClash?.hasClash && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`px-6 py-4 rounded-xl mb-8 ${
+                    gaaFixtureClash.fixtures.some(
+                      (f) => f.impact === "CRITICAL"
+                    )
+                      ? "bg-red-50 border-2 border-red-300"
+                      : gaaFixtureClash.fixtures.some(
+                            (f) => f.impact === "HIGH"
+                          )
+                        ? "bg-orange-50 border-2 border-orange-300"
+                        : "bg-amber-50 border-2 border-amber-300"
+                  }`}
+                >
+                  <div className="flex items-start space-x-3">
+                    <span className="text-2xl flex-shrink-0">
+                      {gaaFixtureClash.fixtures.some(
+                        (f) => f.impact === "CRITICAL"
+                      )
+                        ? "🚨"
+                        : "⚠️"}
+                    </span>
+                    <div className="flex-1">
+                      <h4
+                        className={`font-bold text-sm mb-1 ${
+                          gaaFixtureClash.fixtures.some(
+                            (f) => f.impact === "CRITICAL"
+                          )
+                            ? "text-red-800"
+                            : gaaFixtureClash.fixtures.some(
+                                  (f) => f.impact === "HIGH"
+                                )
+                              ? "text-orange-800"
+                              : "text-amber-800"
+                        }`}
+                      >
+                        GAA Fixture Clash Detected
+                      </h4>
+                      <p
+                        className={`text-sm mb-3 ${
+                          gaaFixtureClash.fixtures.some(
+                            (f) => f.impact === "CRITICAL"
+                          )
+                            ? "text-red-700"
+                            : gaaFixtureClash.fixtures.some(
+                                  (f) => f.impact === "HIGH"
+                                )
+                              ? "text-orange-700"
+                              : "text-amber-700"
+                        }`}
+                      >
+                        {gaaFixtureClash.message}
+                      </p>
+                      <div className="space-y-2">
+                        {gaaFixtureClash.fixtures.map((fixture, index) => (
+                          <div
+                            key={index}
+                            className={`text-xs p-2 rounded-lg ${
+                              fixture.impact === "CRITICAL"
+                                ? "bg-red-100 text-red-800"
+                                : fixture.impact === "HIGH"
+                                  ? "bg-orange-100 text-orange-800"
+                                  : "bg-amber-100 text-amber-800"
+                            }`}
+                          >
+                            <span className="font-semibold">
+                              {fixture.title}
+                            </span>
+                            <span className="mx-2">•</span>
+                            <span>
+                              {new Date(fixture.date).toLocaleDateString(
+                                "en-IE",
+                                {
+                                  weekday: "short",
+                                  day: "numeric",
+                                  month: "short",
+                                  year: "numeric",
+                                }
+                              )}
+                            </span>
+                            <span
+                              className={`ml-2 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
+                                fixture.impact === "CRITICAL"
+                                  ? "bg-red-200 text-red-900"
+                                  : fixture.impact === "HIGH"
+                                    ? "bg-orange-200 text-orange-900"
+                                    : "bg-amber-200 text-amber-900"
+                              }`}
+                            >
+                              {fixture.impact}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-xs mt-3 italic opacity-75">
+                        You can still create the event, but be aware that Irish
+                        teams are unlikely to travel during major GAA fixtures.
+                      </p>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 

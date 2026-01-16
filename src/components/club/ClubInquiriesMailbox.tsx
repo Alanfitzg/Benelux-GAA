@@ -233,12 +233,29 @@ export default function ClubInquiriesMailbox({
               <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
                 <Mail className="w-6 h-6 text-gray-400" />
               </div>
-              <p className="text-gray-500 text-sm">No inquiries found</p>
-              <p className="text-gray-400 text-xs mt-1">
+              <p className="text-gray-500 text-sm font-medium">
                 {filter === "archived"
-                  ? "Archived inquiries will appear here"
-                  : "When visitors express interest, they'll appear here"}
+                  ? "No archived inquiries"
+                  : "No inquiries yet"}
               </p>
+              <p className="text-gray-400 text-xs mt-1 max-w-xs mx-auto">
+                {filter === "archived"
+                  ? "Archived inquiries will appear here for your records"
+                  : "When teams express interest in visiting your club or contact you through your profile, their messages will appear here."}
+              </p>
+              {filter === "active" && (
+                <div className="mt-4 text-left bg-gray-50 rounded-lg p-3 max-w-xs mx-auto">
+                  <p className="text-xs font-medium text-gray-600 mb-2">
+                    How to get more inquiries:
+                  </p>
+                  <ul className="text-xs text-gray-500 space-y-1">
+                    <li>• Complete your club profile with photos</li>
+                    <li>• Set your day-pass price</li>
+                    <li>• Host events to attract teams</li>
+                    <li>• Add your available dates to the calendar</li>
+                  </ul>
+                </div>
+              )}
             </div>
           ) : (
             <div className="divide-y divide-gray-100">
