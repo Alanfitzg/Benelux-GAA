@@ -100,6 +100,8 @@ export async function GET(
       interestCount: event._count.interests,
       approvalStatus: event.approvalStatus,
       rejectionReason: event.rejectionReason,
+      appealStatus: event.appealStatus,
+      dismissedAt: event.dismissedAt?.toISOString() || null,
       interests: event.interests.map((interest) => ({
         name: interest.name,
         email: interest.email,
@@ -173,6 +175,7 @@ export async function GET(
         crest: club.imageUrl,
         memberCount: club._count.members,
         eventCount: club._count.events,
+        dayPassPrice: club.dayPassPrice,
       },
       overview: {
         totalEvents: club.events.length,

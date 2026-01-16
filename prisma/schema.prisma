@@ -29,6 +29,13 @@ model Event {
   status            EventStatus          @default(UPCOMING)
   approvalStatus    EventApprovalStatus  @default(PENDING)
   rejectionReason   String?
+  rejectionAppeal   String?              @db.Text
+  appealStatus      AppealStatus?
+  appealedAt        DateTime?
+  appealResolvedAt  DateTime?
+  appealResolvedBy  String?
+  appealResolution  String?              @db.Text
+  dismissedAt       DateTime?
   approvedAt        DateTime?
   approvedBy        String?
   bracketType       BracketType?
@@ -48,6 +55,9 @@ model Event {
   teams             TournamentTeam[]
   report            EventReport?
   watchers          EventWatchlist[]
+  reviewTokens      ReviewToken[]
+  eventReviews      EventReview[]
+  conflicts         Conflict[]
 
   @@index([startDate])
   @@index([eventType])
@@ -164,6 +174,12 @@ model Club {
   clubFriends         ClubFriend[]         @relation("ClubFriends")
   friendOf            ClubFriend[]         @relation("FriendOf")
   applications        Interest[]           @relation("ClubApplications")
+  reviewTokensAsReviewer  ReviewToken[]    @relation("ReviewTokenReviewer")
+  reviewTokensAsTarget    ReviewToken[]    @relation("ReviewTokenTarget")
+  reviewsGiven            EventReview[]    @relation("ReviewsGiven")
+  reviewsReceived         EventReview[]    @relation("ReviewsReceived")
+  conflictsAsComplainant  Conflict[]       @relation("ConflictComplainant")
+  conflictsAsRespondent   Conflict[]       @relation("ConflictRespondent")
 
   @@index([status])
   @@index([location])
@@ -216,6 +232,9 @@ model User {
   reviewedClubs         Club[]               @relation("ClubReviewer")
   verifiedClubs         Club[]               @relation("ClubVerifier")
   watchedEvents         EventWatchlist[]
+  eventReviewsSuperAdminApprovals EventReview[] @relation("EventReviewSuperAdminApprover")
+  eventReviewsClubAdminApprovals  EventReview[] @relation("EventReviewClubAdminApprover")
+  conflictsResolved     Conflict[]           @relation("ConflictResolver")
 
   @@index([accountStatus])
   @@index([role])
@@ -644,6 +663,12 @@ enum EventApprovalStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+enum AppealStatus {
+  PENDING
+  APPROVED
+  DENIED
 }
 
 enum BracketType {
@@ -1236,4 +1261,125 @@ model NeutralVenue {
   @@index([country])
   @@index([city])
   @@index([createdAt])
+}
+
+// Post-Event Review System Models
+
+model ReviewToken {
+  id              String       @id @default(cuid())
+  token           String       @unique
+  eventId         String
+  reviewerClubId  String
+  targetClubId    String
+  expiresAt       DateTime
+  used            Boolean      @default(false)
+  createdAt       DateTime     @default(now())
+
+  event           Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  reviewerClub    Club         @relation("ReviewTokenReviewer", fields: [reviewerClubId], references: [id])
+  targetClub      Club         @relation("ReviewTokenTarget", fields: [targetClubId], references: [id])
+  review          EventReview?
+
+  @@index([token])
+  @@index([eventId])
+  @@index([expiresAt])
+}
+
+model EventReview {
+  id                    String            @id @default(cuid())
+  tokenId               String            @unique
+  eventId               String
+  reviewerClubId        String
+  targetClubId          String
+
+  rating                Int
+  content               String?           @db.VarChar(500)
+  complaint             String?           @db.Text
+  improvementSuggestion String?           @db.Text
+
+  status                EventReviewStatus @default(PENDING)
+  isConflict            Boolean           @default(false)
+
+  superAdminApprovedAt  DateTime?
+  superAdminApprovedBy  String?
+  clubAdminApprovedAt   DateTime?
+  clubAdminApprovedBy   String?
+
+  submittedAt           DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  token                 ReviewToken       @relation(fields: [tokenId], references: [id])
+  event                 Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  reviewerClub          Club              @relation("ReviewsGiven", fields: [reviewerClubId], references: [id])
+  targetClub            Club              @relation("ReviewsReceived", fields: [targetClubId], references: [id])
+  superAdminApprover    User?             @relation("EventReviewSuperAdminApprover", fields: [superAdminApprovedBy], references: [id])
+  clubAdminApprover     User?             @relation("EventReviewClubAdminApprover", fields: [clubAdminApprovedBy], references: [id])
+  conflict              Conflict?
+
+  @@unique([eventId, reviewerClubId, targetClubId])
+  @@index([targetClubId, status])
+  @@index([isConflict])
+  @@index([status])
+}
+
+enum EventReviewStatus {
+  PENDING
+  SUPER_ADMIN_APPROVED
+  APPROVED
+  REJECTED
+  CONFLICT_OPEN
+  CONFLICT_RESOLVED
+}
+
+model Conflict {
+  id                String           @id @default(cuid())
+  reviewId          String           @unique
+  eventId           String
+  complainantClubId String
+  respondentClubId  String
+
+  status            ConflictStatus   @default(OPEN)
+  priority          ConflictPriority @default(MEDIUM)
+
+  adminNotes        String?          @db.Text
+  resolutionNotes   String?          @db.Text
+  resolutionType    ResolutionType?
+  resolvedAt        DateTime?
+  resolvedBy        String?
+
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  review            EventReview      @relation(fields: [reviewId], references: [id])
+  event             Event            @relation(fields: [eventId], references: [id])
+  complainantClub   Club             @relation("ConflictComplainant", fields: [complainantClubId], references: [id])
+  respondentClub    Club             @relation("ConflictRespondent", fields: [respondentClubId], references: [id])
+  resolver          User?            @relation("ConflictResolver", fields: [resolvedBy], references: [id])
+
+  @@index([status])
+  @@index([respondentClubId])
+  @@index([eventId])
+}
+
+enum ConflictStatus {
+  OPEN
+  IN_PROGRESS
+  AWAITING_RESPONSE
+  RESOLVED
+  DISMISSED
+}
+
+enum ConflictPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ResolutionType {
+  MEDIATED
+  REFUND_ISSUED
+  APOLOGY_ISSUED
+  NO_ACTION
+  WARNING_ISSUED
+  DISMISSED
 }

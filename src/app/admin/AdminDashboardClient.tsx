@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface AdminDashboardClientProps {
@@ -12,10 +12,49 @@ interface AdminDashboardClientProps {
   };
 }
 
+interface ConflictStats {
+  total: number;
+}
+
+interface AppealStats {
+  total: number;
+}
+
 export default function AdminDashboardClient({
   stats,
 }: AdminDashboardClientProps) {
   const [showMore, setShowMore] = useState(false);
+  const [conflictStats, setConflictStats] = useState<ConflictStats | null>(
+    null
+  );
+  const [appealStats, setAppealStats] = useState<AppealStats | null>(null);
+
+  useEffect(() => {
+    async function fetchConflictStats() {
+      try {
+        const response = await fetch("/api/conflicts/stats");
+        if (response.ok) {
+          const data = await response.json();
+          setConflictStats(data);
+        }
+      } catch {
+        // Silently fail - badge just won't show
+      }
+    }
+    async function fetchAppealStats() {
+      try {
+        const response = await fetch("/api/appeals/stats");
+        if (response.ok) {
+          const data = await response.json();
+          setAppealStats(data);
+        }
+      } catch {
+        // Silently fail - badge just won't show
+      }
+    }
+    fetchConflictStats();
+    fetchAppealStats();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary to-slate-800 relative">
@@ -264,6 +303,54 @@ export default function AdminDashboardClient({
                 <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
                   Review and manage club testimonials
                 </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/conflicts"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-red-300"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-red-400/20 to-orange-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <span className="text-lg md:text-2xl">⚠️</span>
+              </div>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  Conflict Resolution
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Review and resolve event disputes
+                </p>
+                {conflictStats && conflictStats.total > 0 && (
+                  <span className="inline-block mt-1 text-xs bg-red-100 text-red-800 px-2 py-0.5 rounded-full font-medium">
+                    {conflictStats.total} open
+                  </span>
+                )}
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/appeals"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-yellow-300"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-yellow-400/20 to-amber-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                <span className="text-lg md:text-2xl">📋</span>
+              </div>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  Event Appeals
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Review rejection appeals from clubs
+                </p>
+                {appealStats && appealStats.total > 0 && (
+                  <span className="inline-block mt-1 text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-medium">
+                    {appealStats.total} pending
+                  </span>
+                )}
               </div>
             </div>
           </Link>

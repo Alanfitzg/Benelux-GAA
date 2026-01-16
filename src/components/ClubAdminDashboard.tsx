@@ -34,6 +34,8 @@ import {
   ArrowRight,
   Inbox,
   Eye,
+  HelpCircle,
+  X,
 } from "lucide-react";
 
 interface ClubStats {
@@ -44,6 +46,7 @@ interface ClubStats {
     crest: string | null;
     memberCount: number;
     eventCount: number;
+    dayPassPrice: number | null;
   };
   overview: {
     totalEvents: number;
@@ -64,6 +67,8 @@ interface ClubStats {
     interestCount: number;
     approvalStatus: "PENDING" | "APPROVED" | "REJECTED";
     rejectionReason?: string;
+    appealStatus?: "PENDING" | "APPROVED" | "DENIED" | null;
+    dismissedAt?: string | null;
     interests: Array<{
       name: string;
       email: string;
@@ -123,6 +128,13 @@ export default function ClubAdminDashboard({
     useState<DashboardSection>("overview");
   const [unreadInquiries, setUnreadInquiries] = useState(0);
   const [showRevenueInfo, setShowRevenueInfo] = useState(false);
+  const [appealModal, setAppealModal] = useState<{
+    eventId: string;
+    eventTitle: string;
+  } | null>(null);
+  const [appealReason, setAppealReason] = useState("");
+  const [appealSubmitting, setAppealSubmitting] = useState(false);
+  const [showDifferenceModal, setShowDifferenceModal] = useState(false);
 
   const fetchStats = useCallback(async () => {
     try {
@@ -157,6 +169,52 @@ export default function ClubAdminDashboard({
     fetchStats();
     fetchUnreadInquiries();
   }, [fetchStats, fetchUnreadInquiries]);
+
+  const handleAppealSubmit = async () => {
+    if (!appealModal || !appealReason.trim()) return;
+
+    setAppealSubmitting(true);
+    try {
+      const response = await fetch(
+        `/api/events/${appealModal.eventId}/appeal`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ appealReason: appealReason.trim() }),
+        }
+      );
+
+      if (response.ok) {
+        setAppealModal(null);
+        setAppealReason("");
+        fetchStats();
+      } else {
+        const data = await response.json();
+        alert(data.error || "Failed to submit appeal");
+      }
+    } catch {
+      alert("An error occurred submitting the appeal");
+    } finally {
+      setAppealSubmitting(false);
+    }
+  };
+
+  const handleDismissRejection = async (eventId: string) => {
+    try {
+      const response = await fetch(`/api/events/${eventId}/dismiss`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        fetchStats();
+      } else {
+        const data = await response.json();
+        alert(data.error || "Failed to dismiss rejection");
+      }
+    } catch {
+      alert("An error occurred dismissing the rejection");
+    }
+  };
 
   if (loading) {
     return (
@@ -227,9 +285,9 @@ export default function ClubAdminDashboard({
   });
 
   return (
-    <div className="space-y-6">
-      {/* Hero Header Section - Dark Theme */}
-      <div className="relative p-4 md:p-8 mb-4 md:mb-6">
+    <div className="space-y-3 md:space-y-6">
+      {/* Hero Header Section - Dark Theme - Hidden on mobile to save space */}
+      <div className="relative p-4 md:p-8 mb-2 md:mb-6 hidden md:block">
         {/* Header with icon */}
         <div className="flex items-center gap-3 mb-3 md:mb-4">
           <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
@@ -250,9 +308,9 @@ export default function ClubAdminDashboard({
 
       {/* Header with Quick Actions */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border-b border-gray-100 px-6 py-5">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex items-center gap-4">
+        <div className="bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5 border-b border-gray-100 px-3 md:px-6 py-3 md:py-5">
+          <div className="flex items-center justify-between gap-3 md:gap-4">
+            <div className="flex items-center gap-2 md:gap-4 min-w-0">
               {/* Club Crest */}
               <div className="flex-shrink-0">
                 <NextImage
@@ -263,26 +321,29 @@ export default function ClubAdminDashboard({
                   alt={stats.club.name}
                   width={64}
                   height={64}
-                  className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-contain bg-white p-1.5 shadow-sm border border-gray-200"
+                  className="w-10 h-10 md:w-16 md:h-16 rounded-lg md:rounded-xl object-contain bg-white p-1 md:p-1.5 shadow-sm border border-gray-200"
                   unoptimized
                 />
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
+              <div className="min-w-0">
+                <h1 className="text-base md:text-2xl font-bold text-gray-900 truncate">
                   {stats.club.name}
                 </h1>
-                <p className="text-gray-500 mt-1">{stats.club.location}</p>
+                <p className="text-xs md:text-base text-gray-500 truncate">
+                  {stats.club.location}
+                </p>
               </div>
             </div>
 
             {/* Quick Actions */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3">
               <Link
                 href={`/club-admin/${clubId}/inquiries`}
-                className="relative inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+                className="relative inline-flex items-center justify-center gap-2 p-2 md:px-4 md:py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+                title="Inbox"
               >
                 <Inbox className="w-4 h-4" />
-                Inbox
+                <span className="hidden md:inline">Inbox</span>
                 {unreadInquiries > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                     {unreadInquiries > 9 ? "9+" : unreadInquiries}
@@ -291,32 +352,92 @@ export default function ClubAdminDashboard({
               </Link>
               <Link
                 href={`/clubs/${clubId}`}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+                className="inline-flex items-center justify-center gap-2 p-2 md:px-4 md:py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+                title="View Public Page"
               >
                 <ExternalLink className="w-4 h-4" />
-                View Public Page
+                <span className="hidden md:inline">View Public Page</span>
               </Link>
               <Link
                 href={`/clubs/${clubId}/edit`}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+                className="inline-flex items-center justify-center gap-2 p-2 md:px-4 md:py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors shadow-sm"
+                title="Edit Club"
               >
                 <Edit className="w-4 h-4" />
-                Edit Club
+                <span className="hidden md:inline">Edit Club</span>
               </Link>
-              {!isIrishClub && <CreateEventButton />}
               {isIrishClub && (
                 <Link
                   href="/events"
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                  className="inline-flex items-center justify-center gap-2 p-2 md:px-4 md:py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+                  title="Find Tournaments"
                 >
                   <CalendarDays className="w-4 h-4" />
-                  Find Tournaments
+                  <span className="hidden md:inline">Find Tournaments</span>
                 </Link>
               )}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Host Club Actions - European Clubs Only */}
+      {!isIrishClub && (
+        <div className="bg-gradient-to-r from-emerald-50 via-white to-red-50 rounded-xl border border-gray-200 p-3 md:p-5 shadow-sm">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
+            <div className="flex items-center gap-2 md:gap-3">
+              <div className="w-8 h-8 md:w-10 md:h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <TrendingUp className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-gray-900 text-sm md:text-base">
+                  Get Started as a Host Club
+                </h3>
+                <p className="text-xs md:text-sm text-gray-500 hidden md:block">
+                  Set your pricing or create tournaments to attract visiting
+                  teams
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 md:gap-3">
+              <Link
+                href={`/club-admin/${clubId}/day-pass`}
+                className="flex-1 md:flex-none inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
+              >
+                {stats.club.dayPassPrice ? (
+                  <>
+                    <Eye className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    <span className="hidden sm:inline">VIEW </span>DAY-PASS
+                  </>
+                ) : (
+                  <>
+                    <Ticket className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                    <span className="hidden sm:inline">SET </span>DAY-PASS
+                  </>
+                )}
+              </Link>
+              <Link
+                href="/events/create"
+                className="flex-1 md:flex-none inline-flex items-center justify-center gap-1.5 md:gap-2 px-3 md:px-5 py-2 md:py-2.5 text-xs md:text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors shadow-sm"
+              >
+                <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                <span className="hidden sm:inline">CREATE </span>EVENT
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowDifferenceModal(true)}
+                className="p-2 md:px-3 md:py-2 text-gray-600 hover:text-primary border border-gray-200 rounded-lg hover:border-primary/30 transition-colors"
+                title="What's the difference?"
+              >
+                <HelpCircle className="w-4 h-4" />
+                <span className="hidden md:inline ml-1.5 text-sm font-medium">
+                  What&apos;s the difference?
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Key Metrics Row - Irish Clubs Only */}
       {isIrishClub && (
@@ -444,7 +565,9 @@ export default function ClubAdminDashboard({
       )}
 
       {/* Rejected Events Alert */}
-      {stats.events.some((e) => e.approvalStatus === "REJECTED") && (
+      {stats.events.some(
+        (e) => e.approvalStatus === "REJECTED" && !e.dismissedAt
+      ) && (
         <div className="bg-red-50 border border-red-200 rounded-xl p-4">
           <div className="flex items-start gap-3">
             <div className="bg-red-100 rounded-full p-2 flex-shrink-0">
@@ -453,25 +576,32 @@ export default function ClubAdminDashboard({
             <div className="flex-1">
               <h3 className="font-semibold text-red-800">
                 Event
-                {stats.events.filter((e) => e.approvalStatus === "REJECTED")
-                  .length !== 1
+                {stats.events.filter(
+                  (e) => e.approvalStatus === "REJECTED" && !e.dismissedAt
+                ).length !== 1
                   ? "s"
                   : ""}{" "}
                 Rejected
               </h3>
               <p className="text-sm text-red-700 mt-1">
                 The following event
-                {stats.events.filter((e) => e.approvalStatus === "REJECTED")
-                  .length !== 1
+                {stats.events.filter(
+                  (e) => e.approvalStatus === "REJECTED" && !e.dismissedAt
+                ).length !== 1
                   ? "s were"
                   : " was"}{" "}
                 rejected by an administrator.
               </p>
-              <div className="mt-3 space-y-2">
+              <div className="mt-3 space-y-3">
                 {stats.events
-                  .filter((e) => e.approvalStatus === "REJECTED")
+                  .filter(
+                    (e) => e.approvalStatus === "REJECTED" && !e.dismissedAt
+                  )
                   .map((event) => (
-                    <div key={event.id} className="text-sm">
+                    <div
+                      key={event.id}
+                      className="text-sm bg-white/50 rounded-lg p-3"
+                    >
                       <div className="flex items-center gap-2">
                         <XCircle className="w-4 h-4 text-red-500" />
                         <span className="font-medium text-red-900">
@@ -483,6 +613,43 @@ export default function ClubAdminDashboard({
                           Reason: {event.rejectionReason}
                         </p>
                       )}
+                      {event.appealStatus === "PENDING" ? (
+                        <div className="ml-6 mt-2">
+                          <span className="inline-flex items-center gap-1 text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                            <Clock className="w-3 h-3" />
+                            Appeal Under Review
+                          </span>
+                        </div>
+                      ) : event.appealStatus === "DENIED" ? (
+                        <div className="ml-6 mt-2">
+                          <span className="inline-flex items-center gap-1 text-xs bg-red-100 text-red-800 px-2 py-1 rounded-full">
+                            <XCircle className="w-3 h-3" />
+                            Appeal Denied
+                          </span>
+                        </div>
+                      ) : !event.appealStatus ? (
+                        <div className="ml-6 mt-3 flex gap-2">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setAppealModal({
+                                eventId: event.id,
+                                eventTitle: event.title,
+                              })
+                            }
+                            className="px-3 py-1.5 text-xs font-medium bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                          >
+                            Challenge Decision
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDismissRejection(event.id)}
+                            className="px-3 py-1.5 text-xs font-medium bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
+                          >
+                            Accept Decision
+                          </button>
+                        </div>
+                      ) : null}
                     </div>
                   ))}
               </div>
@@ -491,48 +658,211 @@ export default function ClubAdminDashboard({
         </div>
       )}
 
+      {/* Appeal Modal */}
+      {appealModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Challenge Rejection Decision
+            </h3>
+            <p className="text-sm text-gray-600 mb-4">
+              Event:{" "}
+              <span className="font-medium">{appealModal.eventTitle}</span>
+            </p>
+            <div className="mb-4">
+              <label
+                htmlFor="appealReason"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Why should this decision be reconsidered?
+              </label>
+              <textarea
+                id="appealReason"
+                value={appealReason}
+                onChange={(e) => setAppealReason(e.target.value)}
+                placeholder="Please explain why you believe this event should be approved..."
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                rows={4}
+              />
+            </div>
+            <div className="flex gap-3 justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setAppealModal(null);
+                  setAppealReason("");
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                disabled={appealSubmitting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleAppealSubmit}
+                disabled={!appealReason.trim() || appealSubmitting}
+                className="px-4 py-2 text-sm font-medium text-white bg-primary rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {appealSubmitting ? "Submitting..." : "Submit Appeal"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* What's the Difference Modal */}
+      {showDifferenceModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Day-Pass vs Create Event
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowDifferenceModal(false)}
+                className="p-1 text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Day-Pass */}
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                    <Ticket className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-emerald-900">Day-Pass</h4>
+                    <p className="text-xs text-emerald-600">
+                      For casual visits
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-emerald-800 mb-2">
+                  Your <strong>standard per-player fee</strong> for teams
+                  visiting outside of tournaments.
+                </p>
+                <ul className="text-sm text-emerald-700 space-y-1">
+                  <li>• Training sessions, friendly matches, facility use</li>
+                  <li>• Teams can book any time that suits you</li>
+                  <li>• One price covers pitch access and hospitality</li>
+                  <li>• Your club appears on the map for travelling teams</li>
+                </ul>
+              </div>
+
+              {/* Create Event */}
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <CalendarDays className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-blue-900">
+                      Create Event
+                    </h4>
+                    <p className="text-xs text-blue-600">For tournaments</p>
+                  </div>
+                </div>
+                <p className="text-sm text-blue-800 mb-2">
+                  <strong>Organised tournaments</strong> with their own pricing,
+                  dates, and team limits.
+                </p>
+                <ul className="text-sm text-blue-700 space-y-1">
+                  <li>• Tournaments, blitzes, or competitions</li>
+                  <li>• Set your own event price (can differ from Day-Pass)</li>
+                  <li>• Fixed dates with limited team slots</li>
+                  <li>• Featured on the events calendar</li>
+                </ul>
+              </div>
+
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                <p className="text-sm text-gray-700">
+                  <strong>In short:</strong> Day-Pass is for drop-in visitors.
+                  Events are for organised tournaments with their own pricing.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 flex gap-3">
+              <Link
+                href={`/club-admin/${clubId}/day-pass`}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors"
+                onClick={() => setShowDifferenceModal(false)}
+              >
+                {stats.club.dayPassPrice ? (
+                  <>
+                    <Eye className="w-4 h-4" />
+                    View Day-Pass
+                  </>
+                ) : (
+                  <>
+                    <Ticket className="w-4 h-4" />
+                    Set Day-Pass
+                  </>
+                )}
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowDifferenceModal(false)}
+                className="px-4 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Tab Navigation */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="bg-gray-50/80 border-b border-gray-200">
-          <nav className="flex overflow-x-auto" aria-label="Tabs">
+          <nav
+            className="flex overflow-x-auto scrollbar-hide -mb-px"
+            aria-label="Tabs"
+          >
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveSection(tab.id)}
-                className={`flex items-center gap-2 px-6 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-all ${
+                className={`flex items-center gap-1.5 md:gap-2 px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm font-medium border-b-2 whitespace-nowrap transition-all flex-shrink-0 ${
                   activeSection === tab.id
                     ? "border-primary text-primary bg-white"
                     : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-white/50"
                 }`}
               >
                 {tab.icon}
-                {isIrishClub && tab.irishLabel ? tab.irishLabel : tab.label}
+                <span className="hidden sm:inline">
+                  {isIrishClub && tab.irishLabel ? tab.irishLabel : tab.label}
+                </span>
               </button>
             ))}
             {/* European clubs only links */}
             {!isIrishClub && (
-              <div className="flex items-center ml-auto border-l border-gray-200">
+              <>
                 <Link
                   href="/products"
-                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-primary hover:text-primary-dark hover:bg-white/50 transition-all"
+                  className="flex items-center gap-1.5 md:gap-2 px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-primary hover:text-primary-dark hover:bg-white/50 transition-all flex-shrink-0 ml-auto"
                 >
                   <Package className="w-4 h-4" />
-                  Products
+                  <span className="hidden sm:inline">Products</span>
                 </Link>
                 <Link
                   href="/host-terms"
-                  className="flex items-center gap-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-white/50 transition-all"
+                  className="flex items-center gap-1.5 md:gap-2 px-3 md:px-6 py-3 md:py-4 text-xs md:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-amber-600 hover:text-amber-700 hover:bg-white/50 transition-all flex-shrink-0"
                 >
                   <FileText className="w-4 h-4" />
-                  Host Terms
+                  <span className="hidden sm:inline">Host Terms</span>
                 </Link>
-              </div>
+              </>
             )}
           </nav>
         </div>
 
-        <div className="p-6">
+        <div className="p-3 md:p-6">
           {/* Overview Tab */}
           {activeSection === "overview" && (
             <div className="space-y-6">
@@ -773,7 +1103,7 @@ export default function ClubAdminDashboard({
                         href={`/club-admin/${clubId}/day-pass`}
                         className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors whitespace-nowrap"
                       >
-                        Configure
+                        {stats.club.dayPassPrice ? "View" : "Configure"}
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                     </div>
@@ -921,100 +1251,105 @@ export default function ClubAdminDashboard({
           {/* Events Tab */}
           {activeSection === "events" && (
             <div className="space-y-4">
-              {stats.events.length > 0 ? (
-                stats.events.map((event) => {
-                  const isUpcoming = new Date(event.startDate) > new Date();
-                  return (
-                    <div
-                      key={event.id}
-                      className="border border-gray-200 rounded-lg overflow-hidden"
-                    >
+              {stats.events.filter((e) => e.approvalStatus !== "REJECTED")
+                .length > 0 ? (
+                stats.events
+                  .filter((e) => e.approvalStatus !== "REJECTED")
+                  .map((event) => {
+                    const isUpcoming = new Date(event.startDate) > new Date();
+                    return (
                       <div
-                        className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                        onClick={() =>
-                          setExpandedEvent(
-                            expandedEvent === event.id ? null : event.id
-                          )
-                        }
+                        key={event.id}
+                        className="border border-gray-200 rounded-lg overflow-hidden"
                       >
-                        <div className="flex justify-between items-start">
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2">
-                              <h3 className="text-lg font-medium text-gray-900">
-                                {event.title}
-                              </h3>
-                              <span
-                                className={`inline-block px-2 py-0.5 text-xs rounded-full ${
-                                  isUpcoming
-                                    ? "bg-green-100 text-green-800"
-                                    : "bg-gray-100 text-gray-600"
-                                }`}
-                              >
-                                {isUpcoming ? "Upcoming" : "Past"}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-500 mt-1">
-                              {event.eventType} • {event.location} •{" "}
-                              {new Date(event.startDate).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <div className="text-right flex items-center gap-3">
-                            <div>
-                              <p className="text-2xl font-bold text-blue-600">
-                                {event.interestCount}
+                        <div
+                          className="p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                          onClick={() =>
+                            setExpandedEvent(
+                              expandedEvent === event.id ? null : event.id
+                            )
+                          }
+                        >
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <h3 className="text-lg font-medium text-gray-900">
+                                  {event.title}
+                                </h3>
+                                <span
+                                  className={`inline-block px-2 py-0.5 text-xs rounded-full ${
+                                    isUpcoming
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-gray-100 text-gray-600"
+                                  }`}
+                                >
+                                  {isUpcoming ? "Upcoming" : "Past"}
+                                </span>
+                              </div>
+                              <p className="text-sm text-gray-500 mt-1">
+                                {event.eventType} • {event.location} •{" "}
+                                {new Date(event.startDate).toLocaleDateString()}
                               </p>
-                              <p className="text-xs text-gray-500">interests</p>
                             </div>
-                            {expandedEvent === event.id ? (
-                              <ChevronUp className="w-5 h-5 text-gray-400" />
-                            ) : (
-                              <ChevronDown className="w-5 h-5 text-gray-400" />
-                            )}
+                            <div className="text-right flex items-center gap-3">
+                              <div>
+                                <p className="text-2xl font-bold text-blue-600">
+                                  {event.interestCount}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  interests
+                                </p>
+                              </div>
+                              {expandedEvent === event.id ? (
+                                <ChevronUp className="w-5 h-5 text-gray-400" />
+                              ) : (
+                                <ChevronDown className="w-5 h-5 text-gray-400" />
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Expanded Interest Details */}
-                      {expandedEvent === event.id &&
-                        event.interests.length > 0 && (
-                          <div className="border-t border-gray-200 bg-gray-50 p-4">
-                            <h4 className="text-sm font-medium text-gray-700 mb-3">
-                              People who expressed interest:
-                            </h4>
-                            <div className="space-y-2">
-                              {event.interests.map((interest, index) => (
-                                <div
-                                  key={index}
-                                  className="bg-white p-3 rounded-lg border border-gray-200"
-                                >
-                                  <div className="flex justify-between items-start">
-                                    <div>
-                                      <p className="font-medium text-gray-900">
-                                        {interest.name}
-                                      </p>
-                                      <p className="text-sm text-gray-600">
-                                        {interest.email}
-                                      </p>
-                                      {interest.message && (
-                                        <p className="text-sm text-gray-500 mt-1 italic">
-                                          &ldquo;{interest.message}&rdquo;
+                        {/* Expanded Interest Details */}
+                        {expandedEvent === event.id &&
+                          event.interests.length > 0 && (
+                            <div className="border-t border-gray-200 bg-gray-50 p-4">
+                              <h4 className="text-sm font-medium text-gray-700 mb-3">
+                                People who expressed interest:
+                              </h4>
+                              <div className="space-y-2">
+                                {event.interests.map((interest, index) => (
+                                  <div
+                                    key={index}
+                                    className="bg-white p-3 rounded-lg border border-gray-200"
+                                  >
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <p className="font-medium text-gray-900">
+                                          {interest.name}
                                         </p>
-                                      )}
+                                        <p className="text-sm text-gray-600">
+                                          {interest.email}
+                                        </p>
+                                        {interest.message && (
+                                          <p className="text-sm text-gray-500 mt-1 italic">
+                                            &ldquo;{interest.message}&rdquo;
+                                          </p>
+                                        )}
+                                      </div>
+                                      <p className="text-xs text-gray-400">
+                                        {new Date(
+                                          interest.submittedAt
+                                        ).toLocaleDateString()}
+                                      </p>
                                     </div>
-                                    <p className="text-xs text-gray-400">
-                                      {new Date(
-                                        interest.submittedAt
-                                      ).toLocaleDateString()}
-                                    </p>
                                   </div>
-                                </div>
-                              ))}
+                                ))}
+                              </div>
                             </div>
-                          </div>
-                        )}
-                    </div>
-                  );
-                })
+                          )}
+                      </div>
+                    );
+                  })
               ) : (
                 <div className="text-center py-12 bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">

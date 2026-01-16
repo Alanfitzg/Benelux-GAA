@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/post-event-reviews",
+      "schedule": "0 9 * * *"
+    }
+  ]
+}

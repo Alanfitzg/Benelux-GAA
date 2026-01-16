@@ -566,7 +566,109 @@ export default function EventsManagementClient({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {filteredEvents.length > 0 ? (
+          filteredEvents.map((event) => (
+            <div
+              key={event.id}
+              className={`bg-white rounded-lg shadow-sm border border-gray-200 p-3 ${
+                event.approvalStatus === "PENDING"
+                  ? "border-l-4 border-l-amber-400"
+                  : ""
+              }`}
+            >
+              <div className="flex items-start justify-between gap-2 mb-2">
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-semibold text-gray-900 truncate">
+                    {event.title}
+                  </h3>
+                  <p className="text-xs text-gray-500">
+                    {event.club ? (
+                      <span className="text-primary font-medium">
+                        {event.club.name}
+                      </span>
+                    ) : (
+                      <span className="text-amber-600">TBC</span>
+                    )}
+                  </p>
+                </div>
+                {getApprovalStatusBadge(event.approvalStatus)}
+              </div>
+
+              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 mb-2">
+                <span className="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-medium">
+                  {event.eventType}
+                </span>
+                <span>📍 {abbreviateLocation(event.location)}</span>
+                <span>📅 {formatShortDate(event.startDate)}</span>
+              </div>
+
+              {event.acceptedTeamTypes &&
+                event.acceptedTeamTypes.length > 0 && (
+                  <div className="mb-2">
+                    <SportsBadges
+                      teamTypes={event.acceptedTeamTypes}
+                      size="sm"
+                    />
+                  </div>
+                )}
+
+              {event.approvalStatus === "REJECTED" && event.rejectionReason && (
+                <p
+                  className="text-xs text-red-600 mb-2 truncate"
+                  title={event.rejectionReason}
+                >
+                  Reason: {event.rejectionReason}
+                </p>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+                {event.approvalStatus === "PENDING" &&
+                  approveEvent &&
+                  rejectEvent && (
+                    <>
+                      <form action={approveEvent}>
+                        <input type="hidden" name="id" value={event.id} />
+                        <button
+                          type="submit"
+                          className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
+                        >
+                          Approve
+                        </button>
+                      </form>
+                      <button
+                        type="button"
+                        onClick={() => setRejectingEventId(event.id)}
+                        className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition"
+                      >
+                        Reject
+                      </button>
+                    </>
+                  )}
+                <Link
+                  href={`/admin/events/${event.id}/edit`}
+                  className="text-xs text-primary hover:text-primary/80 font-medium"
+                >
+                  Edit
+                </Link>
+                <DeleteButton
+                  id={event.id}
+                  onDelete={deleteEvent}
+                  itemType="event"
+                />
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+            No events found matching your filters
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">

@@ -106,6 +106,7 @@ export default function DayPassConfigClient({
   const [success, setSuccess] = useState(false);
   const [showProhibitedDetails, setShowProhibitedDetails] = useState(false);
   const [showPlayAwayEarnings, setShowPlayAwayEarnings] = useState(false);
+  const [showPlatformFeeInfo, setShowPlatformFeeInfo] = useState(false);
 
   const handleToggleInclusion = (id: string) => {
     setSelectedInclusions((prev) =>
@@ -160,25 +161,39 @@ export default function DayPassConfigClient({
   const yourProfit = 2.5;
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary to-slate-800 relative">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-60 h-60 bg-secondary rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-primary rounded-full blur-3xl opacity-50"></div>
+      </div>
+
       {/* Header */}
-      <div className="bg-gradient-to-br from-emerald-600 to-teal-700 text-white">
+      <div className="relative z-10">
         <div className="container mx-auto px-4 py-6">
           <Link
             href={`/club-admin/${clubId}`}
-            className="inline-flex items-center gap-2 text-emerald-100 hover:text-white mb-4 text-sm"
+            className="inline-flex items-center gap-2 text-white/70 hover:text-white mb-4 text-sm transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Dashboard
           </Link>
-          <h1 className="text-2xl md:text-3xl font-bold">
-            Day-Pass Configuration
-          </h1>
-          <p className="text-emerald-100 mt-1">{clubName}</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center">
+              <Euro className="w-5 h-5 md:w-6 md:h-6 text-emerald-400" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
+                Day-Pass Configuration
+              </h1>
+              <p className="text-white/60 mt-1">{clubName}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="relative z-10 container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           {/* What is Day-Pass */}
           <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
@@ -331,9 +346,39 @@ export default function DayPassConfigClient({
                     <span className="text-gray-600">Your Day-Pass price:</span>
                     <span className="font-medium">€{price || "0"}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">+ Platform fee:</span>
-                    <span className="font-medium">€{platformFee}</span>
+                  <div className="relative">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-600 flex items-center gap-1">
+                        + Platform fee:
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowPlatformFeeInfo(!showPlatformFeeInfo)
+                          }
+                          className="text-gray-400 hover:text-primary transition-colors"
+                        >
+                          <Info className="w-3.5 h-3.5" />
+                        </button>
+                      </span>
+                      <span className="font-medium">€{platformFee}</span>
+                    </div>
+                    {showPlatformFeeInfo && (
+                      <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-800">
+                        <p className="font-medium mb-1">
+                          What does the platform fee cover?
+                        </p>
+                        <ul className="space-y-1 text-blue-700">
+                          <li>• Secure payment processing</li>
+                          <li>• Platform maintenance & support</li>
+                          <li>• Marketing to bring teams to you</li>
+                          <li>• Booking management system</li>
+                        </ul>
+                        <p className="mt-2 text-blue-600">
+                          <strong>Note:</strong> You receive 50% of this fee
+                          back as profit share (€{yourProfit} per player).
+                        </p>
+                      </div>
+                    )}
                   </div>
                   <div className="border-t border-gray-200 pt-2 mt-2">
                     <div className="flex justify-between font-semibold">
@@ -355,9 +400,12 @@ export default function DayPassConfigClient({
                       <span className="font-medium">€{price || "0"}</span>
                     </div>
                     <div className="flex justify-between text-emerald-600">
-                      <span>+ Your profit (50% of fee):</span>
+                      <span>+ Your profit share:</span>
                       <span className="font-medium">€{yourProfit}</span>
                     </div>
+                    <p className="text-xs text-gray-500 italic">
+                      (50% of platform fee returned to you)
+                    </p>
                     <div className="flex justify-between font-semibold text-emerald-700 pt-2 border-t border-gray-200">
                       <span>Per player total:</span>
                       <span>
@@ -397,7 +445,7 @@ export default function DayPassConfigClient({
                     €{(yourProfit * 25).toFixed(2)}
                   </div>
                   <div className="text-xs text-emerald-200">
-                    25 × €{yourProfit}
+                    25 × €{yourProfit} (from platform fee)
                   </div>
                 </div>
               </div>
@@ -418,64 +466,89 @@ export default function DayPassConfigClient({
                     Earnings Comparison (25 players)
                   </h4>
 
-                  <div className="grid sm:grid-cols-2 gap-4 mb-4">
-                    {/* Your Club */}
-                    <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
-                      <div className="text-xs text-emerald-700 font-medium mb-1">
-                        Your Club Earns
-                      </div>
-                      <div className="text-xl font-bold text-emerald-700">
-                        €
-                        {(
-                          parseFloat(price) * 25 +
-                          yourProfit * 25
-                        ).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </div>
-                      <div className="text-xs text-emerald-600 mt-1">
-                        €{(parseFloat(price) * 25).toLocaleString()} + €
-                        {(yourProfit * 25).toFixed(2)} profit share
-                      </div>
-                    </div>
+                  {(() => {
+                    const clubTotal = parseFloat(price) * 25 + yourProfit * 25;
+                    const playAwayTotal = yourProfit * 25;
+                    const grandTotal = clubTotal + playAwayTotal;
+                    const clubPercent =
+                      grandTotal > 0
+                        ? ((clubTotal / grandTotal) * 100).toFixed(0)
+                        : "0";
+                    const playAwayPercent =
+                      grandTotal > 0
+                        ? ((playAwayTotal / grandTotal) * 100).toFixed(0)
+                        : "0";
 
-                    {/* PlayAway */}
-                    <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
-                      <div className="text-xs text-gray-600 font-medium mb-1">
-                        PlayAway Earns
-                      </div>
-                      <div className="text-xl font-bold text-gray-700">
-                        €{(yourProfit * 25).toFixed(2)}
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        €{(platformFee * 25).toFixed(2)} fee − €
-                        {(yourProfit * 25).toFixed(2)} to you
-                      </div>
-                    </div>
-                  </div>
+                    return (
+                      <>
+                        <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                          {/* Your Club */}
+                          <div className="bg-emerald-50 rounded-lg p-3 border border-emerald-200">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs text-emerald-700 font-medium">
+                                Your Club Earns
+                              </span>
+                              <span className="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-full">
+                                {clubPercent}%
+                              </span>
+                            </div>
+                            <div className="text-xl font-bold text-emerald-700">
+                              €
+                              {clubTotal.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
+                            </div>
+                            <div className="text-xs text-emerald-600 mt-1">
+                              €{(parseFloat(price) * 25).toLocaleString()}{" "}
+                              Day-Pass + €{(yourProfit * 25).toFixed(2)} from
+                              platform fee
+                            </div>
+                          </div>
 
-                  <p className="text-xs text-gray-500">
-                    PlayAway&apos;s share covers payment processing, platform
-                    maintenance, customer support, and marketing to bring teams
-                    to your club.
-                  </p>
+                          {/* PlayAway */}
+                          <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                            <div className="flex items-center justify-between mb-1">
+                              <span className="text-xs text-gray-600 font-medium">
+                                PlayAway Earns
+                              </span>
+                              <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
+                                {playAwayPercent}%
+                              </span>
+                            </div>
+                            <div className="text-xl font-bold text-gray-700">
+                              €{playAwayTotal.toFixed(2)}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              From platform fee (50% after your share)
+                            </div>
+                          </div>
+                        </div>
+
+                        <p className="text-xs text-gray-500">
+                          PlayAway&apos;s share (from platform fee) covers
+                          payment processing, platform maintenance, customer
+                          support, and marketing to bring teams to your club.
+                        </p>
+                      </>
+                    );
+                  })()}
                 </div>
               )}
             </div>
           )}
 
           {/* Important Note - Items not included */}
-          <div className="bg-amber-50/60 border border-amber-200/60 rounded-xl p-5 mb-6">
+          <div className="bg-white border border-amber-300 rounded-xl p-5 mb-6 shadow-sm">
             <div className="flex items-start gap-3">
-              <div className="bg-amber-100/80 rounded-full p-2 flex-shrink-0">
+              <div className="bg-amber-100 rounded-full p-2 flex-shrink-0">
                 <AlertTriangle className="w-5 h-5 text-amber-600" />
               </div>
               <div className="flex-1">
-                <h3 className="text-sm font-semibold text-amber-900 mb-1.5">
+                <h3 className="text-sm font-semibold text-amber-800 mb-1.5">
                   Important: Day-Pass Scope
                 </h3>
-                <p className="text-amber-800 text-sm mb-3">
+                <p className="text-gray-700 text-sm mb-3">
                   Per EU Package Travel Directive, Day-Passes cover same-day
                   hospitality only. Do not include accommodation, transport, or
                   multi-day services.
@@ -485,7 +558,7 @@ export default function DayPassConfigClient({
                   {PROHIBITED_ITEMS.map((item) => (
                     <span
                       key={item.title}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white border border-amber-200 rounded-full text-xs text-amber-800"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-amber-50 border border-amber-200 rounded-full text-xs text-amber-800"
                     >
                       <XCircle className="w-3 h-3 text-amber-500" />
                       {item.title}
@@ -498,14 +571,14 @@ export default function DayPassConfigClient({
                   onClick={() =>
                     setShowProhibitedDetails(!showProhibitedDetails)
                   }
-                  className="text-xs text-amber-700 hover:text-amber-800 font-medium flex items-center gap-1"
+                  className="text-xs text-amber-700 hover:text-amber-900 font-medium flex items-center gap-1"
                 >
                   <HelpCircle className="w-3.5 h-3.5" />
                   {showProhibitedDetails ? "Hide details" : "Learn more"}
                 </button>
 
                 {showProhibitedDetails && (
-                  <div className="mt-3 bg-white border border-amber-200 rounded-lg p-3 text-xs">
+                  <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs">
                     <p className="text-gray-700 mb-2">
                       Bundling accommodation, transport, or multi-day services
                       creates a &quot;package&quot; with legal obligations only
@@ -516,7 +589,7 @@ export default function DayPassConfigClient({
                       href="https://europa.eu/youreurope/citizens/travel/holidays/package-travel/index_en.htm"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-amber-700 hover:text-amber-800"
+                      className="inline-flex items-center gap-1 text-amber-700 hover:text-amber-900"
                     >
                       <ExternalLink className="w-3 h-3" />
                       EU Package Travel Directive

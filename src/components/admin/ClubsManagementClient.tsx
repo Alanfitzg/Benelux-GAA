@@ -224,33 +224,37 @@ export default function ClubsManagementClient({
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Manage Clubs</h1>
-        <div className="flex items-center space-x-3">
+    <div className="container mx-auto px-4 py-4 md:py-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 md:mb-6">
+        <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
+          Manage Clubs
+        </h1>
+        <div className="flex items-center gap-2 sm:gap-3">
           <Link
             href="/clubs/register"
-            className="bg-primary text-white px-6 py-2.5 rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
+            className="flex-1 sm:flex-none text-center bg-primary text-white px-3 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md"
           >
-            Register Club
+            <span className="hidden sm:inline">Register Club</span>
+            <span className="sm:hidden">Register</span>
           </Link>
           <Link
             href="/admin"
-            className="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg hover:bg-gray-300 transition"
+            className="flex-1 sm:flex-none text-center bg-gray-200 text-gray-700 px-3 sm:px-6 py-2 sm:py-2.5 text-sm sm:text-base rounded-lg hover:bg-gray-300 transition"
           >
-            Back to Dashboard
+            <span className="hidden sm:inline">Back to Dashboard</span>
+            <span className="sm:hidden">Dashboard</span>
           </Link>
         </div>
       </div>
 
       {/* Filters Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-4">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 sm:p-6 mb-4 sm:mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 mb-4">
           {/* Region Filter */}
           <div>
             <label
               htmlFor="region-filter"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="hidden sm:block text-sm font-semibold text-gray-700 mb-2"
             >
               🌍 International Unit / Region
             </label>
@@ -258,7 +262,7 @@ export default function ClubsManagementClient({
               id="region-filter"
               value={selectedRegion}
               onChange={(e) => setSelectedRegion(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+              className="w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
             >
               <option value="all">All Regions ({initialClubs.length})</option>
               {regions.map((region) => {
@@ -285,17 +289,17 @@ export default function ClubsManagementClient({
           <div>
             <label
               htmlFor="search-filter"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="hidden sm:block text-sm font-semibold text-gray-700 mb-2"
             >
               🔍 Search by Name / Country
             </label>
             <input
               id="search-filter"
               type="text"
-              placeholder="e.g., Kilmacud, Cork, Ireland..."
+              placeholder="Search name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
 
@@ -303,17 +307,17 @@ export default function ClubsManagementClient({
           <div>
             <label
               htmlFor="location-filter"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="hidden sm:block text-sm font-semibold text-gray-700 mb-2"
             >
               📍 Filter by Location
             </label>
             <input
               id="location-filter"
               type="text"
-              placeholder="e.g., Dublin, Cork..."
+              placeholder="Location..."
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
             />
           </div>
 
@@ -321,7 +325,7 @@ export default function ClubsManagementClient({
           <div>
             <label
               htmlFor="type-filter"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="hidden sm:block text-sm font-semibold text-gray-700 mb-2"
             >
               🏛️ Club Type
             </label>
@@ -329,7 +333,7 @@ export default function ClubsManagementClient({
               id="type-filter"
               value={clubTypeFilter}
               onChange={(e) => setClubTypeFilter(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+              className="w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
             >
               <option value="all">All Types</option>
               {Object.entries(clubTypeLabels).map(([value, label]) => (
@@ -344,7 +348,7 @@ export default function ClubsManagementClient({
           <div>
             <label
               htmlFor="quality-filter"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="hidden sm:block text-sm font-semibold text-gray-700 mb-2"
             >
               ⚠️ Data Quality
             </label>
@@ -352,15 +356,15 @@ export default function ClubsManagementClient({
               id="quality-filter"
               value={dataQualityFilter}
               onChange={(e) => setDataQualityFilter(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
+              className="w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white"
             >
               <option value="all">All Clubs</option>
               <option value="missing-location">🚫 No Location</option>
-              <option value="missing-region">🚫 No Region/Unit</option>
-              <option value="missing-both">🚫 No Location & Region</option>
-              <option value="no-image">🖼️ No Image/Crest</option>
-              <option value="no-website">🌐 No Website/Social</option>
-              <option value="incomplete">⚡ Incomplete Data</option>
+              <option value="missing-region">🚫 No Region</option>
+              <option value="missing-both">🚫 No Both</option>
+              <option value="no-image">🖼️ No Image</option>
+              <option value="no-website">🌐 No Web</option>
+              <option value="incomplete">⚡ Incomplete</option>
             </select>
           </div>
 
@@ -368,7 +372,7 @@ export default function ClubsManagementClient({
           <div>
             <label
               htmlFor="sort-by"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="hidden sm:block text-sm font-semibold text-gray-700 mb-2"
             >
               🔽 Sort By
             </label>
@@ -376,12 +380,12 @@ export default function ClubsManagementClient({
               id="sort-by"
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
+              className="w-full px-2 sm:px-3 py-2 sm:py-2.5 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
             >
               <option value="name">Name (A-Z)</option>
-              <option value="location">Location (A-Z)</option>
-              <option value="region">Region (A-Z)</option>
-              <option value="completeness">Completeness (Low→High)</option>
+              <option value="location">Location</option>
+              <option value="region">Region</option>
+              <option value="completeness">Completeness</option>
             </select>
           </div>
         </div>
@@ -482,7 +486,95 @@ export default function ClubsManagementClient({
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Mobile Card View */}
+      <div className="md:hidden space-y-3">
+        {filteredClubs.length > 0 ? (
+          filteredClubs.map((club: ClubListItem) => {
+            const displayRegion =
+              club.internationalUnit?.name ||
+              club.country?.name ||
+              club.regionRecord?.name ||
+              club.region ||
+              "-";
+
+            return (
+              <div
+                key={club.id}
+                className="bg-white rounded-lg shadow-sm border border-gray-200 p-3"
+              >
+                <div className="flex items-start gap-3">
+                  {club.imageUrl && (
+                    <Image
+                      src={club.imageUrl}
+                      alt={club.name}
+                      width={40}
+                      height={40}
+                      className="w-10 h-10 rounded-lg object-contain bg-gray-100 flex-shrink-0"
+                      unoptimized
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold text-gray-900 truncate">
+                      {club.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 truncate">
+                      {club.location ? (
+                        `📍 ${club.location}`
+                      ) : (
+                        <span className="text-red-500">⚠️ No location</span>
+                      )}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {displayRegion === "-" ? (
+                        <span className="text-red-500">⚠️ No region</span>
+                      ) : (
+                        displayRegion
+                      )}
+                    </p>
+                    {club.teamTypes.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {club.teamTypes.slice(0, 3).map((type, idx) => (
+                          <span
+                            key={idx}
+                            className="px-1.5 py-0.5 text-[10px] rounded-full bg-primary/10 text-primary"
+                          >
+                            {type}
+                          </span>
+                        ))}
+                        {club.teamTypes.length > 3 && (
+                          <span className="text-[10px] text-gray-400">
+                            +{club.teamTypes.length - 3}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/admin/clubs/${club.id}/edit`}
+                      className="text-xs text-primary hover:text-primary/80 font-medium"
+                    >
+                      Edit
+                    </Link>
+                    <DeleteButton
+                      id={club.id}
+                      onDelete={deleteClub}
+                      itemType="club"
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+            No clubs found matching your filters
+          </div>
+        )}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 border-b border-gray-200">
