@@ -160,9 +160,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-secondary/20 to-primary/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🎯</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🎯
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Manage Events
@@ -179,9 +179,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🏛️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🏛️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Manage Clubs
@@ -198,9 +198,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-emerald-400/20 to-green-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">✅</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                ✅
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Club Approvals
@@ -217,9 +217,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-green-400/20 to-blue-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">👥</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                👥
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Manage Users
@@ -236,9 +236,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-violet-400/20 to-purple-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🛡️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🛡️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Club Admin Requests
@@ -255,9 +255,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-purple-400/20 to-pink-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🖼️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🖼️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Manage Images
@@ -274,9 +274,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-blue-400/20 to-indigo-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">📊</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📊
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Custom Trip Requests
@@ -293,9 +293,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-yellow-400/20 to-orange-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">💬</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                💬
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Testimonials
@@ -312,9 +312,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-red-300"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-red-400/20 to-orange-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">⚠️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                ⚠️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Conflict Resolution
@@ -336,9 +336,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-yellow-300"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-yellow-400/20 to-amber-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">📋</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📋
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Event Appeals
@@ -360,9 +360,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-orange-400/20 to-red-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">💾</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                💾
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Database Backups
@@ -379,9 +379,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-green-400/20 to-emerald-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🏟️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🏟️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Pitch Management
@@ -398,9 +398,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-indigo-400/20 to-blue-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">📅</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📅
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Calendar Management
@@ -417,9 +417,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-green-300"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-green-400/20 to-emerald-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🏐</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🏐
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   GAA Fixtures
@@ -436,9 +436,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-cyan-400/20 to-teal-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🎛️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🎛️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Feature Toggles
@@ -455,9 +455,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-amber-300"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-amber-400/20 to-orange-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">📧</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📧
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Automated Emails
@@ -477,9 +477,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-rose-400/20 to-pink-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">📍</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📍
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Neutral Venues
@@ -496,9 +496,9 @@ export default function AdminDashboardClient({
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
             <div className="flex items-center space-x-3 md:space-x-4">
-              <div className="w-10 h-10 md:w-16 md:h-16 bg-gradient-to-br from-slate-400/20 to-gray-500/20 rounded-lg md:rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
-                <span className="text-lg md:text-2xl">🗄️</span>
-              </div>
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🗄️
+              </span>
               <div>
                 <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
                   Data Center

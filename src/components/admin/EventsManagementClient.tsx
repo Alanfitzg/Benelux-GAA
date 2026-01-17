@@ -4,7 +4,6 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import DeleteButton from "@/components/ui/DeleteButton";
 import { formatShortDate } from "@/lib/utils";
-import SportsBadges from "@/components/club/SportsBadges";
 
 type EventListItem = {
   id: string;
@@ -21,6 +20,7 @@ type EventListItem = {
   club?: {
     id: string;
     name: string;
+    imageUrl?: string | null;
     country?: {
       id: string;
       name: string;
@@ -316,549 +316,599 @@ export default function EventsManagementClient({
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-          Manage Events
-        </h1>
-        <div className="grid grid-cols-3 sm:flex sm:flex-row gap-2 sm:gap-3">
-          <button
-            type="button"
-            onClick={() => setFilterByClashes(!filterByClashes)}
-            className={`relative px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg transition shadow-sm hover:shadow-md text-center ${
-              filterByClashes
-                ? "bg-primary text-white ring-2 ring-primary/50"
-                : "bg-secondary text-white hover:bg-secondary/90"
-            }`}
-          >
-            <span className="hidden sm:inline">
-              {filterByClashes ? "Clear Clashes Filter" : "Check Clashes"}
-            </span>
-            <span className="sm:hidden">
-              {filterByClashes ? "Clear" : "Clashes"}
-            </span>
-            {dateClashes.length > 0 && !filterByClashes && (
-              <span className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 bg-amber-500 text-white text-[10px] sm:text-xs font-bold rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
-                {dateClashes.length}
-              </span>
-            )}
-          </button>
-          <Link
-            href="/events/create"
-            className="bg-primary text-white px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md text-center"
-          >
-            <span className="hidden sm:inline">Create Event</span>
-            <span className="sm:hidden">Create</span>
-          </Link>
-          <Link
-            href="/admin"
-            className="bg-gray-200 text-gray-700 px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg hover:bg-gray-300 transition text-center"
-          >
-            <span className="hidden sm:inline">Back to Dashboard</span>
-            <span className="sm:hidden">Dashboard</span>
-          </Link>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800 relative">
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-60 h-60 bg-secondary rounded-full blur-3xl"></div>
       </div>
 
-      {/* Clash Filter Active Banner */}
-      {filterByClashes && (
-        <div className="bg-secondary/10 border border-secondary/30 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="bg-secondary/20 rounded-full p-1.5 sm:p-2 flex-shrink-0">
-              <svg
-                className="w-4 h-4 sm:w-5 sm:h-5 text-secondary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-secondary text-sm sm:text-base">
-                {totalClashingEvents} Clashing Events ({dateClashes.length} Date
-                {dateClashes.length !== 1 ? "s" : ""})
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">
-                These events share dates with at least one pending event. Review
-                and approve to clear clashes.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setFilterByClashes(false)}
-              className="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition text-xs sm:text-sm font-medium"
-            >
-              Clear
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Pending Events Alert */}
-      {pendingCount > 0 && !filterByClashes && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="bg-amber-100 rounded-full p-1.5 sm:p-2 flex-shrink-0">
-              <svg
-                className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-amber-800 text-sm sm:text-base">
-                {pendingCount} Event{pendingCount !== 1 ? "s" : ""} Awaiting
-                Approval
-              </h3>
-              <p className="text-xs sm:text-sm text-amber-700 hidden sm:block">
-                Review and approve or reject pending events to make them visible
-                on the public events page.
-              </p>
-              <p className="text-xs text-amber-700 sm:hidden">
-                Review and approve or reject pending events to make them visible
-                on the public events page.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setSelectedApprovalStatus("PENDING")}
-              className="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition text-xs sm:text-sm font-medium"
-            >
-              View Pending
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Filters Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
-          {/* Approval Status Filter */}
-          <div>
-            <label
-              htmlFor="approval-filter"
-              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
-            >
-              Approval Status
-            </label>
-            <select
-              id="approval-filter"
-              value={selectedApprovalStatus}
-              onChange={(e) => setSelectedApprovalStatus(e.target.value)}
-              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            >
-              <option value="all">All Status ({initialEvents.length})</option>
-              <option value="PENDING">Pending ({pendingCount})</option>
-              <option value="APPROVED">Approved ({approvedCount})</option>
-              <option value="REJECTED">Rejected ({rejectedCount})</option>
-            </select>
-          </div>
-
-          {/* Country Filter */}
-          <div>
-            <label
-              htmlFor="country-filter"
-              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
-            >
-              Country/Region
-            </label>
-            <select
-              id="country-filter"
-              value={selectedCountry}
-              onChange={(e) => setSelectedCountry(e.target.value)}
-              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            >
-              <option value="all">All Countries</option>
-              {countries.map((country) => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Event Type Filter */}
-          <div>
-            <label
-              htmlFor="type-filter"
-              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
-            >
-              Event Type
-            </label>
-            <select
-              id="type-filter"
-              value={selectedEventType}
-              onChange={(e) => setSelectedEventType(e.target.value)}
-              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            >
-              <option value="all">All Types</option>
-              {eventTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Sport Filter */}
-          <div>
-            <label
-              htmlFor="sport-filter"
-              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
-            >
-              Sport
-            </label>
-            <select
-              id="sport-filter"
-              value={selectedSport}
-              onChange={(e) => setSelectedSport(e.target.value)}
-              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            >
-              <option value="all">All Sports</option>
-              {sports.map((sport) => (
-                <option key={sport} value={sport}>
-                  {sport}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Search Filter */}
-          <div>
-            <label
-              htmlFor="search-filter"
-              className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
-            >
-              Search
-            </label>
-            <input
-              id="search-filter"
-              type="text"
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
-            />
-          </div>
-
-          {/* Results Count */}
-          <div className="flex items-end">
-            <div className="px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-lg w-full text-center">
-              <span className="text-xs sm:text-sm text-gray-600">
-                {filteredEvents.length} of {initialEvents.length}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-3">
-        {filteredEvents.length > 0 ? (
-          filteredEvents.map((event) => (
-            <div
-              key={event.id}
-              className={`bg-white rounded-lg shadow-sm border border-gray-200 p-3 ${
-                event.approvalStatus === "PENDING"
-                  ? "border-l-4 border-l-amber-400"
-                  : ""
-              }`}
-            >
-              <div className="flex items-start justify-between gap-2 mb-2">
-                <div className="flex-1 min-w-0">
-                  <h3 className="text-sm font-semibold text-gray-900 truncate">
-                    {event.title}
-                  </h3>
-                  <p className="text-xs text-gray-500">
-                    {event.club ? (
-                      <span className="text-primary font-medium">
-                        {event.club.name}
-                      </span>
-                    ) : (
-                      <span className="text-amber-600">TBC</span>
-                    )}
-                  </p>
-                </div>
-                {getApprovalStatusBadge(event.approvalStatus)}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 mb-2">
-                <span className="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-medium">
-                  {event.eventType}
-                </span>
-                <span>📍 {abbreviateLocation(event.location)}</span>
-                <span>📅 {formatShortDate(event.startDate)}</span>
-              </div>
-
-              {event.acceptedTeamTypes &&
-                event.acceptedTeamTypes.length > 0 && (
-                  <div className="mb-2">
-                    <SportsBadges
-                      teamTypes={event.acceptedTeamTypes}
-                      size="sm"
-                    />
-                  </div>
-                )}
-
-              {event.approvalStatus === "REJECTED" && event.rejectionReason && (
-                <p
-                  className="text-xs text-red-600 mb-2 truncate"
-                  title={event.rejectionReason}
+      <div className="relative z-10 container mx-auto px-4 py-4 md:py-6">
+        {/* Hero Header */}
+        <div className="relative p-4 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg
+                  className="w-5 h-5 md:w-6 md:h-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  Reason: {event.rejectionReason}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-xl md:text-3xl font-bold text-white">
+                  Event Management
+                </h1>
+                <p className="text-sm md:text-base text-white/90 mt-1">
+                  Approve, review & monitor all platform events
                 </p>
-              )}
-
-              <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
-                {event.approvalStatus === "PENDING" &&
-                  approveEvent &&
-                  rejectEvent && (
-                    <>
-                      <form action={approveEvent}>
-                        <input type="hidden" name="id" value={event.id} />
-                        <button
-                          type="submit"
-                          className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
-                        >
-                          Approve
-                        </button>
-                      </form>
-                      <button
-                        type="button"
-                        onClick={() => setRejectingEventId(event.id)}
-                        className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition"
-                      >
-                        Reject
-                      </button>
-                    </>
-                  )}
-                <Link
-                  href={`/admin/events/${event.id}/edit`}
-                  className="text-xs text-primary hover:text-primary/80 font-medium"
-                >
-                  Edit
-                </Link>
-                <DeleteButton
-                  id={event.id}
-                  onDelete={deleteEvent}
-                  itemType="event"
-                />
+                <p className="text-xs md:text-sm text-white/70 mt-1.5 max-w-md hidden sm:block">
+                  Review pending submissions, detect scheduling conflicts, and
+                  manage the event approval workflow.
+                </p>
               </div>
             </div>
-          ))
-        ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
-            No events found matching your filters
+            <div className="grid grid-cols-3 sm:flex sm:flex-row gap-2 sm:gap-3">
+              <button
+                type="button"
+                onClick={() => setFilterByClashes(!filterByClashes)}
+                className={`relative px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg transition shadow-sm hover:shadow-md text-center ${
+                  filterByClashes
+                    ? "bg-primary text-white ring-2 ring-primary/50"
+                    : "bg-secondary text-white hover:bg-secondary/90"
+                }`}
+              >
+                <span className="hidden sm:inline">
+                  {filterByClashes ? "Clear Clashes Filter" : "Check Clashes"}
+                </span>
+                <span className="sm:hidden">
+                  {filterByClashes ? "Clear" : "Clashes"}
+                </span>
+                {dateClashes.length > 0 && !filterByClashes && (
+                  <span className="absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 bg-amber-500 text-white text-[10px] sm:text-xs font-bold rounded-full w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center">
+                    {dateClashes.length}
+                  </span>
+                )}
+              </button>
+              <Link
+                href="/events/create"
+                className="bg-primary text-white px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg hover:bg-primary/90 transition shadow-sm hover:shadow-md text-center"
+              >
+                <span className="hidden sm:inline">Create Event</span>
+                <span className="sm:hidden">Create</span>
+              </Link>
+              <Link
+                href="/admin"
+                className="bg-white/10 text-white px-2 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-sm rounded-lg hover:bg-white/20 transition text-center"
+              >
+                <span className="hidden sm:inline">Back to Dashboard</span>
+                <span className="sm:hidden">Dashboard</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Clash Filter Active Banner */}
+        {filterByClashes && (
+          <div className="bg-white rounded-xl shadow-sm border border-secondary/30 p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-secondary/20 rounded-full p-1.5 sm:p-2 flex-shrink-0">
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-secondary"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-secondary text-sm sm:text-base">
+                  {totalClashingEvents} Clashing Events ({dateClashes.length}{" "}
+                  Date
+                  {dateClashes.length !== 1 ? "s" : ""})
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-600 hidden sm:block">
+                  These events share dates with at least one pending event.
+                  Review and approve to clear clashes.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFilterByClashes(false)}
+                className="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-secondary text-white rounded-lg hover:bg-secondary/90 transition text-xs sm:text-sm font-medium"
+              >
+                Clear
+              </button>
+            </div>
           </div>
         )}
-      </div>
 
-      {/* Desktop Table View */}
-      <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
-              <tr>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Event
-                </th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Host
-                </th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Type
-                </th>
-                <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sports
-                </th>
-                <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Location
-                </th>
-                <th className="px-2 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Date
-                </th>
-                <th className="px-3 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredEvents.length > 0 ? (
-                filteredEvents.map((event) => (
-                  <tr
-                    key={event.id}
-                    className={`hover:bg-gray-50 transition-colors ${
-                      event.approvalStatus === "PENDING" ? "bg-amber-50/50" : ""
-                    }`}
-                  >
-                    <td className="px-3 py-3 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">
-                        {event.title}
-                      </div>
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap">
+        {/* Pending Events Alert */}
+        {pendingCount > 0 && !filterByClashes && (
+          <div className="bg-white rounded-xl shadow-sm border border-amber-200 p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-amber-100 rounded-full p-1.5 sm:p-2 flex-shrink-0">
+                <svg
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-semibold text-amber-800 text-sm sm:text-base">
+                  {pendingCount} Event{pendingCount !== 1 ? "s" : ""} Awaiting
+                  Approval
+                </h3>
+                <p className="text-xs sm:text-sm text-amber-700 hidden sm:block">
+                  Review and approve or reject pending events to make them
+                  visible on the public events page.
+                </p>
+                <p className="text-xs text-amber-700 sm:hidden">
+                  Review and approve or reject pending events to make them
+                  visible on the public events page.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedApprovalStatus("PENDING")}
+                className="flex-shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition text-xs sm:text-sm font-medium"
+              >
+                View Pending
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Filters Section */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 sm:p-4 mb-4 sm:mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4">
+            {/* Approval Status Filter */}
+            <div>
+              <label
+                htmlFor="approval-filter"
+                className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
+              >
+                Approval Status
+              </label>
+              <select
+                id="approval-filter"
+                value={selectedApprovalStatus}
+                onChange={(e) => setSelectedApprovalStatus(e.target.value)}
+                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="all">All Status ({initialEvents.length})</option>
+                <option value="PENDING">Pending ({pendingCount})</option>
+                <option value="APPROVED">Approved ({approvedCount})</option>
+                <option value="REJECTED">Rejected ({rejectedCount})</option>
+              </select>
+            </div>
+
+            {/* Country Filter */}
+            <div>
+              <label
+                htmlFor="country-filter"
+                className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
+              >
+                Country/Region
+              </label>
+              <select
+                id="country-filter"
+                value={selectedCountry}
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="all">All Countries</option>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Event Type Filter */}
+            <div>
+              <label
+                htmlFor="type-filter"
+                className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
+              >
+                Event Type
+              </label>
+              <select
+                id="type-filter"
+                value={selectedEventType}
+                onChange={(e) => setSelectedEventType(e.target.value)}
+                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="all">All Types</option>
+                {eventTypes.map((type) => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sport Filter */}
+            <div>
+              <label
+                htmlFor="sport-filter"
+                className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
+              >
+                Sport
+              </label>
+              <select
+                id="sport-filter"
+                value={selectedSport}
+                onChange={(e) => setSelectedSport(e.target.value)}
+                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              >
+                <option value="all">All Sports</option>
+                {sports.map((sport) => (
+                  <option key={sport} value={sport}>
+                    {sport}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Search Filter */}
+            <div>
+              <label
+                htmlFor="search-filter"
+                className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
+              >
+                Search
+              </label>
+              <input
+                id="search-filter"
+                type="text"
+                placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+            </div>
+
+            {/* Results Count */}
+            <div className="flex items-end">
+              <div className="px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-lg w-full text-center">
+                <span className="text-xs sm:text-sm text-gray-600">
+                  {filteredEvents.length} of {initialEvents.length}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-3">
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event) => (
+              <div
+                key={event.id}
+                className={`bg-white rounded-lg shadow-sm border border-gray-200 p-3 ${
+                  event.approvalStatus === "PENDING"
+                    ? "border-l-4 border-l-amber-400"
+                    : ""
+                }`}
+              >
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-sm font-semibold text-gray-900 truncate">
+                      {event.title}
+                    </h3>
+                    <p className="text-xs text-gray-500">
                       {event.club ? (
-                        <span className="text-sm font-medium text-primary">
+                        <span className="text-primary font-medium">
                           {event.club.name}
                         </span>
                       ) : (
-                        <span className="text-amber-600 text-sm font-medium">
-                          TBC
-                        </span>
+                        <span className="text-amber-600">TBC</span>
                       )}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap">
-                      {getApprovalStatusBadge(event.approvalStatus)}
-                      {event.approvalStatus === "REJECTED" &&
-                        event.rejectionReason && (
-                          <div
-                            className="text-xs text-red-600 mt-1 max-w-32 truncate"
-                            title={event.rejectionReason}
+                    </p>
+                  </div>
+                  {getApprovalStatusBadge(event.approvalStatus)}
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 mb-2">
+                  <span className="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-medium">
+                    {event.eventType}
+                  </span>
+                  <span>📍 {abbreviateLocation(event.location)}</span>
+                  <span>📅 {formatShortDate(event.startDate)}</span>
+                </div>
+
+                {event.acceptedTeamTypes &&
+                  event.acceptedTeamTypes.length > 0 && (
+                    <p className="text-xs text-gray-500 mb-2">
+                      {event.acceptedTeamTypes.join(", ")}
+                    </p>
+                  )}
+
+                {event.approvalStatus === "REJECTED" &&
+                  event.rejectionReason && (
+                    <p
+                      className="text-xs text-red-600 mb-2 truncate"
+                      title={event.rejectionReason}
+                    >
+                      Reason: {event.rejectionReason}
+                    </p>
+                  )}
+
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-gray-100">
+                  {event.approvalStatus === "PENDING" &&
+                    approveEvent &&
+                    rejectEvent && (
+                      <>
+                        <form action={approveEvent}>
+                          <input type="hidden" name="id" value={event.id} />
+                          <button
+                            type="submit"
+                            className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
                           >
-                            {event.rejectionReason}
-                          </div>
-                        )}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-secondary/10 text-secondary">
-                        {event.eventType}
-                      </span>
-                    </td>
-                    <td className="px-3 py-3">
-                      {event.acceptedTeamTypes &&
-                      event.acceptedTeamTypes.length > 0 ? (
-                        <SportsBadges
-                          teamTypes={event.acceptedTeamTypes}
-                          size="sm"
-                        />
-                      ) : (
-                        <span className="text-gray-400 text-sm">—</span>
-                      )}
-                    </td>
-                    <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-600">
-                      📍 {abbreviateLocation(event.location)}
-                    </td>
-                    <td className="px-2 py-3 whitespace-nowrap text-sm text-gray-600">
-                      📅 {formatShortDate(event.startDate)}
-                    </td>
-                    <td className="px-3 py-3 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end gap-2">
-                        {event.approvalStatus === "PENDING" &&
-                          approveEvent &&
-                          rejectEvent && (
-                            <>
-                              <form action={approveEvent}>
-                                <input
-                                  type="hidden"
-                                  name="id"
-                                  value={event.id}
-                                />
-                                <button
-                                  type="submit"
-                                  className="px-3 py-1 bg-green-600 text-white text-xs rounded-lg hover:bg-green-700 transition"
-                                >
-                                  Approve
-                                </button>
-                              </form>
-                              <button
-                                type="button"
-                                onClick={() => setRejectingEventId(event.id)}
-                                className="px-3 py-1 bg-red-600 text-white text-xs rounded-lg hover:bg-red-700 transition"
-                              >
-                                Reject
-                              </button>
-                            </>
-                          )}
-                        <Link
-                          href={`/admin/events/${event.id}/edit`}
-                          className="text-primary hover:text-primary/80 transition"
+                            Approve
+                          </button>
+                        </form>
+                        <button
+                          type="button"
+                          onClick={() => setRejectingEventId(event.id)}
+                          className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition"
                         >
-                          Edit
-                        </Link>
-                        <span className="text-gray-300">|</span>
-                        <DeleteButton
-                          id={event.id}
-                          onDelete={deleteEvent}
-                          itemType="event"
-                        />
-                      </div>
+                          Reject
+                        </button>
+                      </>
+                    )}
+                  <Link
+                    href={`/admin/events/${event.id}/edit`}
+                    className="text-xs text-primary hover:text-primary/80 font-medium"
+                  >
+                    Edit
+                  </Link>
+                  <DeleteButton
+                    id={event.id}
+                    onDelete={deleteEvent}
+                    itemType="event"
+                  />
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+              No events found matching your filters
+            </div>
+          )}
+        </div>
+
+        {/* Desktop Table View */}
+        <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+            <table className="w-full min-w-[900px]">
+              <thead className="bg-gray-50 border-b border-gray-200">
+                <tr>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Event
+                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Host
+                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Sports
+                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
+                  </th>
+                  <th className="px-2 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date
+                  </th>
+                  <th className="px-2 py-2 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {filteredEvents.length > 0 ? (
+                  filteredEvents.map((event) => (
+                    <tr
+                      key={event.id}
+                      className={`hover:bg-gray-50 transition-colors ${
+                        event.approvalStatus === "PENDING"
+                          ? "bg-amber-50/50"
+                          : ""
+                      }`}
+                    >
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        <div
+                          className="text-sm font-medium text-gray-900 max-w-[200px] truncate"
+                          title={event.title}
+                        >
+                          {event.title}
+                        </div>
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        {event.club ? (
+                          event.club.imageUrl ? (
+                            <img
+                              src={event.club.imageUrl}
+                              alt={event.club.name}
+                              title={event.club.name}
+                              className="w-7 h-7 rounded-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs text-gray-500"
+                              title={event.club.name}
+                            >
+                              {event.club.name.charAt(0)}
+                            </div>
+                          )
+                        ) : (
+                          <span className="text-amber-600 text-xs font-medium">
+                            TBC
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        {getApprovalStatusBadge(event.approvalStatus)}
+                        {event.approvalStatus === "REJECTED" &&
+                          event.rejectionReason && (
+                            <div
+                              className="text-xs text-red-600 mt-1 max-w-[80px] truncate"
+                              title={event.rejectionReason}
+                            >
+                              {event.rejectionReason}
+                            </div>
+                          )}
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap">
+                        {event.acceptedTeamTypes &&
+                        event.acceptedTeamTypes.length > 0 ? (
+                          <span className="text-xs text-gray-600">
+                            {event.acceptedTeamTypes.join(", ")}
+                          </span>
+                        ) : (
+                          <span className="text-gray-400 text-xs">—</span>
+                        )}
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-600">
+                        <span title={event.location}>
+                          📍 {abbreviateLocation(event.location)}
+                        </span>
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap text-xs text-gray-600">
+                        📅 {formatShortDate(event.startDate)}
+                      </td>
+                      <td className="px-2 py-2 whitespace-nowrap text-right text-sm font-medium">
+                        <div className="flex items-center justify-end gap-1.5">
+                          {event.approvalStatus === "PENDING" &&
+                            approveEvent &&
+                            rejectEvent && (
+                              <>
+                                <form action={approveEvent}>
+                                  <input
+                                    type="hidden"
+                                    name="id"
+                                    value={event.id}
+                                  />
+                                  <button
+                                    type="submit"
+                                    className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition"
+                                  >
+                                    Approve
+                                  </button>
+                                </form>
+                                <button
+                                  type="button"
+                                  onClick={() => setRejectingEventId(event.id)}
+                                  className="px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition"
+                                >
+                                  Reject
+                                </button>
+                              </>
+                            )}
+                          <Link
+                            href={`/admin/events/${event.id}/edit`}
+                            className="text-primary hover:text-primary/80 transition text-xs"
+                          >
+                            Edit
+                          </Link>
+                          <span className="text-gray-300">|</span>
+                          <DeleteButton
+                            id={event.id}
+                            onDelete={deleteEvent}
+                            itemType="event"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="px-2 py-12 text-center text-gray-500"
+                    >
+                      No events found matching your filters
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan={8}
-                    className="px-3 py-12 text-center text-gray-500"
-                  >
-                    No events found matching your filters
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Rejection Modal */}
-      {rejectingEventId && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">
-              Reject Event
-            </h3>
-            <p className="text-gray-600 mb-4">
-              Please provide a reason for rejecting this event. This will be
-              shown to the event creator.
-            </p>
-            <textarea
-              value={rejectionReason}
-              onChange={(e) => setRejectionReason(e.target.value)}
-              placeholder="Enter rejection reason..."
-              className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 focus:border-red-500 focus:ring-2 focus:ring-red-200 mb-4"
-              rows={3}
-              required
-            />
-            <div className="flex gap-3">
-              <button
-                type="button"
-                onClick={() => {
-                  setRejectingEventId(null);
-                  setRejectionReason("");
-                }}
-                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={() => handleReject(rejectingEventId)}
-                disabled={!rejectionReason.trim()}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
-              >
-                Reject Event
-              </button>
-            </div>
+                )}
+              </tbody>
+            </table>
+          </div>
+          {/* Scroll hint */}
+          <div className="bg-gray-50 border-t border-gray-200 px-3 py-1.5 text-xs text-gray-400 text-center">
+            ← Scroll horizontally to see all columns →
           </div>
         </div>
-      )}
+
+        {/* Rejection Modal */}
+        {rejectingEventId && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                Reject Event
+              </h3>
+              <p className="text-gray-600 mb-4">
+                Please provide a reason for rejecting this event. This will be
+                shown to the event creator.
+              </p>
+              <textarea
+                value={rejectionReason}
+                onChange={(e) => setRejectionReason(e.target.value)}
+                placeholder="Enter rejection reason..."
+                className="w-full border-2 border-gray-200 rounded-lg px-3 py-2 focus:border-red-500 focus:ring-2 focus:ring-red-200 mb-4"
+                rows={3}
+                required
+              />
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setRejectingEventId(null);
+                    setRejectionReason("");
+                  }}
+                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleReject(rejectingEventId)}
+                  disabled={!rejectionReason.trim()}
+                  className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                >
+                  Reject Event
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

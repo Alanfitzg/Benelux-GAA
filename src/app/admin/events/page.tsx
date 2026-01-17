@@ -100,6 +100,7 @@ export default async function AdminEventsPage() {
         select: {
           id: true,
           name: true,
+          imageUrl: true,
           region: true,
           country: {
             select: {
