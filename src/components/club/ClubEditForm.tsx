@@ -35,6 +35,10 @@ interface Club {
   foundedYear?: number | null;
   isOpenToVisitors?: boolean | null;
   preferredWeekends?: unknown;
+  internationalUnitId?: string | null;
+  countryId?: string | null;
+  internationalUnit?: { name: string } | null;
+  country?: { name: string } | null;
 }
 
 const TEAM_TYPES = [
@@ -306,6 +310,32 @@ export default function ClubEditForm({ club }: { club: Club }) {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
               </div>
+
+              {(club.internationalUnit || club.country) && (
+                <>
+                  {club.internationalUnit && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        International Unit
+                      </label>
+                      <div className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 text-gray-600">
+                        {club.internationalUnit.name}
+                      </div>
+                    </div>
+                  )}
+
+                  {club.country && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Country
+                      </label>
+                      <div className="w-full px-3 py-2 border border-gray-200 rounded-md bg-gray-50 text-gray-600">
+                        {club.country.name}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
 

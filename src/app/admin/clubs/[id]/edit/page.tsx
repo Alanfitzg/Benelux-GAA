@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import ImageUpload from '../../../../components/ImageUpload';
-import LocationAutocomplete from '../../../../events/create/LocationAutocomplete';
+import ImageUpload from "../../../../components/ImageUpload";
+import LocationAutocomplete from "../../../../events/create/LocationAutocomplete";
 import ClubRelocationModal from "@/components/admin/ClubRelocationModal";
 import { TEAM_TYPES } from "@/lib/constants/teams";
 import { URLS, MESSAGES } from "@/lib/constants";
@@ -23,6 +23,23 @@ interface ClubData {
   instagram?: string;
   website?: string;
   teamTypes: string[];
+  internationalUnitId?: string;
+  countryId?: string;
+}
+
+interface InternationalUnit {
+  id: string;
+  code: string;
+  name: string;
+  displayOrder: number;
+}
+
+interface Country {
+  id: string;
+  code: string;
+  name: string;
+  internationalUnitId: string;
+  displayOrder: number;
 }
 
 interface SocialLink {
@@ -46,10 +63,33 @@ export default function EditClubPage() {
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [newPlatform, setNewPlatform] = useState("");
   const [relocationModalOpen, setRelocationModalOpen] = useState(false);
+  const [internationalUnits, setInternationalUnits] = useState<
+    InternationalUnit[]
+  >([]);
+  const [selectedInternationalUnitId, setSelectedInternationalUnitId] =
+    useState<string>("");
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [selectedCountryId, setSelectedCountryId] = useState<string>("");
 
-  const socialPlatforms = ["Facebook", "Instagram", "Twitter", "YouTube", "Website", "Other"];
+  const socialPlatforms = [
+    "Facebook",
+    "Instagram",
+    "Twitter",
+    "YouTube",
+    "Website",
+    "Other",
+  ];
 
   useEffect(() => {
+    // Fetch international units
+    fetch("/api/clubs/international-units")
+      .then((res) => res.json())
+      .then((units) => setInternationalUnits(units))
+      .catch((err) =>
+        console.error("Error fetching international units:", err)
+      );
+
+    // Fetch club data
     fetch(`${URLS.API.CLUBS}/${clubId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -57,26 +97,44 @@ export default function EditClubPage() {
         setLocation(data.location || "");
         setImageUrl(data.imageUrl || null);
         setSelectedTeamTypes(data.teamTypes || []);
-        
+        setSelectedInternationalUnitId(data.internationalUnitId || "");
+        setSelectedCountryId(data.countryId || "");
+
         // Convert existing social links to array format
         const links: SocialLink[] = [];
-        if (data.facebook) links.push({ platform: "Facebook", url: data.facebook });
-        if (data.instagram) links.push({ platform: "Instagram", url: data.instagram });
-        if (data.website) links.push({ platform: "Website", url: data.website });
+        if (data.facebook)
+          links.push({ platform: "Facebook", url: data.facebook });
+        if (data.instagram)
+          links.push({ platform: "Instagram", url: data.instagram });
+        if (data.website)
+          links.push({ platform: "Website", url: data.website });
         setSocialLinks(links);
       });
   }, [clubId]);
 
+  // Fetch countries when international unit changes
+  useEffect(() => {
+    if (selectedInternationalUnitId) {
+      fetch(`/api/clubs/countries?unitId=${selectedInternationalUnitId}`)
+        .then((res) => res.json())
+        .then((data) => setCountries(data))
+        .catch((err) => console.error("Error fetching countries:", err));
+    } else {
+      setCountries([]);
+    }
+  }, [selectedInternationalUnitId]);
+
   const handleTeamTypeToggle = (type: string) => {
-    setSelectedTeamTypes(prev =>
-      prev.includes(type)
-        ? prev.filter(t => t !== type)
-        : [...prev, type]
+    setSelectedTeamTypes((prev) =>
+      prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
     );
   };
 
   const addSocialLink = () => {
-    if (newPlatform && !socialLinks.some(link => link.platform === newPlatform)) {
+    if (
+      newPlatform &&
+      !socialLinks.some((link) => link.platform === newPlatform)
+    ) {
       setSocialLinks([...socialLinks, { platform: newPlatform, url: "" }]);
       setNewPlatform("");
     }
@@ -103,8 +161,8 @@ export default function EditClubPage() {
         setTimeout(() => setSuccess(false), 3000);
       }
     } catch (error) {
-      console.error('Error refreshing club:', error);
-      setError('Failed to refresh club data');
+      console.error("Error refreshing club:", error);
+      setError("Failed to refresh club data");
     }
   };
 
@@ -116,7 +174,7 @@ export default function EditClubPage() {
     const form = eventForm.target as HTMLFormElement;
     const file = imageFile;
     let uploadedImageUrl = "";
-    
+
     if (file && file.size > 0) {
       setUploading(true);
       const uploadData = new FormData();
@@ -135,57 +193,60 @@ export default function EditClubPage() {
       uploadedImageUrl = uploadJson.url;
       setImageUrl(uploadedImageUrl);
     }
-    
+
     // Convert social links back to individual fields
     const socialFields: Record<string, string> = {};
-    socialLinks.forEach(link => {
+    socialLinks.forEach((link) => {
       if (link.url) {
         const fieldName = link.platform.toLowerCase();
         socialFields[fieldName] = link.url;
       }
     });
-    
+
     const data = {
       name: (form.clubName as unknown as HTMLInputElement).value,
       location,
       map: (form.map as unknown as HTMLInputElement)?.value || undefined,
-      region: (form.region as unknown as HTMLInputElement)?.value || undefined,
-      subRegion: (form.subRegion as unknown as HTMLInputElement)?.value || undefined,
+      internationalUnitId: selectedInternationalUnitId || undefined,
+      countryId: selectedCountryId || undefined,
+      subRegion:
+        (form.subRegion as unknown as HTMLInputElement)?.value || undefined,
       codes: (form.codes as unknown as HTMLInputElement)?.value || undefined,
       imageUrl: uploadedImageUrl || imageUrl || undefined,
       teamTypes: selectedTeamTypes,
       ...socialFields,
     };
-    
+
     const res = await fetch(`${URLS.API.CLUBS}/${clubId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     });
-    
+
     if (res.ok) {
       setSuccess(true);
-      setTimeout(() => router.push('/admin/clubs'), 2000);
+      setTimeout(() => router.push("/admin/clubs"), 1000);
     } else {
       setError(MESSAGES.ERROR.GENERIC);
     }
   }
 
-  if (!club) return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
-      <div className="container mx-auto px-4 py-6">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <div className="h-6 w-24 bg-gray-200 rounded animate-pulse mb-4"></div>
-            <div className="h-8 w-64 bg-gray-200 rounded animate-pulse"></div>
-          </div>
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <FormSkeleton />
+  if (!club)
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
+        <div className="container mx-auto px-4 py-6">
+          <div className="max-w-4xl mx-auto">
+            <div className="mb-8">
+              <div className="h-6 w-24 bg-gray-200 rounded animate-pulse mb-4"></div>
+              <div className="h-8 w-64 bg-gray-200 rounded animate-pulse"></div>
+            </div>
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              <FormSkeleton />
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100">
@@ -193,7 +254,7 @@ export default function EditClubPage() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <Link 
+            <Link
               href="/admin/clubs"
               className="text-primary hover:text-primary/80 transition mb-4 inline-block"
             >
@@ -252,7 +313,10 @@ export default function EditClubPage() {
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       Location
                     </label>
-                    <LocationAutocomplete value={location} onChange={setLocation} />
+                    <LocationAutocomplete
+                      value={location}
+                      onChange={setLocation}
+                    />
                   </div>
 
                   {/* Map URL */}
@@ -269,24 +333,64 @@ export default function EditClubPage() {
                     />
                   </div>
 
-                  {/* Region */}
+                  {/* International Unit */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Region <span className="text-gray-400">(Optional)</span>
+                      International Unit <span className="text-red-500">*</span>
                     </label>
-                    <input
-                      type="text"
-                      name="region"
-                      defaultValue={club.region}
-                      placeholder="e.g., Munster"
-                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
-                    />
+                    <select
+                      name="internationalUnitId"
+                      value={selectedInternationalUnitId}
+                      onChange={(e) => {
+                        setSelectedInternationalUnitId(e.target.value);
+                        setSelectedCountryId(""); // Reset country when unit changes
+                      }}
+                      required
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300"
+                    >
+                      <option value="">Select International Unit</option>
+                      {internationalUnits.map((unit) => (
+                        <option key={unit.id} value={unit.id}>
+                          {unit.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Country */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-3">
+                      Country <span className="text-gray-400">(Optional)</span>
+                    </label>
+                    <select
+                      name="countryId"
+                      value={selectedCountryId}
+                      onChange={(e) => setSelectedCountryId(e.target.value)}
+                      disabled={
+                        !selectedInternationalUnitId || countries.length === 0
+                      }
+                      className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <option value="">
+                        {!selectedInternationalUnitId
+                          ? "Select International Unit first"
+                          : countries.length === 0
+                            ? "No countries available"
+                            : "Select Country"}
+                      </option>
+                      {countries.map((country) => (
+                        <option key={country.id} value={country.id}>
+                          {country.name}
+                        </option>
+                      ))}
+                    </select>
                   </div>
 
                   {/* Sub Region */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Sub Region <span className="text-gray-400">(Optional)</span>
+                      Sub Region{" "}
+                      <span className="text-gray-400">(Optional)</span>
                     </label>
                     <input
                       type="text"
@@ -300,7 +404,8 @@ export default function EditClubPage() {
                   {/* Club Codes */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Club Codes <span className="text-gray-400">(Optional)</span>
+                      Club Codes{" "}
+                      <span className="text-gray-400">(Optional)</span>
                     </label>
                     <input
                       type="text"
@@ -322,9 +427,10 @@ export default function EditClubPage() {
                           key={type}
                           className={`
                             flex items-center justify-center px-4 py-3 rounded-xl border-2 cursor-pointer transition-all duration-300
-                            ${selectedTeamTypes.includes(type)
-                              ? 'border-primary bg-primary/10 text-primary'
-                              : 'border-gray-200 hover:border-gray-300 bg-gray-50/50'
+                            ${
+                              selectedTeamTypes.includes(type)
+                                ? "border-primary bg-primary/10 text-primary"
+                                : "border-gray-200 hover:border-gray-300 bg-gray-50/50"
                             }
                           `}
                         >
@@ -343,9 +449,10 @@ export default function EditClubPage() {
                   {/* Social Media Links */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Social Media Links <span className="text-gray-400">(Optional)</span>
+                      Social Media Links{" "}
+                      <span className="text-gray-400">(Optional)</span>
                     </label>
-                    
+
                     {/* Add Platform Button */}
                     <div className="flex gap-3 mb-4">
                       <select
@@ -355,11 +462,15 @@ export default function EditClubPage() {
                       >
                         <option value="">Select Platform</option>
                         {socialPlatforms
-                          .filter(p => !socialLinks.some(link => link.platform === p))
-                          .map(platform => (
-                            <option key={platform} value={platform}>{platform}</option>
-                          ))
-                        }
+                          .filter(
+                            (p) =>
+                              !socialLinks.some((link) => link.platform === p)
+                          )
+                          .map((platform) => (
+                            <option key={platform} value={platform}>
+                              {platform}
+                            </option>
+                          ))}
                       </select>
                       <button
                         type="button"
@@ -376,12 +487,16 @@ export default function EditClubPage() {
                       {socialLinks.map((link, index) => (
                         <div key={index} className="flex gap-3">
                           <div className="flex-shrink-0 w-32 flex items-center px-4 py-3 bg-gray-100 rounded-xl">
-                            <span className="text-sm font-medium">{link.platform}</span>
+                            <span className="text-sm font-medium">
+                              {link.platform}
+                            </span>
                           </div>
                           <input
                             type="url"
                             value={link.url}
-                            onChange={(e) => updateSocialLink(index, e.target.value)}
+                            onChange={(e) =>
+                              updateSocialLink(index, e.target.value)
+                            }
                             placeholder={`${link.platform} URL`}
                             className="flex-1 border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 text-gray-900 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 placeholder-gray-500"
                           />
@@ -400,7 +515,8 @@ export default function EditClubPage() {
                   {/* Club Logo */}
                   <div className="md:col-span-2">
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
-                      Club Logo <span className="text-gray-400">(Optional)</span>
+                      Club Logo{" "}
+                      <span className="text-gray-400">(Optional)</span>
                     </label>
                     <ImageUpload
                       value={imageUrl}
@@ -466,4 +582,4 @@ export default function EditClubPage() {
       )}
     </div>
   );
-} 
+}

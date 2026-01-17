@@ -23,25 +23,35 @@ export default async function ClubEditPage({
         {
           admins: {
             some: {
-              id: session.user.id
-            }
-          }
+              id: session.user.id,
+            },
+          },
         },
         {
           // Super admins can edit any club
-          id: session.user.role === 'SUPER_ADMIN' ? id : undefined
-        }
-      ]
+          id: session.user.role === "SUPER_ADMIN" ? id : undefined,
+        },
+      ],
     },
     include: {
       admins: {
         select: {
           id: true,
           name: true,
-          email: true
-        }
-      }
-    }
+          email: true,
+        },
+      },
+      internationalUnit: {
+        select: {
+          name: true,
+        },
+      },
+      country: {
+        select: {
+          name: true,
+        },
+      },
+    },
   });
 
   if (!club) {
@@ -56,10 +66,11 @@ export default async function ClubEditPage({
             Edit Club Details
           </h1>
           <p className="text-gray-600">
-            Update your club&apos;s information to keep members and visitors informed
+            Update your club&apos;s information to keep members and visitors
+            informed
           </p>
         </div>
-        
+
         <ClubEditForm club={club} />
       </div>
     </div>

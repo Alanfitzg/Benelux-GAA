@@ -65,6 +65,7 @@ export async function PUT(
         codes: data.codes,
         imageUrl: data.imageUrl,
         teamTypes: data.teamTypes || [],
+        internationalUnitId: data.internationalUnitId,
         ...geocodeData,
       },
     });
