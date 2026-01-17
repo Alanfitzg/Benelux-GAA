@@ -35,13 +35,15 @@ const EUROPEAN_COUNTRIES = [
   "Malta",
 ];
 
-const UK_IRELAND_COUNTRIES = [
-  "Ireland",
+const IRELAND_COUNTRIES = ["Ireland", "Northern Ireland"];
+
+const BRITAIN_COUNTRIES = [
   "United Kingdom",
   "England",
   "Scotland",
   "Wales",
-  "Northern Ireland",
+  "Britain",
+  "Great Britain",
 ];
 
 const NORTH_AMERICA_COUNTRIES = ["United States", "Canada", "USA", "Mexico"];
@@ -82,8 +84,10 @@ function getCountriesForGroup(groupId: string): string[] | null {
   switch (groupId) {
     case "mainland-europe":
       return EUROPEAN_COUNTRIES;
-    case "uk-ireland":
-      return UK_IRELAND_COUNTRIES;
+    case "ireland":
+      return IRELAND_COUNTRIES;
+    case "britain":
+      return BRITAIN_COUNTRIES;
     case "north-america":
       return NORTH_AMERICA_COUNTRIES;
     case "asia-pacific":
@@ -104,11 +108,20 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { groupIds, subject, message } = await req.json();
+    const { groupIds, customEmails, subject, message } = await req.json();
 
-    if (!groupIds || !Array.isArray(groupIds) || groupIds.length === 0) {
+    // Either standard groups or custom emails must be provided
+    const hasStandardGroups =
+      groupIds && Array.isArray(groupIds) && groupIds.length > 0;
+    const hasCustomEmails =
+      customEmails && Array.isArray(customEmails) && customEmails.length > 0;
+
+    if (!hasStandardGroups && !hasCustomEmails) {
       return NextResponse.json(
-        { error: "At least one distribution group is required" },
+        {
+          error:
+            "At least one distribution group or custom email list is required",
+        },
         { status: 400 }
       );
     }
@@ -135,64 +148,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Determine which clubs to include
-    const includeAllClubs = groupIds.includes("all-clubs");
-    let countryFilters: string[] = [];
-
-    if (!includeAllClubs) {
-      for (const groupId of groupIds) {
-        const countries = getCountriesForGroup(groupId);
-        if (countries) {
-          countryFilters = [...countryFilters, ...countries];
-        }
-      }
-    }
-
-    // Fetch clubs with their admins
-    const clubsWithAdmins = await prisma.club.findMany({
-      where: {
-        admins: {
-          some: {},
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        location: true,
-        country: {
-          select: {
-            name: true,
-          },
-        },
-        admins: {
-          select: {
-            email: true,
-            name: true,
-          },
-        },
-      },
-    });
-
-    // Filter clubs by region if not sending to all
-    const targetClubs = includeAllClubs
-      ? clubsWithAdmins
-      : clubsWithAdmins.filter((club) => {
-          const countryName = club.country?.name || "";
-          const location = club.location || "";
-          return countryFilters.some(
-            (c) =>
-              countryName.toLowerCase().includes(c.toLowerCase()) ||
-              location.toLowerCase().includes(c.toLowerCase())
-          );
-        });
-
-    if (targetClubs.length === 0) {
-      return NextResponse.json(
-        { error: "No clubs found in selected distribution groups" },
-        { status: 404 }
-      );
-    }
-
     // Collect all admin emails
     const personalizations: Array<{
       to: string;
@@ -201,15 +156,84 @@ export async function POST(req: NextRequest) {
 
     const uniqueEmails = new Set<string>();
 
-    for (const club of targetClubs) {
-      for (const admin of club.admins) {
-        if (!uniqueEmails.has(admin.email)) {
-          uniqueEmails.add(admin.email);
+    // Process standard distribution groups
+    if (hasStandardGroups) {
+      const includeAllClubs = groupIds.includes("all-clubs");
+      let countryFilters: string[] = [];
+
+      if (!includeAllClubs) {
+        for (const groupId of groupIds) {
+          const countries = getCountriesForGroup(groupId);
+          if (countries) {
+            countryFilters = [...countryFilters, ...countries];
+          }
+        }
+      }
+
+      // Fetch clubs with their admins
+      const clubsWithAdmins = await prisma.club.findMany({
+        where: {
+          admins: {
+            some: {},
+          },
+        },
+        select: {
+          id: true,
+          name: true,
+          location: true,
+          country: {
+            select: {
+              name: true,
+            },
+          },
+          admins: {
+            select: {
+              email: true,
+              name: true,
+            },
+          },
+        },
+      });
+
+      // Filter clubs by region if not sending to all
+      const targetClubs = includeAllClubs
+        ? clubsWithAdmins
+        : clubsWithAdmins.filter((club) => {
+            const countryName = club.country?.name || "";
+            const location = club.location || "";
+            return countryFilters.some(
+              (c) =>
+                countryName.toLowerCase().includes(c.toLowerCase()) ||
+                location.toLowerCase().includes(c.toLowerCase())
+            );
+          });
+
+      for (const club of targetClubs) {
+        for (const admin of club.admins) {
+          if (!uniqueEmails.has(admin.email)) {
+            uniqueEmails.add(admin.email);
+            personalizations.push({
+              to: admin.email,
+              substitutions: {
+                recipientName: admin.name || "Club Admin",
+                clubName: club.name,
+              },
+            });
+          }
+        }
+      }
+    }
+
+    // Process custom emails from custom distribution lists
+    if (hasCustomEmails) {
+      for (const email of customEmails) {
+        if (typeof email === "string" && !uniqueEmails.has(email)) {
+          uniqueEmails.add(email);
           personalizations.push({
-            to: admin.email,
+            to: email,
             substitutions: {
-              recipientName: admin.name || "Club Admin",
-              clubName: club.name,
+              recipientName: "there",
+              clubName: "",
             },
           });
         }
@@ -218,7 +242,7 @@ export async function POST(req: NextRequest) {
 
     if (personalizations.length === 0) {
       return NextResponse.json(
-        { error: "No admin email addresses found" },
+        { error: "No email addresses found in selected groups" },
         { status: 400 }
       );
     }
@@ -250,7 +274,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: "Broadcast sent successfully",
       sentTo: personalizations.length,
-      clubsNotified: targetClubs.length,
     });
   } catch (error) {
     console.error("Error sending broadcast:", error);

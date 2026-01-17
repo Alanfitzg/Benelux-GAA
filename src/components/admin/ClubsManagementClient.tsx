@@ -29,6 +29,8 @@ type ClubListItem = {
   regionRecord?: {
     name: string;
   } | null;
+  tripsParticipated?: number;
+  bookingsCompleted?: number;
 };
 
 interface County {
@@ -92,7 +94,8 @@ export default function ClubsManagementClient({
   const [searchTerm, setSearchTerm] = useState("");
   const [dataQualityFilter, setDataQualityFilter] = useState<string>("all");
   const [universitiesOnly, setUniversitiesOnly] = useState(false);
-  const [sortBy, setSortBy] = useState<string>("name");
+  const [codeFilter, setCodeFilter] = useState<string>("all");
+  const [hasTripsFilter, setHasTripsFilter] = useState(false);
 
   const clubs = initialClubs;
 
@@ -182,7 +185,7 @@ export default function ClubsManagementClient({
 
   // Filter clubs based on selected filters
   const filteredClubs = useMemo(() => {
-    const filtered = clubs.filter((club) => {
+    let filtered = clubs.filter((club) => {
       // View mode filter
       if (viewMode === "ireland") {
         // For Ireland view, only show clubs with Ireland international unit
@@ -279,22 +282,87 @@ export default function ClubsManagementClient({
         }
       }
 
+      // Code filter (based on team types)
+      if (codeFilter !== "all") {
+        const teamTypesLower = club.teamTypes.map((t) => t.toLowerCase());
+        const hasHurling = teamTypesLower.some(
+          (t) => t.includes("hurling") || t.includes("camogie")
+        );
+        const hasFootball = teamTypesLower.some(
+          (t) =>
+            t.includes("football") || t.includes("lgfa") || t.includes("ladies")
+        );
+
+        switch (codeFilter) {
+          case "dual":
+            if (!hasHurling || !hasFootball) return false;
+            break;
+          case "hurling-camogie":
+            if (!hasHurling) return false;
+            break;
+          case "football":
+            if (!hasFootball) return false;
+            break;
+          case "g4mo":
+            if (!teamTypesLower.some((t) => t.includes("g4mo"))) return false;
+            break;
+          case "rounders":
+            if (!teamTypesLower.some((t) => t.includes("rounders")))
+              return false;
+            break;
+          case "youth":
+            if (!teamTypesLower.some((t) => t.includes("youth"))) return false;
+            break;
+          case "dads-lads":
+            if (
+              !teamTypesLower.some(
+                (t) => t.includes("dads") || t.includes("lads")
+              )
+            )
+              return false;
+            break;
+          case "higher-education":
+            if (!teamTypesLower.some((t) => t.includes("higher education")))
+              return false;
+            break;
+          case "elite-training":
+            if (
+              !teamTypesLower.some(
+                (t) => t.includes("elite") || t.includes("training camp")
+              )
+            )
+              return false;
+            break;
+          case "beach-gaelic":
+            if (!teamTypesLower.some((t) => t.includes("beach"))) return false;
+            break;
+        }
+      }
+
       return true;
     });
 
-    // Apply sorting
-    filtered.sort((a, b) => {
-      switch (sortBy) {
-        case "name":
-          return a.name.localeCompare(b.name);
-        case "location":
-          return (a.location || "zzz").localeCompare(b.location || "zzz");
-        case "county":
-          return (a.subRegion || "zzz").localeCompare(b.subRegion || "zzz");
-        default:
-          return 0;
-      }
-    });
+    // Filter and sort by busiest if active
+    if (hasTripsFilter) {
+      // Filter to only clubs with activity > 0
+      filtered = filtered.filter((club) => {
+        if (viewMode === "ireland") {
+          return (club.tripsParticipated || 0) > 0;
+        } else {
+          return (club.bookingsCompleted || 0) > 0;
+        }
+      });
+      // Sort by activity (descending)
+      filtered.sort((a, b) => {
+        if (viewMode === "ireland") {
+          return (b.tripsParticipated || 0) - (a.tripsParticipated || 0);
+        } else {
+          return (b.bookingsCompleted || 0) - (a.bookingsCompleted || 0);
+        }
+      });
+    } else {
+      filtered.sort((a, b) => a.name.localeCompare(b.name));
+    }
 
     return filtered;
   }, [
@@ -310,7 +378,8 @@ export default function ClubsManagementClient({
     universitiesOnly,
     searchTerm,
     dataQualityFilter,
-    sortBy,
+    codeFilter,
+    hasTripsFilter,
   ]);
 
   // Count clubs by view mode
@@ -323,6 +392,26 @@ export default function ClubsManagementClient({
     [clubs]
   );
 
+  // Count clubs with activity (for the button display)
+  const irelandActiveCount = useMemo(
+    () =>
+      clubs.filter(
+        (c) =>
+          c.internationalUnit?.name === "Ireland" &&
+          (c.tripsParticipated || 0) > 0
+      ).length,
+    [clubs]
+  );
+  const internationalActiveCount = useMemo(
+    () =>
+      clubs.filter(
+        (c) =>
+          c.internationalUnit?.name !== "Ireland" &&
+          (c.bookingsCompleted || 0) > 0
+      ).length,
+    [clubs]
+  );
+
   // Clear all filters
   const clearFilters = () => {
     setSelectedProvince("all");
@@ -332,6 +421,8 @@ export default function ClubsManagementClient({
     setSearchTerm("");
     setDataQualityFilter("all");
     setUniversitiesOnly(false);
+    setCodeFilter("all");
+    setHasTripsFilter(false);
   };
 
   const hasActiveFilters =
@@ -341,7 +432,9 @@ export default function ClubsManagementClient({
     selectedCountry !== "all" ||
     searchTerm ||
     dataQualityFilter !== "all" ||
-    universitiesOnly;
+    universitiesOnly ||
+    codeFilter !== "all" ||
+    hasTripsFilter;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800 relative">
@@ -564,22 +657,6 @@ export default function ClubsManagementClient({
                   <option value="incomplete">Incomplete</option>
                 </select>
               </div>
-
-              {/* Sort By */}
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Sort By
-                </label>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary bg-white"
-                >
-                  <option value="name">Name (A-Z)</option>
-                  <option value="location">Location</option>
-                  <option value="county">County</option>
-                </select>
-              </div>
             </div>
 
             {/* Active Filters & Results */}
@@ -589,14 +666,99 @@ export default function ClubsManagementClient({
                 <button
                   type="button"
                   onClick={() => setUniversitiesOnly(!universitiesOnly)}
-                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition ${
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition border ${
                     universitiesOnly
-                      ? "bg-purple-600 text-white"
-                      : "bg-purple-50 text-purple-700 hover:bg-purple-100"
+                      ? "bg-slate-800 text-white border-slate-800"
+                      : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700"
                   }`}
                 >
                   <GraduationCap className="w-4 h-4" />
                   Universities Only
+                </button>
+
+                {/* Code Filter Dropdown */}
+                <div className="relative inline-flex items-center">
+                  <select
+                    value={codeFilter}
+                    onChange={(e) => setCodeFilter(e.target.value)}
+                    className={`appearance-none pl-3 py-1.5 rounded-full text-sm font-medium transition cursor-pointer border ${
+                      codeFilter !== "all"
+                        ? "bg-slate-800 text-white border-slate-800 pr-8"
+                        : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 pr-8"
+                    }`}
+                  >
+                    <option value="all">Code Filter</option>
+                    <option value="dual">Dual Clubs</option>
+                    <option value="hurling-camogie">Hurling & Camogie</option>
+                    <option value="football">Football Clubs</option>
+                    <option value="g4mo">G4MO</option>
+                    <option value="rounders">Rounders</option>
+                    <option value="youth">Youth</option>
+                    <option value="dads-lads">Dads & Lads</option>
+                    <option value="higher-education">Higher Education</option>
+                    <option value="elite-training">Elite Training Camp</option>
+                    <option value="beach-gaelic">Beach Gaelic</option>
+                  </select>
+                  {codeFilter !== "all" ? (
+                    <button
+                      type="button"
+                      onClick={() => setCodeFilter("all")}
+                      className="absolute right-1.5 p-0.5 rounded-full hover:bg-slate-700 transition"
+                      title="Clear filter"
+                    >
+                      <svg
+                        className="h-4 w-4 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  ) : (
+                    <div className="pointer-events-none absolute right-2 flex items-center text-gray-500">
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
+                {/* Sort by Busiest Toggle */}
+                <button
+                  type="button"
+                  onClick={() => setHasTripsFilter(!hasTripsFilter)}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition border ${
+                    hasTripsFilter
+                      ? "bg-slate-800 text-white border-slate-800"
+                      : "bg-white text-gray-700 border-gray-300 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700"
+                  }`}
+                >
+                  {viewMode === "ireland" ? "Has Trips" : "Has Hosted"}{" "}
+                  <span
+                    className={`text-xs ${hasTripsFilter ? "text-white/80" : "text-gray-500"}`}
+                  >
+                    (
+                    {viewMode === "ireland"
+                      ? irelandActiveCount
+                      : internationalActiveCount}
+                    )
+                  </span>
                 </button>
 
                 {hasActiveFilters && (
@@ -647,6 +809,9 @@ export default function ClubsManagementClient({
                     </th>
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Team Types
+                    </th>
+                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      {viewMode === "ireland" ? "Trips" : "Hosted"}
                     </th>
                     <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Actions
@@ -718,6 +883,25 @@ export default function ClubsManagementClient({
                               ? club.teamTypes.join(", ")
                               : "-"}
                           </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-center text-sm">
+                            {viewMode === "ireland" ? (
+                              club.tripsParticipated &&
+                              club.tripsParticipated > 0 ? (
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                  {club.tripsParticipated}
+                                </span>
+                              ) : (
+                                <span className="text-gray-400">-</span>
+                              )
+                            ) : club.bookingsCompleted &&
+                              club.bookingsCompleted > 0 ? (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                {club.bookingsCompleted}
+                              </span>
+                            ) : (
+                              <span className="text-gray-400">-</span>
+                            )}
+                          </td>
                           <td className="px-4 py-3 whitespace-nowrap text-right text-sm font-medium space-x-2">
                             <Link
                               href={`/admin/clubs/${club.id}/edit`}
@@ -738,7 +922,7 @@ export default function ClubsManagementClient({
                   ) : (
                     <tr>
                       <td
-                        colSpan={5}
+                        colSpan={6}
                         className="px-4 py-12 text-center text-gray-500"
                       >
                         No clubs found matching your filters

@@ -96,28 +96,36 @@ export default function ContactPage() {
               </h2>
               <div className="flex justify-center gap-4">
                 <a
-                  href="#"
+                  href="https://www.instagram.com/playaway_travel"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center p-3 bg-gradient-to-br from-purple-600 to-pink-500 rounded-xl hover:opacity-80 transition-opacity duration-200"
                   aria-label="Instagram"
                 >
                   <Instagram className="w-6 h-6 text-white" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.facebook.com/Gaelictrips.europe"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center p-3 bg-blue-600 rounded-xl hover:opacity-80 transition-opacity duration-200"
                   aria-label="Facebook"
                 >
                   <Facebook className="w-6 h-6 text-white" />
                 </a>
                 <a
-                  href="#"
+                  href="https://x.com/GaaTrips"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center p-3 bg-black rounded-xl hover:opacity-80 transition-opacity duration-200"
                   aria-label="X (Twitter)"
                 >
                   <Twitter className="w-6 h-6 text-white" />
                 </a>
                 <a
-                  href="#"
+                  href="https://www.tiktok.com/@playgaaaway"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="flex items-center justify-center p-3 bg-black rounded-xl hover:opacity-80 transition-opacity duration-200"
                   aria-label="TikTok"
                 >

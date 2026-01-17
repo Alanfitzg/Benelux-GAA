@@ -58,6 +58,8 @@ model Event {
   reviewTokens      ReviewToken[]
   eventReviews      EventReview[]
   conflicts         Conflict[]
+  guestTestimonials GuestTestimonial[]
+  hostTestimonials  HostTestimonial[]
 
   @@index([startDate])
   @@index([eventType])
@@ -184,6 +186,10 @@ model Club {
   reviewsReceived         EventReview[]    @relation("ReviewsReceived")
   conflictsAsComplainant  Conflict[]       @relation("ConflictComplainant")
   conflictsAsRespondent   Conflict[]       @relation("ConflictRespondent")
+  guestTestimonialsAsGuest  GuestTestimonial[] @relation("GuestTestimonialGuestClub")
+  guestTestimonialsAsHost   GuestTestimonial[] @relation("GuestTestimonialHostClub")
+  hostTestimonialsAsHost    HostTestimonial[]  @relation("HostTestimonialHostClub")
+  hostTestimonialsAsGuest   HostTestimonial[]  @relation("HostTestimonialGuestClub")
 
   @@index([status])
   @@index([location])
@@ -229,6 +235,10 @@ model User {
   testimonials          Testimonial[]
   testimonialSuperAdminApprovals Testimonial[] @relation("TestimonialSuperAdminApprover")
   testimonialClubAdminApprovals  Testimonial[] @relation("TestimonialClubAdminApprover")
+  guestTestimonialsWritten       GuestTestimonial[] @relation("GuestTestimonialGuestUser")
+  guestTestimonialsApproved      GuestTestimonial[] @relation("GuestTestimonialApprover")
+  hostTestimonialsWritten        HostTestimonial[]  @relation("HostTestimonialHostUser")
+  hostTestimonialsApproved       HostTestimonial[]  @relation("HostTestimonialApprover")
   club                  Club?                @relation("ClubMembers", fields: [clubId], references: [id])
   preferences           UserPreferences?
   adminOfClubs          Club[]               @relation("ClubAdmins")
@@ -281,16 +291,17 @@ model SurveyResponse {
   clubName              String?
   country               String
   city                  String?
-  hasTraveledAbroad     String
+  sportCode             String?
+  hasTraveledAbroad     String?
   travelFrequency       String?
   destinationsVisited   String[] @default([])
-  preferredTravelTime   String
-  teamSize              String
-  budgetPerPerson       String
-  biggestChallenge      String
+  preferredMonths       String[] @default([])
+  specificDestination   String?
+  preferredTravelTime   String?
+  teamSize              String?
+  budgetPerPerson       String?
+  biggestChallenge      String?
   interestedServices    String[] @default([])
-  wouldHost             String
-  wouldPayForPlatform   String
   improvementSuggestion String?
   additionalFeedback    String?
   contactName           String
@@ -868,6 +879,76 @@ enum TestimonialStatus {
   REJECTED
 }
 
+// Guest Testimonials - Travelling clubs reviewing their host experience
+model GuestTestimonial {
+  id                    String              @id @default(cuid())
+  // The travelling club writing the review
+  guestClubId           String
+  guestUserId           String
+  // The host club being reviewed
+  hostClubId            String
+  // Optional: linked to a specific event/trip
+  eventId               String?
+  content               String              @db.VarChar(500)
+  rating                Int?                // 1-5 star rating (optional)
+  status                TestimonialStatus   @default(PENDING)
+  displayOrder          Int                 @default(0)
+  deleteRequested       Boolean             @default(false)
+  deleteRequestedAt     DateTime?
+  deleteRequestedBy     String?             // Which club requested deletion
+  submittedAt           DateTime            @default(now())
+  approvedAt            DateTime?
+  approvedBy            String?
+  updatedAt             DateTime            @updatedAt
+
+  guestClub             Club                @relation("GuestTestimonialGuestClub", fields: [guestClubId], references: [id], onDelete: Cascade)
+  guestUser             User                @relation("GuestTestimonialGuestUser", fields: [guestUserId], references: [id])
+  hostClub              Club                @relation("GuestTestimonialHostClub", fields: [hostClubId], references: [id], onDelete: Cascade)
+  event                 Event?              @relation(fields: [eventId], references: [id])
+  approver              User?               @relation("GuestTestimonialApprover", fields: [approvedBy], references: [id])
+
+  @@unique([guestClubId, hostClubId, eventId])
+  @@index([guestClubId])
+  @@index([hostClubId, status])
+  @@index([status])
+  @@index([displayOrder])
+}
+
+// Host Testimonials - Host clubs reviewing the travelling teams they hosted
+model HostTestimonial {
+  id                    String              @id @default(cuid())
+  // The host club writing the review
+  hostClubId            String
+  hostUserId            String
+  // The travelling club being reviewed
+  guestClubId           String
+  // Optional: linked to a specific event/trip
+  eventId               String?
+  content               String              @db.VarChar(500)
+  rating                Int?                // 1-5 star rating (optional)
+  status                TestimonialStatus   @default(PENDING)
+  displayOrder          Int                 @default(0)
+  deleteRequested       Boolean             @default(false)
+  deleteRequestedAt     DateTime?
+  deleteRequestedBy     String?             // Which club requested deletion
+  submittedAt           DateTime            @default(now())
+  approvedAt            DateTime?
+  approvedBy            String?
+  updatedAt             DateTime            @updatedAt
+
+  hostClub              Club                @relation("HostTestimonialHostClub", fields: [hostClubId], references: [id], onDelete: Cascade)
+  hostUser              User                @relation("HostTestimonialHostUser", fields: [hostUserId], references: [id])
+  guestClub             Club                @relation("HostTestimonialGuestClub", fields: [guestClubId], references: [id], onDelete: Cascade)
+  event                 Event?              @relation(fields: [eventId], references: [id])
+  approver              User?               @relation("HostTestimonialApprover", fields: [approvedBy], references: [id])
+
+  @@unique([hostClubId, guestClubId, eventId])
+  @@index([hostClubId])
+  @@index([guestClubId, status])
+  @@index([status])
+  @@index([displayOrder])
+}
+
 // New models for cascading club selection
 model InternationalUnit {
   id          String      @id @default(cuid())
@@ -1408,4 +1489,29 @@ enum GAAFixtureImpact {
   MEDIUM
   HIGH
   CRITICAL
+}
+
+model ContactSubmission {
+  id          String                  @id @default(cuid())
+  name        String
+  email       String
+  subject     String
+  message     String                  @db.Text
+  status      ContactSubmissionStatus @default(NEW)
+  respondedAt DateTime?
+  respondedBy String?
+  response    String?                 @db.Text
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([email])
+}
+
+enum ContactSubmissionStatus {
+  NEW
+  READ
+  RESPONDED
+  ARCHIVED
 }

@@ -33,13 +33,15 @@ const EUROPEAN_COUNTRIES = [
   "Malta",
 ];
 
-const UK_IRELAND_COUNTRIES = [
-  "Ireland",
+const IRELAND_COUNTRIES = ["Ireland", "Northern Ireland"];
+
+const BRITAIN_COUNTRIES = [
   "United Kingdom",
   "England",
   "Scotland",
   "Wales",
-  "Northern Ireland",
+  "Britain",
+  "Great Britain",
 ];
 
 const NORTH_AMERICA_COUNTRIES = ["United States", "Canada", "USA", "Mexico"];
@@ -83,11 +85,15 @@ export async function GET() {
   }
 
   try {
-    // Count clubs with admins in each region
+    // Count clubs that are APPROVED and have at least one CLUB_ADMIN
+    // This ensures only "activated" clubs (where a club admin has joined) are included
     const clubsWithAdmins = await prisma.club.findMany({
       where: {
+        status: "APPROVED",
         admins: {
-          some: {},
+          some: {
+            role: "CLUB_ADMIN",
+          },
         },
       },
       select: {
@@ -99,8 +105,12 @@ export async function GET() {
           },
         },
         admins: {
+          where: {
+            role: "CLUB_ADMIN",
+          },
           select: {
             id: true,
+            email: true,
           },
         },
       },
@@ -126,10 +136,16 @@ export async function GET() {
         clubCount: countByRegion(EUROPEAN_COUNTRIES),
       },
       {
-        id: "uk-ireland",
-        name: "UK & Ireland",
-        description: "Clubs in United Kingdom and Ireland",
-        clubCount: countByRegion(UK_IRELAND_COUNTRIES),
+        id: "ireland",
+        name: "Ireland",
+        description: "Clubs in Ireland (32 counties)",
+        clubCount: countByRegion(IRELAND_COUNTRIES),
+      },
+      {
+        id: "britain",
+        name: "Britain",
+        description: "Clubs in England, Scotland, and Wales",
+        clubCount: countByRegion(BRITAIN_COUNTRIES),
       },
       {
         id: "north-america",

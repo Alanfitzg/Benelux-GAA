@@ -10,7 +10,8 @@ export default async function AdminTestimonialsPage() {
     redirect("/");
   }
 
-  const testimonials = await prisma.testimonial.findMany({
+  // Fetch legacy testimonials (existing system)
+  const legacyTestimonials = await prisma.testimonial.findMany({
     where: {
       status: "PENDING",
     },
@@ -35,7 +36,7 @@ export default async function AdminTestimonialsPage() {
     },
   });
 
-  const deletionRequests = await prisma.testimonial.findMany({
+  const legacyDeletionRequests = await prisma.testimonial.findMany({
     where: {
       deleteRequested: true,
     },
@@ -60,24 +61,145 @@ export default async function AdminTestimonialsPage() {
     },
   });
 
-  return (
-    <div className="container mx-auto px-4 py-4 sm:py-8">
-      <h1 className="text-xl sm:text-3xl font-bold mb-4 sm:mb-8">
-        Testimonial Management
-      </h1>
+  // Fetch new guest testimonials (travelling clubs reviewing hosts)
+  const pendingGuestTestimonials = await prisma.guestTestimonial.findMany({
+    where: {
+      status: "PENDING",
+    },
+    include: {
+      guestClub: {
+        select: { id: true, name: true, location: true },
+      },
+      hostClub: {
+        select: { id: true, name: true, location: true },
+      },
+      guestUser: {
+        select: { id: true, name: true, username: true, email: true },
+      },
+      event: {
+        select: { id: true, title: true },
+      },
+    },
+    orderBy: {
+      submittedAt: "asc",
+    },
+  });
 
-      <TestimonialAdminPanel
-        pendingTestimonials={testimonials.map((t) => ({
-          ...t,
-          deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
-          submittedAt: t.submittedAt.toISOString(),
-        }))}
-        deletionRequests={deletionRequests.map((t) => ({
-          ...t,
-          deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
-          submittedAt: t.submittedAt.toISOString(),
-        }))}
-      />
+  const guestDeletionRequests = await prisma.guestTestimonial.findMany({
+    where: {
+      deleteRequested: true,
+    },
+    include: {
+      guestClub: {
+        select: { id: true, name: true, location: true },
+      },
+      hostClub: {
+        select: { id: true, name: true, location: true },
+      },
+      guestUser: {
+        select: { id: true, name: true, username: true, email: true },
+      },
+    },
+    orderBy: {
+      deleteRequestedAt: "asc",
+    },
+  });
+
+  // Fetch new host testimonials (hosts reviewing travelling clubs)
+  const pendingHostTestimonials = await prisma.hostTestimonial.findMany({
+    where: {
+      status: "PENDING",
+    },
+    include: {
+      hostClub: {
+        select: { id: true, name: true, location: true },
+      },
+      guestClub: {
+        select: { id: true, name: true, location: true },
+      },
+      hostUser: {
+        select: { id: true, name: true, username: true, email: true },
+      },
+      event: {
+        select: { id: true, title: true },
+      },
+    },
+    orderBy: {
+      submittedAt: "asc",
+    },
+  });
+
+  const hostDeletionRequests = await prisma.hostTestimonial.findMany({
+    where: {
+      deleteRequested: true,
+    },
+    include: {
+      hostClub: {
+        select: { id: true, name: true, location: true },
+      },
+      guestClub: {
+        select: { id: true, name: true, location: true },
+      },
+      hostUser: {
+        select: { id: true, name: true, username: true, email: true },
+      },
+    },
+    orderBy: {
+      deleteRequestedAt: "asc",
+    },
+  });
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 mb-6">
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
+            Testimonial Management
+          </h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">
+            Review and manage club testimonials for the homepage
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6">
+          <TestimonialAdminPanel
+            legacyTestimonials={legacyTestimonials.map((t) => ({
+              ...t,
+              deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
+              submittedAt: t.submittedAt.toISOString(),
+            }))}
+            legacyDeletionRequests={legacyDeletionRequests.map((t) => ({
+              ...t,
+              deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
+              submittedAt: t.submittedAt.toISOString(),
+            }))}
+            guestTestimonials={pendingGuestTestimonials.map((t) => ({
+              ...t,
+              deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
+              submittedAt: t.submittedAt.toISOString(),
+              approvedAt: t.approvedAt?.toISOString() || null,
+            }))}
+            guestDeletionRequests={guestDeletionRequests.map((t) => ({
+              ...t,
+              deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
+              submittedAt: t.submittedAt.toISOString(),
+              approvedAt: t.approvedAt?.toISOString() || null,
+            }))}
+            hostTestimonials={pendingHostTestimonials.map((t) => ({
+              ...t,
+              deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
+              submittedAt: t.submittedAt.toISOString(),
+              approvedAt: t.approvedAt?.toISOString() || null,
+            }))}
+            hostDeletionRequests={hostDeletionRequests.map((t) => ({
+              ...t,
+              deleteRequestedAt: t.deleteRequestedAt?.toISOString() || null,
+              submittedAt: t.submittedAt.toISOString(),
+              approvedAt: t.approvedAt?.toISOString() || null,
+            }))}
+          />
+        </div>
+      </div>
     </div>
   );
 }

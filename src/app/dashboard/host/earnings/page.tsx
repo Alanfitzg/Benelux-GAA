@@ -394,30 +394,32 @@ export default function EarningsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="container mx-auto p-6 space-y-8">
+      <div className="container mx-auto px-4 py-4 sm:p-6 space-y-4 sm:space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Link href="/dashboard/host">
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-600 hover:text-gray-900"
+                className="text-gray-600 hover:text-gray-900 px-2 sm:px-3"
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
+                <ArrowLeft className="w-4 h-4 sm:mr-2" />
+                <span className="hidden sm:inline">Back</span>
               </Button>
             </Link>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Earnings</h1>
-              <p className="text-sm text-gray-500">
+              <h1 className="text-lg sm:text-2xl font-bold text-gray-900">
+                Earnings
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-500">
                 Financial overview of your hosting revenue
               </p>
             </div>
           </div>
 
           {/* Export Button */}
-          <div className="relative">
+          <div className="relative self-end sm:self-auto">
             <Button
               onClick={() => setShowExportMenu(!showExportMenu)}
               disabled={exporting}
@@ -493,32 +495,32 @@ export default function EarningsPage() {
         </div>
 
         {/* Main Stats Hero */}
-        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-8 text-white shadow-xl">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-xl sm:rounded-2xl p-4 sm:p-8 text-white shadow-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
             <div className="lg:col-span-2">
-              <p className="text-emerald-100 text-sm font-medium mb-1">
+              <p className="text-emerald-100 text-xs sm:text-sm font-medium mb-1">
                 Total Earnings
               </p>
-              <p className="text-5xl font-bold tracking-tight">
+              <p className="text-3xl sm:text-5xl font-bold tracking-tight">
                 {overview ? formatCurrency(overview.totalEarnings) : "€0.00"}
               </p>
-              <p className="text-emerald-100 mt-2">
+              <p className="text-emerald-100 mt-1 sm:mt-2 text-xs sm:text-base">
                 All-time revenue from hosting
               </p>
 
               {getMonthChange() !== null && (
-                <div className="mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-3 py-1">
+                <div className="mt-3 sm:mt-4 inline-flex items-center gap-2 bg-white/20 rounded-full px-2 sm:px-3 py-0.5 sm:py-1">
                   {getMonthChange()! >= 0 ? (
                     <>
-                      <ArrowUpRight className="w-4 h-4" />
-                      <span className="text-sm font-medium">
+                      <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="text-xs sm:text-sm font-medium">
                         {getMonthChange()}% vs last month
                       </span>
                     </>
                   ) : (
                     <>
-                      <ArrowDownRight className="w-4 h-4" />
-                      <span className="text-sm font-medium">
+                      <ArrowDownRight className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="text-xs sm:text-sm font-medium">
                         {Math.abs(getMonthChange()!)}% vs last month
                       </span>
                     </>
@@ -527,24 +529,28 @@ export default function EarningsPage() {
               )}
             </div>
 
-            <div className="flex flex-col justify-center gap-4">
-              <div className="bg-white/10 rounded-xl p-4 backdrop-blur">
+            <div className="flex flex-row sm:flex-col justify-center gap-2 sm:gap-4">
+              <div className="bg-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 backdrop-blur flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-emerald-100 text-sm">This Month</span>
-                  <Calendar className="w-4 h-4 text-emerald-200" />
+                  <span className="text-emerald-100 text-xs sm:text-sm">
+                    This Month
+                  </span>
+                  <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-200" />
                 </div>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-lg sm:text-2xl font-bold mt-1">
                   {overview
                     ? formatCurrency(overview.thisMonthEarnings)
                     : "€0.00"}
                 </p>
               </div>
-              <div className="bg-white/10 rounded-xl p-4 backdrop-blur">
+              <div className="bg-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 backdrop-blur flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="text-emerald-100 text-sm">This Year</span>
-                  <BarChart3 className="w-4 h-4 text-emerald-200" />
+                  <span className="text-emerald-100 text-xs sm:text-sm">
+                    This Year
+                  </span>
+                  <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-200" />
                 </div>
-                <p className="text-2xl font-bold mt-1">
+                <p className="text-lg sm:text-2xl font-bold mt-1">
                   {overview
                     ? formatCurrency(overview.thisYearEarnings)
                     : "€0.00"}
@@ -555,59 +561,69 @@ export default function EarningsPage() {
         </div>
 
         {/* Payment Status Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4">
           <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-0">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Released</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                <div className="order-2 sm:order-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-500">
+                    Released
+                  </p>
+                  <p className="text-base sm:text-2xl font-bold text-gray-900 mt-0.5 sm:mt-1">
                     {overview
                       ? formatCurrency(overview.totalReleased)
                       : "€0.00"}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">Paid out to you</p>
+                  <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5 sm:mt-1 hidden sm:block">
+                    Paid out to you
+                  </p>
                 </div>
-                <div className="p-3 bg-green-100 rounded-xl">
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+                <div className="p-2 sm:p-3 bg-green-100 rounded-lg sm:rounded-xl order-1 sm:order-2 self-start">
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-0">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Pending</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                <div className="order-2 sm:order-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-500">
+                    Pending
+                  </p>
+                  <p className="text-base sm:text-2xl font-bold text-gray-900 mt-0.5 sm:mt-1">
                     {overview ? formatCurrency(overview.totalPending) : "€0.00"}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5 sm:mt-1 hidden sm:block">
                     Awaiting trip completion
                   </p>
                 </div>
-                <div className="p-3 bg-amber-100 rounded-xl">
-                  <Clock className="w-5 h-5 text-amber-600" />
+                <div className="p-2 sm:p-3 bg-amber-100 rounded-lg sm:rounded-xl order-1 sm:order-2 self-start">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-white shadow-sm hover:shadow-md transition-shadow border-0">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">Withheld</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-1">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                <div className="order-2 sm:order-1">
+                  <p className="text-xs sm:text-sm font-medium text-gray-500">
+                    Withheld
+                  </p>
+                  <p className="text-base sm:text-2xl font-bold text-gray-900 mt-0.5 sm:mt-1">
                     {overview
                       ? formatCurrency(overview.totalWithheld)
                       : "€0.00"}
                   </p>
-                  <p className="text-xs text-gray-400 mt-1">Under review</p>
+                  <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5 sm:mt-1 hidden sm:block">
+                    Under review
+                  </p>
                 </div>
-                <div className="p-3 bg-red-100 rounded-xl">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                <div className="p-2 sm:p-3 bg-red-100 rounded-lg sm:rounded-xl order-1 sm:order-2 self-start">
+                  <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />
                 </div>
               </div>
             </CardContent>
@@ -615,69 +631,75 @@ export default function EarningsPage() {
         </div>
 
         {/* Revenue Breakdown */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Your Revenue */}
           <Card className="bg-white shadow-sm border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <Wallet className="w-5 h-5 text-gray-400" />
-                <h3 className="font-semibold text-gray-900">Your Revenue</h3>
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                <Wallet className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
+                <h3 className="font-semibold text-gray-900 text-sm sm:text-base">
+                  Your Revenue
+                </h3>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      <Ticket className="w-4 h-4 text-blue-600" />
+              <div className="space-y-2 sm:space-y-4">
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-blue-50 rounded-lg sm:rounded-xl">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-1.5 sm:p-2 bg-blue-100 rounded-lg">
+                      <Ticket className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">Team Tickets</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="font-medium text-gray-900 text-xs sm:text-base">
+                        Team Tickets
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">
                         From team registrations
                       </p>
                     </div>
                   </div>
-                  <p className="text-xl font-bold text-gray-900">
+                  <p className="text-base sm:text-xl font-bold text-gray-900">
                     {overview
                       ? formatCurrency(overview.teamTicketEarnings)
                       : "€0.00"}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-purple-50 rounded-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-100 rounded-lg">
-                      <Users className="w-4 h-4 text-purple-600" />
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-purple-50 rounded-lg sm:rounded-xl">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-1.5 sm:p-2 bg-purple-100 rounded-lg">
+                      <Users className="w-3 h-3 sm:w-4 sm:h-4 text-purple-600" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">Day Passes</p>
-                      <p className="text-xs text-gray-500">
+                      <p className="font-medium text-gray-900 text-xs sm:text-base">
+                        Day Passes
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">
                         Per-player revenue
                       </p>
                     </div>
                   </div>
-                  <p className="text-xl font-bold text-gray-900">
+                  <p className="text-base sm:text-xl font-bold text-gray-900">
                     {overview
                       ? formatCurrency(overview.dayPassEarnings)
                       : "€0.00"}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-xl">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-emerald-100 rounded-lg">
-                      <TrendingUp className="w-4 h-4 text-emerald-600" />
+                <div className="flex items-center justify-between p-3 sm:p-4 bg-emerald-50 rounded-lg sm:rounded-xl">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="p-1.5 sm:p-2 bg-emerald-100 rounded-lg">
+                      <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-emerald-600" />
                     </div>
                     <div>
-                      <p className="font-medium text-gray-900">
+                      <p className="font-medium text-gray-900 text-xs sm:text-base">
                         Platform Fee Share
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-[10px] sm:text-xs text-gray-500 hidden sm:block">
                         50% of day pass fees
                       </p>
                     </div>
                   </div>
-                  <p className="text-xl font-bold text-emerald-600">
+                  <p className="text-base sm:text-xl font-bold text-emerald-600">
                     +
                     {overview
                       ? formatCurrency(overview.hostPlatformFeeShare)
@@ -690,35 +712,39 @@ export default function EarningsPage() {
 
           {/* Platform Revenue (GGE) */}
           <Card className="bg-slate-800 text-white shadow-sm border-0">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <Building2 className="w-5 h-5 text-slate-400" />
-                <h3 className="font-semibold">Platform Revenue (GGE)</h3>
+            <CardContent className="p-4 sm:p-6">
+              <div className="flex items-center gap-2 mb-4 sm:mb-6">
+                <Building2 className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" />
+                <h3 className="font-semibold text-sm sm:text-base">
+                  Platform Revenue (GGE)
+                </h3>
               </div>
 
-              <p className="text-slate-400 text-sm mb-6">
+              <p className="text-slate-400 text-xs sm:text-sm mb-4 sm:mb-6">
                 Revenue generated for Gaelic Games Europe through your hosting
                 activities
               </p>
 
-              <div className="bg-slate-700/50 rounded-xl p-6">
-                <p className="text-slate-400 text-sm">Total Platform Fees</p>
-                <p className="text-3xl font-bold mt-1">
+              <div className="bg-slate-700/50 rounded-lg sm:rounded-xl p-4 sm:p-6">
+                <p className="text-slate-400 text-xs sm:text-sm">
+                  Total Platform Fees
+                </p>
+                <p className="text-xl sm:text-3xl font-bold mt-1">
                   {overview
                     ? formatCurrency(overview.platformFeesGenerated)
                     : "€0.00"}
                 </p>
-                <p className="text-slate-500 text-xs mt-2">
+                <p className="text-slate-500 text-[10px] sm:text-xs mt-2">
                   From team tickets & day passes
                 </p>
               </div>
 
-              <div className="mt-4 p-4 bg-slate-700/30 rounded-xl border border-slate-700">
+              <div className="mt-3 sm:mt-4 p-3 sm:p-4 bg-slate-700/30 rounded-lg sm:rounded-xl border border-slate-700">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 text-sm">
+                  <span className="text-slate-400 text-xs sm:text-sm">
                     Your share returned
                   </span>
-                  <span className="text-emerald-400 font-semibold">
+                  <span className="text-emerald-400 font-semibold text-sm sm:text-base">
                     {overview
                       ? formatCurrency(overview.hostPlatformFeeShare)
                       : "€0.00"}
@@ -730,93 +756,109 @@ export default function EarningsPage() {
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
-          <div className="border-b border-gray-100 px-6">
-            <nav className="flex gap-6">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
+          <div className="border-b border-gray-100 px-3 sm:px-6 overflow-x-auto">
+            <nav className="flex gap-3 sm:gap-6 min-w-max">
               {[
-                { id: "transactions", label: "Transactions", icon: Wallet },
-                { id: "events", label: "By Event", icon: Calendar },
-                { id: "monthly", label: "Monthly", icon: BarChart3 },
+                {
+                  id: "transactions",
+                  label: "Transactions",
+                  shortLabel: "Txns",
+                  icon: Wallet,
+                },
+                {
+                  id: "events",
+                  label: "By Event",
+                  shortLabel: "Events",
+                  icon: Calendar,
+                },
+                {
+                  id: "monthly",
+                  label: "Monthly",
+                  shortLabel: "Monthly",
+                  icon: BarChart3,
+                },
               ].map((tab) => (
                 <button
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                  className={`flex items-center gap-2 py-4 border-b-2 font-medium text-sm transition-colors ${
+                  className={`flex items-center gap-1.5 sm:gap-2 py-3 sm:py-4 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap ${
                     activeTab === tab.id
                       ? "border-emerald-600 text-emerald-600"
                       : "border-transparent text-gray-400 hover:text-gray-600"
                   }`}
                 >
-                  <tab.icon className="w-4 h-4" />
-                  {tab.label}
+                  <tab.icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                  <span className="hidden sm:inline">{tab.label}</span>
+                  <span className="sm:hidden">{tab.shortLabel}</span>
                 </button>
               ))}
             </nav>
           </div>
 
-          <div className="p-6">
+          <div className="p-3 sm:p-6">
             {/* Transactions Tab */}
             {activeTab === "transactions" && (
               <>
                 {payments.length === 0 ? (
-                  <div className="text-center py-16">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Wallet className="w-8 h-8 text-gray-400" />
+                  <div className="text-center py-8 sm:py-16">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <Wallet className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <h3 className="text-sm sm:text-lg font-medium text-gray-900 mb-2">
                       No transactions yet
                     </h3>
-                    <p className="text-gray-500 max-w-sm mx-auto">
+                    <p className="text-xs sm:text-base text-gray-500 max-w-sm mx-auto">
                       Transactions will appear here when teams book your hosting
                       services
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {payments.map((payment) => (
                       <div
                         key={payment.id}
-                        className="border border-gray-100 rounded-xl overflow-hidden hover:border-gray-200 transition-colors"
+                        className="border border-gray-100 rounded-lg sm:rounded-xl overflow-hidden hover:border-gray-200 transition-colors"
                       >
                         <div
-                          className="flex items-center justify-between p-4 cursor-pointer"
+                          className="flex items-center justify-between p-3 sm:p-4 cursor-pointer"
                           onClick={() => togglePaymentExpanded(payment.id)}
                         >
-                          <div className="flex items-center gap-4">
-                            <div className="flex flex-col gap-1">
-                              <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
+                            <div className="flex flex-col gap-0.5 sm:gap-1 min-w-0">
+                              <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
                                 {getTypeBadge(payment.type)}
                                 {getStatusBadge(payment.status)}
                               </div>
-                              <p className="font-medium text-gray-900">
+                              <p className="font-medium text-gray-900 text-xs sm:text-base truncate">
                                 {payment.booking.teamName}
                               </p>
-                              <p className="text-sm text-gray-400">
+                              <p className="text-[10px] sm:text-sm text-gray-400">
                                 {formatDate(payment.createdAt)}
                               </p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
                             <div className="text-right">
-                              <p className="text-lg font-bold text-emerald-600">
+                              <p className="text-sm sm:text-lg font-bold text-emerald-600">
                                 +{formatCurrency(payment.hostEarnings)}
                               </p>
-                              <p className="text-xs text-gray-400">
+                              <p className="text-[10px] sm:text-xs text-gray-400">
                                 of {formatCurrency(payment.amount)}
                               </p>
                             </div>
                             {expandedPayments.has(payment.id) ? (
-                              <ChevronUp className="w-5 h-5 text-gray-300" />
+                              <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300 flex-shrink-0" />
                             ) : (
-                              <ChevronDown className="w-5 h-5 text-gray-300" />
+                              <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-gray-300 flex-shrink-0" />
                             )}
                           </div>
                         </div>
 
                         {expandedPayments.has(payment.id) && (
-                          <div className="bg-gray-50 p-4 border-t border-gray-100">
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div className="bg-gray-50 p-3 sm:p-4 border-t border-gray-100">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 text-xs sm:text-sm">
                               <div>
                                 <p className="text-gray-400">Total Collected</p>
                                 <p className="font-medium text-gray-900">
@@ -889,67 +931,67 @@ export default function EarningsPage() {
             {activeTab === "events" && (
               <>
                 {eventBreakdown.length === 0 ? (
-                  <div className="text-center py-16">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Calendar className="w-8 h-8 text-gray-400" />
+                  <div className="text-center py-8 sm:py-16">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <Calendar className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <h3 className="text-sm sm:text-lg font-medium text-gray-900 mb-2">
                       No event data yet
                     </h3>
-                    <p className="text-gray-500 max-w-sm mx-auto">
+                    <p className="text-xs sm:text-base text-gray-500 max-w-sm mx-auto">
                       Host tournaments to see revenue breakdown by event
                     </p>
                   </div>
                 ) : (
-                  <div className="space-y-3">
+                  <div className="space-y-2 sm:space-y-3">
                     {eventBreakdown.map((event) => (
                       <div
                         key={event.eventId}
-                        className="border border-gray-100 rounded-xl p-5 hover:border-gray-200 transition-colors"
+                        className="border border-gray-100 rounded-lg sm:rounded-xl p-3 sm:p-5 hover:border-gray-200 transition-colors"
                       >
-                        <div className="flex justify-between items-start mb-4">
-                          <div>
-                            <h3 className="font-semibold text-gray-900">
+                        <div className="flex justify-between items-start mb-3 sm:mb-4 gap-2">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
                               {event.eventTitle}
                             </h3>
-                            <p className="text-sm text-gray-400">
+                            <p className="text-xs sm:text-sm text-gray-400">
                               {formatDate(event.eventDate)}
                             </p>
                           </div>
-                          <p className="text-2xl font-bold text-emerald-600">
+                          <p className="text-lg sm:text-2xl font-bold text-emerald-600 flex-shrink-0">
                             {formatCurrency(event.totalRevenue)}
                           </p>
                         </div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-100">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pt-3 sm:pt-4 border-t border-gray-100">
                           <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">
                               Team Tickets
                             </p>
-                            <p className="font-semibold text-gray-900 mt-1">
+                            <p className="font-semibold text-gray-900 mt-0.5 sm:mt-1 text-xs sm:text-base">
                               {formatCurrency(event.teamTicketRevenue)}
                             </p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">
                               Day Passes
                             </p>
-                            <p className="font-semibold text-gray-900 mt-1">
+                            <p className="font-semibold text-gray-900 mt-0.5 sm:mt-1 text-xs sm:text-base">
                               {formatCurrency(event.dayPassRevenue)}
                             </p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">
                               Teams
                             </p>
-                            <p className="font-semibold text-gray-900 mt-1">
+                            <p className="font-semibold text-gray-900 mt-0.5 sm:mt-1 text-xs sm:text-base">
                               {event.teamsHosted}
                             </p>
                           </div>
                           <div>
-                            <p className="text-xs text-gray-400 uppercase tracking-wider">
+                            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider">
                               Players
                             </p>
-                            <p className="font-semibold text-gray-900 mt-1">
+                            <p className="font-semibold text-gray-900 mt-0.5 sm:mt-1 text-xs sm:text-base">
                               {event.playersHosted}
                             </p>
                           </div>
@@ -965,64 +1007,116 @@ export default function EarningsPage() {
             {activeTab === "monthly" && (
               <>
                 {monthlyBreakdown.length === 0 ? (
-                  <div className="text-center py-16">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <BarChart3 className="w-8 h-8 text-gray-400" />
+                  <div className="text-center py-8 sm:py-16">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                      <BarChart3 className="w-6 h-6 sm:w-8 sm:h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    <h3 className="text-sm sm:text-lg font-medium text-gray-900 mb-2">
                       No monthly data yet
                     </h3>
-                    <p className="text-gray-500 max-w-sm mx-auto">
+                    <p className="text-xs sm:text-base text-gray-500 max-w-sm mx-auto">
                       Monthly earnings will appear here as you host teams
                     </p>
                   </div>
                 ) : (
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="text-left text-xs text-gray-400 uppercase tracking-wider">
-                          <th className="pb-4 font-medium">Month</th>
-                          <th className="pb-4 font-medium text-right">
-                            Team Tickets
-                          </th>
-                          <th className="pb-4 font-medium text-right">
-                            Day Passes
-                          </th>
-                          <th className="pb-4 font-medium text-right">Total</th>
-                          <th className="pb-4 font-medium text-right">
-                            Released
-                          </th>
-                          <th className="pb-4 font-medium text-right">
-                            Pending
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-100">
-                        {monthlyBreakdown.map((month, idx) => (
-                          <tr key={idx} className="hover:bg-gray-50">
-                            <td className="py-4 font-medium text-gray-900">
-                              {month.month} {month.year}
-                            </td>
-                            <td className="py-4 text-right text-gray-600">
-                              {formatCurrency(month.teamTickets)}
-                            </td>
-                            <td className="py-4 text-right text-gray-600">
-                              {formatCurrency(month.dayPasses)}
-                            </td>
-                            <td className="py-4 text-right font-semibold text-gray-900">
-                              {formatCurrency(month.total)}
-                            </td>
-                            <td className="py-4 text-right text-emerald-600 font-medium">
-                              {formatCurrency(month.released)}
-                            </td>
-                            <td className="py-4 text-right text-amber-600 font-medium">
-                              {formatCurrency(month.pending)}
-                            </td>
+                  <>
+                    {/* Desktop Table */}
+                    <div className="hidden sm:block overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="text-left text-xs text-gray-400 uppercase tracking-wider">
+                            <th className="pb-4 font-medium">Month</th>
+                            <th className="pb-4 font-medium text-right">
+                              Team Tickets
+                            </th>
+                            <th className="pb-4 font-medium text-right">
+                              Day Passes
+                            </th>
+                            <th className="pb-4 font-medium text-right">
+                              Total
+                            </th>
+                            <th className="pb-4 font-medium text-right">
+                              Released
+                            </th>
+                            <th className="pb-4 font-medium text-right">
+                              Pending
+                            </th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {monthlyBreakdown.map((month, idx) => (
+                            <tr key={idx} className="hover:bg-gray-50">
+                              <td className="py-4 font-medium text-gray-900">
+                                {month.month} {month.year}
+                              </td>
+                              <td className="py-4 text-right text-gray-600">
+                                {formatCurrency(month.teamTickets)}
+                              </td>
+                              <td className="py-4 text-right text-gray-600">
+                                {formatCurrency(month.dayPasses)}
+                              </td>
+                              <td className="py-4 text-right font-semibold text-gray-900">
+                                {formatCurrency(month.total)}
+                              </td>
+                              <td className="py-4 text-right text-emerald-600 font-medium">
+                                {formatCurrency(month.released)}
+                              </td>
+                              <td className="py-4 text-right text-amber-600 font-medium">
+                                {formatCurrency(month.pending)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Cards */}
+                    <div className="sm:hidden space-y-2">
+                      {monthlyBreakdown.map((month, idx) => (
+                        <div
+                          key={idx}
+                          className="border border-gray-100 rounded-lg p-3"
+                        >
+                          <div className="flex justify-between items-center mb-2">
+                            <span className="font-medium text-gray-900 text-sm">
+                              {month.month} {month.year}
+                            </span>
+                            <span className="font-bold text-gray-900 text-sm">
+                              {formatCurrency(month.total)}
+                            </span>
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 text-xs">
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">
+                                Team Tickets
+                              </span>
+                              <span className="text-gray-600">
+                                {formatCurrency(month.teamTickets)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Day Passes</span>
+                              <span className="text-gray-600">
+                                {formatCurrency(month.dayPasses)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Released</span>
+                              <span className="text-emerald-600 font-medium">
+                                {formatCurrency(month.released)}
+                              </span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-gray-400">Pending</span>
+                              <span className="text-amber-600 font-medium">
+                                {formatCurrency(month.pending)}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
                 )}
               </>
             )}

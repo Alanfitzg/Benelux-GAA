@@ -84,6 +84,7 @@ export default async function AdminClubsPage() {
     }
   }
 
+  // Get all clubs with their related data
   const clubs = await prisma.club.findMany({
     orderBy: { name: "asc" },
     select: {
@@ -115,8 +116,38 @@ export default async function AdminClubsPage() {
           name: true,
         },
       },
+      // Count trips participated in (for Ireland clubs - past events)
+      tournamentTeams: {
+        where: {
+          event: {
+            startDate: { lt: new Date() },
+          },
+        },
+        select: { id: true },
+      },
+      // Count completed bookings (for International clubs - hosting completed)
+      bookings: {
+        where: {
+          status: "COMPLETED",
+        },
+        select: { id: true },
+      },
     },
   });
 
-  return <ClubsManagementClient initialClubs={clubs} deleteClub={deleteClub} />;
+  // Transform to include trip counts
+  const clubsWithTrips = clubs.map((club) => ({
+    ...club,
+    tripsParticipated: club.tournamentTeams.length,
+    bookingsCompleted: club.bookings.length,
+    tournamentTeams: undefined,
+    bookings: undefined,
+  }));
+
+  return (
+    <ClubsManagementClient
+      initialClubs={clubsWithTrips}
+      deleteClub={deleteClub}
+    />
+  );
 }

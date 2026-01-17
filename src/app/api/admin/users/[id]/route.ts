@@ -224,6 +224,31 @@ export async function PUT(
 
     // Handle club admin assignments
     if (role === "CLUB_ADMIN" && Array.isArray(adminOfClubIds)) {
+      // Filter out empty strings and validate club IDs exist
+      const validClubIds = adminOfClubIds.filter(
+        (cid: string) => cid && cid.length > 0
+      );
+
+      if (validClubIds.length > 0) {
+        // Verify all club IDs exist before attempting to connect
+        const existingClubs = await prisma.club.findMany({
+          where: { id: { in: validClubIds } },
+          select: { id: true },
+        });
+
+        const existingClubIds = existingClubs.map((c) => c.id);
+        const invalidClubIds = validClubIds.filter(
+          (cid: string) => !existingClubIds.includes(cid)
+        );
+
+        if (invalidClubIds.length > 0) {
+          return NextResponse.json(
+            { error: `Invalid club ID(s): ${invalidClubIds.join(", ")}` },
+            { status: 400 }
+          );
+        }
+      }
+
       // Remove from all clubs first
       await prisma.user.update({
         where: { id },
@@ -235,12 +260,12 @@ export async function PUT(
       });
 
       // Assign to selected clubs
-      if (adminOfClubIds.length > 0) {
+      if (validClubIds.length > 0) {
         await prisma.user.update({
           where: { id },
           data: {
             adminOfClubs: {
-              connect: adminOfClubIds.map((clubId) => ({ id: clubId })),
+              connect: validClubIds.map((cid: string) => ({ id: cid })),
             },
           },
         });
@@ -296,6 +321,12 @@ export async function PUT(
     return NextResponse.json({ user: updatedUser });
   } catch (error) {
     console.error("Error updating user:", error);
+    // Log the full error for debugging
+    if (error instanceof Error) {
+      console.error("Error name:", error.name);
+      console.error("Error message:", error.message);
+      console.error("Error stack:", error.stack);
+    }
     const errorMessage =
       error instanceof Error ? error.message : "Failed to update user";
     return NextResponse.json({ error: errorMessage }, { status: 500 });

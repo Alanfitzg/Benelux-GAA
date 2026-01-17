@@ -139,24 +139,24 @@ export default function AdminPitchesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading pitch data...</p>
+          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-300">Loading pitch data...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         <div className="mb-4 sm:mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3">
           <div>
-            <h1 className="text-xl sm:text-3xl font-bold text-gray-900">
+            <h1 className="text-xl sm:text-3xl font-bold text-white">
               Pitch Management
             </h1>
-            <p className="text-xs sm:text-base text-gray-600 mt-1 sm:mt-2">
+            <p className="text-xs sm:text-base text-gray-300 mt-1 sm:mt-2">
               Manage training pitches and location requests
             </p>
           </div>
@@ -164,14 +164,14 @@ export default function AdminPitchesPage() {
             <button
               type="button"
               onClick={() => setShowEnhancedCreator(true)}
-              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm bg-primary text-white rounded-lg hover:bg-primary-dark flex items-center justify-center gap-1 sm:gap-2"
+              className="flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm bg-white text-gray-900 rounded-lg hover:bg-gray-100 flex items-center justify-center gap-1 sm:gap-2 font-medium shadow-lg"
             >
               <Map className="w-3 h-3 sm:w-4 sm:h-4" />
               Find Pitch
             </button>
             <Link
               href="/admin/pitches/create"
-              className="hidden sm:flex px-4 py-2 text-sm border border-primary text-primary rounded-lg hover:bg-primary hover:text-white items-center gap-2"
+              className="hidden sm:flex px-4 py-2 text-sm border border-white text-white rounded-lg hover:bg-white hover:text-gray-900 items-center gap-2 font-medium"
             >
               <Map className="w-4 h-4" />
               Legacy Create
@@ -179,16 +179,36 @@ export default function AdminPitchesPage() {
           </div>
         </div>
 
+        {/* Context Explanation */}
+        <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-4 sm:p-6 mb-4 sm:mb-6">
+          <h3 className="text-sm sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">
+            Why Pitch Management Matters
+          </h3>
+          <div className="text-xs sm:text-sm text-gray-600 space-y-1 sm:space-y-2">
+            <p>
+              Every event on PlayAway must be linked to a{" "}
+              <strong>verifiable location</strong> with accurate GPS
+              coordinates. This ensures travelling teams can find venues easily
+              and builds trust in our platform.
+            </p>
+            <p>
+              Pitches are added by admins, requested by users, or submitted by
+              club administrators. Review and approve locations here to maintain
+              a reliable database of GAA venues worldwide.
+            </p>
+          </div>
+        </div>
+
         {/* Tabs */}
-        <div className="border-b border-gray-200 mb-4 sm:mb-6">
+        <div className="border-b border-white/20 mb-4 sm:mb-6">
           <nav className="-mb-px flex space-x-4 sm:space-x-8">
             <button
               type="button"
               onClick={() => setActiveTab("pitches")}
               className={`py-2 px-1 border-b-2 font-medium text-xs sm:text-sm ${
                 activeTab === "pitches"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? "border-white text-white"
+                  : "border-transparent text-gray-400 hover:text-white hover:border-gray-400"
               }`}
             >
               Pitches ({pitches.length})
@@ -198,8 +218,8 @@ export default function AdminPitchesPage() {
               onClick={() => setActiveTab("requests")}
               className={`py-2 px-1 border-b-2 font-medium text-xs sm:text-sm relative ${
                 activeTab === "requests"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? "border-white text-white"
+                  : "border-transparent text-gray-400 hover:text-white hover:border-gray-400"
               }`}
             >
               Requests
@@ -215,7 +235,7 @@ export default function AdminPitchesPage() {
         {activeTab === "pitches" && (
           <>
             {/* Filters */}
-            <div className="bg-white rounded-lg shadow p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-3 sm:p-4 mb-4 sm:mb-6">
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
                 <div className="col-span-2 sm:col-span-1">
                   <label className="hidden sm:block text-sm font-medium text-gray-700 mb-1">
@@ -296,7 +316,7 @@ export default function AdminPitchesPage() {
                   key={pitch.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6"
+                  className="bg-white rounded-xl shadow-xl border border-gray-100 hover:shadow-2xl transition-shadow p-6"
                 >
                   <div className="flex justify-between items-start">
                     <div className="flex-1">
@@ -361,7 +381,7 @@ export default function AdminPitchesPage() {
             </div>
 
             {filteredPitches.length === 0 && (
-              <div className="text-center py-12 bg-white rounded-lg">
+              <div className="text-center py-12 bg-white rounded-xl shadow-xl border border-gray-100">
                 <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                 <p className="text-gray-600">
                   No pitches found matching your filters
@@ -374,7 +394,7 @@ export default function AdminPitchesPage() {
         {activeTab === "requests" && (
           <div className="space-y-4">
             {requests.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-lg">
+              <div className="text-center py-12 bg-white rounded-xl shadow-xl border border-gray-100">
                 <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-3" />
                 <p className="text-gray-600">No pending pitch requests</p>
               </div>
@@ -384,7 +404,7 @@ export default function AdminPitchesPage() {
                   key={request.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-lg shadow p-6"
+                  className="bg-white rounded-xl shadow-xl border border-gray-100 p-6"
                 >
                   <div className="flex justify-between items-start">
                     <div>

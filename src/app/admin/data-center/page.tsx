@@ -13,6 +13,9 @@ import {
   MapPinOff,
   UserCheck,
   Trophy,
+  Plane,
+  ClipboardList,
+  CheckCircle2,
 } from "lucide-react";
 
 interface ReportCard {
@@ -210,6 +213,60 @@ const reports: ReportCard[] = [
       "Team registrations by sport",
       "Interest trends by sport",
       "Regional sport distribution",
+    ],
+  },
+  {
+    id: "club-trips",
+    title: "Club Trip Activity",
+    narrativeQuestion: "Which clubs are most active?",
+    description:
+      "Track club participation in tournaments (Ireland) and completed hosting bookings (International).",
+    icon: <Plane className="w-5 h-5 text-white" />,
+    gradient: "from-teal-500 to-cyan-500",
+    endpoint: "/api/admin/reports/club-trips",
+    type: "view",
+    includes: [
+      "Irish clubs by trips participated",
+      "International clubs by bookings hosted",
+      "Trip activity by county",
+      "Hosting activity by country",
+      "Recent trip & booking activity",
+    ],
+  },
+  {
+    id: "trip-requests",
+    title: "Custom Trip Requests",
+    narrativeQuestion: "What are teams looking for?",
+    description:
+      "Analysis of custom trip request submissions including roles, budgets, team sizes, and travel preferences.",
+    icon: <ClipboardList className="w-5 h-5 text-white" />,
+    gradient: "from-amber-500 to-orange-500",
+    endpoint: "/api/admin/reports/trip-requests",
+    type: "view",
+    includes: [
+      "Submissions by role & country",
+      "Budget & team size preferences",
+      "Service interests",
+      "Biggest travel challenges",
+      "Monthly submission trends",
+    ],
+  },
+  {
+    id: "event-approvals",
+    title: "Event Approvals",
+    narrativeQuestion: "How well do we approve events?",
+    description:
+      "Event approval and rejection statistics with appeal tracking. Perfect for marketing: 'We approve X% of event applications!'",
+    icon: <CheckCircle2 className="w-5 h-5 text-white" />,
+    gradient: "from-emerald-500 to-green-500",
+    endpoint: "/api/admin/reports/event-approvals",
+    type: "view",
+    includes: [
+      "Approval & rejection rates",
+      "Appeal success rates",
+      "Monthly approval trends",
+      "Rejection reasons breakdown",
+      "Marketing-ready stats",
     ],
   },
 ];
@@ -522,6 +579,12 @@ function ReportContent({ reportId, data }: ReportContentProps) {
       return <ClubEngagementReport data={data} />;
     case "sport-performance":
       return <SportPerformanceReport data={data} />;
+    case "club-trips":
+      return <ClubTripsReport data={data} />;
+    case "trip-requests":
+      return <TripRequestsReport data={data} />;
+    case "event-approvals":
+      return <EventApprovalsReport data={data} />;
     default:
       return (
         <pre className="text-xs overflow-auto">
@@ -1526,6 +1589,609 @@ function SportPerformanceReport({ data }: { data: Record<string, unknown> }) {
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+function ClubTripsReport({ data }: { data: Record<string, unknown> }) {
+  const irelandSummary = data.irelandSummary as {
+    totalClubs: number;
+    clubsWithTrips: number;
+    totalTrips: number;
+    participationRate: number;
+  };
+  const internationalSummary = data.internationalSummary as {
+    totalClubs: number;
+    clubsWithBookings: number;
+    totalCompletedBookings: number;
+    hostingRate: number;
+  };
+  const topIrelandClubs = data.topIrelandClubs as {
+    name: string;
+    county: string;
+    location: string;
+    tripCount: number;
+    lastTrip: string;
+  }[];
+  const topInternationalClubs = data.topInternationalClubs as {
+    name: string;
+    country: string;
+    unit: string;
+    bookingsCompleted: number;
+    teamsHosted: number;
+  }[];
+  const tripsByCounty = data.tripsByCounty as {
+    county: string;
+    trips: number;
+  }[];
+  const bookingsByCountry = data.bookingsByCountry as {
+    country: string;
+    bookings: number;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+          <h3 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
+            <span>🇮🇪</span> Ireland - Trips Participated
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <StatCard
+              label="Total Clubs"
+              value={irelandSummary?.totalClubs || 0}
+            />
+            <StatCard
+              label="Clubs with Trips"
+              value={irelandSummary?.clubsWithTrips || 0}
+            />
+            <StatCard
+              label="Total Trips"
+              value={irelandSummary?.totalTrips || 0}
+            />
+            <StatCard
+              label="Participation Rate"
+              value={`${irelandSummary?.participationRate || 0}%`}
+            />
+          </div>
+        </div>
+
+        <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+          <h3 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+            <span>🌍</span> International - Bookings Hosted
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <StatCard
+              label="Total Clubs"
+              value={internationalSummary?.totalClubs || 0}
+            />
+            <StatCard
+              label="Clubs Hosting"
+              value={internationalSummary?.clubsWithBookings || 0}
+            />
+            <StatCard
+              label="Completed Bookings"
+              value={internationalSummary?.totalCompletedBookings || 0}
+            />
+            <StatCard
+              label="Hosting Rate"
+              value={`${internationalSummary?.hostingRate || 0}%`}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3 text-green-700">
+            Top Ireland Clubs by Trips
+          </h3>
+          <DataTable
+            headers={["Club", "County", "Trips", "Last Trip"]}
+            rows={(topIrelandClubs || []).map((c) => [
+              c.name,
+              c.county,
+              c.tripCount,
+              c.lastTrip,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3 text-blue-700">
+            Top International Clubs by Hosting
+          </h3>
+          <DataTable
+            headers={["Club", "Country", "Bookings", "Teams Hosted"]}
+            rows={(topInternationalClubs || []).map((c) => [
+              c.name,
+              c.country,
+              c.bookingsCompleted,
+              c.teamsHosted,
+            ])}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Trips by County (Ireland)</h3>
+          <DataTable
+            headers={["County", "Trips"]}
+            rows={(tripsByCounty || []).map((c) => [c.county, c.trips])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Bookings by Country</h3>
+          <DataTable
+            headers={["Country", "Bookings"]}
+            rows={(bookingsByCountry || []).map((c) => [c.country, c.bookings])}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TripRequestsReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalResponses: number;
+    withFeedback: number;
+    linkedToEvent: number;
+    withPreferredMonths: number;
+    withSpecificDestination: number;
+    feedbackRate: number;
+    eventLinkRate: number;
+  };
+  const byRole = data.byRole as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byCountry = data.byCountry as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const bySportCode = data.bySportCode as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byPreferredMonth = data.byPreferredMonth as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const bySpecificDestination = data.bySpecificDestination as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byBudget = data.byBudget as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byTeamSize = data.byTeamSize as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byService = data.byService as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byChallenge = data.byChallenge as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byTravelTime = data.byTravelTime as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const byTraveledAbroad = data.byTraveledAbroad as {
+    name: string;
+    count: number;
+    percentage: number;
+  }[];
+  const monthlyTrends = data.monthlyTrends as {
+    month: string;
+    count: number;
+  }[];
+  const recentSubmissions = data.recentSubmissions as {
+    contactName: string;
+    contactEmail: string;
+    role: string;
+    country: string;
+    clubName: string | null;
+    sportCode: string | null;
+    specificDestination: string | null;
+    budget: string | null;
+    teamSize: string | null;
+    submittedAt: string;
+    eventTitle: string | null;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard label="Total Requests" value={summary?.totalResponses || 0} />
+        <StatCard
+          label="With Travel Dates"
+          value={summary?.withPreferredMonths || 0}
+        />
+        <StatCard
+          label="Specific Destination"
+          value={summary?.withSpecificDestination || 0}
+        />
+        <StatCard label="With Feedback" value={summary?.withFeedback || 0} />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">By Role</h3>
+          <DataTable
+            headers={["Role", "Count", "%"]}
+            rows={(byRole || []).map((r) => [
+              r.name,
+              r.count,
+              `${r.percentage}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">By Country</h3>
+          <DataTable
+            headers={["Country", "Count", "%"]}
+            rows={(byCountry || [])
+              .slice(0, 10)
+              .map((c) => [c.name, c.count, `${c.percentage}%`])}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">By Sport Code</h3>
+          <DataTable
+            headers={["Sport", "Count", "%"]}
+            rows={(bySportCode || []).map((s) => [
+              s.name,
+              s.count,
+              `${s.percentage}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Preferred Travel Months</h3>
+          <DataTable
+            headers={["Month", "Count", "%"]}
+            rows={(byPreferredMonth || []).map((m) => [
+              m.name,
+              m.count,
+              `${m.percentage}%`,
+            ])}
+          />
+        </div>
+      </div>
+
+      {(bySpecificDestination || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">
+            Specific Destinations Mentioned
+          </h3>
+          <DataTable
+            headers={["Destination", "Count", "%"]}
+            rows={(bySpecificDestination || [])
+              .slice(0, 15)
+              .map((d) => [d.name, d.count, `${d.percentage}%`])}
+          />
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Budget per Person</h3>
+          <DataTable
+            headers={["Budget Range", "Count", "%"]}
+            rows={(byBudget || []).map((b) => [
+              b.name,
+              b.count,
+              `${b.percentage}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Team Size</h3>
+          <DataTable
+            headers={["Team Size", "Count", "%"]}
+            rows={(byTeamSize || []).map((t) => [
+              t.name,
+              t.count,
+              `${t.percentage}%`,
+            ])}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Services Interested In</h3>
+          <DataTable
+            headers={["Service", "Count", "%"]}
+            rows={(byService || []).map((s) => [
+              s.name,
+              s.count,
+              `${s.percentage}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Biggest Challenges</h3>
+          <DataTable
+            headers={["Challenge", "Count", "%"]}
+            rows={(byChallenge || []).map((c) => [
+              c.name,
+              c.count,
+              `${c.percentage}%`,
+            ])}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Preferred Travel Time</h3>
+          <DataTable
+            headers={["Time", "Count", "%"]}
+            rows={(byTravelTime || []).map((t) => [
+              t.name,
+              t.count,
+              `${t.percentage}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Travel Experience</h3>
+          <DataTable
+            headers={["Has Traveled Abroad", "Count", "%"]}
+            rows={(byTraveledAbroad || []).map((t) => [
+              t.name,
+              t.count,
+              `${t.percentage}%`,
+            ])}
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Monthly Submission Trends</h3>
+        <DataTable
+          headers={["Month", "Submissions"]}
+          rows={(monthlyTrends || []).map((m) => [m.month, m.count])}
+        />
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Recent Submissions</h3>
+        <DataTable
+          headers={[
+            "Contact",
+            "Role",
+            "Country",
+            "Sport",
+            "Destination",
+            "Date",
+          ]}
+          rows={(recentSubmissions || []).map((r) => [
+            r.contactName,
+            r.role,
+            r.country,
+            r.sportCode || "-",
+            r.specificDestination || "-",
+            new Date(r.submittedAt).toLocaleDateString(),
+          ])}
+        />
+      </div>
+    </div>
+  );
+}
+
+function EventApprovalsReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalSubmissions: number;
+    approved: number;
+    rejected: number;
+    pending: number;
+    approvalRate: number;
+    rejectionRate: number;
+    avgApprovalTimeHours: number;
+  };
+  const appeals = data.appeals as {
+    totalAppeals: number;
+    pendingAppeals: number;
+    deniedAppeals: number;
+    approvedAppeals: number;
+    appealRate: number;
+    appealSuccessRate: number;
+  };
+  const marketingHighlight = data.marketingHighlight as {
+    message: string;
+    approvalRate: number;
+    rejectionRate: number;
+  };
+  const monthlyTrends = data.monthlyTrends as {
+    month: string;
+    approved: number;
+    rejected: number;
+    total: number;
+    approvalRate: number;
+  }[];
+  const byEventType = data.byEventType as {
+    type: string;
+    approved: number;
+    rejected: number;
+    total: number;
+    approvalRate: number;
+  }[];
+  const rejectionReasons = data.rejectionReasons as {
+    reason: string;
+    count: number;
+  }[];
+  const recentRejections = data.recentRejections as {
+    title: string;
+    eventType: string;
+    clubName: string;
+    reason: string | null;
+    hasAppeal: boolean;
+    appealStatus: string | null;
+    createdAt: string;
+  }[];
+  const recentAppeals = data.recentAppeals as {
+    title: string;
+    eventType: string;
+    clubName: string;
+    appealStatus: string;
+    appealedAt: string | null;
+    resolvedAt: string | null;
+    resolution: string | null;
+  }[];
+
+  return (
+    <div className="space-y-6">
+      {/* Marketing Highlight Banner */}
+      {marketingHighlight && (
+        <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl p-6 text-white text-center">
+          <p className="text-2xl font-bold">{marketingHighlight.message}</p>
+          <p className="text-emerald-100 mt-2">
+            Use this statistic in your marketing materials
+          </p>
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard
+          label="Total Submissions"
+          value={summary?.totalSubmissions || 0}
+        />
+        <StatCard label="Approved" value={summary?.approved || 0} />
+        <StatCard label="Rejected" value={summary?.rejected || 0} />
+        <StatCard label="Pending" value={summary?.pending || 0} />
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <StatCard
+          label="Approval Rate"
+          value={`${summary?.approvalRate || 0}%`}
+          subtext="Events approved"
+        />
+        <StatCard
+          label="Rejection Rate"
+          value={`${summary?.rejectionRate || 0}%`}
+          subtext="Events rejected"
+        />
+        <StatCard
+          label="Avg Approval Time"
+          value={`${summary?.avgApprovalTimeHours || 0}h`}
+          subtext="Hours to approval"
+        />
+      </div>
+
+      {/* Appeals Section */}
+      <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+        <h3 className="font-semibold text-blue-800 mb-3">Appeal Statistics</h3>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <StatCard label="Total Appeals" value={appeals?.totalAppeals || 0} />
+          <StatCard label="Pending" value={appeals?.pendingAppeals || 0} />
+          <StatCard label="Denied" value={appeals?.deniedAppeals || 0} />
+          <StatCard label="Approved" value={appeals?.approvedAppeals || 0} />
+          <StatCard
+            label="Appeal Rate"
+            value={`${appeals?.appealRate || 0}%`}
+            subtext="Of rejected events"
+          />
+          <StatCard
+            label="Success Rate"
+            value={`${appeals?.appealSuccessRate || 0}%`}
+            subtext="Appeals approved"
+          />
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-semibold mb-3">Monthly Approval Trends</h3>
+        <DataTable
+          headers={["Month", "Total", "Approved", "Rejected", "Rate"]}
+          rows={(monthlyTrends || []).map((m) => [
+            m.month,
+            m.total,
+            m.approved,
+            m.rejected,
+            `${m.approvalRate}%`,
+          ])}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">By Event Type</h3>
+          <DataTable
+            headers={["Type", "Total", "Approved", "Rate"]}
+            rows={(byEventType || []).map((e) => [
+              e.type,
+              e.total,
+              e.approved,
+              `${e.approvalRate}%`,
+            ])}
+          />
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Top Rejection Reasons</h3>
+          <DataTable
+            headers={["Reason", "Count"]}
+            rows={(rejectionReasons || []).map((r) => [r.reason, r.count])}
+          />
+        </div>
+      </div>
+
+      {(recentRejections || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Recent Rejections</h3>
+          <DataTable
+            headers={["Event", "Type", "Club", "Has Appeal", "Status"]}
+            rows={(recentRejections || [])
+              .slice(0, 8)
+              .map((r) => [
+                r.title,
+                r.eventType || "-",
+                r.clubName,
+                r.hasAppeal ? "Yes" : "No",
+                r.appealStatus || "-",
+              ])}
+          />
+        </div>
+      )}
+
+      {(recentAppeals || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Recent Appeals</h3>
+          <DataTable
+            headers={["Event", "Type", "Club", "Status", "Resolution"]}
+            rows={(recentAppeals || [])
+              .slice(0, 8)
+              .map((a) => [
+                a.title,
+                a.eventType || "-",
+                a.clubName,
+                a.appealStatus,
+                a.resolution || "-",
+              ])}
+          />
+        </div>
+      )}
     </div>
   );
 }

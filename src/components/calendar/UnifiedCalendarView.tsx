@@ -27,6 +27,12 @@ interface Club {
   country: { name: string; code: string } | null;
 }
 
+interface AdminTab {
+  id: string;
+  label: string;
+  mobileLabel: string;
+}
+
 interface UnifiedCalendarViewProps {
   mainlandEuropeClubs: Club[];
   clubPermissions: Record<
@@ -42,6 +48,10 @@ interface UnifiedCalendarViewProps {
   // Sidebar filters from EventsPageClient
   selectedCountry?: string;
   selectedSportTypes?: string[];
+  // Admin tabs integration
+  adminTabs?: AdminTab[];
+  activeAdminTab?: string;
+  onAdminTabChange?: (tabId: string) => void;
 }
 
 // Extended CalendarEvent with club info for filtering
@@ -84,6 +94,9 @@ export default function UnifiedCalendarView({
   isAdmin = false,
   selectedCountry = "",
   selectedSportTypes = [],
+  adminTabs,
+  activeAdminTab,
+  onAdminTabChange,
 }: UnifiedCalendarViewProps) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarData, setCalendarData] = useState<CalendarData>({
@@ -107,7 +120,7 @@ export default function UnifiedCalendarView({
   >([]);
   const [selectedClubForInterest, setSelectedClubForInterest] = useState<
     string | null
-  >(null); // eslint-disable-line @typescript-eslint/no-unused-vars
+  >(null);
   const [selectedCountryForInterest, setSelectedCountryForInterest] = useState<
     string | null
   >(null);
@@ -292,32 +305,34 @@ export default function UnifiedCalendarView({
     0
   );
 
-  // TODO: Calendar feature is under construction - remove this return when ready
-  // The full calendar implementation is preserved below - just remove this early return to restore it
-  return (
-    <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
-      <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-white flex items-center gap-2">
-            <Calendar className="w-5 h-5" />
-            European GAA Calendar
-          </h2>
+  // Show under construction message for non-admin users
+  // Super admins get full access to the calendar
+  if (!isAdmin) {
+    return (
+      <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+        <div className="bg-gradient-to-r from-primary to-primary/80 px-6 py-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-white flex items-center gap-2">
+              <Calendar className="w-5 h-5" />
+              European GAA Calendar
+            </h2>
+          </div>
+        </div>
+        <div className="p-12 text-center">
+          <div className="text-6xl mb-4">🚧</div>
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">
+            Calendar Under Construction
+          </h3>
+          <p className="text-gray-500 max-w-md mx-auto">
+            We&apos;re working on bringing you an improved calendar experience.
+            Check back soon!
+          </p>
         </div>
       </div>
-      <div className="p-12 text-center">
-        <div className="text-6xl mb-4">🚧</div>
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">
-          Calendar Under Construction
-        </h3>
-        <p className="text-gray-500 max-w-md mx-auto">
-          We&apos;re working on bringing you an improved calendar experience.
-          Check back soon!
-        </p>
-      </div>
-    </div>
-  );
+    );
+  }
 
-  // Full calendar implementation below - remove the early return above to restore
+  // Full calendar implementation for admins
   return (
     <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
       {/* Header with gradient */}
@@ -336,33 +351,62 @@ export default function UnifiedCalendarView({
       </div>
 
       {/* Controls section */}
-      <div className="px-6 py-4 bg-gray-50 border-b border-gray-100">
-        <div className="flex items-center justify-between">
+      <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-b border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between">
           {/* Month navigation */}
           <div className="flex items-center gap-2">
             <button
               onClick={handlePreviousMonth}
-              className="p-2 hover:bg-white rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow"
+              className="p-1.5 sm:p-2 hover:bg-white rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow"
             >
-              <ChevronLeft className="w-5 h-5 text-gray-600" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
             </button>
-            <h3 className="text-lg font-semibold text-gray-800 min-w-[160px] text-center">
+            <h3 className="text-sm sm:text-lg font-semibold text-gray-800 min-w-[120px] sm:min-w-[160px] text-center">
               {format(currentDate, "MMMM yyyy")}
             </h3>
             <button
               onClick={handleNextMonth}
-              className="p-2 hover:bg-white rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow"
+              className="p-1.5 sm:p-2 hover:bg-white rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow"
             >
-              <ChevronRight className="w-5 h-5 text-gray-600" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
             </button>
           </div>
 
-          {/* Filters */}
-          <CalendarFilters
-            filters={filters}
-            onFiltersChange={setFilters}
-            showInterestFilter={isAdmin}
-          />
+          {/* Filters and Admin Tabs */}
+          <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto">
+            <CalendarFilters
+              filters={filters}
+              onFiltersChange={setFilters}
+              showInterestFilter={isAdmin}
+            />
+
+            {/* Admin Tabs - inline with filters */}
+            {isAdmin &&
+              adminTabs &&
+              adminTabs.length > 0 &&
+              onAdminTabChange && (
+                <>
+                  <div className="w-px h-6 bg-gray-300 hidden sm:block" />
+                  <div className="flex items-center gap-1">
+                    {adminTabs.map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        onClick={() => onAdminTabChange(tab.id)}
+                        className={`px-2 sm:px-3 py-1.5 text-[10px] sm:text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
+                          activeAdminTab === tab.id
+                            ? "bg-indigo-600 text-white"
+                            : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-100"
+                        }`}
+                      >
+                        <span className="hidden sm:inline">{tab.label}</span>
+                        <span className="sm:hidden">{tab.mobileLabel}</span>
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+          </div>
         </div>
 
         {/* Active sidebar filters indicator */}

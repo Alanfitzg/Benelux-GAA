@@ -164,22 +164,22 @@ export default function BackupsManagement() {
 
       {/* Statistics */}
       <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-4 sm:mb-8">
-        <div className="bg-white p-3 sm:p-6 rounded-lg shadow">
+        <div className="bg-white p-3 sm:p-6 rounded-xl shadow-lg border border-gray-100">
           <h3 className="text-xs sm:text-lg font-semibold text-gray-900">Total Backups</h3>
           <p className="text-lg sm:text-3xl font-bold text-primary">{backups.length}</p>
         </div>
-        <div className="bg-white p-3 sm:p-6 rounded-lg shadow">
+        <div className="bg-white p-3 sm:p-6 rounded-xl shadow-lg border border-gray-100">
           <h3 className="text-xs sm:text-lg font-semibold text-gray-900">Local Backups</h3>
           <p className="text-lg sm:text-3xl font-bold text-blue-600">{backups.filter(b => b.type === 'local').length}</p>
         </div>
-        <div className="bg-white p-3 sm:p-6 rounded-lg shadow">
+        <div className="bg-white p-3 sm:p-6 rounded-xl shadow-lg border border-gray-100">
           <h3 className="text-xs sm:text-lg font-semibold text-gray-900">S3 Backups</h3>
           <p className="text-lg sm:text-3xl font-bold text-green-600">{backups.filter(b => b.type === 's3').length}</p>
         </div>
       </div>
 
       {/* Backup Actions */}
-      <div className="bg-white rounded-lg shadow-lg p-3 sm:p-6 mb-4 sm:mb-8">
+      <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-3 sm:p-6 mb-4 sm:mb-8">
         <h2 className="text-sm sm:text-xl font-semibold mb-3 sm:mb-4">Create New Backup</h2>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
           <button
@@ -207,7 +207,7 @@ export default function BackupsManagement() {
       </div>
 
       {/* Backups List */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
         <div className="px-3 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
           <h2 className="text-sm sm:text-xl font-semibold">Available Backups</h2>
         </div>
@@ -339,7 +339,7 @@ export default function BackupsManagement() {
       </div>
 
       {/* Backup Information */}
-      <div className="mt-4 sm:mt-8 bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-6">
+      <div className="mt-4 sm:mt-8 bg-blue-50 border border-blue-200 rounded-xl shadow-lg p-3 sm:p-6">
         <h3 className="text-sm sm:text-lg font-semibold text-blue-900 mb-2">💡 Backup Information</h3>
         <div className="text-xs sm:text-sm text-blue-800 space-y-1 sm:space-y-2">
           <p><strong>Local:</strong> Stored in server file system. Download/delete from here.</p>

@@ -241,47 +241,53 @@ const ProfessionalHeader = () => {
                                 Admin Panel
                               </Link>
                               {session.user.role === "SUPER_ADMIN" && (
-                                <Link
-                                  href="/admin/data-center"
-                                  onClick={() => setProfileDropdownOpen(false)}
-                                  className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                                >
-                                  <svg
-                                    className="w-4 h-4 mr-3"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
+                                <>
+                                  <Link
+                                    href="/admin/financials"
+                                    onClick={() =>
+                                      setProfileDropdownOpen(false)
+                                    }
+                                    className="flex items-center px-4 py-2 text-sm text-emerald-700 hover:bg-emerald-50 transition-colors font-medium"
                                   >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-                                    />
-                                  </svg>
-                                  Data Center
-                                </Link>
+                                    <svg
+                                      className="w-4 h-4 mr-3"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                      />
+                                    </svg>
+                                    Financials
+                                  </Link>
+                                  <Link
+                                    href="/admin/data-center"
+                                    onClick={() =>
+                                      setProfileDropdownOpen(false)
+                                    }
+                                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                                  >
+                                    <svg
+                                      className="w-4 h-4 mr-3"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                                      />
+                                    </svg>
+                                    Data Center
+                                  </Link>
+                                </>
                               )}
-                              <Link
-                                href="/dashboard/host"
-                                onClick={() => setProfileDropdownOpen(false)}
-                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
-                              >
-                                <svg
-                                  className="w-4 h-4 mr-3"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                                  />
-                                </svg>
-                                Host Dashboard
-                              </Link>
                             </>
                           )}
 
@@ -498,30 +504,56 @@ const ProfessionalHeader = () => {
                             <span className="font-medium">Admin Panel</span>
                           </Link>
                           {session.user.role === "SUPER_ADMIN" && (
-                            <Link
-                              href="/admin/data-center"
-                              onClick={() => setMobileMenuOpen(false)}
-                              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                                scrolled
-                                  ? "text-gray-700 hover:bg-gray-100"
-                                  : "text-white hover:bg-white/10"
-                              }`}
-                            >
-                              <svg
-                                className="w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
+                            <>
+                              <Link
+                                href="/admin/financials"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                                  scrolled
+                                    ? "text-emerald-700 hover:bg-emerald-50"
+                                    : "text-emerald-300 hover:bg-emerald-500/20"
+                                }`}
                               >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-                                />
-                              </svg>
-                              <span className="font-medium">Data Center</span>
-                            </Link>
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                                  />
+                                </svg>
+                                <span className="font-medium">Financials</span>
+                              </Link>
+                              <Link
+                                href="/admin/data-center"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                                  scrolled
+                                    ? "text-gray-700 hover:bg-gray-100"
+                                    : "text-white hover:bg-white/10"
+                                }`}
+                              >
+                                <svg
+                                  className="w-5 h-5"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
+                                  />
+                                </svg>
+                                <span className="font-medium">Data Center</span>
+                              </Link>
+                            </>
                           )}
                         </>
                       )}

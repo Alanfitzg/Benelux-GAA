@@ -156,6 +156,44 @@ export default function AdminDashboardClient({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6">
           <Link
+            href="/admin/financials"
+            className="group bg-gradient-to-br from-emerald-500 to-teal-600 p-3 md:p-8 rounded-lg md:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-emerald-400"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                💰
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-white group-hover:text-white/90 transition-colors">
+                  Financials
+                </h2>
+                <p className="text-white/80 text-xs md:text-base mt-0.5 md:mt-1">
+                  Revenue, payouts & business metrics
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/calendar"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📅
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  Master Calendar
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Central hub for all PlayAway calendars
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
             href="/admin/events"
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
@@ -356,25 +394,6 @@ export default function AdminDashboardClient({
           </Link>
 
           <Link
-            href="/admin/backups"
-            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
-          >
-            <div className="flex items-center space-x-3 md:space-x-4">
-              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
-                💾
-              </span>
-              <div>
-                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
-                  Database Backups
-                </h2>
-                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
-                  Create and manage database backups
-                </p>
-              </div>
-            </div>
-          </Link>
-
-          <Link
             href="/admin/pitches"
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >
@@ -388,25 +407,6 @@ export default function AdminDashboardClient({
                 </h2>
                 <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
                   Manage training pitches and location requests
-                </p>
-              </div>
-            </div>
-          </Link>
-
-          <Link
-            href="/admin/calendar"
-            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
-          >
-            <div className="flex items-center space-x-3 md:space-x-4">
-              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
-                📅
-              </span>
-              <div>
-                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
-                  Calendar Management
-                </h2>
-                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
-                  Manage club calendars, events, and interest submissions
                 </p>
               </div>
             </div>
@@ -446,6 +446,47 @@ export default function AdminDashboardClient({
                 <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
                   Enable or disable features for testing
                 </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/communications"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-purple-300"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📢
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  Communications
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Send broadcasts to club admins worldwide
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/newsletter"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-teal-300"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📰
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  Newsletter
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Regional newsletters for club admins
+                </p>
+                <span className="inline-block mt-1 text-xs bg-teal-100 text-teal-800 px-2 py-0.5 rounded">
+                  Coming Soon
+                </span>
               </div>
             </div>
           </Link>
@@ -505,6 +546,25 @@ export default function AdminDashboardClient({
                 </h2>
                 <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
                   Database statistics and data overview
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/backups"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                💾
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-primary transition-colors">
+                  Database Backups
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Create and manage database backups
                 </p>
               </div>
             </div>

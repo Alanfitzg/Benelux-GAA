@@ -164,24 +164,26 @@ export default function ClubAdminRequestsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading requests...</p>
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-white/80">Loading requests...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-slate-800">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <Shield className="w-8 h-8 text-primary" />
+                <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-indigo-600" />
+                </div>
                 <div>
                   <h1 className="text-2xl font-bold text-gray-900">
                     Club Admin Requests
@@ -195,16 +197,16 @@ export default function ClubAdminRequestsPage() {
           </div>
 
           {/* Status Filter */}
-          <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-            <div className="flex gap-2">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-8">
+            <div className="flex flex-wrap gap-2">
               {["PENDING", "APPROVED", "REJECTED", "ALL"].map((status) => (
                 <button
                   key={status}
                   onClick={() => setSelectedStatus(status)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-xl font-medium transition-all ${
                     selectedStatus === status
-                      ? "bg-primary text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-slate-800 text-white shadow-lg"
+                      : "bg-white text-gray-700 hover:bg-gray-100 shadow-md border border-gray-200"
                   }`}
                 >
                   {status}
@@ -216,7 +218,7 @@ export default function ClubAdminRequestsPage() {
           {/* Requests List */}
           <div className="space-y-6">
             {requests.length === 0 ? (
-              <div className="bg-white rounded-lg shadow-sm p-12 text-center">
+              <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-12 text-center">
                 <Shield className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   No requests found
@@ -233,7 +235,7 @@ export default function ClubAdminRequestsPage() {
                   key={request.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-lg shadow-sm p-6"
+                  className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6"
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -286,7 +288,7 @@ export default function ClubAdminRequestsPage() {
                       </div>
 
                       {/* Request Details */}
-                      <div className="bg-gray-50 p-4 rounded-lg mb-4">
+                      <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-4">
                         <h4 className="font-medium text-gray-900 mb-2">
                           Request Reason:
                         </h4>
@@ -318,7 +320,7 @@ export default function ClubAdminRequestsPage() {
                       {/* Rejection Reason */}
                       {request.status === "REJECTED" &&
                         request.rejectionReason && (
-                          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl shadow-sm">
                             <h4 className="font-medium text-red-900 mb-1">
                               Rejection Reason:
                             </h4>
@@ -337,7 +339,7 @@ export default function ClubAdminRequestsPage() {
                             handleReviewRequest(request.id, "approve")
                           }
                           disabled={reviewingRequest === request.id}
-                          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                          className="flex items-center gap-2 px-4 py-2.5 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 transition-colors shadow-lg shadow-green-500/25 disabled:opacity-50"
                         >
                           <CheckCircle className="w-4 h-4" />
                           Approve
@@ -352,7 +354,7 @@ export default function ClubAdminRequestsPage() {
                             }
                           }}
                           disabled={reviewingRequest === request.id}
-                          className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                          className="flex items-center gap-2 px-4 py-2.5 bg-red-600 text-white rounded-xl font-medium hover:bg-red-700 transition-colors shadow-lg shadow-red-500/25 disabled:opacity-50"
                         >
                           <XCircle className="w-4 h-4" />
                           Reject
@@ -365,7 +367,7 @@ export default function ClubAdminRequestsPage() {
                           type="button"
                           onClick={() => handleResendEmail(request.id)}
                           disabled={sendingEmail === request.id}
-                          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/25 disabled:opacity-50"
                         >
                           <Mail className="w-4 h-4" />
                           {sendingEmail === request.id

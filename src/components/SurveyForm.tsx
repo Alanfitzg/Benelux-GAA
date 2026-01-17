@@ -14,10 +14,19 @@ interface SurveyData {
   country: string;
   city: string;
 
-  // Travel History & Intent (simplified)
+  // Sport Code
+  sportCode: string;
+
+  // Travel History & Intent
   travelFrequency: string;
 
-  // Open-Ended Insight (combined)
+  // Preferred Travel Months
+  preferredMonths: string[];
+
+  // Specific Destination
+  specificDestination: string;
+
+  // Open-Ended Insight
   groupAndPreferences: string;
 
   // Contact Information
@@ -31,7 +40,10 @@ const INITIAL_DATA: SurveyData = {
   clubName: "",
   country: "",
   city: "",
+  sportCode: "",
   travelFrequency: "",
+  preferredMonths: [],
+  specificDestination: "",
   groupAndPreferences: "",
   contactName: "",
   contactEmail: "",
@@ -54,6 +66,58 @@ const COUNTRIES = [
   "Other",
 ];
 
+const SPORT_CODES = [
+  { id: "football", label: "Gaelic Football" },
+  { id: "hurling", label: "Hurling" },
+  { id: "camogie", label: "Camogie" },
+  { id: "lgfa", label: "Ladies Football (LGFA)" },
+  { id: "handball", label: "Handball" },
+  { id: "rounders", label: "Rounders" },
+  { id: "multiple", label: "Multiple Codes" },
+];
+
+const MONTHS = [
+  { id: "january", label: "Jan" },
+  { id: "february", label: "Feb" },
+  { id: "march", label: "Mar" },
+  { id: "april", label: "Apr" },
+  { id: "may", label: "May" },
+  { id: "june", label: "Jun" },
+  { id: "july", label: "Jul" },
+  { id: "august", label: "Aug" },
+  { id: "september", label: "Sep" },
+  { id: "october", label: "Oct" },
+  { id: "november", label: "Nov" },
+  { id: "december", label: "Dec" },
+];
+
+const SEASONS = [
+  {
+    id: "spring",
+    label: "Spring",
+    icon: "🌸",
+    months: ["march", "april", "may"],
+  },
+  {
+    id: "summer",
+    label: "Summer",
+    icon: "☀️",
+    months: ["june", "july", "august"],
+  },
+  {
+    id: "autumn",
+    label: "Autumn",
+    icon: "🍂",
+    months: ["september", "october", "november"],
+  },
+  {
+    id: "winter",
+    label: "Winter",
+    icon: "❄️",
+    months: ["december", "january", "february"],
+  },
+];
+
 export default function SurveyForm({ eventId }: SurveyFormProps) {
   const [currentStep, setCurrentStep] = useState(1);
   const [data, setData] = useState<SurveyData>(INITIAL_DATA);
@@ -64,9 +128,37 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
 
   const updateData = (field: keyof SurveyData, value: string | string[]) => {
     setData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
+    }
+  };
+
+  const toggleMonth = (monthId: string) => {
+    if (data.preferredMonths.includes(monthId)) {
+      updateData(
+        "preferredMonths",
+        data.preferredMonths.filter((id) => id !== monthId)
+      );
+    } else {
+      updateData("preferredMonths", [...data.preferredMonths, monthId]);
+    }
+  };
+
+  const selectSeason = (season: { months: string[] }) => {
+    const allMonthsSelected = season.months.every((month) =>
+      data.preferredMonths.includes(month)
+    );
+
+    if (allMonthsSelected) {
+      updateData(
+        "preferredMonths",
+        data.preferredMonths.filter((month) => !season.months.includes(month))
+      );
+    } else {
+      const newMonths = [
+        ...new Set([...data.preferredMonths, ...season.months]),
+      ];
+      updateData("preferredMonths", newMonths);
     }
   };
 
@@ -113,7 +205,6 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
       });
 
       if (response.ok) {
-        // Redirect to completion page
         window.location.href = "/survey?completed=true";
       } else {
         throw new Error("Failed to submit survey");
@@ -193,17 +284,37 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Which club are you affiliated with?
-              </label>
-              <input
-                type="text"
-                value={data.clubName}
-                onChange={(e) => updateData("clubName", e.target.value)}
-                placeholder="Enter club name..."
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Club name (optional)
+                </label>
+                <input
+                  type="text"
+                  value={data.clubName}
+                  onChange={(e) => updateData("clubName", e.target.value)}
+                  placeholder="Enter club name..."
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Sport code (optional)
+                </label>
+                <select
+                  value={data.sportCode}
+                  onChange={(e) => updateData("sportCode", e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+                >
+                  <option value="">Select sport...</option>
+                  {SPORT_CODES.map((sport) => (
+                    <option key={sport.id} value={sport.id}>
+                      {sport.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div>
@@ -233,18 +344,89 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
               Your Preferences & Contact
             </h2>
 
+            {/* Preferred Travel Months */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Please tell us about your group, and your preferences. Also,
-                please type any questions.
+                When would you like to travel? (optional)
+              </label>
+              <p className="text-xs text-gray-500 mb-3">
+                Select seasons or individual months
+              </p>
+
+              {/* Season Quick Select */}
+              <div className="flex flex-wrap gap-2 mb-3">
+                {SEASONS.map((season) => {
+                  const allMonthsSelected = season.months.every((month) =>
+                    data.preferredMonths.includes(month)
+                  );
+                  return (
+                    <button
+                      key={season.id}
+                      type="button"
+                      onClick={() => selectSeason(season)}
+                      className={`px-3 py-1.5 rounded-lg border text-sm transition-all flex items-center gap-1 ${
+                        allMonthsSelected
+                          ? "border-primary bg-primary/10 text-primary font-medium"
+                          : "border-gray-200 hover:border-gray-300 bg-white"
+                      }`}
+                    >
+                      <span>{season.icon}</span>
+                      <span>{season.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Individual Months */}
+              <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+                {MONTHS.map((month) => (
+                  <button
+                    key={month.id}
+                    type="button"
+                    onClick={() => toggleMonth(month.id)}
+                    className={`px-2 py-2 rounded-lg border text-sm transition-all ${
+                      data.preferredMonths.includes(month.id)
+                        ? "border-primary bg-primary/5 font-medium text-primary"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    {month.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Specific Destination */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Do you have a specific city or club in mind? (optional)
+              </label>
+              <input
+                type="text"
+                value={data.specificDestination}
+                onChange={(e) =>
+                  updateData("specificDestination", e.target.value)
+                }
+                placeholder="e.g., Barcelona, Amsterdam GAA, Rome..."
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Enter any destination, city, or club you&apos;d like to visit
+              </p>
+            </div>
+
+            {/* Open-ended */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Anything else you&apos;d like to tell us? (optional)
               </label>
               <textarea
                 value={data.groupAndPreferences}
                 onChange={(e) =>
                   updateData("groupAndPreferences", e.target.value)
                 }
-                rows={6}
-                placeholder="Tell us about your team size, travel preferences, budget considerations, destinations you're interested in, and any questions you have about organizing GAA trips..."
+                rows={4}
+                placeholder="Team size, budget, special requirements, questions..."
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
               />
             </div>
@@ -254,8 +436,7 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
                 Contact Information
               </h3>
               <p className="text-sm text-gray-600 mb-4">
-                We&apos;ll use this information to follow up with relevant
-                opportunities and updates.
+                We&apos;ll use this to follow up with trip options for you.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -351,6 +532,7 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
       {/* Navigation */}
       <div className="flex justify-between mt-8">
         <button
+          type="button"
           onClick={prevStep}
           disabled={currentStep === 1}
           className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
@@ -360,6 +542,7 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
 
         {currentStep < totalSteps ? (
           <button
+            type="button"
             onClick={nextStep}
             className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
           >
@@ -367,11 +550,12 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
           </button>
         ) : (
           <button
+            type="button"
             onClick={handleSubmit}
             disabled={isSubmitting}
             className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Submitting..." : "Submit Survey"}
+            {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         )}
       </div>

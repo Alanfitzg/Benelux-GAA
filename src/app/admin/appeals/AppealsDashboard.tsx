@@ -73,28 +73,51 @@ export function AppealsDashboard({
 
   if (appeals.length === 0) {
     return (
-      <div className="bg-white/5 rounded-xl p-8 text-center">
-        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-          <svg
-            className="w-8 h-8 text-green-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
+      <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+        {/* Context explanation */}
+        <div className="mb-8 pb-6 border-b border-gray-200">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3">
+            How Event Appeals Work
+          </h3>
+          <div className="text-sm text-gray-600 space-y-2">
+            <p>
+              When a club submits an event that doesn&apos;t meet our
+              guidelines, it gets rejected with a reason. The club can then
+              appeal the decision if they believe it was made in error.
+            </p>
+            <p>
+              Appeals appear here for your review. You can either{" "}
+              <strong>approve</strong> the appeal (which returns the event to
+              pending status for re-review) or <strong>deny</strong> it (which
+              upholds the original rejection).
+            </p>
+          </div>
         </div>
-        <h3 className="text-lg font-medium text-white mb-2">
-          No Pending Appeals
-        </h3>
-        <p className="text-gray-400">
-          All event rejection appeals have been resolved.
-        </p>
+
+        {/* Empty state */}
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
+            <svg
+              className="w-8 h-8 text-green-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            No Pending Appeals
+          </h3>
+          <p className="text-gray-600">
+            All event rejection appeals have been resolved.
+          </p>
+        </div>
       </div>
     );
   }
