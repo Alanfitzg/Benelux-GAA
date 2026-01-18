@@ -115,17 +115,20 @@ export async function GET() {
       }
     }
 
-    // Add pending admin requests (only if not already in the list)
+    // Add pending admin requests (only if not already an admin)
     for (const request of user.clubAdminRequests) {
       const existingClub = clubs.find((c) => c.id === request.club.id);
       if (existingClub) {
-        // User is already member/admin but also has a pending request - show pending status
-        existingClub.role = "pending";
-        existingClub.pendingRequest = {
-          id: request.id,
-          status: request.status,
-          requestedAt: request.requestedAt,
-        };
+        // Only show pending status if user is NOT already an admin
+        // (If they're already admin, the pending request is stale and should be ignored)
+        if (existingClub.role !== "admin") {
+          existingClub.role = "pending";
+          existingClub.pendingRequest = {
+            id: request.id,
+            status: request.status,
+            requestedAt: request.requestedAt,
+          };
+        }
       } else {
         clubs.push({
           ...request.club,

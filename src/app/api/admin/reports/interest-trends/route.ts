@@ -48,6 +48,7 @@ export async function GET() {
         createdAt: true,
         interestType: true,
         teamSize: true,
+        teamType: true,
         flexibility: true,
         club: {
           select: {
@@ -168,6 +169,27 @@ export async function GET() {
       }
     });
 
+    // Team type distribution
+    const teamTypeCounts: Record<string, number> = {};
+    const teamTypeLabels: Record<string, string> = {
+      hurling: "Hurling",
+      football: "Football",
+      camogie: "Camogie",
+      lgfa: "LGFA",
+      minor: "Minor",
+      dads_lads: "Dad's & Lads",
+      g4mo: "G4MO",
+      underage: "Underage",
+      masters: "Masters",
+      mixed: "Mixed Team",
+      other: "Other",
+    };
+    tournamentInterests.forEach((ti) => {
+      if (ti.teamType) {
+        teamTypeCounts[ti.teamType] = (teamTypeCounts[ti.teamType] || 0) + 1;
+      }
+    });
+
     // Countries most interested
     const countryCounts: Record<string, number> = {};
     interests.forEach((i) => {
@@ -212,6 +234,13 @@ export async function GET() {
         .sort((a, b) => b.count - a.count),
       interestTypeDistribution: Object.entries(interestTypeCounts)
         .map(([type, count]) => ({ type, count }))
+        .sort((a, b) => b.count - a.count),
+      teamTypeDistribution: Object.entries(teamTypeCounts)
+        .map(([type, count]) => ({
+          type,
+          label: teamTypeLabels[type] || type,
+          count,
+        }))
         .sort((a, b) => b.count - a.count),
       topCountries: Object.entries(countryCounts)
         .map(([country, count]) => ({ country, count }))

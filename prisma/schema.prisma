@@ -496,6 +496,7 @@ model TournamentInterest {
   dateRangeStart DateTime?
   dateRangeEnd   DateTime?
   teamSize       Int
+  teamType       String?          // e.g., "hurling", "camogie", "lgfa", "minor", "dads_lads", "g4mo", etc.
   flexibility    FlexibilityLevel @default(FLEXIBLE)
   message        String?
   status         InterestStatus   @default(PENDING)
@@ -510,6 +511,7 @@ model TournamentInterest {
   @@index([userId])
   @@index([monthYear])
   @@index([status])
+  @@index([teamType])
 }
 
 model PasswordResetToken {

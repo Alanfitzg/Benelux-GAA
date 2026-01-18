@@ -251,14 +251,14 @@ export default function SignUp() {
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-primary via-primary-light to-secondary text-white">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative container mx-auto px-4 py-8 md:py-12">
+        <div className="relative container mx-auto px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-xl md:text-3xl lg:text-4xl font-bold font-poppins">
+            <h1 className="text-lg md:text-2xl lg:text-3xl font-bold font-poppins">
               Join the Global GAA Community
             </h1>
           </motion.div>
@@ -269,17 +269,17 @@ export default function SignUp() {
       </div>
 
       {/* Form Section */}
-      <div className="relative -mt-8 px-4 md:px-6">
+      <div className="relative -mt-6 px-4 md:px-6 pb-6">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-2xl mx-auto"
         >
-          <div className="bg-white/95 backdrop-blur-sm rounded-2xl md:rounded-3xl shadow-professional-lg border border-gray-200/50 overflow-hidden">
-            <div className="p-4 md:p-8">
+          <div className="bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl shadow-professional-lg border border-gray-200/50 overflow-hidden">
+            <div className="p-4 md:p-6">
               {/* Header */}
-              <div className="text-center mb-4 md:mb-6">
+              <div className="text-center mb-3 md:mb-4">
                 <h2 className="text-base md:text-lg font-bold text-gray-900">
                   Create Your Account
                 </h2>
@@ -296,9 +296,9 @@ export default function SignUp() {
                 </motion.div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-3 md:space-y-4">
                 {/* Personal Information */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                   {/* Email */}
                   <motion.div
                     initial={{ opacity: 0, x: -20 }}

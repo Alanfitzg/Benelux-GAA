@@ -241,6 +241,19 @@ export function WelcomeEmail({
             Discover how PlayAway can help you plan tournaments, find host
             clubs, and organise unforgettable GAA trips abroad.
           </p>
+          <p
+            style={{
+              margin: "0 0 16px 0",
+              fontSize: "13px",
+              color: "rgba(255,255,255,0.7)",
+              lineHeight: "1.6",
+              fontStyle: "italic",
+            }}
+          >
+            If you want to organise a trip for a team, you&apos;ll need a Club
+            Admin account. You can request this from your club&apos;s profile
+            page.
+          </p>
           <a
             href="https://playaway.ie/how-it-works"
             style={{

@@ -235,7 +235,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
               {/* Club */}
               {(user.isClubMember || primaryClub) && (
-                <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 border-2 border-gray-200">
                   <div className="flex items-center gap-2 sm:gap-3">
                     <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <svg
@@ -281,7 +281,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               )}
 
               {/* Email */}
-              <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 col-span-2 sm:col-span-1">
+              <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 col-span-2 sm:col-span-1 border-2 border-gray-200">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
@@ -310,7 +310,7 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               </div>
 
               {/* Member Since */}
-              <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 col-span-2 sm:col-span-1">
+              <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 col-span-2 sm:col-span-1 border-2 border-gray-200">
                 <div className="flex items-center gap-2 sm:gap-3">
                   <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#264673]/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <svg
@@ -369,10 +369,10 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                       d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                     />
                   </svg>
-                  Associated Clubs
+                  My Club
                 </h3>
                 <p className="text-gray-500 text-xs md:text-sm mt-0.5">
-                  Clubs you&apos;re connected with
+                  Your GAA club membership
                 </p>
               </div>
             </div>
@@ -383,12 +383,30 @@ export default function ProfileClient({ user }: ProfileClientProps) {
               </div>
             ) : clubs.length > 0 ? (
               <div className="space-y-3">
-                {/* Host Dashboard - Prominent at top for admin clubs */}
+                {/* Host Dashboard - Only for European club admins (hosts) */}
                 {user.role === "CLUB_ADMIN" &&
-                  clubs.some((club) => club.role === "admin") && (
+                  clubs.some(
+                    (club) =>
+                      club.role === "admin" &&
+                      club.location &&
+                      EUROPEAN_COUNTRIES.some((country) =>
+                        club
+                          .location!.toLowerCase()
+                          .includes(country.toLowerCase())
+                      )
+                  ) && (
                     <div className="space-y-2">
                       {clubs
-                        .filter((club) => club.role === "admin")
+                        .filter(
+                          (club) =>
+                            club.role === "admin" &&
+                            club.location &&
+                            EUROPEAN_COUNTRIES.some((country) =>
+                              club
+                                .location!.toLowerCase()
+                                .includes(country.toLowerCase())
+                            )
+                        )
                         .map((club) => (
                           <button
                             key={`dashboard-${club.id}`}
@@ -472,6 +490,23 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                         </div>
                       </div>
                       <div className="flex items-center gap-3 flex-shrink-0 ml-2">
+                        {club.role === "admin" &&
+                          club.location &&
+                          !EUROPEAN_COUNTRIES.some((country) =>
+                            club
+                              .location!.toLowerCase()
+                              .includes(country.toLowerCase())
+                          ) && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                router.push(`/club-admin/${club.id}`)
+                              }
+                              className="px-3 py-1.5 text-xs font-medium text-white bg-primary rounded-lg hover:bg-primary-dark transition-colors hidden sm:block"
+                            >
+                              Admin Dashboard
+                            </button>
+                          )}
                         {club.role === "member" && (
                           <button
                             type="button"

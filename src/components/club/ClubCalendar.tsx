@@ -19,6 +19,7 @@ import {
   isSameDay,
 } from "date-fns";
 import { motion } from "framer-motion";
+import { isWeekend, isBankHoliday, type BankHoliday } from "@/lib/holidays";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import InterestSubmissionForm from "./InterestSubmissionForm";
@@ -45,6 +46,7 @@ interface TournamentInterest {
   dateRangeStart?: string;
   dateRangeEnd?: string;
   teamSize: number;
+  teamType?: string;
   flexibility: string;
   status: string;
   message?: string;
@@ -53,6 +55,20 @@ interface TournamentInterest {
     email: string;
   };
 }
+
+const teamTypeLabels: Record<string, string> = {
+  hurling: "Hurling",
+  football: "Football",
+  camogie: "Camogie",
+  lgfa: "LGFA",
+  minor: "Minor",
+  dads_lads: "Dad's & Lads",
+  g4mo: "G4MO",
+  underage: "Underage",
+  masters: "Masters",
+  mixed: "Mixed Team",
+  other: "Other",
+};
 
 interface Event {
   id: string;
@@ -76,6 +92,7 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
   const [loading, setLoading] = useState(true);
   const [showInfoBanner, setShowInfoBanner] = useState(true);
   const [showInfoTooltip, setShowInfoTooltip] = useState(false);
+  const [showWeekendsOnly, setShowWeekendsOnly] = useState(false);
 
   const fetchCalendarData = useCallback(async () => {
     setLoading(true);
@@ -157,6 +174,33 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
     }
 
     return days;
+  };
+
+  const getMobileDays = () => {
+    const daysInMonth = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      0
+    ).getDate();
+
+    const mobileDays: { date: Date; holiday: BankHoliday | null }[] = [];
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      const date = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        i
+      );
+      const irishHoliday = isBankHoliday(date, "IE");
+      const britishHoliday = isBankHoliday(date, "GB");
+      const holiday = irishHoliday || britishHoliday;
+
+      if (isWeekend(date) || holiday) {
+        mobileDays.push({ date, holiday });
+      }
+    }
+
+    return mobileDays;
   };
 
   const getDateContent = (date: Date) => {
@@ -330,91 +374,251 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
         </div>
       ) : view === "month" ? (
         <div className="p-2 sm:p-6 bg-gradient-to-b from-primary/5 to-white">
-          {/* Day Headers */}
-          <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-2 sm:mb-3">
-            {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-              <div
-                key={day}
-                className="text-center text-[10px] sm:text-sm font-semibold text-primary py-1 sm:py-2 bg-primary/10 rounded sm:rounded-lg"
-              >
-                <span className="hidden sm:inline">{day}</span>
-                <span className="sm:hidden">{day.charAt(0)}</span>
-              </div>
-            ))}
+          {/* Weekends & Holidays Filter Toggle */}
+          <div className="hidden sm:flex justify-end mb-3">
+            <button
+              type="button"
+              onClick={() => setShowWeekendsOnly(!showWeekendsOnly)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                showWeekendsOnly
+                  ? "bg-purple-100 text-purple-700 border-2 border-purple-300"
+                  : "bg-white text-gray-600 border border-gray-200 hover:border-purple-300 hover:text-purple-600"
+              }`}
+            >
+              <CalendarIcon className="w-4 h-4" />
+              {showWeekendsOnly
+                ? "Showing Weekends & Holidays"
+                : "Show Weekends & Holidays Only"}
+            </button>
           </div>
-          {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-0.5 sm:gap-2">
-            {getDaysInMonth().map((date, index) => {
-              if (!date) {
-                return <div key={`empty-${index}`} className="h-12 sm:h-24" />;
-              }
 
-              const {
-                availability,
-                interests: dayInterests,
-                events: dayEvents,
-              } = getDateContent(date);
-              const hasContent =
-                availability || dayInterests.length > 0 || dayEvents.length > 0;
-
-              return (
-                <motion.div
-                  key={date.toISOString()}
-                  className={`h-12 sm:h-24 p-1 sm:p-2 border sm:border-2 rounded-lg sm:rounded-xl transition-all ${
-                    hasContent
-                      ? "border-primary/30 bg-white shadow-sm"
-                      : "border-gray-200 bg-white/80"
-                  } hover:border-primary hover:shadow-md cursor-pointer`}
-                  whileHover={{ scale: 1.02 }}
+          {/* Desktop: Full 7-day calendar grid */}
+          <div
+            className={`hidden sm:block ${showWeekendsOnly ? "!hidden" : ""}`}
+          >
+            {/* Day Headers */}
+            <div className="grid grid-cols-7 gap-1 mb-3">
+              {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                <div
+                  key={day}
+                  className="text-center text-sm font-semibold text-primary py-2 bg-primary/10 rounded-lg"
                 >
-                  <div
-                    className={`text-[10px] sm:text-sm font-semibold mb-0.5 sm:mb-1 ${hasContent ? "text-primary" : "text-gray-700"}`}
+                  {day}
+                </div>
+              ))}
+            </div>
+            {/* Calendar Grid */}
+            <div className="grid grid-cols-7 gap-2">
+              {getDaysInMonth().map((date, index) => {
+                if (!date) {
+                  return <div key={`empty-${index}`} className="h-24" />;
+                }
+
+                const {
+                  availability,
+                  interests: dayInterests,
+                  events: dayEvents,
+                } = getDateContent(date);
+                const hasContent =
+                  availability ||
+                  dayInterests.length > 0 ||
+                  dayEvents.length > 0;
+
+                return (
+                  <motion.div
+                    key={date.toISOString()}
+                    className={`h-24 p-2 border-2 rounded-xl transition-all ${
+                      hasContent
+                        ? "border-primary/30 bg-white shadow-sm"
+                        : "border-gray-200 bg-white/80"
+                    } hover:border-primary hover:shadow-md cursor-pointer`}
+                    whileHover={{ scale: 1.02 }}
                   >
-                    {format(date, "d")}
-                  </div>
-                  {/* Mobile: Show dots only */}
-                  <div className="sm:hidden flex gap-0.5 flex-wrap">
-                    {availability && (
-                      <div className="w-1.5 h-1.5 bg-green-500 rounded-full" />
-                    )}
-                    {dayInterests.length > 0 && (
-                      <div className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
-                    )}
-                    {dayEvents.length > 0 && (
-                      <div className="w-1.5 h-1.5 bg-primary rounded-full" />
-                    )}
-                  </div>
-                  {/* Desktop: Show full labels */}
-                  <div className="hidden sm:block space-y-1">
-                    {availability && (
-                      <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full w-fit">
-                        <CheckCircle className="w-3 h-3" />
-                        <span className="font-medium">Available</span>
+                    <div
+                      className={`text-sm font-semibold mb-1 ${hasContent ? "text-primary" : "text-gray-700"}`}
+                    >
+                      {format(date, "d")}
+                    </div>
+                    <div className="space-y-1">
+                      {availability && (
+                        <div className="flex items-center gap-1 text-xs text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full w-fit">
+                          <CheckCircle className="w-3 h-3" />
+                          <span className="font-medium">Available</span>
+                        </div>
+                      )}
+                      {dayInterests.length > 0 && (
+                        <div className="flex items-center gap-1 text-xs text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full w-fit">
+                          <Users className="w-3 h-3" />
+                          <span className="font-medium">
+                            {dayInterests.length} interested
+                          </span>
+                        </div>
+                      )}
+                      {dayEvents.map((event) => (
+                        <div
+                          key={event.id}
+                          className="flex items-center gap-1 text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded-full"
+                        >
+                          <Globe className="w-3 h-3" />
+                          <span className="truncate font-medium">
+                            {event.title}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Desktop: Weekends & Holidays only (when filter is active) */}
+          <div className={`hidden ${showWeekendsOnly ? "sm:block" : ""}`}>
+            <div className="mb-3 p-2 bg-purple-50 border border-purple-200 rounded-lg">
+              <p className="text-xs text-purple-700 text-center">
+                Showing weekends & bank holidays only
+              </p>
+            </div>
+            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+              {getMobileDays().map(({ date, holiday }) => {
+                const {
+                  availability,
+                  interests: dayInterests,
+                  events: dayEvents,
+                } = getDateContent(date);
+                const hasContent =
+                  availability ||
+                  dayInterests.length > 0 ||
+                  dayEvents.length > 0;
+
+                return (
+                  <motion.div
+                    key={date.toISOString()}
+                    className={`p-4 rounded-lg bg-white shadow-sm border-2 transition-all cursor-pointer ${
+                      hasContent
+                        ? "border-primary/30"
+                        : "border-gray-100 hover:border-primary/20"
+                    } hover:shadow-md`}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-primary">
+                          {format(date, "EEE d")}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {format(date, "MMM")}
+                        </span>
                       </div>
-                    )}
-                    {dayInterests.length > 0 && (
-                      <div className="flex items-center gap-1 text-xs text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full w-fit">
-                        <Users className="w-3 h-3" />
-                        <span className="font-medium">
+                      {holiday && (
+                        <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">
+                          {holiday.name}
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {availability && (
+                        <span className="flex items-center gap-1 text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">
+                          <CheckCircle className="w-3 h-3" />
+                          Available
+                        </span>
+                      )}
+                      {dayInterests.length > 0 && (
+                        <span className="flex items-center gap-1 text-xs bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-medium">
+                          <Users className="w-3 h-3" />
                           {dayInterests.length} interested
                         </span>
-                      </div>
-                    )}
-                    {dayEvents.map((event) => (
-                      <div
-                        key={event.id}
-                        className="flex items-center gap-1 text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded-full"
-                      >
-                        <Globe className="w-3 h-3" />
-                        <span className="truncate font-medium">
-                          {event.title}
+                      )}
+                      {dayEvents.length > 0 && (
+                        <span className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
+                          <Globe className="w-3 h-3" />
+                          {dayEvents.length} event
+                          {dayEvents.length > 1 ? "s" : ""}
                         </span>
+                      )}
+                      {!hasContent && (
+                        <span className="text-xs text-gray-400">
+                          No activity
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Mobile: Weekends & Holidays only */}
+          <div className="sm:hidden">
+            <div className="mb-3 p-2 bg-purple-50 border border-purple-200 rounded-lg">
+              <p className="text-xs text-purple-700 text-center">
+                Showing weekends & bank holidays only
+              </p>
+            </div>
+            <div className="space-y-2">
+              {getMobileDays().map(({ date, holiday }) => {
+                const {
+                  availability,
+                  interests: dayInterests,
+                  events: dayEvents,
+                } = getDateContent(date);
+                const hasContent =
+                  availability ||
+                  dayInterests.length > 0 ||
+                  dayEvents.length > 0;
+
+                return (
+                  <motion.div
+                    key={date.toISOString()}
+                    className={`p-3 rounded-lg bg-white shadow-sm border-2 transition-all ${
+                      hasContent ? "border-primary/30" : "border-gray-100"
+                    } active:scale-[0.98]`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-primary">
+                          {format(date, "EEE d")}
+                        </span>
+                        {holiday && (
+                          <span className="text-xs bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full font-medium">
+                            {holiday.name}
+                          </span>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
+                      <span className="text-xs text-gray-400">
+                        {format(date, "MMM")}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-1">
+                      {availability && (
+                        <span className="flex items-center gap-1 text-xs bg-green-50 text-green-600 px-2 py-0.5 rounded-full font-medium">
+                          <CheckCircle className="w-3 h-3" />
+                          Available
+                        </span>
+                      )}
+                      {dayInterests.length > 0 && (
+                        <span className="flex items-center gap-1 text-xs bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full font-medium">
+                          <Users className="w-3 h-3" />
+                          {dayInterests.length} interested
+                        </span>
+                      )}
+                      {dayEvents.length > 0 && (
+                        <span className="flex items-center gap-1 text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
+                          <Globe className="w-3 h-3" />
+                          {dayEvents.length} event
+                          {dayEvents.length > 1 ? "s" : ""}
+                        </span>
+                      )}
+                      {!hasContent && (
+                        <span className="text-xs text-gray-400">
+                          No activity
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
       ) : (
@@ -437,11 +641,17 @@ export default function ClubCalendar({ clubId, clubName }: ClubCalendarProps) {
                     <p className="font-semibold text-gray-900">
                       {interest.user.name}
                     </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      <span className="inline-flex items-center gap-1 bg-primary/10 text-primary px-2 py-0.5 rounded-full text-xs font-medium mr-2">
+                    <p className="text-sm text-gray-600 mt-1 flex flex-wrap gap-2">
+                      <span className="inline-flex items-center gap-1 bg-primary/10 text-primary px-2 py-0.5 rounded-full text-xs font-medium">
                         <Users className="w-3 h-3" />
                         {interest.teamSize} players
                       </span>
+                      {interest.teamType && (
+                        <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-xs font-medium">
+                          {teamTypeLabels[interest.teamType] ||
+                            interest.teamType}
+                        </span>
+                      )}
                       <span className="text-gray-500">
                         Flexibility: {interest.flexibility}
                       </span>

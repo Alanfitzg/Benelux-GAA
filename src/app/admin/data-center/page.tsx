@@ -67,6 +67,7 @@ const reports: ReportCard[] = [
       "Monthly submission trends",
       "Top interested clubs",
       "Team size preferences",
+      "Team type breakdown",
       "Status distribution",
       "Geographic breakdown",
     ],
@@ -777,6 +778,11 @@ function InterestTrendsReport({ data }: { data: Record<string, unknown> }) {
     status: string;
     count: number;
   }[];
+  const teamTypeDistribution = data.teamTypeDistribution as {
+    type: string;
+    label: string;
+    count: number;
+  }[];
 
   return (
     <div className="space-y-6">
@@ -837,6 +843,16 @@ function InterestTrendsReport({ data }: { data: Record<string, unknown> }) {
           />
         </div>
       </div>
+
+      {(teamTypeDistribution || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Team Type Distribution</h3>
+          <DataTable
+            headers={["Team Type", "Count"]}
+            rows={(teamTypeDistribution || []).map((t) => [t.label, t.count])}
+          />
+        </div>
+      )}
     </div>
   );
 }

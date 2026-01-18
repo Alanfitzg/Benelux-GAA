@@ -357,26 +357,26 @@ export default function SimpleClubSelector({
   };
 
   return (
-    <div className="space-y-5 md:space-y-8">
+    <div className="space-y-3 md:space-y-4">
       {/* Header */}
       <div
-        className="bg-emerald-50/80 rounded-2xl p-4 md:p-6 border border-emerald-200 shadow-sm"
+        className="bg-emerald-50/80 rounded-xl p-3 md:p-4 border border-emerald-200 shadow-sm"
         style={{ borderLeft: "4px solid #1e40af" }}
       >
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
-              <Building className="w-5 h-5 text-primary" />
+            <h3 className="text-sm md:text-base font-bold text-gray-900 mb-0.5 flex items-center gap-2">
+              <Building className="w-4 h-4 text-primary" />
               Club Membership
             </h3>
-            <p className="text-sm text-gray-700">
+            <p className="text-xs md:text-sm text-gray-700">
               Connect with your GAA community worldwide
             </p>
           </div>
           {isClubMember === true && (
             <div className="text-right">
-              <div className="text-sm text-gray-400 mb-1">Progress</div>
-              <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div className="text-xs text-gray-400 mb-0.5">Progress</div>
+              <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                 <motion.div
                   className="h-full bg-gradient-to-r from-green-500 to-emerald-500"
                   initial={{ width: 0 }}
@@ -384,7 +384,9 @@ export default function SimpleClubSelector({
                   transition={{ duration: 0.5 }}
                 />
               </div>
-              <div className="text-xs text-gray-400 mt-1">{getProgress()}%</div>
+              <div className="text-xs text-gray-400 mt-0.5">
+                {getProgress()}%
+              </div>
             </div>
           )}
         </div>
@@ -394,29 +396,27 @@ export default function SimpleClubSelector({
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white rounded-2xl border-2 border-gray-100 p-4 md:p-6 shadow-sm"
+        className="bg-white rounded-xl border-2 border-gray-100 p-3 md:p-4 shadow-sm"
       >
-        <label className="block text-base md:text-lg font-semibold text-gray-800 mb-4 md:mb-6">
+        <label className="block text-sm md:text-base font-semibold text-gray-800 mb-3 md:mb-4">
           Are you currently a member of a GAA club?
         </label>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+        <div className="grid grid-cols-2 gap-2 md:gap-3">
           <motion.button
             type="button"
             onClick={() => handleClubMemberToggle(true)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className={`relative overflow-hidden p-4 md:p-5 rounded-xl font-medium transition-all duration-300 ${
+            className={`relative overflow-hidden p-3 md:p-4 rounded-lg font-medium transition-all duration-300 ${
               isClubMember === true
                 ? "bg-green-600 text-white shadow-lg shadow-green-200"
                 : "bg-gray-50 border-2 border-gray-200 text-gray-700 hover:border-green-300 hover:bg-green-50"
             }`}
           >
-            <div className="flex items-center justify-center gap-2 md:gap-3">
-              <CheckCircle className="w-5 h-5 md:w-6 md:h-6" />
-              <span className="text-sm md:text-base">
-                Yes, I&apos;m a member
-              </span>
+            <div className="flex items-center justify-center gap-2">
+              <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="text-xs md:text-sm">Yes, I&apos;m a member</span>
             </div>
           </motion.button>
 
@@ -425,15 +425,15 @@ export default function SimpleClubSelector({
             onClick={() => handleClubMemberToggle(false)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className={`relative overflow-hidden p-4 md:p-5 rounded-xl font-medium transition-all duration-300 ${
+            className={`relative overflow-hidden p-3 md:p-4 rounded-lg font-medium transition-all duration-300 ${
               isClubMember === false
                 ? "bg-gradient-to-r from-gray-500 to-gray-600 text-white shadow-lg shadow-gray-200"
                 : "bg-gray-50 border-2 border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-100"
             }`}
           >
-            <div className="flex items-center justify-center gap-2 md:gap-3">
-              <Users className="w-5 h-5 md:w-6 md:h-6" />
-              <span className="text-sm md:text-base">No, not currently</span>
+            <div className="flex items-center justify-center gap-2">
+              <Users className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="text-xs md:text-sm">No, not currently</span>
             </div>
           </motion.button>
         </div>
@@ -445,13 +445,13 @@ export default function SimpleClubSelector({
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
-              className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl"
+              className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg"
             >
-              <div className="flex items-start gap-3">
-                <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <div className="flex items-start gap-2">
+                <Info className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-medium text-blue-900">Perfect!</p>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <p className="text-xs font-medium text-blue-900">Perfect!</p>
+                  <p className="text-xs text-blue-700 mt-0.5">
                     You can still join PlayAway as an individual and connect
                     with GAA communities worldwide.
                   </p>
@@ -470,26 +470,26 @@ export default function SimpleClubSelector({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.4 }}
-            className="bg-blue-900 rounded-2xl p-4 md:p-8 shadow-2xl border border-blue-700"
+            className="bg-blue-900 rounded-xl p-3 md:p-5 shadow-2xl border border-blue-700"
           >
-            <div className="space-y-6">
+            <div className="space-y-3 md:space-y-4">
               {/* Progress Steps */}
-              <div className="mb-6">
-                <div className="flex items-center space-x-2 overflow-x-auto py-4">
+              <div className="mb-3">
+                <div className="flex items-center space-x-2 overflow-x-auto py-2">
                   {/* Step 1: International Unit */}
                   <div
-                    className={`flex items-center space-x-2 ${selectedUnit ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
+                    className={`flex items-center space-x-1.5 ${selectedUnit ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shadow-lg ${
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shadow-lg ${
                         selectedUnit
                           ? "bg-green-600 text-white"
                           : "bg-blue-600 text-white"
                       }`}
                     >
-                      {selectedUnit ? <CheckCircle className="w-4 h-4" /> : "1"}
+                      {selectedUnit ? <CheckCircle className="w-3 h-3" /> : "1"}
                     </div>
-                    <span className="font-semibold whitespace-nowrap text-white drop-shadow-sm">
+                    <span className="font-medium text-sm whitespace-nowrap text-white drop-shadow-sm">
                       International Unit
                     </span>
                   </div>
@@ -497,51 +497,51 @@ export default function SimpleClubSelector({
                   {/* Conditional Steps based on Ireland vs Others */}
                   {selectedUnit && (
                     <>
-                      <ChevronRight className="w-4 h-4 text-white opacity-60" />
+                      <ChevronRight className="w-3 h-3 text-white opacity-60" />
                       {isIreland() ? (
                         <>
                           {/* Ireland Flow: Province → County → Club */}
                           <div
-                            className={`flex items-center space-x-2 ${selectedProvince ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
+                            className={`flex items-center space-x-1.5 ${selectedProvince ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
                           >
                             <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shadow-lg ${
+                              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shadow-lg ${
                                 selectedProvince
                                   ? "bg-green-600 text-white"
                                   : "bg-blue-600 text-white"
                               }`}
                             >
                               {selectedProvince ? (
-                                <CheckCircle className="w-4 h-4" />
+                                <CheckCircle className="w-3 h-3" />
                               ) : (
                                 "2"
                               )}
                             </div>
-                            <span className="font-semibold whitespace-nowrap text-white drop-shadow-sm">
+                            <span className="font-medium text-sm whitespace-nowrap text-white drop-shadow-sm">
                               Province
                             </span>
                           </div>
 
                           {selectedProvince && (
                             <>
-                              <ChevronRight className="w-4 h-4 text-white opacity-60" />
+                              <ChevronRight className="w-3 h-3 text-white opacity-60" />
                               <div
-                                className={`flex items-center space-x-2 ${selectedCounty ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
+                                className={`flex items-center space-x-1.5 ${selectedCounty ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
                               >
                                 <div
-                                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shadow-lg ${
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shadow-lg ${
                                     selectedCounty
                                       ? "bg-green-600 text-white"
                                       : "bg-blue-600 text-white"
                                   }`}
                                 >
                                   {selectedCounty ? (
-                                    <CheckCircle className="w-4 h-4" />
+                                    <CheckCircle className="w-3 h-3" />
                                   ) : (
                                     "3"
                                   )}
                                 </div>
-                                <span className="font-semibold whitespace-nowrap text-white drop-shadow-sm">
+                                <span className="font-medium text-sm whitespace-nowrap text-white drop-shadow-sm">
                                   County
                                 </span>
                               </div>
@@ -550,24 +550,24 @@ export default function SimpleClubSelector({
 
                           {selectedCounty && (
                             <>
-                              <ChevronRight className="w-4 h-4 text-white opacity-60" />
+                              <ChevronRight className="w-3 h-3 text-white opacity-60" />
                               <div
-                                className={`flex items-center space-x-2 ${selectedClub ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
+                                className={`flex items-center space-x-1.5 ${selectedClub ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
                               >
                                 <div
-                                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
                                     selectedClub
                                       ? "bg-green-600 text-white"
                                       : "bg-blue-600 text-white"
                                   }`}
                                 >
                                   {selectedClub ? (
-                                    <CheckCircle className="w-4 h-4" />
+                                    <CheckCircle className="w-3 h-3" />
                                   ) : (
                                     "4"
                                   )}
                                 </div>
-                                <span className="font-semibold whitespace-nowrap text-white drop-shadow-sm">
+                                <span className="font-medium text-sm whitespace-nowrap text-white drop-shadow-sm">
                                   Club
                                 </span>
                               </div>
@@ -578,10 +578,10 @@ export default function SimpleClubSelector({
                         <>
                           {/* Other Units Flow: Country → Club */}
                           <div
-                            className={`flex items-center space-x-2 ${selectedCountry ? "text-green-400 drop-shadow-sm" : selectedUnit ? "text-blue-400 drop-shadow-sm" : "text-slate-400"}`}
+                            className={`flex items-center space-x-1.5 ${selectedCountry ? "text-green-400 drop-shadow-sm" : selectedUnit ? "text-blue-400 drop-shadow-sm" : "text-slate-400"}`}
                           >
                             <div
-                              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium shadow-lg ${
+                              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium shadow-lg ${
                                 selectedCountry
                                   ? "bg-green-600 text-white"
                                   : selectedUnit
@@ -590,36 +590,36 @@ export default function SimpleClubSelector({
                               }`}
                             >
                               {selectedCountry ? (
-                                <CheckCircle className="w-4 h-4" />
+                                <CheckCircle className="w-3 h-3" />
                               ) : (
                                 "2"
                               )}
                             </div>
-                            <span className="font-semibold whitespace-nowrap text-white drop-shadow-sm">
+                            <span className="font-medium text-sm whitespace-nowrap text-white drop-shadow-sm">
                               Country
                             </span>
                           </div>
 
                           {selectedCountry && (
                             <>
-                              <ChevronRight className="w-4 h-4 text-white opacity-60" />
+                              <ChevronRight className="w-3 h-3 text-white opacity-60" />
                               <div
-                                className={`flex items-center space-x-2 ${selectedClub ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
+                                className={`flex items-center space-x-1.5 ${selectedClub ? "text-green-400 drop-shadow-sm" : "text-blue-400 drop-shadow-sm"}`}
                               >
                                 <div
-                                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
                                     selectedClub
                                       ? "bg-green-600 text-white"
                                       : "bg-blue-600 text-white"
                                   }`}
                                 >
                                   {selectedClub ? (
-                                    <CheckCircle className="w-4 h-4" />
+                                    <CheckCircle className="w-3 h-3" />
                                   ) : (
                                     "3"
                                   )}
                                 </div>
-                                <span className="font-semibold whitespace-nowrap text-white drop-shadow-sm">
+                                <span className="font-medium text-sm whitespace-nowrap text-white drop-shadow-sm">
                                   Club
                                 </span>
                               </div>
@@ -636,41 +636,39 @@ export default function SimpleClubSelector({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="bg-white rounded-xl border border-gray-200 p-3 md:p-5"
+                className="bg-white rounded-lg border border-gray-200 p-2.5 md:p-3"
               >
-                <label className="block text-sm md:text-base font-semibold text-gray-800 mb-2 md:mb-3">
+                <label className="block text-xs md:text-sm font-semibold text-gray-800 mb-1.5 md:mb-2">
                   Step 1: Select International Unit
                 </label>
                 {loadingUnits ? (
-                  <div className="flex items-center justify-center py-4 md:py-6">
-                    <Loader className="w-5 h-5 md:w-6 md:h-6 animate-spin text-blue-500" />
-                    <span className="ml-2 text-sm md:text-base text-gray-600">
+                  <div className="flex items-center justify-center py-3">
+                    <Loader className="w-4 h-4 animate-spin text-blue-500" />
+                    <span className="ml-2 text-xs text-gray-600">
                       Loading...
                     </span>
                   </div>
                 ) : (
-                  <div className="space-y-2">
-                    <select
-                      value={selectedUnit || ""}
-                      onChange={(e) => setSelectedUnit(e.target.value || null)}
-                      className="w-full px-4 py-3 text-sm border-2 border-gray-200 rounded-xl bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all appearance-none touch-manipulation"
-                      style={{
-                        backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                        backgroundPosition: "right 0.75rem center",
-                        backgroundRepeat: "no-repeat",
-                        backgroundSize: "1.5em 1.5em",
-                        paddingRight: "3rem",
-                        minHeight: "48px", // Ensure minimum touch target size on mobile
-                      }}
-                    >
-                      <option value="">Select International Unit...</option>
-                      {units.map((unit) => (
-                        <option key={unit.id} value={unit.id}>
-                          {unit.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <select
+                    value={selectedUnit || ""}
+                    onChange={(e) => setSelectedUnit(e.target.value || null)}
+                    className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg bg-white text-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all appearance-none touch-manipulation"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                      backgroundPosition: "right 0.5rem center",
+                      backgroundRepeat: "no-repeat",
+                      backgroundSize: "1.25em 1.25em",
+                      paddingRight: "2.5rem",
+                      minHeight: "44px",
+                    }}
+                  >
+                    <option value="">Select International Unit...</option>
+                    {units.map((unit) => (
+                      <option key={unit.id} value={unit.id}>
+                        {unit.name}
+                      </option>
+                    ))}
+                  </select>
                 )}
               </motion.div>
 
@@ -680,47 +678,45 @@ export default function SimpleClubSelector({
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-xl border border-gray-200 p-3 md:p-5"
+                    className="bg-white rounded-lg border border-gray-200 p-2.5 md:p-3"
                   >
-                    <label className="block text-sm md:text-base font-semibold text-gray-800 mb-2 md:mb-3">
+                    <label className="block text-xs md:text-sm font-semibold text-gray-800 mb-1.5 md:mb-2">
                       Step 2: Select Country
                     </label>
                     {loadingCountries ? (
-                      <div className="flex items-center justify-center py-8">
-                        <Loader className="w-6 h-6 animate-spin text-green-500" />
-                        <span className="ml-2 text-gray-600">
+                      <div className="flex items-center justify-center py-3">
+                        <Loader className="w-4 h-4 animate-spin text-green-500" />
+                        <span className="ml-2 text-xs text-gray-600">
                           Loading countries...
                         </span>
                       </div>
                     ) : countries.length === 0 ? (
-                      <div className="text-center py-8 text-gray-400">
+                      <div className="text-center py-4 text-xs text-gray-400">
                         No countries available for this region
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <select
-                          value={selectedCountry || ""}
-                          onChange={(e) =>
-                            setSelectedCountry(e.target.value || null)
-                          }
-                          className="w-full px-4 py-3 text-sm border-2 border-gray-200 rounded-xl bg-white text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all appearance-none touch-manipulation"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                            backgroundPosition: "right 0.75rem center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "1.5em 1.5em",
-                            paddingRight: "3rem",
-                            minHeight: "48px",
-                          }}
-                        >
-                          <option value="">Select Country...</option>
-                          {countries.map((country) => (
-                            <option key={country.id} value={country.id}>
-                              {country.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <select
+                        value={selectedCountry || ""}
+                        onChange={(e) =>
+                          setSelectedCountry(e.target.value || null)
+                        }
+                        className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg bg-white text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all appearance-none touch-manipulation"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                          backgroundPosition: "right 0.5rem center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundSize: "1.25em 1.25em",
+                          paddingRight: "2.5rem",
+                          minHeight: "44px",
+                        }}
+                      >
+                        <option value="">Select Country...</option>
+                        {countries.map((country) => (
+                          <option key={country.id} value={country.id}>
+                            {country.name}
+                          </option>
+                        ))}
+                      </select>
                     )}
                   </motion.div>
                 )}
@@ -732,47 +728,45 @@ export default function SimpleClubSelector({
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-xl border border-gray-200 p-3 md:p-5"
+                    className="bg-white rounded-lg border border-gray-200 p-2.5 md:p-3"
                   >
-                    <label className="block text-sm md:text-base font-semibold text-gray-800 mb-2 md:mb-3">
+                    <label className="block text-xs md:text-sm font-semibold text-gray-800 mb-1.5 md:mb-2">
                       Step 2: Select Province
                     </label>
                     {loadingProvinces ? (
-                      <div className="flex items-center justify-center py-8">
-                        <Loader className="w-6 h-6 animate-spin text-green-500" />
-                        <span className="ml-2 text-gray-600">
+                      <div className="flex items-center justify-center py-3">
+                        <Loader className="w-4 h-4 animate-spin text-green-500" />
+                        <span className="ml-2 text-xs text-gray-600">
                           Loading provinces...
                         </span>
                       </div>
                     ) : provinces.length === 0 ? (
-                      <div className="text-center py-8 text-gray-400">
+                      <div className="text-center py-4 text-xs text-gray-400">
                         No provinces available
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <select
-                          value={selectedProvince || ""}
-                          onChange={(e) =>
-                            setSelectedProvince(e.target.value || null)
-                          }
-                          className="w-full px-4 py-3 text-sm border-2 border-gray-200 rounded-xl bg-white text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all appearance-none touch-manipulation"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                            backgroundPosition: "right 0.75rem center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "1.5em 1.5em",
-                            paddingRight: "3rem",
-                            minHeight: "48px",
-                          }}
-                        >
-                          <option value="">Select Province...</option>
-                          {provinces.map((province) => (
-                            <option key={province.id} value={province.code}>
-                              {province.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <select
+                        value={selectedProvince || ""}
+                        onChange={(e) =>
+                          setSelectedProvince(e.target.value || null)
+                        }
+                        className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg bg-white text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all appearance-none touch-manipulation"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                          backgroundPosition: "right 0.5rem center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundSize: "1.25em 1.25em",
+                          paddingRight: "2.5rem",
+                          minHeight: "44px",
+                        }}
+                      >
+                        <option value="">Select Province...</option>
+                        {provinces.map((province) => (
+                          <option key={province.id} value={province.code}>
+                            {province.name}
+                          </option>
+                        ))}
+                      </select>
                     )}
                   </motion.div>
                 )}
@@ -784,47 +778,45 @@ export default function SimpleClubSelector({
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-xl border border-gray-200 p-3 md:p-5"
+                    className="bg-white rounded-lg border border-gray-200 p-2.5 md:p-3"
                   >
-                    <label className="block text-sm md:text-base font-semibold text-gray-800 mb-2 md:mb-3">
+                    <label className="block text-xs md:text-sm font-semibold text-gray-800 mb-1.5 md:mb-2">
                       Step 3: Select County
                     </label>
                     {loadingCounties ? (
-                      <div className="flex items-center justify-center py-8">
-                        <Loader className="w-6 h-6 animate-spin text-orange-500" />
-                        <span className="ml-2 text-gray-600">
+                      <div className="flex items-center justify-center py-3">
+                        <Loader className="w-4 h-4 animate-spin text-orange-500" />
+                        <span className="ml-2 text-xs text-gray-600">
                           Loading counties...
                         </span>
                       </div>
                     ) : counties.length === 0 ? (
-                      <div className="text-center py-8 text-gray-400">
+                      <div className="text-center py-4 text-xs text-gray-400">
                         No counties available for this province
                       </div>
                     ) : (
-                      <div className="space-y-3">
-                        <select
-                          value={selectedCounty || ""}
-                          onChange={(e) =>
-                            setSelectedCounty(e.target.value || null)
-                          }
-                          className="w-full px-4 py-3 text-sm border-2 border-gray-200 rounded-xl bg-white text-gray-900 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all appearance-none touch-manipulation"
-                          style={{
-                            backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
-                            backgroundPosition: "right 0.75rem center",
-                            backgroundRepeat: "no-repeat",
-                            backgroundSize: "1.5em 1.5em",
-                            paddingRight: "3rem",
-                            minHeight: "48px",
-                          }}
-                        >
-                          <option value="">Select County...</option>
-                          {counties.map((county) => (
-                            <option key={county.id} value={county.code}>
-                              {county.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
+                      <select
+                        value={selectedCounty || ""}
+                        onChange={(e) =>
+                          setSelectedCounty(e.target.value || null)
+                        }
+                        className="w-full px-3 py-2.5 text-sm border-2 border-gray-200 rounded-lg bg-white text-gray-900 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all appearance-none touch-manipulation"
+                        style={{
+                          backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                          backgroundPosition: "right 0.5rem center",
+                          backgroundRepeat: "no-repeat",
+                          backgroundSize: "1.25em 1.25em",
+                          paddingRight: "2.5rem",
+                          minHeight: "44px",
+                        }}
+                      >
+                        <option value="">Select County...</option>
+                        {counties.map((county) => (
+                          <option key={county.id} value={county.code}>
+                            {county.name}
+                          </option>
+                        ))}
+                      </select>
                     )}
                   </motion.div>
                 )}
@@ -836,50 +828,50 @@ export default function SimpleClubSelector({
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-xl border border-gray-200 p-3 md:p-5"
+                    className="bg-white rounded-lg border border-gray-200 p-2.5 md:p-3"
                   >
-                    <label className="block text-sm md:text-base font-semibold text-gray-800 mb-2 md:mb-3">
+                    <label className="block text-xs md:text-sm font-semibold text-gray-800 mb-1.5 md:mb-2">
                       Step {isIreland() ? "4" : "3"}: Find Your Club
                     </label>
 
                     {loadingClubs ? (
-                      <div className="flex items-center justify-center py-12">
-                        <Loader className="w-6 h-6 animate-spin text-purple-500 mr-2" />
-                        <span className="text-gray-600">Loading clubs...</span>
+                      <div className="flex items-center justify-center py-6">
+                        <Loader className="w-4 h-4 animate-spin text-purple-500 mr-2" />
+                        <span className="text-xs text-gray-600">
+                          Loading clubs...
+                        </span>
                       </div>
                     ) : clubs.length > 0 ? (
                       <>
                         {/* Search Input */}
-                        <div className="relative mb-6">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <div className="relative mb-3">
+                          <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                           <input
                             type="text"
                             value={clubSearchTerm}
                             onChange={(e) => setClubSearchTerm(e.target.value)}
-                            placeholder="Search clubs by name or location..."
-                            className="w-full pl-10 pr-4 py-3 border-2 border-gray-200 rounded-xl bg-white text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all"
+                            placeholder="Search clubs..."
+                            className="w-full pl-8 pr-3 py-2 text-sm border-2 border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-400 focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all"
                           />
                         </div>
 
                         {/* Club Count (when more than 5) */}
                         {filteredClubs.length > 5 && (
-                          <div className="mb-4 p-2.5 bg-blue-50 border border-blue-200 rounded-lg">
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-                              <div className="flex items-center gap-1.5">
-                                <Building className="w-4 h-4 text-blue-700" />
-                                <span className="text-sm font-medium text-blue-700">
-                                  {filteredClubs.length} clubs found
-                                </span>
-                              </div>
-                              <span className="text-xs text-blue-600 sm:before:content-['•'] sm:before:mr-2">
-                                Scroll to see all
+                          <div className="mb-2 p-2 bg-blue-50 border border-blue-200 rounded-md">
+                            <div className="flex items-center gap-1.5">
+                              <Building className="w-3.5 h-3.5 text-blue-700" />
+                              <span className="text-xs font-medium text-blue-700">
+                                {filteredClubs.length} clubs found
+                              </span>
+                              <span className="text-xs text-blue-600">
+                                • Scroll to see all
                               </span>
                             </div>
                           </div>
                         )}
 
                         {/* Club Results */}
-                        <div className="space-y-3 max-h-80 overflow-y-auto">
+                        <div className="space-y-1.5 max-h-48 overflow-y-auto">
                           {filteredClubs.map((club) => (
                             <motion.button
                               key={club.id}
@@ -887,25 +879,25 @@ export default function SimpleClubSelector({
                               onClick={() => handleClubSelection(club.id)}
                               whileHover={{ scale: 1.01 }}
                               whileTap={{ scale: 0.99 }}
-                              className={`w-full p-2 md:p-3 rounded-lg border-2 text-left transition-all ${
+                              className={`w-full p-2 rounded-md border-2 text-left transition-all ${
                                 selectedClub === club.id
-                                  ? "border-purple-500 bg-purple-50 shadow-md"
+                                  ? "border-purple-500 bg-purple-50 shadow-sm"
                                   : "border-gray-200 hover:border-purple-500 hover:bg-purple-50"
                               }`}
                             >
                               <div className="flex items-center justify-between gap-2">
                                 <div className="flex-1 min-w-0">
-                                  <h4 className="font-semibold text-sm md:text-base text-gray-900 truncate">
+                                  <h4 className="font-medium text-xs md:text-sm text-gray-900 truncate">
                                     {club.name}
                                   </h4>
                                   {club.location && (
-                                    <p className="text-xs md:text-sm text-gray-500 mt-0.5 truncate">
+                                    <p className="text-xs text-gray-500 truncate">
                                       {club.location.split(",")[0].trim()}
                                     </p>
                                   )}
                                 </div>
                                 {selectedClub === club.id && (
-                                  <CheckCircle className="w-5 h-5 text-purple-500 flex-shrink-0" />
+                                  <CheckCircle className="w-4 h-4 text-purple-500 flex-shrink-0" />
                                 )}
                               </div>
                             </motion.button>
@@ -913,27 +905,20 @@ export default function SimpleClubSelector({
                         </div>
 
                         {filteredClubs.length === 0 && clubSearchTerm && (
-                          <div className="text-center py-8">
-                            <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                            <p className="text-gray-600">
+                          <div className="text-center py-4">
+                            <Search className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                            <p className="text-xs text-gray-600">
                               No clubs found matching &quot;{clubSearchTerm}
                               &quot;
-                            </p>
-                            <p className="text-sm text-gray-500 mt-1">
-                              Try a different search term or add your club
-                              manually
                             </p>
                           </div>
                         )}
                       </>
                     ) : (
-                      <div className="text-center py-12">
-                        <Building className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                        <p className="text-gray-600 mb-2">
+                      <div className="text-center py-6">
+                        <Building className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                        <p className="text-xs text-gray-600">
                           No clubs found in this area
-                        </p>
-                        <p className="text-sm text-gray-400">
-                          Help us expand our directory by adding your club
                         </p>
                       </div>
                     )}
@@ -947,11 +932,11 @@ export default function SimpleClubSelector({
                         }}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        className="w-full mt-4 p-4 border-2 border-dashed border-gray-300 rounded-xl text-gray-600 hover:border-purple-500 hover:text-purple-600 transition-all"
+                        className="w-full mt-2 p-2.5 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-purple-500 hover:text-purple-600 transition-all"
                       >
-                        <div className="flex items-center justify-center gap-2">
-                          <Plus className="w-5 h-5" />
-                          <span className="font-medium">
+                        <div className="flex items-center justify-center gap-1.5">
+                          <Plus className="w-4 h-4" />
+                          <span className="text-xs font-medium">
                             Can&apos;t find your club? Add it here
                           </span>
                         </div>
@@ -968,33 +953,33 @@ export default function SimpleClubSelector({
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-white border-2 border-green-400 rounded-xl p-3 shadow-sm"
+                    className="bg-white border-2 border-green-400 rounded-lg p-2 shadow-sm"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       {/* Crest with checkmark overlay */}
                       <div className="relative flex-shrink-0">
                         {selectedClubData.imageUrl ? (
                           <Image
                             src={selectedClubData.imageUrl}
                             alt={`${selectedClubData.name} crest`}
-                            width={48}
-                            height={48}
-                            className="w-12 h-12 rounded-lg object-cover border border-gray-200"
+                            width={36}
+                            height={36}
+                            className="w-9 h-9 rounded-md object-cover border border-gray-200"
                             unoptimized
                           />
                         ) : (
-                          <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
-                            <Building className="w-6 h-6 text-gray-400" />
+                          <div className="w-9 h-9 bg-gray-100 rounded-md flex items-center justify-center">
+                            <Building className="w-4 h-4 text-gray-400" />
                           </div>
                         )}
                         <div className="absolute -top-1 -right-1 bg-green-500 rounded-full p-0.5">
-                          <CheckCircle className="w-3.5 h-3.5 text-white" />
+                          <CheckCircle className="w-3 h-3 text-white" />
                         </div>
                       </div>
 
                       {/* Club info */}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 truncate text-sm">
+                        <h4 className="font-medium text-gray-900 truncate text-xs">
                           {selectedClubData.name}
                         </h4>
                         <p className="text-xs text-gray-500 truncate">
@@ -1013,7 +998,7 @@ export default function SimpleClubSelector({
                       {/* Verified badge */}
                       {selectedClubData.verificationStatus === "VERIFIED" && (
                         <div className="flex-shrink-0">
-                          <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                          <Star className="w-3.5 h-3.5 text-yellow-500 fill-current" />
                         </div>
                       )}
                     </div>

@@ -18,12 +18,22 @@ const allSections: Section[] = [
 
 interface ClubProfileNavProps {
   excludeSections?: string[];
+  isMainlandEurope?: boolean;
 }
 
 export default function ClubProfileNav({
   excludeSections = [],
+  isMainlandEurope = true,
 }: ClubProfileNavProps) {
-  const sections = allSections.filter((s) => !excludeSections.includes(s.id));
+  const sections = allSections
+    .filter((s) => !excludeSections.includes(s.id))
+    .map((s) => {
+      // Show "Travel Stats" instead of "Tournaments" for non-European clubs
+      if (s.id === "events" && !isMainlandEurope) {
+        return { ...s, label: "Travel Stats" };
+      }
+      return s;
+    });
   const [activeSection, setActiveSection] = useState<string>("events");
   const [showRightFade, setShowRightFade] = useState(false);
   const [showLeftFade, setShowLeftFade] = useState(false);

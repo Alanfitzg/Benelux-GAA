@@ -95,7 +95,7 @@ export default function ClubFriendsSection({
                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
                   />
                 </svg>
-                <span className="truncate">Friends of {clubName}</span>
+                <span className="truncate">International Friends</span>
               </h2>
             </div>
 
@@ -117,11 +117,11 @@ export default function ClubFriendsSection({
                   </svg>
                 </div>
                 <h3 className="text-sm font-medium text-gray-900 mb-1">
-                  No visiting clubs yet
+                  No international friends yet
                 </h3>
                 <p className="text-xs text-gray-500 max-w-xs mx-auto">
-                  When clubs visit for tournaments, they&apos;ll appear here -
-                  showcasing this club&apos;s global GAA friends network.
+                  When {clubName} travels abroad for tournaments, the clubs they
+                  visit will appear here.
                 </p>
               </div>
             ) : (

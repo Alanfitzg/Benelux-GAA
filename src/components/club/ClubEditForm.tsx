@@ -6,7 +6,6 @@ import Image from "next/image";
 import { toast } from "react-hot-toast";
 import { Upload, MapPin, Save, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import ClubVerificationCard from "./ClubVerificationCard";
 import ClubPhotoGallery from "./ClubPhotoGallery";
 
 interface Club {
@@ -39,6 +38,7 @@ interface Club {
   countryId?: string | null;
   internationalUnit?: { name: string } | null;
   country?: { name: string } | null;
+  isMainlandEurope?: boolean;
 }
 
 const TEAM_TYPES = [
@@ -223,9 +223,6 @@ export default function ClubEditForm({ club }: { club: Club }) {
 
   return (
     <div className="space-y-8">
-      {/* Verification Card */}
-      <ClubVerificationCard clubId={club.id} />
-
       {/* Edit Form */}
       <div className="bg-white rounded-lg shadow p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -339,28 +336,30 @@ export default function ClubEditForm({ club }: { club: Club }) {
             </div>
           </div>
 
-          {/* Club Bio */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              About Your Club
-            </h3>
+          {/* Club Bio - Only for mainland European clubs (hosts) */}
+          {club.isMainlandEurope && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Club Bio
-              </label>
-              <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Tell visitors about your club's history, achievements, and what makes it special..."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent resize-y"
-              />
-              <p className="text-xs text-gray-500 mt-1">
-                This will be displayed on your public club page.
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                About Your Club
+              </h3>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Club Bio
+                </label>
+                <textarea
+                  name="bio"
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  rows={4}
+                  placeholder="Tell visitors about your club's history, achievements, and what makes it special..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent resize-y"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  This will be displayed on your public club page.
+                </p>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Club Image */}
           <div>
@@ -401,21 +400,23 @@ export default function ClubEditForm({ club }: { club: Club }) {
             </div>
           </div>
 
-          {/* Photo Gallery */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Photo Gallery
-            </h3>
-            <p className="text-sm text-gray-500 mb-4">
-              Add up to 3 photos to showcase your club. These will appear on
-              your public profile.
-            </p>
-            <ClubPhotoGallery
-              clubId={club.id}
-              isAdmin={true}
-              isMainlandEurope={true}
-            />
-          </div>
+          {/* Photo Gallery - Only for European clubs */}
+          {club.isMainlandEurope && (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Photo Gallery
+              </h3>
+              <p className="text-sm text-gray-500 mb-4">
+                Add up to 3 photos to showcase your club. These will appear on
+                your public profile.
+              </p>
+              <ClubPhotoGallery
+                clubId={club.id}
+                isAdmin={true}
+                isMainlandEurope={true}
+              />
+            </div>
+          )}
 
           {/* Team Types */}
           <div>
@@ -499,20 +500,23 @@ export default function ClubEditForm({ club }: { club: Club }) {
               </div>
             </div>
 
-            <div className="mt-4">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="isContactWilling"
-                  checked={formData.isContactWilling}
-                  onChange={handleInputChange}
-                  className="rounded border-gray-300 text-primary focus:ring-primary"
-                />
-                <span className="text-sm text-gray-700">
-                  Contact person is willing to help visiting teams
-                </span>
-              </label>
-            </div>
+            {/* Only show for European clubs */}
+            {club.isMainlandEurope && (
+              <div className="mt-4">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    name="isContactWilling"
+                    checked={formData.isContactWilling}
+                    onChange={handleInputChange}
+                    className="rounded border-gray-300 text-primary focus:ring-primary"
+                  />
+                  <span className="text-sm text-gray-700">
+                    Contact person is willing to help visiting teams
+                  </span>
+                </label>
+              </div>
+            )}
           </div>
 
           {/* Social Media */}
@@ -593,122 +597,125 @@ export default function ClubEditForm({ club }: { club: Club }) {
             </div>
           </div>
 
-          {/* Visitor Availability */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">
-              Visitor Availability
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <label className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    name="isOpenToVisitors"
-                    checked={formData.isOpenToVisitors}
-                    onChange={handleInputChange}
-                    className="rounded border-gray-300 text-primary focus:ring-primary"
-                  />
-                  <span className="text-sm text-gray-700">
-                    Our club is open to hosting visiting teams
-                  </span>
-                </label>
-                <p className="text-xs text-gray-500 mt-1 ml-6">
-                  This helps travelling teams find clubs that welcome visitors.
-                </p>
-              </div>
-
-              {formData.isOpenToVisitors && (
+          {/* Visitor Availability - Only for European clubs */}
+          {club.isMainlandEurope && (
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                Visitor Availability
+              </h3>
+              <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Available Weekends
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      name="isOpenToVisitors"
+                      checked={formData.isOpenToVisitors}
+                      onChange={handleInputChange}
+                      className="rounded border-gray-300 text-primary focus:ring-primary"
+                    />
+                    <span className="text-sm text-gray-700">
+                      Our club is open to hosting visiting teams
+                    </span>
                   </label>
-                  <div className="space-y-2">
-                    {(formData.preferredWeekends as string[]).map(
-                      (date, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => {
-                              const newDates = [
-                                ...(formData.preferredWeekends as string[]),
-                              ];
-                              newDates[index] = e.target.value;
-                              setFormData((prev) => ({
-                                ...prev,
-                                preferredWeekends: newDates,
-                              }));
-                            }}
-                            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const newDates = (
-                                formData.preferredWeekends as string[]
-                              ).filter((_, i) => i !== index);
-                              setFormData((prev) => ({
-                                ...prev,
-                                preferredWeekends: newDates,
-                              }));
-                            }}
-                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
-                            title="Remove date"
-                          >
-                            <svg
-                              className="w-5 h-5"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      )
-                    )}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFormData((prev) => ({
-                          ...prev,
-                          preferredWeekends: [
-                            ...(prev.preferredWeekends as string[]),
-                            "",
-                          ],
-                        }));
-                      }}
-                      className="inline-flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-primary/10 rounded-md transition-colors"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
-                      Add Available Weekend
-                    </button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-2">
-                    Add dates when your club is available to host visiting
-                    teams.
+                  <p className="text-xs text-gray-500 mt-1 ml-6">
+                    This helps travelling teams find clubs that welcome
+                    visitors.
                   </p>
                 </div>
-              )}
+
+                {formData.isOpenToVisitors && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Available Weekends
+                    </label>
+                    <div className="space-y-2">
+                      {(formData.preferredWeekends as string[]).map(
+                        (date, index) => (
+                          <div key={index} className="flex items-center gap-2">
+                            <input
+                              type="date"
+                              value={date}
+                              onChange={(e) => {
+                                const newDates = [
+                                  ...(formData.preferredWeekends as string[]),
+                                ];
+                                newDates[index] = e.target.value;
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  preferredWeekends: newDates,
+                                }));
+                              }}
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const newDates = (
+                                  formData.preferredWeekends as string[]
+                                ).filter((_, i) => i !== index);
+                                setFormData((prev) => ({
+                                  ...prev,
+                                  preferredWeekends: newDates,
+                                }));
+                              }}
+                              className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors"
+                              title="Remove date"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        )
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData((prev) => ({
+                            ...prev,
+                            preferredWeekends: [
+                              ...(prev.preferredWeekends as string[]),
+                              "",
+                            ],
+                          }));
+                        }}
+                        className="inline-flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-primary/10 rounded-md transition-colors"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4v16m8-8H4"
+                          />
+                        </svg>
+                        Add Available Weekend
+                      </button>
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Add dates when your club is available to host visiting
+                      teams.
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t">

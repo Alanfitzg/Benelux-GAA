@@ -16,10 +16,12 @@ interface Testimonial {
 
 interface TestimonialCarouselProps {
   testimonials: Testimonial[];
+  isMainlandEurope?: boolean;
 }
 
 export default function TestimonialCarousel({
   testimonials,
+  isMainlandEurope = true,
 }: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -57,7 +59,7 @@ export default function TestimonialCarousel({
       <div className="flex items-center gap-2 mb-3 sm:mb-4">
         <Quote className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
         <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-          What Visitors Say
+          {isMainlandEurope ? "What Visitors Say" : "What Hosts Say"}
         </h3>
       </div>
 

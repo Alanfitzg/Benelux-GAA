@@ -44,7 +44,9 @@ export default function ClubTournamentsSection({
 }: ClubTournamentsSectionProps) {
   const [activeTab, setActiveTab] = useState<"upcoming" | "past">("upcoming");
 
-  const upcomingLabel = isMainlandEurope ? "Upcoming" : "Future";
+  const upcomingLabel = isMainlandEurope
+    ? "Upcoming"
+    : "Tournaments in the Future";
   const pastLabel = isMainlandEurope ? "Past" : "Attended";
 
   const formatDate = (date: Date | string) => {

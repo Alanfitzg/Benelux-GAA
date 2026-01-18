@@ -319,10 +319,12 @@ export default function ClubAdminDashboard({
             </div>
             <div>
               <h1 className="text-lg md:text-2xl font-bold text-white">
-                Command Center
+                Club Dashboard
               </h1>
               <p className="text-xs md:text-sm text-white/60">
-                {isIrishClub ? "Travelling Club" : "Your club management hub"}
+                {isIrishClub
+                  ? "Plan & manage your away trips"
+                  : "Your club management hub"}
               </p>
             </div>
           </div>
@@ -917,117 +919,235 @@ export default function ClubAdminDashboard({
             <div className="space-y-6">
               {isIrishClub ? (
                 /* Irish Club Overview - Trip Discovery Focus */
-                <div className="space-y-6">
-                  {/* Quick Actions for Irish Clubs */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-5">
+                  {/* Travel Stats Bar */}
+                  <div className="bg-white rounded-xl border border-gray-200 p-4">
+                    <div className="grid grid-cols-3 divide-x divide-gray-200">
+                      <div className="text-center px-2">
+                        <div className="text-2xl font-bold text-primary">
+                          {stats.applications?.filter(
+                            (a) =>
+                              a.status === "APPROVED" ||
+                              a.status === "COMPLETED"
+                          ).length || 0}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          Trips Completed
+                        </div>
+                      </div>
+                      <div className="text-center px-2">
+                        <div className="text-2xl font-bold text-primary">
+                          {stats.applications?.filter(
+                            (a) => a.status === "PENDING"
+                          ).length || 0}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          Pending Applications
+                        </div>
+                      </div>
+                      <div className="text-center px-2">
+                        <div className="text-2xl font-bold text-primary">
+                          {new Set(
+                            stats.applications
+                              ?.map((a) => a.hostClubId)
+                              .filter(Boolean)
+                          ).size || 0}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          Clubs Visited
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions - More Compact */}
+                  <div className="grid grid-cols-2 gap-3">
                     <Link
                       href="/events"
-                      className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-primary/40 hover:shadow-md transition-all group"
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/40 hover:shadow-sm transition-all group"
                     >
-                      <div className="bg-primary/10 rounded-full p-3 group-hover:bg-primary/20 transition-colors">
-                        <CalendarDays className="w-6 h-6 text-primary" />
+                      <div className="bg-primary/10 rounded-lg p-2 group-hover:bg-primary/20 transition-colors">
+                        <CalendarDays className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-sm font-semibold text-gray-900">
                           Browse Tournaments
                         </h3>
-                        <p className="text-sm text-gray-500">
-                          Find tournaments to attend across Europe
+                        <p className="text-xs text-gray-500">
+                          Find events across Europe
                         </p>
                       </div>
                     </Link>
                     <Link
                       href="/clubs"
-                      className="flex items-center gap-4 p-5 bg-white rounded-xl border border-gray-200 hover:border-primary/40 hover:shadow-md transition-all group"
+                      className="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200 hover:border-primary/40 hover:shadow-sm transition-all group"
                     >
-                      <div className="bg-primary/10 rounded-full p-3 group-hover:bg-primary/20 transition-colors">
-                        <MapPin className="w-6 h-6 text-primary" />
+                      <div className="bg-primary/10 rounded-lg p-2 group-hover:bg-primary/20 transition-colors">
+                        <MapPin className="w-5 h-5 text-primary" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-sm font-semibold text-gray-900">
                           Explore Clubs
                         </h3>
-                        <p className="text-sm text-gray-500">
-                          Discover GAA clubs hosting events abroad
+                        <p className="text-xs text-gray-500">
+                          Discover host clubs abroad
                         </p>
                       </div>
                     </Link>
                   </div>
 
-                  {/* Trip History Summary */}
-                  {stats.events.length > 0 ? (
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Your Trip History
-                      </h3>
-                      <div className="space-y-3">
-                        {stats.events.slice(0, 3).map((event) => {
-                          const isPast = new Date(event.startDate) < new Date();
-                          return (
-                            <div
-                              key={event.id}
-                              className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200"
+                  {/* Two Column Layout: Trips + Widgets */}
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    {/* Trip History - Main Column */}
+                    <div className="lg:col-span-2">
+                      {stats.applications && stats.applications.length > 0 ? (
+                        <div className="bg-white rounded-xl border border-gray-200 p-4">
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-sm font-semibold text-gray-900">
+                              Your Applications
+                            </h3>
+                            <button
+                              type="button"
+                              onClick={() => setActiveSection("applications")}
+                              className="text-xs text-primary hover:text-primary-dark font-medium"
                             >
-                              <div>
-                                <h4 className="font-medium text-gray-900">
-                                  {event.title}
-                                </h4>
-                                <p className="text-sm text-gray-500">
-                                  {event.location} •{" "}
-                                  {new Date(
-                                    event.startDate
-                                  ).toLocaleDateString()}
-                                </p>
-                              </div>
-                              <div className="flex flex-col items-end gap-1">
-                                <span
-                                  className={`px-3 py-1 text-xs font-medium rounded-full ${
-                                    isPast
-                                      ? "bg-gray-100 text-gray-600"
-                                      : "bg-green-100 text-green-700"
-                                  }`}
+                              View All →
+                            </button>
+                          </div>
+                          <div className="space-y-2">
+                            {stats.applications.slice(0, 3).map((app) => {
+                              const isPast =
+                                new Date(app.eventDate) < new Date();
+                              return (
+                                <div
+                                  key={app.id}
+                                  className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                                 >
-                                  {isPast ? "Completed" : "Upcoming"}
-                                </span>
-                                <span className="px-2 py-0.5 text-xs font-semibold text-white bg-amber-500 rounded-full">
-                                  Demo Date
-                                </span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {stats.events.length > 3 && (
-                        <button
-                          type="button"
-                          onClick={() => setActiveSection("events")}
-                          className="text-sm text-primary hover:text-primary-dark font-medium mt-3"
-                        >
-                          View all {stats.events.length} trips →
-                        </button>
+                                  <div className="min-w-0 flex-1">
+                                    <h4 className="font-medium text-gray-900 text-sm truncate">
+                                      {app.eventTitle}
+                                    </h4>
+                                    <p className="text-xs text-gray-500 truncate">
+                                      {app.hostClubName || app.eventLocation} •{" "}
+                                      {new Date(
+                                        app.eventDate
+                                      ).toLocaleDateString()}
+                                    </p>
+                                  </div>
+                                  <span
+                                    className={`ml-2 px-2 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
+                                      app.status === "APPROVED"
+                                        ? "bg-green-100 text-green-700"
+                                        : app.status === "PENDING"
+                                          ? "bg-yellow-100 text-yellow-700"
+                                          : app.status === "REJECTED"
+                                            ? "bg-red-100 text-red-700"
+                                            : isPast
+                                              ? "bg-gray-100 text-gray-600"
+                                              : "bg-blue-100 text-blue-700"
+                                    }`}
+                                  >
+                                    {app.status === "APPROVED"
+                                      ? "Approved"
+                                      : app.status === "PENDING"
+                                        ? "Pending"
+                                        : app.status === "REJECTED"
+                                          ? "Rejected"
+                                          : isPast
+                                            ? "Completed"
+                                            : app.status}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="bg-white rounded-xl border border-gray-200 p-6 text-center">
+                          <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <CalendarDays className="w-6 h-6 text-primary" />
+                          </div>
+                          <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                            No trips yet
+                          </h3>
+                          <p className="text-xs text-gray-500 mb-3">
+                            Start exploring tournaments to plan your first trip
+                            abroad.
+                          </p>
+                          <Link
+                            href="/events"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-sm rounded-lg hover:bg-primary-dark transition-colors"
+                          >
+                            <CalendarDays className="w-3.5 h-3.5" />
+                            Browse Tournaments
+                          </Link>
+                        </div>
                       )}
                     </div>
-                  ) : (
-                    <div className="text-center py-12 bg-gradient-to-br from-primary/5 to-blue-50 rounded-xl border border-primary/10">
-                      <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <CalendarDays className="w-8 h-8 text-primary" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                        No trips yet
-                      </h3>
-                      <p className="text-gray-600 mb-5 max-w-sm mx-auto">
-                        Start exploring tournaments to plan your first trip
-                        abroad.
-                      </p>
-                      <Link
-                        href="/events"
-                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-sm"
+
+                    {/* Sidebar Widgets */}
+                    <div className="space-y-4">
+                      {/* Friends Widget */}
+                      <button
+                        type="button"
+                        onClick={() => setActiveSection("friends")}
+                        className="w-full bg-white rounded-xl border border-gray-200 p-4 text-left hover:border-primary/40 hover:shadow-sm transition-all"
                       >
-                        <CalendarDays className="w-4 h-4" />
-                        Browse Tournaments
-                      </Link>
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4 text-purple-600" />
+                            <span className="text-sm font-semibold text-gray-900">
+                              International Friends
+                            </span>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400" />
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          Manage clubs you&apos;ve visited on trips
+                        </p>
+                      </button>
+
+                      {/* Testimonials Widget */}
+                      <button
+                        type="button"
+                        onClick={() => setActiveSection("testimonials")}
+                        className="w-full bg-white rounded-xl border border-gray-200 p-4 text-left hover:border-primary/40 hover:shadow-sm transition-all"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <MessageSquare className="w-4 h-4 text-blue-600" />
+                            <span className="text-sm font-semibold text-gray-900">
+                              Host Reviews
+                            </span>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400" />
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          Reviews from clubs you&apos;ve visited
+                        </p>
+                      </button>
+
+                      {/* Photos Widget */}
+                      <button
+                        type="button"
+                        onClick={() => setActiveSection("photos")}
+                        className="w-full bg-white rounded-xl border border-gray-200 p-4 text-left hover:border-primary/40 hover:shadow-sm transition-all"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <Image className="w-4 h-4 text-green-600" />
+                            <span className="text-sm font-semibold text-gray-900">
+                              Club Photos
+                            </span>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400" />
+                        </div>
+                        <p className="text-xs text-gray-500">
+                          Manage your club&apos;s photo gallery
+                        </p>
+                      </button>
                     </div>
-                  )}
+                  </div>
                 </div>
               ) : (
                 /* European Club Nerve Center */
@@ -1584,12 +1704,19 @@ export default function ClubAdminDashboard({
 
           {/* Testimonials Tab */}
           {activeSection === "testimonials" && (
-            <TestimonialsDashboardWidget clubId={clubId} />
+            <TestimonialsDashboardWidget
+              clubId={clubId}
+              isMainlandEurope={isMainlandEurope}
+            />
           )}
 
           {/* Friends Tab */}
           {activeSection === "friends" && (
-            <ClubFriendsManagement clubId={clubId} clubName={stats.club.name} />
+            <ClubFriendsManagement
+              clubId={clubId}
+              clubName={stats.club.name}
+              isMainlandEurope={isMainlandEurope}
+            />
           )}
 
           {/* Applications Tab - Irish Clubs Only */}

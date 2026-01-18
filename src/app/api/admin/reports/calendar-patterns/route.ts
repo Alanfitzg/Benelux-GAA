@@ -45,6 +45,7 @@ export async function GET() {
         dateRangeStart: true,
         dateRangeEnd: true,
         teamSize: true,
+        teamType: true,
         flexibility: true,
         createdAt: true,
         club: {
