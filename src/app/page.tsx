@@ -929,10 +929,10 @@ export default function HomePage() {
                           </div>
                         )}
 
-                        {/* Demo Notice Badge */}
+                        {/* Sample Event Badge */}
                         <div className="absolute bottom-3 left-3 z-10">
                           <span className="text-xs font-semibold text-white bg-amber-500 px-2 py-1 rounded-md shadow-sm">
-                            Demo Date
+                            Sample Event
                           </span>
                         </div>
                       </div>
@@ -1243,62 +1243,85 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      {testimonials.length > 0 && (
-        <section className="py-16 md:py-20 bg-white">
-          <div className="container mx-auto px-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="text-center mb-8"
-            >
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
-                What Clubs Are Saying
-              </h2>
-              <p className="text-base md:text-lg text-gray-600">
-                Hear from the GAA community
-              </p>
-            </motion.div>
+      <section className="py-16 md:py-20 bg-white">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center mb-8"
+          >
+            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2">
+              What Clubs Are Saying
+            </h2>
+            <p className="text-base md:text-lg text-gray-600">
+              Hear from the GAA community
+            </p>
+          </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={testimonial.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-50 rounded-xl p-6 border border-gray-200"
-                >
-                  <div className="mb-4">
-                    <svg
-                      className="w-8 h-8 text-primary/30"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-700 mb-4 italic">
-                    &quot;{testimonial.content}&quot;
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {(testimonials.length > 0
+              ? testimonials
+              : [
+                  {
+                    id: "placeholder-1",
+                    content:
+                      "PlayAway made organising our trip to Barcelona incredibly easy. The host club was welcoming and the tournament was brilliantly run. Can't wait for next year!",
+                    author: "Club Secretary",
+                    club: { name: "Sample Irish Club" },
+                  },
+                  {
+                    id: "placeholder-2",
+                    content:
+                      "We hosted teams from Ireland and the UK through PlayAway. The platform handled all the coordination and our visitors had a fantastic experience.",
+                    author: "Tournament Director",
+                    club: { name: "Sample European Club" },
+                  },
+                  {
+                    id: "placeholder-3",
+                    content:
+                      "A great way to discover GAA clubs across Europe. We found the perfect tournament for our underage teams and made lasting friendships abroad.",
+                    author: "Youth Coordinator",
+                    club: { name: "Sample GAA Club" },
+                  },
+                ]
+            ).map((testimonial, index) => (
+              <motion.div
+                key={testimonial.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-gray-50 rounded-xl p-6 border border-gray-200"
+              >
+                <div className="mb-4">
+                  <svg
+                    className="w-8 h-8 text-primary/30"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                  </svg>
+                </div>
+                <p className="text-gray-700 mb-4 italic">
+                  &quot;{testimonial.content}&quot;
+                </p>
+                <div className="border-t border-gray-200 pt-4">
+                  <p className="font-semibold text-gray-900">
+                    {testimonial.author}
                   </p>
-                  <div className="border-t border-gray-200 pt-4">
-                    <p className="font-semibold text-gray-900">
-                      {testimonial.author}
+                  {testimonial.club && (
+                    <p className="text-sm text-gray-600">
+                      {testimonial.club.name}
                     </p>
-                    {testimonial.club && (
-                      <p className="text-sm text-gray-600">
-                        {testimonial.club.name}
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Social Media */}
       <section className="py-12 md:py-16 bg-gray-50">
