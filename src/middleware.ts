@@ -1,37 +1,55 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   // Clone the request headers
-  const requestHeaders = new Headers(request.headers)
-  
+  const requestHeaders = new Headers(request.headers);
+
   // Get the host from the request
-  const host = request.headers.get('host') || ''
-  
+  const host = request.headers.get("host") || "";
+  const pathname = request.nextUrl.pathname;
+
+  // Handle GGE Social domain - rewrite to /gge routes
+  if (host.includes("gge-social.com")) {
+    // If not already on a /gge path, rewrite to /gge
+    if (
+      !pathname.startsWith("/gge") &&
+      !pathname.startsWith("/api/gge") &&
+      !pathname.startsWith("/_next") &&
+      !pathname.startsWith("/images")
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/gge${pathname === "/" ? "" : pathname}`;
+      return NextResponse.rewrite(url);
+    }
+  }
+
   // List of allowed domains
   const allowedDomains = [
-    'localhost:3000',
-    'localhost:3002', // Add port 3002 for development
-    'playawaygaa.com',
-    'www.playawaygaa.com',
-    'playgaaaway.com',
-    'www.playgaaaway.com',
+    "localhost:3000",
+    "localhost:3002", // Add port 3002 for development
+    "playawaygaa.com",
+    "www.playawaygaa.com",
+    "playgaaaway.com",
+    "www.playgaaaway.com",
+    "gge-social.com",
+    "www.gge-social.com",
     // Add your Vercel preview URLs if needed
-  ]
-  
+  ];
+
   // Set the NEXTAUTH_URL dynamically based on the current domain
-  if (allowedDomains.some(domain => host.includes(domain))) {
-    const protocol = request.url.startsWith('https') ? 'https' : 'http'
-    const authUrl = `${protocol}://${host}`
-    requestHeaders.set('x-nextauth-url', authUrl)
+  if (allowedDomains.some((domain) => host.includes(domain))) {
+    const protocol = request.url.startsWith("https") ? "https" : "http";
+    const authUrl = `${protocol}://${host}`;
+    requestHeaders.set("x-nextauth-url", authUrl);
   }
-  
+
   // Continue with the request
   return NextResponse.next({
     request: {
       headers: requestHeaders,
     },
-  })
+  });
 }
 
 export const config = {
@@ -43,6 +61,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder
      */
-    '/((?!_next/static|_next/image|favicon.ico|public).*)',
+    "/((?!_next/static|_next/image|favicon.ico|public).*)",
   ],
-}
+};
