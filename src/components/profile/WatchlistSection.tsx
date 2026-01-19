@@ -129,7 +129,7 @@ export default function WatchlistSection({
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between cursor-pointer hover:bg-gray-50 -m-2 p-2 rounded-lg transition-colors"
       >
-        <div>
+        <div className="relative group/watchlist">
           <h3
             className={`font-bold text-gray-900 flex items-center gap-2 ${compact ? "text-base" : "text-xl"}`}
           >
@@ -146,12 +146,30 @@ export default function WatchlistSection({
                 ({events.length})
               </span>
             )}
+            <svg
+              className="w-4 h-4 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
           </h3>
           <p
             className={`text-gray-500 text-left mt-0.5 ${compact ? "text-xs" : "text-sm"}`}
           >
             Events you want to keep an eye on
           </p>
+          <div className="absolute top-full left-0 mt-1 w-64 p-2.5 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover/watchlist:opacity-100 transition-opacity pointer-events-none z-50">
+            Your watchlist helps you track events you&apos;re interested in. Add
+            events from the event details page and they&apos;ll appear here for
+            easy access.
+          </div>
         </div>
         <svg
           className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ${isExpanded ? "rotate-180" : ""}`}

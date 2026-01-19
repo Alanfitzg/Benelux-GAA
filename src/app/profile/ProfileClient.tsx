@@ -513,9 +513,15 @@ export default function ProfileClient({ user }: ProfileClientProps) {
                             onClick={() =>
                               router.push(`/clubs/${club.id}?requestAdmin=true`)
                             }
-                            className="px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors hidden sm:block"
+                            className="group relative px-3 py-1.5 text-xs font-medium text-blue-700 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors hidden sm:block"
+                            title="Club admins can create & manage events, view registrations, and update club information"
                           >
                             Apply to become a club admin
+                            <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-center">
+                              Club admins can create & manage events, view
+                              registrations, and update club information. Your
+                              application will be reviewed by the current admin.
+                            </span>
                           </button>
                         )}
                         <Link

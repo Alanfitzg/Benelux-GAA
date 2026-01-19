@@ -16,6 +16,9 @@ import {
   Plane,
   ClipboardList,
   CheckCircle2,
+  Target,
+  CalendarDays,
+  Clock,
 } from "lucide-react";
 
 interface ReportCard {
@@ -33,6 +36,63 @@ interface ReportCard {
 }
 
 const reports: ReportCard[] = [
+  {
+    id: "market-coverage",
+    title: "Market Coverage & TAM",
+    narrativeQuestion: "What's our market reach?",
+    description:
+      "Total Addressable Market analysis showing club adoption funnel from database → activated → verified → hosting.",
+    icon: <Target className="w-5 h-5 text-white" />,
+    gradient: "from-purple-600 to-indigo-600",
+    endpoint: "/api/admin/reports/market-coverage",
+    type: "view",
+    includes: [
+      "Total clubs (TAM)",
+      "Activated clubs (has members)",
+      "Verified clubs (has admins)",
+      "Adoption funnel with percentages",
+      "Country & region breakdown",
+      "Monthly activation growth",
+    ],
+  },
+  {
+    id: "bank-holiday-analysis",
+    title: "Bank Holiday Analysis",
+    narrativeQuestion: "Bank holiday analysis",
+    description:
+      "Analysis of GAA travel demand around Irish & UK bank holidays - prime booking windows for tournaments.",
+    icon: <CalendarDays className="w-5 h-5 text-white" />,
+    gradient: "from-amber-500 to-orange-500",
+    endpoint: "/api/admin/reports/bank-holiday-analysis",
+    type: "view",
+    includes: [
+      "Top performing holiday weekends",
+      "Upcoming holiday opportunities",
+      "Holiday gap analysis (no events)",
+      "Monthly demand heatmap",
+      "2025 vs 2026 comparison",
+      "Downloadable holiday calendar",
+    ],
+  },
+  {
+    id: "booking-intelligence",
+    title: "Booking Intelligence",
+    narrativeQuestion: "When & where do teams book?",
+    description:
+      "Lead time analysis and travel relationship patterns - understand booking behaviour and club-to-country corridors.",
+    icon: <Clock className="w-5 h-5 text-white" />,
+    gradient: "from-cyan-500 to-blue-500",
+    endpoint: "/api/admin/reports/booking-intelligence",
+    type: "view",
+    includes: [
+      "Lead time by destination & team type",
+      "Booking window distribution",
+      "County → Country corridors",
+      "Repeat traveller clubs",
+      "Popular host clubs & return rates",
+      "Club pairings & relationships",
+    ],
+  },
   {
     id: "user-preferences",
     title: "Customer Preferences",
@@ -560,6 +620,12 @@ interface ReportContentProps {
 
 function ReportContent({ reportId, data }: ReportContentProps) {
   switch (reportId) {
+    case "market-coverage":
+      return <MarketCoverageReport data={data} />;
+    case "bank-holiday-analysis":
+      return <BankHolidayAnalysisReport data={data} />;
+    case "booking-intelligence":
+      return <BookingIntelligenceReport data={data} />;
     case "user-preferences":
       return <OnboardingSummaryReport data={data} />;
     case "interest-trends":
@@ -647,6 +713,994 @@ function DataTable({
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+function MarketCoverageReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalClubs: number;
+    activatedClubs: number;
+    verifiedClubs: number;
+    hostingClubs: number;
+    activationRate: number;
+    verificationRate: number;
+    overallVerificationRate: number;
+    hostingRate: number;
+    untappedClubs: number;
+    untappedPercentage: number;
+  };
+  const funnel = data.funnel as {
+    stage: string;
+    count: number;
+    percentage: number;
+  }[];
+  const regionBreakdown = data.regionBreakdown as {
+    irish: {
+      total: number;
+      activated: number;
+      verified: number;
+      activationRate: number;
+      verificationRate: number;
+    };
+    european: {
+      total: number;
+      activated: number;
+      verified: number;
+      activationRate: number;
+      verificationRate: number;
+    };
+  };
+  const countryBreakdown = data.countryBreakdown as {
+    country: string;
+    totalClubs: number;
+    activatedClubs: number;
+    verifiedClubs: number;
+    activationRate: number;
+    verificationRate: number;
+  }[];
+  const monthlyGrowth = data.monthlyGrowth as {
+    month: string;
+    newActivations: number;
+  }[];
+  const userStats = data.userStats as {
+    totalUsers: number;
+    totalMembers: number;
+    totalAdmins: number;
+    membershipRate: number;
+    adminRate: number;
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Key Headline Stats */}
+      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-6 text-white">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.totalClubs?.toLocaleString() || 0}
+            </p>
+            <p className="text-purple-200 text-sm">Total Clubs (TAM)</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">{summary?.activatedClubs || 0}</p>
+            <p className="text-purple-200 text-sm">
+              Activated ({summary?.activationRate || 0}%)
+            </p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">{summary?.verifiedClubs || 0}</p>
+            <p className="text-purple-200 text-sm">
+              Verified ({summary?.overallVerificationRate || 0}%)
+            </p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">{summary?.hostingClubs || 0}</p>
+            <p className="text-purple-200 text-sm">Hosting Events</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Adoption Funnel */}
+      <div>
+        <h3 className="font-semibold mb-3">Adoption Funnel</h3>
+        <div className="space-y-3">
+          {(funnel || []).map((stage, idx) => (
+            <div key={idx} className="relative">
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-sm font-medium text-gray-700">
+                  {stage.stage}
+                </span>
+                <span className="text-sm text-gray-600">
+                  {stage.count.toLocaleString()} ({stage.percentage}%)
+                </span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-4">
+                <div
+                  className={`h-4 rounded-full transition-all ${
+                    idx === 0
+                      ? "bg-purple-600"
+                      : idx === 1
+                        ? "bg-indigo-500"
+                        : idx === 2
+                          ? "bg-blue-500"
+                          : "bg-cyan-500"
+                  }`}
+                  style={{ width: `${stage.percentage}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Untapped Opportunity */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+        <h3 className="font-semibold text-amber-800 mb-2">
+          Untapped Opportunity
+        </h3>
+        <p className="text-3xl font-bold text-amber-600">
+          {summary?.untappedClubs?.toLocaleString() || 0} clubs
+        </p>
+        <p className="text-sm text-amber-700">
+          {summary?.untappedPercentage || 0}% of the market has not yet engaged
+          with PlayAway
+        </p>
+      </div>
+
+      {/* Region Breakdown */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <h3 className="font-semibold text-green-800 mb-3 flex items-center gap-2">
+            <span>🇮🇪</span> Ireland & UK (Travellers)
+          </h3>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p className="text-xl font-bold text-green-700">
+                {regionBreakdown?.irish?.total || 0}
+              </p>
+              <p className="text-xs text-green-600">Total</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-green-700">
+                {regionBreakdown?.irish?.activated || 0}
+              </p>
+              <p className="text-xs text-green-600">
+                Activated ({regionBreakdown?.irish?.activationRate || 0}%)
+              </p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-green-700">
+                {regionBreakdown?.irish?.verified || 0}
+              </p>
+              <p className="text-xs text-green-600">
+                Verified ({regionBreakdown?.irish?.verificationRate || 0}%)
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+            <span>🌍</span> European (Hosts)
+          </h3>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p className="text-xl font-bold text-blue-700">
+                {regionBreakdown?.european?.total || 0}
+              </p>
+              <p className="text-xs text-blue-600">Total</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-blue-700">
+                {regionBreakdown?.european?.activated || 0}
+              </p>
+              <p className="text-xs text-blue-600">
+                Activated ({regionBreakdown?.european?.activationRate || 0}%)
+              </p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-blue-700">
+                {regionBreakdown?.european?.verified || 0}
+              </p>
+              <p className="text-xs text-blue-600">
+                Verified ({regionBreakdown?.european?.verificationRate || 0}%)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* User Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+        <StatCard label="Total Users" value={userStats?.totalUsers || 0} />
+        <StatCard
+          label="Club Members"
+          value={userStats?.totalMembers || 0}
+          subtext={`${userStats?.membershipRate || 0}% of users`}
+        />
+        <StatCard
+          label="Club Admins"
+          value={userStats?.totalAdmins || 0}
+          subtext={`${userStats?.adminRate || 0}% of users`}
+        />
+        <StatCard
+          label="Conversion Rate"
+          value={`${summary?.verificationRate || 0}%`}
+          subtext="Activated → Verified"
+        />
+        <StatCard
+          label="Hosting Rate"
+          value={`${summary?.hostingRate || 0}%`}
+          subtext="Verified → Hosting"
+        />
+      </div>
+
+      {/* Country Breakdown */}
+      <div>
+        <h3 className="font-semibold mb-3">Coverage by Country</h3>
+        <DataTable
+          headers={[
+            "Country",
+            "Total",
+            "Activated",
+            "Verified",
+            "Activation %",
+            "Verification %",
+          ]}
+          rows={(countryBreakdown || []).map((c) => [
+            c.country,
+            c.totalClubs,
+            c.activatedClubs,
+            c.verifiedClubs,
+            `${c.activationRate}%`,
+            `${c.verificationRate}%`,
+          ])}
+        />
+      </div>
+
+      {/* Monthly Growth */}
+      {(monthlyGrowth || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Monthly Activation Growth</h3>
+          <DataTable
+            headers={["Month", "New Activations"]}
+            rows={(monthlyGrowth || []).map((m) => [m.month, m.newActivations])}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BankHolidayAnalysisReport({
+  data,
+}: {
+  data: Record<string, unknown>;
+}) {
+  const summary = data.summary as {
+    totalEventsOnHolidays: number;
+    totalRegistrationsOnHolidays: number;
+    holidayEventShare: number;
+    holidayRegistrationShare: number;
+    upcomingHolidaysWithEvents: number;
+    upcomingHolidaysWithoutEvents: number;
+    totalSourceMarketHolidays: number;
+  };
+  const topPerformingHolidays = data.topPerformingHolidays as {
+    holidayName: string;
+    country: string;
+    countryFlag: string;
+    date: string;
+    year: number;
+    eventsCount: number;
+    totalRegistrations: number;
+    averageRegistrations: number;
+  }[];
+  const upcomingOpportunities = data.upcomingOpportunities as {
+    holidayName: string;
+    country: string;
+    countryFlag: string;
+    date: string;
+    year: number;
+    eventsCount: number;
+    daysAway: number | null;
+  }[];
+  const holidayGaps = data.holidayGaps as {
+    holidayName: string;
+    country: string;
+    countryFlag: string;
+    date: string;
+    daysAway: number | null;
+  }[];
+  const heatmapData = data.heatmapData as {
+    month: string;
+    holidays: number;
+    events: number;
+    registrations: number;
+  }[];
+  const yearComparison = data.yearComparison as {
+    "2025": {
+      totalHolidays: number;
+      longWeekends: number;
+      eventsScheduled: number;
+    };
+    "2026": {
+      totalHolidays: number;
+      longWeekends: number;
+      eventsScheduled: number;
+    };
+  };
+  const allHolidayData = data.allHolidayData as {
+    holidayName: string;
+    country: string;
+    countryFlag: string;
+    formattedDate: string;
+    year: number;
+    eventsCount: number;
+    totalRegistrations: number;
+  }[];
+
+  const downloadCSV = () => {
+    const headers = [
+      "Holiday",
+      "Country",
+      "Date",
+      "Year",
+      "Events",
+      "Registrations",
+    ];
+    const rows = (allHolidayData || []).map((h) => [
+      h.holidayName,
+      h.country,
+      h.formattedDate,
+      h.year,
+      h.eventsCount,
+      h.totalRegistrations,
+    ]);
+    const csvContent = [headers, ...rows]
+      .map((row) => row.join(","))
+      .join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "bank-holiday-analysis.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Download Button */}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={downloadCSV}
+          className="flex items-center gap-2 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors text-sm font-medium"
+        >
+          <Download className="w-4 h-4" />
+          Download CSV
+        </button>
+      </div>
+
+      {/* Key Stats */}
+      <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-6 text-white">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.totalEventsOnHolidays || 0}
+            </p>
+            <p className="text-amber-100 text-sm">Events on Holidays</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.totalRegistrationsOnHolidays || 0}
+            </p>
+            <p className="text-amber-100 text-sm">Holiday Registrations</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.holidayEventShare || 0}%
+            </p>
+            <p className="text-amber-100 text-sm">Events on Holiday Windows</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.holidayRegistrationShare || 0}%
+            </p>
+            <p className="text-amber-100 text-sm">Registrations on Holidays</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Holiday Gaps - Priority Alert */}
+      {(holidayGaps || []).length > 0 && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <h3 className="font-semibold text-red-800 mb-3 flex items-center gap-2">
+            <span className="text-lg">⚠️</span> Holiday Gaps - No Events
+            Scheduled
+          </h3>
+          <p className="text-sm text-red-700 mb-3">
+            These upcoming Irish/UK bank holidays have no tournaments scheduled
+            - opportunity to attract travelling teams!
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+            {(holidayGaps || []).slice(0, 6).map((gap, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded p-2 border border-red-100 flex items-center gap-2"
+              >
+                <span>{gap.countryFlag}</span>
+                <div>
+                  <p className="text-sm font-medium text-gray-800">
+                    {gap.holidayName}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {new Date(gap.date).toLocaleDateString("en-IE", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                    {gap.daysAway !== null && ` • ${gap.daysAway} days away`}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Monthly Heatmap */}
+      <div>
+        <h3 className="font-semibold mb-3">2025 Holiday Demand Heatmap</h3>
+        <div className="grid grid-cols-6 md:grid-cols-12 gap-1">
+          {(heatmapData || []).map((month, idx) => {
+            const intensity =
+              month.holidays > 0
+                ? month.holidays >= 2
+                  ? "bg-amber-500"
+                  : "bg-amber-300"
+                : "bg-gray-100";
+            return (
+              <div
+                key={idx}
+                className={`${intensity} rounded p-2 text-center relative group`}
+              >
+                <p className="text-xs font-medium">{month.month}</p>
+                <p className="text-lg font-bold">{month.holidays}</p>
+                <p className="text-xs text-gray-600">{month.events} events</p>
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 whitespace-nowrap z-10 pointer-events-none">
+                  {month.registrations} registrations
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-xs text-gray-500 mt-2">
+          Darker = more bank holidays in that month (IE/UK)
+        </p>
+      </div>
+
+      {/* Year Comparison */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 className="font-semibold text-blue-800 mb-3">2025 Overview</h3>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p className="text-xl font-bold text-blue-700">
+                {yearComparison?.["2025"]?.totalHolidays || 0}
+              </p>
+              <p className="text-xs text-blue-600">Bank Holidays</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-blue-700">
+                {yearComparison?.["2025"]?.longWeekends || 0}
+              </p>
+              <p className="text-xs text-blue-600">Long Weekends</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-blue-700">
+                {yearComparison?.["2025"]?.eventsScheduled || 0}
+              </p>
+              <p className="text-xs text-blue-600">Events Scheduled</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+          <h3 className="font-semibold text-purple-800 mb-3">2026 Overview</h3>
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p className="text-xl font-bold text-purple-700">
+                {yearComparison?.["2026"]?.totalHolidays || 0}
+              </p>
+              <p className="text-xs text-purple-600">Bank Holidays</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-purple-700">
+                {yearComparison?.["2026"]?.longWeekends || 0}
+              </p>
+              <p className="text-xs text-purple-600">Long Weekends</p>
+            </div>
+            <div>
+              <p className="text-xl font-bold text-purple-700">
+                {yearComparison?.["2026"]?.eventsScheduled || 0}
+              </p>
+              <p className="text-xs text-purple-600">Events Scheduled</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Top Performing Holidays */}
+      {(topPerformingHolidays || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">
+            Top Performing Holiday Weekends
+          </h3>
+          <DataTable
+            headers={[
+              "Holiday",
+              "Country",
+              "Date",
+              "Events",
+              "Registrations",
+              "Avg/Event",
+            ]}
+            rows={(topPerformingHolidays || []).map((h) => [
+              h.holidayName,
+              `${h.countryFlag} ${h.country}`,
+              new Date(h.date).toLocaleDateString("en-IE", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+              h.eventsCount,
+              h.totalRegistrations,
+              h.averageRegistrations,
+            ])}
+          />
+        </div>
+      )}
+
+      {/* Upcoming Opportunities */}
+      {(upcomingOpportunities || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Upcoming Holiday Opportunities</h3>
+          <DataTable
+            headers={[
+              "Holiday",
+              "Country",
+              "Date",
+              "Days Away",
+              "Events Scheduled",
+            ]}
+            rows={(upcomingOpportunities || []).map((h) => [
+              h.holidayName,
+              `${h.countryFlag} ${h.country}`,
+              new Date(h.date).toLocaleDateString("en-IE", {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+              }),
+              h.daysAway !== null ? `${h.daysAway} days` : "—",
+              h.eventsCount > 0 ? `${h.eventsCount} ✓` : "None ⚠️",
+            ])}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function BookingIntelligenceReport({
+  data,
+}: {
+  data: Record<string, unknown>;
+}) {
+  const summary = data.summary as {
+    totalBookings: number;
+    uniqueTravellingClubs: number;
+    uniqueHostClubs: number;
+    uniqueDestinations: number;
+    avgLeadTime: number;
+    medianLeadTime: number;
+    repeatTravelerCount: number;
+    repeatTravelerRate: number;
+  };
+  const leadTime = data.leadTime as {
+    buckets: {
+      lastMinute: number;
+      shortTerm: number;
+      mediumTerm: number;
+      planned: number;
+      earlyBird: number;
+    };
+    byDestination: {
+      country: string;
+      avgLeadTime: number;
+      bookings: number;
+    }[];
+    byTeamType: {
+      teamType: string;
+      avgLeadTime: number;
+      bookings: number;
+    }[];
+  };
+  const relationships = data.relationships as {
+    topCorridors: {
+      origin: string;
+      destination: string;
+      trips: number;
+    }[];
+    frequentTravellers: {
+      clubName: string;
+      totalTrips: number;
+      uniqueDestinations: number;
+      destinations: string;
+    }[];
+    popularHosts: {
+      clubName: string;
+      country: string;
+      totalVisits: number;
+      uniqueVisitors: number;
+      returnRate: number;
+    }[];
+    repeatPairings: {
+      travellerName: string;
+      hostName: string;
+      hostCountry: string;
+      count: number;
+    }[];
+    popularDestinations: {
+      country: string;
+      trips: number;
+    }[];
+  };
+  const allBookingData = data.allBookingData as {
+    travellingClub: string;
+    travellingCountry: string;
+    travellingRegion: string;
+    hostClub: string;
+    hostCountry: string;
+    eventTitle: string;
+    eventDate: string;
+    registrationDate: string;
+    leadTimeDays: number;
+    teamType: string;
+  }[];
+
+  const downloadCSV = () => {
+    const headers = [
+      "Travelling Club",
+      "Travelling Country",
+      "Travelling Region",
+      "Host Club",
+      "Host Country",
+      "Event",
+      "Event Date",
+      "Registration Date",
+      "Lead Time (Days)",
+      "Team Type",
+    ];
+    const rows = (allBookingData || []).map((b) => [
+      b.travellingClub,
+      b.travellingCountry,
+      b.travellingRegion,
+      b.hostClub,
+      b.hostCountry,
+      b.eventTitle,
+      b.eventDate,
+      b.registrationDate,
+      b.leadTimeDays,
+      b.teamType,
+    ]);
+    const csvContent = [headers, ...rows]
+      .map((row) => row.join(","))
+      .join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "booking-intelligence.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const totalBuckets =
+    (leadTime?.buckets?.lastMinute || 0) +
+    (leadTime?.buckets?.shortTerm || 0) +
+    (leadTime?.buckets?.mediumTerm || 0) +
+    (leadTime?.buckets?.planned || 0) +
+    (leadTime?.buckets?.earlyBird || 0);
+
+  return (
+    <div className="space-y-6">
+      {/* Download Button */}
+      <div className="flex justify-end">
+        <button
+          type="button"
+          onClick={downloadCSV}
+          className="flex items-center gap-2 px-4 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 transition-colors text-sm font-medium"
+        >
+          <Download className="w-4 h-4" />
+          Download CSV
+        </button>
+      </div>
+
+      {/* Key Stats */}
+      <div className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl p-6 text-white">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div>
+            <p className="text-4xl font-bold">{summary?.avgLeadTime || 0}</p>
+            <p className="text-cyan-100 text-sm">Avg Lead Time (days)</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">{summary?.totalBookings || 0}</p>
+            <p className="text-cyan-100 text-sm">Total Bookings</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.uniqueTravellingClubs || 0}
+            </p>
+            <p className="text-cyan-100 text-sm">Travelling Clubs</p>
+          </div>
+          <div>
+            <p className="text-4xl font-bold">
+              {summary?.repeatTravelerRate || 0}%
+            </p>
+            <p className="text-cyan-100 text-sm">Repeat Travellers</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Lead Time Distribution */}
+      <div>
+        <h3 className="font-semibold mb-3">Booking Window Distribution</h3>
+        <div className="grid grid-cols-5 gap-2">
+          <div className="bg-red-100 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-red-700">
+              {leadTime?.buckets?.lastMinute || 0}
+            </p>
+            <p className="text-xs text-red-600">Last Minute</p>
+            <p className="text-xs text-red-500">(&lt;2 weeks)</p>
+            {totalBuckets > 0 && (
+              <p className="text-xs text-red-400 mt-1">
+                {Math.round(
+                  ((leadTime?.buckets?.lastMinute || 0) / totalBuckets) * 100
+                )}
+                %
+              </p>
+            )}
+          </div>
+          <div className="bg-orange-100 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-orange-700">
+              {leadTime?.buckets?.shortTerm || 0}
+            </p>
+            <p className="text-xs text-orange-600">Short Term</p>
+            <p className="text-xs text-orange-500">(2-4 weeks)</p>
+            {totalBuckets > 0 && (
+              <p className="text-xs text-orange-400 mt-1">
+                {Math.round(
+                  ((leadTime?.buckets?.shortTerm || 0) / totalBuckets) * 100
+                )}
+                %
+              </p>
+            )}
+          </div>
+          <div className="bg-yellow-100 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-yellow-700">
+              {leadTime?.buckets?.mediumTerm || 0}
+            </p>
+            <p className="text-xs text-yellow-600">Medium Term</p>
+            <p className="text-xs text-yellow-500">(1-2 months)</p>
+            {totalBuckets > 0 && (
+              <p className="text-xs text-yellow-400 mt-1">
+                {Math.round(
+                  ((leadTime?.buckets?.mediumTerm || 0) / totalBuckets) * 100
+                )}
+                %
+              </p>
+            )}
+          </div>
+          <div className="bg-green-100 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-green-700">
+              {leadTime?.buckets?.planned || 0}
+            </p>
+            <p className="text-xs text-green-600">Planned</p>
+            <p className="text-xs text-green-500">(2-4 months)</p>
+            {totalBuckets > 0 && (
+              <p className="text-xs text-green-400 mt-1">
+                {Math.round(
+                  ((leadTime?.buckets?.planned || 0) / totalBuckets) * 100
+                )}
+                %
+              </p>
+            )}
+          </div>
+          <div className="bg-blue-100 rounded-lg p-3 text-center">
+            <p className="text-2xl font-bold text-blue-700">
+              {leadTime?.buckets?.earlyBird || 0}
+            </p>
+            <p className="text-xs text-blue-600">Early Bird</p>
+            <p className="text-xs text-blue-500">(&gt;4 months)</p>
+            {totalBuckets > 0 && (
+              <p className="text-xs text-blue-400 mt-1">
+                {Math.round(
+                  ((leadTime?.buckets?.earlyBird || 0) / totalBuckets) * 100
+                )}
+                %
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Lead Time by Destination & Team Type */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 className="font-semibold mb-3">Lead Time by Destination</h3>
+          {(leadTime?.byDestination || []).length > 0 ? (
+            <DataTable
+              headers={["Country", "Avg Lead Time", "Bookings"]}
+              rows={(leadTime?.byDestination || []).map((d) => [
+                d.country,
+                `${d.avgLeadTime} days`,
+                d.bookings,
+              ])}
+            />
+          ) : (
+            <p className="text-gray-500 text-sm">No data available</p>
+          )}
+        </div>
+        <div>
+          <h3 className="font-semibold mb-3">Lead Time by Team Type</h3>
+          {(leadTime?.byTeamType || []).length > 0 ? (
+            <DataTable
+              headers={["Team Type", "Avg Lead Time", "Bookings"]}
+              rows={(leadTime?.byTeamType || []).map((t) => [
+                t.teamType,
+                `${t.avgLeadTime} days`,
+                t.bookings,
+              ])}
+            />
+          ) : (
+            <p className="text-gray-500 text-sm">No data available</p>
+          )}
+        </div>
+      </div>
+
+      {/* Travel Corridors */}
+      {(relationships?.topCorridors || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">
+            Top Travel Corridors (Origin → Destination)
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {(relationships?.topCorridors || []).slice(0, 8).map((c, idx) => (
+              <div
+                key={idx}
+                className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-3 border border-gray-200"
+              >
+                <p className="text-sm font-medium text-gray-800">
+                  {c.origin} → {c.destination}
+                </p>
+                <p className="text-lg font-bold text-cyan-600">
+                  {c.trips} trips
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Popular Destinations */}
+      {(relationships?.popularDestinations || []).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-3">Most Popular Destinations</h3>
+          <div className="flex flex-wrap gap-2">
+            {(relationships?.popularDestinations || []).map((d, idx) => (
+              <div
+                key={idx}
+                className={`px-4 py-2 rounded-full ${
+                  idx === 0
+                    ? "bg-cyan-500 text-white"
+                    : idx === 1
+                      ? "bg-cyan-400 text-white"
+                      : idx === 2
+                        ? "bg-cyan-300 text-cyan-900"
+                        : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                <span className="font-medium">{d.country}</span>
+                <span className="ml-2 opacity-75">({d.trips})</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Frequent Travellers & Popular Hosts */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {(relationships?.frequentTravellers || []).length > 0 && (
+          <div>
+            <h3 className="font-semibold mb-3">Frequent Traveller Clubs</h3>
+            <DataTable
+              headers={["Club", "Trips", "Destinations"]}
+              rows={(relationships?.frequentTravellers || [])
+                .slice(0, 10)
+                .map((t) => [t.clubName, t.totalTrips, t.uniqueDestinations])}
+            />
+          </div>
+        )}
+        {(relationships?.popularHosts || []).length > 0 && (
+          <div>
+            <h3 className="font-semibold mb-3">Popular Host Clubs</h3>
+            <DataTable
+              headers={["Club", "Country", "Visits", "Return Rate"]}
+              rows={(relationships?.popularHosts || [])
+                .slice(0, 10)
+                .map((h) => [
+                  h.clubName,
+                  h.country,
+                  h.totalVisits,
+                  `${h.returnRate}%`,
+                ])}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Repeat Club Pairings */}
+      {(relationships?.repeatPairings || []).length > 0 && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <h3 className="font-semibold text-green-800 mb-3">
+            Repeat Club Relationships
+          </h3>
+          <p className="text-sm text-green-700 mb-3">
+            These clubs have visited the same host multiple times - strong
+            relationships!
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            {(relationships?.repeatPairings || []).map((p, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded p-3 border border-green-100 flex items-center justify-between"
+              >
+                <div>
+                  <p className="text-sm font-medium text-gray-800">
+                    {p.travellerName} → {p.hostName}
+                  </p>
+                  <p className="text-xs text-gray-500">{p.hostCountry}</p>
+                </div>
+                <div className="bg-green-500 text-white px-2 py-1 rounded text-sm font-bold">
+                  {p.count}x
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Additional Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <StatCard
+          label="Unique Host Clubs"
+          value={summary?.uniqueHostClubs || 0}
+        />
+        <StatCard
+          label="Destinations"
+          value={summary?.uniqueDestinations || 0}
+        />
+        <StatCard
+          label="Median Lead Time"
+          value={`${summary?.medianLeadTime || 0} days`}
+        />
+        <StatCard
+          label="Repeat Travellers"
+          value={summary?.repeatTravelerCount || 0}
+          subtext={`${summary?.repeatTravelerRate || 0}% of clubs`}
+        />
+      </div>
     </div>
   );
 }

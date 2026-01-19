@@ -126,13 +126,14 @@ export async function POST(request: NextRequest) {
         },
       });
 
-      // Add user to club admins
+      // Add user to club admins and verify the club
       await prisma.club.update({
         where: { id: adminRequest.clubId },
         data: {
           admins: {
             connect: { id: adminRequest.userId },
           },
+          verificationStatus: "VERIFIED",
         },
       });
 

@@ -552,6 +552,25 @@ export default function AdminDashboardClient({
           </Link>
 
           <Link
+            href="/admin/event-builder"
+            className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-yellow-300"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                ✨
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-gray-900 group-hover:text-yellow-600 transition-colors">
+                  Event Builder
+                </h2>
+                <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
+                  Holidays, festivals & club milestones
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
             href="/admin/backups"
             className="group bg-white p-3 md:p-8 rounded-lg md:rounded-xl shadow hover:shadow-xl transition-all duration-300 border border-gray-200 hover:border-primary/30"
           >

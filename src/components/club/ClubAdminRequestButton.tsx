@@ -287,10 +287,21 @@ export default function ClubAdminRequestButton({
                 <p className="text-gray-600 mb-2">
                   Request administrative access for <strong>{clubName}</strong>
                 </p>
-                <p className="text-sm text-gray-500">
-                  Your request to become an admin for this club will be
-                  reviewed.
+                <p className="text-sm text-gray-500 mb-3">
+                  Your request will be reviewed by the club&apos;s current
+                  administrators.
                 </p>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3">
+                  <p className="text-xs text-blue-700 font-medium mb-1">
+                    As a club admin you can:
+                  </p>
+                  <ul className="text-xs text-blue-600 space-y-0.5">
+                    <li>• Create and manage events & tournaments</li>
+                    <li>• View and manage team registrations</li>
+                    <li>• Update club information and images</li>
+                    <li>• Access the club admin dashboard</li>
+                  </ul>
+                </div>
               </div>
 
               {success ? (
