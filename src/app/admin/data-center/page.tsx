@@ -414,10 +414,9 @@ export default function DataCenterPage() {
             This data has{" "}
             <strong className="text-white">
               never been systematically captured before
-            </strong>{" "}
-            in the history of Gaelic Games abroad. See exactly how many teams
-            are planning trips, where they want to go, their budgets, and when
-            they want to travel.
+            </strong>
+            . See exactly how many teams are planning trips, where they want to
+            go, their budgets, and when they want to travel.
           </p>
         </div>
 

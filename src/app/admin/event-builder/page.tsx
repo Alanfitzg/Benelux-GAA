@@ -3,8 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import {
   Calendar,
-  PartyPopper,
-  Building2,
   Sparkles,
   ChevronLeft,
   ChevronRight,
@@ -12,8 +10,10 @@ import {
   Star,
   Trophy,
   ExternalLink,
-  Info,
   Monitor,
+  Info,
+  PartyPopper,
+  Building2,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -285,13 +285,13 @@ export default function EventBuilderPage() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Total GAA clubs registered in mainland Europe"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
+            <div className="absolute top-2 right-2 group/tooltip">
+              <Info className="w-3.5 h-3.5 text-indigo-300/50 hover:text-indigo-200" />
+              <div className="absolute right-0 top-6 w-48 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                Total GAA clubs registered in mainland Europe
+              </div>
             </div>
             <p className="text-3xl font-bold text-white">
               {data?.summary.totalEuropeanClubs || 0}
@@ -299,11 +299,12 @@ export default function EventBuilderPage() {
             <p className="text-indigo-200 text-xs">European Clubs</p>
           </div>
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Clubs celebrating milestone anniversaries (5, 10, 15, 20, 25, 30+ years) in the selected year"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
+            <div className="absolute top-2 right-2 group/tooltip">
+              <Info className="w-3.5 h-3.5 text-indigo-300/50 hover:text-indigo-200" />
+              <div className="absolute right-0 top-6 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                Clubs celebrating milestone anniversaries (5, 10, 15, 20, 25,
+                30+ years) in the selected year
+              </div>
             </div>
             <p className="text-3xl font-bold text-yellow-400">
               {data?.summary.milestonesThisYear || 0}
@@ -311,23 +312,12 @@ export default function EventBuilderPage() {
             <p className="text-indigo-200 text-xs">Milestones in {year}</p>
           </div>
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Clubs celebrating 10 years or more - significant anniversaries ideal for major events"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
-            </div>
-            <p className="text-3xl font-bold text-orange-400">
-              {data?.summary.decadeMilestones || 0}
-            </p>
-            <p className="text-indigo-200 text-xs">10+ Year Anniversaries</p>
-          </div>
-          <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Major European festivals (carnivals, cultural celebrations) great for combined GAA trips"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
+            <div className="absolute top-2 right-2 group/tooltip">
+              <Info className="w-3.5 h-3.5 text-indigo-300/50 hover:text-indigo-200" />
+              <div className="absolute right-0 top-6 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                Major European festivals (carnivals, cultural celebrations)
+                great for combined GAA trips
+              </div>
             </div>
             <p className="text-3xl font-bold text-pink-400">
               {data?.summary.totalFestivals || 0}
@@ -335,11 +325,12 @@ export default function EventBuilderPage() {
             <p className="text-indigo-200 text-xs">Festivals</p>
           </div>
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Events rated as highly attractive for GAA travel - best opportunities for tournament scheduling"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
+            <div className="absolute top-2 right-2 group/tooltip">
+              <Info className="w-3.5 h-3.5 text-indigo-300/50 hover:text-indigo-200" />
+              <div className="absolute right-0 top-6 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                Events rated as highly attractive for GAA travel - best
+                opportunities for tournament scheduling
+              </div>
             </div>
             <p className="text-3xl font-bold text-green-400">
               {data?.summary.highAppealEvents || 0}
@@ -347,11 +338,12 @@ export default function EventBuilderPage() {
             <p className="text-indigo-200 text-xs">High Appeal Events</p>
           </div>
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Irish and UK bank holidays - key travel windows when clubs are most likely to travel"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
+            <div className="absolute top-2 right-2 group/tooltip">
+              <Info className="w-3.5 h-3.5 text-indigo-300/50 hover:text-indigo-200" />
+              <div className="absolute right-0 top-6 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                Irish and UK bank holidays - key travel windows when clubs are
+                most likely to travel
+              </div>
             </div>
             <p className="text-3xl font-bold text-cyan-400">
               {data?.sourceMarketHolidays.length || 0}
@@ -359,11 +351,12 @@ export default function EventBuilderPage() {
             <p className="text-indigo-200 text-xs">IE/UK Holidays</p>
           </div>
           <div className="bg-white/10 backdrop-blur rounded-lg p-4 text-center relative group">
-            <div
-              className="absolute top-2 right-2"
-              title="Club milestones that coincide with local festivals - premium event opportunities"
-            >
-              <Info className="w-3.5 h-3.5 text-indigo-300/50 group-hover:text-indigo-200 cursor-help" />
+            <div className="absolute top-2 right-2 group/tooltip">
+              <Info className="w-3.5 h-3.5 text-indigo-300/50 hover:text-indigo-200" />
+              <div className="absolute right-0 top-6 w-56 p-2 bg-gray-900 text-white text-xs rounded-lg shadow-lg opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                Club milestones that coincide with local festivals - premium
+                event opportunities
+              </div>
             </div>
             <p className="text-3xl font-bold text-purple-400">
               {data?.summary.combinedOpportunities || 0}
@@ -379,12 +372,25 @@ export default function EventBuilderPage() {
               const monthKey = (idx + 1).toString().padStart(2, "0");
               const monthData = data?.eventsByMonth[monthKey];
               const events = monthData?.europeanEvents || [];
-              const holidays = monthData?.sourceHolidays || [];
-              const milestones =
-                data?.milestones.filter((m) => {
-                  // Show milestones spread across the year
-                  return (idx + 1) % 3 === 0;
-                }) || [];
+              const rawHolidays = monthData?.sourceHolidays || [];
+
+              // Group holidays by date and name to combine IE/UK flags
+              const groupedHolidays = rawHolidays.reduce(
+                (acc, h) => {
+                  const key = `${h.date}-${h.name}`;
+                  if (!acc[key]) {
+                    acc[key] = { ...h, flags: [h.countryFlag] };
+                  } else {
+                    acc[key].flags.push(h.countryFlag);
+                  }
+                  return acc;
+                },
+                {} as Record<
+                  string,
+                  (typeof rawHolidays)[0] & { flags: string[] }
+                >
+              );
+              const holidays = Object.values(groupedHolidays);
 
               return (
                 <div key={month} className="bg-white rounded-xl p-4 shadow-lg">
@@ -406,7 +412,7 @@ export default function EventBuilderPage() {
                           key={i}
                           className="flex items-center gap-2 py-1 border-b border-gray-100 last:border-0"
                         >
-                          <span>{h.countryFlag}</span>
+                          <span>{h.flags.join(" ")}</span>
                           <span className="text-sm text-gray-700">
                             {h.name}
                           </span>

@@ -16,6 +16,43 @@ export interface EuropeanEvent {
   wikiUrl?: string; // Wikipedia link for more info
 }
 
+// Countries that have GAA clubs (based on database)
+export const GAA_CLUB_COUNTRIES = [
+  "ES", // Spain - 25 clubs
+  "FR", // France - 22 clubs
+  "DE", // Germany - 11 clubs
+  "NL", // Netherlands - 6 clubs
+  "SE", // Sweden - 5 clubs
+  "PL", // Poland - 4 clubs
+  "CH", // Switzerland - 4 clubs
+  "DK", // Denmark - 4 clubs
+  "FI", // Finland - 3 clubs
+  "BE", // Belgium - 3 clubs
+  "PT", // Portugal - 2 clubs
+  "AT", // Austria - 2 clubs
+  "IT", // Italy - 2 clubs
+  "NO", // Norway - 2 clubs
+  "GI", // Gibraltar - 2 clubs
+  "CZ", // Czech Republic - 2 clubs
+  "IS", // Iceland - 1 club
+  "HR", // Croatia - 1 club
+  "EE", // Estonia - 1 club
+  "HU", // Hungary - 1 club
+  "SK", // Slovakia - 1 club
+] as const;
+
+export type GaaClubCountryCode = (typeof GAA_CLUB_COUNTRIES)[number];
+
+export function isGaaClubCountry(countryCode: string): boolean {
+  return GAA_CLUB_COUNTRIES.includes(countryCode as GaaClubCountryCode);
+}
+
+export function getGaaClubCountryEvents(
+  events: EuropeanEvent[]
+): EuropeanEvent[] {
+  return events.filter((e) => isGaaClubCountry(e.countryCode));
+}
+
 // 2025 European Events Calendar
 export const europeanEvents2025: EuropeanEvent[] = [
   // SPAIN
@@ -1068,6 +1105,379 @@ export const europeanEvents2026: EuropeanEvent[] = [
     description: "Santo Stefano - public holiday",
     travelAppeal: "low",
     typicalDuration: 1,
+  },
+
+  // SWEDEN
+  {
+    date: "2026-06-06",
+    name: "National Day of Sweden",
+    country: "Sweden",
+    countryCode: "SE",
+    type: "national",
+    description:
+      "Swedish National Day - celebrates independence and constitution",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/National_Day_of_Sweden",
+  },
+  {
+    date: "2026-06-19",
+    name: "Midsummer Eve",
+    country: "Sweden",
+    countryCode: "SE",
+    type: "cultural",
+    description:
+      "Major Swedish celebration with maypole dancing and festivities",
+    travelAppeal: "high",
+    typicalDuration: 2,
+    wikiUrl: "https://en.wikipedia.org/wiki/Midsummer#Sweden",
+  },
+  {
+    date: "2026-04-30",
+    name: "Walpurgis Night",
+    country: "Sweden",
+    countryCode: "SE",
+    type: "cultural",
+    description: "Valborg - bonfires and spring celebrations across Sweden",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Walpurgis_Night",
+  },
+  {
+    date: "2026-12-13",
+    name: "Saint Lucia's Day",
+    country: "Sweden",
+    countryCode: "SE",
+    type: "cultural",
+    description: "Festival of lights with processions and traditional songs",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Saint_Lucy%27s_Day",
+  },
+
+  // POLAND
+  {
+    date: "2026-05-03",
+    name: "Constitution Day",
+    country: "Poland",
+    countryCode: "PL",
+    type: "national",
+    description: "Celebrates the 1791 constitution - major national holiday",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/May_3rd_Constitution_Day",
+  },
+  {
+    date: "2026-11-11",
+    name: "Independence Day",
+    country: "Poland",
+    countryCode: "PL",
+    type: "national",
+    description: "Polish Independence Day - commemorates 1918 restoration",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/National_Independence_Day_(Poland)",
+  },
+  {
+    date: "2026-06-11",
+    name: "Corpus Christi",
+    country: "Poland",
+    countryCode: "PL",
+    type: "religious",
+    description: "Major Catholic holiday with processions - public holiday",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+  },
+  {
+    date: "2026-08-15",
+    name: "Assumption Day",
+    country: "Poland",
+    countryCode: "PL",
+    type: "religious",
+    description: "Armed Forces Day and religious holiday - public holiday",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+  },
+
+  // DENMARK
+  {
+    date: "2026-06-05",
+    name: "Constitution Day",
+    country: "Denmark",
+    countryCode: "DK",
+    type: "national",
+    description: "Grundlovsdag - celebrates Danish constitution",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Constitution_Day_(Denmark)",
+  },
+  {
+    date: "2026-06-23",
+    name: "Sankt Hans Eve",
+    country: "Denmark",
+    countryCode: "DK",
+    type: "cultural",
+    description: "Midsummer celebrations with bonfires across Denmark",
+    travelAppeal: "high",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/St_John%27s_Eve#Denmark",
+  },
+  {
+    date: "2026-04-16",
+    name: "Queen's Birthday",
+    country: "Denmark",
+    countryCode: "DK",
+    type: "national",
+    description: "Queen Margrethe II's birthday - celebrations in Copenhagen",
+    travelAppeal: "low",
+    typicalDuration: 1,
+  },
+  {
+    date: "2026-07-04",
+    name: "Roskilde Festival",
+    country: "Denmark",
+    countryCode: "DK",
+    type: "festival",
+    description: "One of Europe's largest music festivals - 130,000 attendees",
+    travelAppeal: "high",
+    typicalDuration: 8,
+    wikiUrl: "https://en.wikipedia.org/wiki/Roskilde_Festival",
+  },
+
+  // FINLAND
+  {
+    date: "2026-12-06",
+    name: "Independence Day",
+    country: "Finland",
+    countryCode: "FI",
+    type: "national",
+    description: "Finnish Independence Day - commemorates 1917 declaration",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Independence_Day_(Finland)",
+  },
+  {
+    date: "2026-06-19",
+    name: "Midsummer Eve",
+    country: "Finland",
+    countryCode: "FI",
+    type: "cultural",
+    description: "Juhannus - major celebration with bonfires and festivities",
+    travelAppeal: "high",
+    typicalDuration: 2,
+    wikiUrl: "https://en.wikipedia.org/wiki/Midsummer#Finland",
+  },
+  {
+    date: "2026-05-01",
+    name: "Vappu",
+    country: "Finland",
+    countryCode: "FI",
+    type: "cultural",
+    description:
+      "May Day celebrations - student festivities and spring carnival",
+    travelAppeal: "high",
+    typicalDuration: 2,
+    wikiUrl: "https://en.wikipedia.org/wiki/Vappu",
+  },
+
+  // NORWAY
+  {
+    date: "2026-05-17",
+    name: "Constitution Day",
+    country: "Norway",
+    countryCode: "NO",
+    type: "national",
+    description:
+      "Syttende Mai - Norway's national day with parades and celebrations",
+    travelAppeal: "high",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Constitution_Day_(Norway)",
+  },
+  {
+    date: "2026-06-23",
+    name: "Midsummer Eve",
+    country: "Norway",
+    countryCode: "NO",
+    type: "cultural",
+    description: "Sankthansaften - bonfires and celebrations across Norway",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Midsummer#Norway",
+  },
+
+  // CROATIA
+  {
+    date: "2026-06-25",
+    name: "Statehood Day",
+    country: "Croatia",
+    countryCode: "HR",
+    type: "national",
+    description: "Dan državnosti - commemorates 1991 independence declaration",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Statehood_Day_(Croatia)",
+  },
+  {
+    date: "2026-08-05",
+    name: "Victory Day",
+    country: "Croatia",
+    countryCode: "HR",
+    type: "national",
+    description: "Dan pobjede - celebrates Operation Storm victory",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+  },
+  {
+    date: "2026-07-10",
+    name: "Ultra Europe Festival",
+    country: "Croatia",
+    countryCode: "HR",
+    type: "festival",
+    description: "Major electronic music festival in Split",
+    travelAppeal: "high",
+    typicalDuration: 3,
+    wikiUrl: "https://en.wikipedia.org/wiki/Ultra_Europe",
+  },
+
+  // HUNGARY
+  {
+    date: "2026-03-15",
+    name: "National Day",
+    country: "Hungary",
+    countryCode: "HU",
+    type: "national",
+    description: "Celebrates 1848 revolution - major patriotic holiday",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/National_Day_(Hungary)",
+  },
+  {
+    date: "2026-08-20",
+    name: "St. Stephen's Day",
+    country: "Hungary",
+    countryCode: "HU",
+    type: "national",
+    description: "Foundation of the Hungarian state - fireworks in Budapest",
+    travelAppeal: "high",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Saint_Stephen%27s_Day#Hungary",
+  },
+  {
+    date: "2026-10-23",
+    name: "National Day",
+    country: "Hungary",
+    countryCode: "HU",
+    type: "national",
+    description: "Commemorates 1956 uprising and 1989 republic declaration",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+  },
+  {
+    date: "2026-08-12",
+    name: "Sziget Festival",
+    country: "Hungary",
+    countryCode: "HU",
+    type: "festival",
+    description: "One of Europe's largest music festivals in Budapest",
+    travelAppeal: "high",
+    typicalDuration: 7,
+    wikiUrl: "https://en.wikipedia.org/wiki/Sziget_Festival",
+  },
+
+  // ICELAND
+  {
+    date: "2026-06-17",
+    name: "National Day",
+    country: "Iceland",
+    countryCode: "IS",
+    type: "national",
+    description: "Þjóðhátíðardagurinn - celebrates 1944 independence",
+    travelAppeal: "high",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Icelandic_National_Day",
+  },
+  {
+    date: "2026-08-03",
+    name: "Bank Holiday Weekend",
+    country: "Iceland",
+    countryCode: "IS",
+    type: "cultural",
+    description: "Verslunarmannahelgi - outdoor festivals across Iceland",
+    travelAppeal: "high",
+    typicalDuration: 3,
+    wikiUrl: "https://en.wikipedia.org/wiki/Verslunarmannahelgi",
+  },
+
+  // ESTONIA
+  {
+    date: "2026-02-24",
+    name: "Independence Day",
+    country: "Estonia",
+    countryCode: "EE",
+    type: "national",
+    description: "Iseseisvuspäev - celebrates 1918 independence declaration",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl:
+      "https://en.wikipedia.org/wiki/Estonian_Declaration_of_Independence",
+  },
+  {
+    date: "2026-06-23",
+    name: "Victory Day",
+    country: "Estonia",
+    countryCode: "EE",
+    type: "national",
+    description: "Võidupüha - commemorates 1919 Battle of Võnnu",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+  },
+  {
+    date: "2026-06-24",
+    name: "Midsummer Day",
+    country: "Estonia",
+    countryCode: "EE",
+    type: "cultural",
+    description: "Jaanipäev - major celebration with bonfires",
+    travelAppeal: "high",
+    typicalDuration: 2,
+    wikiUrl: "https://en.wikipedia.org/wiki/Midsummer#Estonia",
+  },
+
+  // SLOVAKIA
+  {
+    date: "2026-09-01",
+    name: "Constitution Day",
+    country: "Slovakia",
+    countryCode: "SK",
+    type: "national",
+    description: "Deň Ústavy - celebrates 1992 Slovak constitution",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Constitution_Day_(Slovakia)",
+  },
+  {
+    date: "2026-08-29",
+    name: "Slovak National Uprising Day",
+    country: "Slovakia",
+    countryCode: "SK",
+    type: "national",
+    description: "SNP Day - commemorates 1944 anti-Nazi uprising",
+    travelAppeal: "medium",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Slovak_National_Uprising",
+  },
+
+  // GIBRALTAR
+  {
+    date: "2026-09-10",
+    name: "National Day",
+    country: "Gibraltar",
+    countryCode: "GI",
+    type: "national",
+    description: "Celebrates 1967 referendum - street parties and festivities",
+    travelAppeal: "high",
+    typicalDuration: 1,
+    wikiUrl: "https://en.wikipedia.org/wiki/Gibraltar_National_Day",
   },
 ];
 
