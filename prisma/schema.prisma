@@ -1517,3 +1517,103 @@ enum ContactSubmissionStatus {
   RESPONDED
   ARCHIVED
 }
+
+// ============================================
+// GGE Social / Recreational Games
+// ============================================
+
+model SocialGAAEvent {
+  id                  String                    @id @default(cuid())
+
+  // Host club details
+  clubName            String
+  contactName         String
+  contactEmail        String
+  contactPhone        String
+
+  // Event details
+  eventType           SocialGAAEventType
+  proposedDate        DateTime
+  location            String
+  venueName           String
+  venueDetails        String?                   @db.Text
+  numberOfPitches     Int                       @default(1)
+  maxTeams            Int
+
+  // Additional info
+  foodOptions         String?                   @db.Text
+  accommodationOptions String?                  @db.Text
+  localAttractions    String?                   @db.Text
+  additionalNotes     String?                   @db.Text
+
+  // Status
+  status              SocialGAAEventStatus      @default(PENDING)
+  approvedAt          DateTime?
+  approvedBy          String?
+  rejectionReason     String?
+
+  // Timestamps
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+
+  // Relations
+  registrations       SocialGAARegistration[]
+
+  @@index([status])
+  @@index([eventType])
+  @@index([proposedDate])
+}
+
+model SocialGAARegistration {
+  id                  String                    @id @default(cuid())
+
+  // Team details
+  clubName            String
+  contactName         String
+  contactEmail        String
+  contactPhone        String
+  numberOfPlayers     Int
+  additionalNotes     String?                   @db.Text
+
+  // Status
+  status              SocialGAARegistrationStatus @default(CONFIRMED)
+
+  // Timestamps
+  createdAt           DateTime                  @default(now())
+  updatedAt           DateTime                  @updatedAt
+
+  // Relations
+  eventId             String
+  event               SocialGAAEvent            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([status])
+  @@index([clubName])
+}
+
+model SocialGAAAdmin {
+  id                  String                    @id @default(cuid())
+  email               String                    @unique
+  name                String
+  createdAt           DateTime                  @default(now())
+
+  @@index([email])
+}
+
+enum SocialGAAEventType {
+  DADS_AND_LADS
+  GAELIC4MOTHERS_AND_OTHERS
+  SOCIAL_CAMOGIE
+}
+
+enum SocialGAAEventStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum SocialGAARegistrationStatus {
+  CONFIRMED
+  WAITING_LIST
+  CANCELLED
+}
