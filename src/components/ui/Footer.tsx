@@ -1,7 +1,16 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
   const currentYear = new Date().getFullYear();
+
+  // Don't render on GGE pages - they have their own footer
+  if (pathname?.startsWith("/gge")) {
+    return null;
+  }
 
   return (
     <footer className="bg-gray-900 text-white">

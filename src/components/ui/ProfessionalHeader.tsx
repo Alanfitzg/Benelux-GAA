@@ -5,24 +5,29 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import ClubAdminLinks from "@/components/ClubAdminLinks";
 
 const ProfessionalHeader = () => {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const { data: session, status } = useSession();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const isGGEPage = pathname?.startsWith("/gge");
 
   useEffect(() => {
+    if (isGGEPage) return;
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isGGEPage]);
 
   useEffect(() => {
+    if (isGGEPage) return;
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -33,7 +38,12 @@ const ProfessionalHeader = () => {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isGGEPage]);
+
+  // Don't render on GGE pages - they have their own header
+  if (isGGEPage) {
+    return null;
+  }
 
   const desktopNavItems = [
     { href: "/events", label: "Tournaments" },

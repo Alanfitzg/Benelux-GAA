@@ -5,10 +5,14 @@ export const metadata: Metadata = {
   description:
     "Register for Gaelic Games Europe recreational events - Dads & Lads, Gaelic4Mothers&Others, and Social Camogie across Europe.",
   icons: {
-    icon: "/gge-favicon.ico",
+    icon: "/images/gge-crest.png",
   },
 };
 
 export default function GGELayout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <div className="gge-standalone" style={{ marginTop: "-64px" }}>
+      {children}
+    </div>
+  );
 }

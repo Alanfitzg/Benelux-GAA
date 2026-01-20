@@ -3,8 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 const FloatingContactButton: React.FC = () => {
+  const pathname = usePathname();
+
+  // Don't render on GGE pages
+  if (pathname?.startsWith("/gge")) {
+    return null;
+  }
+
   return (
     <motion.div
       initial={{ scale: 0, opacity: 0 }}
@@ -26,10 +34,10 @@ const FloatingContactButton: React.FC = () => {
       >
         {/* Pulse animation */}
         <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-20" />
-        
+
         {/* Background gradient with hover effect */}
         <span className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-primary-light group-hover:from-primary-dark group-hover:to-primary transition-all duration-300" />
-        
+
         {/* Icon container */}
         <span className="relative flex items-center justify-center">
           {/* Envelope icon */}
@@ -47,7 +55,7 @@ const FloatingContactButton: React.FC = () => {
               d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
             />
           </svg>
-          
+
           {/* Alternative chat bubble icon (commented out) */}
           {/* <svg
             className="w-6 h-6 md:w-7 md:h-7"
@@ -64,7 +72,7 @@ const FloatingContactButton: React.FC = () => {
             />
           </svg> */}
         </span>
-        
+
         {/* Tooltip */}
         <motion.span
           initial={{ opacity: 0, x: 10 }}
