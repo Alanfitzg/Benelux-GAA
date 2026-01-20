@@ -138,9 +138,7 @@ export default function GGELandingPage() {
             Want to Host an Event?
           </h3>
           <p className="text-white/80 max-w-2xl mx-auto mb-8 text-lg">
-            If your club is interested in hosting a Recreational Games blitz,
-            apply now. Applications close{" "}
-            <strong className="text-[#f5c842]">13th February 2026</strong>.
+            If your club is interested in hosting a Social GAA blitz, apply now.
           </p>
           <Link
             href="/gge/host"
