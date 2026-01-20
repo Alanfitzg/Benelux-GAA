@@ -7,29 +7,7 @@ export function middleware(request: NextRequest) {
 
   // Get the host from the request
   const host = request.headers.get("host") || "";
-  const pathname = request.nextUrl.pathname;
-
-  // Handle GGE Social domain - rewrite to /gge routes
-  if (host.includes("gge-social.com")) {
-    // Skip static files and API routes that are already prefixed
-    if (
-      pathname.startsWith("/_next") ||
-      pathname.startsWith("/images") ||
-      pathname.startsWith("/api/gge")
-    ) {
-      // Continue normally
-    } else if (pathname === "/") {
-      // Root path -> /gge
-      const url = request.nextUrl.clone();
-      url.pathname = "/gge";
-      return NextResponse.rewrite(url);
-    } else if (!pathname.startsWith("/gge")) {
-      // Other paths -> /gge/path
-      const url = request.nextUrl.clone();
-      url.pathname = `/gge${pathname}`;
-      return NextResponse.rewrite(url);
-    }
-  }
+  // GGE Social domain routing is handled by next.config.ts rewrites
 
   // List of allowed domains
   const allowedDomains = [
