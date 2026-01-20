@@ -378,9 +378,10 @@ function Header() {
         </Link>
         <Link
           href="/gge/events"
-          className="text-white/80 hover:text-white transition-colors font-medium"
+          className="text-white/80 hover:text-white transition-colors font-medium text-sm md:text-base"
         >
-          ← Back to Events
+          <span className="sm:hidden">← Back</span>
+          <span className="hidden sm:inline">← Back to Events</span>
         </Link>
       </div>
     </header>

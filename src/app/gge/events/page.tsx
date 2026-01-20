@@ -302,19 +302,19 @@ function Header() {
           />
           <div>
             <h1 className="text-lg font-bold">Gaelic Games Europe</h1>
-            <p className="text-sm text-[#f5c842]">Recreational Games 2026</p>
+            <p className="text-sm text-[#f5c842]">Social GAA 2026</p>
           </div>
         </Link>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
           <Link
             href="/gge"
-            className="text-white/80 hover:text-white transition-colors font-medium"
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm md:text-base"
           >
             ← Back
           </Link>
           <Link
             href="/gge/host"
-            className="text-white/80 hover:text-white transition-colors font-medium"
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm md:text-base hidden sm:block"
           >
             Host an Event →
           </Link>
