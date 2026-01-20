@@ -208,7 +208,7 @@ export default function GGELandingPage() {
                   recreationalofficer.europe@gaa.ie
                 </a>
               </p>
-              <p className="mt-1">
+              {/*              <p className="mt-1">
                 Powered by{" "}
                 <a
                   href="https://www.playawaygaa.com"
@@ -216,7 +216,7 @@ export default function GGELandingPage() {
                 >
                   PlayAway
                 </a>
-              </p>
+              </p>*/}
             </div>
           </div>
         </div>
