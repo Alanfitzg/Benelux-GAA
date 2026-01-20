@@ -18,8 +18,15 @@ export default function GGELandingPage() {
               className="rounded-full"
             />
             <div>
-              <h1 className="text-xl font-bold">Gaelic Games Europe</h1>
-              <p className="text-sm text-[#f5c842]">Recreational Games 2026</p>
+              <a
+                href="https://gaelicgameseurope.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xl font-bold hover:text-[#f5c842] transition-colors"
+              >
+                Gaelic Games Europe
+              </a>
+              <p className="text-sm text-[#f5c842]">Social GAA 2026</p>
             </div>
           </div>
           <Link

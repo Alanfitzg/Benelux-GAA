@@ -74,7 +74,7 @@ export default function EventsListingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-200">
       <Header />
 
       <div className="container mx-auto px-4 py-8">
@@ -124,37 +124,47 @@ export default function EventsListingPage() {
             <p className="text-gray-600 text-lg">Loading events...</p>
           </div>
         ) : filteredEvents.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-xl shadow">
-            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg
-                className="w-10 h-10 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <>
+            <div className="text-center py-16 bg-white rounded-xl shadow">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-10 h-10 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-700 mb-2">
+                No Events Yet
+              </h3>
+              <p className="text-gray-500 mb-6">
+                Events will be listed here once they are approved.
+                <br />
+                Check back soon!
+              </p>
+              <Link
+                href="/gge/register-interest"
+                className="inline-block bg-[#f5c842] text-[#1e3a5f] font-bold py-3 px-6 rounded-lg hover:bg-[#e5b832] transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
+                Register Interest
+              </Link>
             </div>
-            <h3 className="text-xl font-bold text-gray-700 mb-2">
-              No Events Yet
-            </h3>
-            <p className="text-gray-500 mb-6">
-              Events will be listed here once they are approved.
-              <br />
-              Check back soon!
-            </p>
-            <Link
-              href="/gge/host"
-              className="inline-block bg-[#f5c842] text-[#1e3a5f] font-bold py-3 px-6 rounded-lg hover:bg-[#e5b832] transition-colors"
-            >
-              Apply to Host an Event
-            </Link>
-          </div>
+            <div className="mt-8 text-center">
+              <Link
+                href="/gge/host"
+                className="inline-block bg-[#1e3a5f] text-white font-bold py-3 px-6 rounded-lg hover:bg-[#2d4a6f] transition-colors"
+              >
+                Apply to Host an Event
+              </Link>
+            </div>
+          </>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredEvents.map((event) => (
@@ -273,19 +283,6 @@ export default function EventsListingPage() {
             ))}
           </div>
         )}
-
-        {/* CTA */}
-        <div className="mt-12 text-center">
-          <p className="text-gray-600 mb-4">
-            Want to host an event in your area?
-          </p>
-          <Link
-            href="/gge/host"
-            className="inline-block bg-[#1e3a5f] text-white font-bold py-3 px-8 rounded-lg hover:bg-[#2d4a6f] transition-colors"
-          >
-            Apply to Host
-          </Link>
-        </div>
       </div>
     </div>
   );
@@ -308,12 +305,20 @@ function Header() {
             <p className="text-sm text-[#f5c842]">Recreational Games 2026</p>
           </div>
         </Link>
-        <Link
-          href="/gge/host"
-          className="text-white/80 hover:text-white transition-colors font-medium"
-        >
-          Host an Event →
-        </Link>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/gge"
+            className="text-white/80 hover:text-white transition-colors font-medium"
+          >
+            ← Back
+          </Link>
+          <Link
+            href="/gge/host"
+            className="text-white/80 hover:text-white transition-colors font-medium"
+          >
+            Host an Event →
+          </Link>
+        </div>
       </div>
     </header>
   );

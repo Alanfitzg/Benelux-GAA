@@ -1617,3 +1617,34 @@ enum SocialGAARegistrationStatus {
   WAITING_LIST
   CANCELLED
 }
+
+// GGE Interest Registration (waiting list)
+model SocialGAAInterest {
+  id                    String                    @id @default(cuid())
+
+  // Club details
+  clubName              String
+  county                String
+
+  // Contact details
+  contactName           String
+  contactEmail          String
+  contactPhone          String?
+
+  // Event interests (stored as comma-separated)
+  eventTypes            String                    // e.g. "DADS_AND_LADS,SOCIAL_CAMOGIE"
+
+  // Additional info
+  estimatedPlayers      String?
+  previousParticipation String?
+  additionalNotes       String?                   @db.Text
+
+  // Timestamps
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+
+  @@index([clubName])
+  @@index([county])
+  @@index([contactEmail])
+  @@index([createdAt])
+}

@@ -15,20 +15,16 @@ const eventTypeLabels: Record<EventType, string> = {
   SOCIAL_CAMOGIE: "Social Camogie (Camogie Association)",
 };
 
-export default function HostApplicationPage() {
+export default function RegisterInterestPage() {
   const [formData, setFormData] = useState({
     clubName: "",
+    country: "",
     contactName: "",
     contactEmail: "",
     contactPhone: "",
-    eventType: "" as EventType | "",
-    proposedDate: "",
-    location: "",
-    venueName: "",
-    venueDetails: "",
-    numberOfPitches: 1,
-    maxTeams: 8,
-    foodOptions: "",
+    eventTypes: [] as EventType[],
+    estimatedPlayers: "",
+    previousParticipation: "",
     additionalNotes: "",
   });
 
@@ -36,13 +32,28 @@ export default function HostApplicationPage() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const handleEventTypeChange = (type: EventType) => {
+    setFormData((prev) => ({
+      ...prev,
+      eventTypes: prev.eventTypes.includes(type)
+        ? prev.eventTypes.filter((t) => t !== type)
+        : [...prev.eventTypes, type],
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
+    if (formData.eventTypes.length === 0) {
+      setError("Please select at least one event type you're interested in.");
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      const response = await fetch("/api/gge/events", {
+      const response = await fetch("/api/gge/register-interest", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -50,7 +61,7 @@ export default function HostApplicationPage() {
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.error || "Failed to submit application");
+        throw new Error(data.error || "Failed to submit registration");
       }
 
       setSubmitted(true);
@@ -83,22 +94,22 @@ export default function HostApplicationPage() {
               </svg>
             </div>
             <h2 className="text-2xl font-bold text-[#1e3a5f] mb-4">
-              Application Submitted!
+              Interest Registered!
             </h2>
             <p className="text-gray-600 mb-6 text-lg">
-              Thank you for your interest in hosting a Recreational Games event.
-              Your application has been received and will be reviewed by the GGE
-              Recreational Games Officer.
+              Thank you for registering your interest in Social GAA events.
+              You&apos;ve been added to our waiting list and will be notified
+              when events become available in your area.
             </p>
             <p className="text-gray-500 mb-8">
-              You will receive a confirmation email shortly at{" "}
+              A confirmation email has been sent to{" "}
               <strong>{formData.contactEmail}</strong>
             </p>
             <Link
-              href="/gge"
+              href="/gge/events"
               className="inline-block bg-[#1e3a5f] text-white font-bold py-3 px-8 rounded-lg hover:bg-[#2d4a6f] transition-colors"
             >
-              Return to Home
+              Back to Events
             </Link>
           </div>
         </div>
@@ -111,14 +122,14 @@ export default function HostApplicationPage() {
       <Header />
 
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {/* Page Title */}
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-[#1e3a5f] mb-2">
-              Host Application Form
+              Register Your Interest
             </h2>
             <p className="text-gray-600 text-lg">
-              Apply to host a Recreational Games blitz in 2026
+              Join the waiting list for upcoming Social GAA events
             </p>
           </div>
 
@@ -139,7 +150,7 @@ export default function HostApplicationPage() {
                 Club Details
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-gray-700 font-medium mb-2 text-lg">
                     Club Name *
                   </label>
@@ -154,7 +165,31 @@ export default function HostApplicationPage() {
                     placeholder="e.g. Munich Colmcilles"
                   />
                 </div>
-                <div>
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 font-medium mb-2 text-lg">
+                    County *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.country}
+                    onChange={(e) =>
+                      setFormData({ ...formData, country: e.target.value })
+                    }
+                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
+                    placeholder="e.g. Dublin"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Details Section */}
+            <div className="mb-8">
+              <h3 className="text-xl font-bold text-[#1e3a5f] mb-4 pb-2 border-b border-gray-200">
+                Contact Details
+              </h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
                   <label className="block text-gray-700 font-medium mb-2 text-lg">
                     Contact Name *
                   </label>
@@ -171,7 +206,7 @@ export default function HostApplicationPage() {
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Contact Email *
+                    Email *
                   </label>
                   <input
                     type="email"
@@ -186,11 +221,10 @@ export default function HostApplicationPage() {
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Contact Phone *
+                    Phone
                   </label>
                   <input
                     type="tel"
-                    required
                     value={formData.contactPhone}
                     onChange={(e) =>
                       setFormData({ ...formData, contactPhone: e.target.value })
@@ -202,144 +236,39 @@ export default function HostApplicationPage() {
               </div>
             </div>
 
-            {/* Event Details Section */}
+            {/* Event Interest Section */}
             <div className="mb-8">
               <h3 className="text-xl font-bold text-[#1e3a5f] mb-4 pb-2 border-b border-gray-200">
-                Event Details
+                Event Interest
               </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Event Type *
-                  </label>
-                  <select
-                    required
-                    value={formData.eventType}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        eventType: e.target.value as EventType,
-                      })
-                    }
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
+              <p className="text-gray-600 mb-4">
+                Which events are you interested in? (Select all that apply) *
+              </p>
+              <div className="space-y-3">
+                {(Object.keys(eventTypeLabels) as EventType[]).map((type) => (
+                  <label
+                    key={type}
+                    className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                      formData.eventTypes.includes(type)
+                        ? "border-[#1e3a5f] bg-[#1e3a5f]/5"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
                   >
-                    <option value="">Select event type...</option>
-                    {(Object.keys(eventTypeLabels) as EventType[]).map(
-                      (type) => (
-                        <option key={type} value={type}>
-                          {eventTypeLabels[type]}
-                        </option>
-                      )
-                    )}
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Proposed Date *
+                    <input
+                      type="checkbox"
+                      checked={formData.eventTypes.includes(type)}
+                      onChange={() => handleEventTypeChange(type)}
+                      className="w-5 h-5 text-[#1e3a5f] border-gray-300 rounded focus:ring-[#1e3a5f]"
+                    />
+                    <span className="ml-3 text-lg font-medium text-gray-700">
+                      {eventTypeLabels[type]}
+                    </span>
                   </label>
-                  <input
-                    type="date"
-                    required
-                    value={formData.proposedDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, proposedDate: e.target.value })
-                    }
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Location (City/Town) *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.location}
-                    onChange={(e) =>
-                      setFormData({ ...formData, location: e.target.value })
-                    }
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                    placeholder="e.g. Munich, Germany"
-                  />
-                </div>
+                ))}
               </div>
             </div>
 
-            {/* Venue Details Section */}
-            <div className="mb-8">
-              <h3 className="text-xl font-bold text-[#1e3a5f] mb-4 pb-2 border-b border-gray-200">
-                Venue Details
-              </h3>
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Venue Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.venueName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, venueName: e.target.value })
-                    }
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                    placeholder="e.g. Sportpark Unterhaching"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Number of Pitches *
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min={1}
-                    value={formData.numberOfPitches}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        numberOfPitches: parseInt(e.target.value) || 1,
-                      })
-                    }
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Maximum Teams *
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    min={2}
-                    value={formData.maxTeams}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        maxTeams: parseInt(e.target.value) || 8,
-                      })
-                    }
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Venue Facilities
-                  </label>
-                  <textarea
-                    value={formData.venueDetails}
-                    onChange={(e) =>
-                      setFormData({ ...formData, venueDetails: e.target.value })
-                    }
-                    rows={3}
-                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                    placeholder="Describe facilities: changing rooms, parking, toilets, etc."
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Information Section */}
+            {/* Additional Info Section */}
             <div className="mb-8">
               <h3 className="text-xl font-bold text-[#1e3a5f] mb-4 pb-2 border-b border-gray-200">
                 Additional Information
@@ -347,21 +276,49 @@ export default function HostApplicationPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Food & Refreshments
+                    Estimated number of players
                   </label>
-                  <textarea
-                    value={formData.foodOptions}
+                  <select
+                    value={formData.estimatedPlayers}
                     onChange={(e) =>
-                      setFormData({ ...formData, foodOptions: e.target.value })
+                      setFormData({
+                        ...formData,
+                        estimatedPlayers: e.target.value,
+                      })
                     }
-                    rows={2}
                     className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                    placeholder="e.g. BBQ provided, on-site canteen, local vendors..."
-                  />
+                  >
+                    <option value="">Select...</option>
+                    <option value="1-10">1-10 players</option>
+                    <option value="11-20">11-20 players</option>
+                    <option value="21-30">21-30 players</option>
+                    <option value="30+">30+ players</option>
+                  </select>
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2 text-lg">
-                    Additional Notes
+                    Have you participated in Social GAA events before?
+                  </label>
+                  <select
+                    value={formData.previousParticipation}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        previousParticipation: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
+                  >
+                    <option value="">Select...</option>
+                    <option value="no">No, this would be our first time</option>
+                    <option value="yes-1">Yes, 1 event</option>
+                    <option value="yes-2-3">Yes, 2-3 events</option>
+                    <option value="yes-4+">Yes, 4+ events</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-2 text-lg">
+                    Anything else you&apos;d like us to know?
                   </label>
                   <textarea
                     value={formData.additionalNotes}
@@ -373,7 +330,7 @@ export default function HostApplicationPage() {
                     }
                     rows={3}
                     className="w-full px-4 py-3 text-lg border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1e3a5f] focus:border-transparent"
-                    placeholder="Any other information you'd like to share..."
+                    placeholder="e.g. preferred locations, travel limitations, etc."
                   />
                 </div>
               </div>
@@ -386,10 +343,10 @@ export default function HostApplicationPage() {
                 disabled={isSubmitting}
                 className="flex-1 bg-[#f5c842] text-[#1e3a5f] font-bold py-4 px-8 rounded-lg text-xl hover:bg-[#e5b832] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? "Submitting..." : "Submit Application"}
+                {isSubmitting ? "Submitting..." : "Register Interest"}
               </button>
               <Link
-                href="/gge"
+                href="/gge/events"
                 className="flex-1 text-center bg-gray-100 text-gray-700 font-bold py-4 px-8 rounded-lg text-xl hover:bg-gray-200 transition-colors"
               >
                 Cancel
@@ -416,14 +373,14 @@ function Header() {
           />
           <div>
             <h1 className="text-lg font-bold">Gaelic Games Europe</h1>
-            <p className="text-sm text-[#f5c842]">Recreational Games 2026</p>
+            <p className="text-sm text-[#f5c842]">Social GAA 2026</p>
           </div>
         </Link>
         <Link
           href="/gge/events"
           className="text-white/80 hover:text-white transition-colors font-medium"
         >
-          View Events →
+          ← Back to Events
         </Link>
       </div>
     </header>

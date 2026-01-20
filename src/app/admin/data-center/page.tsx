@@ -19,6 +19,7 @@ import {
   Target,
   CalendarDays,
   Clock,
+  Heart,
 } from "lucide-react";
 
 interface ReportCard {
@@ -328,6 +329,25 @@ const reports: ReportCard[] = [
       "Monthly approval trends",
       "Rejection reasons breakdown",
       "Marketing-ready stats",
+    ],
+  },
+  {
+    id: "gge-interest",
+    title: "Social GAA Interest",
+    narrativeQuestion: "Who wants to play Social GAA?",
+    description:
+      "GGE Social GAA waiting list and interest registrations. Track demand by county, event type, and build fair allocation based on participation history.",
+    icon: <Heart className="w-5 h-5 text-white" />,
+    gradient: "from-rose-500 to-pink-500",
+    endpoint: "/api/admin/reports/gge-interest",
+    type: "view",
+    includes: [
+      "Total registrations & recent signups",
+      "Interest by event type (Dads & Lads, G4MO, Camogie)",
+      "County breakdown",
+      "Estimated player counts",
+      "Previous participation tracking",
+      "Monthly registration trends",
     ],
   },
 ];
