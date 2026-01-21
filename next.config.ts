@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
-        // When accessing gge-social.com, rewrite to /gge routes
+        // When accessing gge-social.com, rewrite to Rome Hibernia demo
         {
           source: "/",
           has: [
@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
               value: "gge-social.com",
             },
           ],
-          destination: "/gge",
+          destination: "/demo/rome-hibernia",
         },
         {
           source: "/",
@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
               value: "www.gge-social.com",
             },
           ],
-          destination: "/gge",
+          destination: "/demo/rome-hibernia",
         },
         {
           source: "/:path*",
@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
               value: "gge-social.com",
             },
           ],
-          destination: "/gge/:path*",
+          destination: "/demo/rome-hibernia/:path*",
         },
         {
           source: "/:path*",
@@ -43,7 +43,7 @@ const nextConfig: NextConfig = {
               value: "www.gge-social.com",
             },
           ],
-          destination: "/gge/:path*",
+          destination: "/demo/rome-hibernia/:path*",
         },
       ],
     };

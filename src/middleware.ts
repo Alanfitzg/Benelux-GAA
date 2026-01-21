@@ -19,6 +19,8 @@ export function middleware(request: NextRequest) {
     "www.playgaaaway.com",
     "gge-social.com",
     "www.gge-social.com",
+    "gge-socials.com",
+    "www.gge-socials.com",
     // Add your Vercel preview URLs if needed
   ];
 
