@@ -220,6 +220,7 @@ model User {
   isClubMember          Boolean              @default(false)
   createdAt             DateTime             @default(now())
   updatedAt             DateTime             @updatedAt
+  lastLogin             DateTime?
   approvedAt            DateTime?
   approvedBy            String?
   rejectionReason       String?

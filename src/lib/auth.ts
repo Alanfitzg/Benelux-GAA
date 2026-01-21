@@ -195,11 +195,25 @@ export const authOptions = {
           user.role = existingUser.role;
           user.accountStatus = existingUser.accountStatus;
 
+          // Update last login time
+          await prisma.user.update({
+            where: { id: existingUser.id },
+            data: { lastLogin: new Date() },
+          });
+
           return true;
         } catch (error) {
           console.error("Error handling Google sign in:", error);
           return false;
         }
+      }
+
+      // Update last login time for credentials sign-in
+      if (account?.provider === "credentials" && user?.id) {
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { lastLogin: new Date() },
+        });
       }
 
       return true;

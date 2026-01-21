@@ -16,6 +16,7 @@ interface User {
   role: UserRole;
   accountStatus: AccountStatus;
   createdAt: string;
+  lastLogin?: string | null;
   clubId?: string | null;
   club?: {
     id: string;
@@ -25,6 +26,9 @@ interface User {
   accounts?: { provider: string }[];
   hasPassword?: boolean;
 }
+
+type SortField = "createdAt" | "lastLogin" | "name";
+type SortDirection = "asc" | "desc";
 
 interface Club {
   id: string;
@@ -42,6 +46,8 @@ export default function UsersManagement() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showRegionalRepModal, setShowRegionalRepModal] = useState(false);
+  const [sortField, setSortField] = useState<SortField>("lastLogin");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
 
   // Ensure clubs is always an array
 
@@ -178,14 +184,49 @@ export default function UsersManagement() {
     setSelectedUser(null);
   };
 
-  const filteredUsers =
-    roleFilter === "ALL"
-      ? users
-      : roleFilter === "NON_CLUB_MEMBER"
-        ? users.filter((user) => !user.club && user.adminOfClubs.length === 0)
-        : roleFilter === "REGIONAL_REP"
-          ? [] // No users yet - feature under construction
-          : users.filter((user) => user.role === roleFilter);
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("desc");
+    }
+  };
+
+  const sortedAndFilteredUsers = (() => {
+    const filtered =
+      roleFilter === "ALL"
+        ? users
+        : roleFilter === "NON_CLUB_MEMBER"
+          ? users.filter((user) => !user.club && user.adminOfClubs.length === 0)
+          : roleFilter === "REGIONAL_REP"
+            ? []
+            : users.filter((user) => user.role === roleFilter);
+
+    return filtered.sort((a, b) => {
+      let aValue: string | null | undefined;
+      let bValue: string | null | undefined;
+
+      if (sortField === "lastLogin") {
+        aValue = a.lastLogin;
+        bValue = b.lastLogin;
+      } else if (sortField === "createdAt") {
+        aValue = a.createdAt;
+        bValue = b.createdAt;
+      } else if (sortField === "name") {
+        aValue = a.name || a.username;
+        bValue = b.name || b.username;
+      }
+
+      // Handle null/undefined - put them at the end
+      if (!aValue && !bValue) return 0;
+      if (!aValue) return 1;
+      if (!bValue) return -1;
+
+      const comparison = aValue.localeCompare(bValue);
+      return sortDirection === "asc" ? comparison : -comparison;
+    });
+  })();
 
   if (loading) {
     return (
@@ -291,6 +332,30 @@ export default function UsersManagement() {
             Super Admins (
             {users.filter((u) => u.role === UserRole.SUPER_ADMIN).length})
           </button>
+        </div>
+
+        {/* Sort Controls */}
+        <div className="mb-4 flex items-center gap-2">
+          <span className="text-white/70 text-sm">Sort by:</span>
+          <select
+            value={`${sortField}-${sortDirection}`}
+            onChange={(e) => {
+              const [field, dir] = e.target.value.split("-") as [
+                SortField,
+                SortDirection,
+              ];
+              setSortField(field);
+              setSortDirection(dir);
+            }}
+            className="px-3 py-1.5 text-sm bg-white rounded-lg border border-gray-200 shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="lastLogin-desc">Last Login (Recent First)</option>
+            <option value="lastLogin-asc">Last Login (Oldest First)</option>
+            <option value="createdAt-desc">Created (Recent First)</option>
+            <option value="createdAt-asc">Created (Oldest First)</option>
+            <option value="name-asc">Name (A-Z)</option>
+            <option value="name-desc">Name (Z-A)</option>
+          </select>
         </div>
 
         {error && (
@@ -441,7 +506,7 @@ export default function UsersManagement() {
 
         {/* Mobile Users Cards */}
         <div className="md:hidden space-y-3">
-          {filteredUsers.map((user) => (
+          {sortedAndFilteredUsers.map((user) => (
             <div
               key={user.id}
               className="bg-white rounded-2xl shadow-lg border border-gray-100 p-4"
@@ -523,9 +588,17 @@ export default function UsersManagement() {
               )}
 
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <span className="text-xs text-gray-400">
-                  {new Date(user.createdAt).toLocaleDateString()}
-                </span>
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-xs text-gray-400">
+                    Created: {new Date(user.createdAt).toLocaleDateString()}
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    Last Login:{" "}
+                    {user.lastLogin
+                      ? new Date(user.lastLogin).toLocaleDateString()
+                      : "Never"}
+                  </span>
+                </div>
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleEditUser(user)}
@@ -570,12 +643,15 @@ export default function UsersManagement() {
                   Created
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Last Login
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filteredUsers.map((user) => (
+              {sortedAndFilteredUsers.map((user) => (
                 <tr key={user.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div>
@@ -711,6 +787,15 @@ export default function UsersManagement() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {new Date(user.createdAt).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {user.lastLogin ? (
+                      <span title={new Date(user.lastLogin).toLocaleString()}>
+                        {new Date(user.lastLogin).toLocaleDateString()}
+                      </span>
+                    ) : (
+                      <span className="text-gray-400">Never</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex gap-2">

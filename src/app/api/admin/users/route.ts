@@ -21,6 +21,7 @@ export async function GET() {
         role: true,
         accountStatus: true,
         createdAt: true,
+        lastLogin: true,
         clubId: true,
         password: true,
         club: {
@@ -46,8 +47,8 @@ export async function GET() {
         const adminOfClubs = await prisma.club.findMany({
           where: {
             admins: {
-              some: { id: user.id }
-            }
+              some: { id: user.id },
+            },
           },
           select: {
             id: true,
@@ -63,6 +64,7 @@ export async function GET() {
           role: user.role,
           accountStatus: user.accountStatus,
           createdAt: user.createdAt,
+          lastLogin: user.lastLogin,
           clubId: user.clubId,
           hasPassword: !!user.password,
           club: user.club,
@@ -105,10 +107,7 @@ export async function POST(request: NextRequest) {
     // Check if email or username already exists
     const existingUser = await prisma.user.findFirst({
       where: {
-        OR: [
-          { email: email },
-          { username: username },
-        ],
+        OR: [{ email: email }, { username: username }],
       },
     });
 
@@ -160,8 +159,8 @@ export async function POST(request: NextRequest) {
     const adminOfClubs = await prisma.club.findMany({
       where: {
         admins: {
-          some: { id: newUserRaw.id }
-        }
+          some: { id: newUserRaw.id },
+        },
       },
       select: {
         id: true,
@@ -185,15 +184,19 @@ export async function POST(request: NextRequest) {
     };
 
     // If role is CLUB_ADMIN and clubIds are provided, assign admin roles
-    if (role === UserRole.CLUB_ADMIN && Array.isArray(clubIds) && clubIds.length > 0) {
+    if (
+      role === UserRole.CLUB_ADMIN &&
+      Array.isArray(clubIds) &&
+      clubIds.length > 0
+    ) {
       for (const clubId of clubIds) {
         await prisma.club.update({
           where: { id: clubId },
           data: {
             admins: {
-              connect: { id: newUser.id }
-            }
-          }
+              connect: { id: newUser.id },
+            },
+          },
         });
       }
     }
