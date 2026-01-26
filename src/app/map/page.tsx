@@ -704,7 +704,7 @@ function MapContent() {
               initial={{ x: -400 }}
               animate={{ x: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="hidden md:block w-96 bg-white shadow-professional-lg border-r border-gray-200/50 overflow-hidden"
+              className="hidden md:block w-96 bg-white shadow-professional-lg border-r-2 border-gray-300 overflow-hidden"
             >
               <SidebarContent />
             </motion.div>

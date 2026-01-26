@@ -1649,3 +1649,133 @@ model SocialGAAInterest {
   @@index([contactEmail])
   @@index([createdAt])
 }
+
+// ============================================
+// GAA Demographics Report Data (December 2025)
+// Source: "No One Shouted Stop—Until Now" Report
+// ============================================
+
+model DemographicsProvince {
+  id                       String                    @id @default(cuid())
+  name                     String                    @unique  // Connacht, Leinster, Munster, Ulster
+  displayOrder             Int                       @default(0)
+
+  // Aggregated stats (calculated from counties)
+  totalPopulation          Int?
+  totalClubsGAA            Int?
+  totalClubsLGFA           Int?
+  totalClubsCamogie        Int?
+  totalMembers             Int?
+  totalPitches             Int?
+  totalYouthMalePlayers    Int?
+  totalYouthFemalePlayers  Int?
+  totalFullMalePlayers     Int?
+  totalFullFemalePlayers   Int?
+  totalNonPlayers          Int?
+
+  // Timestamps
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+
+  // Relations
+  counties                 DemographicsCounty[]
+
+  @@index([displayOrder])
+}
+
+model DemographicsCounty {
+  id                    String                    @id @default(cuid())
+  name                  String                    @unique  // e.g., "Antrim", "Dublin", "Kerry"
+  provinceId            String
+  displayOrder          Int                       @default(0)
+
+  // Club counts from report
+  clubsGAA              Int                       @default(0)
+  clubsLGFA             Int                       @default(0)
+  clubsCamogie          Int                       @default(0)
+
+  // Member breakdown from report
+  youthMalePlayers      Int                       @default(0)
+  youthFemalePlayers    Int                       @default(0)
+  fullMalePlayers       Int                       @default(0)
+  fullFemalePlayers     Int                       @default(0)
+  nonPlayers            Int                       @default(0)
+
+  // Facilities from report
+  totalPitches          Int                       @default(0)
+  totalFloodlitPitches  Int                       @default(0)
+  totalFullSizePitches  Int                       @default(0)
+  teamsPerPitch         Float?
+
+  // Teams from report
+  teamsCamogie          Int                       @default(0)
+  teamsLadiesFootball   Int                       @default(0)
+  teamsHurling          Int                       @default(0)
+  teamsFootball         Int                       @default(0)
+  totalTeams            Int                       @default(0)
+
+  // Population data from report
+  populationFemale      Int                       @default(0)
+  populationMale        Int                       @default(0)
+  populationTotal       Int                       @default(0)
+  averageAge            Float?
+
+  // Youth population (0-5 year olds) - critical for future planning
+  population0to5        Int                       @default(0)
+  population6to11       Int                       @default(0)
+
+  // Report metadata
+  reportYear            Int                       @default(2025)
+  censusYear            String?                   // "2021/2022"
+
+  // Timestamps
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+
+  // Relations
+  province              DemographicsProvince      @relation(fields: [provinceId], references: [id])
+
+  @@index([provinceId])
+  @@index([displayOrder])
+  @@index([name])
+}
+
+// Summary totals from the report for quick reference
+model DemographicsReportSummary {
+  id                    String                    @id @default(cuid())
+  reportTitle           String                    @default("No One Shouted Stop—Until Now")
+  reportSubtitle        String?                   @default("The GAA's Response to Ireland's Demographic Shift")
+  publishedDate         DateTime?
+
+  // Island-wide totals from report
+  totalPopulation       Int                       @default(0)  // 7,052,602
+  totalClubs            Int                       @default(0)  // 2,371
+  totalMembers          Int                       @default(0)  // 760,183
+
+  // Dublin Commuter Belt stats
+  dublinCommuterBeltPopulation    Int             @default(0)  // 2,304,899
+  dublinCommuterBeltPopPercent    Float?                       // 32.7%
+  dublinCommuterBeltClubsPercent  Float?                       // 18%
+  dublinCommuterBeltMembersPercent Float?                      // 25.7%
+
+  // Eastern Seaboard stats
+  easternSeaboardPopulation       Int             @default(0)  // 3,071,222
+  easternSeaboardPopPercent       Float?                       // 43.5%
+  easternSeaboardClubsPercent     Float?                       // 18.6%
+  easternSeaboardMembersPercent   Float?                       // 25.4%
+
+  // Youth concentration stats
+  top50ClubsYouthPercent          Float?                       // 25.5% of 0-5 year olds
+  lowest1000ClubsYouthPercent     Float?                       // 22% of 0-5 year olds
+
+  // Birth rate decline
+  birthsIn2010                    Int?                         // 100,291
+  birthsIn2024                    Int?                         // 73,478
+  birthRateDeclinePercent         Float?                       // 26.7%
+
+  // Timestamps
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
+
+  @@index([publishedDate])
+}

@@ -588,6 +588,25 @@ export default function AdminDashboardClient({
               </div>
             </div>
           </Link>
+
+          <Link
+            href="/admin/demographics"
+            className="group bg-gradient-to-br from-blue-500 to-indigo-600 p-3 md:p-8 rounded-lg md:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-400"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                📊
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-white group-hover:text-white/90 transition-colors">
+                  GAA Demographics
+                </h2>
+                <p className="text-white/80 text-xs md:text-base mt-0.5 md:mt-1">
+                  Ireland demographic data & PlayAway comparison
+                </p>
+              </div>
+            </div>
+          </Link>
         </div>
       </div>
     </div>
