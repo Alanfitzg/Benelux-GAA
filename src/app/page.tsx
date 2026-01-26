@@ -1267,21 +1267,21 @@ export default function HomePage() {
                   {
                     id: "placeholder-1",
                     content:
-                      "PlayAway made organising our trip to Barcelona incredibly easy. The host club was welcoming and the tournament was brilliantly run. Can't wait for next year!",
+                      "The host club in Barcelona went above and beyond for us. Their facilities were excellent, the tournament was brilliantly organised, and they made us feel like family. We've already booked for next year!",
                     author: "Club Secretary",
                     club: { name: "Sample Irish Club" },
                   },
                   {
                     id: "placeholder-2",
                     content:
-                      "We hosted teams from Ireland and the UK through PlayAway. The platform handled all the coordination and our visitors had a fantastic experience.",
+                      "Hosting visiting teams has been incredibly rewarding. We've welcomed clubs from Ireland, the UK, and beyond. The friendships formed on and off the pitch are what GAA is all about.",
                     author: "Tournament Director",
                     club: { name: "Sample European Club" },
                   },
                   {
                     id: "placeholder-3",
                     content:
-                      "A great way to discover GAA clubs across Europe. We found the perfect tournament for our underage teams and made lasting friendships abroad.",
+                      "We travelled with our underage teams and the experience was unforgettable. The local club organised everything perfectly, and our young players made friends they still keep in touch with today.",
                     author: "Youth Coordinator",
                     club: { name: "Sample GAA Club" },
                   },
