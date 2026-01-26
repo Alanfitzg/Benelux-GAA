@@ -52,24 +52,6 @@ interface FriendsNetworkData {
   };
 }
 
-function Tooltip({
-  children,
-  text,
-}: {
-  children: React.ReactNode;
-  text: string;
-}) {
-  return (
-    <div className="group relative inline-flex items-center">
-      {children}
-      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-        {text}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
-      </div>
-    </div>
-  );
-}
-
 export default function FriendsNetworkPage() {
   const [data, setData] = useState<FriendsNetworkData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -164,234 +146,156 @@ export default function FriendsNetworkPage() {
             </div>
           </div>
 
-          {/* Context explanation */}
-          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-5 border border-white/20">
+          {/* Context explanation - hidden on mobile for cleaner view */}
+          <div className="hidden sm:block bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-5 border border-white/20">
             <p className="text-sm md:text-base text-white/90 leading-relaxed">
               The Friends Network tracks the connections between GAA clubs
               worldwide. When clubs travel for tournaments or host visiting
               teams, these connections form lasting relationships that
-              strengthen the global GAA community. This data is valuable for
-              understanding club engagement, identifying active ambassadors, and
-              potentially supporting future reward schemes for clubs that
-              actively build international connections.
+              strengthen the global GAA community.
             </p>
-            <div className="mt-3 pt-3 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs md:text-sm">
+            <div className="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs md:text-sm">
               <div className="flex items-center gap-2 text-white/70">
                 <span className="w-2 h-2 bg-green-400 rounded-full"></span>
                 <span>
                   <strong className="text-white">Friends</strong> — Informal
-                  connections from trips
+                  connections
                 </span>
               </div>
               <div className="flex items-center gap-2 text-white/70">
                 <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
                 <span>
                   <strong className="text-white">Twin Clubs</strong> — Official
-                  GAA partnerships
+                  partnerships
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
-          <Tooltip text="Informal connections made through trips and hosting">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 w-full cursor-help">
-              <div className="text-2xl md:text-3xl font-bold text-white">
-                {data?.friends.total || 0}
-              </div>
-              <div className="text-xs md:text-sm text-white/70 flex items-center gap-1">
-                Total Friendships
-                <svg
-                  className="w-3 h-3 text-white/50"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
+        {/* Stats Cards - simplified on mobile */}
+        <div className="grid grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-8">
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+            <div className="text-xl md:text-3xl font-bold text-white">
+              {data?.friends.total || 0}
             </div>
-          </Tooltip>
+            <div className="text-[10px] md:text-sm text-white/70">Friends</div>
+          </div>
 
-          <Tooltip text="Unique clubs that have at least one friendship connection">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 w-full cursor-help">
-              <div className="text-2xl md:text-3xl font-bold text-white">
-                {data?.friends.uniqueClubs || 0}
-              </div>
-              <div className="text-xs md:text-sm text-white/70 flex items-center gap-1">
-                Connected Clubs
-                <svg
-                  className="w-3 h-3 text-white/50"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+            <div className="text-xl md:text-3xl font-bold text-white">
+              {data?.friends.uniqueClubs || 0}
             </div>
-          </Tooltip>
+            <div className="text-[10px] md:text-sm text-white/70">Clubs</div>
+          </div>
 
-          <Tooltip text="Official GAA Twinning Initiative partnerships">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 w-full cursor-help">
-              <div className="text-2xl md:text-3xl font-bold text-emerald-400">
-                {data?.twinClubs.total || 0}
-              </div>
-              <div className="text-xs md:text-sm text-white/70 flex items-center gap-1">
-                Twin Clubs
-                <svg
-                  className="w-3 h-3 text-white/50"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+            <div className="text-xl md:text-3xl font-bold text-emerald-400">
+              {data?.twinClubs.total || 0}
             </div>
-          </Tooltip>
+            <div className="text-[10px] md:text-sm text-white/70">Twins</div>
+          </div>
 
-          <Tooltip text="Combined total of all friendships and twin club relationships">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 md:p-4 w-full cursor-help">
-              <div className="text-2xl md:text-3xl font-bold text-secondary">
-                {(data?.friends.total || 0) + (data?.twinClubs.total || 0)}
-              </div>
-              <div className="text-xs md:text-sm text-white/70 flex items-center gap-1">
-                Total Relationships
-                <svg
-                  className="w-3 h-3 text-white/50"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+            <div className="text-xl md:text-3xl font-bold text-secondary">
+              {(data?.friends.total || 0) + (data?.twinClubs.total || 0)}
             </div>
-          </Tooltip>
+            <div className="text-[10px] md:text-sm text-white/70">Total</div>
+          </div>
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white rounded-lg md:rounded-xl shadow-lg overflow-hidden">
           <div className="border-b border-gray-200">
             <div className="flex">
-              <Tooltip text="Clubs that have visited or hosted each other through PlayAway trips">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("friends")}
-                  className={`flex-1 px-4 md:px-6 py-3 md:py-4 text-sm font-medium transition-colors ${
-                    activeTab === "friends"
-                      ? "text-green-600 border-b-2 border-green-600 bg-green-50"
-                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <svg
-                      className="w-4 h-4 md:w-5 md:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
-                    <span className="hidden sm:inline">Friends</span> (
-                    {data?.friends.total || 0})
-                  </div>
-                </button>
-              </Tooltip>
-              <Tooltip text="Formal partnerships under the GAA Twinning Initiative program">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("twins")}
-                  className={`flex-1 px-4 md:px-6 py-3 md:py-4 text-sm font-medium transition-colors ${
-                    activeTab === "twins"
-                      ? "text-emerald-600 border-b-2 border-emerald-600 bg-emerald-50"
-                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <svg
-                      className="w-4 h-4 md:w-5 md:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                      />
-                    </svg>
-                    <span className="hidden sm:inline">Twin Clubs</span> (
-                    {data?.twinClubs.total || 0})
-                  </div>
-                </button>
-              </Tooltip>
-              <Tooltip text="Top clubs by connections and strongest repeat relationships">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("leaderboards")}
-                  className={`flex-1 px-4 md:px-6 py-3 md:py-4 text-sm font-medium transition-colors ${
-                    activeTab === "leaderboards"
-                      ? "text-amber-600 border-b-2 border-amber-600 bg-amber-50"
-                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <div className="flex items-center justify-center gap-2">
-                    <svg
-                      className="w-4 h-4 md:w-5 md:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                      />
-                    </svg>
-                    <span className="hidden sm:inline">Leaderboards</span>
-                  </div>
-                </button>
-              </Tooltip>
+              <button
+                type="button"
+                onClick={() => setActiveTab("friends")}
+                className={`flex-1 px-2 md:px-6 py-2.5 md:py-4 text-xs md:text-sm font-medium transition-colors ${
+                  activeTab === "friends"
+                    ? "text-green-600 border-b-2 border-green-600 bg-green-50"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <svg
+                    className="w-4 h-4 md:w-5 md:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                    />
+                  </svg>
+                  <span>Friends</span>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("twins")}
+                className={`flex-1 px-2 md:px-6 py-2.5 md:py-4 text-xs md:text-sm font-medium transition-colors ${
+                  activeTab === "twins"
+                    ? "text-emerald-600 border-b-2 border-emerald-600 bg-emerald-50"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <svg
+                    className="w-4 h-4 md:w-5 md:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                    />
+                  </svg>
+                  <span>Twins</span>
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("leaderboards")}
+                className={`flex-1 px-2 md:px-6 py-2.5 md:py-4 text-xs md:text-sm font-medium transition-colors ${
+                  activeTab === "leaderboards"
+                    ? "text-amber-600 border-b-2 border-amber-600 bg-amber-50"
+                    : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                }`}
+              >
+                <div className="flex items-center justify-center gap-1 md:gap-2">
+                  <svg
+                    className="w-4 h-4 md:w-5 md:h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                  <span className="hidden xs:inline">Leaders</span>
+                  <span className="xs:hidden">Top</span>
+                </div>
+              </button>
             </div>
           </div>
 
-          <div className="p-4 md:p-6">
+          <div className="p-3 md:p-6">
             {/* Friends Tab */}
             {activeTab === "friends" && (
               <div>
-                {/* Section explanation */}
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+                {/* Section explanation - hidden on mobile */}
+                <div className="hidden sm:block mb-4 p-3 bg-green-50 border border-green-200 rounded-lg">
                   <div className="flex items-start gap-2">
                     <svg
                       className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5"
@@ -409,8 +313,7 @@ export default function FriendsNetworkPage() {
                     <div className="text-sm text-green-800">
                       <span className="font-medium">Friends</span> are informal
                       connections formed when clubs travel abroad for
-                      tournaments or host visiting teams. These relationships
-                      are added by club admins to their profile.
+                      tournaments or host visiting teams.
                     </div>
                   </div>
                 </div>
@@ -539,8 +442,8 @@ export default function FriendsNetworkPage() {
             {/* Twin Clubs Tab */}
             {activeTab === "twins" && (
               <div>
-                {/* Section explanation */}
-                <div className="mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
+                {/* Section explanation - hidden on mobile */}
+                <div className="hidden sm:block mb-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg">
                   <div className="flex items-start gap-2">
                     <svg
                       className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5"
@@ -557,10 +460,8 @@ export default function FriendsNetworkPage() {
                     </svg>
                     <div className="text-sm text-emerald-800">
                       <span className="font-medium">Twin Clubs</span> are formal
-                      partnerships established through the official GAA Twinning
-                      Initiative. These pairings connect Irish/UK clubs with
-                      European clubs for ongoing cultural exchange and sporting
-                      collaboration.
+                      GAA Twinning Initiative partnerships connecting Irish/UK
+                      clubs with European clubs.
                     </div>
                   </div>
                 </div>
@@ -689,46 +590,24 @@ export default function FriendsNetworkPage() {
 
             {/* Leaderboards Tab */}
             {activeTab === "leaderboards" && (
-              <div className="space-y-8">
+              <div className="space-y-6 md:space-y-8">
                 {/* Most Connected Clubs */}
                 <div>
-                  <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <svg
-                        className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      <div className="text-sm text-amber-800">
-                        <span className="font-medium">
-                          Most Connected Clubs
-                        </span>{" "}
-                        — Clubs ranked by their total number of friendship
-                        connections. These are the most well-travelled or
-                        hospitable clubs in the network.
-                      </div>
-                    </div>
-                  </div>
+                  <h3 className="text-sm md:text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <span className="text-amber-500">🏆</span> Most Connected
+                  </h3>
 
                   {data?.leaderboards?.mostConnected &&
                   data.leaderboards.mostConnected.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="space-y-1.5 md:space-y-2">
                       {data.leaderboards.mostConnected.map((item, index) => (
                         <Link
                           key={item.club.id}
                           href={`/clubs/${item.club.id}`}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                          className="flex items-center gap-2 md:gap-3 p-2 md:p-3 bg-gray-50 rounded-lg md:rounded-xl hover:bg-gray-100 transition-colors"
                         >
                           <div
-                            className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
+                            className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold flex-shrink-0 ${
                               index === 0
                                 ? "bg-amber-400 text-amber-900"
                                 : index === 1
@@ -740,7 +619,7 @@ export default function FriendsNetworkPage() {
                           >
                             {index + 1}
                           </div>
-                          <div className="relative w-10 h-10 flex-shrink-0">
+                          <div className="relative w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
                             <Image
                               src={
                                 item.club.imageUrl ||
@@ -753,28 +632,25 @@ export default function FriendsNetworkPage() {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium text-gray-900 truncate">
+                            <div className="font-medium text-gray-900 truncate text-sm md:text-base">
                               {item.club.name}
                             </div>
                             {item.club.location && (
-                              <div className="text-xs text-gray-500 truncate">
+                              <div className="text-xs text-gray-500 truncate hidden sm:block">
                                 {item.club.location}
                               </div>
                             )}
                           </div>
-                          <div className="text-right">
-                            <div className="text-lg font-bold text-amber-600">
+                          <div className="text-right flex-shrink-0">
+                            <div className="text-base md:text-lg font-bold text-amber-600">
                               {item.count}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              connection{item.count !== 1 ? "s" : ""}
                             </div>
                           </div>
                         </Link>
                       ))}
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-gray-500">
+                    <div className="text-center py-6 md:py-8 text-gray-500 text-sm">
                       No connection data available yet
                     </div>
                   )}
@@ -782,47 +658,25 @@ export default function FriendsNetworkPage() {
 
                 {/* Strongest Relationships */}
                 <div>
-                  <div className="mb-4 p-3 bg-purple-50 border border-purple-200 rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <svg
-                        className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                      </svg>
-                      <div className="text-sm text-purple-800">
-                        <span className="font-medium">
-                          Strongest Relationships
-                        </span>{" "}
-                        — Club pairs that have visited each other multiple
-                        times. These represent deep, lasting friendships that
-                        span years.
-                      </div>
-                    </div>
-                  </div>
+                  <h3 className="text-sm md:text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <span className="text-purple-500">💜</span> Strongest Bonds
+                  </h3>
 
                   {data?.leaderboards?.strongestRelationships &&
                   data.leaderboards.strongestRelationships.length > 0 ? (
-                    <div className="space-y-3">
+                    <div className="space-y-2 md:space-y-3">
                       {data.leaderboards.strongestRelationships.map(
                         (item, index) => (
                           <div
                             key={index}
-                            className="flex items-center gap-2 md:gap-4 p-3 md:p-4 bg-purple-50 rounded-xl border border-purple-200"
+                            className="flex items-center gap-2 p-2 md:p-3 bg-purple-50 rounded-lg md:rounded-xl border border-purple-200"
                           >
                             {/* Club 1 */}
                             <Link
                               href={`/clubs/${item.clubs[0].id}`}
-                              className="flex-1 flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity min-w-0"
+                              className="flex-1 flex items-center gap-1.5 md:gap-3 hover:opacity-80 transition-opacity min-w-0"
                             >
-                              <div className="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+                              <div className="relative w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
                                 <Image
                                   src={
                                     item.clubs[0].imageUrl ||
@@ -834,51 +688,36 @@ export default function FriendsNetworkPage() {
                                   unoptimized
                                 />
                               </div>
-                              <div className="min-w-0">
-                                <div className="font-medium text-gray-900 truncate text-sm md:text-base">
+                              <div className="min-w-0 hidden sm:block">
+                                <div className="font-medium text-gray-900 truncate text-sm">
                                   {item.clubs[0].name}
                                 </div>
-                                {item.clubs[0].location && (
-                                  <div className="text-xs text-gray-500 truncate hidden sm:block">
-                                    {item.clubs[0].location}
-                                  </div>
-                                )}
                               </div>
                             </Link>
 
                             {/* Visit Count */}
-                            <div className="flex-shrink-0 px-2 md:px-4 text-center">
-                              <div className="w-12 h-12 md:w-14 md:h-14 bg-purple-200 rounded-full flex flex-col items-center justify-center">
-                                <div className="text-lg md:text-xl font-bold text-purple-700">
+                            <div className="flex-shrink-0 px-1 md:px-3 text-center">
+                              <div className="w-10 h-10 md:w-12 md:h-12 bg-purple-200 rounded-full flex flex-col items-center justify-center">
+                                <div className="text-base md:text-lg font-bold text-purple-700">
                                   {item.visits}
                                 </div>
-                                <div className="text-[10px] text-purple-600">
+                                <div className="text-[8px] md:text-[10px] text-purple-600">
                                   visits
                                 </div>
                               </div>
-                              {item.years.length > 0 && (
-                                <div className="text-xs text-gray-500 mt-1">
-                                  {item.years.join(", ")}
-                                </div>
-                              )}
                             </div>
 
                             {/* Club 2 */}
                             <Link
                               href={`/clubs/${item.clubs[1].id}`}
-                              className="flex-1 flex items-center gap-2 md:gap-3 hover:opacity-80 transition-opacity justify-end text-right min-w-0"
+                              className="flex-1 flex items-center gap-1.5 md:gap-3 hover:opacity-80 transition-opacity justify-end text-right min-w-0"
                             >
-                              <div className="min-w-0">
-                                <div className="font-medium text-gray-900 truncate text-sm md:text-base">
+                              <div className="min-w-0 hidden sm:block">
+                                <div className="font-medium text-gray-900 truncate text-sm">
                                   {item.clubs[1].name}
                                 </div>
-                                {item.clubs[1].location && (
-                                  <div className="text-xs text-gray-500 truncate hidden sm:block">
-                                    {item.clubs[1].location}
-                                  </div>
-                                )}
                               </div>
-                              <div className="relative w-10 h-10 md:w-12 md:h-12 flex-shrink-0">
+                              <div className="relative w-8 h-8 md:w-10 md:h-10 flex-shrink-0">
                                 <Image
                                   src={
                                     item.clubs[1].imageUrl ||
@@ -896,9 +735,8 @@ export default function FriendsNetworkPage() {
                       )}
                     </div>
                   ) : (
-                    <div className="text-center py-8 text-gray-500">
-                      No repeat visits recorded yet. Strongest relationships
-                      appear when clubs visit each other multiple times.
+                    <div className="text-center py-6 md:py-8 text-gray-500 text-sm">
+                      No repeat visits recorded yet
                     </div>
                   )}
                 </div>
