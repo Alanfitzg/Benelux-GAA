@@ -10,84 +10,135 @@ export default function FAQPage() {
       title: "General Questions",
       questions: [
         {
-          question: "What is Gaelic Trips?",
-          answer: "Gaelic Trips is an online marketplace dedicated to GAA-related travel, enabling clubs around Europe (and globally) to list events and travel packages, generate revenue securely, and centralise logistics. It connects international GAA clubs with travelling teams, simplifying arrangements and enhancing profitability and efficiency."
+          question: "What is PlayAway?",
+          answer:
+            "PlayAway is a global platform connecting GAA clubs worldwide for tournaments, training camps, and cultural exchanges. We enable clubs to list events, connect with travelling teams, and manage bookings securely. With over 2,400 clubs across 60+ countries, PlayAway is the go-to destination for GAA travel experiences.",
         },
         {
-          question: "Is Gaelic Trips officially affiliated with the GAA?",
-          answer: "No. Gaelic Trips is an autonomous, independent company that provides services for Gaelic Athletics teams and groups, primarily, but not exclusively."
+          question: "Is PlayAway officially affiliated with the GAA?",
+          answer:
+            "No. PlayAway is an independent company that provides services for Gaelic Athletics teams and groups. We are not officially affiliated with the GAA, LGFA, or Camogie Association, but we serve their communities worldwide.",
         },
         {
-          question: "Is Gaelic Trips a travel agent or a tour operator?",
-          answer: "No. Gaelic Trips is neither a travel agent nor a traditional tour operator. It is a marketplace platform, similar in concept to Airbnb or Eventbrite, facilitating direct connections between clubs (hosts) and visiting teams (travellers)."
-        }
-      ]
+          question: "Is PlayAway a travel agent or a tour operator?",
+          answer:
+            "No. PlayAway is a marketplace platform, similar to Airbnb or Eventbrite, facilitating direct connections between host clubs and visiting teams. We do not book flights, accommodation, or transport on behalf of users.",
+        },
+        {
+          question: "What sports does PlayAway support?",
+          answer:
+            "PlayAway supports all Gaelic games including Hurling, Gaelic Football, Ladies Gaelic Football (LGFA), Camogie, and Gaelic4Mothers&Others (G4MO). Events can be filtered by sport type to find the perfect match for your team.",
+        },
+      ],
     },
     {
-      id: "legal",
-      title: "Legal and Regulatory",
+      id: "getting-started",
+      title: "Getting Started",
       questions: [
         {
-          question: "Is Gaelic Trips compliant with EU travel regulations?",
-          answer: "Yes. Gaelic Trips aligns with EU Package Travel Directive standards. Our platform primarily deals with Linked Travel Arrangements (LTAs), ensuring regulatory compliance without placing licensing or bonding obligations on clubs."
+          question: "How do I create an account?",
+          answer:
+            "Click 'Sign Up' and register using your email or Google account. Once registered, you can complete your Profile Builder to tell us about your playing experience, preferred sports, and travel interests. This helps us show you relevant events and clubs.",
         },
         {
-          question: "What are Linked Travel Arrangements (LTAs)?",
-          answer: "LTAs involve booking multiple travel services separately, but closely in time. Unlike full package holidays, LTAs offer financial protection specifically in cases of insolvency but do not create organiser liability for performance of travel services."
-        }
-      ]
+          question: "Do I need an account to browse events?",
+          answer:
+            "You can browse the club map and see basic event information without an account. However, to view full event details, register interest, or make bookings, you'll need to create a free account.",
+        },
+        {
+          question: "How do I find clubs in my area or destination?",
+          answer:
+            "Use our interactive Club Map to explore clubs worldwide. You can filter by country, region, or search for specific clubs. For Ireland, we offer a Province to County to Club navigation for easy discovery.",
+        },
+        {
+          question: "What is the Profile Builder?",
+          answer:
+            "The Profile Builder is our onboarding questionnaire that helps us understand your background and interests. It covers your playing experience, preferred sports, age groups, and what you're looking for on PlayAway. This information helps match you with suitable events and clubs.",
+        },
+      ],
     },
     {
       id: "clubs",
       title: "For Clubs (Hosts)",
       questions: [
         {
-          question: "Why should European clubs list their tournaments on Gaelic Trips?",
-          answer: "Listing on Gaelic Trips provides upfront payments, reduces financial risk from last-minute dropouts, and simplifies logistical management. Clubs can monetise existing tournaments effortlessly and safely, providing a steady revenue stream."
+          question: "Why should clubs list their tournaments on PlayAway?",
+          answer:
+            "Listing on PlayAway provides access to a global network of GAA clubs and players. You'll receive secure upfront payments, reducing financial risk from cancellations. Our platform handles booking management, letting you focus on delivering great events.",
         },
         {
-          question: "Can European clubs control their event pricing?",
-          answer: "Yes. Clubs set their event (Day Pass) prices, keeping full control to remain competitive and appealing to visiting teams."
+          question: "Can clubs control their event pricing?",
+          answer:
+            "Yes. Clubs have full control over their event pricing. You set your Day Pass prices and package inclusions to remain competitive and appealing to visiting teams.",
         },
         {
-          question: "What obligations or liabilities do European clubs bear?",
-          answer: "Clubs bear minimal liability. Gaelic Trips is structured to absorb the major regulatory and financial responsibilities. Clubs only need to ensure accurate event descriptions and delivery as advertised."
+          question: "What can clubs list on PlayAway?",
+          answer:
+            "Clubs can list GAA tournaments, day passes, training sessions, and cultural exchange experiences. Note: Due to travel regulations, clubs cannot bundle flights, accommodation, or passenger transport into day passes.",
         },
         {
-          question: "How do clubs benefit from using Gaelic Trips?",
-          answer: "European Clubs can monetise their events safely and efficiently. Payments from visiting teams are collected upfront, reducing financial risk and providing guaranteed income. Gaelic Trips handles the administrative burden and liability, leaving clubs free to focus on delivering quality events."
+          question: "How much does it cost for clubs to use PlayAway?",
+          answer:
+            "Creating an account and listing events is free. PlayAway charges a small platform fee on successful bookings. Note: Specific fees are subject to change - contact us for current pricing details.",
         },
         {
-          question: "What can clubs list on Gaelic Trips?",
-          answer: "Clubs can list GAA tournaments, day passes, and experience packages. However, clubs cannot bundle certain travel components like flights, accommodation, or passenger transport into day passes due to regulatory restrictions."
+          question: "How do I become a verified club?",
+          answer:
+            "Club verification involves confirming your club's identity and appointing a club administrator. This builds trust with visiting teams and unlocks additional features. Contact us or apply through the platform to start the verification process.",
         },
         {
-          question: "How much does it cost to use Gaelic Trips as a club?",
-          answer: "Listing events is free. Gaelic Trips earns revenue from small fees included in the booking process, typically €5 per participant and a €10 fee per team registration. Clubs earn clear profit shares from each booking (e.g., €40 per team, €2.50 per participant)."
+          question: "Can clubs outside Europe list events?",
+          answer:
+            "Absolutely! PlayAway is a global platform. Clubs from North America, Asia, Australasia, the Middle East, and beyond are welcome to list events and host visiting teams.",
         },
-        {
-          question: "Can British clubs also list events, or is it just for European clubs?",
-          answer: "British clubs are welcome to list and host tournaments, training camps, and cultural exchanges, benefiting from the same secure financial arrangements as European counterparts."
-        }
-      ]
+      ],
     },
     {
       id: "travellers",
       title: "For Travellers (Teams and Players)",
       questions: [
         {
-          question: "How do teams book events on Gaelic Trips?",
-          answer: "Teams select events listed by clubs, pay upfront via our secure booking system, and receive confirmation and full event details. This simplified process replaces informal arrangements, ensuring transparency and reducing risks associated with cancellations or miscommunication."
+          question: "How do teams book events on PlayAway?",
+          answer:
+            "Browse events on the platform, select one that suits your team, and register through our secure booking system. You'll receive confirmation and full event details. This replaces informal arrangements and ensures transparency for everyone.",
         },
         {
-          question: "What happens if a team cancels last minute?",
-          answer: "Gaelic Trips includes clear cancellation policies and requires upfront payment to minimise dropouts. Teams making last-minute cancellations risk losing their deposits, providing greater security to host clubs."
+          question: "Can I register interest before committing to an event?",
+          answer:
+            "Yes! You can register interest in events or specific dates on club calendars. Host clubs can see this interest and may reach out with more information or create events to match demand.",
         },
         {
-          question: "Is Gaelic Trips accessible for clubs outside Europe?",
-          answer: "Yes. The platform is global in scope, enabling clubs worldwide to participate in events or host events themselves, driving global engagement with the GAA community."
-        }
-      ]
+          question: "What happens if I need to cancel?",
+          answer:
+            "Each event has its own cancellation policy set by the host club. These policies are clearly displayed before booking. We encourage reviewing cancellation terms carefully, as last-minute cancellations may result in loss of deposits.",
+        },
+        {
+          question: "How do I find events for my specific sport or age group?",
+          answer:
+            "Use the filters on the Events page to narrow down by sport type (Hurling, Football, LGFA, Camogie, G4MO), location, date range, and more. Events display sport badges so you can quickly identify suitable tournaments.",
+        },
+      ],
+    },
+    {
+      id: "events",
+      title: "Events & Tournaments",
+      questions: [
+        {
+          question: "What types of events are available?",
+          answer:
+            "PlayAway hosts a variety of events including competitive tournaments, friendly blitzes, training camps, cultural exchanges, and social GAA experiences. Events range from single-day tournaments to multi-day festivals.",
+        },
+        {
+          question: "How do I know what's included in an event?",
+          answer:
+            "Each event listing includes a detailed 'What's Included' section. This typically covers pitch access, match officiating, and any extras provided by the host. Note: Some components (like meals or equipment) may be the host club's responsibility to arrange.",
+        },
+        {
+          question: "Can I create my own event?",
+          answer:
+            "Yes! If you're a club administrator, you can create events through your club dashboard. Independent organisers can also create events - contact us for more information on hosting options.",
+        },
+      ],
     },
     {
       id: "payment",
@@ -95,44 +146,84 @@ export default function FAQPage() {
       questions: [
         {
           question: "How does payment work?",
-          answer: "Payments are processed securely upfront through our platform, ensuring host clubs have necessary funds before events. Gaelic Trips retains a small commission (platform fee), with the remainder transferred directly to host clubs."
+          answer:
+            "Payments are processed securely through our platform. Funds are collected upfront to ensure host clubs have confirmed bookings before events. PlayAway retains a small platform fee, with the remainder transferred to host clubs.",
         },
         {
           question: "Are there hidden costs?",
-          answer: "No. All costs are transparently outlined at booking, ensuring no surprises for either teams or clubs."
-        }
-      ]
+          answer:
+            "No. All costs are transparently displayed at booking time. You'll see the full breakdown including any platform fees before confirming your booking.",
+        },
+        {
+          question: "What currency are prices displayed in?",
+          answer:
+            "Prices are typically displayed in Euros (EUR) for European events. Host clubs set their prices, and currency may vary by region.",
+        },
+        {
+          question: "Will prices change?",
+          answer:
+            "Platform fees and pricing structures may be updated from time to time. Any prices mentioned in FAQs or documentation are indicative and subject to change. Current pricing is always displayed at the point of booking.",
+        },
+      ],
     },
     {
-      id: "support",
-      title: "Technical and Support",
+      id: "legal",
+      title: "Legal and Regulatory",
       questions: [
         {
-          question: "What kind of support does Gaelic Trips provide?",
-          answer: "We offer full platform support, including booking management, logistics coordination, and compliance with EU regulations. Clubs also receive guidelines on best practices for event management to ensure high standards and positive traveller experiences."
-        }
-      ]
+          question: "Is PlayAway compliant with travel regulations?",
+          answer:
+            "Yes. PlayAway operates in alignment with EU Package Travel Directive standards. Our platform primarily facilitates Linked Travel Arrangements (LTAs), ensuring regulatory compliance without placing licensing burdens on clubs.",
+        },
+        {
+          question: "What are Linked Travel Arrangements (LTAs)?",
+          answer:
+            "LTAs involve booking multiple travel services separately but closely in time. Unlike full package holidays, LTAs offer financial protection in cases of insolvency but do not create organiser liability for performance of individual travel services.",
+        },
+        {
+          question: "What obligations do host clubs have?",
+          answer:
+            "Host clubs are responsible for accurately describing their events and delivering what's advertised. PlayAway's structure minimises regulatory burden on clubs - we handle the major platform responsibilities.",
+        },
+      ],
     },
     {
       id: "security",
       title: "Security and Data",
       questions: [
         {
-          question: "How does Gaelic Trips handle user data?",
-          answer: "Gaelic Trips securely manages user data in line with GDPR and EU regulations, ensuring data privacy and security. We transparently use collected data only to optimise service provision, event scheduling, and marketplace operations."
-        }
-      ]
+          question: "How does PlayAway handle my data?",
+          answer:
+            "PlayAway manages user data in compliance with GDPR and applicable privacy regulations. We only collect data necessary to provide our services, and we never sell personal information to third parties. See our Privacy Policy for full details.",
+        },
+        {
+          question: "Is my payment information secure?",
+          answer:
+            "Yes. All payments are processed through secure, encrypted connections. We do not store full payment card details on our servers.",
+        },
+      ],
     },
     {
-      id: "expansion",
-      title: "Scaling and Expansion",
+      id: "support",
+      title: "Help and Support",
       questions: [
         {
-          question: "Does Gaelic Trips only cover Europe?",
-          answer: "While our initial focus is on Europe, Gaelic Trips aims to become a global platform. Our model is scalable and replicable to other regions and sports, leveraging the growing international GAA community and potentially extending into similar amateur sports and cultural sectors."
-        }
-      ]
-    }
+          question: "How do I contact PlayAway support?",
+          answer:
+            "You can reach us through the Contact page on our website. We aim to respond to all enquiries within 48 hours.",
+        },
+        {
+          question: "I'm having trouble with my account. What should I do?",
+          answer:
+            "If you're having login issues, try the 'Forgot Password' option to reset your password. For other account problems, contact our support team with details of the issue.",
+        },
+        {
+          question: "How do I report a problem with an event or club?",
+          answer:
+            "Contact our support team with details of the issue. We take all reports seriously and will investigate promptly to ensure the platform remains trustworthy for all users.",
+        },
+      ],
+    },
   ];
 
   return (
@@ -150,7 +241,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-lg md:text-xl text-emerald-100">
-              Everything you need to know about Gaelic Trips
+              Everything you need to know about PlayAway
             </p>
           </motion.div>
         </div>
@@ -166,7 +257,9 @@ export default function FAQPage() {
             transition={{ duration: 0.6 }}
             className="mb-12 p-6 bg-white rounded-lg shadow-sm"
           >
-            <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Jump to section:</h2>
+            <h2 className="text-base md:text-lg font-semibold text-gray-900 mb-4">
+              Jump to section:
+            </h2>
             <div className="flex flex-wrap gap-3">
               {faqSections.map((section) => (
                 <a
@@ -176,8 +269,8 @@ export default function FAQPage() {
                   onClick={(e) => {
                     e.preventDefault();
                     document.getElementById(section.id)?.scrollIntoView({
-                      behavior: 'smooth',
-                      block: 'start'
+                      behavior: "smooth",
+                      block: "start",
                     });
                   }}
                 >
@@ -186,6 +279,25 @@ export default function FAQPage() {
               ))}
             </div>
           </motion.div>
+
+          {/* Pricing Disclaimer */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-8 p-4 bg-amber-50 border border-amber-200 rounded-lg"
+          >
+            <div className="flex items-start gap-3">
+              <span className="text-amber-500 text-lg flex-shrink-0">⚠️</span>
+              <p className="text-sm text-amber-800">
+                <strong>Note:</strong> Any prices, fees, or costs mentioned in
+                these FAQs are indicative and subject to change. Please refer to
+                the current pricing displayed at the point of booking for
+                accurate information.
+              </p>
+            </div>
+          </motion.div>
+
           {faqSections.map((section, sectionIndex) => (
             <motion.div
               key={section.title}
@@ -200,7 +312,10 @@ export default function FAQPage() {
               </h2>
               <div className="space-y-6">
                 {section.questions.map((item, index) => (
-                  <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
+                  <div
+                    key={index}
+                    className="bg-white rounded-lg p-6 shadow-sm"
+                  >
                     <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-3">
                       Q: {item.question}
                     </h3>
