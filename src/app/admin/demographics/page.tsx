@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 interface County {
@@ -95,6 +95,101 @@ export default function DemographicsPage() {
     }
     fetchData();
   }, []);
+
+  const downloadCSV = useCallback(() => {
+    if (!data) return;
+    const { provinces } = data;
+
+    const allCounties = provinces.flatMap((province) =>
+      province.counties.map((county) => ({
+        province: province.name,
+        ...county,
+      }))
+    );
+
+    const headers = [
+      "Province",
+      "County",
+      "Population Total",
+      "Population Male",
+      "Population Female",
+      "Average Age",
+      "Population 0-5",
+      "Population 6-11",
+      "GAA Clubs",
+      "LGFA Clubs",
+      "Camogie Clubs",
+      "Youth Male Players",
+      "Youth Female Players",
+      "Full Male Players",
+      "Full Female Players",
+      "Non-Players",
+      "Total Members",
+      "Total Pitches",
+      "Floodlit Pitches",
+      "Full Size Pitches",
+      "Teams Per Pitch",
+      "Camogie Teams",
+      "Ladies Football Teams",
+      "Hurling Teams",
+      "Football Teams",
+      "Total Teams",
+    ];
+
+    const rows = allCounties.map((county) => [
+      county.province,
+      county.name,
+      county.populationTotal ?? "",
+      county.populationMale ?? "",
+      county.populationFemale ?? "",
+      county.averageAge ?? "",
+      county.population0to5 ?? "",
+      county.population6to11 ?? "",
+      county.clubsGAA ?? "",
+      county.clubsLGFA ?? "",
+      county.clubsCamogie ?? "",
+      county.youthMalePlayers ?? "",
+      county.youthFemalePlayers ?? "",
+      county.fullMalePlayers ?? "",
+      county.fullFemalePlayers ?? "",
+      county.nonPlayers ?? "",
+      (county.youthMalePlayers || 0) +
+        (county.youthFemalePlayers || 0) +
+        (county.fullMalePlayers || 0) +
+        (county.fullFemalePlayers || 0) +
+        (county.nonPlayers || 0),
+      county.totalPitches ?? "",
+      county.totalFloodlitPitches ?? "",
+      county.totalFullSizePitches ?? "",
+      county.teamsPerPitch ?? "",
+      county.teamsCamogie ?? "",
+      county.teamsLadiesFootball ?? "",
+      county.teamsHurling ?? "",
+      county.teamsFootball ?? "",
+      county.totalTeams ?? "",
+    ]);
+
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) =>
+        row
+          .map((cell) =>
+            typeof cell === "string" && cell.includes(",") ? `"${cell}"` : cell
+          )
+          .join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `gaa-demographics-${new Date().toISOString().split("T")[0]}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }, [data]);
 
   if (loading) {
     return (
@@ -209,9 +304,31 @@ export default function DemographicsPage() {
           </div>
         </div>
 
-        <h2 className="text-sm md:text-lg font-semibold text-white/80 mb-2 md:mb-3">
-          GAA Report Figures (External Data)
-        </h2>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-2 md:mb-3">
+          <h2 className="text-sm md:text-lg font-semibold text-white/80">
+            GAA Report Figures (External Data)
+          </h2>
+          <button
+            type="button"
+            onClick={downloadCSV}
+            className="flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg text-xs md:text-sm text-white transition-colors w-fit"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+              />
+            </svg>
+            Download All County Data (CSV)
+          </button>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6 md:mb-8">
           <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-3 md:p-4">
             <div className="text-xl md:text-3xl font-bold text-white">
