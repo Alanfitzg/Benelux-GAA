@@ -31,8 +31,7 @@ export const youthEvents: YouthEvent[] = [
     month: "March",
     year: 2026,
     duration: "2 days",
-    imageUrl:
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800",
+    imageUrl: "/images/GAA YOUTH LADS.jpeg",
     region: "France",
     hostClub: {
       name: "Bordeaux Gaelic Football",
@@ -75,8 +74,7 @@ export const youthEvents: YouthEvent[] = [
     month: "April",
     year: 2026,
     duration: "1 day",
-    imageUrl:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800",
+    imageUrl: "/images/GAA YOUTH FEILE .jpeg",
     hostClub: {
       name: "Earls of Leuven",
       crestUrl: "/club-crests/earls-of-leuven.png",
@@ -127,8 +125,7 @@ export const youthEvents: YouthEvent[] = [
     month: "June",
     year: 2026,
     duration: "2 days",
-    imageUrl:
-      "https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?w=800",
+    imageUrl: "/images/GAA YOUTH LADS.jpeg",
     hostClub: {
       name: "Bordeaux Gaelic Football",
       crestUrl: "/club-crests/bordeaux.gif",
@@ -145,8 +142,7 @@ export const youthEvents: YouthEvent[] = [
     month: "June",
     year: 2026,
     duration: "1 day",
-    imageUrl:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800",
+    imageUrl: "/images/GAA YOUTH GIRLS.jpeg",
     hostClub: {
       name: "Derry GAA",
       crestUrl: "/club-crests/derry/slaughtneil-emmets-gfc.png",
@@ -163,8 +159,7 @@ export const youthEvents: YouthEvent[] = [
     month: "June",
     year: 2026,
     duration: "2 days",
-    imageUrl:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800",
+    imageUrl: "/images/GAA YOUTH FEILE .jpeg",
     hostClub: {
       name: "Derry GAA",
       crestUrl: "/club-crests/derry/slaughtneil-emmets-gfc.png",
@@ -181,8 +176,7 @@ export const youthEvents: YouthEvent[] = [
     month: "July",
     year: 2026,
     duration: "3 days",
-    imageUrl:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=800",
+    imageUrl: "/images/GAA YOUTH LADS.jpeg",
     hostClub: {
       name: "Keltoi Vigo",
       crestUrl: "/club-crests/keltoi vigo.png",

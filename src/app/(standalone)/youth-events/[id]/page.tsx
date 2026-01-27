@@ -1,10 +1,200 @@
 "use client";
 
-import React, { use } from "react";
+import React, { use, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getEventById, youthEvents } from "../data";
+
+interface ContactModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  recipient: "youth-officer" | "host";
+  hostName?: string;
+}
+
+function ContactModal({
+  isOpen,
+  onClose,
+  recipient,
+  hostName,
+}: ContactModalProps) {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate sending - in production this would hit an API endpoint
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setIsSubmitting(false);
+    setIsSubmitted(true);
+
+    // Reset after showing success
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setFormData({ name: "", email: "", message: "" });
+      onClose();
+    }, 2000);
+  };
+
+  const title =
+    recipient === "youth-officer"
+      ? "Contact GGE Youth Officer"
+      : `Contact ${hostName || "Host Club"}`;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#1B4B8F] to-[#2563eb] p-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-bold text-white">{title}</h3>
+            <button
+              type="button"
+              onClick={onClose}
+              className="text-white/80 hover:text-white transition-colors"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-5">
+          {isSubmitted ? (
+            <div className="text-center py-8">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-green-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+              <h4 className="text-lg font-bold text-gray-900 mb-2">
+                Message Sent!
+              </h4>
+              <p className="text-gray-500">We&apos;ll get back to you soon.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1B4B8F]/30 focus:border-[#1B4B8F] transition-all text-gray-900"
+                  placeholder="Enter your name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1B4B8F]/30 focus:border-[#1B4B8F] transition-all text-gray-900"
+                  placeholder="your@email.com"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Message
+                </label>
+                <textarea
+                  required
+                  rows={4}
+                  value={formData.message}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#1B4B8F]/30 focus:border-[#1B4B8F] transition-all text-gray-900 resize-none"
+                  placeholder="Your message..."
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-3 bg-[#F5B800] text-[#1B4B8F] rounded-xl font-bold hover:bg-[#F5B800]/90 transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <svg
+                      className="animate-spin w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function YouthEventDetailPage({
   params,
@@ -13,6 +203,11 @@ export default function YouthEventDetailPage({
 }) {
   const { id } = use(params);
   const event = getEventById(id);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [contactRecipient, setContactRecipient] = useState<
+    "youth-officer" | "host"
+  >("youth-officer");
+  const [selectedHostName, setSelectedHostName] = useState<string>("");
 
   if (!event) {
     notFound();
@@ -20,6 +215,18 @@ export default function YouthEventDetailPage({
 
   const isGoGames = event.title.toLowerCase().includes("go games");
   const isFeile = event.title.toLowerCase().includes("feile");
+
+  const handleContactYouthOfficer = () => {
+    setContactRecipient("youth-officer");
+    setSelectedHostName("");
+    setContactModalOpen(true);
+  };
+
+  const handleContactHost = (hostName?: string) => {
+    setContactRecipient("host");
+    setSelectedHostName(hostName || event.hostClub?.name || "Host Club");
+    setContactModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -52,18 +259,14 @@ export default function YouthEventDetailPage({
               </svg>
               <span className="text-sm font-medium">Back to Events</span>
             </Link>
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-xl p-1.5 shadow-lg">
-                <Image
-                  src="/images/gge-crest.png"
-                  alt="Gaelic Games Europe"
-                  width={48}
-                  height={48}
-                  className="w-full h-full object-contain"
-                  unoptimized
-                />
-              </div>
-            </div>
+            <Image
+              src="/images/gge-crest.png"
+              alt="Gaelic Games Europe"
+              width={48}
+              height={48}
+              className="w-10 h-10 md:w-12 md:h-12"
+              unoptimized
+            />
           </div>
 
           {/* Event Header */}
@@ -262,16 +465,14 @@ export default function YouthEventDetailPage({
               Organizer
             </h2>
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-white rounded-xl p-2 shadow-md border border-gray-100">
-                <Image
-                  src="/images/gge-crest.png"
-                  alt="Gaelic Games Europe"
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-contain"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/images/gge-crest.png"
+                alt="Gaelic Games Europe"
+                width={64}
+                height={64}
+                className="w-16 h-16"
+                unoptimized
+              />
               <div>
                 <h3 className="font-bold text-gray-900 text-lg">
                   Gaelic Games Europe
@@ -285,24 +486,57 @@ export default function YouthEventDetailPage({
 
           {/* Contact Section */}
           <div className="bg-gradient-to-r from-[#1B4B8F] to-[#2563eb] rounded-2xl p-6 md:p-8">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div className="text-center md:text-left">
-                <h3 className="font-bold text-white text-xl mb-1">
-                  Interested in this event?
-                </h3>
-                <p className="text-white/80">
-                  Contact Gaelic Games Europe for more information or to
-                  register.
-                </p>
-              </div>
-              <a
-                href="https://gaelicgameseurope.com/contact/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-[#F5B800] text-[#1B4B8F] rounded-xl font-bold hover:bg-[#F5B800]/90 transition-colors shadow-lg whitespace-nowrap"
+            <div className="text-center md:text-left mb-5">
+              <h3 className="font-bold text-white text-xl mb-1">
+                Interested in this event?
+              </h3>
+              <p className="text-white/80">
+                Get in touch for more information or to register.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button
+                type="button"
+                onClick={handleContactYouthOfficer}
+                className="flex-1 px-6 py-3 bg-[#F5B800] text-[#1B4B8F] rounded-xl font-bold hover:bg-[#F5B800]/90 transition-colors shadow-lg flex items-center justify-center gap-2"
               >
-                Contact GGE
-              </a>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                Contact Youth Officer
+              </button>
+              {(event.hostClub || event.hostClubs) && (
+                <button
+                  type="button"
+                  onClick={() => handleContactHost()}
+                  className="flex-1 px-6 py-3 bg-white/20 text-white rounded-xl font-bold hover:bg-white/30 transition-colors shadow-lg flex items-center justify-center gap-2 border border-white/30"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  Contact {event.hostClubs ? "Hosts" : "Host"}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -313,22 +547,28 @@ export default function YouthEventDetailPage({
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white rounded-lg p-1.5">
-                <Image
-                  src="/images/gge-crest.png"
-                  alt="GGE"
-                  width={40}
-                  height={40}
-                  className="w-full h-full object-contain"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/images/gge-crest.png"
+                alt="GGE"
+                width={40}
+                height={40}
+                className="w-10 h-10"
+                unoptimized
+              />
               <span className="text-white font-semibold">GGE Youth Events</span>
             </div>
             <p className="text-white/60 text-sm">Powered by PlayAway</p>
           </div>
         </div>
       </div>
+
+      {/* Contact Modal */}
+      <ContactModal
+        isOpen={contactModalOpen}
+        onClose={() => setContactModalOpen(false)}
+        recipient={contactRecipient}
+        hostName={selectedHostName}
+      />
     </div>
   );
 }

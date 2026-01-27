@@ -373,16 +373,14 @@ export default function YouthEventsPage() {
               </div>
             </div>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-14 h-14 bg-white rounded-xl p-1.5 shadow-lg flex-shrink-0">
-                <Image
-                  src="/images/gge-crest.png"
-                  alt="Gaelic Games Europe"
-                  width={56}
-                  height={56}
-                  className="w-full h-full object-contain"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/images/gge-crest.png"
+                alt="Gaelic Games Europe"
+                width={56}
+                height={56}
+                className="w-14 h-14 flex-shrink-0"
+                unoptimized
+              />
               <div>
                 <h1 className="text-2xl font-black text-white tracking-tight">
                   GGE Youth
@@ -437,16 +435,14 @@ export default function YouthEventsPage() {
                     />
                   </svg>
                 </a>
-                <div className="w-20 h-20 bg-white rounded-2xl p-2 shadow-lg">
-                  <Image
-                    src="/images/gge-crest.png"
-                    alt="Gaelic Games Europe"
-                    width={80}
-                    height={80}
-                    className="w-full h-full object-contain"
-                    unoptimized
-                  />
-                </div>
+                <Image
+                  src="/images/gge-crest.png"
+                  alt="Gaelic Games Europe"
+                  width={80}
+                  height={80}
+                  className="w-20 h-20"
+                  unoptimized
+                />
                 <div>
                   <h1 className="text-4xl font-black text-white tracking-tight">
                     GGE Youth
@@ -852,16 +848,14 @@ export default function YouthEventsPage() {
         <div className="container mx-auto px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6 text-center md:text-left">
             <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4">
-              <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-xl md:rounded-2xl p-1.5 md:p-2">
-                <Image
-                  src="/images/gge-crest.png"
-                  alt="GGE"
-                  width={64}
-                  height={64}
-                  className="w-full h-full object-contain"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/images/gge-crest.png"
+                alt="GGE"
+                width={64}
+                height={64}
+                className="w-12 h-12 md:w-16 md:h-16"
+                unoptimized
+              />
               <div>
                 <h3 className="font-bold text-white text-lg md:text-xl">
                   Want to host a youth event?
