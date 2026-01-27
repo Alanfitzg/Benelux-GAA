@@ -45,12 +45,19 @@ const ProfessionalHeader = () => {
     return null;
   }
 
+  const canViewYouthEvents =
+    session?.user?.role === "SUPER_ADMIN" ||
+    session?.user?.role === "YOUTH_OFFICER";
+
   const desktopNavItems = [
     { href: "/events", label: "Tournaments" },
     { href: "/clubs", label: "Clubs" },
     { href: "/map", label: "Map" },
     { href: "/survey", label: "Custom Trip" },
     { href: "/how-it-works", label: "How It Works" },
+    ...(canViewYouthEvents
+      ? [{ href: "/youth-events", label: "Youth Events" }]
+      : []),
   ];
 
   const mobileNavItems = [
@@ -60,6 +67,9 @@ const ProfessionalHeader = () => {
     { href: "/survey", label: "Custom Trip" },
     { href: "/how-it-works", label: "How It Works" },
     { href: "/faq", label: "FAQ" },
+    ...(canViewYouthEvents
+      ? [{ href: "/youth-events", label: "Youth Events" }]
+      : []),
   ];
 
   return (
@@ -327,6 +337,32 @@ const ProfessionalHeader = () => {
                             className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                             onClick={() => setProfileDropdownOpen(false)}
                           />
+
+                          {session.user.role === "YOUTH_OFFICER" && (
+                            <>
+                              <div className="border-t border-gray-100 my-1" />
+                              <Link
+                                href="/admin/youth"
+                                onClick={() => setProfileDropdownOpen(false)}
+                                className="flex items-center px-4 py-2 text-sm text-purple-700 hover:bg-purple-50 transition-colors font-medium"
+                              >
+                                <svg
+                                  className="w-4 h-4 mr-3"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                                  />
+                                </svg>
+                                Youth Admin
+                              </Link>
+                            </>
+                          )}
 
                           <div className="border-t border-gray-100 my-1" />
                           <button
@@ -624,6 +660,33 @@ const ProfessionalHeader = () => {
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       />
+
+                      {session.user.role === "YOUTH_OFFICER" && (
+                        <Link
+                          href="/admin/youth"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
+                            scrolled
+                              ? "text-purple-700 hover:bg-purple-50"
+                              : "text-purple-300 hover:bg-purple-500/20"
+                          }`}
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                            />
+                          </svg>
+                          <span className="font-medium">Youth Admin</span>
+                        </Link>
+                      )}
 
                       {/* Sign Out Button - More prominent */}
                       <div

@@ -3,24 +3,6 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import "../styles/modal-fix.css";
-import ProfessionalHeader from "@/components/ui/ProfessionalHeader";
-import Footer from "@/components/ui/Footer";
-import FloatingContactButton from "@/components/ui/FloatingContactButton";
-import { AuthSessionProvider } from "@/components/providers/session-provider";
-import CookieConsent from "@/components/CookieConsent";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { ErrorNotificationProvider } from "@/components/ErrorNotification";
-import {
-  StructuredData,
-  organizationStructuredData,
-  websiteStructuredData,
-} from "@/components/StructuredData";
-import { ErrorLoggerInitializer } from "@/components/ErrorLoggerInitializer";
-import ExampleDataPopup from "@/components/ExampleDataBanner";
-import { FeatureFlagProvider } from "@/contexts/FeatureFlagContext";
-import OnboardingProvider from "@/components/onboarding/OnboardingProvider";
-import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -152,31 +134,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <StructuredData data={organizationStructuredData} />
-        <StructuredData data={websiteStructuredData} />
-      </head>
       <body
-        className={`${inter.variable} ${poppins.variable} font-inter antialiased bg-gray-50 min-h-screen`}
+        className={`${inter.variable} ${poppins.variable} font-inter antialiased`}
       >
-        <GoogleAnalytics />
-        <ErrorBoundary>
-          <ErrorNotificationProvider>
-            <AuthSessionProvider>
-              <FeatureFlagProvider>
-                <ErrorLoggerInitializer />
-                <Toaster position="top-center" />
-                <ExampleDataPopup />
-                <OnboardingProvider />
-                <ProfessionalHeader />
-                <main className="pt-16">{children}</main>
-                <Footer />
-                <FloatingContactButton />
-                <CookieConsent />
-              </FeatureFlagProvider>
-            </AuthSessionProvider>
-          </ErrorNotificationProvider>
-        </ErrorBoundary>
+        {children}
       </body>
     </html>
   );

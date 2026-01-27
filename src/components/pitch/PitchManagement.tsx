@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Plus, Edit2, Trash2, X, Map } from "lucide-react";
-import LocationAutocomplete from "@/app/events/create/LocationAutocomplete";
+import LocationAutocomplete from "@/app/(main)/events/create/LocationAutocomplete";
 import MapPitchCreator from "./MapPitchCreator";
 import EnhancedMapPitchCreator from "./EnhancedMapPitchCreator";
 import toast from "react-hot-toast";
@@ -24,7 +24,10 @@ interface PitchManagementProps {
   canEdit: boolean;
 }
 
-export default function PitchManagement({ clubId, canEdit }: PitchManagementProps) {
+export default function PitchManagement({
+  clubId,
+  canEdit,
+}: PitchManagementProps) {
   const [pitches, setPitches] = useState<PitchLocation[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -61,9 +64,9 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
     }
   };
 
-  const handleLocationSelect = (location: { 
-    city: string; 
-    address?: string; 
+  const handleLocationSelect = (location: {
+    city: string;
+    address?: string;
     coordinates: { lat: number; lng: number };
   }) => {
     setFormData({
@@ -78,23 +81,26 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.city || !formData.latitude || !formData.longitude) {
+
+    if (
+      !formData.name ||
+      !formData.city ||
+      !formData.latitude ||
+      !formData.longitude
+    ) {
       toast.error("Please fill in all required fields");
       return;
     }
 
     setSubmitting(true);
     try {
-      const url = editingPitch 
+      const url = editingPitch
         ? `/api/pitch-locations/${editingPitch.id}`
         : "/api/pitch-locations";
-      
+
       const method = editingPitch ? "PUT" : "POST";
-      
-      const body = editingPitch 
-        ? formData 
-        : { ...formData, clubId };
+
+      const body = editingPitch ? formData : { ...formData, clubId };
 
       const response = await fetch(url, {
         method,
@@ -105,7 +111,11 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
       });
 
       if (response.ok) {
-        toast.success(editingPitch ? "Pitch updated successfully" : "Pitch added successfully");
+        toast.success(
+          editingPitch
+            ? "Pitch updated successfully"
+            : "Pitch added successfully"
+        );
         setShowModal(false);
         resetForm();
         fetchPitches();
@@ -245,11 +255,13 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
                     {pitch.address || pitch.city}
                   </p>
                   <p className="text-gray-500 text-xs mt-2">
-                    Coordinates: {pitch.latitude.toFixed(6)}, {pitch.longitude.toFixed(6)}
+                    Coordinates: {pitch.latitude.toFixed(6)},{" "}
+                    {pitch.longitude.toFixed(6)}
                   </p>
                   {pitch.events && pitch.events.length > 0 && (
                     <p className="text-sm text-gray-600 mt-2">
-                      Used by {pitch.events.length} event{pitch.events.length !== 1 ? "s" : ""}
+                      Used by {pitch.events.length} event
+                      {pitch.events.length !== 1 ? "s" : ""}
                     </p>
                   )}
                 </div>
@@ -265,7 +277,11 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
                       onClick={() => handleDelete(pitch.id)}
                       className="p-2 text-gray-600 hover:text-red-600"
                       disabled={pitch.events && pitch.events.length > 0}
-                      title={pitch.events && pitch.events.length > 0 ? "Cannot delete pitch used by events" : "Delete pitch"}
+                      title={
+                        pitch.events && pitch.events.length > 0
+                          ? "Cannot delete pitch used by events"
+                          : "Delete pitch"
+                      }
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -295,7 +311,9 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
             >
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold">
-                  {editingPitch ? "Edit Pitch Location" : "Add New Pitch Location"}
+                  {editingPitch
+                    ? "Edit Pitch Location"
+                    : "Add New Pitch Location"}
                 </h3>
                 <button
                   onClick={() => setShowModal(false)}
@@ -313,7 +331,9 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                     placeholder="e.g., Main Training Pitch"
                     required
@@ -344,7 +364,9 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
                       </p>
                     )}
                     <p className="text-sm text-gray-600">
-                      <strong>Coordinates:</strong> {formData.latitude.toFixed(6)}, {formData.longitude.toFixed(6)}
+                      <strong>Coordinates:</strong>{" "}
+                      {formData.latitude.toFixed(6)},{" "}
+                      {formData.longitude.toFixed(6)}
                     </p>
                   </div>
                 )}
@@ -359,10 +381,16 @@ export default function PitchManagement({ clubId, canEdit }: PitchManagementProp
                   </button>
                   <button
                     type="submit"
-                    disabled={submitting || !formData.latitude || !formData.longitude}
+                    disabled={
+                      submitting || !formData.latitude || !formData.longitude
+                    }
                     className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    {submitting ? "Saving..." : editingPitch ? "Update Pitch" : "Add Pitch"}
+                    {submitting
+                      ? "Saving..."
+                      : editingPitch
+                        ? "Update Pitch"
+                        : "Add Pitch"}
                   </button>
                 </div>
               </form>

@@ -554,6 +554,7 @@ enum UserRole {
   SUPER_ADMIN
   CLUB_ADMIN
   GUEST_ADMIN
+  YOUTH_OFFICER
   USER
 }
 
