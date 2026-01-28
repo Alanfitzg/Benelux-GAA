@@ -20,6 +20,7 @@ export default function ClubContactForm({
     name: "",
     email: "",
     message: "",
+    website: "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -46,7 +47,7 @@ export default function ClubContactForm({
 
       if (response.ok) {
         setSuccess(true);
-        setFormData({ name: "", email: "", message: "" });
+        setFormData({ name: "", email: "", message: "", website: "" });
         setTimeout(() => {
           setIsOpen(false);
           setSuccess(false);
@@ -145,6 +146,22 @@ export default function ClubContactForm({
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot field - hidden from real users, bots will fill it */}
+                <div className="absolute -left-[9999px]" aria-hidden="true">
+                  <label htmlFor="club-website">Website</label>
+                  <input
+                    type="text"
+                    id="club-website"
+                    name="website"
+                    value={formData.website}
+                    onChange={(e) =>
+                      setFormData({ ...formData, website: e.target.value })
+                    }
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </div>
+
                 <div>
                   <label
                     htmlFor="name"

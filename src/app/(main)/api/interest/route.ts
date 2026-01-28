@@ -6,6 +6,13 @@ import { prisma } from "@/lib/prisma";
 async function createInterestHandler(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Check honeypot field - if filled, it's a bot
+    if (body.website && body.website.length > 0) {
+      // Silently reject but return success to not alert the bot
+      return NextResponse.json({ id: "fake-id", success: true });
+    }
+
     const session = await auth();
 
     // If user is logged in and is a club admin, attach their club info to the interest

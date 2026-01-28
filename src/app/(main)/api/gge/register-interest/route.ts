@@ -15,7 +15,18 @@ export async function POST(request: NextRequest) {
       estimatedPlayers,
       previousParticipation,
       additionalNotes,
+      website,
     } = body;
+
+    // Check honeypot field - if filled, it's a bot
+    if (website && website.length > 0) {
+      // Silently reject but return success to not alert the bot
+      return NextResponse.json({
+        success: true,
+        message: "Interest registered successfully",
+        id: "fake-id",
+      });
+    }
 
     // Validate required fields
     if (!clubName || !country || !contactName || !contactEmail) {

@@ -9,7 +9,26 @@ export async function POST(
   try {
     const { id } = await params;
     const body = await request.json();
-    const { name, email, message, type, clubName: visitorClubName } = body;
+    const {
+      name,
+      email,
+      message,
+      type,
+      clubName: visitorClubName,
+      website,
+    } = body;
+
+    // Check honeypot field - if filled, it's a bot
+    if (website && website.length > 0) {
+      // Silently reject but return success to not alert the bot
+      return NextResponse.json({
+        success: true,
+        message:
+          type === "contact"
+            ? "Your message has been sent to the club!"
+            : "Your interest has been recorded! The club will be notified.",
+      });
+    }
 
     // Validate required fields
     if (!name || !email || !type) {

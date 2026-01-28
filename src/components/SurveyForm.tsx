@@ -33,6 +33,9 @@ interface SurveyData {
   contactName: string;
   contactEmail: string;
   contactPhone: string;
+
+  // Honeypot
+  website: string;
 }
 
 const INITIAL_DATA: SurveyData = {
@@ -48,6 +51,7 @@ const INITIAL_DATA: SurveyData = {
   contactName: "",
   contactEmail: "",
   contactPhone: "",
+  website: "",
 };
 
 const COUNTRIES = [
@@ -500,6 +504,20 @@ export default function SurveyForm({ eventId }: SurveyFormProps) {
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      {/* Honeypot field - hidden from real users, bots will fill it */}
+      <div className="absolute -left-[9999px]" aria-hidden="true">
+        <label htmlFor="survey-website">Website</label>
+        <input
+          type="text"
+          id="survey-website"
+          name="website"
+          value={data.website}
+          onChange={(e) => updateData("website", e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {/* Progress Bar */}
       <div className="mb-8">
         <div className="flex justify-between text-sm text-gray-500 mb-2">

@@ -26,6 +26,7 @@ export default function RegisterInterestPage() {
     estimatedPlayers: "",
     previousParticipation: "",
     additionalNotes: "",
+    website: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -138,6 +139,22 @@ export default function RegisterInterestPage() {
             onSubmit={handleSubmit}
             className="bg-white rounded-xl shadow-lg p-6 md:p-8"
           >
+            {/* Honeypot field - hidden from real users, bots will fill it */}
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <label htmlFor="gge-website">Website</label>
+              <input
+                type="text"
+                id="gge-website"
+                name="website"
+                value={formData.website}
+                onChange={(e) =>
+                  setFormData({ ...formData, website: e.target.value })
+                }
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             {error && (
               <div className="mb-6 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
                 {error}

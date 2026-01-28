@@ -310,6 +310,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
       name: formData.get("name"),
       email: formData.get("email"),
       message: formData.get("message"),
+      website: formData.get("website"),
     };
 
     const response = await fetch(URLS.API.INTEREST, {
@@ -694,6 +695,21 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                         </button>
                       </div>
                       <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* Honeypot field - hidden from real users, bots will fill it */}
+                        <div
+                          className="absolute -left-[9999px]"
+                          aria-hidden="true"
+                        >
+                          <label htmlFor="interest-website">Website</label>
+                          <input
+                            type="text"
+                            id="interest-website"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                          />
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium mb-2">

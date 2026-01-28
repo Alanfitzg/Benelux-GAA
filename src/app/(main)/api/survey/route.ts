@@ -13,6 +13,19 @@ export async function POST(request: NextRequest) {
       : request.headers.get("x-real-ip") || "";
     const referrer = request.headers.get("referer") || "";
 
+    // Check honeypot field - if filled, it's a bot
+    if (body.website && body.website.length > 0) {
+      // Silently reject but return success to not alert the bot
+      return NextResponse.json(
+        {
+          success: true,
+          id: "fake-id",
+          message: "Survey response saved successfully",
+        },
+        { status: 201 }
+      );
+    }
+
     // Validate required fields (simplified form only requires role, country, name, email)
     const requiredFields = ["role", "country", "contactName", "contactEmail"];
 
