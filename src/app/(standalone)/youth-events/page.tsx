@@ -24,11 +24,7 @@ function generateICalEvent(event: YouthEvent): string {
   };
 
   const endDate = new Date(startDate);
-  if (event.duration.includes("24")) {
-    endDate.setDate(endDate.getDate() + 1);
-  } else {
-    endDate.setHours(endDate.getHours() + 5);
-  }
+  endDate.setHours(endDate.getHours() + 8);
 
   return `BEGIN:VEVENT
 DTSTART:${formatDate(startDate)}

@@ -12,7 +12,6 @@ export interface YouthEvent {
   date: string;
   month: string;
   year: number;
-  duration: string;
   imageUrl: string;
   region?: string;
   hostClub?: HostClub;
@@ -30,7 +29,6 @@ export const youthEvents: YouthEvent[] = [
     date: "March 14th",
     month: "March",
     year: 2026,
-    duration: "2 days",
     imageUrl: "/images/GAA YOUTH LADS.jpeg",
     region: "France",
     hostClub: {
@@ -48,7 +46,6 @@ export const youthEvents: YouthEvent[] = [
     date: "March 14th",
     month: "March",
     year: 2026,
-    duration: "1 day",
     imageUrl: "/go-games-logo.png",
     hostClubs: [
       { name: "Gwened Vannes", crestUrl: "/club-crests/vannes logo.png" },
@@ -73,7 +70,6 @@ export const youthEvents: YouthEvent[] = [
     date: "April 18th",
     month: "April",
     year: 2026,
-    duration: "1 day",
     imageUrl: "/images/GAA YOUTH FEILE .jpeg",
     hostClub: {
       name: "Earls of Leuven",
@@ -90,7 +86,6 @@ export const youthEvents: YouthEvent[] = [
     date: "May 2nd",
     month: "May",
     year: 2026,
-    duration: "2 days",
     imageUrl: "/european-feile-logo.png",
     hostClub: {
       name: "Maastricht Gaels",
@@ -107,7 +102,6 @@ export const youthEvents: YouthEvent[] = [
     date: "May 30th",
     month: "May",
     year: 2026,
-    duration: "1 day",
     imageUrl: "/go-games-logo.png",
     hostClub: {
       name: "Rennes GAA – Ar Gwazi Gouez",
@@ -124,7 +118,6 @@ export const youthEvents: YouthEvent[] = [
     date: "June 6th",
     month: "June",
     year: 2026,
-    duration: "2 days",
     imageUrl: "/images/GAA YOUTH LADS.jpeg",
     hostClub: {
       name: "Bordeaux Gaelic Football",
@@ -141,7 +134,6 @@ export const youthEvents: YouthEvent[] = [
     date: "June 27th",
     month: "June",
     year: 2026,
-    duration: "1 day",
     imageUrl: "/images/GAA YOUTH GIRLS.jpeg",
     hostClub: {
       name: "Derry GAA",
@@ -158,7 +150,6 @@ export const youthEvents: YouthEvent[] = [
     date: "June 27th",
     month: "June",
     year: 2026,
-    duration: "2 days",
     imageUrl: "/images/GAA YOUTH FEILE .jpeg",
     hostClub: {
       name: "Derry GAA",
@@ -175,7 +166,6 @@ export const youthEvents: YouthEvent[] = [
     date: "July 4th",
     month: "July",
     year: 2026,
-    duration: "3 days",
     imageUrl: "/images/GAA YOUTH LADS.jpeg",
     hostClub: {
       name: "Keltoi Vigo",

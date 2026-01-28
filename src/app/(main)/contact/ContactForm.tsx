@@ -9,6 +9,7 @@ interface ContactFormData {
   subject: string;
   message: string;
   type: string;
+  website: string;
 }
 
 export default function ContactForm() {
@@ -18,6 +19,7 @@ export default function ContactForm() {
     subject: "",
     message: "",
     type: "general",
+    website: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
@@ -58,6 +60,7 @@ export default function ContactForm() {
           subject: "",
           message: "",
           type: "general",
+          website: "",
         });
       } else {
         setSubmitStatus("error");
@@ -72,6 +75,20 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Honeypot field - hidden from real users, bots will fill it */}
+      <div className="absolute -left-[9999px]" aria-hidden="true">
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          value={formData.website}
+          onChange={handleInputChange}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {/* Contact Type */}
       <div>
         <label

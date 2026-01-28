@@ -9,6 +9,19 @@ async function contactHandler(request: NextRequest) {
   // Validate request body using Zod schema
   const validatedData = await validateBody(request, ContactFormSchema);
 
+  // Check honeypot field - if filled, it's a bot
+  if (validatedData.website && validatedData.website.length > 0) {
+    // Silently reject but return success to not alert the bot
+    return NextResponse.json(
+      {
+        success: true,
+        message:
+          "Thank you for your message! We'll get back to you within 24 hours.",
+      },
+      { status: 200 }
+    );
+  }
+
   // 1. Save to database
   const submission = await prisma.contactSubmission.create({
     data: {
