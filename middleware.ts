@@ -1,21 +1,36 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
-import { createRateLimitMiddleware, RATE_LIMITS } from "@/lib/rate-limit"
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { createRateLimitMiddleware, RATE_LIMITS } from "@/lib/rate-limit";
 
 // Create rate limiters for different route types
-const authRateLimit = createRateLimitMiddleware(RATE_LIMITS.AUTH)
+const authRateLimit = createRateLimitMiddleware(RATE_LIMITS.AUTH);
 
 export async function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname
-  
-  // Apply rate limiting to auth routes
-  if (path.startsWith("/api/auth")) {
-    const rateLimitResponse = authRateLimit(request)
-    if (rateLimitResponse) {
-      return rateLimitResponse
+  const path = request.nextUrl.pathname;
+  const host = request.headers.get("host") || "";
+
+  // Domain-based routing: gge-social.com serves Rome Hibernia site
+  if (host.includes("gge-social.com")) {
+    // If not already on the rome-hibernia path, rewrite to it
+    if (
+      !path.startsWith("/demo/rome-hibernia") &&
+      !path.startsWith("/api") &&
+      !path.startsWith("/_next")
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/demo/rome-hibernia${path === "/" ? "" : path}`;
+      return NextResponse.rewrite(url);
     }
   }
-  
+
+  // Apply rate limiting to auth routes
+  if (path.startsWith("/api/auth")) {
+    const rateLimitResponse = authRateLimit(request);
+    if (rateLimitResponse) {
+      return rateLimitResponse;
+    }
+  }
+
   // Allow public routes
   const publicPaths = [
     "/",
@@ -25,25 +40,25 @@ export async function middleware(request: NextRequest) {
     "/api/clubs",
     "/api/events",
     "/api/interest",
-  ]
-  
+  ];
+
   // Check if the path is public
-  const isPublicPath = publicPaths.some(publicPath => 
-    path === publicPath || path.startsWith(publicPath + "/")
-  )
-  
+  const isPublicPath = publicPaths.some(
+    (publicPath) => path === publicPath || path.startsWith(publicPath + "/")
+  );
+
   // Allow public access to GET requests for clubs and events
-  const isPublicApiGet = 
-    (path.startsWith("/api/clubs") || path.startsWith("/api/events")) && 
-    request.method === "GET"
-  
+  const isPublicApiGet =
+    (path.startsWith("/api/clubs") || path.startsWith("/api/events")) &&
+    request.method === "GET";
+
   if (isPublicPath || isPublicApiGet) {
-    return NextResponse.next()
+    return NextResponse.next();
   }
-  
+
   // For protected routes, we'll check authentication in the API routes themselves
   // This allows for more granular control based on user roles
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config = {
@@ -57,4 +72,4 @@ export const config = {
      */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
-}
+};

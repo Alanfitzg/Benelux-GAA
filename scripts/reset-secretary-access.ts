@@ -10,7 +10,7 @@ async function resetSecretaryAccess() {
     club: "Zürich Inneoin",
     email: "Secretary.europe@gaa.ie",
     username: "secretary_europe",
-    password: "DaveReilly",
+    password: "Secretary",
   };
 
   console.log("Resetting Secretary access...\n");
