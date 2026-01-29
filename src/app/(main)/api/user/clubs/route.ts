@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getServerSession } from "@/lib/auth-helpers";
 import { prisma } from "@/lib/prisma";
 import { UserRole } from "@prisma/client";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const session = await getServerSession();
 
   if (!session?.user) {
@@ -13,9 +14,14 @@ export async function GET() {
     );
   }
 
+  // Check if "all" query param is set - only return all clubs when explicitly requested
+  const { searchParams } = new URL(request.url);
+  const returnAllClubs = searchParams.get("all") === "true";
+
   try {
-    // If user is SUPER_ADMIN, return all clubs with admin role
-    if (session.user.role === UserRole.SUPER_ADMIN) {
+    // If user is SUPER_ADMIN and explicitly requesting all clubs, return all clubs with admin role
+    // This is used for admin dashboards where super admin needs access to all clubs
+    if (session.user.role === UserRole.SUPER_ADMIN && returnAllClubs) {
       const allClubs = await prisma.club.findMany({
         select: {
           id: true,

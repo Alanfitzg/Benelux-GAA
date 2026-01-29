@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { useSession } from 'next-auth/react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Club {
   id: string;
@@ -10,7 +10,7 @@ interface Club {
   location: string | null;
   region: string | null;
   imageUrl?: string | null;
-  role?: 'admin' | 'member' | 'pending';
+  role?: "admin" | "member" | "pending";
 }
 
 interface ClubSelectorOptionalProps {
@@ -19,24 +19,35 @@ interface ClubSelectorOptionalProps {
   disabled?: boolean;
 }
 
-export default function ClubSelectorOptional({ value, onChange, disabled = false }: ClubSelectorOptionalProps) {
+export default function ClubSelectorOptional({
+  value,
+  onChange,
+  disabled = false,
+}: ClubSelectorOptionalProps) {
   const { data: session } = useSession();
   const [clubs, setClubs] = useState<Club[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [searchLoading, setSearchLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const selectedClub = Array.isArray(clubs) ? clubs.find(c => c.id === value) : undefined;
+  const selectedClub = Array.isArray(clubs)
+    ? clubs.find((c) => c.id === value)
+    : undefined;
 
-  const filteredClubs = Array.isArray(clubs) ? clubs.filter(club =>
-    club.name.toLowerCase().includes(search.toLowerCase()) ||
-    (club.location && club.location.toLowerCase().includes(search.toLowerCase())) ||
-    (club.region && club.region.toLowerCase().includes(search.toLowerCase()))
-  ) : [];
+  const filteredClubs = Array.isArray(clubs)
+    ? clubs.filter(
+        (club) =>
+          club.name.toLowerCase().includes(search.toLowerCase()) ||
+          (club.location &&
+            club.location.toLowerCase().includes(search.toLowerCase())) ||
+          (club.region &&
+            club.region.toLowerCase().includes(search.toLowerCase()))
+      )
+    : [];
 
   // Simulate search delay for better UX
   useEffect(() => {
@@ -53,23 +64,28 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
     const fetchClubs = async () => {
       try {
         setError(null);
-        // Fetch clubs - API will return all clubs for super admin, or only admin clubs for others
-        const response = await fetch('/api/user/clubs');
+        // Fetch clubs - for super admins, request all clubs so they can assign events to any club
+        const isSuperAdminUser = session?.user?.role === "SUPER_ADMIN";
+        const response = await fetch(
+          `/api/user/clubs${isSuperAdminUser ? "?all=true" : ""}`
+        );
         if (response.ok) {
           const responseData = await response.json();
-          const adminClubs = responseData.clubs?.filter((club: Club) => club.role === 'admin') || [];
+          const adminClubs =
+            responseData.clubs?.filter((club: Club) => club.role === "admin") ||
+            [];
           setClubs(adminClubs);
-          
+
           // Check if user is super admin (if all clubs are returned with admin role)
-          if (session?.user?.role === 'SUPER_ADMIN') {
+          if (session?.user?.role === "SUPER_ADMIN") {
             setIsSuperAdmin(true);
           }
         } else {
-          throw new Error('Failed to load clubs');
+          throw new Error("Failed to load clubs");
         }
       } catch (error) {
-        console.error('Failed to fetch clubs:', error);
-        setError('Failed to load clubs. Please try again.');
+        console.error("Failed to fetch clubs:", error);
+        setError("Failed to load clubs. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -80,25 +96,28 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleClubSelect = (clubId: string) => {
     onChange(clubId);
     setIsOpen(false);
-    setSearch('');
+    setSearch("");
   };
 
   const handleNoClubSelect = () => {
-    onChange('');
+    onChange("");
     setIsOpen(false);
-    setSearch('');
+    setSearch("");
   };
 
   if (loading) {
@@ -130,29 +149,44 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={`w-full border-2 border-gray-200 rounded-xl px-4 py-3 bg-gray-50/50 text-left focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 ${
-          disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 cursor-pointer'
-        } ${clubs.length === 0 && !loading ? 'opacity-75' : ''}`}
+          disabled
+            ? "opacity-50 cursor-not-allowed"
+            : "hover:bg-gray-100 cursor-pointer"
+        } ${clubs.length === 0 && !loading ? "opacity-75" : ""}`}
       >
         <div className="flex items-center justify-between">
           <div className="flex-1">
             {selectedClub ? (
               <div>
-                <div className="font-medium text-gray-900">{selectedClub.name}</div>
+                <div className="font-medium text-gray-900">
+                  {selectedClub.name}
+                </div>
                 {selectedClub.location && (
-                  <div className="text-sm text-gray-500">{selectedClub.location}</div>
+                  <div className="text-sm text-gray-500">
+                    {selectedClub.location}
+                  </div>
                 )}
               </div>
             ) : (
-              <span className="text-gray-500">{clubs.length === 0 ? 'No admin clubs available' : 'No club selected'}</span>
+              <span className="text-gray-500">
+                {clubs.length === 0
+                  ? "No admin clubs available"
+                  : "No club selected"}
+              </span>
             )}
           </div>
           <svg
-            className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
           </svg>
         </div>
       </button>
@@ -169,7 +203,9 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
             <div className="p-3 border-b border-gray-100">
               <input
                 type="text"
-                placeholder={isSuperAdmin ? "Search all clubs..." : "Search clubs..."}
+                placeholder={
+                  isSuperAdmin ? "Search all clubs..." : "Search clubs..."
+                }
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
@@ -180,18 +216,20 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
                 </p>
               )}
             </div>
-            
+
             <div className="max-h-60 overflow-y-auto">
               {/* No club option */}
               <button
                 type="button"
                 onClick={handleNoClubSelect}
                 className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150 border-b border-gray-100 ${
-                  !value ? 'bg-primary/5 text-primary' : ''
+                  !value ? "bg-primary/5 text-primary" : ""
                 }`}
               >
                 <div className="font-medium">No club association</div>
-                <div className="text-sm text-gray-500">Remove club association from this event</div>
+                <div className="text-sm text-gray-500">
+                  Remove club association from this event
+                </div>
               </button>
 
               {searchLoading ? (
@@ -201,9 +239,11 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
                 </div>
               ) : filteredClubs.length === 0 ? (
                 <div className="px-4 py-3 text-gray-500 text-sm">
-                  {search ? 'No clubs found matching your search' : 
-                   clubs.length === 0 ? 'You are not an admin of any clubs. Only club admins can create events for their clubs.' : 
-                   'No clubs available'}
+                  {search
+                    ? "No clubs found matching your search"
+                    : clubs.length === 0
+                      ? "You are not an admin of any clubs. Only club admins can create events for their clubs."
+                      : "No clubs available"}
                 </div>
               ) : (
                 filteredClubs.map((club) => (
@@ -212,12 +252,14 @@ export default function ClubSelectorOptional({ value, onChange, disabled = false
                     type="button"
                     onClick={() => handleClubSelect(club.id)}
                     className={`w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors duration-150 ${
-                      club.id === value ? 'bg-primary/5 text-primary' : ''
+                      club.id === value ? "bg-primary/5 text-primary" : ""
                     }`}
                   >
                     <div className="font-medium">{club.name}</div>
                     {club.location && (
-                      <div className="text-sm text-gray-500">{club.location}</div>
+                      <div className="text-sm text-gray-500">
+                        {club.location}
+                      </div>
                     )}
                   </button>
                 ))
