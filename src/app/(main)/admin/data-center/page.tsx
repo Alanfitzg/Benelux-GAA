@@ -370,6 +370,25 @@ const reports: ReportCard[] = [
       "Monthly trend analysis",
     ],
   },
+  {
+    id: "europe-traffic",
+    title: "Europe Traffic Report",
+    narrativeQuestion: "Total traffic to Europe?",
+    description:
+      "Demand vs capacity analysis for European GAA travel. Shows how many teams want to come to Europe vs hosting capacity - the investment case for infrastructure.",
+    icon: <Plane className="w-5 h-5 text-white" />,
+    gradient: "from-blue-600 to-indigo-600",
+    endpoint: "/api/admin/reports/europe-traffic",
+    type: "view",
+    includes: [
+      "Total demand (interests, registrations, preferences)",
+      "European hosting capacity & utilization",
+      "Demand vs supply gap analysis",
+      "Irish teams wanting to visit Europe",
+      "Traffic by European country",
+      "Investment story metrics",
+    ],
+  },
 ];
 
 export default function DataCenterPage() {
@@ -488,6 +507,19 @@ export default function DataCenterPage() {
                 <span className="md:hidden">{report.title.split(" ")[0]}</span>
               </button>
             ))}
+            {/* Total Traffic - Europe Focus button */}
+            <button
+              type="button"
+              onClick={() => setSelectedReport("europe-traffic")}
+              className={`px-3 py-1.5 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-medium transition-all ${
+                selectedReport === "europe-traffic"
+                  ? "bg-blue-500 text-white shadow-md"
+                  : "bg-blue-500/20 text-blue-300 hover:bg-blue-500/30 border border-blue-500/30"
+              }`}
+            >
+              <span className="hidden md:inline">✈️ Total Traffic</span>
+              <span className="md:hidden">✈️ Traffic</span>
+            </button>
             {/* Financial Data - Coming Soon button */}
             <button
               type="button"
@@ -816,6 +848,8 @@ function ReportContent({ reportId, data }: ReportContentProps) {
       return <GGEInterestReport data={data} />;
     case "youth-gaa":
       return <YouthGAAReport data={data} />;
+    case "europe-traffic":
+      return <EuropeTrafficReport data={data} />;
     default:
       return (
         <pre className="text-xs overflow-auto">
@@ -4134,6 +4168,513 @@ function YouthGAAReport({ data }: { data: Record<string, unknown> }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function EuropeTrafficReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    demand: {
+      interests: number;
+      registrations: number;
+      usersWantingEurope: number;
+      surveyResponses: number;
+      total: number;
+    };
+    supply: {
+      clubs: number;
+      hostingClubs: number;
+      availableClubs: number;
+      events: number;
+      upcomingEvents: number;
+      totalCapacity: number;
+      filledSpots: number;
+    };
+    gap: {
+      demandTotal: number;
+      supplyCapacity: number;
+      utilizationRate: number;
+      unmetDemand: number;
+      potentialGrowth: number;
+    };
+    irishDemand: {
+      interests: number;
+      registrations: number;
+    };
+  };
+  const demandByOrigin = data.demandByOrigin as {
+    origin: string;
+    count: number;
+  }[];
+  const byCountry = data.byCountry as {
+    country: string;
+    clubs: number;
+    events: number;
+    registrations: number;
+    interests: number;
+    total: number;
+  }[];
+  const topEuropeanEvents = data.topEuropeanEvents as {
+    id: string;
+    title: string;
+    location: string;
+    hostClub: string;
+    country: string;
+    date: string;
+    registrations: number;
+    interests: number;
+    totalDemand: number;
+    maxTeams: number;
+    fillRate: number;
+  }[];
+  const investmentStory = data.investmentStory as {
+    totalTeamsInterested: number;
+    irishTeamsWanting: number;
+    currentCapacity: number;
+    capacityUtilization: number;
+    unmetDemandCount: number;
+    growthPotential: string;
+    activeEuropeanCountries: number;
+    totalEuropeanClubs: number;
+    hostReadyClubs: number;
+    recentGrowth: {
+      lastSixMonths: number;
+      trend: string;
+    };
+  };
+  const monthlyTrend = data.monthlyTrend as {
+    month: string;
+    interests: number;
+    registrations: number;
+    total: number;
+  }[];
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      {/* Investment Story Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg sm:rounded-xl p-4 sm:p-6 text-white">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-2xl">🏟️</span>
+          <h3 className="font-bold text-lg sm:text-xl">
+            The Case for European GAA Investment
+          </h3>
+        </div>
+        <p className="text-blue-100 text-xs sm:text-sm mb-4">
+          This data tells a story of growing demand exceeding current capacity -
+          the foundation for infrastructure investment.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div className="bg-white/10 rounded-lg p-3 text-center">
+            <p className="text-2xl sm:text-4xl font-bold">
+              {investmentStory?.totalTeamsInterested || 0}
+            </p>
+            <p className="text-blue-200 text-[10px] sm:text-xs">
+              Teams Interested
+            </p>
+          </div>
+          <div className="bg-white/10 rounded-lg p-3 text-center">
+            <p className="text-2xl sm:text-4xl font-bold text-emerald-300">
+              {investmentStory?.irishTeamsWanting || 0}
+            </p>
+            <p className="text-blue-200 text-[10px] sm:text-xs">From Ireland</p>
+          </div>
+          <div className="bg-white/10 rounded-lg p-3 text-center">
+            <p className="text-2xl sm:text-4xl font-bold text-amber-300">
+              {investmentStory?.capacityUtilization || 0}%
+            </p>
+            <p className="text-blue-200 text-[10px] sm:text-xs">
+              Capacity Used
+            </p>
+          </div>
+          <div className="bg-white/10 rounded-lg p-3 text-center">
+            <p className="text-2xl sm:text-4xl font-bold text-rose-300">
+              {investmentStory?.unmetDemandCount || 0}
+            </p>
+            <p className="text-blue-200 text-[10px] sm:text-xs">Unmet Demand</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Demand vs Supply */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Demand Side */}
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-lg sm:rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-xl">📈</span>
+            <h3 className="font-bold text-green-800">DEMAND (Want to Come)</h3>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-green-700">
+                Event Interests
+              </span>
+              <span className="font-bold text-green-800">
+                {summary?.demand?.interests || 0}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-green-700">
+                Registrations
+              </span>
+              <span className="font-bold text-green-800">
+                {summary?.demand?.registrations || 0}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-green-700">
+                Users Wanting Europe
+              </span>
+              <span className="font-bold text-green-800">
+                {summary?.demand?.usersWantingEurope || 0}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-green-700">
+                Survey Responses
+              </span>
+              <span className="font-bold text-green-800">
+                {summary?.demand?.surveyResponses || 0}
+              </span>
+            </div>
+            <div className="border-t border-green-300 pt-2 mt-2">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-green-800">TOTAL DEMAND</span>
+                <span className="text-xl font-bold text-green-900">
+                  {summary?.demand?.total || 0}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Supply Side */}
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg sm:rounded-xl p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-xl">🏠</span>
+            <h3 className="font-bold text-blue-800">SUPPLY (Can Host)</h3>
+          </div>
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-blue-700">
+                European Clubs
+              </span>
+              <span className="font-bold text-blue-800">
+                {summary?.supply?.clubs || 0}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-blue-700">
+                Hosting-Ready Clubs
+              </span>
+              <span className="font-bold text-blue-800">
+                {summary?.supply?.hostingClubs || 0}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-blue-700">
+                European Events
+              </span>
+              <span className="font-bold text-blue-800">
+                {summary?.supply?.events || 0}
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-xs sm:text-sm text-blue-700">
+                Filled Spots
+              </span>
+              <span className="font-bold text-blue-800">
+                {summary?.supply?.filledSpots || 0}
+              </span>
+            </div>
+            <div className="border-t border-blue-300 pt-2 mt-2">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-blue-800">
+                  TOTAL CAPACITY
+                </span>
+                <span className="text-xl font-bold text-blue-900">
+                  {summary?.supply?.totalCapacity || 0}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Gap Analysis */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg sm:rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xl">⚠️</span>
+          <h3 className="font-bold text-amber-800">THE GAP (Opportunity)</h3>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="text-center">
+            <p className="text-xl sm:text-2xl font-bold text-amber-700">
+              {summary?.gap?.demandTotal || 0}
+            </p>
+            <p className="text-[10px] sm:text-xs text-amber-600">
+              Total Demand
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-xl sm:text-2xl font-bold text-amber-700">
+              {summary?.gap?.supplyCapacity || 0}
+            </p>
+            <p className="text-[10px] sm:text-xs text-amber-600">
+              Current Capacity
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-xl sm:text-2xl font-bold text-red-600">
+              {summary?.gap?.unmetDemand || 0}
+            </p>
+            <p className="text-[10px] sm:text-xs text-amber-600">
+              Unmet Demand
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-xl sm:text-2xl font-bold text-green-600">
+              {investmentStory?.growthPotential || "0%"}
+            </p>
+            <p className="text-[10px] sm:text-xs text-amber-600">
+              Growth Potential
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Irish Demand Highlight */}
+      <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-lg sm:rounded-xl p-4 text-white">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xl">🇮🇪</span>
+          <h3 className="font-bold">Irish Teams Wanting to Visit Europe</h3>
+        </div>
+        <div className="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <p className="text-2xl sm:text-3xl font-bold">
+              {summary?.irishDemand?.interests || 0}
+            </p>
+            <p className="text-green-200 text-xs">Interests</p>
+          </div>
+          <div>
+            <p className="text-2xl sm:text-3xl font-bold">
+              {summary?.irishDemand?.registrations || 0}
+            </p>
+            <p className="text-green-200 text-xs">Registrations</p>
+          </div>
+          <div>
+            <p className="text-2xl sm:text-3xl font-bold">
+              {(summary?.irishDemand?.interests || 0) +
+                (summary?.irishDemand?.registrations || 0)}
+            </p>
+            <p className="text-green-200 text-xs">Total</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Demand by Origin */}
+      {demandByOrigin && demandByOrigin.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+            <Plane className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+            Where Demand Comes From
+          </h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {demandByOrigin.slice(0, 8).map((origin, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-50 rounded-lg p-3 flex justify-between items-center"
+              >
+                <span className="text-xs sm:text-sm text-gray-700 truncate">
+                  {origin.origin}
+                </span>
+                <span className="font-bold text-blue-600 ml-2">
+                  {origin.count}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* European Country Breakdown */}
+      {byCountry && byCountry.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+            <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+            European Country Breakdown
+          </h3>
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b bg-gray-50">
+                    <th className="text-left py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Country
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Clubs
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Events
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Registrations
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Interests
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {byCountry.slice(0, 15).map((country, idx) => (
+                    <tr
+                      key={idx}
+                      className={`border-b border-gray-100 ${idx < 3 ? "bg-blue-50/50" : ""}`}
+                    >
+                      <td className="py-2 px-2 sm:px-3 font-medium text-gray-800">
+                        {country.country}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-gray-600">
+                        {country.clubs}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-gray-600">
+                        {country.events}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-green-600">
+                        {country.registrations}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-purple-600">
+                        {country.interests}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center font-bold text-blue-700">
+                        {country.total}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Top European Events */}
+      {topEuropeanEvents && topEuropeanEvents.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+            <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+            Top European Events by Demand
+          </h3>
+          <div className="space-y-2">
+            {topEuropeanEvents.slice(0, 6).map((event, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-50 rounded-lg p-2 sm:p-3 flex items-center justify-between"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-gray-900 text-xs sm:text-sm truncate">
+                    {event.title}
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">
+                    {event.hostClub} • {event.country}
+                  </p>
+                </div>
+                <div className="text-right ml-2 flex-shrink-0">
+                  <p className="text-xs sm:text-sm font-medium text-blue-600">
+                    {event.totalDemand} interested
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">
+                    {event.fillRate}% filled
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Monthly Trend */}
+      {monthlyTrend && monthlyTrend.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Monthly Traffic Trend
+          </h3>
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+            {monthlyTrend.slice(-6).map((month, idx) => (
+              <div key={idx} className="bg-gray-50 rounded-lg p-2 text-center">
+                <p className="text-[10px] sm:text-xs text-gray-500">
+                  {month.month}
+                </p>
+                <p className="text-sm sm:text-lg font-bold text-blue-600">
+                  {month.total}
+                </p>
+                <p className="text-[10px] text-gray-400">
+                  {month.interests}i / {month.registrations}r
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Key Takeaways for Investment */}
+      <div className="bg-gradient-to-r from-slate-800 to-slate-900 rounded-lg sm:rounded-xl p-4 sm:p-6 text-white">
+        <h3 className="font-bold text-lg mb-3 flex items-center gap-2">
+          <span>💡</span> Key Investment Insights
+        </h3>
+        <ul className="space-y-2 text-sm text-slate-300">
+          <li className="flex items-start gap-2">
+            <span className="text-green-400">✓</span>
+            <span>
+              <strong className="text-white">
+                {investmentStory?.totalTeamsInterested || 0} teams
+              </strong>{" "}
+              have expressed interest in European GAA events
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-green-400">✓</span>
+            <span>
+              <strong className="text-white">
+                {investmentStory?.activeEuropeanCountries || 0} European
+                countries
+              </strong>{" "}
+              are actively hosting GAA events
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-amber-400">⚠</span>
+            <span>
+              Current capacity utilization at{" "}
+              <strong className="text-white">
+                {investmentStory?.capacityUtilization || 0}%
+              </strong>{" "}
+              - room for growth
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-blue-400">📊</span>
+            <span>
+              <strong className="text-white">
+                {investmentStory?.recentGrowth?.lastSixMonths || 0}
+              </strong>{" "}
+              new interests in the last 6 months
+            </span>
+          </li>
+          <li className="flex items-start gap-2">
+            <span className="text-rose-400">🎯</span>
+            <span>
+              <strong className="text-white">
+                {investmentStory?.unmetDemandCount || 0}
+              </strong>{" "}
+              teams could not be accommodated - unmet demand
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
