@@ -462,67 +462,73 @@ export default function DataCenterPage() {
         </div>
 
         {/* Tab Navigation */}
-        <div className="mb-6 md:mb-8">
-          <div className="flex flex-wrap gap-3 md:gap-4 justify-center">
+        <div className="mb-4 md:mb-8">
+          <div className="flex flex-wrap gap-2 md:gap-3 justify-center">
             <button
               type="button"
               onClick={() => setSelectedReport(null)}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all bg-white/10 text-white/80 hover:bg-white/20`}
+              className={`px-3 py-1.5 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-medium transition-all bg-white/10 text-white/80 hover:bg-white/20`}
             >
-              All Reports
+              All
             </button>
             {reports.map((report) => (
               <button
                 key={report.id}
                 type="button"
                 onClick={() => setSelectedReport(report.id)}
-                className={`px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all ${
+                className={`px-3 py-1.5 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-medium transition-all ${
                   selectedReport === report.id
                     ? "bg-cyan-500 text-white shadow-md"
                     : "bg-white/10 text-white/80 hover:bg-white/20"
                 }`}
               >
-                {report.narrativeQuestion}
+                <span className="hidden md:inline">
+                  {report.narrativeQuestion}
+                </span>
+                <span className="md:hidden">{report.title.split(" ")[0]}</span>
               </button>
             ))}
             {/* Financial Data - Coming Soon button */}
             <button
               type="button"
               onClick={() => setShowFinancialModal(true)}
-              className="px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/30"
+              className="px-3 py-1.5 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-medium transition-all bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/30"
             >
-              💰 Financial Data
+              <span className="hidden md:inline">💰 Financial Data</span>
+              <span className="md:hidden">💰 Finance</span>
             </button>
           </div>
         </div>
 
         <div
-          className={`grid gap-6 ${selectedReport ? "grid-cols-1 max-w-2xl mx-auto" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}`}
+          className={`grid gap-3 md:gap-6 ${selectedReport ? "grid-cols-1 max-w-2xl mx-auto" : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"}`}
         >
           {displayedReports.map((report) => (
             <div
               key={report.id}
-              className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
+              className="bg-white rounded-lg md:rounded-xl shadow-lg border border-gray-200 overflow-hidden"
             >
-              <div className={`bg-gradient-to-r ${report.gradient} px-6 py-4`}>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+              <div
+                className={`bg-gradient-to-r ${report.gradient} px-4 py-3 md:px-6 md:py-4`}
+              >
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center">
                     {report.icon}
                   </div>
-                  <h2 className="text-lg font-semibold text-white">
+                  <h2 className="text-sm md:text-lg font-semibold text-white">
                     {report.title}
                   </h2>
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-lg font-semibold text-gray-900 mb-2 italic">
+              <div className="p-4 md:p-6">
+                <p className="text-sm md:text-lg font-semibold text-gray-900 mb-1 md:mb-2 italic">
                   &ldquo;{report.narrativeQuestion}&rdquo;
                 </p>
-                <p className="text-gray-600 text-sm mb-4">
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2 md:line-clamp-none">
                   {report.description}
                 </p>
                 {report.includes && (
-                  <div className="text-xs text-gray-500 mb-4">
+                  <div className="hidden md:block text-xs text-gray-500 mb-4">
                     <p className="font-medium mb-1">Includes:</p>
                     <ul className="list-disc list-inside ml-1 space-y-0.5">
                       {report.includes.map((item, idx) => (
@@ -539,14 +545,15 @@ export default function DataCenterPage() {
                         handleViewReport(report.id, report.viewEndpoint!)
                       }
                       disabled={loading === report.id}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 rounded-lg transition-colors disabled:opacity-50 bg-gray-100 text-gray-700 hover:bg-gray-200 text-xs md:text-sm"
                     >
                       {loading === report.id ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-3.5 h-3.5 md:w-4 md:h-4 animate-spin" />
                       ) : (
-                        <BarChart3 className="w-4 h-4" />
+                        <BarChart3 className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       )}
-                      Summary
+                      <span className="hidden md:inline">Summary</span>
+                      <span className="md:hidden">View</span>
                     </button>
                     <button
                       type="button"
@@ -557,12 +564,12 @@ export default function DataCenterPage() {
                         )
                       }
                       disabled={loading === report.id + "-export"}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700"
+                      className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 rounded-lg transition-colors disabled:opacity-50 bg-blue-600 text-white hover:bg-blue-700 text-xs md:text-sm"
                     >
                       {loading === report.id + "-export" ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-3.5 h-3.5 md:w-4 md:h-4 animate-spin" />
                       ) : (
-                        <Download className="w-4 h-4" />
+                        <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       )}
                       Export
                     </button>
@@ -576,18 +583,18 @@ export default function DataCenterPage() {
                         : handleViewReport(report.id, report.endpoint)
                     }
                     disabled={loading === report.id}
-                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors disabled:opacity-50 ${
+                    className={`w-full flex items-center justify-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 rounded-lg transition-colors disabled:opacity-50 text-xs md:text-sm ${
                       report.type === "export"
                         ? "bg-blue-600 text-white hover:bg-blue-700"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                     }`}
                   >
                     {loading === report.id ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <Loader2 className="w-3.5 h-3.5 md:w-4 md:h-4 animate-spin" />
                     ) : (
-                      <Download className="w-4 h-4" />
+                      <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     )}
-                    {report.type === "export" ? "Export CSV" : "View Report"}
+                    {report.type === "export" ? "Export" : "View Report"}
                   </button>
                 )}
               </div>
@@ -596,26 +603,26 @@ export default function DataCenterPage() {
 
           {/* Financial Data Card - Coming Soon */}
           {!selectedReport && (
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <span className="text-xl">💰</span>
+            <div className="bg-white rounded-lg md:rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 px-4 py-3 md:px-6 md:py-4">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <span className="text-base md:text-xl">💰</span>
                   </div>
-                  <h2 className="text-lg font-semibold text-white">
+                  <h2 className="text-sm md:text-lg font-semibold text-white">
                     Financial Data
                   </h2>
                 </div>
               </div>
-              <div className="p-6">
-                <p className="text-lg font-semibold text-gray-900 mb-2 italic">
+              <div className="p-4 md:p-6">
+                <p className="text-sm md:text-lg font-semibold text-gray-900 mb-1 md:mb-2 italic">
                   &ldquo;What&apos;s our economic impact?&rdquo;
                 </p>
-                <p className="text-gray-600 text-sm mb-4">
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4 line-clamp-2 md:line-clamp-none">
                   Revenue tracking, spending analysis, and economic impact data
                   for European GAA travel.
                 </p>
-                <div className="text-xs text-gray-500 mb-4">
+                <div className="hidden md:block text-xs text-gray-500 mb-4">
                   <p className="font-medium mb-1">Will include:</p>
                   <ul className="list-disc list-inside ml-1 space-y-0.5">
                     <li>Total revenue & platform fees</li>
@@ -628,10 +635,11 @@ export default function DataCenterPage() {
                 <button
                   type="button"
                   onClick={() => setShowFinancialModal(true)}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors bg-amber-100 text-amber-700 hover:bg-amber-200"
+                  className="w-full flex items-center justify-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-2.5 rounded-lg transition-colors bg-amber-100 text-amber-700 hover:bg-amber-200 text-xs md:text-sm"
                 >
-                  <BarChart3 className="w-4 h-4" />
-                  View Financial Data
+                  <BarChart3 className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  <span className="hidden md:inline">View Financial Data</span>
+                  <span className="md:hidden">View Report</span>
                 </button>
               </div>
             </div>
@@ -640,17 +648,19 @@ export default function DataCenterPage() {
 
         {/* Financial Data Modal - Coming Soon */}
         {showFinancialModal && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden">
-              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 px-6 py-4 flex items-center justify-between">
-                <h2 className="text-xl font-bold text-white">Financial Data</h2>
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-3 md:p-4">
+            <div className="bg-white rounded-xl md:rounded-2xl max-w-md w-full overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 px-4 py-3 md:px-6 md:py-4 flex items-center justify-between">
+                <h2 className="text-base md:text-xl font-bold text-white">
+                  Financial Data
+                </h2>
                 <button
                   type="button"
                   onClick={() => setShowFinancialModal(false)}
                   className="text-white/80 hover:text-white transition-colors"
                 >
                   <svg
-                    className="w-6 h-6"
+                    className="w-5 h-5 md:w-6 md:h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -664,20 +674,20 @@ export default function DataCenterPage() {
                   </svg>
                 </button>
               </div>
-              <div className="p-6">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
-                    <span className="text-3xl">🚧</span>
+              <div className="p-4 md:p-6">
+                <div className="flex items-center justify-center mb-3 md:mb-4">
+                  <div className="w-12 h-12 md:w-16 md:h-16 bg-amber-100 rounded-full flex items-center justify-center">
+                    <span className="text-2xl md:text-3xl">🚧</span>
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                <h3 className="text-base md:text-lg font-semibold text-gray-900 text-center mb-1 md:mb-2">
                   Coming Soon
                 </h3>
-                <p className="text-gray-600 text-sm text-center mb-4">
+                <p className="text-gray-600 text-xs md:text-sm text-center mb-3 md:mb-4">
                   Financial data reporting is not yet available as the payment
                   and booking models are currently under construction.
                 </p>
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
                   <p className="text-xs text-amber-800">
                     <strong>What&apos;s being built:</strong> Once the booking
                     and payment systems are finalised, this report will show
@@ -688,7 +698,7 @@ export default function DataCenterPage() {
                 <button
                   type="button"
                   onClick={() => setShowFinancialModal(false)}
-                  className="w-full px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                  className="w-full px-3 py-2 md:px-4 md:py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm"
                 >
                   Got it
                 </button>
