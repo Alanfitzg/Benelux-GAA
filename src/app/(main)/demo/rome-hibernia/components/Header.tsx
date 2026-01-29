@@ -35,14 +35,44 @@ export default function Header({ currentPage }: HeaderProps) {
   return (
     <header className="bg-black sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-24">
+        {/* Mobile Header - Shop left, Crest center, Menu right */}
+        <div className="flex lg:hidden items-center justify-between h-16">
+          <a
+            href="https://azzurri.ie/rome-hibernia-gaa"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="border border-[#c41e3a] text-white px-2 py-1 text-xs font-medium hover:bg-[#c41e3a] transition-colors"
+          >
+            SHOP
+          </a>
+          <Link href={homeHref} className="absolute left-1/2 -translate-x-1/2">
+            <Image
+              src="/club-crests/rome-hibernia-NEW.png"
+              alt="Rome Hibernia GAA"
+              width={80}
+              height={80}
+              className="object-contain w-20 h-20"
+              unoptimized
+            />
+          </Link>
+          <button
+            type="button"
+            className="text-white"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* Desktop Header */}
+        <div className="hidden lg:flex items-center justify-between h-24">
           {/* Shop Button & Logo */}
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-4">
             <a
               href="https://azzurri.ie/rome-hibernia-gaa"
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-[#c41e3a] text-white px-2 md:px-4 py-1 md:py-1.5 text-xs md:text-sm font-medium hover:bg-[#c41e3a] transition-colors"
+              className="border border-[#c41e3a] text-white px-4 py-1.5 text-sm font-medium hover:bg-[#c41e3a] transition-colors"
             >
               SHOP
             </a>
@@ -52,14 +82,14 @@ export default function Header({ currentPage }: HeaderProps) {
                 alt="Rome Hibernia GAA"
                 width={100}
                 height={100}
-                className="object-contain w-14 h-14 md:w-[100px] md:h-[100px]"
+                className="object-contain w-[100px] h-[100px]"
                 unoptimized
               />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="flex items-center gap-1">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
@@ -86,25 +116,52 @@ export default function Header({ currentPage }: HeaderProps) {
               </Link>
             ))}
           </nav>
-
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            className="lg:hidden text-white"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <nav className="lg:hidden py-4 border-t border-gray-800">
+      {/* Mobile Navigation - Full Screen Overlay */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 bg-black z-40">
+          {/* Header - Shop left, Crest center, Close right */}
+          <div className="flex items-center justify-between px-4 h-16 relative">
+            <a
+              href="https://azzurri.ie/rome-hibernia-gaa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="border border-[#c41e3a] text-white px-2 py-1 text-xs font-medium hover:bg-[#c41e3a] transition-colors"
+            >
+              SHOP
+            </a>
+            <Link
+              href={homeHref}
+              onClick={() => setMobileMenuOpen(false)}
+              className="absolute left-1/2 -translate-x-1/2"
+            >
+              <Image
+                src="/club-crests/rome-hibernia-NEW.png"
+                alt="Rome Hibernia GAA"
+                width={80}
+                height={80}
+                className="object-contain w-20 h-20"
+                unoptimized
+              />
+            </Link>
+            <button
+              type="button"
+              className="text-white"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="px-4 pt-4">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`block py-3 text-lg font-medium transition-colors ${
+                className={`block py-4 text-xl font-light border-b border-gray-800 transition-colors ${
                   currentPage === link.name
                     ? "text-[#c41e3a]"
                     : "text-white hover:text-[#c41e3a]"
@@ -115,8 +172,8 @@ export default function Header({ currentPage }: HeaderProps) {
               </Link>
             ))}
           </nav>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 }

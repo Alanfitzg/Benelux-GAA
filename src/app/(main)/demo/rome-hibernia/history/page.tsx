@@ -6,7 +6,7 @@ export default function HistoryPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="History" />
 
-      <main className="flex-1 py-16">
+      <main className="flex-1 pt-24 pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="text-2xl font-light text-gray-900 mb-8">
             Rome Hibernia GAA – Gaelic Games in the Eternal City

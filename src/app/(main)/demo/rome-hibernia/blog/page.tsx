@@ -6,7 +6,7 @@ export default function BlogPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Blog" />
 
-      <main className="flex-1 py-16">
+      <main className="flex-1 pt-24 pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h1 className="text-3xl font-light text-gray-900 mb-4">Blog</h1>
           <p className="text-gray-600">Coming soon...</p>

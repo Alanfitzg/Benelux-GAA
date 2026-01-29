@@ -8,10 +8,10 @@ export default function Footer() {
   return (
     <footer className="bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
           {/* Where we train */}
-          <div className="text-center md:text-left">
-            <div className="flex justify-center md:justify-start mb-4">
+          <div className="text-center sm:text-left">
+            <div className="flex justify-center sm:justify-start mb-4">
               <Image
                 src="/club-crests/rome-hibernia-NEW.png"
                 alt="Rome Hibernia GAA"
@@ -22,43 +22,21 @@ export default function Footer() {
               />
             </div>
             <h4 className="font-medium mb-2">Where we train</h4>
-            <p className="text-gray-400 text-sm">Address</p>
-            <p className="text-gray-400 text-sm">Address</p>
+            <p className="text-gray-400 text-sm">Stadio delle Tre Fontane</p>
+            <p className="text-gray-400 text-sm">Via delle Tre Fontane, 5</p>
+            <p className="text-gray-400 text-sm">00144 Roma RM, Italy</p>
             <a
-              href="#"
+              href="https://maps.google.com/?q=Stadio+delle+Tre+Fontane,+Via+delle+Tre+Fontane,+5,+00144+Roma+RM,+Italy"
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-white text-sm underline hover:text-[#c41e3a] transition-colors mt-2 inline-block"
             >
               Show on Google Maps
             </a>
           </div>
 
-          {/* Newsletter */}
-          <div className="text-center sm:col-span-2 md:col-span-1">
-            <h4 className="font-medium mb-3 sm:mb-4 text-sm sm:text-base">
-              Subscribe to our newsletter
-            </h4>
-            <div className="flex flex-col sm:flex-row gap-2 max-w-sm mx-auto">
-              <div className="flex-1">
-                <label className="block text-left text-xs text-gray-400 mb-1">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  placeholder="e.g., email@exampl..."
-                  className="w-full px-3 py-2 bg-white text-black text-sm rounded-none border-0 focus:outline-none focus:ring-2 focus:ring-red-500"
-                />
-              </div>
-              <button
-                type="button"
-                className="sm:self-end px-4 py-2 bg-white text-black text-sm font-medium hover:bg-gray-100 transition-colors"
-              >
-                Sign up
-              </button>
-            </div>
-          </div>
-
           {/* Social Media */}
-          <div className="text-center sm:text-right md:text-right sm:col-span-2 md:col-span-1">
+          <div className="text-center sm:text-right">
             <h4 className="font-medium mb-3 sm:mb-4 text-sm sm:text-base">
               Contact us on social media
             </h4>
@@ -105,9 +83,12 @@ export default function Footer() {
               </a>
             </div>
             <p className="text-gray-400 text-sm">
-              Email us on{" "}
-              <a href="#" className="underline hover:text-white">
-                ____________
+              Email us at{" "}
+              <a
+                href="mailto:secretary.rome.europe@gaa.ie"
+                className="underline hover:text-white"
+              >
+                secretary.rome.europe@gaa.ie
               </a>
             </p>
           </div>

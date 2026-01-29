@@ -6,7 +6,7 @@ export default function YouthPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Youth" />
 
-      <main className="flex-1 py-16">
+      <main className="flex-1 pt-24 pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4">
           <ul className="list-disc pl-6 space-y-3 text-gray-700">
             <li>Romes first Cúl camp - information & photos</li>

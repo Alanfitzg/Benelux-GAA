@@ -108,41 +108,84 @@ export default function HeroCarousel() {
   const slide = slides[currentSlide];
 
   return (
-    <section className="relative h-[400px] sm:h-[500px] md:h-[700px] lg:h-[800px] overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src={slide.image}
-          alt={slide.title}
-          fill
-          className="object-cover object-center transition-opacity duration-500"
-          priority
-          unoptimized
+    <section className="relative h-[280px] sm:h-[350px] md:h-[550px] lg:h-[650px] overflow-hidden">
+      {/* Background Images with crossfade */}
+      {slides.map((s, index) => (
+        <div
+          key={s.id}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            index === currentSlide ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Image
+            src={s.image}
+            alt={s.title}
+            fill
+            className="object-cover object-center"
+            priority={index === 0}
+            unoptimized
+          />
+        </div>
+      ))}
+
+      {/* Gradient overlays for depth */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+
+      {/* Animated progress bar at bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/30">
+        <div
+          className="h-full bg-[#c41e3a] transition-all ease-linear"
+          style={{
+            width: `${((currentSlide + 1) / slides.length) * 100}%`,
+            transition: isAutoPlaying
+              ? "width 5s linear"
+              : "width 0.3s ease-out",
+          }}
         />
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-black/50" />
       </div>
 
-      {/* Content */}
-      <div className="relative h-full flex items-end justify-center pb-16 sm:pb-20 md:pb-24">
+      {/* Mobile slide indicator dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex sm:hidden gap-1.5">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => goToSlide(index)}
+            className={`h-1.5 rounded-full transition-all duration-300 ${
+              index === currentSlide ? "bg-white w-6" : "bg-white/40 w-1.5"
+            }`}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+
+      {/* Content - hidden on mobile */}
+      <div className="relative h-full hidden sm:flex items-end justify-center pb-20 md:pb-24">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
-          <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-4 drop-shadow-lg">
+          <h1
+            className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg animate-fade-in"
+            key={`title-${currentSlide}`}
+          >
             {slide.title}
           </h1>
-          <p className="text-base sm:text-lg md:text-2xl text-white/90 mb-4 sm:mb-6 md:mb-8 drop-shadow-md">
+          <p
+            className="text-lg md:text-2xl text-white/90 mb-6 md:mb-8 drop-shadow-md animate-fade-in-delay"
+            key={`subtitle-${currentSlide}`}
+          >
             {slide.subtitle}
           </p>
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
+          <div className="flex flex-row gap-4 justify-center">
             <Link
               href={slide.cta.href}
-              className="bg-[#c41e3a] text-white px-6 sm:px-8 py-2 sm:py-3 font-bold text-sm sm:text-lg hover:bg-[#a01830] transition-colors"
+              className="bg-[#c41e3a] text-white px-8 py-3 font-bold text-lg hover:bg-[#a01830] transition-colors hover:scale-105 transform"
             >
               {slide.cta.text}
             </Link>
             {slide.secondaryCta && (
               <Link
                 href={slide.secondaryCta.href}
-                className="border-2 border-white text-white px-6 sm:px-8 py-2 sm:py-3 font-bold text-sm sm:text-lg hover:bg-white/10 transition-colors"
+                className="border-2 border-white text-white px-8 py-3 font-bold text-lg hover:bg-white/10 transition-colors hover:scale-105 transform"
               >
                 {slide.secondaryCta.text}
               </Link>
@@ -151,42 +194,61 @@ export default function HeroCarousel() {
         </div>
       </div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - hidden on mobile */}
       <button
         type="button"
         onClick={prevSlide}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-12 sm:h-12 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white transition-colors"
+        className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full hidden sm:flex items-center justify-center text-white transition-all hover:scale-110"
         aria-label="Previous slide"
       >
-        <ChevronLeft size={20} className="sm:hidden" />
-        <ChevronLeft size={28} className="hidden sm:block" />
+        <ChevronLeft size={28} />
       </button>
       <button
         type="button"
         onClick={nextSlide}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-12 sm:h-12 bg-black/30 hover:bg-black/50 rounded-full flex items-center justify-center text-white transition-colors"
+        className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full hidden sm:flex items-center justify-center text-white transition-all hover:scale-110"
         aria-label="Next slide"
       >
-        <ChevronRight size={20} className="sm:hidden" />
-        <ChevronRight size={28} className="hidden sm:block" />
+        <ChevronRight size={28} />
       </button>
 
-      {/* Dots */}
-      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
+      {/* Desktop Dots */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden sm:flex gap-2">
         {slides.map((_, index) => (
           <button
             key={index}
             type="button"
             onClick={() => goToSlide(index)}
-            className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-colors ${
+            className={`h-3 rounded-full transition-all duration-300 ${
               index === currentSlide
-                ? "bg-white"
-                : "bg-white/40 hover:bg-white/60"
+                ? "bg-white w-8"
+                : "bg-white/40 hover:bg-white/60 w-3"
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
+
+      {/* CSS for animations */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-fade-in {
+          animation: fadeIn 0.6s ease-out forwards;
+        }
+        .animate-fade-in-delay {
+          animation: fadeIn 0.6s ease-out 0.2s forwards;
+          opacity: 0;
+        }
+      `}</style>
     </section>
   );
 }

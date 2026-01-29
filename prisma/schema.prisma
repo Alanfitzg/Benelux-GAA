@@ -1780,3 +1780,21 @@ model DemographicsReportSummary {
 
   @@index([publishedDate])
 }
+
+// ============================================
+// Club Website Content Management
+// For inline text editing on club demo sites
+// ============================================
+
+model ClubContent {
+  id         String   @id @default(cuid())
+  clubId     String   // e.g., "rome-hibernia"
+  pageKey    String   // e.g., "home", "history", "training"
+  contentKey String   // e.g., "hero.title", "about.text"
+  value      String   @db.Text
+  maxLength  Int?     // Optional character limit
+  updatedAt  DateTime @updatedAt
+
+  @@unique([clubId, pageKey, contentKey])
+  @@index([clubId, pageKey])
+}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ClubContentWrapper from "./components/ClubContentWrapper";
 
 export const metadata: Metadata = {
   title: "Rome Hibernia GAA | The Home of Gaelic Games in Rome",
@@ -29,7 +30,7 @@ export default function RomeHiberniaLayout({
         }
       `}</style>
       <div className="rome-hibernia-standalone" style={{ marginTop: "-64px" }}>
-        {children}
+        <ClubContentWrapper>{children}</ClubContentWrapper>
       </div>
     </>
   );
