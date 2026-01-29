@@ -176,32 +176,44 @@ export default function FriendsNetworkPage() {
 
         {/* Stats Cards - simplified on mobile */}
         <div className="grid grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-8">
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+          <div className="group relative bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
             <div className="text-xl md:text-3xl font-bold text-white">
               {data?.friends.total || 0}
             </div>
             <div className="text-[10px] md:text-sm text-white/70">Friends</div>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden sm:block">
+              Informal club connections from tournaments & visits
+            </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+          <div className="group relative bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
             <div className="text-xl md:text-3xl font-bold text-white">
               {data?.friends.uniqueClubs || 0}
             </div>
             <div className="text-[10px] md:text-sm text-white/70">Clubs</div>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden sm:block">
+              Unique clubs with at least one friend connection
+            </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+          <div className="group relative bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
             <div className="text-xl md:text-3xl font-bold text-emerald-400">
               {data?.twinClubs.total || 0}
             </div>
             <div className="text-[10px] md:text-sm text-white/70">Twins</div>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden sm:block">
+              Official GAA Twinning Initiative partnerships
+            </div>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
+          <div className="group relative bg-white/10 backdrop-blur-sm rounded-lg md:rounded-xl p-2 md:p-4">
             <div className="text-xl md:text-3xl font-bold text-secondary">
               {(data?.friends.total || 0) + (data?.twinClubs.total || 0)}
             </div>
             <div className="text-[10px] md:text-sm text-white/70">Total</div>
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg whitespace-nowrap z-50 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none hidden sm:block">
+              All club relationships (friends + twins)
+            </div>
           </div>
         </div>
 

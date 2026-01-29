@@ -11,6 +11,7 @@ import {
   Loader2,
   Flame,
   MapPinOff,
+  MapPin,
   UserCheck,
   Trophy,
   Plane,
@@ -350,6 +351,25 @@ const reports: ReportCard[] = [
       "Monthly registration trends",
     ],
   },
+  {
+    id: "youth-gaa",
+    title: "Youth GAA Report",
+    narrativeQuestion: "How active is Youth GAA?",
+    description:
+      "Comprehensive youth GAA analysis with demographics, age group breakdown, and county-level travel patterns. See which counties are most active in youth tournaments.",
+    icon: <Users className="w-5 h-5 text-white" />,
+    gradient: "from-emerald-500 to-teal-500",
+    endpoint: "/api/admin/reports/youth-gaa",
+    type: "view",
+    includes: [
+      "Youth events & registrations overview",
+      "Age group demographics (U8-U18, Minor)",
+      "County travel rankings",
+      "Most active youth clubs",
+      "County interest levels",
+      "Monthly trend analysis",
+    ],
+  },
 ];
 
 export default function DataCenterPage() {
@@ -359,6 +379,7 @@ export default function DataCenterPage() {
     null
   );
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
+  const [showFinancialModal, setShowFinancialModal] = useState(false);
 
   // Filter reports based on selection
   const displayedReports = selectedReport
@@ -564,7 +585,109 @@ export default function DataCenterPage() {
               </div>
             </div>
           ))}
+
+          {/* Financial Data Card - Coming Soon */}
+          {!selectedReport && (
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <span className="text-xl">💰</span>
+                  </div>
+                  <h2 className="text-lg font-semibold text-white">
+                    Financial Data
+                  </h2>
+                </div>
+              </div>
+              <div className="p-6">
+                <p className="text-lg font-semibold text-gray-900 mb-2 italic">
+                  &ldquo;What&apos;s our economic impact?&rdquo;
+                </p>
+                <p className="text-gray-600 text-sm mb-4">
+                  Revenue tracking, spending analysis, and economic impact data
+                  for European GAA travel.
+                </p>
+                <div className="text-xs text-gray-500 mb-4">
+                  <p className="font-medium mb-1">Will include:</p>
+                  <ul className="list-disc list-inside ml-1 space-y-0.5">
+                    <li>Total revenue & platform fees</li>
+                    <li>Spending by travelling teams</li>
+                    <li>Economic impact estimates</li>
+                    <li>Club earnings breakdown</li>
+                    <li>Payment & booking trends</li>
+                  </ul>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowFinancialModal(true)}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg transition-colors bg-amber-100 text-amber-700 hover:bg-amber-200"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  View Financial Data
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Financial Data Modal - Coming Soon */}
+        {showFinancialModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl max-w-md w-full overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-500 to-yellow-500 px-6 py-4 flex items-center justify-between">
+                <h2 className="text-xl font-bold text-white">Financial Data</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowFinancialModal(false)}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-6">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
+                    <span className="text-3xl">🚧</span>
+                  </div>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+                  Coming Soon
+                </h3>
+                <p className="text-gray-600 text-sm text-center mb-4">
+                  Financial data reporting is not yet available as the payment
+                  and booking models are currently under construction.
+                </p>
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+                  <p className="text-xs text-amber-800">
+                    <strong>What&apos;s being built:</strong> Once the booking
+                    and payment systems are finalised, this report will show
+                    revenue, club earnings, economic impact data, and spending
+                    trends across European GAA travel.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowFinancialModal(false)}
+                  className="w-full px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                >
+                  Got it
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Report Modal */}
         {viewingReport && reportData && (
@@ -673,6 +796,8 @@ function ReportContent({ reportId, data }: ReportContentProps) {
       return <EventApprovalsReport data={data} />;
     case "gge-interest":
       return <GGEInterestReport data={data} />;
+    case "youth-gaa":
+      return <YouthGAAReport data={data} />;
     default:
       return (
         <pre className="text-xs overflow-auto">
@@ -3603,6 +3728,394 @@ function GGEInterestReport({ data }: { data: Record<string, unknown> }) {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function YouthGAAReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalYouthEvents: number;
+    upcomingYouthEvents: number;
+    pastYouthEvents: number;
+    totalYouthRegistrations: number;
+    totalYouthInterests: number;
+    activeCounties: number;
+  };
+  const demographics = data.demographics as {
+    ageGroupBreakdown: {
+      ageGroup: string;
+      ageGroupKey: string;
+      events: number;
+      registrations: number;
+    }[];
+  };
+  const countyAnalysis = data.countyAnalysis as {
+    ranking: {
+      county: string;
+      trips: number;
+      activeClubs: number;
+      interests: number;
+      score: number;
+    }[];
+    byTrips: { county: string; trips: number }[];
+    byActiveClubs: { county: string; activeClubs: number }[];
+    byInterests: { county: string; interests: number }[];
+  };
+  const topYouthClubs = data.topYouthClubs as {
+    name: string;
+    county: string;
+    location: string;
+    youthTrips: number;
+    lastEvent: string;
+  }[];
+  const recentYouthEvents = data.recentYouthEvents as {
+    id: string;
+    title: string;
+    location: string;
+    startDate: string;
+    hostClub: string;
+    registrations: number;
+    teamTypes: string[];
+  }[];
+  const monthlyTrend = data.monthlyTrend as {
+    month: string;
+    events: number;
+    registrations: number;
+  }[];
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      {/* Key Stats Banner */}
+      <div className="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-lg sm:rounded-xl p-4 sm:p-6 text-white">
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-4 text-center">
+          <div>
+            <p className="text-xl sm:text-3xl font-bold">
+              {summary?.totalYouthEvents || 0}
+            </p>
+            <p className="text-emerald-100 text-[10px] sm:text-sm">
+              Youth Events
+            </p>
+          </div>
+          <div>
+            <p className="text-xl sm:text-3xl font-bold">
+              {summary?.upcomingYouthEvents || 0}
+            </p>
+            <p className="text-emerald-100 text-[10px] sm:text-sm">Upcoming</p>
+          </div>
+          <div>
+            <p className="text-xl sm:text-3xl font-bold">
+              {summary?.totalYouthRegistrations || 0}
+            </p>
+            <p className="text-emerald-100 text-[10px] sm:text-sm">
+              Registrations
+            </p>
+          </div>
+          <div className="hidden sm:block">
+            <p className="text-xl sm:text-3xl font-bold">
+              {summary?.totalYouthInterests || 0}
+            </p>
+            <p className="text-emerald-100 text-[10px] sm:text-sm">Interests</p>
+          </div>
+          <div className="hidden sm:block">
+            <p className="text-xl sm:text-3xl font-bold">
+              {summary?.activeCounties || 0}
+            </p>
+            <p className="text-emerald-100 text-[10px] sm:text-sm">
+              Active Counties
+            </p>
+          </div>
+          <div className="hidden sm:block">
+            <p className="text-xl sm:text-3xl font-bold">
+              {summary?.pastYouthEvents || 0}
+            </p>
+            <p className="text-emerald-100 text-[10px] sm:text-sm">Completed</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Age Group Demographics */}
+      {demographics?.ageGroupBreakdown &&
+        demographics.ageGroupBreakdown.length > 0 && (
+          <div>
+            <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+              <Users className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />
+              Age Group Demographics
+            </h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+              {demographics.ageGroupBreakdown.map((group, idx) => (
+                <div
+                  key={idx}
+                  className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg sm:rounded-xl p-2 sm:p-4"
+                >
+                  <p className="text-lg sm:text-2xl font-bold text-emerald-700">
+                    {group.registrations}
+                  </p>
+                  <p className="text-xs sm:text-sm text-emerald-600 font-medium">
+                    {group.ageGroup}
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-emerald-500">
+                    {group.events} events
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+      {/* County Analysis - Three Tabs */}
+      <div>
+        <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-500" />
+          County Analysis
+        </h3>
+
+        {/* Combined Ranking */}
+        {countyAnalysis?.ranking && countyAnalysis.ranking.length > 0 && (
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl overflow-hidden mb-4">
+            <div className="bg-emerald-50 px-3 sm:px-4 py-2 border-b border-emerald-100">
+              <h4 className="font-medium text-emerald-800 text-xs sm:text-sm">
+                Overall County Rankings (Youth GAA Activity)
+              </h4>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="min-w-full text-xs sm:text-sm">
+                <thead>
+                  <tr className="border-b bg-gray-50">
+                    <th className="text-left py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Rank
+                    </th>
+                    <th className="text-left py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      County
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Trips
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Active Clubs
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Interests
+                    </th>
+                    <th className="text-center py-2 px-2 sm:px-3 font-medium text-gray-600">
+                      Score
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {countyAnalysis.ranking.slice(0, 15).map((county, idx) => (
+                    <tr
+                      key={idx}
+                      className={`border-b border-gray-100 ${idx < 3 ? "bg-emerald-50/50" : ""}`}
+                    >
+                      <td className="py-2 px-2 sm:px-3">
+                        {idx === 0 ? (
+                          <span className="text-amber-500">🥇</span>
+                        ) : idx === 1 ? (
+                          <span className="text-gray-400">🥈</span>
+                        ) : idx === 2 ? (
+                          <span className="text-amber-700">🥉</span>
+                        ) : (
+                          <span className="text-gray-500">{idx + 1}</span>
+                        )}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 font-medium text-gray-800">
+                        {county.county}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-emerald-600">
+                        {county.trips}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-blue-600">
+                        {county.activeClubs}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center text-purple-600">
+                        {county.interests}
+                      </td>
+                      <td className="py-2 px-2 sm:px-3 text-center font-bold text-emerald-700">
+                        {county.score}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* Individual Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
+          {/* Most Trips */}
+          {countyAnalysis?.byTrips && countyAnalysis.byTrips.length > 0 && (
+            <div className="bg-emerald-50 border border-emerald-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
+              <h4 className="font-medium text-emerald-800 mb-2 text-xs sm:text-sm flex items-center gap-1">
+                <Plane className="w-3 h-3 sm:w-4 sm:h-4" />
+                Most Trips
+              </h4>
+              <div className="space-y-1">
+                {countyAnalysis.byTrips.slice(0, 8).map((county, idx) => (
+                  <div
+                    key={idx}
+                    className="flex justify-between text-xs sm:text-sm"
+                  >
+                    <span className="text-gray-700 truncate">
+                      {county.county}
+                    </span>
+                    <span className="font-medium text-emerald-700">
+                      {county.trips}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Most Active Clubs */}
+          {countyAnalysis?.byActiveClubs &&
+            countyAnalysis.byActiveClubs.length > 0 && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                <h4 className="font-medium text-blue-800 mb-2 text-xs sm:text-sm flex items-center gap-1">
+                  <Building2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                  Most Active Clubs
+                </h4>
+                <div className="space-y-1">
+                  {countyAnalysis.byActiveClubs
+                    .slice(0, 8)
+                    .map((county, idx) => (
+                      <div
+                        key={idx}
+                        className="flex justify-between text-xs sm:text-sm"
+                      >
+                        <span className="text-gray-700 truncate">
+                          {county.county}
+                        </span>
+                        <span className="font-medium text-blue-700">
+                          {county.activeClubs}
+                        </span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
+          {/* Most Interests */}
+          {countyAnalysis?.byInterests &&
+            countyAnalysis.byInterests.length > 0 && (
+              <div className="bg-purple-50 border border-purple-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
+                <h4 className="font-medium text-purple-800 mb-2 text-xs sm:text-sm flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4" />
+                  Most Interests
+                </h4>
+                <div className="space-y-1">
+                  {countyAnalysis.byInterests.slice(0, 8).map((county, idx) => (
+                    <div
+                      key={idx}
+                      className="flex justify-between text-xs sm:text-sm"
+                    >
+                      <span className="text-gray-700 truncate">
+                        {county.county}
+                      </span>
+                      <span className="font-medium text-purple-700">
+                        {county.interests}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+        </div>
+      </div>
+
+      {/* Top Youth Clubs */}
+      {topYouthClubs && topYouthClubs.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Top Youth Clubs
+          </h3>
+          <DataTable
+            headers={["Club", "County", "Trips", "Last Event"]}
+            rows={topYouthClubs
+              .slice(0, 10)
+              .map((club) => [
+                club.name,
+                club.county,
+                club.youthTrips,
+                club.lastEvent.length > 25
+                  ? club.lastEvent.substring(0, 25) + "..."
+                  : club.lastEvent,
+              ])}
+          />
+        </div>
+      )}
+
+      {/* Recent Youth Events */}
+      {recentYouthEvents && recentYouthEvents.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Recent Youth Events
+          </h3>
+          <div className="space-y-2">
+            {recentYouthEvents.slice(0, 6).map((event, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-50 rounded-lg p-2 sm:p-3 flex items-center justify-between"
+              >
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-gray-900 text-xs sm:text-sm truncate">
+                    {event.title}
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">
+                    {event.location} • {event.hostClub}
+                  </p>
+                  <div className="flex flex-wrap gap-1 mt-1">
+                    {event.teamTypes.slice(0, 3).map((type, i) => (
+                      <span
+                        key={i}
+                        className="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 rounded text-[10px]"
+                      >
+                        {type}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right ml-2 flex-shrink-0">
+                  <p className="text-xs sm:text-sm font-medium text-gray-900">
+                    {event.registrations} teams
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500">
+                    {new Date(event.startDate).toLocaleDateString("en-IE", {
+                      day: "numeric",
+                      month: "short",
+                    })}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Monthly Trend */}
+      {monthlyTrend && monthlyTrend.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Monthly Trend
+          </h3>
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+            {monthlyTrend.slice(0, 6).map((month, idx) => (
+              <div key={idx} className="bg-gray-50 rounded-lg p-2 text-center">
+                <p className="text-[10px] sm:text-xs text-gray-500">
+                  {month.month}
+                </p>
+                <p className="text-sm sm:text-lg font-bold text-emerald-600">
+                  {month.events}
+                </p>
+                <p className="text-[10px] text-gray-400">
+                  {month.registrations} reg
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
