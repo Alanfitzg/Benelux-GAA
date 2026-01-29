@@ -238,6 +238,26 @@ export default function ClubApprovalPage() {
           </p>
         </div>
 
+        {/* Info Box */}
+        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-5 mb-6">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-indigo-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Building2 className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-300" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-semibold text-white mb-1">
+                New Club Submissions
+              </h3>
+              <p className="text-sm text-white/70 leading-relaxed">
+                When users submit a new club that isn&apos;t in our database, it
+                appears here for review. You can verify the club details, assign
+                it to the correct international unit, and approve or reject the
+                submission. Approved clubs become visible in the club directory.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Status Filter Tabs */}
         <div className="mb-6">
           <div className="flex flex-wrap gap-2 sm:gap-3">

@@ -152,7 +152,8 @@ export default function FriendsNetworkPage() {
               The Friends Network tracks the connections between GAA clubs
               worldwide. When clubs travel for tournaments or host visiting
               teams, these connections form lasting relationships that
-              strengthen the global GAA community.
+              strengthen the global GAA community. All relationships are
+              recorded here and displayed on each club&apos;s profile page.
             </p>
             <div className="mt-3 pt-3 border-t border-white/10 grid grid-cols-2 gap-2 text-xs md:text-sm">
               <div className="flex items-center gap-2 text-white/70">

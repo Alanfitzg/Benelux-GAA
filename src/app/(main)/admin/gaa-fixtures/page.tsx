@@ -5,6 +5,17 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+import {
+  Calendar,
+  Plus,
+  Trash2,
+  AlertTriangle,
+  Info,
+  Shield,
+  X,
+  ArrowLeft,
+  Ban,
+} from "lucide-react";
 
 type GAAFixture = {
   id: string;
@@ -14,14 +25,15 @@ type GAAFixture = {
   description: string | null;
   impact: "MEDIUM" | "HIGH" | "CRITICAL";
   year: number;
+  sportCode?: string | null;
   createdAt: string;
   updatedAt: string;
 };
 
 const IMPACT_COLORS = {
-  MEDIUM: "bg-amber-100 text-amber-800 border-amber-200",
-  HIGH: "bg-orange-100 text-orange-800 border-orange-200",
-  CRITICAL: "bg-red-100 text-red-800 border-red-200",
+  MEDIUM: "bg-amber-500/10 border-amber-500/30",
+  HIGH: "bg-orange-500/10 border-orange-500/30",
+  CRITICAL: "bg-red-500/10 border-red-500/30",
 };
 
 const IMPACT_BADGES = {
@@ -29,6 +41,16 @@ const IMPACT_BADGES = {
   HIGH: "bg-orange-500",
   CRITICAL: "bg-red-500",
 };
+
+const SPORT_CODES = [
+  { value: "", label: "All Sports (GAA-wide)" },
+  { value: "G4MO", label: "Gaelic4Mothers&Others" },
+  { value: "LGFA", label: "Ladies Gaelic Football" },
+  { value: "CAMOGIE", label: "Camogie" },
+  { value: "HURLING", label: "Hurling" },
+  { value: "FOOTBALL", label: "Men's Football" },
+  { value: "YOUTH", label: "Youth Events" },
+];
 
 export default function GAAFixturesPage() {
   const { data: session, status } = useSession();
@@ -39,15 +61,18 @@ export default function GAAFixturesPage() {
     new Date().getFullYear()
   );
   const [showAddModal, setShowAddModal] = useState(false);
+  const [addModalType, setAddModalType] = useState<"fixture" | "blackout">(
+    "fixture"
+  );
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  // Form state for adding new fixture
   const [newFixture, setNewFixture] = useState({
     date: "",
     endDate: "",
     title: "",
     description: "",
     impact: "HIGH" as "MEDIUM" | "HIGH" | "CRITICAL",
+    sportCode: "",
   });
 
   useEffect(() => {
@@ -87,11 +112,14 @@ export default function GAAFixturesPage() {
           ...newFixture,
           year: selectedYear,
           endDate: newFixture.endDate || null,
+          sportCode: newFixture.sportCode || null,
         }),
       });
 
       if (response.ok) {
-        toast.success("Fixture added successfully");
+        toast.success(
+          addModalType === "blackout" ? "Blackout date added" : "Fixture added"
+        );
         setShowAddModal(false);
         setNewFixture({
           date: "",
@@ -99,15 +127,16 @@ export default function GAAFixturesPage() {
           title: "",
           description: "",
           impact: "HIGH",
+          sportCode: "",
         });
         fetchFixtures();
       } else {
         const error = await response.json();
-        toast.error(error.error || "Failed to add fixture");
+        toast.error(error.error || "Failed to add");
       }
     } catch (error) {
       console.error("Error adding fixture:", error);
-      toast.error("Failed to add fixture");
+      toast.error("Failed to add");
     }
   };
 
@@ -118,16 +147,16 @@ export default function GAAFixturesPage() {
       });
 
       if (response.ok) {
-        toast.success("Fixture deleted successfully");
+        toast.success("Deleted successfully");
         setDeleteConfirm(null);
         fetchFixtures();
       } else {
         const error = await response.json();
-        toast.error(error.error || "Failed to delete fixture");
+        toast.error(error.error || "Failed to delete");
       }
     } catch (error) {
       console.error("Error deleting fixture:", error);
-      toast.error("Failed to delete fixture");
+      toast.error("Failed to delete");
     }
   };
 
@@ -140,12 +169,27 @@ export default function GAAFixturesPage() {
     });
   };
 
+  const openAddModal = (type: "fixture" | "blackout") => {
+    setAddModalType(type);
+    setNewFixture({
+      date: "",
+      endDate: "",
+      title: "",
+      description: "",
+      impact: "HIGH",
+      sportCode: type === "blackout" ? "" : "",
+    });
+    setShowAddModal(true);
+  };
+
+  // Separate GAA-wide fixtures from sport-specific blackouts
+  const gaaFixtures = fixtures.filter((f) => !f.sportCode);
+  const sportBlackouts = fixtures.filter((f) => f.sportCode);
+
   if (status === "loading" || loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary to-slate-800 flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -153,244 +197,380 @@ export default function GAAFixturesPage() {
   const years = [2025, 2026, 2027, 2028];
 
   return (
-    <div className="container mx-auto px-4 py-4 sm:py-8 max-w-5xl">
-      {/* Header */}
-      <div className="mb-4 sm:mb-8">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h1 className="text-xl sm:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">
-              GAA Fixtures
-            </h1>
-            <p className="text-xs sm:text-base text-gray-600">
-              Manage major GAA fixture dates that affect Irish team travel
-              availability.
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary to-slate-800 relative">
+      <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute top-0 left-0 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-60 h-60 bg-secondary rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10 container mx-auto px-4 py-4 sm:py-8 max-w-5xl">
+        {/* Header */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Calendar className="w-6 h-6 text-green-600" />
+            </div>
+            <div className="flex-1">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                GAA Fixtures & Blackout Dates
+              </h1>
+              <p className="text-sm sm:text-base text-gray-600 mt-1">
+                Manage major GAA fixture dates that affect Irish team travel
+                availability
+              </p>
+            </div>
+          </div>
+
+          {/* Info Section */}
+          <div className="mt-5 bg-green-50 rounded-xl p-4 border border-green-100">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              <strong className="text-gray-900">GAA Fixtures</strong> warn
+              European clubs when they create events that clash with major Irish
+              fixtures.
+              <strong className="text-gray-900">
+                {" "}
+                Sport-specific blackouts
+              </strong>{" "}
+              allow officers to block dates for their code (e.g., LGFA can block
+              dates for G4MO tournaments when scheduling conflicts occur).
             </p>
           </div>
-          <button
-            type="button"
-            onClick={() => setShowAddModal(true)}
-            className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium flex items-center gap-2 self-start sm:self-auto"
-          >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
-            Add Fixture
-          </button>
-        </div>
-      </div>
-
-      {/* Year Selector */}
-      <div className="bg-white rounded-lg shadow-lg p-3 sm:p-6 mb-4 sm:mb-6">
-        <div className="flex flex-wrap items-center gap-2 sm:gap-4">
-          <span className="text-sm font-medium text-gray-700">Year:</span>
-          {years.map((year) => (
-            <button
-              key={year}
-              type="button"
-              onClick={() => setSelectedYear(year)}
-              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedYear === year
-                  ? "bg-primary text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {year}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
-          <p className="text-lg sm:text-2xl font-bold text-gray-900">
-            {fixtures.length}
-          </p>
-          <p className="text-xs sm:text-sm text-gray-600">Total Fixtures</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
-          <p className="text-lg sm:text-2xl font-bold text-red-600">
-            {fixtures.filter((f) => f.impact === "CRITICAL").length}
-          </p>
-          <p className="text-xs sm:text-sm text-gray-600">Critical Dates</p>
-        </div>
-        <div className="bg-white rounded-lg shadow p-3 sm:p-4">
-          <p className="text-lg sm:text-2xl font-bold text-orange-600">
-            {fixtures.filter((f) => f.impact === "HIGH").length}
-          </p>
-          <p className="text-xs sm:text-sm text-gray-600">High Impact</p>
-        </div>
-      </div>
-
-      {/* Fixtures List */}
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="p-3 sm:p-4 border-b border-gray-200">
-          <h2 className="text-sm sm:text-lg font-semibold text-gray-900">
-            {selectedYear} Fixtures ({fixtures.length})
-          </h2>
         </div>
 
-        {fixtures.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
-            <p>No fixtures found for {selectedYear}</p>
-            <button
-              type="button"
-              onClick={() => setShowAddModal(true)}
-              className="mt-4 text-primary hover:underline text-sm"
-            >
-              Add the first fixture
-            </button>
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-100">
-            {fixtures.map((fixture) => (
-              <div
-                key={fixture.id}
-                className={`p-3 sm:p-4 hover:bg-gray-50 transition-colors ${IMPACT_COLORS[fixture.impact]} border-l-4`}
+        {/* Year Selector */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-4 sm:p-6 mb-6">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <span className="text-sm font-medium text-gray-700">Year:</span>
+            {years.map((year) => (
+              <button
+                key={year}
+                type="button"
+                onClick={() => setSelectedYear(year)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  selectedYear === year
+                    ? "bg-primary text-white shadow-md"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <h3 className="text-sm sm:text-base font-semibold text-gray-900">
-                        {fixture.title}
-                      </h3>
-                      <span
-                        className={`px-2 py-0.5 text-[10px] sm:text-xs font-bold text-white rounded-full ${IMPACT_BADGES[fixture.impact]}`}
-                      >
-                        {fixture.impact}
-                      </span>
-                    </div>
-                    <p className="text-xs sm:text-sm text-gray-600 mb-1">
-                      {formatDate(fixture.date)}
-                      {fixture.endDate &&
-                        fixture.endDate !== fixture.date &&
-                        ` - ${formatDate(fixture.endDate)}`}
-                    </p>
-                    {fixture.description && (
-                      <p className="text-[10px] sm:text-xs text-gray-500">
-                        {fixture.description}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex-shrink-0">
-                    {deleteConfirm === fixture.id ? (
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteFixture(fixture.id)}
-                          className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
-                        >
-                          Confirm
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setDeleteConfirm(null)}
-                          className="px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => setDeleteConfirm(fixture.id)}
-                        className="p-1.5 text-gray-400 hover:text-red-600 transition-colors"
-                        title="Delete fixture"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
+                {year}
+              </button>
             ))}
           </div>
-        )}
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-6">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-5 border border-gray-100">
+            <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+              {fixtures.length}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600">Total</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-5 border border-gray-100">
+            <p className="text-2xl sm:text-3xl font-bold text-red-600">
+              {fixtures.filter((f) => f.impact === "CRITICAL").length}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600">Critical</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-5 border border-gray-100">
+            <p className="text-2xl sm:text-3xl font-bold text-green-600">
+              {gaaFixtures.length}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600">GAA Fixtures</p>
+          </div>
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-5 border border-gray-100">
+            <p className="text-2xl sm:text-3xl font-bold text-purple-600">
+              {sportBlackouts.length}
+            </p>
+            <p className="text-xs sm:text-sm text-gray-600">Sport Blackouts</p>
+          </div>
+        </div>
+
+        {/* GAA Fixtures Section */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-6">
+          <div className="p-4 sm:p-5 border-b border-gray-100 bg-green-50 flex items-center justify-between">
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-green-600" />
+              GAA Fixtures ({gaaFixtures.length})
+            </h2>
+            <button
+              type="button"
+              onClick={() => openAddModal("fixture")}
+              className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm font-medium flex items-center gap-1.5"
+            >
+              <Plus className="w-4 h-4" />
+              Add Fixture
+            </button>
+          </div>
+
+          {gaaFixtures.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              <Calendar className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+              <p className="font-medium">No GAA fixtures for {selectedYear}</p>
+              <button
+                type="button"
+                onClick={() => openAddModal("fixture")}
+                className="mt-3 text-green-600 hover:underline text-sm font-medium"
+              >
+                Add the first fixture
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {gaaFixtures.map((fixture) => (
+                <div
+                  key={fixture.id}
+                  className={`p-4 sm:p-5 hover:bg-gray-50 transition-colors border-l-4 ${IMPACT_COLORS[fixture.impact]}`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                        <h3 className="text-sm sm:text-base font-semibold text-gray-900">
+                          {fixture.title}
+                        </h3>
+                        <span
+                          className={`px-2 py-0.5 text-[10px] sm:text-xs font-bold text-white rounded-full ${IMPACT_BADGES[fixture.impact]}`}
+                        >
+                          {fixture.impact}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                        {formatDate(fixture.date)}
+                        {fixture.endDate &&
+                          fixture.endDate !== fixture.date &&
+                          ` - ${formatDate(fixture.endDate)}`}
+                      </p>
+                      {fixture.description && (
+                        <p className="text-[10px] sm:text-xs text-gray-500">
+                          {fixture.description}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0">
+                      {deleteConfirm === fixture.id ? (
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteFixture(fixture.id)}
+                            className="px-2.5 py-1.5 text-xs bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteConfirm(null)}
+                            className="px-2.5 py-1.5 text-xs bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setDeleteConfirm(fixture.id)}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete fixture"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Sport-Specific Blackouts Section */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden mb-6">
+          <div className="p-4 sm:p-5 border-b border-gray-100 bg-purple-50 flex items-center justify-between">
+            <div>
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Ban className="w-5 h-5 text-purple-600" />
+                Sport-Specific Blackouts ({sportBlackouts.length})
+              </h2>
+              <p className="text-xs text-gray-500 mt-0.5">
+                Dates blocked for specific sport codes only
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => openAddModal("blackout")}
+              className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium flex items-center gap-1.5"
+            >
+              <Plus className="w-4 h-4" />
+              Add Blackout
+            </button>
+          </div>
+
+          {sportBlackouts.length === 0 ? (
+            <div className="p-8 text-center text-gray-500">
+              <Ban className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+              <p className="font-medium">
+                No sport-specific blackouts for {selectedYear}
+              </p>
+              <p className="text-sm mt-1 text-gray-400">
+                Officers can add dates specific to their sport code
+              </p>
+              <button
+                type="button"
+                onClick={() => openAddModal("blackout")}
+                className="mt-3 text-purple-600 hover:underline text-sm font-medium"
+              >
+                Add the first blackout
+              </button>
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-100">
+              {sportBlackouts.map((fixture) => (
+                <div
+                  key={fixture.id}
+                  className={`p-4 sm:p-5 hover:bg-gray-50 transition-colors border-l-4 border-purple-400`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                        <h3 className="text-sm sm:text-base font-semibold text-gray-900">
+                          {fixture.title}
+                        </h3>
+                        <span className="px-2 py-0.5 text-[10px] sm:text-xs font-bold text-white bg-purple-500 rounded-full">
+                          {fixture.sportCode}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 text-[10px] sm:text-xs font-bold text-white rounded-full ${IMPACT_BADGES[fixture.impact]}`}
+                        >
+                          {fixture.impact}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-gray-600 mb-1">
+                        {formatDate(fixture.date)}
+                        {fixture.endDate &&
+                          fixture.endDate !== fixture.date &&
+                          ` - ${formatDate(fixture.endDate)}`}
+                      </p>
+                      {fixture.description && (
+                        <p className="text-[10px] sm:text-xs text-gray-500">
+                          {fixture.description}
+                        </p>
+                      )}
+                    </div>
+                    <div className="flex-shrink-0">
+                      {deleteConfirm === fixture.id ? (
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteFixture(fixture.id)}
+                            className="px-2.5 py-1.5 text-xs bg-red-600 text-white rounded-lg hover:bg-red-700 font-medium"
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setDeleteConfirm(null)}
+                            className="px-2.5 py-1.5 text-xs bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => setDeleteConfirm(fixture.id)}
+                          className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete blackout"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Impact Legend */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-5">
+          <h3 className="text-sm sm:text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-gray-600" />
+            Impact Levels
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg border border-red-100">
+              <span className="w-3 h-3 bg-red-500 rounded-full flex-shrink-0"></span>
+              <div>
+                <p className="text-sm font-medium text-gray-900">Critical</p>
+                <p className="text-xs text-gray-600">
+                  All teams unavailable (Finals)
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg border border-orange-100">
+              <span className="w-3 h-3 bg-orange-500 rounded-full flex-shrink-0"></span>
+              <div>
+                <p className="text-sm font-medium text-gray-900">High</p>
+                <p className="text-xs text-gray-600">
+                  Most teams unavailable (Semis)
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg border border-amber-100">
+              <span className="w-3 h-3 bg-amber-500 rounded-full flex-shrink-0"></span>
+              <div>
+                <p className="text-sm font-medium text-gray-900">Medium</p>
+                <p className="text-xs text-gray-600">
+                  Some impact (League rounds)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 text-center">
+          <Link
+            href="/admin"
+            className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm font-medium transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Admin Dashboard
+          </Link>
+        </div>
       </div>
 
-      {/* Info Box */}
-      <div className="mt-4 sm:mt-6 bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4">
-        <h3 className="text-xs sm:text-base font-semibold text-blue-900 mb-1.5 sm:mb-2">
-          How GAA fixtures affect event creation:
-        </h3>
-        <ul className="list-disc list-inside text-[10px] sm:text-sm text-blue-800 space-y-0.5 sm:space-y-1">
-          <li>
-            When European clubs create events that clash with these dates, they
-            receive a warning
-          </li>
-          <li>
-            <strong>CRITICAL:</strong> All-Ireland Finals - Irish teams will not
-            travel
-          </li>
-          <li>
-            <strong>HIGH:</strong> Provincial finals, semi-finals - Most Irish
-            teams unavailable
-          </li>
-          <li>
-            <strong>MEDIUM:</strong> League finals, earlier rounds - Some impact
-            on travel
-          </li>
-        </ul>
-      </div>
-
-      <div className="mt-4 sm:mt-6 text-center">
-        <Link
-          href="/admin"
-          className="text-xs sm:text-base text-primary hover:underline"
-        >
-          Back to Admin Dashboard
-        </Link>
-      </div>
-
-      {/* Add Fixture Modal */}
+      {/* Add Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-4 sm:p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold text-gray-900">
-                  Add GAA Fixture
-                </h2>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      addModalType === "blackout"
+                        ? "bg-purple-100"
+                        : "bg-green-100"
+                    }`}
+                  >
+                    {addModalType === "blackout" ? (
+                      <Ban className="w-5 h-5 text-purple-600" />
+                    ) : (
+                      <Calendar className="w-5 h-5 text-green-600" />
+                    )}
+                  </div>
+                  <h2 className="text-lg font-bold text-gray-900">
+                    {addModalType === "blackout"
+                      ? "Add Sport Blackout"
+                      : "Add GAA Fixture"}
+                  </h2>
+                </div>
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                 >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -406,10 +586,43 @@ export default function GAAFixturesPage() {
                     onChange={(e) =>
                       setNewFixture({ ...newFixture, title: e.target.value })
                     }
-                    placeholder="e.g., All-Ireland Football Final"
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                    placeholder={
+                      addModalType === "blackout"
+                        ? "e.g., G4MO National Blitz Weekend"
+                        : "e.g., All-Ireland Football Final"
+                    }
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
+
+                {addModalType === "blackout" && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Sport Code *
+                    </label>
+                    <select
+                      required
+                      value={newFixture.sportCode}
+                      onChange={(e) =>
+                        setNewFixture({
+                          ...newFixture,
+                          sportCode: e.target.value,
+                        })
+                      }
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                    >
+                      <option value="">Select a sport...</option>
+                      {SPORT_CODES.filter((s) => s.value).map((sport) => (
+                        <option key={sport.value} value={sport.value}>
+                          {sport.label}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-xs text-gray-500 mt-1">
+                      This blackout will only apply to events of this sport type
+                    </p>
+                  </div>
+                )}
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
@@ -423,7 +636,7 @@ export default function GAAFixturesPage() {
                       onChange={(e) =>
                         setNewFixture({ ...newFixture, date: e.target.value })
                       }
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -440,7 +653,7 @@ export default function GAAFixturesPage() {
                         })
                       }
                       min={newFixture.date}
-                      className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                      className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -460,16 +673,16 @@ export default function GAAFixturesPage() {
                           | "CRITICAL",
                       })
                     }
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                   >
                     <option value="MEDIUM">
-                      Medium - Some impact on travel
+                      Medium - Some impact on scheduling
                     </option>
                     <option value="HIGH">
-                      High - Most Irish teams unavailable
+                      High - Most teams/events affected
                     </option>
                     <option value="CRITICAL">
-                      Critical - All Irish teams unavailable
+                      Critical - Complete blackout
                     </option>
                   </select>
                 </div>
@@ -486,9 +699,9 @@ export default function GAAFixturesPage() {
                         description: e.target.value,
                       })
                     }
-                    placeholder="Additional details about the fixture..."
+                    placeholder="Additional details..."
                     rows={2}
-                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                 </div>
 
@@ -496,15 +709,21 @@ export default function GAAFixturesPage() {
                   <button
                     type="button"
                     onClick={() => setShowAddModal(false)}
-                    className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
+                    className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors text-sm font-medium"
+                    className={`flex-1 px-4 py-2.5 text-white rounded-lg transition-colors text-sm font-medium shadow-md ${
+                      addModalType === "blackout"
+                        ? "bg-purple-600 hover:bg-purple-700"
+                        : "bg-green-600 hover:bg-green-700"
+                    }`}
                   >
-                    Add Fixture
+                    {addModalType === "blackout"
+                      ? "Add Blackout"
+                      : "Add Fixture"}
                   </button>
                 </div>
               </form>

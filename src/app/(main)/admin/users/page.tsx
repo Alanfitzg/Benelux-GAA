@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { UserRole, AccountStatus } from "@prisma/client";
 import { TableSkeleton } from "@/components/ui/Skeleton";
 import UserEditModal from "@/components/admin/UserEditModal";
-import { Construction, X } from "lucide-react";
+import { Construction, X, Users, Info } from "lucide-react";
 
 type FilterType = "ALL" | UserRole | "NON_CLUB_MEMBER" | "REGIONAL_REP";
 
@@ -257,6 +257,57 @@ export default function UsersManagement() {
           >
             {showCreateForm ? "Cancel" : "Create New User"}
           </button>
+        </div>
+
+        {/* Info Box */}
+        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 sm:p-5 mb-6">
+          <div className="flex items-start gap-3 sm:gap-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Users className="w-5 h-5 sm:w-6 sm:h-6 text-blue-300" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
+                User Roles & Categories
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 text-xs sm:text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="w-2 h-2 mt-1.5 bg-amber-400 rounded-full flex-shrink-0"></span>
+                  <span className="text-white/70">
+                    <strong className="text-amber-300">Non Club Members</strong>{" "}
+                    &mdash; Users not yet affiliated with any club
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="w-2 h-2 mt-1.5 bg-gray-400 rounded-full flex-shrink-0"></span>
+                  <span className="text-white/70">
+                    <strong className="text-white">Club Members</strong> &mdash;
+                    Regular users associated with a club
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="w-2 h-2 mt-1.5 bg-blue-400 rounded-full flex-shrink-0"></span>
+                  <span className="text-white/70">
+                    <strong className="text-blue-300">Club Admins</strong>{" "}
+                    &mdash; Can manage their club&apos;s profile and events
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="w-2 h-2 mt-1.5 bg-purple-400 rounded-full flex-shrink-0"></span>
+                  <span className="text-white/70">
+                    <strong className="text-purple-300">Regional Reps</strong>{" "}
+                    &mdash; Oversee multiple clubs in a region
+                  </span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="w-2 h-2 mt-1.5 bg-red-400 rounded-full flex-shrink-0"></span>
+                  <span className="text-white/70">
+                    <strong className="text-red-300">Super Admins</strong>{" "}
+                    &mdash; Full platform access and management
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Role Filter */}

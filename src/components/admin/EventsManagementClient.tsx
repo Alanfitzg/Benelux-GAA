@@ -48,7 +48,7 @@ export default function EventsManagementClient({
 }: Props) {
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedEventType, setSelectedEventType] = useState<string>("all");
+  const [selectedVisibility, setSelectedVisibility] = useState<string>("all");
   const [selectedSport, setSelectedSport] = useState<string>("all");
   const [selectedApprovalStatus, setSelectedApprovalStatus] =
     useState<string>("all");
@@ -56,27 +56,20 @@ export default function EventsManagementClient({
   const [rejectionReason, setRejectionReason] = useState("");
   const [filterByClashes, setFilterByClashes] = useState(false);
 
-  // Extract unique countries, event types, and sports for filter dropdowns
-  const {
-    countries,
-    eventTypes,
-    sports,
-    approvalStatuses: _approvalStatuses,
-  } = useMemo(() => {
+  // Extract unique countries and sports for filter dropdowns
+  // Also count visibility types
+  const { countries, sports, publicCount, privateCount } = useMemo(() => {
     const countrySet = new Set<string>();
-    const eventTypeSet = new Set<string>();
     const sportSet = new Set<string>();
-    const approvalStatusSet = new Set<string>();
+    let pubCount = 0;
+    let privCount = 0;
 
     initialEvents.forEach((event) => {
-      // Add event type
-      if (event.eventType) {
-        eventTypeSet.add(event.eventType);
-      }
-
-      // Add approval status
-      if (event.approvalStatus) {
-        approvalStatusSet.add(event.approvalStatus);
+      // Count visibility types
+      if (event.visibility === "PUBLIC") {
+        pubCount++;
+      } else if (event.visibility === "PRIVATE") {
+        privCount++;
       }
 
       // Add sports/codes
@@ -107,9 +100,9 @@ export default function EventsManagementClient({
 
     return {
       countries: Array.from(countrySet).sort(),
-      eventTypes: Array.from(eventTypeSet).sort(),
       sports: Array.from(sportSet).sort(),
-      approvalStatuses: Array.from(approvalStatusSet).sort(),
+      publicCount: pubCount,
+      privateCount: privCount,
     };
   }, [initialEvents]);
 
@@ -203,10 +196,10 @@ export default function EventsManagementClient({
         }
       }
 
-      // Event type filter
+      // Visibility filter (GGE Events = PRIVATE, Public Invitationals = PUBLIC)
       if (
-        selectedEventType !== "all" &&
-        event.eventType !== selectedEventType
+        selectedVisibility !== "all" &&
+        event.visibility !== selectedVisibility
       ) {
         return false;
       }
@@ -237,7 +230,7 @@ export default function EventsManagementClient({
   }, [
     initialEvents,
     selectedCountry,
-    selectedEventType,
+    selectedVisibility,
     selectedSport,
     selectedApprovalStatus,
     searchTerm,
@@ -528,26 +521,25 @@ export default function EventsManagementClient({
               </select>
             </div>
 
-            {/* Event Type Filter */}
+            {/* Event Category Filter (GGE vs Public) */}
             <div>
               <label
-                htmlFor="type-filter"
+                htmlFor="visibility-filter"
                 className="hidden sm:block text-sm font-medium text-gray-700 mb-1"
               >
-                Event Type
+                Event Category
               </label>
               <select
-                id="type-filter"
-                value={selectedEventType}
-                onChange={(e) => setSelectedEventType(e.target.value)}
+                id="visibility-filter"
+                value={selectedVisibility}
+                onChange={(e) => setSelectedVisibility(e.target.value)}
                 className="w-full px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary"
               >
-                <option value="all">All Types</option>
-                {eventTypes.map((type) => (
-                  <option key={type} value={type}>
-                    {type}
-                  </option>
-                ))}
+                <option value="all">All Categories</option>
+                <option value="PUBLIC">
+                  Public Invitationals ({publicCount})
+                </option>
+                <option value="PRIVATE">GGE Events ({privateCount})</option>
               </select>
             </div>
 

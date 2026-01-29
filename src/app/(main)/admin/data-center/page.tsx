@@ -671,6 +671,8 @@ function ReportContent({ reportId, data }: ReportContentProps) {
       return <TripRequestsReport data={data} />;
     case "event-approvals":
       return <EventApprovalsReport data={data} />;
+    case "gge-interest":
+      return <GGEInterestReport data={data} />;
     default:
       return (
         <pre className="text-xs overflow-auto">
@@ -3281,6 +3283,326 @@ function EventApprovalsReport({ data }: { data: Record<string, unknown> }) {
           />
         </div>
       )}
+    </div>
+  );
+}
+
+function GGEInterestReport({ data }: { data: Record<string, unknown> }) {
+  const summary = data.summary as {
+    totalRegistrations: number;
+    recentRegistrations: number;
+    uniqueCounties: number;
+  };
+  const eventTypeCounts = data.eventTypeCounts as {
+    DADS_AND_LADS: number;
+    GAELIC4MOTHERS_AND_OTHERS: number;
+    SOCIAL_CAMOGIE: number;
+  };
+  const countyBreakdown = data.countyBreakdown as {
+    county: string;
+    count: number;
+  }[];
+  const playerBreakdown = data.playerBreakdown as Record<string, number>;
+  const participationBreakdown = data.participationBreakdown as Record<
+    string,
+    number
+  >;
+  const monthlyTrend = data.monthlyTrend as Record<string, number>;
+  const registrations = data.registrations as {
+    id: string;
+    clubName: string;
+    county: string;
+    contactName: string;
+    contactEmail: string;
+    contactPhone: string | null;
+    eventTypes: string[];
+    estimatedPlayers: string | null;
+    previousParticipation: string | null;
+    additionalNotes: string | null;
+    createdAt: string;
+  }[];
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      {/* Key Stats Banner */}
+      <div className="bg-gradient-to-r from-rose-500 to-pink-600 rounded-lg sm:rounded-xl p-4 sm:p-6 text-white">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
+          <div>
+            <p className="text-2xl sm:text-4xl font-bold">
+              {summary?.totalRegistrations || 0}
+            </p>
+            <p className="text-rose-100 text-[10px] sm:text-sm">
+              Total Registrations
+            </p>
+          </div>
+          <div>
+            <p className="text-2xl sm:text-4xl font-bold">
+              {summary?.recentRegistrations || 0}
+            </p>
+            <p className="text-rose-100 text-[10px] sm:text-sm">Last 7 Days</p>
+          </div>
+          <div>
+            <p className="text-2xl sm:text-4xl font-bold">
+              {summary?.uniqueCounties || 0}
+            </p>
+            <p className="text-rose-100 text-[10px] sm:text-sm">
+              Counties Represented
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Interest by Event Type */}
+      <div>
+        <h3 className="font-semibold mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
+          <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-pink-500" />
+          Interest by Event Type
+        </h3>
+        <div className="grid grid-cols-3 gap-2 sm:gap-4">
+          <div className="bg-pink-50 border border-pink-200 rounded-lg sm:rounded-xl p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-3xl font-bold text-pink-600">
+              {eventTypeCounts?.GAELIC4MOTHERS_AND_OTHERS || 0}
+            </p>
+            <p className="text-xs sm:text-sm text-pink-700 font-medium">G4MO</p>
+            <p className="text-[10px] sm:text-xs text-pink-500 hidden sm:block">
+              Gaelic for Mothers & Others
+            </p>
+          </div>
+          <div className="bg-blue-50 border border-blue-200 rounded-lg sm:rounded-xl p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-3xl font-bold text-blue-600">
+              {eventTypeCounts?.DADS_AND_LADS || 0}
+            </p>
+            <p className="text-xs sm:text-sm text-blue-700 font-medium">
+              Dads & Lads
+            </p>
+            <p className="text-[10px] sm:text-xs text-blue-500 hidden sm:block">
+              Fathers & Sons Events
+            </p>
+          </div>
+          <div className="bg-purple-50 border border-purple-200 rounded-lg sm:rounded-xl p-2 sm:p-4 text-center">
+            <p className="text-xl sm:text-3xl font-bold text-purple-600">
+              {eventTypeCounts?.SOCIAL_CAMOGIE || 0}
+            </p>
+            <p className="text-xs sm:text-sm text-purple-700 font-medium whitespace-nowrap">
+              Social Camogie
+            </p>
+            <p className="text-[10px] sm:text-xs text-purple-500 hidden sm:block">
+              Social Camogie Events
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* County Breakdown */}
+      {countyBreakdown && countyBreakdown.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Top Counties
+          </h3>
+          <div className="space-y-1.5 sm:space-y-2">
+            {countyBreakdown.slice(0, 10).map((county, idx) => (
+              <div key={idx} className="flex items-center gap-2 sm:gap-3">
+                <span className="w-16 sm:w-24 text-xs sm:text-sm text-gray-600 truncate">
+                  {county.county}
+                </span>
+                <div className="flex-1 bg-gray-200 rounded-full h-3 sm:h-4">
+                  <div
+                    className="bg-pink-500 h-3 sm:h-4 rounded-full transition-all"
+                    style={{
+                      width: `${(county.count / countyBreakdown[0].count) * 100}%`,
+                    }}
+                  />
+                </div>
+                <span className="w-6 sm:w-8 text-xs sm:text-sm font-medium text-gray-700 text-right">
+                  {county.count}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Player Estimates & Previous Participation */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        {playerBreakdown && Object.keys(playerBreakdown).length > 0 && (
+          <div>
+            <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+              Estimated Players
+            </h3>
+            <div className="space-y-1.5 sm:space-y-2">
+              {Object.entries(playerBreakdown)
+                .sort(([, a], [, b]) => b - a)
+                .map(([range, count], idx) => (
+                  <div
+                    key={idx}
+                    className="flex justify-between py-1.5 sm:py-2 px-2 sm:px-3 bg-gray-50 rounded-lg"
+                  >
+                    <span className="text-xs sm:text-sm text-gray-600">
+                      {range}
+                    </span>
+                    <span className="text-xs sm:text-sm font-medium">
+                      {count}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {participationBreakdown &&
+          Object.keys(participationBreakdown).length > 0 && (
+            <div>
+              <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+                Previous Participation
+              </h3>
+              <div className="space-y-1.5 sm:space-y-2">
+                {Object.entries(participationBreakdown)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([participation, count], idx) => (
+                    <div
+                      key={idx}
+                      className="flex justify-between py-1.5 sm:py-2 px-2 sm:px-3 bg-gray-50 rounded-lg"
+                    >
+                      <span className="text-xs sm:text-sm text-gray-600">
+                        {participation}
+                      </span>
+                      <span className="text-xs sm:text-sm font-medium">
+                        {count}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+      </div>
+
+      {/* Monthly Trend */}
+      {monthlyTrend && Object.keys(monthlyTrend).length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Monthly Registration Trend
+          </h3>
+          <div className="flex items-end gap-1 sm:gap-2 h-24 sm:h-32">
+            {Object.entries(monthlyTrend)
+              .slice(-6)
+              .map(([month, count], idx) => {
+                const maxCount = Math.max(
+                  ...Object.values(monthlyTrend).slice(-6)
+                );
+                const height = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                return (
+                  <div
+                    key={idx}
+                    className="flex-1 flex flex-col items-center gap-0.5 sm:gap-1"
+                  >
+                    <span className="text-[10px] sm:text-xs font-medium text-gray-700">
+                      {count}
+                    </span>
+                    <div
+                      className="w-full bg-pink-500 rounded-t transition-all"
+                      style={{ height: `${height}%`, minHeight: "4px" }}
+                    />
+                    <span className="text-[8px] sm:text-xs text-gray-500 whitespace-nowrap">
+                      {month}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+        </div>
+      )}
+
+      {/* Recent Registrations */}
+      {registrations && registrations.length > 0 && (
+        <div>
+          <h3 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">
+            Recent Registrations ({registrations.length} total)
+          </h3>
+          {/* Mobile: Card view */}
+          <div className="sm:hidden space-y-2">
+            {registrations.slice(0, 10).map((reg) => (
+              <div key={reg.id} className="bg-gray-50 rounded-lg p-3">
+                <div className="flex justify-between items-start mb-1">
+                  <span className="font-medium text-sm text-gray-900">
+                    {reg.clubName}
+                  </span>
+                  <span className="text-[10px] text-gray-500">
+                    {new Date(reg.createdAt).toLocaleDateString("en-IE")}
+                  </span>
+                </div>
+                <div className="text-xs text-gray-600 mb-1">{reg.county}</div>
+                <div className="flex flex-wrap gap-1">
+                  {reg.eventTypes.map((t, i) => (
+                    <span
+                      key={i}
+                      className="text-[10px] bg-pink-100 text-pink-700 px-1.5 py-0.5 rounded"
+                    >
+                      {t === "GAELIC4MOTHERS_AND_OTHERS"
+                        ? "G4MO"
+                        : t === "DADS_AND_LADS"
+                          ? "Dads & Lads"
+                          : t === "SOCIAL_CAMOGIE"
+                            ? "Social Camogie"
+                            : t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop: Table view */}
+          <div className="hidden sm:block overflow-x-auto">
+            <DataTable
+              headers={[
+                "Club",
+                "County",
+                "Contact",
+                "Event Types",
+                "Est. Players",
+                "Date",
+              ]}
+              rows={registrations
+                .slice(0, 15)
+                .map((reg) => [
+                  reg.clubName,
+                  reg.county,
+                  reg.contactName,
+                  reg.eventTypes
+                    .map((t) =>
+                      t === "GAELIC4MOTHERS_AND_OTHERS"
+                        ? "G4MO"
+                        : t === "DADS_AND_LADS"
+                          ? "Dads & Lads"
+                          : t === "SOCIAL_CAMOGIE"
+                            ? "Social Camogie"
+                            : t
+                    )
+                    .join(", "),
+                  reg.estimatedPlayers || "-",
+                  new Date(reg.createdAt).toLocaleDateString("en-IE"),
+                ])}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Development Notice */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg sm:rounded-xl p-3 sm:p-4">
+        <div className="flex items-start gap-2 sm:gap-3">
+          <span className="text-base sm:text-xl">🚧</span>
+          <div>
+            <h4 className="font-medium text-amber-800 text-sm sm:text-base">
+              Feature In Development
+            </h4>
+            <p className="text-xs sm:text-sm text-amber-700 mt-1">
+              This report tracks Social GAA interest registrations. Upcoming
+              features include: applicant travel status tracking, fair
+              allocation scoring based on participation history, and automated
+              follow-up reminders for clubs who haven&apos;t yet travelled.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

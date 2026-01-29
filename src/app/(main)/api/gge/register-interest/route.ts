@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
-export async function POST(request: NextRequest) {
+async function registerInterestHandler(request: NextRequest) {
   try {
     const body = await request.json();
 
@@ -99,6 +100,8 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITS.FORMS, registerInterestHandler);
 
 export async function GET() {
   try {

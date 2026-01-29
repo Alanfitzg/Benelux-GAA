@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
-export async function POST(
-  request: Request,
+async function clubContactHandler(
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -89,3 +90,5 @@ export async function POST(
     );
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITS.FORMS, clubContactHandler);

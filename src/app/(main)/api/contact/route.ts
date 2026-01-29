@@ -3,6 +3,7 @@ import { ContactFormSchema } from "@/lib/validation/schemas";
 import { withErrorHandler } from "@/lib/error-handlers";
 import { validateBody } from "@/lib/validation/middleware";
 import { prisma } from "@/lib/prisma";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 async function contactHandler(request: NextRequest) {
   // Validate request body using Zod schema
@@ -42,5 +43,8 @@ async function contactHandler(request: NextRequest) {
   );
 }
 
-// Apply error handling wrapper
-export const POST = withErrorHandler(contactHandler);
+// Apply rate limiting and error handling wrappers
+export const POST = withRateLimit(
+  RATE_LIMITS.FORMS,
+  withErrorHandler(contactHandler)
+);

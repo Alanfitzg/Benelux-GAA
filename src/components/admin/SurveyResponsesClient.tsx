@@ -17,6 +17,7 @@ import {
   MessageSquare,
   ClipboardList,
   Eye,
+  Info,
 } from "lucide-react";
 
 interface SurveyResponse {
@@ -113,9 +114,9 @@ export default function SurveyResponsesClient({
       tabIndex={-1}
     >
       <div className="container mx-auto px-4 py-4 sm:py-8">
-        {/* Header */}
+        {/* Header with Info */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center">
               <ClipboardList className="w-6 h-6 text-indigo-600" />
             </div>
@@ -127,6 +128,17 @@ export default function SurveyResponsesClient({
                 View and analyze custom trip requests and travel preferences
               </p>
             </div>
+          </div>
+          <div className="bg-indigo-50 rounded-xl p-4 border border-indigo-100">
+            <p className="text-sm text-gray-700 leading-relaxed">
+              <strong className="text-gray-900">Custom Trip Requests</strong>{" "}
+              are submitted by users who want a bespoke travel experience that
+              isn&apos;t available through existing tournaments. These requests
+              include contact details, preferred destinations, budget ranges,
+              team sizes, and specific travel requirements. Review each request
+              to understand the user&apos;s needs and follow up with
+              personalized trip options.
+            </p>
           </div>
         </div>
 

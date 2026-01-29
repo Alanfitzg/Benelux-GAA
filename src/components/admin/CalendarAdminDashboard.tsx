@@ -9,6 +9,12 @@ import {
   Settings,
   AlertCircle,
   Flag,
+  Download,
+  Trash2,
+  RefreshCw,
+  Check,
+  Edit3,
+  X,
 } from "lucide-react";
 import UnifiedCalendarView from "@/components/calendar/UnifiedCalendarView";
 
@@ -50,6 +56,7 @@ export default function CalendarAdminDashboard({
     null
   );
   const [loading, setLoading] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const fetchCalendarStats = async () => {
     setLoading(true);
@@ -99,34 +106,7 @@ export default function CalendarAdminDashboard({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Calendar - The Central Nervous System */}
-      <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-        <UnifiedCalendarView
-          mainlandEuropeClubs={clubs}
-          clubPermissions={mockClubPermissions}
-          userId="admin"
-          isAdmin={true}
-          adminTabs={adminTabs}
-          activeAdminTab={activeTab}
-          onAdminTabChange={(tabId) => {
-            // Toggle off if clicking the same tab
-            if (activeTab === tabId) {
-              setActiveTab("none");
-            } else {
-              setActiveTab(
-                tabId as
-                  | "none"
-                  | "overview"
-                  | "calendar"
-                  | "statistics"
-                  | "settings"
-              );
-            }
-          }}
-        />
-      </div>
-
-      {/* Tab Content - Only show when a tab is selected */}
+      {/* Tab Content - Show ABOVE calendar when a tab is selected */}
       {activeTab !== "none" && (
         <div className="bg-white rounded-xl shadow-xl border border-gray-100">
           <div className="p-3 sm:p-6">
@@ -347,58 +327,79 @@ export default function CalendarAdminDashboard({
                   Calendar Settings
                 </h3>
 
+                {/* Primary Action - Edit Calendar */}
+                <button
+                  type="button"
+                  onClick={() => setShowEditModal(true)}
+                  className="w-full flex items-center justify-center gap-3 p-4 sm:p-5 bg-primary hover:bg-primary/90 rounded-xl text-white font-semibold text-sm sm:text-base shadow-md hover:shadow-lg transition-all"
+                >
+                  <Edit3 className="w-5 h-5 sm:w-6 sm:h-6" />
+                  Edit Calendar
+                </button>
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-6">
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-6">
-                    <h4 className="text-xs sm:text-base font-medium text-gray-900 mb-2 sm:mb-4">
+                  <div className="bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-200 shadow-md">
+                    <h4 className="text-xs sm:text-base font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                      <Settings className="w-4 h-4 text-gray-600" />
                       General Settings
                     </h4>
                     <div className="space-y-3 sm:space-y-4">
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
                         <div>
                           <p className="text-xs sm:text-sm font-medium text-gray-900">
                             Auto-show Irish Holidays
                           </p>
-                          <p className="text-[10px] sm:text-xs text-gray-600">
+                          <p className="text-[10px] sm:text-xs text-gray-500">
                             Display Irish holidays automatically
                           </p>
                         </div>
-                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full flex-shrink-0 ml-2"></div>
+                        <div className="flex items-center gap-1.5 bg-green-100 text-green-700 px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium">
+                          <Check className="w-3 h-3" />
+                          Enabled
+                        </div>
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between bg-white rounded-lg p-3 border border-gray-200 shadow-sm">
                         <div>
                           <p className="text-xs sm:text-sm font-medium text-gray-900">
                             Interest Heatmap Privacy
                           </p>
-                          <p className="text-[10px] sm:text-xs text-gray-600">
+                          <p className="text-[10px] sm:text-xs text-gray-500">
                             Hide from non-authenticated users
                           </p>
                         </div>
-                        <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full flex-shrink-0 ml-2"></div>
+                        <div className="flex items-center gap-1.5 bg-green-100 text-green-700 px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium">
+                          <Check className="w-3 h-3" />
+                          Enabled
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gray-50 rounded-lg p-3 sm:p-6">
-                    <h4 className="text-xs sm:text-base font-medium text-gray-900 mb-2 sm:mb-4">
+                  <div className="bg-gray-50 rounded-xl p-4 sm:p-6 border border-gray-200 shadow-md">
+                    <h4 className="text-xs sm:text-base font-semibold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-gray-600" />
                       Data Management
                     </h4>
                     <div className="space-y-2 sm:space-y-3">
                       <button
                         type="button"
-                        className="w-full p-2 sm:p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors text-xs sm:text-sm font-medium"
+                        className="w-full flex items-center gap-3 p-3 sm:p-4 bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all text-xs sm:text-sm font-medium text-gray-700 shadow-sm"
                       >
+                        <Download className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                         Export Calendar Data
                       </button>
                       <button
                         type="button"
-                        className="w-full p-2 sm:p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors text-xs sm:text-sm font-medium"
+                        className="w-full flex items-center gap-3 p-3 sm:p-4 bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all text-xs sm:text-sm font-medium text-gray-700 shadow-sm"
                       >
+                        <Trash2 className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                         Clear Old Interest Submissions
                       </button>
                       <button
                         type="button"
-                        className="w-full p-2 sm:p-3 bg-white rounded-lg hover:bg-gray-100 transition-colors text-xs sm:text-sm font-medium"
+                        className="w-full flex items-center gap-3 p-3 sm:p-4 bg-white rounded-lg border border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all text-xs sm:text-sm font-medium text-gray-700 shadow-sm"
                       >
+                        <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                         Refresh Holiday Cache
                       </button>
                     </div>
@@ -406,6 +407,74 @@ export default function CalendarAdminDashboard({
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Calendar - The Central Nervous System */}
+      <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+        <UnifiedCalendarView
+          mainlandEuropeClubs={clubs}
+          clubPermissions={mockClubPermissions}
+          userId="admin"
+          isAdmin={true}
+          adminTabs={adminTabs}
+          activeAdminTab={activeTab}
+          onAdminTabChange={(tabId) => {
+            // Toggle off if clicking the same tab
+            if (activeTab === tabId) {
+              setActiveTab("none");
+            } else {
+              setActiveTab(
+                tabId as
+                  | "none"
+                  | "overview"
+                  | "calendar"
+                  | "statistics"
+                  | "settings"
+              );
+            }
+          }}
+        />
+      </div>
+
+      {/* Edit Calendar Modal */}
+      {showEditModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 sm:p-8 relative">
+            <button
+              type="button"
+              onClick={() => setShowEditModal(false)}
+              className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Edit3 className="w-8 h-8 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">
+                Edit Calendar
+              </h3>
+              <p className="text-gray-600 leading-relaxed">
+                Administrators can edit, add and remove fixtures here. You can
+                also select which club calendars these fixtures appear on.
+              </p>
+              <div className="mt-6 pt-4 border-t border-gray-100">
+                <p className="text-sm text-gray-500 italic">
+                  Full editing functionality coming soon
+                </p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowEditModal(false)}
+              className="w-full mt-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition-colors"
+            >
+              Close
+            </button>
           </div>
         </div>
       )}
