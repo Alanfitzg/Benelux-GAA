@@ -18,7 +18,9 @@ export async function middleware(request: NextRequest) {
       !path.startsWith("/_next")
     ) {
       const url = request.nextUrl.clone();
-      url.pathname = `/demo/rome-hibernia${path === "/" ? "" : path}`;
+      // For root path, go to /demo/rome-hibernia, otherwise append the path
+      url.pathname =
+        path === "/" ? "/demo/rome-hibernia" : `/demo/rome-hibernia${path}`;
       return NextResponse.rewrite(url);
     }
   }
