@@ -478,6 +478,16 @@ export default function DataCenterPage() {
             . See exactly how many teams are planning trips, where they want to
             go, their budgets, and when they want to travel.
           </p>
+
+          {/* Disclaimer Note */}
+          <div className="mt-4 mx-auto max-w-2xl bg-amber-500/10 border border-amber-500/20 rounded-lg px-4 py-3">
+            <p className="text-xs text-amber-200/90">
+              <strong className="text-amber-300">Note:</strong> All reports are
+              under development and compare against the PlayAway platform
+              database only — not the full GAA demographics database. Figures
+              will be refined as the platform grows.
+            </p>
+          </div>
         </div>
 
         {/* Tab Navigation */}
