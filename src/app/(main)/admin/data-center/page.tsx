@@ -485,6 +485,14 @@ export default function DataCenterPage() {
                 {report.narrativeQuestion}
               </button>
             ))}
+            {/* Financial Data - Coming Soon button */}
+            <button
+              type="button"
+              onClick={() => setShowFinancialModal(true)}
+              className="px-4 py-2 md:px-6 md:py-3 rounded-full text-sm md:text-base font-medium transition-all bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/30"
+            >
+              💰 Financial Data
+            </button>
           </div>
         </div>
 
