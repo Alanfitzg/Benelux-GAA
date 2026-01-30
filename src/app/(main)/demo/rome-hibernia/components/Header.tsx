@@ -12,6 +12,7 @@ const baseNavLinks = [
   { name: "Training", href: "/training" },
   { name: "Youth", href: "/youth" },
   { name: "Gallery", href: "/gallery" },
+  { name: "Sponsors", href: "/sponsors" },
   { name: "Events", href: "/events" },
   { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "/contact" },

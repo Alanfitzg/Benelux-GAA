@@ -26,18 +26,18 @@ export default function SponsorsPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Sponsors" />
 
-      <main className="flex-1 pt-24 pb-16 md:pt-32">
+      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
         <div className="max-w-5xl mx-auto px-4">
-          <p className="text-gray-500 text-sm mb-2">2025 & 2026</p>
-          <h1 className="text-4xl font-light text-gray-900 mb-4">
+          <p className="text-gray-500 text-xs sm:text-sm mb-2">2025 & 2026</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-3 sm:mb-4">
             Our Sponsors
           </h1>
-          <p className="text-gray-600 mb-10">
+          <p className="text-gray-600 mb-6 sm:mb-10 text-base sm:text-lg">
             We&apos;re proud to partner with these local businesses who support
             Gaelic games in Rome.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             {sponsors.map((sponsor) => (
               <a
                 key={sponsor.name}
@@ -47,20 +47,22 @@ export default function SponsorsPage() {
                 className="group block"
               >
                 <div
-                  className={`${sponsor.bgColor} rounded-2xl p-8 text-white h-full transition-transform hover:scale-[1.02]`}
+                  className={`${sponsor.bgColor} rounded-xl sm:rounded-2xl p-5 sm:p-8 text-white h-full transition-transform hover:scale-[1.02]`}
                 >
-                  <div className="bg-white rounded-xl p-4 mb-6 flex items-center justify-center h-24">
+                  <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 flex items-center justify-center h-20 sm:h-24">
                     <Image
                       src={sponsor.logo}
                       alt={`${sponsor.name} logo`}
                       width={200}
                       height={80}
-                      className="object-contain max-h-16"
+                      className="object-contain max-h-14 sm:max-h-16"
                       unoptimized
                     />
                   </div>
-                  <h2 className="text-xl font-bold mb-2">{sponsor.name}</h2>
-                  <p className="text-white/90 mb-6 text-sm">
+                  <h2 className="text-base sm:text-lg md:text-xl font-bold mb-2">
+                    {sponsor.name}
+                  </h2>
+                  <p className="text-white/90 mb-4 sm:mb-6 text-sm sm:text-base">
                     {sponsor.description}
                   </p>
                   <span className="inline-flex items-center gap-2 text-white/80 group-hover:text-white transition-colors text-sm">
@@ -84,8 +86,8 @@ export default function SponsorsPage() {
             ))}
           </div>
 
-          <div className="mt-12 md:mt-16">
-            <div className="bg-gradient-to-br from-[#c41e3a] to-[#8a1528] rounded-2xl p-6 md:p-12 text-white relative overflow-hidden">
+          <div className="mt-8 sm:mt-12 md:mt-16">
+            <div className="bg-gradient-to-br from-[#c41e3a] to-[#8a1528] rounded-xl sm:rounded-2xl p-5 sm:p-8 md:p-12 text-white relative overflow-hidden">
               {/* Background crest watermark - hidden on mobile to prevent overlap */}
               <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 opacity-10 pointer-events-none">
                 <Image
@@ -99,52 +101,52 @@ export default function SponsorsPage() {
               </div>
 
               <div className="relative z-10">
-                <p className="text-white/80 text-xs md:text-sm font-medium mb-2 uppercase tracking-wider">
+                <p className="text-white/80 text-xs sm:text-sm font-medium mb-2 uppercase tracking-wider">
                   Partnership Opportunities
                 </p>
-                <h2 className="text-2xl md:text-4xl font-bold mb-3 md:mb-4">
+                <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-4">
                   Become a Sponsor
                 </h2>
-                <p className="text-white/90 mb-6 text-base md:text-lg max-w-2xl">
+                <p className="text-white/90 mb-4 sm:mb-6 text-sm sm:text-base md:text-lg max-w-2xl">
                   Connect your brand with Rome&apos;s vibrant Gaelic games
                   community. Flexible packages for businesses of all sizes.
                 </p>
 
-                <div className="grid grid-cols-3 gap-2 md:gap-4 mb-6 md:mb-8">
-                  <div className="bg-white/10 rounded-lg md:rounded-xl p-3 md:p-4 text-center">
-                    <div className="text-xl md:text-2xl font-bold mb-0.5 md:mb-1">
+                <div className="grid grid-cols-3 gap-2 sm:gap-3 md:gap-4 mb-4 sm:mb-6 md:mb-8">
+                  <div className="bg-white/10 rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 text-center">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
                       60+
                     </div>
-                    <div className="text-white/80 text-xs md:text-sm">
+                    <div className="text-white/80 text-xs sm:text-sm">
                       Members
                     </div>
                   </div>
-                  <div className="bg-white/10 rounded-lg md:rounded-xl p-3 md:p-4 text-center">
-                    <div className="text-xl md:text-2xl font-bold mb-0.5 md:mb-1">
+                  <div className="bg-white/10 rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 text-center">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
                       20+
                     </div>
-                    <div className="text-white/80 text-xs md:text-sm">
+                    <div className="text-white/80 text-xs sm:text-sm">
                       Nations
                     </div>
                   </div>
-                  <div className="bg-white/10 rounded-lg md:rounded-xl p-3 md:p-4 text-center">
-                    <div className="text-xl md:text-2xl font-bold mb-0.5 md:mb-1">
+                  <div className="bg-white/10 rounded-lg sm:rounded-xl p-2.5 sm:p-3 md:p-4 text-center">
+                    <div className="text-lg sm:text-xl md:text-2xl font-bold mb-0.5">
                       1000s
                     </div>
-                    <div className="text-white/80 text-xs md:text-sm">
+                    <div className="text-white/80 text-xs sm:text-sm">
                       Reach
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <a
                     href="mailto:secretary.rome.europe@gaa.ie?subject=Sponsorship Enquiry"
-                    className="inline-flex items-center justify-center gap-2 bg-white text-[#c41e3a] px-6 md:px-8 py-3 rounded-lg font-bold text-sm md:text-base hover:bg-gray-100 transition-colors"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-[#c41e3a] px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base hover:bg-gray-100 transition-colors"
                   >
                     Get in Touch
                     <svg
-                      className="w-4 h-4 md:w-5 md:h-5"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -159,11 +161,11 @@ export default function SponsorsPage() {
                   </a>
                   <a
                     href="#"
-                    className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-6 md:px-8 py-3 rounded-lg font-bold text-sm md:text-base hover:bg-white/10 transition-colors"
+                    className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 rounded-lg font-bold text-sm sm:text-base hover:bg-white/10 transition-colors"
                   >
                     Sponsor Pack
                     <svg
-                      className="w-4 h-4 md:w-5 md:h-5"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

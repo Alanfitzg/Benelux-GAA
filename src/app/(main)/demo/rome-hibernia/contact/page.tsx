@@ -97,9 +97,9 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Contact" />
 
-      <main className="flex-1 pt-24 pb-16 md:pt-32">
+      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             <EditableText
               pageKey="contact"
               contentKey="title"
@@ -107,7 +107,7 @@ export default function ContactPage() {
               maxLength={40}
             />
           </h1>
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
             <EditableText
               pageKey="contact"
               contentKey="subtitle"
@@ -117,7 +117,7 @@ export default function ContactPage() {
           </p>
 
           {activeSocialButtons.length > 0 && (
-            <div className="flex gap-4 mb-8 flex-wrap">
+            <div className="flex gap-3 sm:gap-4 mb-6 sm:mb-8 flex-wrap">
               {activeSocialButtons.map((btn) => {
                 const Icon = btn.icon;
                 return (
@@ -126,17 +126,17 @@ export default function ContactPage() {
                     href={btn.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`w-14 h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform ${btn.className || ""}`}
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-full flex items-center justify-center hover:scale-110 transition-transform ${btn.className || ""}`}
                     style={btn.style}
                   >
-                    <Icon className="w-7 h-7 text-white" />
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                   </a>
                 );
               })}
             </div>
           )}
 
-          <p className="text-gray-600 mb-8">
+          <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
             <EditableText
               pageKey="contact"
               contentKey="email_intro"
@@ -151,7 +151,7 @@ export default function ContactPage() {
             </a>
           </p>
 
-          <h2 className="text-3xl font-light text-[#c41e3a] mb-8">
+          <h2 className="text-2xl sm:text-3xl font-light text-[#c41e3a] mb-6 sm:mb-8">
             <EditableText
               pageKey="contact"
               contentKey="form_title"
@@ -161,7 +161,7 @@ export default function ContactPage() {
           </h2>
 
           <form
-            className="space-y-6 max-w-xl"
+            className="space-y-4 sm:space-y-6 max-w-xl"
             action={`mailto:secretary.rome.europe@gaa.ie`}
             method="POST"
             encType="text/plain"
@@ -176,50 +176,50 @@ export default function ContactPage() {
               aria-hidden="true"
             />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm text-gray-700 mb-1">
                   First name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm text-gray-700 mb-1">
+                <label className="block text-xs sm:text-sm text-gray-700 mb-1">
                   Last name
                 </label>
                 <input
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm text-gray-700 mb-1">
                 Email <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
-                className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-gray-700 mb-1">
+              <label className="block text-xs sm:text-sm text-gray-700 mb-1">
                 Your question
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-[#c41e3a] text-white py-3 font-medium hover:bg-[#a01830] transition-colors"
+              className="w-full bg-[#c41e3a] text-white py-2.5 sm:py-3 font-medium text-sm sm:text-base rounded-lg hover:bg-[#a01830] transition-colors"
             >
               Submit
             </button>

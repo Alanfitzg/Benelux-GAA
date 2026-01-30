@@ -11,10 +11,10 @@ export default function TrainingPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Training" />
 
-      <main className="flex-1 pt-24 pb-16 md:pt-32">
+      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-10 md:mb-16">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 sm:mb-10 md:mb-16">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               <EditableText
                 pageKey="training"
                 contentKey="title"
@@ -22,7 +22,7 @@ export default function TrainingPage() {
                 maxLength={30}
               />
             </h1>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
               <EditableText
                 pageKey="training"
                 contentKey="subtitle"
@@ -32,16 +32,16 @@ export default function TrainingPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {/* Training Info */}
-            <div className="space-y-6">
-              <div className="bg-gray-50 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#c41e3a] rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-5 h-5 text-white" />
+            <div className="space-y-4 sm:space-y-6">
+              <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#c41e3a] rounded-full flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="when_title"
@@ -49,7 +49,7 @@ export default function TrainingPage() {
                         maxLength={30}
                       />
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="when_time"
@@ -57,7 +57,7 @@ export default function TrainingPage() {
                         maxLength={50}
                       />
                     </p>
-                    <p className="text-gray-500 text-sm mt-1">
+                    <p className="text-gray-500 text-xs sm:text-sm mt-1">
                       <EditableText
                         pageKey="training"
                         contentKey="when_note"
@@ -69,13 +69,13 @@ export default function TrainingPage() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#c41e3a] rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-white" />
+              <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#c41e3a] rounded-full flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="where_title"
@@ -83,7 +83,7 @@ export default function TrainingPage() {
                         maxLength={30}
                       />
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="venue_name"
@@ -91,7 +91,7 @@ export default function TrainingPage() {
                         maxLength={50}
                       />
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="venue_address"
@@ -99,7 +99,7 @@ export default function TrainingPage() {
                         maxLength={50}
                       />
                     </p>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="venue_city"
@@ -111,7 +111,7 @@ export default function TrainingPage() {
                       href="https://maps.google.com/?q=Stadio+delle+Tre+Fontane,+Via+delle+Tre+Fontane,+5,+00144+Roma+RM,+Italy"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#c41e3a] text-sm font-medium hover:underline mt-2 inline-block"
+                      className="text-[#c41e3a] text-xs sm:text-sm font-medium hover:underline mt-2 inline-block"
                     >
                       Get directions →
                     </a>
@@ -119,13 +119,13 @@ export default function TrainingPage() {
                 </div>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#c41e3a] rounded-full flex items-center justify-center flex-shrink-0">
-                    <Users className="w-5 h-5 text-white" />
+              <div className="bg-gray-50 rounded-xl p-4 sm:p-6">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#c41e3a] rounded-full flex items-center justify-center flex-shrink-0">
+                    <Users className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-2">
+                    <h3 className="font-semibold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">
                       <EditableText
                         pageKey="training"
                         contentKey="bring_title"
@@ -133,7 +133,7 @@ export default function TrainingPage() {
                         maxLength={30}
                       />
                     </h3>
-                    <ul className="text-gray-600 space-y-1 list-disc list-inside">
+                    <ul className="text-gray-600 space-y-1 list-disc list-inside text-sm sm:text-base">
                       <li>
                         <EditableText
                           pageKey="training"
@@ -180,8 +180,8 @@ export default function TrainingPage() {
           </div>
 
           {/* CTA */}
-          <div className="bg-[#c41e3a] rounded-2xl p-8 md:p-12 text-center text-white">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4">
+          <div className="bg-[#c41e3a] rounded-xl sm:rounded-2xl p-6 sm:p-8 md:p-12 text-center text-white">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4">
               <EditableText
                 pageKey="training"
                 contentKey="cta_title"
@@ -189,7 +189,7 @@ export default function TrainingPage() {
                 maxLength={40}
               />
             </h2>
-            <p className="text-white/90 mb-6 max-w-xl mx-auto">
+            <p className="text-white/90 mb-4 sm:mb-6 max-w-xl mx-auto text-sm sm:text-base">
               <EditableText
                 pageKey="training"
                 contentKey="cta_text"
@@ -197,16 +197,16 @@ export default function TrainingPage() {
                 maxLength={200}
               />
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <InternalLink
                 href="/contact"
-                className="bg-white text-[#c41e3a] px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
+                className="bg-white text-[#c41e3a] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-colors"
               >
                 Get in Touch
               </InternalLink>
               <a
                 href="mailto:secretary.rome.europe@gaa.ie?subject=I want to get involved!"
-                className="border-2 border-white text-white px-8 py-3 rounded-lg font-bold text-lg hover:bg-white/10 transition-colors"
+                className="border-2 border-white text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold text-base sm:text-lg hover:bg-white/10 transition-colors"
               >
                 Email Us Directly
               </a>

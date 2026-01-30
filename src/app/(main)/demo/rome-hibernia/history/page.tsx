@@ -9,9 +9,9 @@ export default function HistoryPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="History" />
 
-      <main className="flex-1 pt-24 pb-16 md:pt-32">
+      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4">
-          <h1 className="text-2xl font-light text-gray-900 mb-8">
+          <h1 className="text-xl sm:text-2xl font-light text-gray-900 mb-6 sm:mb-8">
             <EditableText
               pageKey="history"
               contentKey="title"
@@ -21,7 +21,7 @@ export default function HistoryPage() {
             />
           </h1>
 
-          <div className="prose prose-gray max-w-none space-y-6">
+          <div className="prose prose-gray max-w-none space-y-4 sm:space-y-6 text-sm sm:text-base">
             <p>
               <EditableText
                 pageKey="history"
@@ -58,7 +58,7 @@ export default function HistoryPage() {
               />
             </p>
 
-            <h2 className="text-lg font-normal text-gray-900 mt-10 mb-4">
+            <h2 className="text-base sm:text-lg font-normal text-gray-900 mt-8 sm:mt-10 mb-3 sm:mb-4">
               <EditableText
                 pageKey="history"
                 contentKey="achievements_title"
@@ -76,7 +76,7 @@ export default function HistoryPage() {
               />
             </p>
 
-            <ul className="list-disc pl-6 space-y-2">
+            <ul className="list-disc pl-4 sm:pl-6 space-y-1.5 sm:space-y-2">
               <li>
                 <EditableText
                   pageKey="history"
