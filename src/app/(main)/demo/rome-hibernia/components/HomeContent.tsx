@@ -169,6 +169,42 @@ export default function HomeContent() {
       {/* Instagram Feed */}
       <InstagramFeed />
 
+      {/* Ready to Join CTA */}
+      <section className="py-10 sm:py-16 bg-white">
+        <div className="max-w-lg mx-auto px-4 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+            <EditableText
+              pageKey="home"
+              contentKey="cta.title"
+              defaultValue="Ready to Join?"
+              maxLength={40}
+            />
+          </h2>
+          <p className="text-gray-600 mb-6 sm:mb-8 text-base sm:text-lg">
+            <EditableText
+              pageKey="home"
+              contentKey="cta.description"
+              defaultValue="Whether you're an experienced player or have never held a ball before, we'd love to meet you. Come to a training session and see what it's all about!"
+              maxLength={200}
+            />
+          </p>
+          <div className="flex flex-col gap-3 sm:gap-4">
+            <InternalLink
+              href="/training"
+              className="bg-[#c41e3a] text-white px-6 py-3 rounded-lg font-semibold text-base hover:bg-[#a01830] transition-colors"
+            >
+              View Training Schedule
+            </InternalLink>
+            <InternalLink
+              href="/contact"
+              className="border-2 border-[#c41e3a] text-[#c41e3a] px-6 py-3 rounded-lg font-semibold text-base hover:bg-[#c41e3a]/5 transition-colors"
+            >
+              Contact Us
+            </InternalLink>
+          </div>
+        </div>
+      </section>
+
       {/* Newsletter */}
       <section className="py-10 sm:py-16 bg-[#1a1a2e] text-white">
         <div className="max-w-md mx-auto px-4 text-center">
