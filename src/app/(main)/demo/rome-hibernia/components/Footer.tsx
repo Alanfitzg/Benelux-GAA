@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import {
   Instagram,
   Facebook,
@@ -165,12 +164,12 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
           <p className="text-gray-500 text-sm">
             Powered by{" "}
-            <Link
-              href="/"
+            <InternalLink
+              href="/powered-by"
               className="text-[#c41e3a] hover:text-white transition-colors font-medium"
             >
               PlayAway
-            </Link>
+            </InternalLink>
           </p>
           <span className="text-gray-700">•</span>
           <InternalLink
