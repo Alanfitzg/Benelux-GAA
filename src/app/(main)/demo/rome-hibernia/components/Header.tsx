@@ -11,10 +11,10 @@ const baseNavLinks = [
   { name: "History", href: "/history" },
   { name: "Training", href: "/training" },
   { name: "Youth", href: "/youth" },
-  { name: "Sponsors", href: "/sponsors" },
+  { name: "Gallery", href: "/gallery" },
   { name: "Events", href: "/events" },
+  { name: "FAQ", href: "/faq" },
   { name: "Contact", href: "/contact" },
-  { name: "Blog", href: "/blog" },
 ];
 
 interface HeaderProps {

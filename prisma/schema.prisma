@@ -1798,3 +1798,35 @@ model ClubContent {
   @@unique([clubId, pageKey, contentKey])
   @@index([clubId, pageKey])
 }
+
+// ============================================
+// Club Gallery Images
+// For club website photo galleries
+// ============================================
+
+model GalleryImage {
+  id          String   @id @default(cuid())
+  clubId      String   // e.g., "rome-hibernia"
+  url         String   // Vercel Blob URL
+  caption     String?  // Optional caption
+  sortOrder   Int      @default(0)
+  uploadedBy  String?  // User ID who uploaded
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([clubId, sortOrder])
+}
+
+// ============================================
+// Instagram Token Storage
+// For auto-refreshing Instagram access tokens
+// ============================================
+
+model InstagramToken {
+  id        String   @id @default(cuid())
+  clubId    String   @unique // e.g., "rome-hibernia"
+  token     String   @db.Text
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
