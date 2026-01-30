@@ -11,7 +11,7 @@ export default function TrainingPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Training" />
 
-      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32">
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-8 sm:mb-10 md:mb-16">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">

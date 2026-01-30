@@ -97,7 +97,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Contact" />
 
-      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             <EditableText
@@ -107,11 +107,11 @@ export default function ContactPage() {
               maxLength={40}
             />
           </h1>
-          <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
+          <p className="text-gray-600 mb-6 sm:mb-8 text-base sm:text-lg">
             <EditableText
               pageKey="contact"
               contentKey="subtitle"
-              defaultValue="The quickest way to reach us is through social media or email."
+              defaultValue="Send us a DM or drop us an email - we'd love to hear from you!"
               maxLength={100}
             />
           </p>
@@ -136,7 +136,7 @@ export default function ContactPage() {
             </div>
           )}
 
-          <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">
+          <p className="text-gray-600 text-base sm:text-lg mb-8 sm:mb-10">
             <EditableText
               pageKey="contact"
               contentKey="email_intro"
@@ -151,79 +151,84 @@ export default function ContactPage() {
             </a>
           </p>
 
-          <h2 className="text-2xl sm:text-3xl font-light text-[#c41e3a] mb-6 sm:mb-8">
-            <EditableText
-              pageKey="contact"
-              contentKey="form_title"
-              defaultValue="Send us a message"
-              maxLength={40}
-            />
-          </h2>
-
-          <form
-            className="space-y-4 sm:space-y-6 max-w-xl"
-            action={`mailto:secretary.rome.europe@gaa.ie`}
-            method="POST"
-            encType="text/plain"
-          >
-            {/* Honeypot field - hidden from users, bots will fill it */}
-            <input
-              type="text"
-              name="website"
-              autoComplete="off"
-              tabIndex={-1}
-              className="absolute -left-[9999px]"
-              aria-hidden="true"
-            />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div>
-                <label className="block text-xs sm:text-sm text-gray-700 mb-1">
-                  First name <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-xs sm:text-sm text-gray-700 mb-1">
-                  Last name
-                </label>
-                <input
-                  type="text"
-                  className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs sm:text-sm text-gray-700 mb-1">
-                Email <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="email"
-                className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+          <div className="border-t border-gray-200 pt-8 sm:pt-10">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6">
+              <EditableText
+                pageKey="contact"
+                contentKey="form_title"
+                defaultValue="Send us a message"
+                maxLength={40}
               />
-            </div>
+            </h2>
 
-            <div>
-              <label className="block text-xs sm:text-sm text-gray-700 mb-1">
-                Your question
-              </label>
+            <form
+              className="space-y-4 sm:space-y-5"
+              action={`mailto:secretary.rome.europe@gaa.ie`}
+              method="POST"
+              encType="text/plain"
+            >
               <input
                 type="text"
-                className="w-full px-3 py-2.5 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                name="website"
+                autoComplete="off"
+                tabIndex={-1}
+                className="absolute -left-[9999px]"
+                aria-hidden="true"
               />
-            </div>
 
-            <button
-              type="submit"
-              className="w-full bg-[#c41e3a] text-white py-2.5 sm:py-3 font-medium text-sm sm:text-base rounded-lg hover:bg-[#a01830] transition-colors"
-            >
-              Submit
-            </button>
-          </form>
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    First name <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="John"
+                    className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Last name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Doe"
+                    className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  placeholder="john@example.com"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Message
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="How can we help you?"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a]/20 focus:border-[#c41e3a] transition-colors resize-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-[#c41e3a] text-white py-3 font-semibold text-base rounded-lg hover:bg-[#a01830] transition-colors"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
         </div>
       </main>
 

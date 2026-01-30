@@ -26,7 +26,7 @@ export default function SponsorsPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Sponsors" />
 
-      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32">
         <div className="max-w-5xl mx-auto px-4">
           <p className="text-gray-500 text-xs sm:text-sm mb-2">2025 & 2026</p>
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-light text-gray-900 mb-3 sm:mb-4">

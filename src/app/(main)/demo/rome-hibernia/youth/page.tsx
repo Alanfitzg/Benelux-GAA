@@ -9,7 +9,7 @@ export default function YouthPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Youth" />
 
-      <main className="flex-1 pt-16 pb-12 sm:pt-24 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32">
         <div className="max-w-3xl mx-auto px-4">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
             <EditableText
