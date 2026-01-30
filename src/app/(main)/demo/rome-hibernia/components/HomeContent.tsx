@@ -1,8 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import EditableText from "./EditableText";
 import InternalLink from "./InternalLink";
 import InstagramFeed from "./InstagramFeed";
+
+const sponsors = [
+  {
+    name: "The Fiddler's Elbow",
+    logo: "/sponsors/fiddlers-elbow.png",
+    website: "https://thefiddlerselbowrome.com",
+  },
+  {
+    name: "Roman Vacations",
+    logo: "/sponsors/roman-vacations.svg",
+    website: "https://www.roman-vacations.com",
+  },
+];
 
 export default function HomeContent() {
   return (
@@ -155,10 +169,10 @@ export default function HomeContent() {
       {/* Instagram Feed */}
       <InstagramFeed />
 
-      {/* Newsletter Signup */}
-      <section className="py-10 sm:py-16 bg-gray-50">
-        <div className="max-w-xl mx-auto px-4 text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
+      {/* Newsletter */}
+      <section className="py-10 sm:py-16 bg-[#1a1a2e] text-white">
+        <div className="max-w-md mx-auto px-4 text-center">
+          <h2 className="text-xl sm:text-2xl font-bold mb-2">
             <EditableText
               pageKey="home"
               contentKey="newsletter.title"
@@ -166,7 +180,7 @@ export default function HomeContent() {
               maxLength={40}
             />
           </h2>
-          <p className="text-gray-600 text-sm sm:text-base mb-6">
+          <p className="text-gray-400 text-sm sm:text-base mb-6">
             <EditableText
               pageKey="home"
               contentKey="newsletter.description"
@@ -175,7 +189,7 @@ export default function HomeContent() {
             />
           </p>
           <form className="flex flex-col sm:flex-row gap-3 relative">
-            {/* Honeypot field - hidden from users, bots will fill it */}
+            {/* Honeypot field */}
             <input
               type="text"
               name="website"
@@ -187,12 +201,12 @@ export default function HomeContent() {
             <input
               type="email"
               placeholder="Your email address"
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent text-gray-900"
+              className="flex-1 px-4 py-3 rounded-lg bg-white border-0 focus:outline-none focus:ring-2 focus:ring-[#c41e3a] text-gray-900 text-base"
               required
             />
             <button
               type="submit"
-              className="bg-[#c41e3a] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#a01830] transition-colors"
+              className="bg-[#c41e3a] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#a01830] transition-colors text-base whitespace-nowrap"
             >
               Subscribe
             </button>
@@ -203,136 +217,38 @@ export default function HomeContent() {
         </div>
       </section>
 
-      {/* Achievements */}
-      <section className="py-10 sm:py-16 md:py-24 bg-[#1a1a2e] text-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-8 md:mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">
-              <EditableText
-                pageKey="home"
-                contentKey="achievements.title"
-                defaultValue="Recent Achievements"
-                maxLength={40}
-              />
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4 sm:p-6">
-              <div className="text-[#c41e3a] font-semibold text-xs sm:text-sm mb-1 sm:mb-2">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement1.year"
-                  defaultValue="2024"
-                  maxLength={10}
-                />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement1.title"
-                  defaultValue="Ladies Tournament Winners"
-                  maxLength={50}
-                />
-              </h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement1.description"
-                  defaultValue="Our ladies' team won a friendly tournament in Nice in January 2024."
-                  maxLength={150}
-                />
-              </p>
-            </div>
-
-            <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4 sm:p-6">
-              <div className="text-[#c41e3a] font-semibold text-xs sm:text-sm mb-1 sm:mb-2">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement2.year"
-                  defaultValue="2023"
-                  maxLength={10}
-                />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement2.title"
-                  defaultValue="World Games Semi-Final"
-                  maxLength={50}
-                />
-              </h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement2.description"
-                  defaultValue="Our men's team reached the semi-finals of the GAA World Games in Derry."
-                  maxLength={150}
-                />
-              </p>
-            </div>
-
-            <div className="bg-white/5 backdrop-blur border border-white/10 rounded-xl p-4 sm:p-6 sm:col-span-2 md:col-span-1">
-              <div className="text-[#c41e3a] font-semibold text-xs sm:text-sm mb-1 sm:mb-2">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement3.year"
-                  defaultValue="2024"
-                  maxLength={10}
-                />
-              </div>
-              <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement3.title"
-                  defaultValue="Regional Championship"
-                  maxLength={50}
-                />
-              </h3>
-              <p className="text-gray-400 text-sm sm:text-base">
-                <EditableText
-                  pageKey="home"
-                  contentKey="achievement3.description"
-                  defaultValue="Hosted the Regional Football Championship in Rome for the first time since 2017."
-                  maxLength={150}
-                />
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-10 sm:py-16 md:py-24">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4 sm:mb-6">
-            <EditableText
-              pageKey="home"
-              contentKey="cta.title"
-              defaultValue="Ready to Join?"
-              maxLength={40}
-            />
-          </h2>
-          <p className="text-gray-600 text-base sm:text-lg mb-6 sm:mb-8">
-            <EditableText
-              pageKey="home"
-              contentKey="cta.description"
-              defaultValue="Whether you're an experienced player or have never held a ball before, we'd love to meet you. Come to a training session and see what it's all about!"
-              maxLength={200}
-            />
+      {/* Sponsors Banner */}
+      <section className="py-8 sm:py-10 bg-white border-t border-gray-100">
+        <div className="max-w-4xl mx-auto px-4">
+          <p className="text-center text-gray-500 text-xs sm:text-sm mb-4 sm:mb-6 uppercase tracking-wider">
+            Proudly supported by
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+          <div className="flex items-center justify-center gap-8 sm:gap-12 md:gap-16 flex-wrap">
+            {sponsors.map((sponsor) => (
+              <a
+                key={sponsor.name}
+                href={sponsor.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-70 hover:opacity-100 transition-opacity"
+              >
+                <Image
+                  src={sponsor.logo}
+                  alt={sponsor.name}
+                  width={120}
+                  height={48}
+                  className="h-8 sm:h-10 w-auto object-contain"
+                  unoptimized
+                />
+              </a>
+            ))}
+          </div>
+          <div className="text-center mt-4 sm:mt-6">
             <InternalLink
-              href="/training"
-              className="bg-[#c41e3a] text-white px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold text-base sm:text-lg hover:bg-[#a01830] transition-colors"
+              href="/sponsors"
+              className="text-[#c41e3a] text-sm font-medium hover:underline"
             >
-              View Training Schedule
-            </InternalLink>
-            <InternalLink
-              href="/contact"
-              className="border-2 border-[#c41e3a] text-[#c41e3a] px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-bold text-base sm:text-lg hover:bg-[#c41e3a] hover:text-white transition-colors"
-            >
-              Contact Us
+              Become a sponsor →
             </InternalLink>
           </div>
         </div>

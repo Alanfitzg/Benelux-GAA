@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -70,6 +70,8 @@ export default function HeroCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const { basePath } = useBasePath();
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   const slides = useMemo(() => {
     return baseSlides.map((slide) => ({
@@ -98,6 +100,34 @@ export default function HeroCarousel() {
     setTimeout(() => setIsAutoPlaying(true), 10000);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+
+    const diff = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 50;
+
+    if (Math.abs(diff) > minSwipeDistance) {
+      if (diff > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+      setIsAutoPlaying(false);
+      setTimeout(() => setIsAutoPlaying(true), 10000);
+    }
+
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   useEffect(() => {
     if (!isAutoPlaying) return;
 
@@ -108,7 +138,12 @@ export default function HeroCarousel() {
   const slide = slides[currentSlide];
 
   return (
-    <section className="relative h-[280px] sm:h-[350px] md:h-[550px] lg:h-[650px] overflow-hidden">
+    <section
+      className="relative h-[280px] sm:h-[350px] md:h-[550px] lg:h-[650px] overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Background Images with crossfade */}
       {slides.map((s, index) => (
         <div
@@ -144,6 +179,32 @@ export default function HeroCarousel() {
           }}
         />
       </div>
+
+      {/* Mobile navigation arrows */}
+      <button
+        type="button"
+        onClick={() => {
+          prevSlide();
+          setIsAutoPlaying(false);
+          setTimeout(() => setIsAutoPlaying(true), 10000);
+        }}
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/20 rounded-full flex sm:hidden items-center justify-center text-white/70 active:bg-black/40"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft size={18} />
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          nextSlide();
+          setIsAutoPlaying(false);
+          setTimeout(() => setIsAutoPlaying(true), 10000);
+        }}
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-black/20 rounded-full flex sm:hidden items-center justify-center text-white/70 active:bg-black/40"
+        aria-label="Next slide"
+      >
+        <ChevronRight size={18} />
+      </button>
 
       {/* Mobile slide indicator dots */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex sm:hidden gap-1.5">
