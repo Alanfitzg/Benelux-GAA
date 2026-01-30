@@ -132,6 +132,16 @@ export default function PoweredByPage() {
               onSubmit={handleSubmit}
               className="bg-white/5 border border-white/10 rounded-xl p-4 md:p-8 text-left mx-2"
             >
+              {/* Honeypot field - hidden from users, bots will fill it */}
+              <input
+                type="text"
+                name="website"
+                autoComplete="off"
+                tabIndex={-1}
+                className="absolute -left-[9999px]"
+                aria-hidden="true"
+              />
+
               <h3 className="text-lg md:text-xl font-semibold text-white mb-4 md:mb-6 text-center">
                 Get in Touch
               </h3>

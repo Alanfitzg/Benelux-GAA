@@ -8,8 +8,11 @@ import { usePathname } from "next/navigation";
 const FloatingContactButton: React.FC = () => {
   const pathname = usePathname();
 
-  // Don't render on GGE pages
-  if (pathname?.startsWith("/gge")) {
+  // Don't render on GGE pages or Rome Hibernia demo site
+  if (
+    pathname?.startsWith("/gge") ||
+    pathname?.startsWith("/demo/rome-hibernia")
+  ) {
     return null;
   }
 
