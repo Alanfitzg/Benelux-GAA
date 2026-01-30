@@ -1830,3 +1830,21 @@ model InstagramToken {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ============================================
+// Club Site Administrators
+// For independent admin access to club demo sites
+// ============================================
+
+model ClubSiteAdmin {
+  id        String   @id @default(cuid())
+  clubId    String   // e.g., "rome-hibernia"
+  email     String
+  name      String?
+  addedBy   String?  // User ID who added this admin
+  createdAt DateTime @default(now())
+
+  @@unique([clubId, email])
+  @@index([clubId])
+  @@index([email])
+}

@@ -106,6 +106,16 @@ function SignInForm() {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {/* Honeypot field - hidden from users, bots will fill it */}
+          <input
+            type="text"
+            name="website"
+            autoComplete="off"
+            tabIndex={-1}
+            className="absolute -left-[9999px]"
+            aria-hidden="true"
+          />
+
           {showRegistrationSuccess && (
             <div className="rounded-lg p-4 border shadow-sm bg-green-50 border-green-200/50">
               <div className="flex">

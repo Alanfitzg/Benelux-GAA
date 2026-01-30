@@ -1,10 +1,98 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Instagram, Facebook, Linkedin, Youtube } from "lucide-react";
+import {
+  Instagram,
+  Facebook,
+  Youtube,
+  Linkedin,
+  Link as LinkIcon,
+} from "lucide-react";
+import InternalLink from "./InternalLink";
+
+const CLUB_ID = "rome-hibernia";
+
+interface SocialLinks {
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  linkedin: string;
+  tiktok: string;
+}
+
+const defaultSocialLinks: SocialLinks = {
+  instagram: "https://www.instagram.com/romehiberniagaa/",
+  facebook: "https://www.facebook.com/RomeHiberniaGAA/",
+  youtube: "",
+  linkedin: "",
+  tiktok: "",
+};
 
 export default function Footer() {
+  const [socialLinks, setSocialLinks] =
+    useState<SocialLinks>(defaultSocialLinks);
+
+  useEffect(() => {
+    fetch(`/api/club-content?clubId=${CLUB_ID}&pageKey=settings`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.content) {
+          const links = { ...defaultSocialLinks };
+          Object.entries(data.content).forEach(([key, val]) => {
+            const platform = key.replace("social_", "") as keyof SocialLinks;
+            if (platform in links) {
+              const value = (val as { value: string }).value;
+              if (value) {
+                links[platform] = value;
+              }
+            }
+          });
+          setSocialLinks(links);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const socialButtons = [
+    {
+      key: "instagram",
+      href: socialLinks.instagram,
+      icon: Instagram,
+      style: {
+        background:
+          "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
+      },
+    },
+    {
+      key: "facebook",
+      href: socialLinks.facebook,
+      icon: Facebook,
+      className: "bg-[#1877f2]",
+    },
+    {
+      key: "youtube",
+      href: socialLinks.youtube,
+      icon: Youtube,
+      className: "bg-[#ff0000]",
+    },
+    {
+      key: "linkedin",
+      href: socialLinks.linkedin,
+      icon: Linkedin,
+      className: "bg-[#0077b5]",
+    },
+    {
+      key: "tiktok",
+      href: socialLinks.tiktok,
+      icon: LinkIcon,
+      className: "bg-black border border-white",
+    },
+  ];
+
+  const activeSocialButtons = socialButtons.filter((btn) => btn.href);
+
   return (
     <footer className="bg-black text-white">
       <div className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
@@ -40,48 +128,25 @@ export default function Footer() {
             <h4 className="font-medium mb-3 sm:mb-4 text-sm sm:text-base">
               Contact us on social media
             </h4>
-            <div className="flex gap-2 sm:gap-3 justify-center sm:justify-end md:justify-end mb-3 sm:mb-4 flex-wrap">
-              <a
-                href="#"
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-                style={{
-                  background:
-                    "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
-                }}
-              >
-                <Instagram size={20} className="text-white" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-[#1877f2] rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-              >
-                <Facebook size={20} className="text-white" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-[#0a66c2] rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-              >
-                <Linkedin size={20} className="text-white" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-[#ff0000] rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-              >
-                <Youtube size={20} className="text-white" />
-              </a>
-              <a
-                href="#"
-                className="w-10 h-10 bg-black border border-white rounded-full flex items-center justify-center hover:opacity-80 transition-opacity"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-5 h-5 text-white"
-                >
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
-                </svg>
-              </a>
-            </div>
+            {activeSocialButtons.length > 0 && (
+              <div className="flex gap-2 sm:gap-3 justify-center sm:justify-end md:justify-end mb-3 sm:mb-4 flex-wrap">
+                {activeSocialButtons.map((btn) => {
+                  const Icon = btn.icon;
+                  return (
+                    <a
+                      key={btn.key}
+                      href={btn.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity ${btn.className || ""}`}
+                      style={btn.style}
+                    >
+                      <Icon size={20} className="text-white" />
+                    </a>
+                  );
+                })}
+              </div>
+            )}
             <p className="text-gray-400 text-sm">
               Email us at{" "}
               <a
@@ -97,7 +162,7 @@ export default function Footer() {
 
       {/* Powered by PlayAway */}
       <div className="border-t border-gray-800 py-4">
-        <div className="max-w-7xl mx-auto px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
           <p className="text-gray-500 text-sm">
             Powered by{" "}
             <Link
@@ -107,6 +172,13 @@ export default function Footer() {
               PlayAway
             </Link>
           </p>
+          <span className="text-gray-700">•</span>
+          <InternalLink
+            href="/admin"
+            className="text-gray-600 hover:text-gray-400 text-sm transition-colors"
+          >
+            Admin
+          </InternalLink>
         </div>
       </div>
     </footer>

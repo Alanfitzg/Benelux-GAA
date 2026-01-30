@@ -1,6 +1,9 @@
+"use client";
+
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import InternalLink from "../components/InternalLink";
+import EditableText from "../components/EditableText";
 import { MapPin, Clock, Users } from "lucide-react";
 
 export default function TrainingPage() {
@@ -12,11 +15,20 @@ export default function TrainingPage() {
         <div className="max-w-5xl mx-auto px-4">
           <div className="text-center mb-10 md:mb-16">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Training
+              <EditableText
+                pageKey="training"
+                contentKey="title"
+                defaultValue="Training"
+                maxLength={30}
+              />
             </h1>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              Join us for training sessions every week. All skill levels welcome
-              - from complete beginners to experienced players.
+              <EditableText
+                pageKey="training"
+                contentKey="subtitle"
+                defaultValue="Join us for training sessions every week. All skill levels welcome - from complete beginners to experienced players."
+                maxLength={200}
+              />
             </p>
           </div>
 
@@ -30,11 +42,28 @@ export default function TrainingPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">
-                      When We Train
+                      <EditableText
+                        pageKey="training"
+                        contentKey="when_title"
+                        defaultValue="When We Train"
+                        maxLength={30}
+                      />
                     </h3>
-                    <p className="text-gray-600">Sundays, 10:30am - 12:30pm</p>
+                    <p className="text-gray-600">
+                      <EditableText
+                        pageKey="training"
+                        contentKey="when_time"
+                        defaultValue="Sundays, 10:30am - 12:30pm"
+                        maxLength={50}
+                      />
+                    </p>
                     <p className="text-gray-500 text-sm mt-1">
-                      Weather permitting - check our socials for updates
+                      <EditableText
+                        pageKey="training"
+                        contentKey="when_note"
+                        defaultValue="Weather permitting - check our socials for updates"
+                        maxLength={80}
+                      />
                     </p>
                   </div>
                 </div>
@@ -47,11 +76,37 @@ export default function TrainingPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">
-                      Where We Train
+                      <EditableText
+                        pageKey="training"
+                        contentKey="where_title"
+                        defaultValue="Where We Train"
+                        maxLength={30}
+                      />
                     </h3>
-                    <p className="text-gray-600">Stadio delle Tre Fontane</p>
-                    <p className="text-gray-600">Via delle Tre Fontane, 5</p>
-                    <p className="text-gray-600">00144 Roma RM, Italy</p>
+                    <p className="text-gray-600">
+                      <EditableText
+                        pageKey="training"
+                        contentKey="venue_name"
+                        defaultValue="Stadio delle Tre Fontane"
+                        maxLength={50}
+                      />
+                    </p>
+                    <p className="text-gray-600">
+                      <EditableText
+                        pageKey="training"
+                        contentKey="venue_address"
+                        defaultValue="Via delle Tre Fontane, 5"
+                        maxLength={50}
+                      />
+                    </p>
+                    <p className="text-gray-600">
+                      <EditableText
+                        pageKey="training"
+                        contentKey="venue_city"
+                        defaultValue="00144 Roma RM, Italy"
+                        maxLength={40}
+                      />
+                    </p>
                     <a
                       href="https://maps.google.com/?q=Stadio+delle+Tre+Fontane,+Via+delle+Tre+Fontane,+5,+00144+Roma+RM,+Italy"
                       target="_blank"
@@ -71,14 +126,38 @@ export default function TrainingPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-2">
-                      What to Bring
+                      <EditableText
+                        pageKey="training"
+                        contentKey="bring_title"
+                        defaultValue="What to Bring"
+                        maxLength={30}
+                      />
                     </h3>
-                    <ul className="text-gray-600 space-y-1">
+                    <ul className="text-gray-600 space-y-1 list-disc list-inside">
                       <li>
-                        • Sports clothes and boots (moulded studs preferred)
+                        <EditableText
+                          pageKey="training"
+                          contentKey="bring_item1"
+                          defaultValue="Sports clothes and boots (moulded studs preferred)"
+                          maxLength={80}
+                        />
                       </li>
-                      <li>• Water bottle</li>
-                      <li>• Enthusiasm!</li>
+                      <li>
+                        <EditableText
+                          pageKey="training"
+                          contentKey="bring_item2"
+                          defaultValue="Water bottle"
+                          maxLength={40}
+                        />
+                      </li>
+                      <li>
+                        <EditableText
+                          pageKey="training"
+                          contentKey="bring_item3"
+                          defaultValue="Enthusiasm!"
+                          maxLength={40}
+                        />
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -103,12 +182,20 @@ export default function TrainingPage() {
           {/* CTA */}
           <div className="bg-[#c41e3a] rounded-2xl p-8 md:p-12 text-center text-white">
             <h2 className="text-2xl md:text-3xl font-bold mb-4">
-              Ready to Get Involved?
+              <EditableText
+                pageKey="training"
+                contentKey="cta_title"
+                defaultValue="Ready to Get Involved?"
+                maxLength={40}
+              />
             </h2>
             <p className="text-white/90 mb-6 max-w-xl mx-auto">
-              Whether you&apos;ve played GAA your whole life or never held a
-              ball before, we&apos;d love to see you at training. Just turn up -
-              no booking required!
+              <EditableText
+                pageKey="training"
+                contentKey="cta_text"
+                defaultValue="Whether you've played GAA your whole life or never held a ball before, we'd love to see you at training. Just turn up - no booking required!"
+                maxLength={200}
+              />
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <InternalLink

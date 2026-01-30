@@ -2,7 +2,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HeroCarousel from "./components/HeroCarousel";
 import HomeContent from "./components/HomeContent";
-import InstagramFeed from "./components/InstagramFeed";
 
 export default function RomeHiberniaPage() {
   return (
@@ -14,9 +13,6 @@ export default function RomeHiberniaPage() {
 
       {/* Editable Content Sections */}
       <HomeContent />
-
-      {/* Instagram Feed */}
-      <InstagramFeed />
 
       <Footer />
     </div>

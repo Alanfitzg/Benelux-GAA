@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import InternalLink from "../components/InternalLink";
+import { useClubContent } from "../context/ClubContentContext";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Settings } from "lucide-react";
 
 interface GalleryImage {
   id: string;
@@ -14,6 +16,7 @@ interface GalleryImage {
 }
 
 export default function GalleryPage() {
+  const { isAdmin } = useClubContent();
   const [images, setImages] = useState<GalleryImage[]>([]);
   const [loading, setLoading] = useState(true);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -73,6 +76,15 @@ export default function GalleryPage() {
               <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
                 Moments from our matches, training sessions, and social events.
               </p>
+              {isAdmin && (
+                <InternalLink
+                  href="/admin/gallery"
+                  className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-[#c41e3a] text-white rounded-lg hover:bg-[#a01830] transition-colors text-sm font-medium"
+                >
+                  <Settings size={16} />
+                  Edit Gallery
+                </InternalLink>
+              )}
             </div>
 
             {loading ? (

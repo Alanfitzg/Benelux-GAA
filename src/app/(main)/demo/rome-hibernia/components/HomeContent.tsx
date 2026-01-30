@@ -2,6 +2,7 @@
 
 import EditableText from "./EditableText";
 import InternalLink from "./InternalLink";
+import InstagramFeed from "./InstagramFeed";
 
 export default function HomeContent() {
   return (
@@ -151,6 +152,9 @@ export default function HomeContent() {
         </div>
       </section>
 
+      {/* Instagram Feed */}
+      <InstagramFeed />
+
       {/* Newsletter Signup */}
       <section className="py-10 sm:py-16 bg-gray-50">
         <div className="max-w-xl mx-auto px-4 text-center">
@@ -170,7 +174,16 @@ export default function HomeContent() {
               maxLength={120}
             />
           </p>
-          <form className="flex flex-col sm:flex-row gap-3">
+          <form className="flex flex-col sm:flex-row gap-3 relative">
+            {/* Honeypot field - hidden from users, bots will fill it */}
+            <input
+              type="text"
+              name="website"
+              autoComplete="off"
+              tabIndex={-1}
+              className="absolute -left-[9999px]"
+              aria-hidden="true"
+            />
             <input
               type="email"
               placeholder="Your email address"

@@ -4,9 +4,62 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import InternalLink from "../components/InternalLink";
+import EditableText from "../components/EditableText";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-const faqs = [
+function FAQItem({
+  index,
+  defaultQuestion,
+  defaultAnswer,
+  isOpen,
+  onToggle,
+}: {
+  index: number;
+  defaultQuestion: string;
+  defaultAnswer: string;
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div className="border-b border-gray-200 last:border-b-0">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="w-full py-5 sm:py-6 flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:ring-offset-2 rounded-lg"
+      >
+        <span className="text-base sm:text-lg font-semibold text-gray-900 pr-4">
+          <EditableText
+            pageKey="faq"
+            contentKey={`faq${index}_question`}
+            defaultValue={defaultQuestion}
+            maxLength={100}
+          />
+        </span>
+        {isOpen ? (
+          <ChevronUp className="text-[#c41e3a] flex-shrink-0" size={24} />
+        ) : (
+          <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
+        )}
+      </button>
+      <div
+        className={`overflow-hidden transition-all duration-300 ${
+          isOpen ? "max-h-[500px] pb-5 sm:pb-6" : "max-h-0"
+        }`}
+      >
+        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+          <EditableText
+            pageKey="faq"
+            contentKey={`faq${index}_answer`}
+            defaultValue={defaultAnswer}
+            maxLength={400}
+          />
+        </p>
+      </div>
+    </div>
+  );
+}
+
+const faqDefaults = [
   {
     question: "Do I need previous experience to join?",
     answer:
@@ -59,46 +112,6 @@ const faqs = [
   },
 ];
 
-function FAQItem({
-  question,
-  answer,
-  isOpen,
-  onToggle,
-}: {
-  question: string;
-  answer: string;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div className="border-b border-gray-200 last:border-b-0">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="w-full py-5 sm:py-6 flex items-center justify-between text-left focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:ring-offset-2 rounded-lg"
-      >
-        <span className="text-base sm:text-lg font-semibold text-gray-900 pr-4">
-          {question}
-        </span>
-        {isOpen ? (
-          <ChevronUp className="text-[#c41e3a] flex-shrink-0" size={24} />
-        ) : (
-          <ChevronDown className="text-gray-400 flex-shrink-0" size={24} />
-        )}
-      </button>
-      <div
-        className={`overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 pb-5 sm:pb-6" : "max-h-0"
-        }`}
-      >
-        <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-          {answer}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -115,19 +128,30 @@ export default function FAQPage() {
           <div className="max-w-3xl mx-auto px-4">
             <div className="text-center mb-8 sm:mb-12">
               <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 mb-4">
-                Frequently Asked Questions
+                <EditableText
+                  pageKey="faq"
+                  contentKey="title"
+                  defaultValue="Frequently Asked Questions"
+                  maxLength={50}
+                />
               </h1>
               <p className="text-gray-600 text-base sm:text-lg">
-                Everything you need to know about joining Rome Hibernia GAA
+                <EditableText
+                  pageKey="faq"
+                  contentKey="subtitle"
+                  defaultValue="Everything you need to know about joining Rome Hibernia GAA"
+                  maxLength={100}
+                />
               </p>
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8">
-              {faqs.map((faq, index) => (
+              {faqDefaults.map((faq, index) => (
                 <FAQItem
                   key={index}
-                  question={faq.question}
-                  answer={faq.answer}
+                  index={index + 1}
+                  defaultQuestion={faq.question}
+                  defaultAnswer={faq.answer}
                   isOpen={openIndex === index}
                   onToggle={() => toggleFAQ(index)}
                 />
@@ -139,11 +163,20 @@ export default function FAQPage() {
         <section className="py-10 sm:py-16 md:py-20 bg-[#1a1a2e]">
           <div className="max-w-3xl mx-auto px-4 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-              Still have questions?
+              <EditableText
+                pageKey="faq"
+                contentKey="cta_title"
+                defaultValue="Still have questions?"
+                maxLength={40}
+              />
             </h2>
             <p className="text-gray-300 mb-6 sm:mb-8">
-              Can&apos;t find what you&apos;re looking for? Get in touch and
-              we&apos;ll be happy to help.
+              <EditableText
+                pageKey="faq"
+                contentKey="cta_description"
+                defaultValue="Can't find what you're looking for? Get in touch and we'll be happy to help."
+                maxLength={120}
+              />
             </p>
             <InternalLink
               href="/contact"
