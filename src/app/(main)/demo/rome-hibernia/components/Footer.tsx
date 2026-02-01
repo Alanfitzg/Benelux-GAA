@@ -171,10 +171,10 @@ export default function Footer() {
               PlayAway
             </InternalLink>
           </p>
-          <span className="text-gray-700">•</span>
+          <span className="hidden sm:inline text-gray-700">•</span>
           <InternalLink
             href="/admin"
-            className="text-gray-600 hover:text-gray-400 text-sm transition-colors"
+            className="hidden sm:inline text-gray-600 hover:text-gray-400 text-sm transition-colors"
           >
             Admin
           </InternalLink>

@@ -24,9 +24,11 @@ import {
   Linkedin,
   Youtube,
   Check,
+  MessageSquareQuote,
 } from "lucide-react";
 
 const CLUB_ID = "rome-hibernia";
+const CLUB_ADMIN_PASSWORD = "Secretaryrome";
 
 interface ClubSiteAdmin {
   id: string;
@@ -87,6 +89,11 @@ export default function RomeAdminPage() {
   const [isClubAdmin, setIsClubAdmin] = useState(false);
   const [checkingAdmin, setCheckingAdmin] = useState(true);
 
+  // Club-specific password login
+  const [clubPassword, setClubPassword] = useState("");
+  const [clubPasswordAuth, setClubPasswordAuth] = useState(false);
+  const [clubPasswordError, setClubPasswordError] = useState("");
+
   // Admin management state
   const [admins, setAdmins] = useState<ClubSiteAdmin[]>([]);
   const [showAdminModal, setShowAdminModal] = useState(false);
@@ -108,7 +115,62 @@ export default function RomeAdminPage() {
   const [socialError, setSocialError] = useState("");
   const [socialSuccess, setSocialSuccess] = useState(false);
 
+  // Instagram connection request state
+  const [instagramRequest, setInstagramRequest] = useState<{
+    id: string;
+    status: string;
+    requestedAt: string;
+  } | null>(null);
+  const [requestingInstagram, setRequestingInstagram] = useState(false);
+  const [instagramRequestSuccess, setInstagramRequestSuccess] = useState(false);
+
   const isSuperAdmin = session?.user?.role === "SUPER_ADMIN";
+
+  const fetchInstagramRequest = useCallback(async () => {
+    try {
+      const res = await fetch(
+        `/api/instagram-connection-requests?clubId=${CLUB_ID}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        if (data.request) {
+          setInstagramRequest(data.request);
+        }
+      }
+    } catch {
+      // Silently fail - not critical
+    }
+  }, []);
+
+  const handleRequestInstagramConnection = async () => {
+    setRequestingInstagram(true);
+    setInstagramRequestSuccess(false);
+
+    try {
+      const res = await fetch("/api/instagram-connection-requests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clubId: CLUB_ID,
+          clubName: "Rome Hibernia GAA",
+          instagramHandle: "@romehiberniagaa",
+        }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setInstagramRequest(data.request);
+        setInstagramRequestSuccess(true);
+      } else if (res.status === 409) {
+        // Request already exists, fetch current status
+        await fetchInstagramRequest();
+      }
+    } catch {
+      // Handle error silently
+    } finally {
+      setRequestingInstagram(false);
+    }
+  };
 
   const fetchAdmins = useCallback(async () => {
     if (!isSuperAdmin) return;
@@ -181,8 +243,25 @@ export default function RomeAdminPage() {
     }
   };
 
+  // Check for club password auth in sessionStorage on mount
+  useEffect(() => {
+    const storedAuth = sessionStorage.getItem(`${CLUB_ID}-admin-auth`);
+    if (storedAuth === "true") {
+      setClubPasswordAuth(true);
+    }
+  }, []);
+
   useEffect(() => {
     if (status === "loading") return;
+
+    // If authenticated via club password, skip NextAuth checks
+    if (clubPasswordAuth) {
+      setCheckingAdmin(false);
+      setIsClubAdmin(true);
+      fetchSocialLinks();
+      fetchInstagramRequest();
+      return;
+    }
 
     if (!session?.user?.email) {
       setCheckingAdmin(false);
@@ -200,7 +279,15 @@ export default function RomeAdminPage() {
 
     fetchAdmins();
     fetchSocialLinks();
-  }, [session, status, fetchAdmins, fetchSocialLinks]);
+    fetchInstagramRequest();
+  }, [
+    session,
+    status,
+    fetchAdmins,
+    fetchSocialLinks,
+    fetchInstagramRequest,
+    clubPasswordAuth,
+  ]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -219,6 +306,20 @@ export default function RomeAdminPage() {
       setError("Invalid email or password");
     } else {
       router.refresh();
+    }
+  };
+
+  const handleClubPasswordLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setClubPasswordError("");
+
+    if (clubPassword === CLUB_ADMIN_PASSWORD) {
+      sessionStorage.setItem(`${CLUB_ID}-admin-auth`, "true");
+      setClubPasswordAuth(true);
+      setIsClubAdmin(true);
+      setCheckingAdmin(false);
+    } else {
+      setClubPasswordError("Invalid password");
     }
   };
 
@@ -269,7 +370,7 @@ export default function RomeAdminPage() {
     );
   }
 
-  if (!session) {
+  if (!session && !clubPasswordAuth) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <Header currentPage="" />
@@ -288,66 +389,41 @@ export default function RomeAdminPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-4">
-                {/* Honeypot field - hidden from users, bots will fill it */}
-                <input
-                  type="text"
-                  name="website"
-                  autoComplete="off"
-                  tabIndex={-1}
-                  className="absolute -left-[9999px]"
-                  aria-hidden="true"
-                />
-
+              {/* Club Password Login Form */}
+              <form
+                onSubmit={handleClubPasswordLogin}
+                className="space-y-4 mb-6"
+              >
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="club-password"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Email
+                    Club Admin Password
                   </label>
                   <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Password
-                  </label>
-                  <input
-                    id="password"
+                    id="club-password"
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={clubPassword}
+                    onChange={(e) => setClubPassword(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent"
+                    placeholder="Enter club password"
                     required
                   />
                 </div>
 
-                {error && (
-                  <p className="text-red-600 text-sm text-center">{error}</p>
+                {clubPasswordError && (
+                  <p className="text-red-600 text-sm text-center">
+                    {clubPasswordError}
+                  </p>
                 )}
 
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full bg-[#c41e3a] text-white py-3 rounded-lg font-semibold hover:bg-[#a01830] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-[#c41e3a] text-white py-3 rounded-lg font-semibold hover:bg-[#a01830] transition-colors flex items-center justify-center gap-2"
                 >
-                  {loading ? (
-                    <Loader2 className="animate-spin" size={20} />
-                  ) : (
-                    <LogIn size={20} />
-                  )}
-                  {loading ? "Signing in..." : "Sign In"}
+                  <LogIn size={20} />
+                  Sign In
                 </button>
               </form>
             </div>
@@ -358,7 +434,7 @@ export default function RomeAdminPage() {
     );
   }
 
-  if (!isClubAdmin) {
+  if (!isClubAdmin && !clubPasswordAuth) {
     return (
       <div className="min-h-screen bg-white flex flex-col">
         <Header currentPage="" />
@@ -370,72 +446,46 @@ export default function RomeAdminPage() {
                   <Lock className="text-[#c41e3a]" size={32} />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  Admin Login
+                  Access Denied
                 </h1>
                 <p className="text-gray-600 mt-2">
-                  Sign in to manage the Rome Hibernia website
+                  You don&apos;t have admin access. Please enter the club
+                  password.
                 </p>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-4">
-                <input
-                  type="text"
-                  name="website"
-                  autoComplete="off"
-                  tabIndex={-1}
-                  className="absolute -left-[9999px]"
-                  aria-hidden="true"
-                />
-
+              {/* Club Password Login Form */}
+              <form onSubmit={handleClubPasswordLogin} className="space-y-4">
                 <div>
                   <label
-                    htmlFor="email"
+                    htmlFor="club-password-alt"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
-                    Email
+                    Club Admin Password
                   </label>
                   <input
-                    id="email"
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
-                    Password
-                  </label>
-                  <input
-                    id="password"
+                    id="club-password-alt"
                     type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={clubPassword}
+                    onChange={(e) => setClubPassword(e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#c41e3a] focus:border-transparent"
+                    placeholder="Enter club password"
                     required
                   />
                 </div>
 
-                {error && (
-                  <p className="text-red-600 text-sm text-center">{error}</p>
+                {clubPasswordError && (
+                  <p className="text-red-600 text-sm text-center">
+                    {clubPasswordError}
+                  </p>
                 )}
 
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full bg-[#c41e3a] text-white py-3 rounded-lg font-semibold hover:bg-[#a01830] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full bg-[#c41e3a] text-white py-3 rounded-lg font-semibold hover:bg-[#a01830] transition-colors flex items-center justify-center gap-2"
                 >
-                  {loading ? (
-                    <Loader2 className="animate-spin" size={20} />
-                  ) : (
-                    <LogIn size={20} />
-                  )}
-                  {loading ? "Signing in..." : "Sign In"}
+                  <LogIn size={20} />
+                  Sign In
                 </button>
               </form>
             </div>
@@ -453,13 +503,19 @@ export default function RomeAdminPage() {
       title: "Gallery Manager",
       description: "Upload, reorder, and manage gallery photos",
       icon: Images,
-      href: `${basePath}/gallery/admin`,
+      href: "/gallery/admin",
+    },
+    {
+      title: "Manage Testimonials",
+      description: "Request and approve member testimonials",
+      icon: MessageSquareQuote,
+      href: "/admin/testimonials",
     },
     {
       title: "Edit Content",
       description: "Edit text content across the website",
       icon: FileText,
-      href: `${basePath}`,
+      href: "/",
       note: "Click any editable text on the site to edit it",
     },
     {
@@ -468,14 +524,6 @@ export default function RomeAdminPage() {
       icon: Link,
       href: "#",
       onClick: () => setShowSocialModal(true),
-    },
-    {
-      title: "Instagram Feed",
-      description: "Instagram feed status and settings",
-      icon: Instagram,
-      href: "#",
-      disabled: true,
-      note: "Managed via environment variables",
     },
   ];
 
@@ -490,35 +538,19 @@ export default function RomeAdminPage() {
               Site Administration
             </h1>
             <p className="text-gray-600 mt-2">
-              Welcome back, {session.user?.name || session.user?.email}
+              Welcome back
+              {session?.user?.name
+                ? `, ${session.user.name}`
+                : session?.user?.email
+                  ? `, ${session.user.email}`
+                  : ""}
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 gap-6">
             {adminLinks.map((link) => (
               <div key={link.title}>
-                {link.disabled ? (
-                  <div className="bg-gray-50 rounded-xl p-6 border border-gray-200 opacity-75">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 bg-gray-200 rounded-lg">
-                        <link.icon className="text-gray-500" size={24} />
-                      </div>
-                      <div>
-                        <h2 className="text-lg font-semibold text-gray-700">
-                          {link.title}
-                        </h2>
-                        <p className="text-gray-500 text-sm mt-1">
-                          {link.description}
-                        </p>
-                        {link.note && (
-                          <p className="text-gray-400 text-xs mt-2 italic">
-                            {link.note}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ) : link.onClick ? (
+                {link.onClick ? (
                   <button
                     type="button"
                     onClick={link.onClick}
@@ -650,6 +682,101 @@ export default function RomeAdminPage() {
                   text on the website to edit it directly. Look for text that
                   highlights when you hover over it.
                 </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4 p-4 bg-purple-50 rounded-lg border border-purple-200">
+            <div className="flex items-start gap-3">
+              <Instagram
+                className="text-purple-600 mt-0.5 flex-shrink-0"
+                size={20}
+              />
+              <div className="flex-1">
+                <h3 className="font-medium text-purple-900">
+                  Live Instagram Feed
+                </h3>
+
+                {instagramRequest?.status === "COMPLETED" ? (
+                  <div className="mt-2">
+                    <div className="flex items-center gap-2 text-green-700 bg-green-100 px-3 py-2 rounded-lg">
+                      <Check size={18} />
+                      <span className="font-medium">
+                        Instagram feed connected!
+                      </span>
+                    </div>
+                    <p className="text-purple-600 text-xs mt-2">
+                      Your feed updates automatically. The connection renews
+                      itself every 60 days.
+                    </p>
+                  </div>
+                ) : instagramRequest?.status === "IN_PROGRESS" ? (
+                  <div className="mt-2">
+                    <div className="flex items-center gap-2 text-blue-700 bg-blue-100 px-3 py-2 rounded-lg">
+                      <Loader2 size={18} className="animate-spin" />
+                      <span className="font-medium">Setup in progress</span>
+                    </div>
+                    <p className="text-purple-600 text-xs mt-2">
+                      PlayAway is setting up your Instagram connection. You may
+                      be contacted to authorize the connection.
+                    </p>
+                  </div>
+                ) : instagramRequest?.status === "PENDING" ? (
+                  <div className="mt-2">
+                    <div className="flex items-center gap-2 text-amber-700 bg-amber-100 px-3 py-2 rounded-lg">
+                      <Loader2 size={18} />
+                      <span className="font-medium">Request pending</span>
+                    </div>
+                    <p className="text-purple-600 text-xs mt-2">
+                      Your request has been submitted. PlayAway will process it
+                      soon.
+                    </p>
+                  </div>
+                ) : instagramRequest?.status === "REJECTED" ? (
+                  <div className="mt-2">
+                    <p className="text-purple-700 text-sm">
+                      Your previous request could not be processed. Please
+                      contact PlayAway directly for assistance.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-purple-700 text-sm mt-1">
+                      Want your latest Instagram posts to appear on the
+                      homepage? Click the button below to request setup.
+                    </p>
+                    <ol className="text-purple-700 text-sm mt-2 list-decimal list-inside space-y-1">
+                      <li>Click &quot;Request Connection&quot; below</li>
+                      <li>PlayAway will send you an authorization link</li>
+                      <li>Log into Instagram and authorize the connection</li>
+                    </ol>
+                    <button
+                      type="button"
+                      onClick={handleRequestInstagramConnection}
+                      disabled={requestingInstagram}
+                      className="mt-3 flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition-colors disabled:opacity-50"
+                    >
+                      {requestingInstagram ? (
+                        <Loader2 size={18} className="animate-spin" />
+                      ) : (
+                        <Instagram size={18} />
+                      )}
+                      {requestingInstagram
+                        ? "Submitting..."
+                        : "Request Connection"}
+                    </button>
+                    {instagramRequestSuccess && (
+                      <p className="text-green-600 text-sm mt-2 flex items-center gap-1">
+                        <Check size={16} />
+                        Request submitted! PlayAway will be in touch.
+                      </p>
+                    )}
+                    <p className="text-purple-600 text-xs mt-2">
+                      Once connected, your feed updates automatically. The
+                      connection renews itself every 60 days.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
           </div>

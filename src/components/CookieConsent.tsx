@@ -1,75 +1,82 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 interface CookiePreferences {
-  necessary: boolean
-  analytics: boolean
-  marketing: boolean
+  necessary: boolean;
+  analytics: boolean;
+  marketing: boolean;
 }
 
 export default function CookieConsent() {
-  const [showBanner, setShowBanner] = useState(false)
-  const [showDetails, setShowDetails] = useState(false)
+  const [showBanner, setShowBanner] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
   const [preferences, setPreferences] = useState<CookiePreferences>({
     necessary: true, // Always required
     analytics: false,
     marketing: false,
-  })
+  });
+  const pathname = usePathname();
 
   useEffect(() => {
+    // Don't show on Rome Hibernia pages (standalone club site)
+    if (pathname?.startsWith("/demo/rome-hibernia")) {
+      return;
+    }
+
     // Check if user has already made a choice
-    const consent = localStorage.getItem("cookie-consent")
+    const consent = localStorage.getItem("cookie-consent");
     if (!consent) {
       // Show banner after a short delay
-      const timer = setTimeout(() => setShowBanner(true), 1000)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setShowBanner(true), 1000);
+      return () => clearTimeout(timer);
     }
-  }, [])
+  }, [pathname]);
 
   const handleAcceptAll = () => {
     const allPreferences = {
       necessary: true,
       analytics: true,
       marketing: true,
-    }
-    saveCookiePreferences(allPreferences)
-    setShowBanner(false)
-  }
+    };
+    saveCookiePreferences(allPreferences);
+    setShowBanner(false);
+  };
 
   const handleAcceptSelected = () => {
-    saveCookiePreferences(preferences)
-    setShowBanner(false)
-  }
+    saveCookiePreferences(preferences);
+    setShowBanner(false);
+  };
 
   const handleRejectAll = () => {
     const minimalPreferences = {
       necessary: true,
       analytics: false,
       marketing: false,
-    }
-    saveCookiePreferences(minimalPreferences)
-    setShowBanner(false)
-  }
+    };
+    saveCookiePreferences(minimalPreferences);
+    setShowBanner(false);
+  };
 
   const saveCookiePreferences = (prefs: CookiePreferences) => {
     const consentData = {
       timestamp: new Date().toISOString(),
       preferences: prefs,
       version: "1.0",
-    }
-    localStorage.setItem("cookie-consent", JSON.stringify(consentData))
-    
+    };
+    localStorage.setItem("cookie-consent", JSON.stringify(consentData));
+
     // Apply preferences immediately
-    applyCookiePreferences(prefs)
-  }
+    applyCookiePreferences(prefs);
+  };
 
   const applyCookiePreferences = (prefs: CookiePreferences) => {
     // Set global flags for other parts of the app to check
     if (typeof window !== "undefined") {
-      window.cookieConsent = prefs
+      window.cookieConsent = prefs;
     }
 
     // Here you would integrate with analytics tools
@@ -80,14 +87,17 @@ export default function CookieConsent() {
     // if (prefs.marketing) {
     //   // Initialize marketing pixels
     // }
-  }
+  };
 
-  const handlePreferenceChange = (type: keyof CookiePreferences, value: boolean) => {
-    if (type === "necessary") return // Can't disable necessary cookies
-    setPreferences(prev => ({ ...prev, [type]: value }))
-  }
+  const handlePreferenceChange = (
+    type: keyof CookiePreferences,
+    value: boolean
+  ) => {
+    if (type === "necessary") return; // Can't disable necessary cookies
+    setPreferences((prev) => ({ ...prev, [type]: value }));
+  };
 
-  if (!showBanner) return null
+  if (!showBanner) return null;
 
   return (
     <AnimatePresence>
@@ -102,16 +112,22 @@ export default function CookieConsent() {
             // Simple banner
             <div className="flex flex-col lg:flex-row items-start lg:items-center gap-4">
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 mb-2">🍪 We use cookies</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">
+                  🍪 We use cookies
+                </h3>
                 <p className="text-sm text-gray-600">
-                  We use cookies to enhance your browsing experience, serve personalized content, 
-                  and analyze our traffic. By clicking &ldquo;Accept All&rdquo;, you consent to our use of cookies.{" "}
-                  <Link href="/privacy" className="text-primary hover:underline">
+                  We use cookies to enhance your browsing experience, serve
+                  personalized content, and analyze our traffic. By clicking
+                  &ldquo;Accept All&rdquo;, you consent to our use of cookies.{" "}
+                  <Link
+                    href="/privacy"
+                    className="text-primary hover:underline"
+                  >
                     Read our Privacy Policy
                   </Link>
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row gap-3 min-w-fit">
                 <button
                   onClick={handleRejectAll}
@@ -137,7 +153,9 @@ export default function CookieConsent() {
             // Detailed preferences
             <div className="max-w-2xl mx-auto">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-900">Cookie Preferences</h3>
+                <h3 className="font-semibold text-gray-900">
+                  Cookie Preferences
+                </h3>
                 <button
                   onClick={() => setShowDetails(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -145,18 +163,22 @@ export default function CookieConsent() {
                   ✕
                 </button>
               </div>
-              
+
               <p className="text-sm text-gray-600 mb-6">
-                Choose which cookies you want to accept. You can change these settings at any time.
+                Choose which cookies you want to accept. You can change these
+                settings at any time.
               </p>
 
               <div className="space-y-4 mb-6">
                 {/* Necessary Cookies */}
                 <div className="flex items-start justify-between p-4 bg-gray-50 rounded-lg">
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">Necessary Cookies</h4>
+                    <h4 className="font-medium text-gray-900">
+                      Necessary Cookies
+                    </h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Essential for the website to function properly. These cannot be disabled.
+                      Essential for the website to function properly. These
+                      cannot be disabled.
                     </p>
                   </div>
                   <div className="ml-4">
@@ -169,21 +191,32 @@ export default function CookieConsent() {
                 {/* Analytics Cookies */}
                 <div className="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">Analytics Cookies</h4>
+                    <h4 className="font-medium text-gray-900">
+                      Analytics Cookies
+                    </h4>
                     <p className="text-sm text-gray-600 mt-1">
                       Help us understand how visitors interact with our website.
                     </p>
                   </div>
                   <div className="ml-4">
                     <button
-                      onClick={() => handlePreferenceChange("analytics", !preferences.analytics)}
+                      onClick={() =>
+                        handlePreferenceChange(
+                          "analytics",
+                          !preferences.analytics
+                        )
+                      }
                       className={`w-12 h-6 rounded-full relative transition-colors ${
                         preferences.analytics ? "bg-primary" : "bg-gray-300"
                       }`}
                     >
-                      <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
-                        preferences.analytics ? "translate-x-6" : "translate-x-0.5"
-                      }`}></div>
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+                          preferences.analytics
+                            ? "translate-x-6"
+                            : "translate-x-0.5"
+                        }`}
+                      ></div>
                     </button>
                   </div>
                 </div>
@@ -191,21 +224,33 @@ export default function CookieConsent() {
                 {/* Marketing Cookies */}
                 <div className="flex items-start justify-between p-4 border border-gray-200 rounded-lg">
                   <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">Marketing Cookies</h4>
+                    <h4 className="font-medium text-gray-900">
+                      Marketing Cookies
+                    </h4>
                     <p className="text-sm text-gray-600 mt-1">
-                      Used to track visitors across websites for advertising purposes.
+                      Used to track visitors across websites for advertising
+                      purposes.
                     </p>
                   </div>
                   <div className="ml-4">
                     <button
-                      onClick={() => handlePreferenceChange("marketing", !preferences.marketing)}
+                      onClick={() =>
+                        handlePreferenceChange(
+                          "marketing",
+                          !preferences.marketing
+                        )
+                      }
                       className={`w-12 h-6 rounded-full relative transition-colors ${
                         preferences.marketing ? "bg-primary" : "bg-gray-300"
                       }`}
                     >
-                      <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
-                        preferences.marketing ? "translate-x-6" : "translate-x-0.5"
-                      }`}></div>
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full absolute top-0.5 transition-transform ${
+                          preferences.marketing
+                            ? "translate-x-6"
+                            : "translate-x-0.5"
+                        }`}
+                      ></div>
                     </button>
                   </div>
                 </div>
@@ -236,12 +281,12 @@ export default function CookieConsent() {
         </div>
       </motion.div>
     </AnimatePresence>
-  )
+  );
 }
 
 // Extend window object for TypeScript
 declare global {
   interface Window {
-    cookieConsent?: CookiePreferences
+    cookieConsent?: CookiePreferences;
   }
 }

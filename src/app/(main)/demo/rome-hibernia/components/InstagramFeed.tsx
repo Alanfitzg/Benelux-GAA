@@ -20,16 +20,16 @@ export default function InstagramFeed() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/instagram?limit=6")
+    fetch("/api/instagram/feed?clubId=rome-hibernia")
       .then((res) => {
         if (!res.ok) throw new Error("Failed to load");
         return res.json();
       })
       .then((data) => {
-        if (Array.isArray(data)) {
-          setPosts(data);
-        } else {
-          setError(data.error || "Failed to load Instagram feed");
+        if (data.posts && Array.isArray(data.posts)) {
+          setPosts(data.posts.slice(0, 6));
+        } else if (data.error) {
+          setError(data.error);
         }
         setLoading(false);
       })

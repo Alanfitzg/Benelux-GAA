@@ -1848,3 +1848,53 @@ model ClubSiteAdmin {
   @@index([clubId])
   @@index([email])
 }
+
+// Instagram Connection Requests
+// Club admins request Instagram feed connection, super admin approves
+// ==================================================================
+
+model InstagramConnectionRequest {
+  id            String                        @id @default(cuid())
+  clubId        String                        // e.g., "rome-hibernia"
+  clubName      String                        // Display name for the club
+  instagramHandle String?                     // e.g., "@romehiberniagaa"
+  status        InstagramConnectionStatus     @default(PENDING)
+  requestedAt   DateTime                      @default(now())
+  reviewedAt    DateTime?
+  reviewedBy    String?                       // Super admin who reviewed
+  notes         String?                       // Admin notes
+
+  @@unique([clubId])
+  @@index([status])
+  @@index([requestedAt])
+}
+
+enum InstagramConnectionStatus {
+  PENDING       // Club requested, awaiting super admin action
+  IN_PROGRESS   // Super admin is working on it
+  COMPLETED     // Connection established
+  REJECTED      // Request rejected
+}
+
+// Club Testimonial Requests
+// Email-based testimonial collection for club demo sites
+// ======================================================
+
+model ClubTestimonialRequest {
+  id             String    @id @default(cuid())
+  clubId         String    // e.g., "rome-hibernia"
+  email          String
+  token          String    @unique
+  name           String?   @db.VarChar(100)
+  memberClubName String?   @db.VarChar(100) // The submitter's home club
+  content        String?   @db.VarChar(300)
+  status         String    @default("PENDING") // PENDING, SUBMITTED, APPROVED, REJECTED
+  displayOrder   Int       @default(0)
+  expiresAt      DateTime
+  createdAt      DateTime  @default(now())
+  submittedAt    DateTime?
+
+  @@index([clubId])
+  @@index([clubId, status])
+  @@index([token])
+}

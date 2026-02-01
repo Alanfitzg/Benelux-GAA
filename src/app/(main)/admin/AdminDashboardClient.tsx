@@ -20,6 +20,10 @@ interface AppealStats {
   total: number;
 }
 
+interface InstagramRequestStats {
+  pending: number;
+}
+
 export default function AdminDashboardClient({
   stats,
 }: AdminDashboardClientProps) {
@@ -28,6 +32,8 @@ export default function AdminDashboardClient({
     null
   );
   const [appealStats, setAppealStats] = useState<AppealStats | null>(null);
+  const [instagramStats, setInstagramStats] =
+    useState<InstagramRequestStats | null>(null);
 
   useEffect(() => {
     async function fetchConflictStats() {
@@ -52,8 +58,24 @@ export default function AdminDashboardClient({
         // Silently fail - badge just won't show
       }
     }
+    async function fetchInstagramStats() {
+      try {
+        const response = await fetch("/api/instagram-connection-requests");
+        if (response.ok) {
+          const data = await response.json();
+          const pendingCount =
+            data.requests?.filter(
+              (r: { status: string }) => r.status === "PENDING"
+            ).length || 0;
+          setInstagramStats({ pending: pendingCount });
+        }
+      } catch {
+        // Silently fail - badge just won't show
+      }
+    }
     fetchConflictStats();
     fetchAppealStats();
+    fetchInstagramStats();
   }, []);
 
   return (
@@ -642,6 +664,30 @@ export default function AdminDashboardClient({
                 <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
                   Create and manage database backups
                 </p>
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/admin/club-sites"
+            className="group bg-gradient-to-br from-purple-500 to-violet-600 p-3 md:p-8 rounded-lg md:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-purple-400"
+          >
+            <div className="flex items-center space-x-3 md:space-x-4">
+              <span className="text-2xl md:text-3xl group-hover:scale-110 transition-transform flex-shrink-0">
+                🌐
+              </span>
+              <div>
+                <h2 className="text-sm md:text-xl font-semibold text-white group-hover:text-white/90 transition-colors">
+                  Club Sites
+                </h2>
+                <p className="text-white/80 text-xs md:text-base mt-0.5 md:mt-1">
+                  Instagram connections & club website management
+                </p>
+                {instagramStats && instagramStats.pending > 0 && (
+                  <span className="inline-block mt-1 text-xs bg-white/20 text-white px-2 py-0.5 rounded-full font-medium">
+                    {instagramStats.pending} pending
+                  </span>
+                )}
               </div>
             </div>
           </Link>
