@@ -17,6 +17,7 @@ export async function GET() {
           { location: { contains: "Dusseldorf", mode: "insensitive" } },
           { location: { contains: "Darmstadt", mode: "insensitive" } },
           { location: { contains: "Hamburg", mode: "insensitive" } },
+          { location: { contains: "Frankfurt", mode: "insensitive" } },
         ],
       },
       select: {
@@ -72,7 +73,8 @@ export async function GET() {
           loc.includes("düsseldorf") ||
           loc.includes("dusseldorf") ||
           loc.includes("darmstadt") ||
-          loc.includes("hamburg")
+          loc.includes("hamburg") ||
+          loc.includes("frankfurt")
         ) {
           country = "Germany";
           countryCode = "DE";

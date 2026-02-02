@@ -53,27 +53,29 @@ export default function Header({ currentPage }: HeaderProps) {
     <header className="bg-[#1a3a4a] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         {/* Mobile Header */}
-        <div className="flex lg:hidden items-center justify-between h-14">
-          <span className="text-white font-bold text-sm tracking-widest">
-            BENELUX
+        <div className="flex lg:hidden items-center justify-between h-16">
+          <span className="text-white font-bold text-sm tracking-widest w-24">
+            BENELUX GAA
           </span>
           <Link href={homeHref}>
             <Image
               src="/benelux-gaa-crest.png"
               alt="Benelux GAA"
-              width={50}
-              height={50}
-              className="object-contain w-[50px] h-[50px]"
+              width={60}
+              height={60}
+              className="object-contain w-[60px] h-[60px]"
               unoptimized
             />
           </Link>
-          <button
-            type="button"
-            className="text-white"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="w-24 flex justify-end">
+            <button
+              type="button"
+              className="text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Desktop Header */}
@@ -157,29 +159,29 @@ export default function Header({ currentPage }: HeaderProps) {
       {/* Mobile Navigation - Full Screen Overlay */}
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 bg-[#1a3a4a] z-40">
-          <div className="flex items-center justify-between px-4 h-16 relative">
-            <div className="w-6" />
-            <Link
-              href={homeHref}
-              onClick={() => setMobileMenuOpen(false)}
-              className="absolute left-1/2 -translate-x-1/2"
-            >
+          <div className="flex items-center justify-between px-4 h-16">
+            <span className="text-white font-bold text-sm tracking-widest w-24">
+              BENELUX GAA
+            </span>
+            <Link href={homeHref} onClick={() => setMobileMenuOpen(false)}>
               <Image
                 src="/benelux-gaa-crest.png"
                 alt="Benelux GAA"
-                width={70}
-                height={70}
-                className="object-contain w-[70px] h-[70px]"
+                width={60}
+                height={60}
+                className="object-contain w-[60px] h-[60px]"
                 unoptimized
               />
             </Link>
-            <button
-              type="button"
-              className="text-white"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <X size={24} />
-            </button>
+            <div className="w-24 flex justify-end">
+              <button
+                type="button"
+                className="text-white"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <X size={24} />
+              </button>
+            </div>
           </div>
 
           <nav className="px-4 pt-4 overflow-y-auto max-h-[calc(100vh-80px)]">

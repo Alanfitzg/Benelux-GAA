@@ -1,141 +1,76 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
-import { Calendar, Clock, Eye, ChevronRight } from "lucide-react";
+import { Calendar, Clock, User, ChevronRight, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 interface NewsArticle {
   id: string;
   title: string;
   excerpt: string;
-  content: string;
   date: string;
+  author: string;
   readTime: number;
-  views: number;
   category: string;
+  tags: string[];
   imageUrl?: string;
-  featured?: boolean;
+  featured: boolean;
 }
-
-const newsArticles: NewsArticle[] = [
-  {
-    id: "0",
-    title: "Amsterdam Makes History: First European Club to Win Leinster Title",
-    excerpt:
-      "In a watershed moment for Gaelic Games in Europe, Amsterdam GAC has become the first club from outside Ireland to win a Leinster title. Their dramatic 0-15 to 0-14 victory over Longford Slashers in the Leinster Special Junior Club Hurling Championship Final marks the culmination of decades of growth for GAA on the continent.",
-    content: "",
-    date: "November 24, 2025",
-    readTime: 5,
-    views: 1247,
-    category: "Results",
-    featured: true,
-    imageUrl: "/club-crests/amsterdam.png",
-  },
-  {
-    id: "1",
-    title: "New Club Spotlight: Aachen Gaels",
-    excerpt:
-      "Germany's first new GAA club in a decade has emerged at the crossroads of Germany, Belgium, and the Netherlands. Aachen Gaels brings Germany's total to 12 clubs, making it the third-largest GAA nation in continental Europe.",
-    content: "",
-    date: "January 19, 2026",
-    readTime: 4,
-    views: 312,
-    category: "Club News",
-  },
-  {
-    id: "2",
-    title: "2026 Benelux GAA Season Fixtures Released",
-    excerpt:
-      "The complete fixtures calendar for the 2026 Benelux GAA season has been published. Check out all the dates and venues for this year's competitions.",
-    content: "",
-    date: "January 15, 2026",
-    readTime: 3,
-    views: 245,
-    category: "Fixtures",
-  },
-  {
-    id: "3",
-    title: "Amsterdam GAA Wins 2025 Benelux Championship",
-    excerpt:
-      "Congratulations to Amsterdam GAA on their thrilling victory in the 2025 Benelux Football Championship final.",
-    content: "",
-    date: "December 10, 2025",
-    readTime: 4,
-    views: 512,
-    category: "Results",
-  },
-  {
-    id: "4",
-    title: "New Referee Training Program Launched",
-    excerpt:
-      "Benelux GAA has launched a comprehensive referee training program to develop officials across the region.",
-    content: "",
-    date: "November 28, 2025",
-    readTime: 2,
-    views: 178,
-    category: "Development",
-  },
-  {
-    id: "5",
-    title: "Luxembourg GAA Celebrates 20 Years",
-    excerpt:
-      "Luxembourg GAA marked two decades of promoting Gaelic Games in the Grand Duchy with a special celebration event.",
-    content: "",
-    date: "November 15, 2025",
-    readTime: 5,
-    views: 324,
-    category: "Club News",
-  },
-  {
-    id: "6",
-    title: "Youth Development Initiative Expands",
-    excerpt:
-      "The Benelux GAA youth program is expanding to more schools and clubs across the region in 2026.",
-    content: "",
-    date: "October 30, 2025",
-    readTime: 3,
-    views: 156,
-    category: "Youth",
-  },
-  {
-    id: "7",
-    title: "Benelux Represented at GAA World Games",
-    excerpt:
-      "Players from across the Benelux region represented their clubs at the GAA World Games in Dublin.",
-    content: "",
-    date: "October 5, 2025",
-    readTime: 6,
-    views: 892,
-    category: "International",
-  },
-];
 
 const categories = [
   "All",
-  "Fixtures",
+  "Benelux News",
+  "Featured",
   "Results",
   "Club News",
   "Development",
   "Youth",
-  "International",
 ];
+
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+}
 
 export default function NewsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredArticles =
-    selectedCategory === "All"
-      ? newsArticles
-      : newsArticles.filter((a) => a.category === selectedCategory);
+  useEffect(() => {
+    async function fetchNews() {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams();
+        if (selectedCategory !== "All") {
+          params.set("category", selectedCategory);
+        }
+        const res = await fetch(`/api/benelux-news?${params.toString()}`);
+        const data = await res.json();
+        setArticles(data);
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchNews();
+  }, [selectedCategory]);
 
-  const featuredArticle = newsArticles.find((a) => a.featured);
-  const regularArticles = filteredArticles.filter((a) => !a.featured);
+  const featuredArticle = articles.find((a) => a.featured);
+  const regularArticles = articles.filter(
+    (a) => !a.featured || selectedCategory !== "All"
+  );
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header currentPage="News" />
 
       <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32">
@@ -170,7 +105,7 @@ export default function NewsPage() {
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category
                     ? "bg-[#1a3a4a] text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-200"
                 }`}
               >
                 {category}
@@ -178,114 +113,165 @@ export default function NewsPage() {
             ))}
           </div>
 
-          {/* Featured Article */}
-          {featuredArticle && selectedCategory === "All" && (
-            <article className="mb-12 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] rounded-2xl overflow-hidden">
-              <div className="grid md:grid-cols-5">
-                <div className="md:col-span-2 h-48 md:h-auto flex items-center justify-center p-6 md:p-8">
-                  <div className="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                    <Image
-                      src={
-                        featuredArticle.imageUrl || "/club-crests/amsterdam.png"
-                      }
-                      alt={featuredArticle.title}
-                      width={200}
-                      height={200}
-                      className="object-contain w-32 h-32 md:w-44 md:h-44"
-                      unoptimized
-                    />
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-[#2B9EB3]" />
+            </div>
+          ) : (
+            <>
+              {/* Featured Article */}
+              {featuredArticle && selectedCategory === "All" && (
+                <article className="mb-12 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                  <div className="grid md:grid-cols-2">
+                    <div className="relative h-64 md:h-auto bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] flex items-center justify-center p-8">
+                      {featuredArticle.imageUrl ? (
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                          <Image
+                            src={featuredArticle.imageUrl}
+                            alt={featuredArticle.title}
+                            width={200}
+                            height={200}
+                            className="object-contain w-32 h-32 md:w-44 md:h-44"
+                            unoptimized
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-white text-center">
+                          <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span className="text-4xl">📰</span>
+                          </div>
+                          <span className="text-white/80 text-sm uppercase tracking-wider">
+                            Featured Story
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-8 md:p-10 flex flex-col justify-center">
+                      <div className="flex flex-wrap items-center gap-2 mb-4">
+                        <span className="inline-block px-3 py-1 bg-[#2B9EB3] text-white text-xs font-semibold rounded-full">
+                          Featured
+                        </span>
+                        <span className="inline-block px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">
+                          {featuredArticle.category}
+                        </span>
+                      </div>
+                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 leading-tight">
+                        {featuredArticle.title}
+                      </h2>
+                      <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
+                        {featuredArticle.excerpt}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-4 text-gray-400 text-sm mb-6">
+                        <span className="flex items-center gap-1.5">
+                          <User size={14} />
+                          {featuredArticle.author}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Calendar size={14} />
+                          {formatDate(featuredArticle.date)}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                          <Clock size={14} />
+                          {featuredArticle.readTime} min read
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-[#1a3a4a] text-white rounded-lg font-semibold hover:bg-[#0d2530] transition-colors w-fit"
+                      >
+                        Read Article
+                        <ChevronRight size={18} />
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="md:col-span-3 p-8 md:p-10 text-white">
-                  <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-4">
-                    Featured
-                  </span>
-                  <h2 className="text-2xl md:text-3xl font-bold mb-4">
-                    {featuredArticle.title}
-                  </h2>
-                  <p className="text-white/80 mb-6 leading-relaxed">
-                    {featuredArticle.excerpt}
+                </article>
+              )}
+
+              {/* Article Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {regularArticles.map((article) => (
+                  <article
+                    key={article.id}
+                    className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100"
+                  >
+                    <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+                      {article.imageUrl ? (
+                        <Image
+                          src={article.imageUrl}
+                          alt={article.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a3a4a]/10 to-[#2B9EB3]/10">
+                          <span className="text-4xl opacity-50">📰</span>
+                        </div>
+                      )}
+                      <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                        <span className="px-3 py-1 bg-[#2B9EB3] text-white text-xs font-medium rounded-full shadow-sm">
+                          {article.category}
+                        </span>
+                        {article.tags.includes("Featured") && (
+                          <span className="px-3 py-1 bg-amber-500 text-white text-xs font-medium rounded-full shadow-sm">
+                            Featured
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-[#2B9EB3] transition-colors line-clamp-2 leading-snug">
+                        {article.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2 leading-relaxed">
+                        {article.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-gray-400 text-xs">
+                        <div className="flex items-center gap-3">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={12} />
+                            {formatDate(article.date)
+                              .split(" ")
+                              .slice(0, 2)
+                              .join(" ")}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Clock size={12} />
+                            {article.readTime}m
+                          </span>
+                        </div>
+                        <span className="text-[#2B9EB3] font-medium group-hover:underline">
+                          Read →
+                        </span>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              {articles.length === 0 && (
+                <div className="text-center py-12">
+                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl">📭</span>
+                  </div>
+                  <p className="text-gray-500">
+                    No articles found in this category.
                   </p>
-                  <div className="flex items-center gap-4 text-white/60 text-sm mb-6">
-                    <span className="flex items-center gap-1">
-                      <Calendar size={14} />
-                      {featuredArticle.date}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Clock size={14} />
-                      {featuredArticle.readTime} min read
-                    </span>
-                  </div>
+                </div>
+              )}
+
+              {/* Load More */}
+              {articles.length > 0 && (
+                <div className="text-center mt-10">
                   <button
                     type="button"
-                    className="flex items-center gap-2 px-6 py-3 bg-white text-[#1a3a4a] rounded-lg font-semibold hover:bg-white/90 transition-colors"
+                    className="px-8 py-3 border-2 border-[#1a3a4a] text-[#1a3a4a] rounded-lg font-semibold hover:bg-[#1a3a4a] hover:text-white transition-colors"
                   >
-                    Read More
-                    <ChevronRight size={18} />
+                    Load More Articles
                   </button>
                 </div>
-              </div>
-            </article>
-          )}
-
-          {/* Article Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {regularArticles.map((article) => (
-              <article
-                key={article.id}
-                className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow group"
-              >
-                <div className="h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative">
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-[#2B9EB3] text-white text-xs font-medium rounded-full">
-                    {article.category}
-                  </span>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#2B9EB3] transition-colors line-clamp-2">
-                    {article.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {article.excerpt}
-                  </p>
-                  <div className="flex items-center justify-between text-gray-400 text-sm">
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={14} />
-                        {article.date.split(",")[0]}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={14} />
-                        {article.readTime}m
-                      </span>
-                    </div>
-                    <span className="flex items-center gap-1">
-                      <Eye size={14} />
-                      {article.views}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-
-          {filteredArticles.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-500">
-                No articles found in this category.
-              </p>
-            </div>
-          )}
-
-          {/* Load More */}
-          {filteredArticles.length > 0 && (
-            <div className="text-center mt-10">
-              <button
-                type="button"
-                className="px-8 py-3 border-2 border-[#1a3a4a] text-[#1a3a4a] rounded-lg font-semibold hover:bg-[#1a3a4a] hover:text-white transition-colors"
-              >
-                Load More Articles
-              </button>
-            </div>
+              )}
+            </>
           )}
         </div>
       </main>

@@ -321,13 +321,13 @@ type CodeType =
 
 const codeConfig: Record<CodeType, { label: string; records: HonorRecord[] }> =
   {
-    mens: { label: "Men's Football", records: mensFootballRecords },
-    mens15s: { label: "Men's 15s", records: mens15sRecords },
-    lgfa: { label: "Ladies Football", records: lgfaRecords },
-    lgfa15s: { label: "Ladies 15s", records: lgfa15sRecords },
-    hurling: { label: "Hurling", records: hurlingRecords },
+    mens: { label: "Men's Football 7s", records: mensFootballRecords },
+    mens15s: { label: "Men's Football 15s", records: mens15sRecords },
+    lgfa: { label: "Ladies Football 7s", records: lgfaRecords },
+    lgfa15s: { label: "Ladies Football 15s", records: lgfa15sRecords },
+    hurling: { label: "Hurling 7s", records: hurlingRecords },
     hurling15s: { label: "Hurling 15s", records: hurling15sRecords },
-    camogie: { label: "Camogie", records: camogieRecords },
+    camogie: { label: "Camogie 7s", records: camogieRecords },
     camogie15s: { label: "Camogie 15s", records: camogie15sRecords },
   };
 
@@ -405,24 +405,113 @@ export default function RollOfHonorPage() {
             </p>
           </div>
 
-          {/* Code Tabs */}
-          <div className="flex justify-center mb-6 sm:mb-8 overflow-x-auto pb-2">
-            <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-0.5">
-              {(Object.keys(codeConfig) as CodeType[]).map((code) => (
+          {/* Code Tabs - Organized by Sport */}
+          <div className="mb-6 sm:mb-8 space-y-3">
+            {/* Football Row */}
+            <div className="flex justify-center">
+              <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-0.5">
                 <button
-                  key={code}
                   type="button"
-                  onClick={() => setSelectedCode(code)}
-                  className={`px-2 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === code
+                  onClick={() => setSelectedCode("mens")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "mens"
                       ? "bg-[#1a3a4a] text-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
-                  {codeConfig[code].label}
+                  Men&apos;s 7s
                 </button>
-              ))}
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("mens15s")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "mens15s"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Men&apos;s 15s
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("lgfa")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "lgfa"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Ladies 7s
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("lgfa15s")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "lgfa15s"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Ladies 15s
+                </button>
+              </div>
             </div>
+            <p className="text-center text-xs text-gray-400 uppercase tracking-wider">
+              Football
+            </p>
+
+            {/* Hurling/Camogie Row */}
+            <div className="flex justify-center">
+              <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-0.5">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("hurling")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "hurling"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Hurling 7s
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("hurling15s")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "hurling15s"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Hurling 15s
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("camogie")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "camogie"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Camogie 7s
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCode("camogie15s")}
+                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedCode === "camogie15s"
+                      ? "bg-[#1a3a4a] text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  Camogie 15s
+                </button>
+              </div>
+            </div>
+            <p className="text-center text-xs text-gray-400 uppercase tracking-wider">
+              Hurling &amp; Camogie
+            </p>
           </div>
 
           {/* Championship Count */}

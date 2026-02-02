@@ -4,7 +4,34 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
+import Image from "next/image";
 import { Calendar, MapPin, Clock, AlertCircle } from "lucide-react";
+
+const venueToClub: Record<string, { name: string; crest: string }> = {
+  Leuven: {
+    name: "Earls of Leuven",
+    crest: "/club-crests/earls of leuven.png",
+  },
+  "Den Haag": { name: "CLG Den Haag", crest: "/club-crests/clg den haag.png" },
+  "The Hague": { name: "CLG Den Haag", crest: "/club-crests/clg den haag.png" },
+  Cologne: {
+    name: "Cologne Celtics",
+    crest: "/club-crests/logo-cologne_celtics.png",
+  },
+  Maastricht: {
+    name: "Maastricht Gaels",
+    crest: "/club-crests/maastricht gaels - red round - cropped.png",
+  },
+  Eindhoven: {
+    name: "Eindhoven Shamrocks",
+    crest: "/club-crests/eindhoven.webp",
+  },
+  Luxembourg: {
+    name: "Luxembourg GAA",
+    crest: "/club-crests/gaelic_sports_club_luxembourg_crest.jpg",
+  },
+  Amsterdam: { name: "Amsterdam GAA", crest: "/club-crests/amsterdam.png" },
+};
 
 interface Fixture {
   id: string;
@@ -251,16 +278,6 @@ const fixtures2026: Fixture[] = [
   },
 ];
 
-const codeColors: Record<string, string> = {
-  Football: "bg-green-500",
-  "Camogie/Hurling": "bg-amber-500",
-  Hurling: "bg-amber-600",
-  "Youth Football": "bg-purple-500",
-  Mixed: "bg-blue-500",
-  Invitational: "bg-orange-500",
-  "15s": "bg-indigo-500",
-};
-
 const competitionColors: Record<string, string> = {
   "Benelux Regional Football Championships (11s)": "border-l-[#2B9EB3]",
   "Benelux Regional Camogie & Hurling Championships (7s/9s)":
@@ -285,7 +302,6 @@ const competitionColors: Record<string, string> = {
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-GB", {
-    weekday: "short",
     day: "numeric",
     month: "short",
     year: "numeric",
@@ -421,38 +437,6 @@ export default function FixturesPage() {
             </div>
           </div>
 
-          {/* Legend */}
-          <div className="flex flex-wrap gap-x-3 sm:gap-x-5 gap-y-1.5 sm:gap-y-2 mb-6 sm:mb-8 text-xs sm:text-sm">
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
-              <span className="text-slate-500">Football</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-              <span className="text-slate-500">Camogie/Hurling</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-purple-500" />
-              <span className="text-slate-500">Youth Football</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
-              <span className="text-slate-500">Mixed</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
-              <span className="text-slate-500">Invitational</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500" />
-              <span className="text-slate-500">15s</span>
-            </div>
-            <div className="flex items-center gap-2 pl-3 border-l border-slate-300">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
-              <span className="text-slate-500">TBC</span>
-            </div>
-          </div>
-
           {/* Fixtures List */}
           {Object.entries(groupedByMonth).map(([month, monthFixtures]) => (
             <div key={month} className="mb-6 sm:mb-10">
@@ -471,7 +455,7 @@ export default function FixturesPage() {
                           "border-l-slate-300"
                     }`}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       {/* Date */}
                       <div className="flex-shrink-0 sm:w-32">
                         <div className="text-xs sm:text-sm font-semibold text-slate-800 flex items-center gap-2">
@@ -492,16 +476,13 @@ export default function FixturesPage() {
                       </div>
 
                       {/* Details */}
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
-                          <span
-                            className={`w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-sm ${codeColors[fixture.code] || "bg-slate-400"}`}
-                          />
-                          <span className="font-semibold text-slate-900 text-sm sm:text-base">
+                          <span className="font-semibold text-slate-900 text-sm sm:text-base truncate">
                             {fixture.competition}
                           </span>
                           {fixture.round && (
-                            <span className="text-slate-500 text-xs sm:text-sm">
+                            <span className="text-slate-500 text-xs sm:text-sm flex-shrink-0">
                               - {fixture.round}
                             </span>
                           )}
@@ -532,6 +513,19 @@ export default function FixturesPage() {
                           </div>
                         )}
                       </div>
+
+                      {/* Host Club Crest */}
+                      {venueToClub[fixture.venue] && (
+                        <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 relative">
+                          <Image
+                            src={venueToClub[fixture.venue].crest}
+                            alt={venueToClub[fixture.venue].name}
+                            fill
+                            className="object-contain"
+                            unoptimized
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
