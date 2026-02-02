@@ -10,6 +10,7 @@ import {
   Calendar,
   Lock,
   ExternalLink,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export default function AdminPage() {
@@ -68,6 +69,14 @@ export default function AdminPage() {
       icon: FileText,
       href: "#",
       color: "bg-blue-500",
+    },
+    {
+      title: "Gallery Management",
+      description:
+        "Upload and manage images for the homepage gallery carousel.",
+      icon: ImageIcon,
+      href: "#gallery",
+      color: "bg-pink-500",
     },
     {
       title: "Fixtures Management",
@@ -160,6 +169,69 @@ export default function AdminPage() {
                 </div>
               );
             })}
+          </div>
+
+          {/* Gallery Management Section */}
+          <div
+            id="gallery"
+            className="mb-10 bg-gray-50 rounded-xl p-6 border border-gray-100"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-pink-500 rounded-lg flex items-center justify-center">
+                <ImageIcon size={20} className="text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Gallery Management
+              </h3>
+            </div>
+            <p className="text-gray-600 text-sm mb-4">
+              Upload images to display in the homepage gallery carousel. Add
+              images to the{" "}
+              <code className="bg-gray-200 px-1.5 py-0.5 rounded text-xs">
+                /public/benelux-gallery/
+              </code>{" "}
+              folder on your server.
+            </p>
+            <div className="bg-white rounded-lg border border-gray-200 p-4">
+              <p className="text-sm text-gray-500 mb-3">
+                Expected image filenames:
+              </p>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>
+                  •{" "}
+                  <code className="bg-gray-100 px-1 rounded">
+                    gallery-1.jpg
+                  </code>
+                </li>
+                <li>
+                  •{" "}
+                  <code className="bg-gray-100 px-1 rounded">
+                    gallery-2.jpg
+                  </code>
+                </li>
+                <li>
+                  •{" "}
+                  <code className="bg-gray-100 px-1 rounded">
+                    gallery-3.jpg
+                  </code>
+                </li>
+                <li>
+                  •{" "}
+                  <code className="bg-gray-100 px-1 rounded">
+                    gallery-4.jpg
+                  </code>
+                </li>
+                <li>
+                  •{" "}
+                  <code className="bg-gray-100 px-1 rounded">
+                    gallery-5.jpg
+                  </code>
+                </li>
+              </ul>
+              <p className="text-xs text-gray-400 mt-3">
+                Recommended: landscape orientation, minimum 1920x1080px
+              </p>
+            </div>
           </div>
 
           {/* PlayAway Admin Link */}
