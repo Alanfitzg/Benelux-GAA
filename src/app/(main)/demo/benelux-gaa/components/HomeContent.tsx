@@ -45,10 +45,10 @@ function formatFixtureDate(dateStr: string): { month: string; day: string } {
 }
 
 const latestNews = {
-  title: "2026 Season Fixtures Released",
+  title: "New Club Spotlight: Aachen Gaels",
   excerpt:
-    "The full fixtures calendar for the 2026 Benelux GAA season has been published. Check out all upcoming tournaments, league rounds, and championship dates.",
-  date: "Jan 15, 2026",
+    "Germany's first new GAA club in a decade has emerged at the crossroads of Germany, Belgium, and the Netherlands. Aachen Gaels brings Germany's total to 12 clubs, making it the third-largest GAA nation in continental Europe.",
+  date: "Jan 19, 2026",
 };
 
 export default function HomeContent() {

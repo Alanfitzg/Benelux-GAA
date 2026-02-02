@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
 import { Calendar, Clock, Eye, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 interface NewsArticle {
   id: string;
@@ -21,7 +22,31 @@ interface NewsArticle {
 
 const newsArticles: NewsArticle[] = [
   {
+    id: "0",
+    title: "Amsterdam Makes History: First European Club to Win Leinster Title",
+    excerpt:
+      "In a watershed moment for Gaelic Games in Europe, Amsterdam GAC has become the first club from outside Ireland to win a Leinster title. Their dramatic 0-15 to 0-14 victory over Longford Slashers in the Leinster Special Junior Club Hurling Championship Final marks the culmination of decades of growth for GAA on the continent.",
+    content: "",
+    date: "November 24, 2025",
+    readTime: 5,
+    views: 1247,
+    category: "Results",
+    featured: true,
+    imageUrl: "/club-crests/amsterdam.png",
+  },
+  {
     id: "1",
+    title: "New Club Spotlight: Aachen Gaels",
+    excerpt:
+      "Germany's first new GAA club in a decade has emerged at the crossroads of Germany, Belgium, and the Netherlands. Aachen Gaels brings Germany's total to 12 clubs, making it the third-largest GAA nation in continental Europe.",
+    content: "",
+    date: "January 19, 2026",
+    readTime: 4,
+    views: 312,
+    category: "Club News",
+  },
+  {
+    id: "2",
     title: "2026 Benelux GAA Season Fixtures Released",
     excerpt:
       "The complete fixtures calendar for the 2026 Benelux GAA season has been published. Check out all the dates and venues for this year's competitions.",
@@ -30,10 +55,9 @@ const newsArticles: NewsArticle[] = [
     readTime: 3,
     views: 245,
     category: "Fixtures",
-    featured: true,
   },
   {
-    id: "2",
+    id: "3",
     title: "Amsterdam GAA Wins 2025 Benelux Championship",
     excerpt:
       "Congratulations to Amsterdam GAA on their thrilling victory in the 2025 Benelux Football Championship final.",
@@ -44,7 +68,7 @@ const newsArticles: NewsArticle[] = [
     category: "Results",
   },
   {
-    id: "3",
+    id: "4",
     title: "New Referee Training Program Launched",
     excerpt:
       "Benelux GAA has launched a comprehensive referee training program to develop officials across the region.",
@@ -55,7 +79,7 @@ const newsArticles: NewsArticle[] = [
     category: "Development",
   },
   {
-    id: "4",
+    id: "5",
     title: "Luxembourg GAA Celebrates 20 Years",
     excerpt:
       "Luxembourg GAA marked two decades of promoting Gaelic Games in the Grand Duchy with a special celebration event.",
@@ -66,7 +90,7 @@ const newsArticles: NewsArticle[] = [
     category: "Club News",
   },
   {
-    id: "5",
+    id: "6",
     title: "Youth Development Initiative Expands",
     excerpt:
       "The Benelux GAA youth program is expanding to more schools and clubs across the region in 2026.",
@@ -77,7 +101,7 @@ const newsArticles: NewsArticle[] = [
     category: "Youth",
   },
   {
-    id: "6",
+    id: "7",
     title: "Benelux Represented at GAA World Games",
     excerpt:
       "Players from across the Benelux region represented their clubs at the GAA World Games in Dublin.",
@@ -157,9 +181,22 @@ export default function NewsPage() {
           {/* Featured Article */}
           {featuredArticle && selectedCategory === "All" && (
             <article className="mb-12 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] rounded-2xl overflow-hidden">
-              <div className="grid md:grid-cols-2">
-                <div className="h-64 md:h-auto bg-black/20" />
-                <div className="p-8 md:p-10 text-white">
+              <div className="grid md:grid-cols-5">
+                <div className="md:col-span-2 h-48 md:h-auto flex items-center justify-center p-6 md:p-8">
+                  <div className="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
+                    <Image
+                      src={
+                        featuredArticle.imageUrl || "/club-crests/amsterdam.png"
+                      }
+                      alt={featuredArticle.title}
+                      width={200}
+                      height={200}
+                      className="object-contain w-32 h-32 md:w-44 md:h-44"
+                      unoptimized
+                    />
+                  </div>
+                </div>
+                <div className="md:col-span-3 p-8 md:p-10 text-white">
                   <span className="inline-block px-3 py-1 bg-white/20 rounded-full text-sm font-medium mb-4">
                     Featured
                   </span>

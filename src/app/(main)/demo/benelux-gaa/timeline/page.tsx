@@ -288,12 +288,13 @@ const timelineEvents: TimelineEvent[] = [
   {
     year: 2025,
     month: "November",
-    title: "Amsterdam Wins Leinster Championship",
+    title: "Amsterdam Makes History: First European Club to Win Leinster Title",
     description:
-      "Amsterdam GAA becomes the first club representing Europe to win the Leinster Club Special Junior Hurling Championship, a historic achievement for European GAA.",
+      "Amsterdam GAC defeats Longford Slashers 0-15 to 0-14 in the Leinster Special Junior Club Hurling Championship Final, becoming the first Europe-based club ever to win a Leinster title. Grahame McDermott's winning point in the final seconds seals a landmark victory for Gaelic Games in Europe.",
     category: "championship",
-    sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
-    sourceName: "Wikipedia",
+    sourceUrl:
+      "https://www.rte.ie/sport/hurling/2025/1124/1545513-mcdermott-relieved-after-amsterdams-leinster-win/",
+    sourceName: "RTÉ Sport",
     clubCrests: ["/club-crests/amsterdam.png"],
   },
 ];
