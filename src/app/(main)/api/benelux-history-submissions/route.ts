@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export interface HistorySubmission {
   id: string;
@@ -26,9 +27,15 @@ export async function GET() {
   return NextResponse.json(submissions);
 }
 
-export async function POST(request: Request) {
+async function postHandler(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Check honeypot field - if filled, it's a bot
+    if (body.website && body.website.length > 0) {
+      // Silently reject but return success to not alert the bot
+      return NextResponse.json({ id: "success" }, { status: 201 });
+    }
 
     const newSubmission: HistorySubmission = {
       id: generateId(),
@@ -51,6 +58,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to submit" }, { status: 400 });
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITS.FORMS, postHandler);
 
 export async function PUT(request: Request) {
   try {

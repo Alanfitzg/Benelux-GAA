@@ -557,31 +557,6 @@ export default function FixturesPage() {
               </p>
             </div>
           )}
-
-          {/* Download / Calendar Sync */}
-          <div className="mt-8 sm:mt-10 bg-[#1a3a4a] rounded-xl p-5 sm:p-6 md:p-8 text-center shadow-2xl">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
-              Add to Your Calendar
-            </h3>
-            <p className="text-slate-300 mb-4 sm:mb-6 text-sm sm:text-base">
-              Never miss a match - sync the Benelux GAA fixtures with your
-              calendar.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-              <button
-                type="button"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#2B9EB3] text-white rounded-lg font-semibold hover:bg-[#238a9c] transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
-              >
-                Download iCal
-              </button>
-              <button
-                type="button"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 text-white border border-white/30 rounded-lg font-semibold hover:bg-white/20 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
-              >
-                Google Calendar
-              </button>
-            </div>
-          </div>
         </div>
       </main>
 

@@ -4,6 +4,7 @@ import { z } from "zod";
 import crypto from "crypto";
 import { getServerSession } from "@/lib/auth-helpers";
 import { EventReviewStatus, Prisma } from "@prisma/client";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 const reviewSubmissionSchema = z.object({
   token: z.string().min(1, "Token is required"),
@@ -13,7 +14,7 @@ const reviewSubmissionSchema = z.object({
   improvementSuggestion: z.string().optional(),
 });
 
-export async function POST(request: NextRequest) {
+async function postHandler(request: NextRequest) {
   try {
     const body = await request.json();
 
@@ -138,7 +139,9 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET(request: NextRequest) {
+export const POST = withRateLimit(RATE_LIMITS.FORMS, postHandler);
+
+async function getHandler(request: NextRequest) {
   try {
     const session = await getServerSession();
 
@@ -222,3 +225,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export const GET = withRateLimit(RATE_LIMITS.PUBLIC_API, getHandler);

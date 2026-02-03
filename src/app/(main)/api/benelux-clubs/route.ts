@@ -33,6 +33,7 @@ export async function GET() {
         twitter: true,
         tiktok: true,
         foundedYear: true,
+        sportsSupported: true,
       },
       orderBy: { name: "asc" },
     });

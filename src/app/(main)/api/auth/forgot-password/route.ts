@@ -3,14 +3,25 @@ import { prisma } from "@/lib/prisma";
 import { sendEmail } from "@/lib/email";
 import { z } from "zod";
 import crypto from "crypto";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
 
-export async function POST(request: NextRequest) {
+async function forgotPasswordHandler(request: NextRequest) {
   try {
     const body = await request.json();
+
+    // Check honeypot field - if filled, it's a bot
+    if (body.website && body.website.length > 0) {
+      // Silently reject but return success to not alert the bot
+      return NextResponse.json({
+        success: true,
+        message:
+          "If an account exists with this email, you will receive password reset instructions.",
+      });
+    }
 
     // Validate input
     const result = forgotPasswordSchema.safeParse(body);
@@ -123,3 +134,5 @@ GAA Trips - Connecting GAA clubs worldwide
     );
   }
 }
+
+export const POST = withRateLimit(RATE_LIMITS.AUTH, forgotPasswordHandler);

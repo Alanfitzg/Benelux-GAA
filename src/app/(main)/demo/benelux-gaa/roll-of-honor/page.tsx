@@ -753,61 +753,53 @@ export default function RollOfHonorPage() {
           </div>
 
           {/* Notable Records */}
-          <div className="mt-10 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] rounded-xl p-6 text-white">
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <Trophy size={20} className="text-yellow-400" />
-              Notable Records
+          <div className="mt-8 sm:mt-10">
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-4 text-center">
+              Record Holders
             </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {/* Belgium/Brussels Ladies Dominance */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
                   13
                 </div>
-                <div className="text-sm font-semibold mb-1">
-                  Ladies Football Championships
+                <div className="text-xs sm:text-sm font-medium text-gray-900">
+                  LGFA Titles
                 </div>
-                <div className="text-xs text-white/70">
-                  Belgium/Brussels Ladies (2011-2019, 2022-2025) - The most
-                  dominant team in Benelux GAA history
-                </div>
-              </div>
-
-              {/* Amsterdam 15s Streak */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">7</div>
-                <div className="text-sm font-semibold mb-1">
-                  Men&apos;s 15s Championships in a Row
-                </div>
-                <div className="text-xs text-white/70">
-                  Amsterdam (2017-2025, excl. COVID) - Undefeated in the
-                  15-a-side code
+                <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
+                  Brussels Ladies
                 </div>
               </div>
-
-              {/* Luxembourg Men's 11s */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">5</div>
-                <div className="text-sm font-semibold mb-1">
-                  Men&apos;s 11s Championships
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
+                  7
                 </div>
-                <div className="text-xs text-white/70">
-                  Luxembourg (2007, 2009, 2017-2019) - Most titles in the
-                  flagship 11-a-side code
+                <div className="text-xs sm:text-sm font-medium text-gray-900">
+                  15s in a Row
+                </div>
+                <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
+                  Amsterdam Men
                 </div>
               </div>
-
-              {/* Longest Running Competition */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
+                  5
+                </div>
+                <div className="text-xs sm:text-sm font-medium text-gray-900">
+                  11s Titles
+                </div>
+                <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
+                  Luxembourg Men
+                </div>
+              </div>
+              <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
                   2007
                 </div>
-                <div className="text-sm font-semibold mb-1">
-                  First Benelux Championship
+                <div className="text-xs sm:text-sm font-medium text-gray-900">
+                  First Final
                 </div>
-                <div className="text-xs text-white/70">
-                  Luxembourg defeated Hague in the inaugural Men&apos;s Football
-                  final
+                <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
+                  Luxembourg won
                 </div>
               </div>
             </div>

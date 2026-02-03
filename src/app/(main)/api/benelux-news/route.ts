@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 
 export interface NewsArticle {
   id: string;
@@ -132,8 +134,16 @@ export async function GET(request: Request) {
   return NextResponse.json(filtered);
 }
 
-export async function POST(request: Request) {
+async function postHandler(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
 
     const newArticle: NewsArticle = {
@@ -162,8 +172,18 @@ export async function POST(request: Request) {
   }
 }
 
-export async function PUT(request: Request) {
+export const POST = withRateLimit(RATE_LIMITS.ADMIN, postHandler);
+
+async function putHandler(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
 
     if (!body.id) {
@@ -205,8 +225,18 @@ export async function PUT(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+export const PUT = withRateLimit(RATE_LIMITS.ADMIN, putHandler);
+
+async function deleteHandler(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user || session.user.role !== "SUPER_ADMIN") {
+      return NextResponse.json(
+        { error: "Authentication required" },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
 
@@ -233,3 +263,5 @@ export async function DELETE(request: Request) {
     );
   }
 }
+
+export const DELETE = withRateLimit(RATE_LIMITS.ADMIN, deleteHandler);
