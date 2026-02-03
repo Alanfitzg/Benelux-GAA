@@ -45,13 +45,23 @@ const nextConfig: NextConfig = {
           ],
           destination: "/demo/rome-hibernia/:path*",
         },
-        // Benelux GAA standalone site
+        // Benelux GAA standalone site (custom domain)
         {
           source: "/",
           has: [
             {
               type: "host",
-              value: "benelux-gaa.vercel.app",
+              value: "beneluxgaa.com",
+            },
+          ],
+          destination: "/demo/benelux-gaa",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "host",
+              value: "www.beneluxgaa.com",
             },
           ],
           destination: "/demo/benelux-gaa",
@@ -61,7 +71,17 @@ const nextConfig: NextConfig = {
           has: [
             {
               type: "host",
-              value: "benelux-gaa.vercel.app",
+              value: "beneluxgaa.com",
+            },
+          ],
+          destination: "/demo/benelux-gaa/:path*",
+        },
+        {
+          source: "/:path*",
+          has: [
+            {
+              type: "host",
+              value: "www.beneluxgaa.com",
             },
           ],
           destination: "/demo/benelux-gaa/:path*",
