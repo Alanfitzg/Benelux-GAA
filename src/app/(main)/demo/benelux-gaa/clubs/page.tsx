@@ -33,6 +33,7 @@ interface Club {
   foundedYear: number | null;
   country: string;
   countryCode: string;
+  sportsSupported: string[];
 }
 
 const countryFlags: Record<string, string> = {
@@ -49,8 +50,29 @@ function getCity(location: string | null): string {
   return parts[0]?.trim() || "";
 }
 
+const sportCodes = [
+  { code: "all", name: "All Sports", short: "All" },
+  { code: "Mens Gaelic Football", name: "Mens Football", short: "Football" },
+  { code: "LGFA", name: "LGFA", short: "LGFA" },
+  { code: "Hurling", name: "Hurling", short: "Hurling" },
+  { code: "Camogie", name: "Camogie", short: "Camogie" },
+  { code: "Youth", name: "Youth", short: "Youth" },
+];
+
+function getSportLabel(sportCode: string): string | null {
+  const sportMap: Record<string, string> = {
+    "Mens Gaelic Football": "Football",
+    LGFA: "LGFA",
+    Hurling: "Hurling",
+    Camogie: "Camogie",
+    Youth: "Youth",
+  };
+  return sportMap[sportCode] || null;
+}
+
 export default function ClubsPage() {
   const [selectedCountry, setSelectedCountry] = useState<string>("all");
+  const [selectedSport, setSelectedSport] = useState<string>("all");
   const [clubs, setClubs] = useState<Club[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -73,10 +95,13 @@ export default function ClubsPage() {
     fetchClubs();
   }, []);
 
-  const filteredClubs =
-    selectedCountry === "all"
-      ? clubs
-      : clubs.filter((c) => c.countryCode === selectedCountry);
+  const filteredClubs = clubs.filter((c) => {
+    const countryMatch =
+      selectedCountry === "all" || c.countryCode === selectedCountry;
+    const sportMatch =
+      selectedSport === "all" || c.sportsSupported?.includes(selectedSport);
+    return countryMatch && sportMatch;
+  });
 
   const countries = [
     { code: "all", name: "All Countries", flag: "🌍" },
@@ -111,60 +136,92 @@ export default function ClubsPage() {
 
       <Header currentPage="Clubs" />
 
-      <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32 relative z-10">
+      <main className="flex-1 pt-20 pb-12 sm:pt-24 sm:pb-16 relative z-10">
         <div className="max-w-6xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-6 sm:mb-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
-              <EditableText
-                pageKey="clubs"
-                contentKey="title"
-                defaultValue="Benelux GAA Clubs"
-                maxLength={40}
-              />
-            </h1>
-            <p className="text-[#2B9EB3] text-base sm:text-lg max-w-2xl mx-auto mb-4 sm:mb-6">
-              <EditableText
-                pageKey="clubs"
-                contentKey="subtitle"
-                defaultValue="Find your local Gaelic Games club across Belgium, Netherlands, Luxembourg, and affiliated German clubs."
-                maxLength={150}
-              />
-            </p>
-            {!loading && !error && (
-              <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 sm:px-5 py-2 sm:py-2.5 rounded-full border border-white/20">
-                <span className="text-2xl sm:text-3xl font-bold text-white">
-                  {clubs.length}
+          {/* Compact Header Bar */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+            {/* Title + Count */}
+            <div className="flex items-center gap-3">
+              <h1 className="text-xl sm:text-2xl font-bold text-white">
+                Benelux GAA Clubs
+              </h1>
+              {!loading && !error && (
+                <span className="text-white/60 text-sm font-medium">
+                  ({filteredClubs.length})
                 </span>
-                <span className="text-white/80 font-medium text-sm sm:text-base">
-                  clubs in the Benelux region
-                </span>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
 
-          {/* Country Filter */}
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-6 sm:mb-10">
-            {countries.map((country) => (
-              <button
-                key={country.code}
-                type="button"
-                onClick={() => setSelectedCountry(country.code)}
-                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-colors ${
-                  selectedCountry === country.code
-                    ? "bg-[#2B9EB3] text-white"
-                    : "bg-white/10 text-white hover:bg-white/20"
-                }`}
-              >
-                <span>{country.flag}</span>
-                <span className="hidden xs:inline sm:inline">
-                  {country.name}
-                </span>
-                <span className="xs:hidden sm:hidden">
-                  {country.code === "all" ? "All" : country.code}
-                </span>
-              </button>
-            ))}
+            {/* Filters */}
+            <div className="flex items-center gap-2">
+              {/* Country Dropdown */}
+              <div className="relative">
+                <select
+                  value={selectedCountry}
+                  onChange={(e) => setSelectedCountry(e.target.value)}
+                  className="appearance-none bg-white/10 text-white text-sm font-medium pl-3 pr-8 py-2 rounded-lg border border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] cursor-pointer"
+                >
+                  {countries.map((country) => (
+                    <option
+                      key={country.code}
+                      value={country.code}
+                      className="bg-[#1a3a4a] text-white"
+                    >
+                      {country.flag} {country.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-white/60">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+
+              {/* Sport Dropdown */}
+              <div className="relative">
+                <select
+                  value={selectedSport}
+                  onChange={(e) => setSelectedSport(e.target.value)}
+                  className="appearance-none bg-white/10 text-white text-sm font-medium pl-3 pr-8 py-2 rounded-lg border border-white/20 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] cursor-pointer"
+                >
+                  {sportCodes.map((sport) => (
+                    <option
+                      key={sport.code}
+                      value={sport.code}
+                      className="bg-[#1a3a4a] text-white"
+                    >
+                      {sport.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-white/60">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Interactive Map */}
@@ -256,6 +313,25 @@ export default function ClubsPage() {
                           </p>
                         )}
 
+                        {/* Sport Badges */}
+                        {club.sportsSupported &&
+                          club.sportsSupported.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1.5">
+                              {club.sportsSupported.map((sport) => {
+                                const label = getSportLabel(sport);
+                                if (!label) return null;
+                                return (
+                                  <span
+                                    key={sport}
+                                    className="bg-gray-200 text-gray-700 text-[10px] font-medium px-1.5 py-0.5 rounded"
+                                  >
+                                    {label}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+
                         {/* Social + Website row */}
                         <div className="flex items-center gap-2 mt-2">
                           <div className="flex items-center gap-1">
@@ -316,7 +392,7 @@ export default function ClubsPage() {
                               </svg>
                             </a>
                           </div>
-                          {club.website && (
+                          {club.website ? (
                             <a
                               href={club.website}
                               target="_blank"
@@ -326,6 +402,11 @@ export default function ClubsPage() {
                               <ExternalLink size={12} />
                               Website
                             </a>
+                          ) : (
+                            <span className="ml-auto text-xs text-gray-400 flex items-center gap-1">
+                              <ExternalLink size={12} />
+                              Website
+                            </span>
                           )}
                         </div>
                       </div>
@@ -382,6 +463,25 @@ export default function ClubsPage() {
                             Est. {club.foundedYear}
                           </p>
                         )}
+
+                        {/* Sport Badges */}
+                        {club.sportsSupported &&
+                          club.sportsSupported.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-2">
+                              {club.sportsSupported.map((sport) => {
+                                const label = getSportLabel(sport);
+                                if (!label) return null;
+                                return (
+                                  <span
+                                    key={sport}
+                                    className="bg-gray-200 text-gray-700 text-xs font-medium px-2 py-0.5 rounded"
+                                  >
+                                    {label}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
                       </div>
                     </div>
 
@@ -452,7 +552,7 @@ export default function ClubsPage() {
                       </div>
 
                       {/* Website Button */}
-                      {club.website && (
+                      {club.website ? (
                         <a
                           href={club.website}
                           target="_blank"
@@ -462,6 +562,11 @@ export default function ClubsPage() {
                           <ExternalLink size={14} />
                           Website
                         </a>
+                      ) : (
+                        <span className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-400 text-sm font-medium rounded-lg cursor-not-allowed">
+                          <ExternalLink size={14} />
+                          Website
+                        </span>
                       )}
                     </div>
                   </div>
