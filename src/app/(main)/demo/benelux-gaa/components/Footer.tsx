@@ -90,7 +90,7 @@ export default function Footer() {
   const activeSocialButtons = socialButtons.filter((btn) => btn.href);
 
   return (
-    <footer className="bg-[#0d1f28] text-white">
+    <footer className="bg-[#0d1f28] text-white relative z-10">
       <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Logo & About */}
