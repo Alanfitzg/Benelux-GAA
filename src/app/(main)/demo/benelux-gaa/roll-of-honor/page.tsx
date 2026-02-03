@@ -14,7 +14,44 @@ interface HonorRecord {
   notPlayed?: boolean;
 }
 
-const mensFootballRecords: HonorRecord[] = [
+// Men's Football 11s Records (2007-2025)
+const mensFootball11sRecords: HonorRecord[] = [
+  {
+    year: 2025,
+    competition: "Championship",
+    winner: "Eindhoven A",
+    runnerUp: "Brussels A",
+  },
+  {
+    year: 2025,
+    competition: "Shield",
+    winner: "Leuven A",
+    runnerUp: "Hague A",
+  },
+  {
+    year: 2025,
+    competition: "Plate",
+    winner: "Groningen A",
+    runnerUp: "Luxembourg B",
+  },
+  {
+    year: 2024,
+    competition: "Championship",
+    winner: "Eindhoven A",
+    runnerUp: "Leuven A",
+  },
+  {
+    year: 2024,
+    competition: "Shield",
+    winner: "Amsterdam",
+    runnerUp: "Nijmegen",
+  },
+  {
+    year: 2024,
+    competition: "Plate",
+    winner: "Cologne",
+    runnerUp: "Groningen",
+  },
   {
     year: 2023,
     competition: "Championship",
@@ -42,14 +79,14 @@ const mensFootballRecords: HonorRecord[] = [
   {
     year: 2022,
     competition: "Shield",
-    winner: "Leuven",
-    runnerUp: "Luxembourg B",
+    winner: "Nijmegen",
+    runnerUp: "Maastricht",
   },
   {
     year: 2022,
     competition: "Plate",
-    winner: "Nijmegen",
-    runnerUp: "Maastricht",
+    winner: "Leuven",
+    runnerUp: "Luxembourg B",
   },
   {
     year: 2021,
@@ -71,12 +108,14 @@ const mensFootballRecords: HonorRecord[] = [
     winner: "Luxembourg A",
     runnerUp: "",
   },
+  { year: 2019, competition: "Shield", winner: "", runnerUp: "" },
   {
     year: 2018,
     competition: "Championship",
     winner: "Luxembourg A",
     runnerUp: "",
   },
+  { year: 2018, competition: "Shield", winner: "", runnerUp: "" },
   {
     year: 2017,
     competition: "Championship",
@@ -89,6 +128,12 @@ const mensFootballRecords: HonorRecord[] = [
     winner: "Eindhoven/Maastricht",
     runnerUp: "Leuven",
   },
+  { year: 2016, competition: "Championship", winner: "", runnerUp: "" },
+  { year: 2016, competition: "Shield", winner: "", runnerUp: "" },
+  { year: 2015, competition: "Championship", winner: "", runnerUp: "" },
+  { year: 2015, competition: "Shield", winner: "", runnerUp: "" },
+  { year: 2014, competition: "Championship", winner: "", runnerUp: "" },
+  { year: 2014, competition: "Shield", winner: "", runnerUp: "" },
   {
     year: 2013,
     competition: "Championship",
@@ -143,9 +188,121 @@ const mensFootballRecords: HonorRecord[] = [
     winner: "Luxembourg",
     runnerUp: "Hague",
   },
+].filter((r) => r.winner || r.notPlayed);
+
+// Men's Football 15s Records
+const mensFootball15sRecords: HonorRecord[] = [
+  {
+    year: 2025,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2024,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2023,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2022,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2020,
+    competition: "Championship",
+    winner: "",
+    runnerUp: "",
+    notPlayed: true,
+  },
+  {
+    year: 2019,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2018,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2017,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
 ];
 
-const lgfaRecords: HonorRecord[] = [
+// Ladies Football 9s Records (2011-2019)
+const ladiesFootball9sRecords: HonorRecord[] = [
+  {
+    year: 2019,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2018,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2017,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2016,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2015,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2014,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2013,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2012,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+  {
+    year: 2011,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Holland Ladies",
+  },
+];
+
+// Ladies Football 9s Records (2022-2023)
+const ladiesFootball9s2022Records: HonorRecord[] = [
   {
     year: 2023,
     competition: "Championship",
@@ -169,172 +326,166 @@ const lgfaRecords: HonorRecord[] = [
     year: 2022,
     competition: "Shield",
     winner: "Leuven",
-    runnerUp: "Hague + Eindhoven/Maastricht",
-  },
-  {
-    year: 2021,
-    competition: "Championship",
-    winner: "",
-    runnerUp: "",
-    notPlayed: true,
-  },
-  {
-    year: 2020,
-    competition: "Championship",
-    winner: "",
-    runnerUp: "",
-    notPlayed: true,
-  },
-  {
-    year: 2019,
-    competition: "Championship",
-    winner: "Holland Ladies",
-    runnerUp: "",
-  },
-  {
-    year: 2018,
-    competition: "Championship",
-    winner: "Belgium A",
-    runnerUp: "",
-  },
-  {
-    year: 2017,
-    competition: "Championship",
-    winner: "Holland Ladies A",
-    runnerUp: "Belgium A",
-  },
-  { year: 2016, competition: "Championship", winner: "Belgium", runnerUp: "" },
-  { year: 2015, competition: "Championship", winner: "Belgium", runnerUp: "" },
-  {
-    year: 2013,
-    competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Holland Ladies",
-  },
-  {
-    year: 2012,
-    competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Holland Ladies",
+    runnerUp: "Hague/Eindhoven/Maastricht",
   },
 ];
 
-const hurlingRecords: HonorRecord[] = [
+// Ladies Football 11s Records (2024-2025)
+const ladiesFootball11sRecords: HonorRecord[] = [
+  {
+    year: 2025,
+    competition: "Championship",
+    winner: "Brussels A",
+    runnerUp: "Luxembourg A",
+  },
+  {
+    year: 2025,
+    competition: "Shield",
+    winner: "Nijmegen",
+    runnerUp: "Groningen A",
+  },
+  { year: 2025, competition: "Plate", winner: "Hague", runnerUp: "Hamburg" },
+  {
+    year: 2024,
+    competition: "Championship",
+    winner: "Belgium",
+    runnerUp: "Groningen",
+  },
+  { year: 2024, competition: "Shield", winner: "Nijmegen", runnerUp: "Hague" },
+];
+
+// Ladies Football 15s Records
+const ladiesFootball15sRecords: HonorRecord[] = [
+  {
+    year: 2024,
+    competition: "Championship",
+    winner: "Belgium/Groningen",
+    runnerUp: "Amsterdam/Luxembourg",
+  },
+];
+
+// Hurling 9s Records
+const hurling9sRecords: HonorRecord[] = [
+  {
+    year: 2025,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Brussels B",
+  },
+  {
+    year: 2024,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
   {
     year: 2023,
     competition: "Championship",
     winner: "Luxembourg",
     runnerUp: "Amsterdam/Maastricht",
   },
+  {
+    year: 2022,
+    competition: "Championship",
+    winner: "Luxembourg",
+    runnerUp: "Amsterdam/Maastricht",
+  },
 ];
 
-const camogieRecords: HonorRecord[] = [
+// Hurling 15s Records
+const hurling15sRecords: HonorRecord[] = [
   {
-    year: 2023,
+    year: 2024,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+];
+
+// Camogie 9s Records
+const camogie9sRecords: HonorRecord[] = [
+  {
+    year: 2022,
     competition: "Championship",
     winner: "Belgium",
     runnerUp: "Luxembourg/Hague",
   },
 ];
 
-const mens15sRecords: HonorRecord[] = [
+// Camogie 7/9s Records (2024-2025)
+const camogie7sRecords: HonorRecord[] = [
   {
-    year: 2023,
+    year: 2025,
     competition: "Championship",
-    winner: "Luxembourg",
-    runnerUp: "Belgium",
+    winner: "Luxembourg A",
+    runnerUp: "Brussels A",
   },
   {
-    year: 2022,
+    year: 2024,
     competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Luxembourg",
-  },
-  {
-    year: 2019,
-    competition: "Championship",
-    winner: "Luxembourg",
-    runnerUp: "Belgium",
-  },
-  {
-    year: 2018,
-    competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Luxembourg",
-  },
-  {
-    year: 2017,
-    competition: "Championship",
-    winner: "Luxembourg",
-    runnerUp: "Belgium",
+    winner: "Luxembourg A",
+    runnerUp: "Belgium A",
   },
 ];
 
-const lgfa15sRecords: HonorRecord[] = [
-  {
-    year: 2023,
-    competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Holland Ladies",
-  },
-  {
-    year: 2022,
-    competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Holland Ladies",
-  },
-  {
-    year: 2019,
-    competition: "Championship",
-    winner: "Holland Ladies",
-    runnerUp: "Belgium",
-  },
-];
+type SportCategory = "mensFootball" | "ladiesFootball" | "hurling" | "camogie";
+type TeamSize = "9s" | "11s" | "15s" | "7s";
 
-const hurling15sRecords: HonorRecord[] = [
-  {
-    year: 2023,
-    competition: "Championship",
-    winner: "Luxembourg",
-    runnerUp: "Brussels",
+interface SportConfig {
+  label: string;
+  availableSizes: TeamSize[];
+  records: Record<string, HonorRecord[]>;
+}
+
+const sportConfig: Record<SportCategory, SportConfig> = {
+  mensFootball: {
+    label: "Men's Football",
+    availableSizes: ["11s", "15s"],
+    records: {
+      "11s": mensFootball11sRecords,
+      "15s": mensFootball15sRecords,
+    },
   },
-];
-
-const camogie15sRecords: HonorRecord[] = [
-  {
-    year: 2023,
-    competition: "Championship",
-    winner: "Belgium",
-    runnerUp: "Amsterdam",
+  ladiesFootball: {
+    label: "Ladies Football",
+    availableSizes: ["9s", "11s", "15s"],
+    records: {
+      "9s": [...ladiesFootball9s2022Records, ...ladiesFootball9sRecords],
+      "11s": ladiesFootball11sRecords,
+      "15s": ladiesFootball15sRecords,
+    },
   },
-];
-
-type CodeType =
-  | "mens"
-  | "mens15s"
-  | "lgfa"
-  | "lgfa15s"
-  | "hurling"
-  | "hurling15s"
-  | "camogie"
-  | "camogie15s";
-
-const codeConfig: Record<CodeType, { label: string; records: HonorRecord[] }> =
-  {
-    mens: { label: "Men's Football 7s", records: mensFootballRecords },
-    mens15s: { label: "Men's Football 15s", records: mens15sRecords },
-    lgfa: { label: "Ladies Football 7s", records: lgfaRecords },
-    lgfa15s: { label: "Ladies Football 15s", records: lgfa15sRecords },
-    hurling: { label: "Hurling 7s", records: hurlingRecords },
-    hurling15s: { label: "Hurling 15s", records: hurling15sRecords },
-    camogie: { label: "Camogie 7s", records: camogieRecords },
-    camogie15s: { label: "Camogie 15s", records: camogie15sRecords },
-  };
+  hurling: {
+    label: "Hurling",
+    availableSizes: ["9s", "15s"],
+    records: {
+      "9s": hurling9sRecords,
+      "15s": hurling15sRecords,
+    },
+  },
+  camogie: {
+    label: "Camogie",
+    availableSizes: ["7s"],
+    records: {
+      "7s": [...camogie7sRecords, ...camogie9sRecords],
+    },
+  },
+};
 
 export default function RollOfHonorPage() {
-  const [selectedCode, setSelectedCode] = useState<CodeType>("mens");
+  const [selectedSport, setSelectedSport] =
+    useState<SportCategory>("mensFootball");
+  const [selectedSize, setSelectedSize] = useState<TeamSize>("11s");
 
-  const currentRecords = codeConfig[selectedCode].records;
+  const currentSportConfig = sportConfig[selectedSport];
+  const availableSizes = currentSportConfig.availableSizes;
+
+  // Auto-select first available size when sport changes
+  const effectiveSize = availableSizes.includes(selectedSize)
+    ? selectedSize
+    : availableSizes[0];
+
+  const currentRecords = currentSportConfig.records[effectiveSize] || [];
 
   // Group records by year
   const groupedByYear: Record<number, HonorRecord[]> = {};
@@ -399,119 +550,79 @@ export default function RollOfHonorPage() {
               <EditableText
                 pageKey="roll-of-honor"
                 contentKey="subtitle"
-                defaultValue="Benelux GAA champions through the years"
+                defaultValue="Benelux GAA champions through the years (2007-2025)"
                 maxLength={100}
               />
             </p>
           </div>
 
-          {/* Code Tabs - Organized by Sport */}
-          <div className="mb-6 sm:mb-8 space-y-3">
-            {/* Football Row */}
-            <div className="flex justify-center">
-              <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-0.5">
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("mens")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "mens"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+          {/* Sport & Size Selectors */}
+          <div className="mb-6 sm:mb-8">
+            <div className="flex justify-center gap-3">
+              {/* Sport Category Dropdown */}
+              <div className="relative">
+                <select
+                  value={selectedSport}
+                  onChange={(e) =>
+                    setSelectedSport(e.target.value as SportCategory)
+                  }
+                  className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[160px]"
                 >
-                  Men&apos;s 7s
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("mens15s")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "mens15s"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  Men&apos;s 15s
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("lgfa")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "lgfa"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  Ladies 7s
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("lgfa15s")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "lgfa15s"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  Ladies 15s
-                </button>
+                  {(Object.keys(sportConfig) as SportCategory[]).map(
+                    (sport) => (
+                      <option key={sport} value={sport}>
+                        {sportConfig[sport].label}
+                      </option>
+                    )
+                  )}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
               </div>
-            </div>
-            <p className="text-center text-xs text-gray-400 uppercase tracking-wider">
-              Football
-            </p>
 
-            {/* Hurling/Camogie Row */}
-            <div className="flex justify-center">
-              <div className="inline-flex bg-gray-100 rounded-lg p-1 gap-0.5">
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("hurling")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "hurling"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+              {/* Team Size Dropdown */}
+              <div className="relative">
+                <select
+                  value={effectiveSize}
+                  onChange={(e) => setSelectedSize(e.target.value as TeamSize)}
+                  className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[100px]"
                 >
-                  Hurling 7s
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("hurling15s")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "hurling15s"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  Hurling 15s
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("camogie")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "camogie"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  Camogie 7s
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedCode("camogie15s")}
-                  className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedCode === "camogie15s"
-                      ? "bg-[#1a3a4a] text-white shadow-sm"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
-                >
-                  Camogie 15s
-                </button>
+                  {availableSizes.map((size) => (
+                    <option key={size} value={size}>
+                      {size === "7s" ? "7/9s" : size}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
-            <p className="text-center text-xs text-gray-400 uppercase tracking-wider">
-              Hurling &amp; Camogie
-            </p>
           </div>
 
           {/* Championship Count */}
@@ -568,7 +679,7 @@ export default function RollOfHonorPage() {
                         <td className="px-2 sm:px-4 py-2 sm:py-3">
                           {record.notPlayed ? (
                             <span className="text-gray-400 italic text-xs sm:text-sm">
-                              Not played
+                              Not played (COVID-19)
                             </span>
                           ) : (
                             <span
@@ -632,6 +743,73 @@ export default function RollOfHonorPage() {
             </div>
             <div className="flex items-center gap-1">
               <span className="text-gray-400">Plate = 3rd tier</span>
+            </div>
+          </div>
+
+          {/* Notes */}
+          <div className="text-center text-xs text-gray-400 mt-4 space-y-1">
+            <p>* Names with &quot;/&quot; denote joint winners or runners-up</p>
+            <p>* Brussels (previously Belgium GAA)</p>
+          </div>
+
+          {/* Notable Records */}
+          <div className="mt-10 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] rounded-xl p-6 text-white">
+            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
+              <Trophy size={20} className="text-yellow-400" />
+              Notable Records
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {/* Belgium/Brussels Ladies Dominance */}
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-yellow-400 mb-1">
+                  13
+                </div>
+                <div className="text-sm font-semibold mb-1">
+                  Ladies Football Championships
+                </div>
+                <div className="text-xs text-white/70">
+                  Belgium/Brussels Ladies (2011-2019, 2022-2025) - The most
+                  dominant team in Benelux GAA history
+                </div>
+              </div>
+
+              {/* Amsterdam 15s Streak */}
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-yellow-400 mb-1">7</div>
+                <div className="text-sm font-semibold mb-1">
+                  Men&apos;s 15s Championships in a Row
+                </div>
+                <div className="text-xs text-white/70">
+                  Amsterdam (2017-2025, excl. COVID) - Undefeated in the
+                  15-a-side code
+                </div>
+              </div>
+
+              {/* Luxembourg Men's 11s */}
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-yellow-400 mb-1">5</div>
+                <div className="text-sm font-semibold mb-1">
+                  Men&apos;s 11s Championships
+                </div>
+                <div className="text-xs text-white/70">
+                  Luxembourg (2007, 2009, 2017-2019) - Most titles in the
+                  flagship 11-a-side code
+                </div>
+              </div>
+
+              {/* Longest Running Competition */}
+              <div className="bg-white/10 rounded-lg p-4">
+                <div className="text-3xl font-bold text-yellow-400 mb-1">
+                  2007
+                </div>
+                <div className="text-sm font-semibold mb-1">
+                  First Benelux Championship
+                </div>
+                <div className="text-xs text-white/70">
+                  Luxembourg defeated Hague in the inaugural Men&apos;s Football
+                  final
+                </div>
+              </div>
             </div>
           </div>
         </div>

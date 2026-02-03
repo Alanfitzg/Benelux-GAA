@@ -4,198 +4,92 @@ export interface NewsArticle {
   id: string;
   title: string;
   excerpt: string;
-  content?: string;
+  content: string;
   date: string;
   author: string;
   readTime: number;
   category: string;
   tags: string[];
-  imageUrl?: string;
+  imageUrl: string;
   featured: boolean;
   status: "published" | "draft";
 }
 
-// This would eventually connect to WordPress API or a database
-// For now, using static data that mirrors the WordPress structure
+// In-memory storage for demo purposes
+// In production, this would connect to a database
 const newsArticles: NewsArticle[] = [
   {
     id: "1",
     title: "New Club Spotlight – Aachen Gaels",
     excerpt:
       "Germany's first new GAA club in a decade has emerged at the crossroads of Germany, Belgium, and the Netherlands. Aachen Gaels brings Germany's total to 12 clubs, making it the third-largest GAA nation in continental Europe.",
-    content: "",
+    content: `Germany's first new GAA club in a decade has emerged at the crossroads of Germany, Belgium, and the Netherlands.
+
+Aachen Gaels brings Germany's total to 12 clubs, making it the third-largest GAA nation in continental Europe.
+
+The club was founded in late 2025 by a group of Irish expatriates working at RWTH Aachen University and local tech companies. Their inaugural training session drew over 30 participants, a promising start for the fledgling club.
+
+"We've been overwhelmed by the response," said club chairperson Siobhan Murphy. "There's clearly a hunger for GAA in this part of Germany."
+
+The Gaels have already registered for the 2026 Benelux Championships and are actively recruiting players of all skill levels.`,
     date: "2026-01-19",
     author: "Alan Fitzgerald",
     readTime: 4,
     category: "Benelux News",
-    tags: ["Featured"],
+    tags: ["Featured", "New Club"],
     imageUrl: "/club-crests/aachen gaels.png",
     featured: true,
     status: "published",
   },
   {
     id: "2",
-    title: "Young stars — Draft",
+    title: "Amsterdam Leinster Claim 2025 15-a-side Title",
     excerpt:
-      "Highlighting the emerging talent across the Benelux region as young players make their mark on Gaelic Games.",
-    content: "",
-    date: "2026-01-19",
-    author: "Alan Fitzgerald",
+      "Amsterdam Leinster have secured their fourth consecutive 15-a-side championship title with a commanding victory over Luxembourg in the final.",
+    content: `Amsterdam Leinster have secured their fourth consecutive 15-a-side championship title with a commanding victory over Luxembourg in the final.
+
+The match, played at the Benelux Championships in Eindhoven, saw Amsterdam dominate from the opening whistle, eventually running out comfortable winners.
+
+Captain Michael O'Brien lifted the trophy for the fourth time, cementing Amsterdam's dynasty in the 15-a-side code.
+
+"It never gets old," O'Brien said after the match. "The lads put in an incredible effort all year, and this is the reward."
+
+Luxembourg, despite the defeat, can take pride in reaching another final and continuing to challenge the traditional powerhouses.`,
+    date: "2025-06-15",
+    author: "Benelux GAA",
     readTime: 3,
-    category: "Benelux News",
-    tags: [],
+    category: "Results",
+    tags: ["Championships", "Amsterdam"],
+    imageUrl: "",
     featured: false,
-    status: "draft",
+    status: "published",
   },
   {
     id: "3",
-    title: "Top 10 moments of 2025!",
+    title: "2026 Championship Dates Announced",
     excerpt:
-      "From historic victories to unforgettable comebacks, we count down the most memorable moments from the 2025 Benelux GAA season.",
-    content: "",
-    date: "2025-12-02",
-    author: "Alan Fitzgerald",
-    readTime: 6,
-    category: "Featured",
-    tags: [],
-    imageUrl: "/benelux-sports/football.jpg",
-    featured: true,
-    status: "published",
-  },
-  {
-    id: "4",
-    title:
-      "Championing Inclusive Gaelic Games: Meet Charlie Jameson, GGE's Recreational Officer",
-    excerpt:
-      "An interview with Charlie Jameson about growing recreational GAA across Europe and making the games accessible to all.",
-    content: "",
-    date: "2025-11-27",
-    author: "Alan Fitzgerald",
-    readTime: 5,
-    category: "Central East News",
-    tags: ["Featured"],
-    featured: false,
-    status: "published",
-  },
-  {
-    id: "5",
-    title: "Europes Young Stars – Oisin Shortall",
-    excerpt:
-      "Spotlight on one of the Benelux region's most promising young talents making waves in European GAA.",
-    content: "",
-    date: "2025-11-26",
-    author: "Alan Fitzgerald",
-    readTime: 4,
-    category: "Benelux News",
-    tags: [],
-    featured: false,
-    status: "draft",
-  },
-  {
-    id: "6",
-    title: "Small Ball in Europe – A year in review",
-    excerpt:
-      "2025 saw unprecedented growth in hurling and camogie across Europe. We look back at a landmark year for the small ball games.",
-    content: "",
-    date: "2025-10-15",
-    author: "Alan Fitzgerald",
-    readTime: 7,
-    category: "Benelux News",
-    tags: ["Featured"],
-    imageUrl: "/benelux-sports/hurling.jpg",
-    featured: true,
-    status: "published",
-  },
-  {
-    id: "7",
-    title:
-      "International GAA Player Exchange – Europe Welcomes All-Ireland Winner",
-    excerpt:
-      "A landmark moment as an All-Ireland winner joins a European club through the new player exchange program.",
-    content: "",
-    date: "2025-09-25",
-    author: "Alan Fitzgerald",
-    readTime: 5,
-    category: "North-West News",
-    tags: ["Featured"],
-    featured: false,
-    status: "published",
-  },
-  {
-    id: "8",
-    title:
-      "Europes Player Pathway is Glistening – Féile Sparks a New Generation of Coaches",
-    excerpt:
-      "How the Féile tournament is inspiring a new wave of coaches across European GAA clubs.",
-    content: "",
-    date: "2025-08-29",
-    author: "Alan Fitzgerald",
-    readTime: 6,
-    category: "North-West News",
-    tags: ["Featured"],
-    featured: false,
-    status: "published",
-  },
-  {
-    id: "9",
-    title:
-      "Kingspan Euro Gaelic Games 2025: France Delivers, Europe Accelerates",
-    excerpt:
-      "The biggest European GAA tournament of the year delivered thrilling action as clubs from across the continent competed in France.",
-    content: "",
-    date: "2025-07-25",
-    author: "Alan Fitzgerald",
-    readTime: 8,
-    category: "North-West News",
-    tags: ["Featured"],
-    imageUrl: "/benelux-sports/camogie.jpg",
-    featured: false,
-    status: "published",
-  },
-  {
-    id: "10",
-    title: "History Makers: First-Ever European Féile All-Star Team",
-    excerpt:
-      "Announcing the inaugural European Féile All-Star team, celebrating the best young talent from across the continent.",
-    content: "",
-    date: "2025-06-30",
-    author: "Alan Fitzgerald",
-    readTime: 4,
-    category: "Kids Corner",
-    tags: ["Featured"],
-    featured: false,
-    status: "published",
-  },
-  {
-    id: "11",
-    title:
-      "Gaelic Games Europe Embarks on a New Era with Landmark Kingspan Partnership",
-    excerpt:
-      "A groundbreaking sponsorship deal that will transform European GAA for years to come.",
-    content: "",
-    date: "2025-06-24",
-    author: "Alan Fitzgerald",
-    readTime: 5,
-    category: "Featured",
-    tags: [],
-    featured: false,
-    status: "published",
-  },
-  {
-    id: "12",
-    title: "Gaelic Games Take Centre Stage at the Vatican's Jubilee of Sport",
-    excerpt:
-      "GAA represented at a historic gathering of world sports at the Vatican.",
-    content: "",
-    date: "2025-06-17",
-    author: "Alan Fitzgerald",
-    readTime: 5,
-    category: "Central & Eastern European News",
-    tags: ["Featured"],
+      "The Benelux GAA Board has confirmed the dates for the 2026 Championships, with the tournament returning to its traditional June slot.",
+    content: `The Benelux GAA Board has confirmed the dates for the 2026 Championships.
+
+The tournament will take place on June 13-14, 2026, at a venue to be announced shortly.
+
+All codes will be represented, including Men's and Ladies Football, Hurling, and Camogie across various formats.
+
+Registration opens on March 1st, 2026.`,
+    date: "2026-01-10",
+    author: "Benelux GAA",
+    readTime: 2,
+    category: "Announcements",
+    tags: ["Championships", "2026"],
+    imageUrl: "",
     featured: false,
     status: "published",
   },
 ];
+
+function generateId(): string {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -204,7 +98,12 @@ export async function GET(request: Request) {
   const limit = searchParams.get("limit");
   const status = searchParams.get("status") || "published";
 
-  let filtered = newsArticles.filter((a) => a.status === status);
+  let filtered = [...newsArticles];
+
+  // Filter by status
+  if (status !== "all") {
+    filtered = filtered.filter((a) => a.status === status);
+  }
 
   // Filter by category (including Benelux News specifically)
   if (category && category !== "All") {
@@ -231,4 +130,106 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.json(filtered);
+}
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+
+    const newArticle: NewsArticle = {
+      id: generateId(),
+      title: body.title || "",
+      excerpt: body.excerpt || "",
+      content: body.content || "",
+      date: body.date || new Date().toISOString().split("T")[0],
+      author: body.author || "",
+      readTime: body.readTime || 3,
+      category: body.category || "Benelux News",
+      tags: body.tags || [],
+      imageUrl: body.imageUrl || "",
+      featured: body.featured || false,
+      status: body.status || "draft",
+    };
+
+    newsArticles.unshift(newArticle);
+
+    return NextResponse.json(newArticle, { status: 201 });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to create article" },
+      { status: 400 }
+    );
+  }
+}
+
+export async function PUT(request: Request) {
+  try {
+    const body = await request.json();
+
+    if (!body.id) {
+      return NextResponse.json(
+        { error: "Article ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const index = newsArticles.findIndex((a) => a.id === body.id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
+    }
+
+    const updatedArticle: NewsArticle = {
+      ...newsArticles[index],
+      title: body.title ?? newsArticles[index].title,
+      excerpt: body.excerpt ?? newsArticles[index].excerpt,
+      content: body.content ?? newsArticles[index].content,
+      date: body.date ?? newsArticles[index].date,
+      author: body.author ?? newsArticles[index].author,
+      readTime: body.readTime ?? newsArticles[index].readTime,
+      category: body.category ?? newsArticles[index].category,
+      tags: body.tags ?? newsArticles[index].tags,
+      imageUrl: body.imageUrl ?? newsArticles[index].imageUrl,
+      featured: body.featured ?? newsArticles[index].featured,
+      status: body.status ?? newsArticles[index].status,
+    };
+
+    newsArticles[index] = updatedArticle;
+
+    return NextResponse.json(updatedArticle);
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to update article" },
+      { status: 400 }
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Article ID is required" },
+        { status: 400 }
+      );
+    }
+
+    const index = newsArticles.findIndex((a) => a.id === id);
+
+    if (index === -1) {
+      return NextResponse.json({ error: "Article not found" }, { status: 404 });
+    }
+
+    newsArticles.splice(index, 1);
+
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to delete article" },
+      { status: 400 }
+    );
+  }
 }

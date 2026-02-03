@@ -210,10 +210,10 @@ export default function Footer() {
             <p className="text-gray-400 text-sm">
               Email us at{" "}
               <a
-                href="mailto:info@beneluxgaa.eu"
+                href="mailto:secretary.benelux.europe@gaa.ie"
                 className="text-[#2B9EB3] hover:text-white transition-colors"
               >
-                info@beneluxgaa.eu
+                secretary.benelux.europe@gaa.ie
               </a>
             </p>
           </div>

@@ -216,11 +216,13 @@ export default function ContactPage() {
                   Email Us
                 </h2>
                 <a
-                  href="mailto:info@beneluxgaa.eu"
+                  href="mailto:secretary.benelux.europe@gaa.ie"
                   className="inline-flex items-center gap-2 text-[#2B9EB3] hover:text-[#1a3a4a] transition-colors"
                 >
                   <Mail size={20} />
-                  <span className="text-lg">info@beneluxgaa.eu</span>
+                  <span className="text-lg">
+                    secretary.benelux.europe@gaa.ie
+                  </span>
                 </a>
               </div>
 
@@ -277,7 +279,7 @@ export default function ContactPage() {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="bg-gray-50 rounded-xl p-6 md:p-8"
+                  className="bg-white rounded-xl p-6 md:p-8 border-2 border-gray-200 shadow-lg shadow-gray-200/50"
                 >
                   <h2 className="text-xl font-semibold text-gray-900 mb-6">
                     Send us a Message

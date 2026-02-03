@@ -15,6 +15,9 @@ import {
   ExternalLink,
   Landmark,
   Send,
+  X,
+  Loader2,
+  CheckCircle,
 } from "lucide-react";
 
 interface TimelineEvent {
@@ -315,8 +318,34 @@ const categoryColors = {
   international: "bg-green-500",
 };
 
+interface SubmissionForm {
+  title: string;
+  year: string;
+  month: string;
+  description: string;
+  sourceUrl: string;
+  sourceName: string;
+  submitterName: string;
+  submitterEmail: string;
+}
+
+const defaultForm: SubmissionForm = {
+  title: "",
+  year: "",
+  month: "",
+  description: "",
+  sourceUrl: "",
+  sourceName: "",
+  submitterName: "",
+  submitterEmail: "",
+};
+
 export default function TimelinePage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [showSubmitForm, setShowSubmitForm] = useState(false);
+  const [formData, setFormData] = useState<SubmissionForm>(defaultForm);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const categories = [
     { id: "all", label: "All Events" },
@@ -331,6 +360,28 @@ export default function TimelinePage() {
     selectedCategory === "all"
       ? timelineEvents
       : timelineEvents.filter((e) => e.category === selectedCategory);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/benelux-history-submissions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setSubmitted(true);
+        setFormData(defaultForm);
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col relative">
@@ -383,8 +434,8 @@ export default function TimelinePage() {
             </p>
           </div>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-1.5 sm:gap-2 mb-8 sm:mb-12">
+          {/* Category Filter + Submit Button */}
+          <div className="flex flex-wrap justify-center items-center gap-1.5 sm:gap-2 mb-8 sm:mb-12">
             {categories.map((cat) => (
               <button
                 key={cat.id}
@@ -399,6 +450,17 @@ export default function TimelinePage() {
                 {cat.label}
               </button>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                setShowSubmitForm(true);
+                setSubmitted(false);
+              }}
+              className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium bg-[#2B9EB3] text-white hover:bg-[#249DAD] transition-colors flex items-center gap-1.5"
+            >
+              <Send size={12} className="sm:w-[14px] sm:h-[14px]" />
+              Submit History
+            </button>
           </div>
 
           {/* Timeline */}
@@ -534,27 +596,213 @@ export default function TimelinePage() {
             </div>
           </div>
 
-          {/* Submit News CTA */}
-          <div className="mt-8 sm:mt-12 bg-gradient-to-r from-[#1a3a4a] to-[#2B9EB3] rounded-xl p-5 sm:p-6 md:p-8 text-center shadow-lg">
-            <Send
-              size={24}
-              className="mx-auto text-white/90 mb-2 sm:mb-3 sm:w-8 sm:h-8"
-            />
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-2">
-              Have a Story to Share?
-            </h3>
-            <p className="text-white/80 mb-4 sm:mb-5 max-w-md mx-auto text-sm sm:text-base">
-              Help us preserve Benelux GAA history. Submit your club&apos;s
-              milestones, photos, and stories.
-            </p>
-            <a
-              href="mailto:info@beneluxgaa.com?subject=Museum%20Submission"
-              className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 bg-white text-[#1a3a4a] rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-md text-sm sm:text-base"
-            >
-              <Send size={16} className="sm:w-[18px] sm:h-[18px]" />
-              Submit News
-            </a>
-          </div>
+          {/* Submit Form Modal */}
+          {showSubmitForm && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50">
+              <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-auto">
+                <div className="sticky top-0 bg-gradient-to-r from-[#1a3a4a] to-[#2B9EB3] px-6 py-4 flex items-center justify-between rounded-t-xl">
+                  <h3 className="text-lg font-semibold text-white">
+                    Submit Historical Event
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => setShowSubmitForm(false)}
+                    className="p-1 hover:bg-white/20 rounded-lg transition-colors"
+                  >
+                    <X size={20} className="text-white" />
+                  </button>
+                </div>
+
+                {submitted ? (
+                  <div className="p-8 text-center">
+                    <CheckCircle
+                      size={48}
+                      className="mx-auto text-green-500 mb-4"
+                    />
+                    <h4 className="text-xl font-semibold text-gray-900 mb-2">
+                      Thank You!
+                    </h4>
+                    <p className="text-gray-600 mb-6">
+                      Your submission has been received and will be reviewed by
+                      our team.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowSubmitForm(false)}
+                      className="px-6 py-2 bg-[#2B9EB3] text-white rounded-lg font-medium hover:bg-[#249DAD] transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
+                ) : (
+                  <form
+                    onSubmit={handleSubmit}
+                    className="p-4 sm:p-6 space-y-4"
+                  >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                      <div className="sm:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Event Title *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.title}
+                          onChange={(e) =>
+                            setFormData({ ...formData, title: e.target.value })
+                          }
+                          placeholder="e.g., Amsterdam GAA Founded"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Year *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.year}
+                          onChange={(e) =>
+                            setFormData({ ...formData, year: e.target.value })
+                          }
+                          placeholder="e.g., 2003"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Month (optional)
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.month}
+                          onChange={(e) =>
+                            setFormData({ ...formData, month: e.target.value })
+                          }
+                          placeholder="e.g., March"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Description *
+                        </label>
+                        <textarea
+                          required
+                          rows={3}
+                          value={formData.description}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              description: e.target.value,
+                            })
+                          }
+                          placeholder="Describe the event and its significance..."
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent resize-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Source URL (optional)
+                        </label>
+                        <input
+                          type="url"
+                          value={formData.sourceUrl}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              sourceUrl: e.target.value,
+                            })
+                          }
+                          placeholder="https://..."
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Source Name (optional)
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.sourceName}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              sourceName: e.target.value,
+                            })
+                          }
+                          placeholder="e.g., Club Website"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                      <div className="sm:col-span-2 pt-2 border-t border-gray-200">
+                        <p className="text-xs text-gray-500 mb-3">
+                          Your contact details (for follow-up questions)
+                        </p>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Your Name *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          value={formData.submitterName}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              submitterName: e.target.value,
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Your Email *
+                        </label>
+                        <input
+                          type="email"
+                          required
+                          value={formData.submitterEmail}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              submitterEmail: e.target.value,
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-4">
+                      <button
+                        type="button"
+                        onClick={() => setShowSubmitForm(false)}
+                        className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={submitting}
+                        className="flex items-center gap-2 px-6 py-2 bg-[#2B9EB3] text-white rounded-lg font-medium hover:bg-[#249DAD] transition-colors disabled:opacity-50"
+                      >
+                        {submitting ? (
+                          <Loader2 size={16} className="animate-spin" />
+                        ) : (
+                          <Send size={16} />
+                        )}
+                        Submit for Review
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
 
           {/* Sources Note */}
           <div className="mt-8 text-center text-xs text-gray-500">
