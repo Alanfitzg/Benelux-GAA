@@ -4,127 +4,74 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
-        // When accessing gge-social.com, rewrite to Rome Hibernia demo
+        // Root path rewrites must be beforeFiles to work correctly
+        // gge-social.com
         {
           source: "/",
-          has: [
-            {
-              type: "host",
-              value: "gge-social.com",
-            },
-          ],
+          has: [{ type: "host", value: "gge-social.com" }],
           destination: "/demo/rome-hibernia",
         },
         {
           source: "/",
-          has: [
-            {
-              type: "host",
-              value: "www.gge-social.com",
-            },
-          ],
+          has: [{ type: "host", value: "www.gge-social.com" }],
           destination: "/demo/rome-hibernia",
         },
-        {
-          source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "gge-social.com",
-            },
-          ],
-          destination: "/demo/rome-hibernia/:path*",
-        },
-        {
-          source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "www.gge-social.com",
-            },
-          ],
-          destination: "/demo/rome-hibernia/:path*",
-        },
-        // Rome Hibernia GAA Italian domain
+        // romehiberniagaa.it
         {
           source: "/",
-          has: [
-            {
-              type: "host",
-              value: "romehiberniagaa.it",
-            },
-          ],
+          has: [{ type: "host", value: "romehiberniagaa.it" }],
           destination: "/demo/rome-hibernia",
         },
         {
           source: "/",
-          has: [
-            {
-              type: "host",
-              value: "www.romehiberniagaa.it",
-            },
-          ],
+          has: [{ type: "host", value: "www.romehiberniagaa.it" }],
           destination: "/demo/rome-hibernia",
         },
-        {
-          source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "romehiberniagaa.it",
-            },
-          ],
-          destination: "/demo/rome-hibernia/:path*",
-        },
-        {
-          source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "www.romehiberniagaa.it",
-            },
-          ],
-          destination: "/demo/rome-hibernia/:path*",
-        },
-        // Benelux GAA standalone site (custom domain)
+        // beneluxgaa.com
         {
           source: "/",
-          has: [
-            {
-              type: "host",
-              value: "beneluxgaa.com",
-            },
-          ],
+          has: [{ type: "host", value: "beneluxgaa.com" }],
           destination: "/demo/benelux-gaa",
         },
         {
           source: "/",
-          has: [
-            {
-              type: "host",
-              value: "www.beneluxgaa.com",
-            },
-          ],
+          has: [{ type: "host", value: "www.beneluxgaa.com" }],
           destination: "/demo/benelux-gaa",
+        },
+      ],
+      afterFiles: [
+        // Path rewrites go in afterFiles so static files are served first
+        // gge-social.com
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "gge-social.com" }],
+          destination: "/demo/rome-hibernia/:path*",
         },
         {
           source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "beneluxgaa.com",
-            },
-          ],
+          has: [{ type: "host", value: "www.gge-social.com" }],
+          destination: "/demo/rome-hibernia/:path*",
+        },
+        // romehiberniagaa.it
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "romehiberniagaa.it" }],
+          destination: "/demo/rome-hibernia/:path*",
+        },
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "www.romehiberniagaa.it" }],
+          destination: "/demo/rome-hibernia/:path*",
+        },
+        // beneluxgaa.com
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "beneluxgaa.com" }],
           destination: "/demo/benelux-gaa/:path*",
         },
         {
           source: "/:path*",
-          has: [
-            {
-              type: "host",
-              value: "www.beneluxgaa.com",
-            },
-          ],
+          has: [{ type: "host", value: "www.beneluxgaa.com" }],
           destination: "/demo/benelux-gaa/:path*",
         },
       ],
