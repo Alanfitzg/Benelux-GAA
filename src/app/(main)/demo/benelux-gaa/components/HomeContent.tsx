@@ -366,7 +366,7 @@ export default function HomeContent() {
               return (
                 <div
                   key={idx}
-                  className="flex items-center gap-4 md:gap-6 p-4 md:p-5 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
+                  className="flex items-center gap-4 md:gap-6 p-4 md:p-5 bg-white rounded-2xl shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.12)] transition-all duration-300 border-2 border-gray-200 hover:border-[#2B9EB3]/30 group"
                 >
                   <div className="flex-shrink-0 w-16 h-18 md:w-20 md:h-22 bg-gradient-to-br from-[#1a3a4a] to-[#0d2530] rounded-xl flex flex-col items-center justify-center text-white shadow-md group-hover:shadow-lg transition-shadow">
                     <span className="text-[10px] md:text-xs font-medium tracking-wider opacity-80">
