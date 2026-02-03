@@ -74,6 +74,47 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "www.beneluxgaa.com" }],
           destination: "/demo/benelux-gaa/:path*",
         },
+        // Benelux GAA custom domain
+        {
+          source: "/",
+          has: [
+            {
+              type: "host",
+              value: "beneluxgaa.com",
+            },
+          ],
+          destination: "/demo/benelux-gaa",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "host",
+              value: "www.beneluxgaa.com",
+            },
+          ],
+          destination: "/demo/benelux-gaa",
+        },
+        {
+          source: "/:path((?!demo|api|_next).*)",
+          has: [
+            {
+              type: "host",
+              value: "beneluxgaa.com",
+            },
+          ],
+          destination: "/demo/benelux-gaa/:path",
+        },
+        {
+          source: "/:path((?!demo|api|_next).*)",
+          has: [
+            {
+              type: "host",
+              value: "www.beneluxgaa.com",
+            },
+          ],
+          destination: "/demo/benelux-gaa/:path",
+        },
       ],
     };
   },
