@@ -45,6 +45,47 @@ const nextConfig: NextConfig = {
           ],
           destination: "/demo/rome-hibernia/:path*",
         },
+        // Rome Hibernia GAA Italian domain
+        {
+          source: "/",
+          has: [
+            {
+              type: "host",
+              value: "romehiberniagaa.it",
+            },
+          ],
+          destination: "/demo/rome-hibernia",
+        },
+        {
+          source: "/",
+          has: [
+            {
+              type: "host",
+              value: "www.romehiberniagaa.it",
+            },
+          ],
+          destination: "/demo/rome-hibernia",
+        },
+        {
+          source: "/:path*",
+          has: [
+            {
+              type: "host",
+              value: "romehiberniagaa.it",
+            },
+          ],
+          destination: "/demo/rome-hibernia/:path*",
+        },
+        {
+          source: "/:path*",
+          has: [
+            {
+              type: "host",
+              value: "www.romehiberniagaa.it",
+            },
+          ],
+          destination: "/demo/rome-hibernia/:path*",
+        },
         // Benelux GAA standalone site (custom domain)
         {
           source: "/",

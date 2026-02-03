@@ -7,6 +7,7 @@ import NewsManager from "../components/NewsManager";
 import GalleryManager from "../components/GalleryManager";
 import HistorySubmissions from "../components/HistorySubmissions";
 import { Lock } from "lucide-react";
+import InternalLink from "../components/InternalLink";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -43,12 +44,12 @@ export default function AdminPage() {
               You need to be logged in as a site administrator to access this
               page.
             </p>
-            <a
-              href="/auth/login"
+            <InternalLink
+              href="/login"
               className="inline-flex items-center justify-center px-6 py-3 bg-[#1a3a4a] text-white rounded-lg font-semibold hover:bg-[#0d2530] transition-colors"
             >
               Sign In
-            </a>
+            </InternalLink>
           </div>
         </main>
         <Footer />
