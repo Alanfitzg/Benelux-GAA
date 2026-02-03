@@ -8,6 +8,7 @@ import NewsletterForm from "./NewsletterForm";
 import ImageCarousel from "./ImageCarousel";
 import ClubsCarousel from "./ClubsCarousel";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
+import { getAssetUrl } from "../constants";
 
 interface NewsArticle {
   id: string;
@@ -30,7 +31,7 @@ const upcomingFixtures = [
     venue: "Leuven",
     code: "Football",
     hostClub: "Earls of Leuven",
-    hostCrest: "/club-crests/earls of leuven.png",
+    hostCrest: "/club-crests/earls-of-leuven.png",
   },
   {
     date: "2026-02-28",
@@ -38,7 +39,7 @@ const upcomingFixtures = [
     venue: "Den Haag",
     code: "Invitational",
     hostClub: "CLG Den Haag",
-    hostCrest: "/club-crests/clg den haag.png",
+    hostCrest: "/club-crests/clg-den-haag.png",
   },
   {
     date: "2026-03-14",
@@ -377,7 +378,7 @@ export default function HomeContent() {
                   </div>
                   <div className="hidden md:block flex-shrink-0 w-14 h-14">
                     <Image
-                      src={fixture.hostCrest}
+                      src={getAssetUrl(fixture.hostCrest)}
                       alt={fixture.hostClub}
                       width={56}
                       height={56}
@@ -387,7 +388,7 @@ export default function HomeContent() {
                   </div>
                   <div className="md:hidden flex-shrink-0 w-10 h-10">
                     <Image
-                      src={fixture.hostCrest}
+                      src={getAssetUrl(fixture.hostCrest)}
                       alt={fixture.hostClub}
                       width={40}
                       height={40}

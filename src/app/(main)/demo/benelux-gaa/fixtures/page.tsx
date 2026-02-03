@@ -6,21 +6,22 @@ import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
 import Image from "next/image";
 import { Calendar, MapPin, Clock, AlertCircle } from "lucide-react";
+import { getAssetUrl } from "../constants";
 
 const venueToClub: Record<string, { name: string; crest: string }> = {
   Leuven: {
     name: "Earls of Leuven",
-    crest: "/club-crests/earls of leuven.png",
+    crest: "/club-crests/earls-of-leuven.png",
   },
-  "Den Haag": { name: "CLG Den Haag", crest: "/club-crests/clg den haag.png" },
-  "The Hague": { name: "CLG Den Haag", crest: "/club-crests/clg den haag.png" },
+  "Den Haag": { name: "CLG Den Haag", crest: "/club-crests/clg-den-haag.png" },
+  "The Hague": { name: "CLG Den Haag", crest: "/club-crests/clg-den-haag.png" },
   Cologne: {
     name: "Cologne Celtics",
     crest: "/club-crests/logo-cologne_celtics.png",
   },
   Maastricht: {
     name: "Maastricht Gaels",
-    crest: "/club-crests/maastricht gaels - red round - cropped.png",
+    crest: "/club-crests/maastricht-gaels.png",
   },
   Eindhoven: {
     name: "Eindhoven Shamrocks",
@@ -518,7 +519,7 @@ export default function FixturesPage() {
                       {venueToClub[fixture.venue] && (
                         <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 relative">
                           <Image
-                            src={venueToClub[fixture.venue].crest}
+                            src={getAssetUrl(venueToClub[fixture.venue].crest)}
                             alt={venueToClub[fixture.venue].name}
                             fill
                             className="object-contain"

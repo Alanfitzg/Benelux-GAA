@@ -7,6 +7,7 @@ import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import InternalLink from "../components/InternalLink";
+import { getAssetUrl } from "../constants";
 import { toast } from "react-hot-toast";
 
 function LoginForm() {
@@ -58,7 +59,7 @@ function LoginForm() {
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
             <Image
-              src="/benelux-gaa-crest.png"
+              src={getAssetUrl("/benelux-gaa-crest.png")}
               alt="Benelux GAA"
               width={80}
               height={80}

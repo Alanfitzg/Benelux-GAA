@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import { getAssetUrl } from "../constants";
 
 interface Club {
   id: string;
@@ -118,7 +119,7 @@ export default function BeneluxClubsMap({
       markerEl.style.cursor = "pointer";
 
       if (club.imageUrl) {
-        markerEl.style.backgroundImage = `url(${club.imageUrl})`;
+        markerEl.style.backgroundImage = `url(${getAssetUrl(club.imageUrl)})`;
       } else {
         markerEl.innerHTML = `<span style="font-size: 20px; display: flex; justify-content: center; align-items: center; height: 100%;">${countryFlags[club.countryCode] || "🏐"}</span>`;
       }

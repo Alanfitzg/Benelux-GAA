@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Loader2, ArrowRight } from "lucide-react";
 import InternalLink from "./InternalLink";
+import { getAssetUrl } from "../constants";
 
 interface Club {
   id: string;
@@ -146,7 +147,7 @@ export default function ClubsCarousel() {
                   <div className="aspect-square flex items-center justify-center mb-2">
                     {club.imageUrl ? (
                       <Image
-                        src={club.imageUrl}
+                        src={getAssetUrl(club.imageUrl)}
                         alt={`${club.name} crest`}
                         width={72}
                         height={72}
@@ -177,7 +178,7 @@ export default function ClubsCarousel() {
                   <div className="h-44 flex items-center justify-center mb-5">
                     {club.imageUrl ? (
                       <Image
-                        src={club.imageUrl}
+                        src={getAssetUrl(club.imageUrl)}
                         alt={`${club.name} crest`}
                         width={160}
                         height={160}

@@ -19,6 +19,7 @@ import {
   Loader2,
   CheckCircle,
 } from "lucide-react";
+import { getAssetUrl } from "../constants";
 
 interface TimelineEvent {
   year: number;
@@ -68,7 +69,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg den haag.png"],
+    clubCrests: ["/club-crests/clg-den-haag.png"],
   },
   {
     year: 1978,
@@ -89,7 +90,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://gaelicgameseurope.com/2024/03/11/the-5-leagues-of-europe-the-benelux/",
     sourceName: "Gaelic Games Europe",
-    clubCrests: ["/club-crests/ec brussels - youth.png"],
+    clubCrests: ["/club-crests/ec-brussels-youth.png"],
   },
   {
     year: 1999,
@@ -120,7 +121,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://brussels-gaa.com/about/",
     sourceName: "Brussels Craobh Rua",
-    clubCrests: ["/club-crests/brussels - an craobh rua.png"],
+    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
   },
   {
     year: 2004,
@@ -131,7 +132,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
     sourceName: "GAA.ie",
-    clubCrests: ["/club-crests/maastricht gaels - white round - cropped.png"],
+    clubCrests: ["/club-crests/maastricht-gaels.png"],
   },
   {
     year: 2007,
@@ -149,7 +150,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://www.balls.ie/gaa/florina-tobon-belgium-gaa-533601",
     sourceName: "Balls.ie",
-    clubCrests: ["/club-crests/brussels - an craobh rua.png"],
+    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
   },
   {
     year: 2012,
@@ -167,7 +168,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "award",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg den haag.png"],
+    clubCrests: ["/club-crests/clg-den-haag.png"],
   },
   {
     year: 2013,
@@ -223,7 +224,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "award",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg den haag.png"],
+    clubCrests: ["/club-crests/clg-den-haag.png"],
   },
   {
     year: 2020,
@@ -241,7 +242,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
     sourceName: "GAA.ie",
-    clubCrests: ["/club-crests/maastricht gaels - white round - cropped.png"],
+    clubCrests: ["/club-crests/maastricht-gaels.png"],
   },
   {
     year: 2021,
@@ -249,7 +250,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Nijmegen Gaelic Football Club is established in the Netherlands, becoming one of the newest clubs in the region.",
     category: "founding",
-    clubCrests: ["/club-crests/nijmegen gfc.png"],
+    clubCrests: ["/club-crests/nijmegen-gfc.png"],
   },
   {
     year: 2022,
@@ -286,7 +287,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://brussels-gaa.com/about/",
     sourceName: "Brussels Craobh Rua",
-    clubCrests: ["/club-crests/brussels - an craobh rua.png"],
+    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
   },
   {
     year: 2025,
@@ -505,7 +506,7 @@ export default function TimelinePage() {
                                 className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gray-50 border-2 border-gray-200 flex items-center justify-center overflow-hidden shadow-sm"
                               >
                                 <Image
-                                  src={crest}
+                                  src={getAssetUrl(crest)}
                                   alt="Club crest"
                                   width={48}
                                   height={48}

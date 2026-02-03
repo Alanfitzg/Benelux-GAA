@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
 import { MapPin, ExternalLink, Loader2, Calendar } from "lucide-react";
 import dynamic from "next/dynamic";
+import { getAssetUrl } from "../constants";
 
 const BeneluxClubsMap = dynamic(() => import("../components/BeneluxClubsMap"), {
   ssr: false,
@@ -224,7 +225,7 @@ export default function ClubsPage() {
                       <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
                         {club.imageUrl ? (
                           <Image
-                            src={club.imageUrl}
+                            src={getAssetUrl(club.imageUrl)}
                             alt={`${club.name} crest`}
                             width={64}
                             height={64}
@@ -346,7 +347,7 @@ export default function ClubsPage() {
                       <div className="w-20 h-20 flex-shrink-0 flex items-center justify-center bg-gray-50 rounded-xl p-2 group-hover:scale-105 transition-transform duration-300">
                         {club.imageUrl ? (
                           <Image
-                            src={club.imageUrl}
+                            src={getAssetUrl(club.imageUrl)}
                             alt={`${club.name} crest`}
                             width={72}
                             height={72}

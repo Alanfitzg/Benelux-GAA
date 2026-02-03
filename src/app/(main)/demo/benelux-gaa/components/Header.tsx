@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useBasePath } from "../hooks/useBasePath";
+import { getAssetUrl } from "../constants";
 
 const baseNavLinks = [
   { name: "Home", href: "" },
@@ -59,7 +60,7 @@ export default function Header({ currentPage }: HeaderProps) {
           </span>
           <Link href={homeHref}>
             <Image
-              src="/benelux-gaa-crest.png"
+              src={getAssetUrl("/benelux-gaa-crest.png")}
               alt="Benelux GAA"
               width={60}
               height={60}
@@ -82,7 +83,7 @@ export default function Header({ currentPage }: HeaderProps) {
         <div className="hidden lg:flex items-center justify-between h-20">
           <Link href={homeHref} className="flex items-center">
             <Image
-              src="/benelux-gaa-crest.png"
+              src={getAssetUrl("/benelux-gaa-crest.png")}
               alt="Benelux GAA"
               width={80}
               height={80}
@@ -165,7 +166,7 @@ export default function Header({ currentPage }: HeaderProps) {
             </span>
             <Link href={homeHref} onClick={() => setMobileMenuOpen(false)}>
               <Image
-                src="/benelux-gaa-crest.png"
+                src={getAssetUrl("/benelux-gaa-crest.png")}
                 alt="Benelux GAA"
                 width={60}
                 height={60}

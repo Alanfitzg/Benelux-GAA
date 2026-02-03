@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Instagram, Facebook, Youtube, Twitter } from "lucide-react";
 import InternalLink from "./InternalLink";
+import { getAssetUrl } from "../constants";
 
 const CLUB_ID = "benelux-gaa";
 
@@ -96,7 +97,7 @@ export default function Footer() {
           <div className="text-center sm:text-left">
             <div className="flex justify-center sm:justify-start mb-4">
               <Image
-                src="/benelux-gaa-crest.png"
+                src={getAssetUrl("/benelux-gaa-crest.png")}
                 alt="Benelux GAA"
                 width={80}
                 height={80}
