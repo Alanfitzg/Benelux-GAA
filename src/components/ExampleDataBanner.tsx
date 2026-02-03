@@ -9,8 +9,11 @@ export default function ExampleDataPopup() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Don't show on Rome Hibernia pages (standalone club site)
-    if (pathname?.startsWith("/demo/rome-hibernia")) {
+    // Don't show on standalone club sites
+    if (
+      pathname?.startsWith("/demo/rome-hibernia") ||
+      pathname?.startsWith("/demo/benelux-gaa")
+    ) {
       return;
     }
 
