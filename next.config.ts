@@ -88,24 +88,24 @@ const nextConfig: NextConfig = {
           destination: "/demo/benelux-gaa",
         },
         {
-          source: "/:path*",
+          source: "/:path((?!demo|api|_next).*)",
           has: [
             {
               type: "host",
               value: "beneluxgaa.com",
             },
           ],
-          destination: "/demo/benelux-gaa/:path*",
+          destination: "/demo/benelux-gaa/:path",
         },
         {
-          source: "/:path*",
+          source: "/:path((?!demo|api|_next).*)",
           has: [
             {
               type: "host",
               value: "www.beneluxgaa.com",
             },
           ],
-          destination: "/demo/benelux-gaa/:path*",
+          destination: "/demo/benelux-gaa/:path",
         },
       ],
     };
