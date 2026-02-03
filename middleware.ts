@@ -9,8 +9,8 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const host = request.headers.get("host") || "";
 
-  // Domain-based routing: gge-social.com serves Rome Hibernia site
-  if (host.includes("gge-social.com")) {
+  // Domain-based routing: Rome Hibernia sites
+  if (host.includes("gge-social.com") || host.includes("romehiberniagaa.it")) {
     // If not already on the rome-hibernia path, rewrite to it
     if (
       !path.startsWith("/demo/rome-hibernia") &&
@@ -21,6 +21,20 @@ export async function middleware(request: NextRequest) {
       // For root path, go to /demo/rome-hibernia, otherwise append the path
       url.pathname =
         path === "/" ? "/demo/rome-hibernia" : `/demo/rome-hibernia${path}`;
+      return NextResponse.rewrite(url);
+    }
+  }
+
+  // Domain-based routing: Benelux GAA site
+  if (host.includes("beneluxgaa.com")) {
+    if (
+      !path.startsWith("/demo/benelux-gaa") &&
+      !path.startsWith("/api") &&
+      !path.startsWith("/_next")
+    ) {
+      const url = request.nextUrl.clone();
+      url.pathname =
+        path === "/" ? "/demo/benelux-gaa" : `/demo/benelux-gaa${path}`;
       return NextResponse.rewrite(url);
     }
   }
