@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return {
       beforeFiles: [
-        // Root path rewrites must be beforeFiles to work correctly
+        // Domain-based rewrites for club sites
         // gge-social.com
         {
           source: "/",
