@@ -45,6 +45,27 @@ const nextConfig: NextConfig = {
           ],
           destination: "/demo/rome-hibernia/:path*",
         },
+        // Benelux GAA standalone site
+        {
+          source: "/",
+          has: [
+            {
+              type: "host",
+              value: "benelux-gaa.vercel.app",
+            },
+          ],
+          destination: "/demo/benelux-gaa",
+        },
+        {
+          source: "/:path*",
+          has: [
+            {
+              type: "host",
+              value: "benelux-gaa.vercel.app",
+            },
+          ],
+          destination: "/demo/benelux-gaa/:path*",
+        },
       ],
     };
   },
