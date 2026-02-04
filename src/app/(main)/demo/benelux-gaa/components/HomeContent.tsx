@@ -99,7 +99,7 @@ export default function HomeContent() {
       <section className="py-8 md:py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-6 md:mb-10">
-            <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2 md:mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-gray-900 mb-2 md:mb-4">
               <EditableText
                 pageKey="home"
                 contentKey="games_title"
