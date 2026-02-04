@@ -521,7 +521,7 @@ const timelineEvents: TimelineEvent[] = [
     month: "November",
     title: "John Murphy Completes 5-Year Term as European Chair",
     description:
-      "John Murphy completes his 5-year term as Chairperson of Gaelic Games Europe, having led the organisation through a period of significant growth and development across the continent.",
+      "John Murphy completes his 5-year term as Chairperson of Gaelic Games Europe, having overseen a 40% growth in numbers and led the organisation through a period of significant development across the continent.",
     category: "milestone",
   },
   {
