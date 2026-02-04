@@ -2,11 +2,18 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Instagram, Facebook, Youtube, Twitter } from "lucide-react";
+import { Instagram, Facebook, Youtube } from "lucide-react";
 import InternalLink from "./InternalLink";
 import { getAssetUrl } from "../constants";
 
 const CLUB_ID = "benelux-gaa";
+
+// X (Twitter) icon
+const XIcon = ({ size = 18 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 interface SocialLinks {
   instagram: string;
@@ -21,16 +28,6 @@ const defaultSocialLinks: SocialLinks = {
   youtube: "",
   twitter: "https://twitter.com/BeneluxGAA",
 };
-
-const memberClubs = [
-  "Amsterdam GAA",
-  "Antwerp GAA",
-  "Belgium GAA",
-  "Brussels GAA",
-  "Den Haag GAA",
-  "Luxembourg GAA",
-  "Rotterdam GAA",
-];
 
 export default function Footer() {
   const [socialLinks, setSocialLinks] =
@@ -74,16 +71,16 @@ export default function Footer() {
       className: "bg-[#1877f2]",
     },
     {
+      key: "twitter",
+      href: socialLinks.twitter,
+      icon: XIcon,
+      className: "bg-black",
+    },
+    {
       key: "youtube",
       href: socialLinks.youtube,
       icon: Youtube,
       className: "bg-[#ff0000]",
-    },
-    {
-      key: "twitter",
-      href: socialLinks.twitter,
-      icon: Twitter,
-      className: "bg-black",
     },
   ];
 
@@ -91,144 +88,46 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#0d1f28] text-white relative z-10">
-      <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Logo & About */}
-          <div className="text-center sm:text-left">
-            <div className="flex justify-center sm:justify-start mb-4">
-              <Image
-                src={getAssetUrl("/benelux-gaa-crest.png")}
-                alt="Benelux GAA"
-                width={80}
-                height={80}
-                className="object-contain"
-                unoptimized
-              />
+      <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8">
+        <div className="flex flex-col items-center gap-4">
+          {/* Logo */}
+          <InternalLink href="/">
+            <Image
+              src={getAssetUrl("/benelux-gaa-crest.png")}
+              alt="Benelux GAA"
+              width={60}
+              height={60}
+              className="object-contain"
+              unoptimized
+            />
+          </InternalLink>
+
+          {/* Social Icons */}
+          {activeSocialButtons.length > 0 && (
+            <div className="flex gap-3">
+              {activeSocialButtons.map((btn) => {
+                const Icon = btn.icon;
+                return (
+                  <a
+                    key={btn.key}
+                    href={btn.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-9 h-9 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity ${btn.className || ""}`}
+                    style={btn.style}
+                  >
+                    <Icon size={16} />
+                  </a>
+                );
+              })}
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Promoting Gaelic Games across Belgium, Netherlands, and Luxembourg
-              since 2022.
-            </p>
-          </div>
+          )}
 
-          {/* Member Clubs */}
-          <div className="text-center sm:text-left">
-            <h4 className="font-semibold text-[#2B9EB3] mb-4 uppercase text-sm tracking-wider">
-              Member Clubs
-            </h4>
-            <ul className="space-y-2">
-              {memberClubs.slice(0, 5).map((club) => (
-                <li key={club}>
-                  <span className="text-gray-400 text-sm hover:text-white transition-colors cursor-pointer">
-                    {club}
-                  </span>
-                </li>
-              ))}
-              <li>
-                <InternalLink
-                  href="/clubs"
-                  className="text-[#2B9EB3] text-sm hover:text-white transition-colors"
-                >
-                  View all clubs →
-                </InternalLink>
-              </li>
-            </ul>
-          </div>
-
-          {/* Quick Links */}
-          <div className="text-center sm:text-left">
-            <h4 className="font-semibold text-[#2B9EB3] mb-4 uppercase text-sm tracking-wider">
-              Quick Links
-            </h4>
-            <ul className="space-y-2">
-              <li>
-                <InternalLink
-                  href="/fixtures"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Fixtures
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/standings"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Standings
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/roll-of-honor"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Roll of Honor
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/timeline"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Timeline
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/faq"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  What are Gaelic Games?
-                </InternalLink>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact & Social */}
-          <div className="text-center sm:text-left">
-            <h4 className="font-semibold text-[#2B9EB3] mb-4 uppercase text-sm tracking-wider">
-              Connect With Us
-            </h4>
-            {activeSocialButtons.length > 0 && (
-              <div className="flex gap-3 justify-center sm:justify-start mb-4">
-                {activeSocialButtons.map((btn) => {
-                  const Icon = btn.icon;
-                  return (
-                    <a
-                      key={btn.key}
-                      href={btn.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-10 h-10 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity ${btn.className || ""}`}
-                      style={btn.style}
-                    >
-                      <Icon size={18} className="text-white" />
-                    </a>
-                  );
-                })}
-              </div>
-            )}
-            <p className="text-gray-400 text-sm">
-              Email us at{" "}
-              <a
-                href="mailto:secretary.benelux.europe@gaa.ie"
-                className="text-[#2B9EB3] hover:text-white transition-colors"
-              >
-                secretary.benelux.europe@gaa.ie
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Bar */}
-      <div className="border-t border-[#2B9EB3]/20 py-4">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Benelux GAA. All rights reserved.
-          </p>
-          <div className="flex items-center gap-4">
-            <p className="text-gray-500 text-sm">
+          {/* Bottom Line */}
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-sm text-gray-500 pt-2">
+            <span>&copy; {new Date().getFullYear()} Benelux GAA</span>
+            <span className="hidden sm:inline text-gray-700">•</span>
+            <span>
               Powered by{" "}
               <InternalLink
                 href="/powered-by"
@@ -236,11 +135,11 @@ export default function Footer() {
               >
                 PlayAway
               </InternalLink>
-            </p>
+            </span>
             <span className="hidden sm:inline text-gray-700">•</span>
             <InternalLink
               href="/admin"
-              className="hidden sm:inline text-gray-600 hover:text-gray-400 text-sm transition-colors"
+              className="text-gray-600 hover:text-gray-400 transition-colors"
             >
               Admin
             </InternalLink>

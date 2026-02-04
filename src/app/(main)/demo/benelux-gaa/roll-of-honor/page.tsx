@@ -594,7 +594,7 @@ export default function RollOfHonorPage() {
           <div className="text-center mb-6 sm:mb-8">
             <Trophy
               size={32}
-              className="mx-auto text-[#2B9EB3] mb-2 sm:mb-3 sm:w-10 sm:h-10"
+              className="hidden sm:block mx-auto text-[#2B9EB3] mb-2 sm:mb-3 sm:w-10 sm:h-10"
             />
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
               <EditableText
