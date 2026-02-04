@@ -55,23 +55,23 @@ export default function Header({ currentPage }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-4">
         {/* Mobile Header */}
         <div className="flex lg:hidden items-center justify-between h-16">
-          <span className="text-white font-bold text-sm tracking-widest w-24">
+          <span className="text-white font-bold text-base tracking-wider">
             BENELUX GAA
           </span>
-          <Link href={homeHref}>
-            <Image
-              src={getAssetUrl("/benelux-gaa-crest.png")}
-              alt="Benelux GAA"
-              width={72}
-              height={72}
-              className="object-contain w-[72px] h-[72px] drop-shadow-md"
-              unoptimized
-            />
-          </Link>
-          <div className="w-24 flex justify-end">
+          <div className="flex items-center gap-3">
+            <Link href={homeHref} className="flex-shrink-0 flex items-center">
+              <Image
+                src={getAssetUrl("/benelux-gaa-crest.png")}
+                alt="Benelux GAA"
+                width={56}
+                height={56}
+                className="object-contain w-14 h-14 drop-shadow-md"
+                unoptimized
+              />
+            </Link>
             <button
               type="button"
-              className="text-white"
+              className="text-white flex items-center"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -161,23 +161,27 @@ export default function Header({ currentPage }: HeaderProps) {
       {mobileMenuOpen && (
         <div className="lg:hidden fixed inset-0 bg-[#1a3a4a] z-40">
           <div className="flex items-center justify-between px-4 h-16">
-            <span className="text-white font-bold text-sm tracking-widest w-24">
+            <span className="text-white font-bold text-base tracking-wider">
               BENELUX GAA
             </span>
-            <Link href={homeHref} onClick={() => setMobileMenuOpen(false)}>
-              <Image
-                src={getAssetUrl("/benelux-gaa-crest.png")}
-                alt="Benelux GAA"
-                width={72}
-                height={72}
-                className="object-contain w-[72px] h-[72px] drop-shadow-md"
-                unoptimized
-              />
-            </Link>
-            <div className="w-24 flex justify-end">
+            <div className="flex items-center gap-3">
+              <Link
+                href={homeHref}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-shrink-0 flex items-center"
+              >
+                <Image
+                  src={getAssetUrl("/benelux-gaa-crest.png")}
+                  alt="Benelux GAA"
+                  width={56}
+                  height={56}
+                  className="object-contain w-14 h-14 drop-shadow-md"
+                  unoptimized
+                />
+              </Link>
               <button
                 type="button"
-                className="text-white"
+                className="text-white flex items-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <X size={24} />
