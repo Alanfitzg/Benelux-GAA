@@ -54,8 +54,7 @@ const sportCodes = [
   { code: "all", name: "All Sports", short: "All" },
   { code: "Mens Gaelic Football", name: "Mens Football", short: "Football" },
   { code: "LGFA", name: "LGFA", short: "LGFA" },
-  { code: "Hurling", name: "Hurling", short: "Hurling" },
-  { code: "Camogie", name: "Camogie", short: "Camogie" },
+  { code: "Hurling", name: "Hurling & Camogie", short: "Hurling" },
   { code: "Youth", name: "Youth", short: "Youth" },
 ];
 
@@ -63,11 +62,12 @@ function getSportLabel(sportCode: string): string | null {
   const sportMap: Record<string, string> = {
     "Mens Gaelic Football": "Football",
     LGFA: "LGFA",
-    Hurling: "Hurling",
-    Camogie: "Camogie",
+    Hurling: "Hurling/Camogie",
+    Camogie: "", // Skip - shown with Hurling
     Youth: "Youth",
   };
-  return sportMap[sportCode] || null;
+  const label = sportMap[sportCode];
+  return label === "" ? null : label || null;
 }
 
 export default function ClubsPage() {

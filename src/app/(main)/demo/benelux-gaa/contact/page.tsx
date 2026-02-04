@@ -8,13 +8,30 @@ import {
   Instagram,
   Facebook,
   Youtube,
-  Twitter,
   Mail,
   MapPin,
   Send,
   Loader2,
   CheckCircle,
 } from "lucide-react";
+
+const XIcon = ({
+  size = 20,
+  className = "",
+}: {
+  size?: number;
+  className?: string;
+}) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+  >
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
 
 const CLUB_ID = "benelux-gaa";
 
@@ -141,8 +158,8 @@ export default function ContactPage() {
     {
       key: "twitter",
       href: socialLinks.twitter,
-      icon: Twitter,
-      label: "Twitter",
+      icon: XIcon,
+      label: "X",
       className: "bg-black",
     },
     {
@@ -160,11 +177,11 @@ export default function ContactPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Contact" />
 
-      <main className="flex-1 pt-24 pb-12 sm:pt-28 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-20 pb-8 sm:pt-28 sm:pb-16 md:pt-32">
         <div className="max-w-4xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          {/* Header - Hidden on mobile */}
+          <div className="hidden sm:block text-center mb-8 sm:mb-12">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               <EditableText
                 pageKey="contact"
                 contentKey="title"
@@ -172,7 +189,7 @@ export default function ContactPage() {
                 maxLength={30}
               />
             </h1>
-            <p className="text-gray-600 text-lg max-w-xl mx-auto">
+            <p className="text-gray-600 text-base sm:text-lg max-w-xl mx-auto">
               <EditableText
                 pageKey="contact"
                 contentKey="subtitle"
@@ -182,15 +199,15 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-10">
             {/* Contact Info */}
             <div>
               {/* Social Media */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              <div className="mb-4 sm:mb-8">
+                <h2 className="text-base sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-4">
                   Connect With Us
                 </h2>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {activeSocialButtons.map((btn) => {
                     const Icon = btn.icon;
                     return (
@@ -199,11 +216,12 @@ export default function ContactPage() {
                         href={btn.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity ${btn.className || ""}`}
+                        className={`flex items-center justify-center gap-2 p-2.5 sm:px-4 sm:py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity ${btn.className || ""}`}
                         style={btn.style}
+                        title={btn.label}
                       >
-                        <Icon size={18} />
-                        <span>{btn.label}</span>
+                        <Icon size={20} className="sm:w-[18px] sm:h-[18px]" />
+                        <span className="hidden sm:inline">{btn.label}</span>
                       </a>
                     );
                   })}
@@ -211,43 +229,51 @@ export default function ContactPage() {
               </div>
 
               {/* Email */}
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              <div className="mb-4 sm:mb-8">
+                <h2 className="text-base sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-4">
                   Email Us
                 </h2>
                 <a
                   href="mailto:secretary.benelux.europe@gaa.ie"
                   className="inline-flex items-center gap-2 text-[#2B9EB3] hover:text-[#1a3a4a] transition-colors"
                 >
-                  <Mail size={20} />
-                  <span className="text-lg">
+                  <Mail size={18} className="flex-shrink-0 sm:w-5 sm:h-5" />
+                  <span className="text-sm sm:text-lg break-all">
                     secretary.benelux.europe@gaa.ie
                   </span>
                 </a>
               </div>
 
-              {/* Region Info */}
-              <div className="bg-[#1a3a4a] rounded-xl p-6 text-white">
-                <div className="flex items-center gap-2 mb-4">
-                  <MapPin size={20} className="text-[#2B9EB3]" />
-                  <h2 className="text-lg font-semibold">Our Region</h2>
+              {/* Region Info - Hidden on mobile */}
+              <div className="hidden sm:block bg-[#1a3a4a] rounded-xl p-4 sm:p-6 text-white">
+                <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                  <MapPin size={18} className="text-[#2B9EB3] sm:w-5 sm:h-5" />
+                  <h2 className="text-base sm:text-lg font-semibold">
+                    Our Region
+                  </h2>
                 </div>
-                <p className="text-gray-300 leading-relaxed mb-4">
+                <p className="text-gray-300 leading-relaxed mb-4 text-sm sm:text-base">
                   Benelux GAA covers Belgium, Netherlands, and Luxembourg with
                   16 clubs and over 1,000 members across 4 countries.
                 </p>
-                <div className="grid grid-cols-3 gap-4 text-center">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 text-center">
                   <div>
-                    <div className="text-2xl mb-1">🇧🇪</div>
-                    <div className="text-sm text-gray-400">Belgium</div>
+                    <div className="text-xl sm:text-2xl mb-1">🇧🇪</div>
+                    <div className="text-xs sm:text-sm text-gray-400">
+                      Belgium
+                    </div>
                   </div>
                   <div>
-                    <div className="text-2xl mb-1">🇳🇱</div>
-                    <div className="text-sm text-gray-400">Netherlands</div>
+                    <div className="text-xl sm:text-2xl mb-1">🇳🇱</div>
+                    <div className="text-xs sm:text-sm text-gray-400">
+                      Netherlands
+                    </div>
                   </div>
                   <div>
-                    <div className="text-2xl mb-1">🇱🇺</div>
-                    <div className="text-sm text-gray-400">Luxembourg</div>
+                    <div className="text-xl sm:text-2xl mb-1">🇱🇺</div>
+                    <div className="text-xs sm:text-sm text-gray-400">
+                      Luxembourg
+                    </div>
                   </div>
                 </div>
               </div>
@@ -279,9 +305,9 @@ export default function ContactPage() {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="bg-white rounded-xl p-6 md:p-8 border-2 border-gray-200 shadow-lg shadow-gray-200/50"
+                  className="bg-white rounded-xl p-4 sm:p-6 md:p-8 border-2 border-gray-200 shadow-lg shadow-gray-200/50"
                 >
-                  <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
                     Send us a Message
                   </h2>
 

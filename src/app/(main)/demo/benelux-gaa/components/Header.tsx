@@ -62,9 +62,9 @@ export default function Header({ currentPage }: HeaderProps) {
             <Image
               src={getAssetUrl("/benelux-gaa-crest.png")}
               alt="Benelux GAA"
-              width={60}
-              height={60}
-              className="object-contain w-[60px] h-[60px]"
+              width={72}
+              height={72}
+              className="object-contain w-[72px] h-[72px] drop-shadow-md"
               unoptimized
             />
           </Link>
@@ -168,9 +168,9 @@ export default function Header({ currentPage }: HeaderProps) {
               <Image
                 src={getAssetUrl("/benelux-gaa-crest.png")}
                 alt="Benelux GAA"
-                width={60}
-                height={60}
-                className="object-contain w-[60px] h-[60px]"
+                width={72}
+                height={72}
+                className="object-contain w-[72px] h-[72px] drop-shadow-md"
                 unoptimized
               />
             </Link>

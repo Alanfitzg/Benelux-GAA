@@ -4,7 +4,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
-import { Trophy, Medal } from "lucide-react";
+import { Trophy, Medal, List, BarChart3 } from "lucide-react";
 
 interface HonorRecord {
   year: number;
@@ -472,10 +472,65 @@ const sportConfig: Record<SportCategory, SportConfig> = {
   },
 };
 
+type ViewMode = "timeline" | "leaderboard";
+
+interface ClubStats {
+  name: string;
+  championships: number;
+  shields: number;
+  plates: number;
+  total: number;
+}
+
+function calculateLeaderboard(records: HonorRecord[]): ClubStats[] {
+  const clubMap = new Map<string, ClubStats>();
+
+  records.forEach((record) => {
+    if (record.notPlayed || !record.winner) return;
+
+    // Handle joint winners (split by "/")
+    const winners = record.winner.split("/").map((w) => w.trim());
+
+    winners.forEach((winner) => {
+      // Normalize club names (remove A/B suffixes for grouping)
+      const normalizedName = winner.replace(/\s+[AB]$/, "").trim();
+
+      if (!clubMap.has(normalizedName)) {
+        clubMap.set(normalizedName, {
+          name: normalizedName,
+          championships: 0,
+          shields: 0,
+          plates: 0,
+          total: 0,
+        });
+      }
+
+      const stats = clubMap.get(normalizedName)!;
+      if (record.competition === "Championship") {
+        stats.championships += 1;
+      } else if (record.competition === "Shield") {
+        stats.shields += 1;
+      } else if (record.competition === "Plate") {
+        stats.plates += 1;
+      }
+      stats.total += 1;
+    });
+  });
+
+  return Array.from(clubMap.values()).sort((a, b) => {
+    // Sort by championships first, then shields, then plates
+    if (b.championships !== a.championships)
+      return b.championships - a.championships;
+    if (b.shields !== a.shields) return b.shields - a.shields;
+    return b.plates - a.plates;
+  });
+}
+
 export default function RollOfHonorPage() {
   const [selectedSport, setSelectedSport] =
     useState<SportCategory>("mensFootball");
   const [selectedSize, setSelectedSize] = useState<TeamSize>("11s");
+  const [viewMode, setViewMode] = useState<ViewMode>("timeline");
 
   const currentSportConfig = sportConfig[selectedSport];
   const availableSizes = currentSportConfig.availableSizes;
@@ -486,6 +541,9 @@ export default function RollOfHonorPage() {
     : availableSizes[0];
 
   const currentRecords = currentSportConfig.records[effectiveSize] || [];
+
+  // Calculate leaderboard stats
+  const leaderboardStats = calculateLeaderboard(currentRecords);
 
   // Group records by year
   const groupedByYear: Record<number, HonorRecord[]> = {};
@@ -558,69 +616,101 @@ export default function RollOfHonorPage() {
 
           {/* Sport & Size Selectors */}
           <div className="mb-6 sm:mb-8">
-            <div className="flex justify-center gap-3">
-              {/* Sport Category Dropdown */}
-              <div className="relative">
-                <select
-                  value={selectedSport}
-                  onChange={(e) =>
-                    setSelectedSport(e.target.value as SportCategory)
-                  }
-                  className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[160px]"
-                >
-                  {(Object.keys(sportConfig) as SportCategory[]).map(
-                    (sport) => (
-                      <option key={sport} value={sport}>
-                        {sportConfig[sport].label}
-                      </option>
-                    )
-                  )}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex justify-center gap-3">
+                {/* Sport Category Dropdown */}
+                <div className="relative">
+                  <select
+                    value={selectedSport}
+                    onChange={(e) =>
+                      setSelectedSport(e.target.value as SportCategory)
+                    }
+                    className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[160px]"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
+                    {(Object.keys(sportConfig) as SportCategory[]).map(
+                      (sport) => (
+                        <option key={sport} value={sport}>
+                          {sportConfig[sport].label}
+                        </option>
+                      )
+                    )}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Team Size Dropdown */}
+                <div className="relative">
+                  <select
+                    value={effectiveSize}
+                    onChange={(e) =>
+                      setSelectedSize(e.target.value as TeamSize)
+                    }
+                    className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[100px]"
+                  >
+                    {availableSizes.map((size) => (
+                      <option key={size} value={size}>
+                        {size === "7s" ? "7/9s" : size}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
 
-              {/* Team Size Dropdown */}
-              <div className="relative">
-                <select
-                  value={effectiveSize}
-                  onChange={(e) => setSelectedSize(e.target.value as TeamSize)}
-                  className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[100px]"
+              {/* View Mode Toggle */}
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("timeline")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                    viewMode === "timeline"
+                      ? "bg-white text-gray-900 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
                 >
-                  {availableSizes.map((size) => (
-                    <option key={size} value={size}>
-                      {size === "7s" ? "7/9s" : size}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-                  <svg
-                    className="h-4 w-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                </div>
+                  <List size={14} />
+                  <span>Timeline</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("leaderboard")}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-all ${
+                    viewMode === "leaderboard"
+                      ? "bg-white text-gray-900 shadow-sm"
+                      : "text-gray-500 hover:text-gray-700"
+                  }`}
+                >
+                  <BarChart3 size={14} />
+                  <span>Leaderboard</span>
+                </button>
               </div>
             </div>
           </div>
@@ -638,119 +728,208 @@ export default function RollOfHonorPage() {
             </div>
           </div>
 
-          {/* Records Table */}
-          <div className="bg-gray-50 rounded-xl overflow-hidden overflow-x-auto">
-            <table className="w-full min-w-[320px]">
-              <thead>
-                <tr className="bg-[#1a3a4a] text-white text-xs sm:text-sm">
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold w-14 sm:w-20">
-                    Year
-                  </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
-                    Competition
-                  </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
-                    Winner
-                  </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold hidden sm:table-cell">
-                    Runner-up
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {years.map((year, yearIdx) =>
-                  groupedByYear[year].map((record, recordIdx) => {
-                    const isFirstOfYear = recordIdx === 0;
-                    const rowCount = groupedByYear[year].length;
-
-                    return (
+          {viewMode === "leaderboard" ? (
+            <>
+              {/* Leaderboard View */}
+              <div className="bg-gray-50 rounded-xl overflow-hidden">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-[#1a3a4a] text-white text-xs sm:text-sm">
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center font-semibold w-10 sm:w-14">
+                        #
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
+                        Club
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center font-semibold">
+                        <Trophy size={14} className="inline text-yellow-400" />
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center font-semibold hidden sm:table-cell">
+                        Shield
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center font-semibold hidden sm:table-cell">
+                        Plate
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-center font-semibold">
+                        Total
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {leaderboardStats.map((club, idx) => (
                       <tr
-                        key={`${year}-${record.competition}-${recordIdx}`}
-                        className={`border-b border-gray-200 ${yearIdx % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+                        key={club.name}
+                        className={`border-b border-gray-200 ${idx % 2 === 0 ? "bg-white" : "bg-gray-50"} ${idx < 3 ? "font-medium" : ""}`}
                       >
-                        {isFirstOfYear && (
-                          <td
-                            rowSpan={rowCount}
-                            className="px-2 sm:px-4 py-2 sm:py-3 font-bold text-gray-900 align-top border-r border-gray-200 text-sm sm:text-base"
+                        <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-center">
+                          {idx === 0 && (
+                            <span className="text-yellow-500 font-bold">
+                              🥇
+                            </span>
+                          )}
+                          {idx === 1 && (
+                            <span className="text-gray-400 font-bold">🥈</span>
+                          )}
+                          {idx === 2 && (
+                            <span className="text-amber-600 font-bold">🥉</span>
+                          )}
+                          {idx > 2 && (
+                            <span className="text-gray-500 text-sm">
+                              {idx + 1}
+                            </span>
+                          )}
+                        </td>
+                        <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-gray-900 text-sm sm:text-base">
+                          {club.name}
+                        </td>
+                        <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-center">
+                          <span
+                            className={`font-bold text-sm sm:text-base ${club.championships > 0 ? "text-[#2B9EB3]" : "text-gray-300"}`}
                           >
-                            {year}
-                          </td>
-                        )}
-                        <td className="px-2 sm:px-4 py-2 sm:py-3">
-                          {record.notPlayed ? (
-                            <span className="text-gray-400 italic text-xs sm:text-sm">
-                              Not played (COVID-19)
-                            </span>
-                          ) : (
-                            <span
-                              className={`text-xs sm:text-sm font-medium ${
-                                record.competition === "Championship"
-                                  ? "text-[#1a3a4a]"
-                                  : "text-gray-500"
-                              }`}
-                            >
-                              {record.competition}
-                            </span>
-                          )}
+                            {club.championships}
+                          </span>
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3">
-                          {!record.notPlayed && record.winner && (
-                            <div className="flex items-center gap-1 sm:gap-2">
-                              {record.competition === "Championship" && (
-                                <Trophy
-                                  size={12}
-                                  className="text-yellow-500 flex-shrink-0 sm:w-[14px] sm:h-[14px]"
-                                />
-                              )}
-                              <span
-                                className={`font-medium text-xs sm:text-sm ${record.competition === "Championship" ? "text-gray-900" : "text-gray-700"}`}
-                              >
-                                {record.winner}
-                              </span>
-                            </div>
-                          )}
+                        <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-center text-gray-600 text-sm hidden sm:table-cell">
+                          {club.shields || "-"}
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-gray-500 text-xs sm:text-sm hidden sm:table-cell">
-                          {!record.notPlayed && record.runnerUp && (
-                            <div className="flex items-center gap-2">
-                              <Medal
-                                size={12}
-                                className="text-gray-400 flex-shrink-0"
-                              />
-                              <span>{record.runnerUp}</span>
-                            </div>
-                          )}
+                        <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-center text-gray-600 text-sm hidden sm:table-cell">
+                          {club.plates || "-"}
+                        </td>
+                        <td className="px-2 sm:px-4 py-2.5 sm:py-3 text-center font-semibold text-gray-900 text-sm sm:text-base">
+                          {club.total}
                         </td>
                       </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-          {/* Legend */}
-          <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center text-xs sm:text-sm text-gray-500">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <Trophy
-                size={12}
-                className="text-yellow-500 sm:w-[14px] sm:h-[14px]"
-              />
-              <span>Championship (Top tier)</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-gray-400">Shield = 2nd tier</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="text-gray-400">Plate = 3rd tier</span>
-            </div>
-          </div>
+              {/* Leaderboard Notes */}
+              <div className="text-center text-xs text-gray-400 mt-4">
+                <p>
+                  Clubs ranked by Championship wins, then Shield, then Plate
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Records Table (Timeline View) */}
+              <div className="bg-gray-50 rounded-xl overflow-hidden overflow-x-auto">
+                <table className="w-full min-w-[320px]">
+                  <thead>
+                    <tr className="bg-[#1a3a4a] text-white text-xs sm:text-sm">
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold w-14 sm:w-20">
+                        Year
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
+                        Competition
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
+                        Winner
+                      </th>
+                      <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold hidden sm:table-cell">
+                        Runner-up
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {years.map((year, yearIdx) =>
+                      groupedByYear[year].map((record, recordIdx) => {
+                        const isFirstOfYear = recordIdx === 0;
+                        const rowCount = groupedByYear[year].length;
 
-          {/* Notes */}
-          <div className="text-center text-xs text-gray-400 mt-4 space-y-1">
-            <p>* Names with &quot;/&quot; denote joint winners or runners-up</p>
-            <p>* Brussels (previously Belgium GAA)</p>
-          </div>
+                        return (
+                          <tr
+                            key={`${year}-${record.competition}-${recordIdx}`}
+                            className={`border-b border-gray-200 ${yearIdx % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+                          >
+                            {isFirstOfYear && (
+                              <td
+                                rowSpan={rowCount}
+                                className="px-2 sm:px-4 py-2 sm:py-3 font-bold text-gray-900 align-top border-r border-gray-200 text-sm sm:text-base"
+                              >
+                                {year}
+                              </td>
+                            )}
+                            <td className="px-2 sm:px-4 py-2 sm:py-3">
+                              {record.notPlayed ? (
+                                <span className="text-gray-400 italic text-xs sm:text-sm">
+                                  Not played (COVID-19)
+                                </span>
+                              ) : (
+                                <span
+                                  className={`text-xs sm:text-sm font-medium ${
+                                    record.competition === "Championship"
+                                      ? "text-[#1a3a4a]"
+                                      : "text-gray-500"
+                                  }`}
+                                >
+                                  {record.competition}
+                                </span>
+                              )}
+                            </td>
+                            <td className="px-2 sm:px-4 py-2 sm:py-3">
+                              {!record.notPlayed && record.winner && (
+                                <div className="flex items-center gap-1 sm:gap-2">
+                                  {record.competition === "Championship" && (
+                                    <Trophy
+                                      size={12}
+                                      className="text-yellow-500 flex-shrink-0 sm:w-[14px] sm:h-[14px]"
+                                    />
+                                  )}
+                                  <span
+                                    className={`font-medium text-xs sm:text-sm ${record.competition === "Championship" ? "text-gray-900" : "text-gray-700"}`}
+                                  >
+                                    {record.winner}
+                                  </span>
+                                </div>
+                              )}
+                            </td>
+                            <td className="px-2 sm:px-4 py-2 sm:py-3 text-gray-500 text-xs sm:text-sm hidden sm:table-cell">
+                              {!record.notPlayed && record.runnerUp && (
+                                <div className="flex items-center gap-2">
+                                  <Medal
+                                    size={12}
+                                    className="text-gray-400 flex-shrink-0"
+                                  />
+                                  <span>{record.runnerUp}</span>
+                                </div>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Legend */}
+              <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center text-xs sm:text-sm text-gray-500">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <Trophy
+                    size={12}
+                    className="text-yellow-500 sm:w-[14px] sm:h-[14px]"
+                  />
+                  <span>Championship (Top tier)</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-400">Shield = 2nd tier</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-gray-400">Plate = 3rd tier</span>
+                </div>
+              </div>
+
+              {/* Notes */}
+              <div className="text-center text-xs text-gray-400 mt-4 space-y-1">
+                <p>
+                  * Names with &quot;/&quot; denote joint winners or runners-up
+                </p>
+                <p>* Brussels (previously Belgium GAA)</p>
+              </div>
+            </>
+          )}
 
           {/* Notable Records */}
           <div className="mt-8 sm:mt-10">
@@ -759,39 +938,51 @@ export default function RollOfHonorPage() {
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
               <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <span className="inline-block px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-medium rounded mb-2">
+                  LGFA 9s/11s
+                </span>
                 <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
                   13
                 </div>
                 <div className="text-xs sm:text-sm font-medium text-gray-900">
-                  LGFA Titles
+                  Championships
                 </div>
                 <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
                   Brussels Ladies
                 </div>
               </div>
               <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <span className="inline-block px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-medium rounded mb-2">
+                  Men&apos;s 15s
+                </span>
                 <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
                   7
                 </div>
                 <div className="text-xs sm:text-sm font-medium text-gray-900">
-                  15s in a Row
+                  Titles in a Row
                 </div>
                 <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
-                  Amsterdam Men
+                  Amsterdam
                 </div>
               </div>
               <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <span className="inline-block px-2 py-0.5 bg-emerald-100 text-emerald-700 text-[10px] font-medium rounded mb-2">
+                  Men&apos;s 11s
+                </span>
                 <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
                   5
                 </div>
                 <div className="text-xs sm:text-sm font-medium text-gray-900">
-                  11s Titles
+                  Championships
                 </div>
                 <div className="text-[10px] sm:text-xs text-gray-500 mt-1">
-                  Luxembourg Men
+                  Luxembourg
                 </div>
               </div>
               <div className="bg-white rounded-xl p-4 text-center shadow-sm border border-gray-100">
+                <span className="inline-block px-2 py-0.5 bg-amber-100 text-amber-700 text-[10px] font-medium rounded mb-2">
+                  Men&apos;s 11s
+                </span>
                 <div className="text-2xl sm:text-3xl font-bold text-[#2B9EB3] mb-1">
                   2007
                 </div>

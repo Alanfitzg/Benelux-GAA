@@ -495,16 +495,6 @@ export default function HomeContent() {
                         <span className="text-3xl">📰</span>
                       </div>
                     )}
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="px-3 py-1 bg-[#2B9EB3] text-white text-xs font-semibold rounded-full">
-                        {latestNews[0].category}
-                      </span>
-                      {latestNews[0].featured && (
-                        <span className="px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-full">
-                          Featured
-                        </span>
-                      )}
-                    </div>
                   </div>
                   <div className="p-6 md:p-8">
                     <div className="flex items-center gap-3 text-gray-400 text-xs mb-3">
@@ -559,18 +549,10 @@ export default function HomeContent() {
                         )}
                       </div>
                       <div className="p-4 flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-0.5 bg-[#2B9EB3]/10 text-[#2B9EB3] text-[10px] font-semibold rounded-full">
-                            {article.category}
-                          </span>
-                          <span className="text-gray-400 text-[10px] flex items-center gap-1">
-                            <Calendar size={10} />
-                            {formatNewsDate(article.date)
-                              .split(" ")
-                              .slice(0, 2)
-                              .join(" ")}
-                          </span>
-                        </div>
+                        <span className="text-gray-400 text-[10px] flex items-center gap-1 mb-2">
+                          <Calendar size={10} />
+                          {formatNewsDate(article.date)}
+                        </span>
                         <h4 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-[#2B9EB3] transition-colors line-clamp-2">
                           {article.title}
                         </h4>
