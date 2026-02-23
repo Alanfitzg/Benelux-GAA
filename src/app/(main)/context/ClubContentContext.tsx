@@ -127,10 +127,17 @@ export function ClubContentProvider({
   );
 }
 
+const fallbackContext: ClubContentContextType = {
+  clubId: "",
+  content: {},
+  isAdmin: false,
+  isLoading: false,
+  getContent: (_pageKey: string, _contentKey: string, defaultValue: string) =>
+    defaultValue,
+  saveContent: async () => false,
+};
+
 export function useClubContent() {
   const context = useContext(ClubContentContext);
-  if (!context) {
-    throw new Error("useClubContent must be used within a ClubContentProvider");
-  }
-  return context;
+  return context ?? fallbackContext;
 }
