@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import EditableText from "../components/EditableText";
 import {
   Calendar,
   Trophy,
@@ -481,20 +480,11 @@ export default function TimelinePage() {
               className="mx-auto text-[#2B9EB3] mb-3 sm:mb-4 sm:w-12 sm:h-12"
             />
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              <EditableText
-                pageKey="timeline"
-                contentKey="title"
-                defaultValue="The Benelux Museum"
-                maxLength={40}
-              />
+              The Benelux Museum
             </h1>
             <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
-              <EditableText
-                pageKey="timeline"
-                contentKey="subtitle"
-                defaultValue="A journey through the history of Gaelic Games in Belgium, Netherlands, Luxembourg, and beyond."
-                maxLength={120}
-              />
+              A journey through the history of Gaelic Games in Belgium,
+              Netherlands, Luxembourg, and beyond.
             </p>
           </div>
 
