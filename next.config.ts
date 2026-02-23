@@ -27,17 +27,6 @@ const nextConfig: NextConfig = {
           has: [{ type: "host", value: "www.romehiberniagaa.it" }],
           destination: "/demo/rome-hibernia",
         },
-        // beneluxgaa.com
-        {
-          source: "/",
-          has: [{ type: "host", value: "beneluxgaa.com" }],
-          destination: "/demo/benelux-gaa",
-        },
-        {
-          source: "/",
-          has: [{ type: "host", value: "www.beneluxgaa.com" }],
-          destination: "/demo/benelux-gaa",
-        },
       ],
       afterFiles: [
         // Path rewrites go in afterFiles so static files are served first
@@ -62,58 +51,6 @@ const nextConfig: NextConfig = {
           source: "/:path*",
           has: [{ type: "host", value: "www.romehiberniagaa.it" }],
           destination: "/demo/rome-hibernia/:path*",
-        },
-        // beneluxgaa.com
-        {
-          source: "/:path*",
-          has: [{ type: "host", value: "beneluxgaa.com" }],
-          destination: "/demo/benelux-gaa/:path*",
-        },
-        {
-          source: "/:path*",
-          has: [{ type: "host", value: "www.beneluxgaa.com" }],
-          destination: "/demo/benelux-gaa/:path*",
-        },
-        // Benelux GAA custom domain
-        {
-          source: "/",
-          has: [
-            {
-              type: "host",
-              value: "beneluxgaa.com",
-            },
-          ],
-          destination: "/demo/benelux-gaa",
-        },
-        {
-          source: "/",
-          has: [
-            {
-              type: "host",
-              value: "www.beneluxgaa.com",
-            },
-          ],
-          destination: "/demo/benelux-gaa",
-        },
-        {
-          source: "/:path((?!demo|api|_next).*)",
-          has: [
-            {
-              type: "host",
-              value: "beneluxgaa.com",
-            },
-          ],
-          destination: "/demo/benelux-gaa/:path",
-        },
-        {
-          source: "/:path((?!demo|api|_next).*)",
-          has: [
-            {
-              type: "host",
-              value: "www.beneluxgaa.com",
-            },
-          ],
-          destination: "/demo/benelux-gaa/:path",
         },
       ],
     };

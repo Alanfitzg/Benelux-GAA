@@ -81,16 +81,16 @@ function NavItem({
   return (
     <Link
       href={link.href}
-      className={`relative px-3.5 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
+      className={`relative px-3.5 py-2 text-sm font-medium tracking-wide transition-all duration-300 group/link ${
         currentPage === link.name
           ? "text-[#2B9EB3]"
-          : "text-white/75 hover:text-white"
+          : "text-white/60 hover:text-white"
       }`}
     >
       <span className="relative z-10">{link.name}</span>
       <span
         className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-[#2B9EB3] rounded-full transition-all duration-300 ${
-          currentPage === link.name ? "w-5" : "w-0 group-hover:w-5"
+          currentPage === link.name ? "w-5" : "w-0 group-hover/link:w-5"
         }`}
       />
     </Link>
@@ -118,7 +118,8 @@ export default function Header({ currentPage }: HeaderProps) {
   const homeHref = basePath || "/";
 
   return (
-    <header className="bg-[#1a3a4a] sticky top-0 z-50">
+    <header className="bg-gradient-to-b from-[#1a3a4a] to-[#162f3d] sticky top-0 z-50 shadow-[0_2px_20px_rgba(0,0,0,0.3)]">
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#2B9EB3]/40 to-transparent" />
       <div className="max-w-7xl mx-auto px-4">
         {/* Mobile Header */}
         <div className="flex lg:hidden items-center justify-between h-16">
@@ -148,9 +149,9 @@ export default function Header({ currentPage }: HeaderProps) {
 
         {/* Desktop Header - Centered Crest with Split Nav */}
         <div className="hidden lg:flex items-center justify-center h-[88px]">
-          {/* Left Nav */}
+          {/* Left Nav (5 items) */}
           <nav className="flex items-center">
-            {navLinks.slice(0, 4).map((link) => (
+            {navLinks.slice(0, 5).map((link) => (
               <NavItem
                 key={link.name}
                 link={link}
@@ -162,20 +163,23 @@ export default function Header({ currentPage }: HeaderProps) {
           </nav>
 
           {/* Center Crest */}
-          <Link href={homeHref} className="mx-8 flex-shrink-0">
-            <Image
-              src="/benelux-gaa-crest.png"
-              alt="Benelux GAA"
-              width={90}
-              height={90}
-              className="object-contain w-[90px] h-[90px]"
-              unoptimized
-            />
+          <Link href={homeHref} className="mx-8 flex-shrink-0 relative group">
+            <div className="absolute inset-0 bg-[#2B9EB3]/20 rounded-full blur-xl scale-125 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="relative ring-2 ring-white/10 rounded-full p-0.5">
+              <Image
+                src="/benelux-gaa-crest.png"
+                alt="Benelux GAA"
+                width={90}
+                height={90}
+                className="object-contain w-[90px] h-[90px] relative z-10"
+                unoptimized
+              />
+            </div>
           </Link>
 
-          {/* Right Nav */}
+          {/* Right Nav (3 items) */}
           <nav className="flex items-center">
-            {navLinks.slice(4).map((link) => (
+            {navLinks.slice(5).map((link) => (
               <NavItem
                 key={link.name}
                 link={link}
@@ -191,8 +195,8 @@ export default function Header({ currentPage }: HeaderProps) {
             href={`${basePath}/timeline`}
             className={`ml-4 flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
               currentPage === "Museum"
-                ? "bg-[#2B9EB3] text-white"
-                : "bg-[#2B9EB3]/15 text-[#4ecde6] border border-[#2B9EB3]/30 hover:bg-[#2B9EB3] hover:text-white hover:border-transparent"
+                ? "bg-[#2B9EB3] text-white shadow-[0_0_12px_rgba(43,158,179,0.4)]"
+                : "bg-[#2B9EB3]/15 text-[#4ecde6] border border-[#2B9EB3]/30 hover:bg-[#2B9EB3] hover:text-white hover:border-transparent hover:shadow-[0_0_12px_rgba(43,158,179,0.3)]"
             }`}
           >
             <Landmark size={14} />
