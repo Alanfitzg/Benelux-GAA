@@ -19,68 +19,54 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    default:
-      "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-    template: "%s | PlayAway",
+    default: "Benelux GAA - Gaelic Games in Belgium, Netherlands & Luxembourg",
+    template: "%s | Benelux GAA",
   },
   description:
-    "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
+    "The home of Gaelic Games in Belgium, the Netherlands, and Luxembourg. Fixtures, clubs, news, standings, and over 50 years of history.",
   keywords: [
+    "Benelux GAA",
     "GAA",
-    "Gaelic Athletic Association",
-    "Irish sports",
     "Gaelic football",
     "Hurling",
-    "Camogie",
-    "Handball",
-    "Irish clubs worldwide",
-    "GAA tournaments",
-    "Irish culture",
-    "Gaelic games",
-    "Ireland",
-    "Irish diaspora",
-    "sports travel",
-    "GAA clubs",
-    "Gaelic sports",
-    "Irish community",
-    "traditional Irish sports",
+    "Belgium GAA",
+    "Netherlands GAA",
+    "Luxembourg GAA",
+    "European GAA",
+    "Gaelic games Europe",
+    "Irish sports",
   ],
-  authors: [{ name: "PlayAway" }],
-  creator: "PlayAway",
-  publisher: "PlayAway",
+  authors: [{ name: "Benelux GAA" }],
+  creator: "Benelux GAA",
+  publisher: "Benelux GAA",
 
-  // Open Graph metadata for social sharing
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://play-away.vercel.app",
-    siteName: "PlayAway",
-    title: "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
+    url: "https://www.beneluxgaa.com",
+    siteName: "Benelux GAA",
+    title: "Benelux GAA - Gaelic Games in Belgium, Netherlands & Luxembourg",
     description:
-      "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community, find events, and explore Irish sport culture internationally.",
+      "The home of Gaelic Games in Belgium, the Netherlands, and Luxembourg. Fixtures, clubs, news, standings, and over 50 years of history.",
     images: [
       {
-        url: "https://play-away.vercel.app/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "PlayAway - Discover Gaelic Clubs Worldwide",
-        type: "image/jpeg",
+        url: "https://www.beneluxgaa.com/benelux-gaa-crest.png",
+        width: 500,
+        height: 500,
+        alt: "Benelux GAA Crest",
+        type: "image/png",
       },
     ],
   },
 
-  // Twitter metadata
   twitter: {
-    card: "summary_large_image",
-    site: "@gaatrips",
-    creator: "@gaatrips",
-    title: "PlayAway - Discover Gaelic Athletic Clubs & Tournaments Worldwide",
+    card: "summary",
+    title: "Benelux GAA - Gaelic Games in Belgium, Netherlands & Luxembourg",
     description:
-      "Discover Gaelic Athletic Association clubs and tournaments around the world. Connect with the global GAA community.",
-    images: ["https://play-away.vercel.app/og-image.jpg"],
+      "The home of Gaelic Games in Belgium, the Netherlands, and Luxembourg.",
+    images: ["https://www.beneluxgaa.com/benelux-gaa-crest.png"],
   },
 
-  // Additional SEO metadata
   robots: {
     index: true,
     follow: true,
@@ -93,37 +79,24 @@ export const metadata: Metadata = {
     },
   },
 
-  // Verification for search engines
-  verification: {
-    google: "your-google-verification-code",
-    yandex: "your-yandex-verification-code",
-    yahoo: "your-yahoo-verification-code",
-  },
-
-  // App-specific metadata
-  applicationName: "PlayAway",
+  applicationName: "Benelux GAA",
   referrer: "origin-when-cross-origin",
   category: "Sports",
   classification: "Sports and Recreation",
 
-  // Favicon and icons
   icons: {
-    icon: [
-      { url: "/logo.png", type: "image/png" },
-      { url: "/icon.png", sizes: "1563x1563", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-icon.png", sizes: "1563x1563", type: "image/png" }],
-    shortcut: "/logo.png",
+    icon: [{ url: "/benelux-gaa-crest.png", type: "image/png" }],
+    apple: [{ url: "/benelux-gaa-crest.png", type: "image/png" }],
+    shortcut: "/benelux-gaa-crest.png",
   },
 
-  // Additional metadata
   other: {
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "default",
-    "apple-mobile-web-app-title": "PlayAway",
+    "apple-mobile-web-app-title": "Benelux GAA",
     "mobile-web-app-capable": "yes",
-    "msapplication-TileColor": "#1e40af",
-    "theme-color": "#1e40af",
+    "msapplication-TileColor": "#1a3a4a",
+    "theme-color": "#1a3a4a",
   },
 };
 
