@@ -6,9 +6,10 @@ export default function NewsletterForm() {
   const [showForm, setShowForm] = useState(false);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [formLoadTime] = useState(Date.now());
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -23,8 +24,23 @@ export default function NewsletterForm() {
       return;
     }
 
-    console.log("Newsletter signup:", email);
+    setSubmitting(true);
+    try {
+      await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          website: formData.get("website"),
+          phone_number: formData.get("phone_number"),
+          _timestamp: formLoadTime,
+        }),
+      });
+    } catch {
+      // silent fail for user
+    }
     setSubmitted(true);
+    setSubmitting(false);
   };
 
   if (submitted) {
@@ -97,9 +113,10 @@ export default function NewsletterForm() {
         />
         <button
           type="submit"
-          className="px-6 py-3.5 bg-[#2B9EB3] text-white rounded-xl font-bold hover:bg-[#238a9c] transition-colors text-sm whitespace-nowrap"
+          disabled={submitting}
+          className="px-6 py-3.5 bg-[#2B9EB3] text-white rounded-xl font-bold hover:bg-[#238a9c] transition-colors text-sm whitespace-nowrap disabled:opacity-50"
         >
-          Subscribe
+          {submitting ? "..." : "Subscribe"}
         </button>
       </div>
       <p className="text-gray-500 text-[11px] tracking-wide">

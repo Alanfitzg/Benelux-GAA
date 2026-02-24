@@ -194,6 +194,57 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Affiliations */}
+      <div className="border-t border-white/10 py-5">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center gap-3">
+          <p className="text-gray-500 text-[10px] uppercase tracking-[0.2em] font-medium">
+            Affiliated with
+          </p>
+          <div className="flex items-center gap-6 sm:gap-10">
+            {[
+              {
+                name: "Gaelic Games Europe",
+                src: "/crests/gge.png",
+                href: "https://gaelicgameseurope.com",
+              },
+              {
+                name: "GAA",
+                src: "/crests/gaa.png",
+                href: "https://www.gaa.ie",
+              },
+              {
+                name: "LGFA",
+                src: "/crests/lgfa.png",
+                href: "https://ladiesgaelic.ie",
+              },
+              {
+                name: "Camogie Association",
+                src: "/crests/camogie.png",
+                href: "https://camogie.ie",
+              },
+            ].map((org) => (
+              <a
+                key={org.name}
+                href={org.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:opacity-70 transition-opacity"
+                title={org.name}
+              >
+                <Image
+                  src={org.src}
+                  alt={org.name}
+                  width={60}
+                  height={60}
+                  className="object-contain h-8 sm:h-10 w-auto brightness-0 invert opacity-60 hover:opacity-100 transition-opacity"
+                  unoptimized
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Bar */}
       <div className="border-t border-[#2B9EB3]/20 py-4">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">

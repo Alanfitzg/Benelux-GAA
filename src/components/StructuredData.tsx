@@ -17,94 +17,99 @@ export function generateEventStructuredData(event: Event) {
   return {
     "@context": "https://schema.org",
     "@type": "Event",
-    "name": event.title,
-    "description": event.description || `${event.eventType} event in ${event.location}`,
-    "startDate": event.startDate,
-    "endDate": event.endDate || event.startDate,
-    "location": {
+    name: event.title,
+    description:
+      event.description || `${event.eventType} event in ${event.location}`,
+    startDate: event.startDate,
+    endDate: event.endDate || event.startDate,
+    location: {
       "@type": "Place",
-      "name": event.location,
-      ...(event.latitude && event.longitude && {
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": event.latitude,
-          "longitude": event.longitude
+      name: event.location,
+      ...(event.latitude &&
+        event.longitude && {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: event.latitude,
+            longitude: event.longitude,
+          },
+        }),
+    },
+    organizer: event.club
+      ? {
+          "@type": "Organization",
+          name: event.club.name,
+          ...(event.club.imageUrl && { logo: event.club.imageUrl }),
         }
-      })
-    },
-    "organizer": event.club ? {
-      "@type": "Organization",
-      "name": event.club.name,
-      ...(event.club.imageUrl && { "logo": event.club.imageUrl })
-    } : {
-      "@type": "Organization",
-      "name": "PlayAway"
-    },
-    "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-    "eventStatus": "https://schema.org/EventScheduled",
-    ...(event.imageUrl && { "image": event.imageUrl }),
+      : {
+          "@type": "Organization",
+          name: "PlayAway",
+        },
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventStatus: "https://schema.org/EventScheduled",
+    ...(event.imageUrl && { image: event.imageUrl }),
     ...(event.cost && {
-      "offers": {
+      offers: {
         "@type": "Offer",
-        "price": event.cost,
-        "priceCurrency": "EUR"
-      }
-    })
+        price: event.cost,
+        priceCurrency: "EUR",
+      },
+    }),
   };
 }
 
 export const organizationStructuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "PlayAway",
-  "description": "Your gateway to Gaelic games abroad. Explore GAA clubs, tournaments, and events worldwide.",
-  "url": "https://play-away.vercel.app",
-  "logo": "https://play-away.vercel.app/logo.png",
-  "foundingDate": "2024",
-  "sameAs": [
-    "https://facebook.com/gaatrips",
-    "https://instagram.com/gaatrips",
-    "https://twitter.com/gaatrips"
+  name: "Benelux GAA",
+  description:
+    "The governing body for Gaelic games across the Netherlands, Belgium, Luxembourg, and Germany.",
+  url: "https://beneluxgaa.com",
+  foundingDate: "1999",
+  sameAs: [
+    "https://www.facebook.com/BeneluxGAA/",
+    "https://www.instagram.com/beneluxgaa/",
+    "https://twitter.com/BeneluxGAA",
   ],
-  "contactPoint": {
+  contactPoint: {
     "@type": "ContactPoint",
-    "contactType": "customer service",
-    "email": "info@play-away.com"
-  }
+    contactType: "customer service",
+    email: "secretary.benelux.europe@gaa.ie",
+  },
 };
 
 export const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "PlayAway",
-  "description": "Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-  "url": "https://play-away.vercel.app",
-  "potentialAction": {
+  name: "PlayAway",
+  description: "Discover Gaelic Athletic Clubs & Tournaments Worldwide",
+  url: "https://play-away.vercel.app",
+  potentialAction: {
     "@type": "SearchAction",
-    "target": {
+    target: {
       "@type": "EntryPoint",
-      "urlTemplate": "https://play-away.vercel.app/events?search={search_term_string}"
+      urlTemplate:
+        "https://play-away.vercel.app/events?search={search_term_string}",
     },
-    "query-input": "required name=search_term_string"
-  }
+    "query-input": "required name=search_term_string",
+  },
 };
 
 export function generateClubStructuredData(club: Club) {
   return {
     "@context": "https://schema.org",
     "@type": "SportsOrganization",
-    "name": club.name,
-    "description": `GAA club based in ${club.location || "Ireland"}`,
-    "address": {
+    name: club.name,
+    description: `GAA club based in ${club.location || "Ireland"}`,
+    address: {
       "@type": "PostalAddress",
-      "addressLocality": club.location
+      addressLocality: club.location,
     },
-    ...(club.imageUrl && { "logo": club.imageUrl }),
-    ...(club.website && { "url": club.website }),
-    "sport": "Gaelic games",
-    "memberOf": {
+    ...(club.imageUrl && { logo: club.imageUrl }),
+    ...(club.website && { url: club.website }),
+    sport: "Gaelic games",
+    memberOf: {
       "@type": "Organization",
-      "name": "Gaelic Athletic Association"
-    }
+      name: "Gaelic Athletic Association",
+    },
   };
 }
