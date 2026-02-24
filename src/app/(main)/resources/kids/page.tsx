@@ -15,6 +15,7 @@ import {
   Loader2,
   MapPin,
   ExternalLink,
+  Mail,
 } from "lucide-react";
 
 interface Club {
@@ -103,17 +104,32 @@ export default function KidsPage() {
             Back to Resources
           </InternalLink>
 
-          <div className="flex items-center gap-4 mb-8">
-            <div className="w-16 h-16 bg-[#1a3a4a] rounded-xl flex items-center justify-center">
-              <Users size={32} className="text-white" />
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div className="flex items-center gap-3 sm:gap-4">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#1a3a4a] rounded-xl flex items-center justify-center flex-shrink-0">
+                <Users size={24} className="text-white sm:w-8 sm:h-8" />
+              </div>
+              <div>
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+                  Youth Development
+                </h1>
+                <p className="text-gray-600 text-sm sm:text-base">
+                  Growing the next generation of Gaelic Games
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Youth Development
-              </h1>
-              <p className="text-gray-600">
-                Growing the next generation of Gaelic Games
-              </p>
+            <div className="flex flex-col items-center gap-1 flex-shrink-0">
+              <Image
+                src="/sponsors/breagh-blue.png"
+                alt="Breagh - Recruiting Construction Experts"
+                width={100}
+                height={40}
+                className="object-contain sm:w-[110px]"
+                unoptimized
+              />
+              <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">
+                Sponsor
+              </span>
             </div>
           </div>
 
@@ -144,36 +160,6 @@ export default function KidsPage() {
             </div>
           </div>
 
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">
-            Youth Programs
-          </h2>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-12">
-            {kidsPrograms.map((program) => {
-              const Icon = program.icon;
-              return (
-                <div
-                  key={program.title}
-                  className="bg-gray-50 rounded-xl p-5 border border-gray-200"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 bg-[#1a3a4a]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Icon size={18} className="text-[#1a3a4a]" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-sm mb-1">
-                        {program.title}
-                      </h3>
-                      <p className="text-gray-600 text-sm">
-                        {program.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
           {/* Youth Clubs in the Benelux */}
           <h2 className="text-xl font-semibold text-gray-900 mb-2">
             Youth Clubs in the Benelux
@@ -184,14 +170,14 @@ export default function KidsPage() {
           </p>
 
           {loading ? (
-            <div className="flex items-center justify-center py-8 mb-12">
+            <div className="flex items-center justify-center py-8 mb-8">
               <Loader2 className="w-6 h-6 animate-spin text-[#2B9EB3]" />
               <span className="ml-2 text-gray-500 text-sm">
                 Loading clubs...
               </span>
             </div>
           ) : youthClubs.length > 0 ? (
-            <div className="grid sm:grid-cols-2 gap-4 mb-12">
+            <div className="grid sm:grid-cols-2 gap-4 mb-8">
               {youthClubs.map((club) => (
                 <div
                   key={club.id}
@@ -264,10 +250,62 @@ export default function KidsPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-8 mb-12 text-gray-500 text-sm">
+            <div className="text-center py-8 mb-8 text-gray-500 text-sm">
               No youth clubs found at this time.
             </div>
           )}
+
+          {/* Contact Youth Officer CTA */}
+          <div className="bg-[#1a3a4a] rounded-xl p-4 sm:p-6 mb-12 flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
+            <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center flex-shrink-0">
+              <Mail size={22} className="text-[#2B9EB3]" />
+            </div>
+            <div className="text-center sm:text-left flex-1">
+              <h3 className="font-semibold text-white mb-1">
+                Want to set up a youth section at your club?
+              </h3>
+              <p className="text-white/70 text-sm">
+                Contact our European Youth Officer, Pearse, to get started.
+              </p>
+            </div>
+            <a
+              href="mailto:youthofficer.europe@gaa.ie"
+              className="inline-flex items-center gap-2 bg-[#2B9EB3] hover:bg-[#249aad] text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-colors flex-shrink-0"
+            >
+              <Mail size={15} />
+              Email Pearse
+            </a>
+          </div>
+
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">
+            Youth Programs
+          </h2>
+
+          <div className="grid sm:grid-cols-2 gap-4 mb-12">
+            {kidsPrograms.map((program) => {
+              const Icon = program.icon;
+              return (
+                <div
+                  key={program.title}
+                  className="bg-gray-50 rounded-xl p-5 border border-gray-200"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 bg-[#1a3a4a]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <Icon size={18} className="text-[#1a3a4a]" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 text-sm mb-1">
+                        {program.title}
+                      </h3>
+                      <p className="text-gray-600 text-sm">
+                        {program.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </main>
 

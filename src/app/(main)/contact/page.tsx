@@ -22,27 +22,29 @@ export default function ContactPage() {
     <div className="min-h-screen bg-[#1a3a4a] flex flex-col">
       <Header currentPage="Contact" />
 
-      <main className="flex-1 py-12 px-4 relative z-10">
+      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-12 px-4 relative z-10">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-white mb-4">Get in Touch</h1>
-            <p className="text-lg text-white/70 max-w-2xl mx-auto">
+          <div className="text-center mb-8 sm:mb-12">
+            <h1 className="text-2xl sm:text-4xl font-bold text-white mb-3 sm:mb-4">
+              Get in Touch
+            </h1>
+            <p className="text-base sm:text-lg text-white/70 max-w-2xl mx-auto">
               Have a question about Benelux GAA? Want to get involved with
               Gaelic Games in Belgium, the Netherlands, or Luxembourg? We&apos;d
               love to hear from you.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-12">
+            <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                 Send us a message
               </h2>
               <ContactForm />
             </div>
 
-            <div className="space-y-8">
-              <div className="bg-white rounded-2xl shadow-lg p-8">
+            <div className="space-y-6 sm:space-y-8">
+              <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8">
                 <h2 className="text-2xl font-semibold text-gray-900 mb-6">
                   Contact Information
                 </h2>
@@ -82,8 +84,8 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-8">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+              <div className="bg-white rounded-2xl shadow-lg p-5 sm:p-8">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-4 sm:mb-6">
                   Follow Us
                 </h2>
                 <div className="flex justify-center gap-4">

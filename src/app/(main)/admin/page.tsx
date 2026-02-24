@@ -1,18 +1,6 @@
-import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { getServerSession } from "@/lib/auth-helpers";
-import AdminDashboardClient from "./AdminDashboardClient";
-
-async function getStats() {
-  const [clubCount, countryCount, userCount, eventCount] = await Promise.all([
-    prisma.club.count(),
-    prisma.country.count(),
-    prisma.user.count(),
-    prisma.event.count({ where: { approvalStatus: "APPROVED" } }),
-  ]);
-
-  return { clubCount, countryCount, userCount, eventCount };
-}
+import BeneluxAdminDashboard from "./BeneluxAdminDashboard";
 
 export default async function AdminDashboard() {
   const session = await getServerSession();
@@ -21,7 +9,5 @@ export default async function AdminDashboard() {
     redirect("/");
   }
 
-  const stats = await getStats();
-
-  return <AdminDashboardClient stats={stats} />;
+  return <BeneluxAdminDashboard />;
 }

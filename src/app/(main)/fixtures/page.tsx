@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
-import SponsorBanner from "../components/SponsorBanner";
 import Image from "next/image";
-import { Calendar, MapPin, Clock } from "lucide-react";
+import { Calendar, MapPin, Clock, ChevronDown } from "lucide-react";
 import { fixtures2026, venueToClub, competitionColors } from "../data/fixtures";
 import type { Fixture } from "../data/fixtures";
 
@@ -25,8 +24,22 @@ function getMonthYear(dateStr: string): string {
 }
 
 export default function FixturesPage() {
+  const [allFixtures, setAllFixtures] = useState<Fixture[]>(fixtures2026);
+  const [loading, setLoading] = useState(true);
   const [selectedCode, setSelectedCode] = useState<string>("all");
   const [selectedCompetition, setSelectedCompetition] = useState<string>("all");
+
+  useEffect(() => {
+    fetch("/api/admin/site-data?key=fixtures")
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.data && Array.isArray(result.data)) {
+          setAllFixtures(result.data);
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
   const codes = [
     "all",
@@ -40,10 +53,10 @@ export default function FixturesPage() {
   ];
   const competitions = [
     "all",
-    ...new Set(fixtures2026.map((f) => f.competition)),
+    ...new Set(allFixtures.map((f) => f.competition)),
   ];
 
-  let filteredFixtures = fixtures2026;
+  let filteredFixtures = allFixtures;
   if (selectedCode !== "all") {
     filteredFixtures = filteredFixtures.filter((f) => f.code === selectedCode);
   }
@@ -63,56 +76,71 @@ export default function FixturesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-[#f0f2f5] flex flex-col">
       <Header currentPage="Fixtures" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Header + Sponsor */}
-          <div className="text-center mb-8 sm:mb-12">
-            <p className="text-[#2B9EB3] text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2">
-              Benelux GAA
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1a3a4a] mb-2 sm:mb-3 tracking-tight">
-              <EditableText
-                pageKey="fixtures"
-                contentKey="title"
-                defaultValue="2026 Fixtures Calendar"
-                maxLength={40}
+      {/* Hero Banner */}
+      <div className="bg-[#1a3a4a] pt-16 sm:pt-20 md:pt-24 pb-10 sm:pb-14 relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2B9EB3]/10 via-transparent to-black/20" />
+        <div className="max-w-4xl mx-auto px-4 relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
+            <div>
+              <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
+                Benelux GAA
+              </p>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                <EditableText
+                  pageKey="fixtures"
+                  contentKey="title"
+                  defaultValue="2026 Fixtures Calendar"
+                  maxLength={40}
+                />
+              </h1>
+            </div>
+            <a
+              href="https://breagh.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 sm:gap-3 group shrink-0"
+            >
+              <span className="text-white/30 text-[8px] sm:text-[10px] uppercase tracking-[0.15em] font-medium">
+                Sponsored by
+              </span>
+              <Image
+                src="/sponsors/breagh-white.png"
+                alt="Breagh Recruitment"
+                width={160}
+                height={50}
+                className="object-contain h-5 sm:h-7 w-auto opacity-80 group-hover:opacity-100 transition-opacity"
+                unoptimized
               />
-            </h1>
-            <p className="text-slate-500 text-sm sm:text-base max-w-xl mx-auto mb-6 sm:mb-8">
-              <EditableText
-                pageKey="fixtures"
-                contentKey="subtitle"
-                defaultValue="Complete schedule of fixtures, tournaments, and competitions."
-                maxLength={120}
-              />
-            </p>
-            <div className="w-12 h-px bg-slate-200 mx-auto mb-5 sm:mb-6" />
-            <SponsorBanner />
+            </a>
           </div>
+        </div>
+      </div>
 
-          {/* Filters */}
-          <div className="mb-8 sm:mb-10 bg-slate-50 rounded-2xl border border-slate-100 p-4 sm:p-6">
-            <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-[0.15em] font-semibold mb-3 sm:mb-4">
-              Filter Fixtures
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-              <div>
-                <label className="block text-xs sm:text-sm text-slate-500 mb-2 font-medium">
-                  Code
-                </label>
+      <main className="flex-1 -mt-4 sm:-mt-6 pb-8 sm:pb-16 relative z-10">
+        <div className="max-w-4xl mx-auto px-4">
+          {/* Filters - overlapping hero */}
+          <div className="mb-6 sm:mb-8 bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 p-3 sm:p-5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5">
+              <div className="flex-1">
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {codes.map((code) => (
                     <button
                       key={code}
                       type="button"
                       onClick={() => setSelectedCode(code)}
-                      className={`px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all ${
+                      className={`px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all ${
                         selectedCode === code
                           ? "bg-[#1a3a4a] text-white shadow-md"
-                          : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-200"
+                          : "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"
                       }`}
                     >
                       {code === "all" ? "All Codes" : code}
@@ -120,14 +148,11 @@ export default function FixturesPage() {
                   ))}
                 </div>
               </div>
-              <div>
-                <label className="block text-xs sm:text-sm text-slate-500 mb-2 font-medium">
-                  Competition
-                </label>
+              <div className="sm:w-52 relative">
                 <select
                   value={selectedCompetition}
                   onChange={(e) => setSelectedCompetition(e.target.value)}
-                  className="w-full px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] bg-white text-sm sm:text-base"
+                  className="w-full appearance-none px-3 sm:px-4 py-2 sm:py-2.5 pr-9 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent bg-gray-50 text-sm font-medium text-gray-700"
                 >
                   {competitions.map((comp) => (
                     <option key={comp} value={comp}>
@@ -135,42 +160,56 @@ export default function FixturesPage() {
                     </option>
                   ))}
                 </select>
+                <ChevronDown
+                  size={14}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                />
               </div>
             </div>
           </div>
 
           {/* Fixtures List */}
           {Object.entries(groupedByMonth).map(([month, monthFixtures]) => (
-            <div key={month} className="mb-6 sm:mb-10">
-              <h2 className="text-lg sm:text-xl font-bold text-slate-800 mb-3 sm:mb-4 flex items-center gap-2">
-                <Calendar size={18} className="text-[#2B9EB3] sm:w-5 sm:h-5" />
-                {month}
-              </h2>
-              <div className="space-y-2 sm:space-y-3">
+            <div key={month} className="mb-6 sm:mb-8">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 bg-[#2B9EB3] rounded-lg flex items-center justify-center shadow-sm">
+                  <Calendar
+                    size={16}
+                    className="text-white sm:w-[18px] sm:h-[18px]"
+                  />
+                </div>
+                <h2 className="text-base sm:text-lg font-bold text-[#1a3a4a]">
+                  {month}
+                </h2>
+                <span className="text-xs text-gray-400 font-medium">
+                  ({monthFixtures.length})
+                </span>
+              </div>
+              <div className="space-y-2 sm:space-y-2.5">
                 {monthFixtures.map((fixture) => (
                   <div
                     key={fixture.id}
-                    className={`bg-white rounded-xl p-3 sm:p-4 shadow-md hover:shadow-xl transition-all duration-200 border-l-4 ${
+                    className={`bg-white rounded-xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-200 border-l-4 ${
                       fixture.tbc
                         ? "border-l-red-500"
                         : competitionColors[fixture.competition] ||
-                          "border-l-slate-300"
+                          "border-l-gray-300"
                     }`}
                   >
                     <div className="flex items-center gap-2 sm:gap-3">
                       {/* Date */}
                       <div className="flex-shrink-0 sm:w-32">
-                        <div className="text-xs sm:text-sm font-semibold text-slate-800 flex items-center gap-2">
+                        <div className="text-xs sm:text-sm font-semibold text-[#1a3a4a] flex items-center gap-2">
                           {formatDate(fixture.date)}
                           {fixture.tbc && (
                             <span
-                              className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0 shadow-sm"
+                              className="w-2 h-2 rounded-full bg-red-500 flex-shrink-0 animate-pulse"
                               title="TBC"
                             />
                           )}
                         </div>
                         {fixture.time && (
-                          <div className="text-xs text-slate-500 flex items-center gap-1">
+                          <div className="text-[11px] sm:text-xs text-gray-400 flex items-center gap-1 mt-0.5">
                             <Clock size={10} className="sm:w-3 sm:h-3" />
                             {fixture.time}
                           </div>
@@ -179,17 +218,17 @@ export default function FixturesPage() {
 
                       {/* Details */}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 sm:gap-2 mb-1">
-                          <span className="font-semibold text-slate-900 text-sm sm:text-base truncate">
+                        <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5">
+                          <span className="font-semibold text-[#1a3a4a] text-sm sm:text-base truncate">
                             {fixture.competition}
                           </span>
                           {fixture.round && (
-                            <span className="text-slate-500 text-xs sm:text-sm flex-shrink-0">
+                            <span className="text-gray-400 text-xs sm:text-sm flex-shrink-0">
                               - {fixture.round}
                             </span>
                           )}
                         </div>
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-slate-600">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-500">
                           <span className="flex items-center gap-1">
                             <MapPin
                               size={12}
@@ -205,12 +244,12 @@ export default function FixturesPage() {
                               {fixture.venue}
                             </span>
                           </span>
-                          <span className="px-1.5 sm:px-2 py-0.5 bg-slate-100 rounded text-xs font-medium text-slate-600 shadow-sm">
+                          <span className="px-1.5 sm:px-2 py-0.5 bg-[#f0f2f5] rounded text-[11px] sm:text-xs font-medium text-gray-500">
                             {fixture.code}
                           </span>
                         </div>
                         {fixture.notes && (
-                          <div className="text-xs text-slate-500 mt-1 italic">
+                          <div className="text-[11px] sm:text-xs text-gray-400 mt-1 italic">
                             {fixture.notes}
                           </div>
                         )}
@@ -218,7 +257,7 @@ export default function FixturesPage() {
 
                       {/* Host Club Crest */}
                       {venueToClub[fixture.venue] && (
-                        <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 relative">
+                        <div className="flex-shrink-0 w-9 h-9 sm:w-12 sm:h-12 relative opacity-80">
                           <Image
                             src={venueToClub[fixture.venue].crest}
                             alt={venueToClub[fixture.venue].name}
@@ -237,50 +276,53 @@ export default function FixturesPage() {
 
           {/* Summer Break Notice */}
           {selectedCode === "all" && selectedCompetition === "all" && (
-            <div className="mb-6 sm:mb-10 bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 text-center shadow-md">
+            <div className="mb-6 sm:mb-8 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60 rounded-xl p-3 sm:p-4 text-center">
               <p className="text-amber-800 font-semibold text-sm sm:text-base">
                 Summer Break: 18 July - 15 August 2026
               </p>
-              <p className="text-amber-600 text-xs sm:text-sm">
+              <p className="text-amber-600/80 text-xs sm:text-sm">
                 No fixtures scheduled during this period
               </p>
             </div>
           )}
 
           {filteredFixtures.length === 0 && (
-            <div className="text-center py-8 sm:py-12 bg-white rounded-xl shadow-lg">
+            <div className="text-center py-12 sm:py-16 bg-white rounded-2xl shadow-sm">
               <Calendar
                 size={40}
-                className="mx-auto text-slate-300 mb-3 sm:mb-4 sm:w-12 sm:h-12"
+                className="mx-auto text-gray-300 mb-3 sm:mb-4 sm:w-12 sm:h-12"
               />
-              <p className="text-slate-500 text-sm sm:text-base">
+              <p className="text-gray-400 text-sm sm:text-base font-medium">
                 No fixtures found matching your filters.
               </p>
             </div>
           )}
 
           {/* Download / Calendar Sync */}
-          <div className="mt-8 sm:mt-10 bg-[#1a3a4a] rounded-xl p-5 sm:p-6 md:p-8 text-center shadow-2xl">
-            <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">
-              Add to Your Calendar
-            </h3>
-            <p className="text-slate-300 mb-4 sm:mb-6 text-sm sm:text-base">
-              Never miss a match - sync the Benelux GAA fixtures with your
-              calendar.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
-              <button
-                type="button"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#2B9EB3] text-white rounded-lg font-semibold hover:bg-[#238a9c] transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
-              >
-                Download iCal
-              </button>
-              <button
-                type="button"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 text-white border border-white/30 rounded-lg font-semibold hover:bg-white/20 transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
-              >
-                Google Calendar
-              </button>
+          <div className="mt-8 sm:mt-10 bg-[#1a3a4a] rounded-2xl p-5 sm:p-6 md:p-8 text-center shadow-xl relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#2B9EB3]/15 via-transparent to-transparent" />
+            <div className="relative z-10">
+              <h3 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">
+                Add to Your Calendar
+              </h3>
+              <p className="text-white/50 mb-4 sm:mb-6 text-sm sm:text-base">
+                Never miss a match - sync the Benelux GAA fixtures with your
+                calendar.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 justify-center">
+                <button
+                  type="button"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 bg-[#2B9EB3] text-white rounded-lg font-semibold hover:bg-[#238a9c] transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
+                >
+                  Download iCal
+                </button>
+                <button
+                  type="button"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white/10 text-white border border-white/20 rounded-lg font-semibold hover:bg-white/20 transition-all text-sm sm:text-base"
+                >
+                  Google Calendar
+                </button>
+              </div>
             </div>
           </div>
         </div>

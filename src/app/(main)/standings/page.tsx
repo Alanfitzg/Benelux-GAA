@@ -1,18 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
-import SponsorBanner from "../components/SponsorBanner";
-import {
-  Trophy,
-  Medal,
-  ChevronDown,
-  ChevronUp,
-  Calendar,
-  Filter,
-} from "lucide-react";
+import { Trophy, Medal, ChevronDown, ChevronUp, Calendar } from "lucide-react";
 
 interface CompetitionSection {
   id: string;
@@ -122,7 +115,7 @@ function CompetitionSectionComponent({
 
   return (
     <div
-      className={`rounded-xl overflow-hidden shadow-lg border-2 ${section.borderColor} mb-4 sm:mb-6`}
+      className={`rounded-xl overflow-hidden shadow-sm border-2 ${section.borderColor} mb-4 sm:mb-6`}
     >
       <button
         type="button"
@@ -147,7 +140,6 @@ function CompetitionSectionComponent({
 
       {isExpanded && (
         <div className="bg-white p-3 sm:p-5">
-          {/* Next Fixture */}
           {section.nextFixture && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-5 flex items-start sm:items-center gap-2 sm:gap-3">
               <Calendar
@@ -165,7 +157,6 @@ function CompetitionSectionComponent({
             </div>
           )}
 
-          {/* Pools or Teams */}
           {section.pools ? (
             <div className="grid md:grid-cols-2 gap-3 sm:gap-4">
               {section.pools.map((pool) => (
@@ -214,8 +205,7 @@ function CompetitionSectionComponent({
             </div>
           ) : null}
 
-          {/* Status Message */}
-          <div className="mt-3 sm:mt-4 text-center text-gray-500 text-xs sm:text-sm">
+          <div className="mt-3 sm:mt-4 text-center text-gray-400 text-xs sm:text-sm">
             Standings will be updated as the season progresses
           </div>
         </div>
@@ -224,74 +214,112 @@ function CompetitionSectionComponent({
   );
 }
 
+const defaultSections = competitionSections;
+
 export default function StandingsPage() {
+  const [sections, setSections] =
+    useState<CompetitionSection[]>(defaultSections);
   const [selectedCompetition, setSelectedCompetition] = useState<string>("all");
+
+  useEffect(() => {
+    fetch("/api/admin/site-data?key=standings")
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.data && Array.isArray(result.data)) {
+          setSections(result.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const filteredSections =
     selectedCompetition === "all"
-      ? competitionSections
-      : competitionSections.filter((s) => s.id === selectedCompetition);
+      ? sections
+      : sections.filter((s) => s.id === selectedCompetition);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#f0f2f5] flex flex-col">
       <Header currentPage="Standings" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
-        <div className="max-w-5xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-8 sm:mb-12">
-            <p className="text-[#2B9EB3] text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2">
-              Benelux GAA
-            </p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1a3a4a] mb-2 sm:mb-3 tracking-tight">
-              <EditableText
-                pageKey="standings"
-                contentKey="title"
-                defaultValue="League Standings"
-                maxLength={30}
-              />
-            </h1>
-            <p className="text-slate-500 text-sm sm:text-base max-w-xl mx-auto mb-6 sm:mb-8">
-              <EditableText
-                pageKey="standings"
-                contentKey="subtitle"
-                defaultValue="Current Benelux GAA league tables for the 2026 season."
-                maxLength={100}
-              />
-            </p>
-            <div className="w-12 h-px bg-slate-200 mx-auto mb-5 sm:mb-6" />
-            <SponsorBanner />
-          </div>
-
-          {/* Competition Filter */}
-          <div className="bg-white rounded-xl p-3 sm:p-4 mb-4 sm:mb-6 shadow-sm border border-gray-200">
-            <div className="flex items-center gap-2 mb-2 sm:mb-3 text-gray-700">
-              <Filter size={16} className="sm:w-[18px] sm:h-[18px]" />
-              <span className="font-semibold text-xs sm:text-sm">
-                Filter by Competition
-              </span>
+      {/* Hero Banner */}
+      <div className="bg-[#1a3a4a] pt-16 sm:pt-20 md:pt-24 pb-10 sm:pb-14 relative overflow-hidden">
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#2B9EB3]/10 via-transparent to-black/20" />
+        <div className="max-w-5xl mx-auto px-4 relative z-10">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
+            <div>
+              <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
+                Benelux GAA
+              </p>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                <EditableText
+                  pageKey="standings"
+                  contentKey="title"
+                  defaultValue="League Standings"
+                  maxLength={30}
+                />
+              </h1>
+              <p className="text-white/40 text-xs sm:text-sm mt-1 hidden sm:block">
+                <EditableText
+                  pageKey="standings"
+                  contentKey="subtitle"
+                  defaultValue="Current Benelux GAA league tables for the 2026 season."
+                  maxLength={100}
+                />
+              </p>
             </div>
+            <a
+              href="https://breagh.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 sm:gap-3 group shrink-0"
+            >
+              <span className="text-white/30 text-[8px] sm:text-[10px] uppercase tracking-[0.15em] font-medium">
+                Sponsored by
+              </span>
+              <Image
+                src="/sponsors/breagh-white.png"
+                alt="Breagh Recruitment"
+                width={160}
+                height={50}
+                className="object-contain h-5 sm:h-7 w-auto opacity-80 group-hover:opacity-100 transition-opacity"
+                unoptimized
+              />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <main className="flex-1 -mt-4 sm:-mt-6 pb-8 sm:pb-16 relative z-10">
+        <div className="max-w-5xl mx-auto px-4">
+          {/* Competition Filter - overlapping hero */}
+          <div className="mb-6 sm:mb-8 bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 p-3 sm:p-5">
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
               <button
                 type="button"
                 onClick={() => setSelectedCompetition("all")}
-                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
                   selectedCompetition === "all"
                     ? "bg-[#1a3a4a] text-white shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"
                 }`}
               >
                 All Competitions
               </button>
-              {competitionSections.map((section) => (
+              {sections.map((section) => (
                 <button
                   key={section.id}
                   type="button"
                   onClick={() => setSelectedCompetition(section.id)}
-                  className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
+                  className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
                     selectedCompetition === section.id
                       ? `${section.bgColor} text-white shadow-md`
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"
                   }`}
                 >
                   {section.shortName}
@@ -307,7 +335,7 @@ export default function StandingsPage() {
 
           {/* Legend */}
           <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm mt-6 sm:mt-8">
-            <h3 className="font-semibold text-gray-900 mb-3 sm:mb-4 text-sm sm:text-base">
+            <h3 className="font-semibold text-[#1a3a4a] mb-3 sm:mb-4 text-sm sm:text-base">
               Competition Structure
             </h3>
             <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 text-xs sm:text-sm text-gray-600">
@@ -338,8 +366,8 @@ export default function StandingsPage() {
                   <p>Regional group stage format</p>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="w-3 h-3 bg-purple-600 rounded mt-1 flex-shrink-0" />
+              <div className="flex items-start gap-2 sm:gap-3">
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-purple-600 rounded mt-0.5 sm:mt-1 flex-shrink-0" />
                 <div>
                   <span className="font-medium text-gray-800">
                     15s Camogie & Hurling

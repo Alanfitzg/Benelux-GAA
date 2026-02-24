@@ -17,6 +17,7 @@ import {
   X,
   Loader2,
   CheckCircle,
+  Handshake,
 } from "lucide-react";
 
 interface TimelineEvent {
@@ -29,10 +30,13 @@ interface TimelineEvent {
     | "championship"
     | "milestone"
     | "award"
-    | "international";
+    | "international"
+    | "sponsorship";
   sourceUrl?: string;
   sourceName?: string;
   clubCrests?: string[];
+  imageUrl?: string;
+  featured?: boolean;
 }
 
 const timelineEvents: TimelineEvent[] = [
@@ -321,6 +325,26 @@ const timelineEvents: TimelineEvent[] = [
     sourceName: "RTÉ Sport",
     clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
+  {
+    year: 2025,
+    title: "Aachen Gaels Founded",
+    description:
+      "Germany's first new GAA club in a decade is established at the crossroads of Germany, Belgium, and the Netherlands. Founded by Irish expatriates working at RWTH Aachen University and local tech companies, their inaugural training session draws over 30 participants, bringing Germany's total to 12 GAA clubs.",
+    category: "founding",
+    clubCrests: ["/club-crests/benelux-aachen-gaels.png"],
+  },
+  {
+    year: 2026,
+    month: "February",
+    title: "Breagh Recruiting Becomes First Benelux GAA Sponsor",
+    description:
+      "Breagh Recruiting, a construction recruitment specialist, partners with Benelux GAA as the organisation's first official sponsor. The deal supports youth development programs across the region, marking a significant step in the professionalisation of Gaelic Games in continental Europe.",
+    category: "sponsorship",
+    sourceUrl: "https://www.breagh.com",
+    sourceName: "Breagh Recruiting",
+    imageUrl: "/sponsors/breagh-blue.png",
+    featured: true,
+  },
 ];
 
 const categoryIcons = {
@@ -329,6 +353,7 @@ const categoryIcons = {
   milestone: Star,
   award: Award,
   international: MapPin,
+  sponsorship: Handshake,
 };
 
 const categoryColors = {
@@ -337,6 +362,7 @@ const categoryColors = {
   milestone: "bg-[#2B9EB3]",
   award: "bg-purple-500",
   international: "bg-green-500",
+  sponsorship: "bg-orange-500",
 };
 
 interface SubmissionForm {
@@ -403,12 +429,26 @@ function AnimatedCard({
   );
 }
 
+const defaultTimelineEvents = timelineEvents;
+
 export default function TimelinePage() {
+  const [events, setEvents] = useState<TimelineEvent[]>(defaultTimelineEvents);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [showSubmitForm, setShowSubmitForm] = useState(false);
   const [formData, setFormData] = useState<SubmissionForm>(defaultForm);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/admin/site-data?key=timeline")
+      .then((res) => res.json())
+      .then((result) => {
+        if (result.data && Array.isArray(result.data)) {
+          setEvents(result.data);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const categories = [
     { id: "all", label: "All Events" },
@@ -417,12 +457,13 @@ export default function TimelinePage() {
     { id: "milestone", label: "Milestones" },
     { id: "award", label: "Awards" },
     { id: "international", label: "International" },
+    { id: "sponsorship", label: "Sponsorship" },
   ];
 
   const filteredEvents =
     selectedCategory === "all"
-      ? timelineEvents
-      : timelineEvents.filter((e) => e.category === selectedCategory);
+      ? events
+      : events.filter((e) => e.category === selectedCategory);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -527,6 +568,89 @@ export default function TimelinePage() {
                 const Icon = categoryIcons[event.category];
                 const isEven = idx % 2 === 0;
 
+                if (event.featured) {
+                  return (
+                    <div
+                      key={`${event.year}-${event.title}`}
+                      className="relative"
+                    >
+                      {/* Timeline Point - larger for featured */}
+                      <div className="absolute left-3 sm:left-4 md:left-1/2 transform md:-translate-x-1/2">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-orange-500 flex items-center justify-center shadow-lg z-10 relative ring-4 ring-orange-200">
+                          <Icon
+                            size={14}
+                            className="text-white sm:w-5 sm:h-5"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Full-width featured card */}
+                      <div className="ml-12 sm:ml-16 md:ml-0 md:px-16">
+                        <AnimatedCard direction="left">
+                          <div className="bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-200 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-lg hover:shadow-xl transition-shadow">
+                            <div className="md:flex md:items-center md:gap-8">
+                              {/* Left: Breagh logo */}
+                              {event.imageUrl && (
+                                <div className="flex-shrink-0 mb-4 md:mb-0">
+                                  <a
+                                    href={event.sourceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block"
+                                  >
+                                    <Image
+                                      src={event.imageUrl}
+                                      alt={event.title}
+                                      width={200}
+                                      height={80}
+                                      className="object-contain"
+                                      unoptimized
+                                    />
+                                  </a>
+                                </div>
+                              )}
+
+                              {/* Right: Content */}
+                              <div className="flex-1">
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2 sm:mb-3">
+                                  <span className="text-2xl sm:text-3xl font-bold text-[#1a3a4a]">
+                                    {event.year}
+                                  </span>
+                                  {event.month && (
+                                    <span className="text-sm text-gray-500">
+                                      {event.month}
+                                    </span>
+                                  )}
+                                  <span className="px-2.5 py-1 rounded-full text-xs font-semibold text-white bg-orange-500">
+                                    Partnership
+                                  </span>
+                                </div>
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                                  {event.title}
+                                </h3>
+                                <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-3">
+                                  {event.description}
+                                </p>
+                                {event.sourceUrl && (
+                                  <a
+                                    href={event.sourceUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-orange-600 hover:text-orange-800 font-medium transition-colors"
+                                  >
+                                    <ExternalLink size={13} />
+                                    Visit {event.sourceName}
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </AnimatedCard>
+                      </div>
+                    </div>
+                  );
+                }
+
                 return (
                   <div
                     key={`${event.year}-${event.title}`}
@@ -551,6 +675,20 @@ export default function TimelinePage() {
                     >
                       <AnimatedCard direction={isEven ? "left" : "right"}>
                         <div className="bg-white border border-gray-200 rounded-xl p-4 sm:p-6 shadow-md hover:shadow-lg transition-shadow">
+                          {/* Sponsor Image */}
+                          {event.imageUrl && (
+                            <div className="flex items-center gap-3 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-100">
+                              <Image
+                                src={event.imageUrl}
+                                alt={event.title}
+                                width={140}
+                                height={56}
+                                className="object-contain"
+                                unoptimized
+                              />
+                            </div>
+                          )}
+
                           {/* Club Crests */}
                           {event.clubCrests && event.clubCrests.length > 0 && (
                             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 pb-3 sm:pb-4 border-b border-gray-100">

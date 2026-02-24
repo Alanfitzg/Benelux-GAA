@@ -45,7 +45,7 @@ export default function SponsorSection() {
 
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center md:gap-16">
             <a
-              href="https://breaghrecruitment.com/"
+              href="https://breagh.com"
               target="_blank"
               rel="noopener noreferrer"
               className={`block transition-all duration-700 delay-200 ${
@@ -54,15 +54,14 @@ export default function SponsorSection() {
                   : "opacity-0 -translate-x-8 scale-95"
               }`}
             >
-              <div className="w-full max-w-[280px] h-32 sm:max-w-[320px] sm:h-36 md:w-[480px] md:h-72 md:max-w-none relative flex-shrink-0 hover:scale-105 transition-transform duration-300">
-                <Image
-                  src="/sponsors/breagh.jpg"
-                  alt="Breagh Recruitment - Official Sponsor of Benelux GAA"
-                  fill
-                  className="object-contain"
-                  unoptimized
-                />
-              </div>
+              <Image
+                src="/sponsors/breagh-blue.png"
+                alt="Breagh Recruitment - Official Sponsor of Benelux GAA"
+                width={500}
+                height={200}
+                className="object-contain w-48 sm:w-64 md:w-80 hover:scale-105 transition-transform duration-300"
+                unoptimized
+              />
             </a>
 
             <div
@@ -77,7 +76,7 @@ export default function SponsorSection() {
                 support Gaelic Games across the Benelux region.
               </p>
               <a
-                href="https://breaghrecruitment.com/"
+                href="https://breagh.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-[#2B9EB3] font-semibold text-lg hover:text-[#1a3a4a] transition-colors group"

@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "@/lib/auth-helpers";
-import { UserRole } from "@prisma/client";
 
 export default async function AdminLayout({
   children,
@@ -13,12 +12,7 @@ export default async function AdminLayout({
     redirect("/signin");
   }
 
-  if (
-    session.user.role !== UserRole.SUPER_ADMIN &&
-    session.user.role !== UserRole.GUEST_ADMIN &&
-    session.user.role !== UserRole.CLUB_ADMIN &&
-    session.user.role !== UserRole.YOUTH_OFFICER
-  ) {
+  if (session.user.role !== "SUPER_ADMIN") {
     redirect("/");
   }
 

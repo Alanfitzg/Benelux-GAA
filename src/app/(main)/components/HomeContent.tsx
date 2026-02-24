@@ -13,6 +13,7 @@ import FeaturedArticle from "./FeaturedArticle";
 import SponsorSection from "./SponsorSection";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { getUpcomingFixtures, venueToClub } from "../data/fixtures";
+import type { Fixture } from "../data/fixtures";
 
 interface NewsArticle {
   id: string;
@@ -54,6 +55,9 @@ function formatNewsDate(dateStr: string): string {
 export default function HomeContent() {
   const [latestNews, setLatestNews] = useState<NewsArticle[]>([]);
   const [newsLoading, setNewsLoading] = useState(true);
+  const [upcomingFixtures, setUpcomingFixtures] = useState<Fixture[]>(
+    getUpcomingFixtures(3)
+  );
 
   useEffect(() => {
     async function fetchNews() {
@@ -67,7 +71,21 @@ export default function HomeContent() {
         setNewsLoading(false);
       }
     }
+    async function fetchFixtures() {
+      try {
+        const res = await fetch("/api/admin/site-data?key=fixtures");
+        const result = await res.json();
+        if (result.data && Array.isArray(result.data)) {
+          const today = new Date().toISOString().split("T")[0];
+          const upcoming = result.data
+            .filter((f: Fixture) => f.date >= today)
+            .slice(0, 3);
+          setUpcomingFixtures(upcoming);
+        }
+      } catch {}
+    }
     fetchNews();
+    fetchFixtures();
   }, []);
   return (
     <div className="bg-white">
@@ -342,7 +360,7 @@ export default function HomeContent() {
           </div>
 
           <div className="space-y-4">
-            {getUpcomingFixtures(3).map((fixture, idx) => {
+            {upcomingFixtures.map((fixture, idx) => {
               const { month, day } = formatFixtureDate(fixture.date);
               const colors = codeColors[fixture.code] || {
                 bg: "bg-gray-100",
@@ -489,16 +507,6 @@ export default function HomeContent() {
                         <span className="text-3xl">📰</span>
                       </div>
                     )}
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <span className="px-3 py-1 bg-[#2B9EB3] text-white text-xs font-semibold rounded-full">
-                        {latestNews[0].category}
-                      </span>
-                      {latestNews[0].featured && (
-                        <span className="px-3 py-1 bg-amber-500 text-white text-xs font-semibold rounded-full">
-                          Featured
-                        </span>
-                      )}
-                    </div>
                   </div>
                   <div className="p-4 md:p-8">
                     <div className="flex items-center gap-3 text-gray-400 text-xs mb-2 md:mb-3">
@@ -554,9 +562,6 @@ export default function HomeContent() {
                       </div>
                       <div className="p-4 flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-0.5 bg-[#2B9EB3]/10 text-[#2B9EB3] text-[10px] font-semibold rounded-full">
-                            {article.category}
-                          </span>
                           <span className="text-gray-400 text-[10px] flex items-center gap-1">
                             <Calendar size={10} />
                             {formatNewsDate(article.date)

@@ -569,6 +569,8 @@ enum ClubStatus {
   PENDING
   APPROVED
   REJECTED
+  IN_DEVELOPMENT
+  DORMANT
 }
 
 enum TournamentVisibility {
@@ -1038,7 +1040,7 @@ enum SubmissionStatus {
 // Calendar-specific models for the new Club Admin Calendar feature
 model CalendarEvent {
   id              String            @id @default(cuid())
-  clubId          String
+  clubId          String?
   title           String
   description     String?
   eventType       CalendarEventType
@@ -1057,7 +1059,7 @@ model CalendarEvent {
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
-  club            Club              @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  club            Club?             @relation(fields: [clubId], references: [id], onDelete: Cascade)
 
   @@index([clubId, startDate])
   @@index([startDate])
@@ -1168,6 +1170,8 @@ enum CalendarEventType {
   TRAINING
   TOURNAMENT
   SOCIAL
+  FRIENDLY
+  INVITATIONAL
 }
 
 enum EventSource {
@@ -1797,6 +1801,18 @@ model ClubContent {
 
   @@unique([clubId, pageKey, contentKey])
   @@index([clubId, pageKey])
+}
+
+// ============================================
+// Site Data (JSON storage for Benelux GAA admin)
+// Stores fixtures, standings, timeline, news as JSON
+// ============================================
+
+model SiteData {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  data      Json
+  updatedAt DateTime @updatedAt
 }
 
 // ============================================

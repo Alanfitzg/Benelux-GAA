@@ -128,7 +128,7 @@ export default function Header({ currentPage }: HeaderProps) {
           </span>
           <Link href={homeHref}>
             <Image
-              src="/benelux-gaa-crest.png"
+              src="/images/Benelux Crest white background.png"
               alt="Benelux GAA"
               width={60}
               height={60}
@@ -165,7 +165,7 @@ export default function Header({ currentPage }: HeaderProps) {
           {/* Center Crest */}
           <Link href={homeHref} className="mx-8 flex-shrink-0 relative group">
             <Image
-              src="/benelux-gaa-crest.png"
+              src="/images/Benelux Crest white background.png"
               alt="Benelux GAA"
               width={90}
               height={90}
@@ -211,7 +211,7 @@ export default function Header({ currentPage }: HeaderProps) {
             </span>
             <Link href={homeHref} onClick={() => setMobileMenuOpen(false)}>
               <Image
-                src="/benelux-gaa-crest.png"
+                src="/images/Benelux Crest white background.png"
                 alt="Benelux GAA"
                 width={60}
                 height={60}
