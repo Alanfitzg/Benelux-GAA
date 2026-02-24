@@ -164,17 +164,14 @@ export default function Header({ currentPage }: HeaderProps) {
 
           {/* Center Crest */}
           <Link href={homeHref} className="mx-8 flex-shrink-0 relative group">
-            <div className="absolute inset-0 bg-[#2B9EB3]/20 rounded-full blur-xl scale-125 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="relative ring-2 ring-white/10 rounded-full p-0.5">
-              <Image
-                src="/benelux-gaa-crest.png"
-                alt="Benelux GAA"
-                width={90}
-                height={90}
-                className="object-contain w-[90px] h-[90px] relative z-10"
-                unoptimized
-              />
-            </div>
+            <Image
+              src="/benelux-gaa-crest.png"
+              alt="Benelux GAA"
+              width={90}
+              height={90}
+              className="object-contain w-[90px] h-[90px] relative z-10"
+              unoptimized
+            />
           </Link>
 
           {/* Right Nav (3 items) */}

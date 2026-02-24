@@ -204,39 +204,40 @@ export default function ClubsCarousel() {
           </div>
 
           {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-5 gap-3">
+          <div className="hidden md:grid md:grid-cols-5 gap-x-6 gap-y-8">
             {visibleClubs.map((club) => {
               const year = club.foundedYear || foundedYearFallback[club.name];
               return (
-                <div key={club.id} className="group cursor-pointer">
-                  <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/15 hover:border-white/20 transition-all duration-300 hover:-translate-y-0.5">
-                    <div className="h-20 flex items-center justify-center mb-3">
-                      {club.imageUrl ? (
-                        <Image
-                          src={club.imageUrl}
-                          alt={`${club.name} crest`}
-                          width={80}
-                          height={80}
-                          className="object-contain w-20 h-20 group-hover:scale-110 transition-transform duration-300"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="w-16 h-16 bg-gradient-to-br from-[#2B9EB3] to-[#1a3a4a] rounded-full flex items-center justify-center">
-                          <span className="text-2xl">
-                            {countryFlags[club.countryCode] || "\u{1F3D0}"}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-white/90 font-medium text-center text-sm leading-snug group-hover:text-[#4ecde6] transition-colors">
-                      {club.name}
-                    </p>
-                    {year && (
-                      <p className="text-white/40 text-center text-xs mt-1">
-                        Est. {year}
-                      </p>
+                <div
+                  key={club.id}
+                  className="group cursor-pointer flex flex-col items-center"
+                >
+                  <div className="h-28 w-28 flex items-center justify-center mb-3">
+                    {club.imageUrl ? (
+                      <Image
+                        src={club.imageUrl}
+                        alt={`${club.name} crest`}
+                        width={112}
+                        height={112}
+                        className="object-contain w-28 h-28 group-hover:scale-110 transition-transform duration-300"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-20 h-20 bg-gradient-to-br from-[#2B9EB3] to-[#1a3a4a] rounded-full flex items-center justify-center">
+                        <span className="text-3xl">
+                          {countryFlags[club.countryCode] || "\u{1F3D0}"}
+                        </span>
+                      </div>
                     )}
                   </div>
+                  <p className="text-white/90 font-medium text-center text-sm leading-snug group-hover:text-[#4ecde6] transition-colors">
+                    {club.name}
+                  </p>
+                  {year && (
+                    <p className="text-white/40 text-center text-xs mt-1">
+                      Est. {year}
+                    </p>
+                  )}
                 </div>
               );
             })}
