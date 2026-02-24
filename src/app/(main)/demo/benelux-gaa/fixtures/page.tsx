@@ -11,27 +11,36 @@ import { getAssetUrl } from "../constants";
 const venueToClub: Record<string, { name: string; crest: string }> = {
   Leuven: {
     name: "Earls of Leuven",
-    crest: "/club-crests/earls-of-leuven.png",
+    crest: "/club-crests/benelux-earls-of-leuven.png",
   },
-  "Den Haag": { name: "CLG Den Haag", crest: "/club-crests/clg-den-haag.png" },
-  "The Hague": { name: "CLG Den Haag", crest: "/club-crests/clg-den-haag.png" },
+  "Den Haag": {
+    name: "CLG Den Haag",
+    crest: "/club-crests/benelux-den-haag.png",
+  },
+  "The Hague": {
+    name: "CLG Den Haag",
+    crest: "/club-crests/benelux-den-haag.png",
+  },
   Cologne: {
     name: "Cologne Celtics",
-    crest: "/club-crests/logo-cologne_celtics.png",
+    crest: "/club-crests/benelux-cologne-celts.png",
   },
   Maastricht: {
     name: "Maastricht Gaels",
-    crest: "/club-crests/maastricht-gaels.png",
+    crest: "/club-crests/benelux-maastricht-gaels.png",
   },
   Eindhoven: {
     name: "Eindhoven Shamrocks",
-    crest: "/club-crests/eindhoven.webp",
+    crest: "/club-crests/benelux-eindhoven-shamrocks.png",
   },
   Luxembourg: {
     name: "Luxembourg GAA",
-    crest: "/club-crests/gaelic_sports_club_luxembourg_crest.jpg",
+    crest: "/club-crests/benelux-luxembourg.png",
   },
-  Amsterdam: { name: "Amsterdam GAA", crest: "/club-crests/amsterdam.png" },
+  Amsterdam: {
+    name: "Amsterdam GAA",
+    crest: "/club-crests/benelux-amsterdam-gac.png",
+  },
 };
 
 interface Fixture {

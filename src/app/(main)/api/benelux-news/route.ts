@@ -39,7 +39,7 @@ The Gaels have already registered for the 2026 Benelux Championships and are act
     readTime: 4,
     category: "Benelux News",
     tags: ["Featured", "New Club"],
-    imageUrl: "/club-crests/aachen gaels.png",
+    imageUrl: "/club-crests/benelux-aachen-gaels.png",
     featured: true,
     status: "published",
   },

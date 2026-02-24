@@ -530,7 +530,7 @@ export default function RollOfHonorPage() {
 
       <Header currentPage="Roll of Honor" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-28 sm:pb-16 md:pt-32 relative z-10">
+      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28 relative z-10">
         <div className="max-w-3xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8">

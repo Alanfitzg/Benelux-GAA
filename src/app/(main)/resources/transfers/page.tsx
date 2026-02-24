@@ -44,7 +44,7 @@ export default function TransfersPage() {
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Resources" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-28 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
         <div className="max-w-4xl mx-auto px-4">
           <InternalLink
             href="/resources"

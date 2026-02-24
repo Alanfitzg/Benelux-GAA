@@ -65,7 +65,7 @@ export default function FixturesPage() {
     <div className="min-h-screen bg-slate-100 flex flex-col">
       <Header currentPage="Fixtures" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-28 sm:pb-16 md:pt-32">
+      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
         <div className="max-w-4xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-10">

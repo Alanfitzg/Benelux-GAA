@@ -14,10 +14,26 @@ export default function FeaturedArticle() {
   const [imageUrl, setImageUrl] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const savedHeadline = getContent("home", "featured_headline", "");
-  const savedDescription = getContent("home", "featured_description", "");
-  const savedUrl = getContent("home", "featured_url", "");
-  const savedImageUrl = getContent("home", "featured_image", "");
+  const savedHeadline = getContent(
+    "home",
+    "featured_headline",
+    "McDermott relieved after Amsterdam's Leinster win"
+  );
+  const savedDescription = getContent(
+    "home",
+    "featured_description",
+    "Amsterdam's Leinster GAA celebrate a hard-fought victory in the 2025 season, as covered by RTE Sport."
+  );
+  const savedUrl = getContent(
+    "home",
+    "featured_url",
+    "https://www.rte.ie/sport/hurling/2025/1124/1545513-mcdermott-relieved-after-amsterdams-leinster-win/"
+  );
+  const savedImageUrl = getContent(
+    "home",
+    "featured_image",
+    "https://www.rte.ie/images/0023822a-1600.jpg"
+  );
 
   if (!savedHeadline && !isAdmin) return null;
 

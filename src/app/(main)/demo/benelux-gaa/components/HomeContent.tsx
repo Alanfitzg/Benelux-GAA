@@ -31,7 +31,7 @@ const upcomingFixtures = [
     venue: "Leuven",
     code: "Football",
     hostClub: "Earls of Leuven",
-    hostCrest: "/club-crests/earls-of-leuven.png",
+    hostCrest: "/club-crests/benelux-earls-of-leuven.png",
   },
   {
     date: "2026-02-28",
@@ -39,7 +39,7 @@ const upcomingFixtures = [
     venue: "Den Haag",
     code: "Invitational",
     hostClub: "CLG Den Haag",
-    hostCrest: "/club-crests/clg-den-haag.png",
+    hostCrest: "/club-crests/benelux-den-haag.png",
   },
   {
     date: "2026-03-14",
@@ -47,7 +47,7 @@ const upcomingFixtures = [
     venue: "Cologne",
     code: "Invitational",
     hostClub: "Cologne Celtics",
-    hostCrest: "/club-crests/logo-cologne_celtics.png",
+    hostCrest: "/club-crests/benelux-cologne-celts.png",
   },
 ];
 

@@ -8,6 +8,9 @@ import NewsletterForm from "./NewsletterForm";
 import ImageCarousel from "./ImageCarousel";
 import ClubsCarousel from "./ClubsCarousel";
 import MuseumPreview from "./MuseumPreview";
+import HeroSection from "./HeroSection";
+import FeaturedArticle from "./FeaturedArticle";
+import SponsorSection from "./SponsorSection";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { getUpcomingFixtures, venueToClub } from "../data/fixtures";
 
@@ -68,6 +71,15 @@ export default function HomeContent() {
   }, []);
   return (
     <div className="bg-white">
+      {/* Hero Banner */}
+      <HeroSection />
+
+      {/* Sponsor */}
+      <SponsorSection />
+
+      {/* Featured Article */}
+      <FeaturedArticle />
+
       {/* What are Gaelic Games Section */}
       <section className="py-8 md:py-16 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">

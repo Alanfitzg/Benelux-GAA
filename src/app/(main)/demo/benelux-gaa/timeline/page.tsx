@@ -76,7 +76,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://en.wikipedia.org/wiki/Gaelic_Sports_Club_Luxembourg",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 1979,
@@ -86,7 +86,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg-den-haag.png"],
+    clubCrests: ["/club-crests/benelux-den-haag.png"],
   },
   {
     year: 1979,
@@ -95,8 +95,8 @@ const timelineEvents: TimelineEvent[] = [
       "The first Gaelic Games tournament hosted in the Benelux region, organised by Luxembourg and Brussels clubs.",
     category: "milestone",
     clubCrests: [
-      "/club-crests/gaelic_sports_club_luxembourg_crest.jpg",
-      "/club-crests/ec-brussels-youth.png",
+      "/club-crests/benelux-luxembourg.png",
+      "/club-crests/benelux-ec-brussels.png",
     ],
   },
   {
@@ -108,7 +108,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://gaelicgameseurope.com/2024/03/11/the-5-leagues-of-europe-the-benelux/",
     sourceName: "Gaelic Games Europe",
-    clubCrests: ["/club-crests/ec-brussels-youth.png"],
+    clubCrests: ["/club-crests/benelux-ec-brussels.png"],
   },
   {
     year: 1997,
@@ -136,7 +136,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2003,
@@ -146,7 +146,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://brussels-gaa.com/about/",
     sourceName: "Brussels Craobh Rua",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2004,
@@ -157,7 +157,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
     sourceName: "GAA.ie",
-    clubCrests: ["/club-crests/maastricht-gaels.png"],
+    clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
   {
     year: 2006,
@@ -165,7 +165,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Maastricht Gaels win the first European Football Shield (now Intermediate Championship) in Barcelona, marking their first major European title.",
     category: "championship",
-    clubCrests: ["/club-crests/maastricht-gaels.png"],
+    clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
   {
     year: 2007,
@@ -173,7 +173,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Luxembourg's Damien Higgins wins the Poc Fada na hEorpa competition for a record 7th time, cementing Luxembourg's dominance in the long puck competition.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2007,
@@ -181,7 +181,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Luxembourg men win the first ever Gaelic Football Benelux tournament, establishing the regional championship.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2008,
@@ -189,7 +189,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Luxembourg wins the first official European Camogie Championship title, adding to their collection of honours.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2008,
@@ -199,7 +199,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://www.balls.ie/gaa/florina-tobon-belgium-gaa-533601",
     sourceName: "Balls.ie",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2009,
@@ -214,7 +214,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "The Cologne Celtics are established in Germany, expanding the Benelux-affiliated clubs into the Rhineland.",
     category: "founding",
-    clubCrests: ["/club-crests/logo-cologne_celtics.png"],
+    clubCrests: ["/club-crests/benelux-cologne-celts.png"],
   },
   {
     year: 2012,
@@ -222,7 +222,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Belgium win the inaugural Benelux Regional Ladies Football Championship, marking a significant milestone for women's Gaelic football in the region.",
     category: "championship",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2013,
@@ -230,7 +230,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Dusseldorf GAA is established in Germany, adding another German city to the growing Benelux network.",
     category: "founding",
-    clubCrests: ["/club-crests/dusseldorf-gaa.png"],
+    clubCrests: ["/club-crests/benelux-dusseldorf.png"],
   },
   {
     year: 2013,
@@ -240,7 +240,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "award",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg-den-haag.png"],
+    clubCrests: ["/club-crests/benelux-den-haag.png"],
   },
   {
     year: 2013,
@@ -248,7 +248,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Eindhoven Shamrocks GAA is established in the Netherlands, adding another Dutch city to the growing network.",
     category: "founding",
-    clubCrests: ["/club-crests/eindhoven.webp"],
+    clubCrests: ["/club-crests/benelux-eindhoven-shamrocks.png"],
   },
   {
     year: 2014,
@@ -256,7 +256,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "The first Leinster Club Football Championship fixture outside of Ireland is played in Maastricht, a historic moment for European GAA.",
     category: "milestone",
-    clubCrests: ["/club-crests/maastricht-gaels.png"],
+    clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
   {
     year: 2014,
@@ -264,7 +264,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Belgium win the first ever European Premier (15s) Ladies Football Championship, establishing themselves as a powerhouse in European women's football.",
     category: "championship",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2014,
@@ -274,7 +274,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2015,
@@ -282,7 +282,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Hamburg GAA is established in northern Germany, expanding Gaelic Games to the port city.",
     category: "founding",
-    clubCrests: ["/club-crests/hamburg gaa.png"],
+    clubCrests: ["/club-crests/benelux-hamburg-gaa.png"],
   },
   {
     year: 2015,
@@ -290,7 +290,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Darmstadt GAA is established in Germany, adding another club to the growing network.",
     category: "founding",
-    clubCrests: ["/club-crests/darmstadt gaa.png"],
+    clubCrests: ["/club-crests/benelux-darmstadt.png"],
   },
   {
     year: 2015,
@@ -298,7 +298,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Earls of Leuven GAA is established in Belgium, expanding Gaelic Games to the university city.",
     category: "founding",
-    clubCrests: ["/club-crests/earls-of-leuven.png"],
+    clubCrests: ["/club-crests/benelux-earls-of-leuven.png"],
   },
   {
     year: 2016,
@@ -306,7 +306,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Belgium are the first European team to qualify for an All-Ireland Ladies Football Club Championship Quarter-Final, which is also the first All-Ireland QF ever to be played in Europe, hosted in Maastricht.",
     category: "championship",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2017,
@@ -315,8 +315,8 @@ const timelineEvents: TimelineEvent[] = [
       "Leuven and Eindhoven win their first European football titles, taking home the Intermediate Championship and Shield trophies respectively.",
     category: "championship",
     clubCrests: [
-      "/club-crests/earls-of-leuven.png",
-      "/club-crests/eindhoven.webp",
+      "/club-crests/benelux-earls-of-leuven.png",
+      "/club-crests/benelux-eindhoven-shamrocks.png",
     ],
   },
   {
@@ -325,7 +325,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Luxembourg GAA wins the European 15-a-side Championship, breaking Amsterdam's winning streak.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2018,
@@ -333,7 +333,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Groningen Gaels are established in the northern Netherlands, expanding Gaelic Games to new regions.",
     category: "founding",
-    clubCrests: ["/club-crests/groningen.webp"],
+    clubCrests: ["/club-crests/benelux-groningen-gaels.png"],
   },
   {
     year: 2018,
@@ -357,7 +357,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "award",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg-den-haag.png"],
+    clubCrests: ["/club-crests/benelux-den-haag.png"],
   },
   {
     year: 2020,
@@ -375,7 +375,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
     sourceName: "GAA.ie",
-    clubCrests: ["/club-crests/maastricht-gaels.png"],
+    clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
   {
     year: 2022,
@@ -383,7 +383,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Nijmegen Gaelic Football Club is established in the Netherlands, becoming one of the newest clubs in the region.",
     category: "founding",
-    clubCrests: ["/club-crests/nijmegen-gfc.png"],
+    clubCrests: ["/club-crests/benelux-nijmegen-gfc.png"],
   },
   {
     year: 2022,
@@ -392,7 +392,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Leuven host the inaugural European Universities Football Championships, bringing collegiate Gaelic Games to the continent.",
     category: "milestone",
-    clubCrests: ["/club-crests/earls-of-leuven.png"],
+    clubCrests: ["/club-crests/benelux-earls-of-leuven.png"],
   },
   {
     year: 2022,
@@ -400,7 +400,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Luxembourg are the first Benelux representatives to win the Euro Cup, played over two days in Pontevedra, Spain.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2022,
@@ -408,7 +408,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Belgium claim a record 9th European Camogie Championship title in Amsterdam.",
     category: "championship",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2022,
@@ -416,7 +416,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Amsterdam win the first European Premier (15s) Hurling Championships, hosted by Maastricht.",
     category: "championship",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2022,
@@ -424,7 +424,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Belgium ladies footballers smash their own record, winning a 13th European Senior Championship title.",
     category: "championship",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2022,
@@ -441,7 +441,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2022,
@@ -458,7 +458,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Eindhoven host the inaugural Benelux region Camogie and Hurling Championships, which are won by Belgium and Luxembourg respectively.",
     category: "championship",
-    clubCrests: ["/club-crests/eindhoven.webp"],
+    clubCrests: ["/club-crests/benelux-eindhoven-shamrocks.png"],
   },
   {
     year: 2023,
@@ -466,7 +466,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Leuven host the second European Collegiate Games, building on the success of the inaugural event.",
     category: "milestone",
-    clubCrests: ["/club-crests/earls-of-leuven.png"],
+    clubCrests: ["/club-crests/benelux-earls-of-leuven.png"],
   },
   {
     year: 2023,
@@ -483,8 +483,8 @@ const timelineEvents: TimelineEvent[] = [
       "Eindhoven Shamrocks win the cup for the first time in their history, while the Earls of Leuven finish second, representing a dramatic shift in the power dynamic in Europe's premier league. Amsterdam CLG win the Shield and Luxembourg take the Plate.",
     category: "championship",
     clubCrests: [
-      "/club-crests/eindhoven.webp",
-      "/club-crests/earls-of-leuven.png",
+      "/club-crests/benelux-eindhoven-shamrocks.png",
+      "/club-crests/benelux-earls-of-leuven.png",
     ],
   },
   {
@@ -493,7 +493,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "The Belgium ladies win the Benelux for the 10th year! An incredible achievement from Europe's top LGFA team.",
     category: "championship",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2024,
@@ -502,8 +502,8 @@ const timelineEvents: TimelineEvent[] = [
       "The first ever Benelux 15-a-side championship occurred in Maastricht. Belgium Ladies defeated Luxembourg in the final, while the Amsterdam men emerged victorious in the men's final.",
     category: "championship",
     clubCrests: [
-      "/club-crests/amsterdam.png",
-      "/club-crests/brussels-an-craobh-rua.png",
+      "/club-crests/benelux-amsterdam-gac.png",
+      "/club-crests/benelux-brussels.png",
     ],
   },
   {
@@ -514,7 +514,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://brussels-gaa.com/about/",
     sourceName: "Brussels Craobh Rua",
-    clubCrests: ["/club-crests/brussels-an-craobh-rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2025,
@@ -534,7 +534,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.rte.ie/sport/hurling/2025/1120/1544933-the-dam-united-netherlands-powerhouse-seek-history/",
     sourceName: "RTÉ Sport",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2025,
@@ -546,7 +546,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.rte.ie/sport/hurling/2025/1124/1545513-mcdermott-relieved-after-amsterdams-leinster-win/",
     sourceName: "RTÉ Sport",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
 ];
 
@@ -597,20 +597,19 @@ interface Club {
 }
 
 const clubCrestMap: Record<string, string> = {
-  "Amsterdam GAC": "/club-crests/amsterdam.png",
-  "CLG Den Haag": "/club-crests/clg-den-haag.png",
-  "An Craobh Rua": "/club-crests/brussels-an-craobh-rua.png",
-  "Gaelic Sports Club Luxembourg":
-    "/club-crests/gaelic_sports_club_luxembourg_crest.jpg",
-  "EC Brussels Youth": "/club-crests/ec-brussels-youth.png",
-  "Maastricht Gaels": "/club-crests/maastricht-gaels.png",
-  "Cologne Celtics": "/club-crests/logo-cologne_celtics.png",
-  "Eindhoven Shamrocks GAA": "/club-crests/eindhoven.webp",
-  "Earls of Leuven": "/club-crests/earls-of-leuven.png",
-  "Hamburg GAA": "/club-crests/hamburg gaa.png",
-  "Darmstadt GAA": "/club-crests/darmstadt gaa.png",
-  "Groningen Gaels": "/club-crests/groningen.webp",
-  "Nijmegen GFC": "/club-crests/nijmegen-gfc.png",
+  "Amsterdam GAC": "/club-crests/benelux-amsterdam-gac.png",
+  "CLG Den Haag": "/club-crests/benelux-den-haag.png",
+  "An Craobh Rua": "/club-crests/benelux-brussels.png",
+  "Gaelic Sports Club Luxembourg": "/club-crests/benelux-luxembourg.png",
+  "EC Brussels Youth": "/club-crests/benelux-ec-brussels.png",
+  "Maastricht Gaels": "/club-crests/benelux-maastricht-gaels.png",
+  "Cologne Celtics": "/club-crests/benelux-cologne-celts.png",
+  "Eindhoven Shamrocks GAA": "/club-crests/benelux-eindhoven-shamrocks.png",
+  "Earls of Leuven": "/club-crests/benelux-earls-of-leuven.png",
+  "Hamburg GAA": "/club-crests/benelux-hamburg-gaa.png",
+  "Darmstadt GAA": "/club-crests/benelux-darmstadt.png",
+  "Groningen Gaels": "/club-crests/benelux-groningen-gaels.png",
+  "Nijmegen GFC": "/club-crests/benelux-nijmegen-gfc.png",
 };
 
 export default function TimelinePage() {

@@ -67,7 +67,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg den haag.png"],
+    clubCrests: ["/club-crests/benelux-den-haag.png"],
   },
   {
     year: 1978,
@@ -77,7 +77,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://en.wikipedia.org/wiki/Gaelic_Sports_Club_Luxembourg",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 1980,
@@ -88,7 +88,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://gaelicgameseurope.com/2024/03/11/the-5-leagues-of-europe-the-benelux/",
     sourceName: "Gaelic Games Europe",
-    clubCrests: ["/club-crests/ec brussels - youth.png"],
+    clubCrests: ["/club-crests/benelux-ec-brussels.png"],
   },
   {
     year: 1999,
@@ -109,7 +109,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2003,
@@ -119,7 +119,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://brussels-gaa.com/about/",
     sourceName: "Brussels Craobh Rua",
-    clubCrests: ["/club-crests/brussels - an craobh rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2004,
@@ -130,7 +130,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
     sourceName: "GAA.ie",
-    clubCrests: ["/club-crests/maastricht gaels - white round - cropped.png"],
+    clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
   {
     year: 2007,
@@ -138,7 +138,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "The inaugural Benelux GAA Championship is held, with Luxembourg winning the first Men's Football title.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2008,
@@ -149,7 +149,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://ladiesgaelic.ie/more-than-a-sporting-experience-the-first-thirty-years-of-gaelic-games-in-luxembourg/",
     sourceName: "Ladies Gaelic Football",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2008,
@@ -159,7 +159,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "founding",
     sourceUrl: "https://www.balls.ie/gaa/florina-tobon-belgium-gaa-533601",
     sourceName: "Balls.ie",
-    clubCrests: ["/club-crests/brussels - an craobh rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2012,
@@ -167,7 +167,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "The Cologne Celtics are established in Germany, expanding the Benelux-affiliated clubs into the Rhineland.",
     category: "founding",
-    clubCrests: ["/club-crests/logo-cologne_celtics.png"],
+    clubCrests: ["/club-crests/benelux-cologne-celts.png"],
   },
   {
     year: 2013,
@@ -177,7 +177,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "award",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg den haag.png"],
+    clubCrests: ["/club-crests/benelux-den-haag.png"],
   },
   {
     year: 2013,
@@ -185,7 +185,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Eindhoven Shamrocks GAA is established in the Netherlands, adding another Dutch city to the growing network.",
     category: "founding",
-    clubCrests: ["/club-crests/eindhoven.webp"],
+    clubCrests: ["/club-crests/benelux-eindhoven-shamrocks.png"],
   },
   {
     year: 2014,
@@ -195,7 +195,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2015,
@@ -204,9 +204,9 @@ const timelineEvents: TimelineEvent[] = [
       "Three new clubs are established: Earls of Leuven (Belgium), Hamburg GAA (Germany), and Darmstadt GAA (Germany), significantly expanding the region's footprint.",
     category: "founding",
     clubCrests: [
-      "/club-crests/earls-of-leuven.png",
-      "/club-crests/hamburg gaa.png",
-      "/club-crests/darmstadt gaa.png",
+      "/club-crests/benelux-earls-of-leuven.png",
+      "/club-crests/benelux-hamburg-gaa.png",
+      "/club-crests/benelux-darmstadt.png",
     ],
   },
   {
@@ -215,7 +215,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Luxembourg GAA wins the European 15-a-side Championship, breaking Amsterdam's winning streak.",
     category: "championship",
-    clubCrests: ["/club-crests/gaelic_sports_club_luxembourg_crest.jpg"],
+    clubCrests: ["/club-crests/benelux-luxembourg.png"],
   },
   {
     year: 2018,
@@ -223,7 +223,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Groningen Gaels are established in the northern Netherlands, expanding Gaelic Games to new regions.",
     category: "founding",
-    clubCrests: ["/club-crests/groningen.webp"],
+    clubCrests: ["/club-crests/benelux-groningen-gaels.png"],
   },
   {
     year: 2019,
@@ -233,7 +233,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "award",
     sourceUrl: "https://denhaaggaa.com/den-haag-gaa-about-us/",
     sourceName: "Den Haag GAA",
-    clubCrests: ["/club-crests/clg den haag.png"],
+    clubCrests: ["/club-crests/benelux-den-haag.png"],
   },
   {
     year: 2020,
@@ -262,7 +262,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
     sourceName: "GAA.ie",
-    clubCrests: ["/club-crests/maastricht gaels - white round - cropped.png"],
+    clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
   {
     year: 2021,
@@ -270,7 +270,7 @@ const timelineEvents: TimelineEvent[] = [
     description:
       "Nijmegen Gaelic Football Club is established in the Netherlands, becoming one of the newest clubs in the region.",
     category: "founding",
-    clubCrests: ["/club-crests/nijmegen gfc.png"],
+    clubCrests: ["/club-crests/benelux-nijmegen-gfc.png"],
   },
   {
     year: 2022,
@@ -280,7 +280,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://en.wikipedia.org/wiki/Amsterdam_GAC",
     sourceName: "Wikipedia",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
     year: 2022,
@@ -307,7 +307,7 @@ const timelineEvents: TimelineEvent[] = [
     category: "championship",
     sourceUrl: "https://brussels-gaa.com/about/",
     sourceName: "Brussels Craobh Rua",
-    clubCrests: ["/club-crests/brussels - an craobh rua.png"],
+    clubCrests: ["/club-crests/benelux-brussels.png"],
   },
   {
     year: 2025,
@@ -319,7 +319,7 @@ const timelineEvents: TimelineEvent[] = [
     sourceUrl:
       "https://www.rte.ie/sport/hurling/2025/1124/1545513-mcdermott-relieved-after-amsterdams-leinster-win/",
     sourceName: "RTÉ Sport",
-    clubCrests: ["/club-crests/amsterdam.png"],
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
 ];
 
@@ -471,7 +471,7 @@ export default function TimelinePage() {
 
       <Header currentPage="Museum" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-28 sm:pb-16 md:pt-32 relative z-10">
+      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28 relative z-10">
         <div className="max-w-4xl mx-auto px-4">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-10">
