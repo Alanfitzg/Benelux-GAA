@@ -21,16 +21,6 @@ const defaultSocialLinks: SocialLinks = {
   twitter: "https://twitter.com/BeneluxGAA",
 };
 
-const memberClubs = [
-  "Amsterdam GAA",
-  "Antwerp GAA",
-  "Belgium GAA",
-  "Brussels GAA",
-  "Den Haag GAA",
-  "Luxembourg GAA",
-  "Rotterdam GAA",
-];
-
 export default function Footer() {
   const [socialLinks, setSocialLinks] =
     useState<SocialLinks>(defaultSocialLinks);
@@ -91,7 +81,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#0d1f28] text-white">
       <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Sponsor & About */}
           <div className="text-center sm:text-left">
             <p className="text-[#2B9EB3] text-[10px] uppercase tracking-[0.15em] font-bold mb-3">
@@ -116,30 +106,6 @@ export default function Footer() {
             <p className="text-gray-500 text-sm leading-relaxed">
               Proud sponsors of all Benelux GAA regional competitions.
             </p>
-          </div>
-
-          {/* Member Clubs */}
-          <div className="text-center sm:text-left">
-            <h4 className="font-semibold text-[#2B9EB3] mb-4 uppercase text-sm tracking-wider">
-              Member Clubs
-            </h4>
-            <ul className="space-y-2">
-              {memberClubs.slice(0, 5).map((club) => (
-                <li key={club}>
-                  <span className="text-gray-400 text-sm hover:text-white transition-colors cursor-pointer">
-                    {club}
-                  </span>
-                </li>
-              ))}
-              <li>
-                <InternalLink
-                  href="/clubs"
-                  className="text-[#2B9EB3] text-sm hover:text-white transition-colors"
-                >
-                  View all clubs →
-                </InternalLink>
-              </li>
-            </ul>
           </div>
 
           {/* Quick Links */}

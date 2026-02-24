@@ -11,6 +11,7 @@ import MuseumPreview from "./MuseumPreview";
 import HeroSection from "./HeroSection";
 import FeaturedArticle from "./FeaturedArticle";
 import SponsorSection from "./SponsorSection";
+import AffiliationsBanner from "./AffiliationsBanner";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
 import { getUpcomingFixtures, venueToClub } from "../data/fixtures";
 import type { Fixture } from "../data/fixtures";
@@ -94,6 +95,9 @@ export default function HomeContent() {
 
       {/* Sponsor */}
       <SponsorSection />
+
+      {/* Affiliations */}
+      <AffiliationsBanner />
 
       {/* Featured Article */}
       <FeaturedArticle />
