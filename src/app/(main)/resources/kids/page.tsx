@@ -1,9 +1,41 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Image from "next/image";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import InternalLink from "../../components/InternalLink";
-import { ArrowLeft, Users, Star, Shield, UserCheck, Heart } from "lucide-react";
+import {
+  ArrowLeft,
+  Users,
+  Star,
+  Shield,
+  UserCheck,
+  Heart,
+  Loader2,
+  MapPin,
+  ExternalLink,
+} from "lucide-react";
+
+interface Club {
+  id: string;
+  name: string;
+  location: string | null;
+  imageUrl: string | null;
+  website: string | null;
+  facebook: string | null;
+  instagram: string | null;
+  countryCode: string;
+  sportsSupported: string[];
+}
+
+const countryFlags: Record<string, string> = {
+  NL: "🇳🇱",
+  BE: "🇧🇪",
+  LU: "🇱🇺",
+  DE: "🇩🇪",
+  XX: "🌍",
+};
 
 const kidsPrograms = [
   {
@@ -31,7 +63,32 @@ const kidsPrograms = [
   },
 ];
 
+function getCity(location: string | null): string {
+  if (!location) return "";
+  const parts = location.split(",");
+  return parts[0]?.trim() || "";
+}
+
 export default function KidsPage() {
+  const [youthClubs, setYouthClubs] = useState<Club[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchClubs() {
+      try {
+        const response = await fetch("/api/benelux-clubs");
+        if (!response.ok) throw new Error("Failed to fetch");
+        const data: Club[] = await response.json();
+        setYouthClubs(data.filter((c) => c.sportsSupported?.includes("Youth")));
+      } catch {
+        // Silently fail
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchClubs();
+  }, []);
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Resources" />
@@ -117,21 +174,100 @@ export default function KidsPage() {
             })}
           </div>
 
-          <div className="bg-gradient-to-r from-[#1a3a4a] to-[#2B9EB3] rounded-xl p-5 sm:p-8 text-center text-white">
-            <h3 className="text-xl font-semibold mb-3">
-              Get Your Kids Involved!
-            </h3>
-            <p className="text-white/80 mb-6">
-              Contact a local club to find out about youth programs in your
-              area. Most clubs offer free taster sessions!
-            </p>
-            <InternalLink
-              href="/clubs"
-              className="inline-flex items-center justify-center px-6 py-3 bg-white text-[#1a3a4a] rounded-lg font-semibold hover:bg-white/90 transition-colors"
-            >
-              Find a Club
-            </InternalLink>
-          </div>
+          {/* Youth Clubs in the Benelux */}
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+            Youth Clubs in the Benelux
+          </h2>
+          <p className="text-gray-600 text-sm mb-6">
+            These clubs currently run youth programs. Contact them directly to
+            find out about training times and how to get involved.
+          </p>
+
+          {loading ? (
+            <div className="flex items-center justify-center py-8 mb-12">
+              <Loader2 className="w-6 h-6 animate-spin text-[#2B9EB3]" />
+              <span className="ml-2 text-gray-500 text-sm">
+                Loading clubs...
+              </span>
+            </div>
+          ) : youthClubs.length > 0 ? (
+            <div className="grid sm:grid-cols-2 gap-4 mb-12">
+              {youthClubs.map((club) => (
+                <div
+                  key={club.id}
+                  className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm hover:shadow-md transition-shadow flex items-center gap-4"
+                >
+                  <div className="w-16 h-16 flex-shrink-0 flex items-center justify-center">
+                    {club.imageUrl ? (
+                      <Image
+                        src={club.imageUrl}
+                        alt={`${club.name} crest`}
+                        width={56}
+                        height={56}
+                        className="object-contain w-14 h-14"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-14 h-14 bg-gradient-to-br from-[#2B9EB3] to-[#1a3a4a] rounded-full flex items-center justify-center">
+                        <span className="text-2xl">
+                          {countryFlags[club.countryCode] || "🏐"}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-gray-900 font-bold text-sm">
+                      {club.name}
+                    </h3>
+                    <p className="text-gray-500 text-xs flex items-center gap-1 mt-0.5">
+                      <MapPin
+                        size={12}
+                        className="text-[#2B9EB3] flex-shrink-0"
+                      />
+                      {getCity(club.location)} {countryFlags[club.countryCode]}
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      {club.website && (
+                        <a
+                          href={club.website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-[#2B9EB3] hover:underline flex items-center gap-1"
+                        >
+                          <ExternalLink size={10} />
+                          Website
+                        </a>
+                      )}
+                      {club.facebook && (
+                        <a
+                          href={club.facebook}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-[#1877F2] hover:underline"
+                        >
+                          Facebook
+                        </a>
+                      )}
+                      {club.instagram && (
+                        <a
+                          href={club.instagram}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-[#E4405F] hover:underline"
+                        >
+                          Instagram
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8 mb-12 text-gray-500 text-sm">
+              No youth clubs found at this time.
+            </div>
+          )}
         </div>
       </main>
 

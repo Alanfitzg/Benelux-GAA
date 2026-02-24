@@ -301,7 +301,7 @@ export default function HomeContent() {
 
           <div className="text-center mt-10">
             <InternalLink
-              href="/faq"
+              href="/gaelic-games"
               className="inline-flex items-center text-[#2B9EB3] font-semibold hover:text-[#1a3a4a] transition-colors"
             >
               Learn more about Gaelic Games →

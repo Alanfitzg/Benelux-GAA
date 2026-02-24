@@ -92,21 +92,29 @@ export default function Footer() {
     <footer className="bg-[#0d1f28] text-white">
       <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Logo & About */}
+          {/* Sponsor & About */}
           <div className="text-center sm:text-left">
+            <p className="text-[#2B9EB3] text-[10px] uppercase tracking-[0.15em] font-bold mb-3">
+              Official Regional Sponsor
+            </p>
             <div className="flex justify-center sm:justify-start mb-4">
-              <Image
-                src="/benelux-gaa-crest.png"
-                alt="Benelux GAA"
-                width={80}
-                height={80}
-                className="object-contain"
-                unoptimized
-              />
+              <a
+                href="https://breagh.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/sponsors/breagh-white.png"
+                  alt="Breagh Recruitment"
+                  width={300}
+                  height={100}
+                  className="object-contain h-16 sm:h-20 w-auto hover:opacity-80 transition-opacity"
+                  unoptimized
+                />
+              </a>
             </div>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              Promoting Gaelic Games across Belgium, Netherlands, and Luxembourg
-              since 2022.
+            <p className="text-gray-500 text-sm leading-relaxed">
+              Proud sponsors of all Benelux GAA regional competitions.
             </p>
           </div>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthSessionProvider } from "@/components/providers/session-provider";
-import CookieConsent from "@/components/CookieConsent";
+
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { ErrorNotificationProvider } from "@/components/ErrorNotification";
 import {
@@ -28,7 +28,6 @@ export default function MainLayout({
             <ErrorLoggerInitializer />
             <Toaster position="top-center" />
             {children}
-            <CookieConsent />
           </AuthSessionProvider>
         </ErrorNotificationProvider>
       </ErrorBoundary>

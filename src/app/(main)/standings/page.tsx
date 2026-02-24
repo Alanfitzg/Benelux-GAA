@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
+import SponsorBanner from "../components/SponsorBanner";
 import {
   Trophy,
   Medal,
@@ -238,12 +239,11 @@ export default function StandingsPage() {
       <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
         <div className="max-w-5xl mx-auto px-4">
           {/* Header */}
-          <div className="text-center mb-6 sm:mb-10">
-            <Trophy
-              size={36}
-              className="mx-auto text-[#f4c430] mb-3 sm:mb-4 sm:w-12 sm:h-12"
-            />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
+          <div className="text-center mb-8 sm:mb-12">
+            <p className="text-[#2B9EB3] text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2">
+              Benelux GAA
+            </p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1a3a4a] mb-2 sm:mb-3 tracking-tight">
               <EditableText
                 pageKey="standings"
                 contentKey="title"
@@ -251,7 +251,7 @@ export default function StandingsPage() {
                 maxLength={30}
               />
             </h1>
-            <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
+            <p className="text-slate-500 text-sm sm:text-base max-w-xl mx-auto mb-6 sm:mb-8">
               <EditableText
                 pageKey="standings"
                 contentKey="subtitle"
@@ -259,6 +259,8 @@ export default function StandingsPage() {
                 maxLength={100}
               />
             </p>
+            <div className="w-12 h-px bg-slate-200 mx-auto mb-5 sm:mb-6" />
+            <SponsorBanner />
           </div>
 
           {/* Competition Filter */}
@@ -296,16 +298,6 @@ export default function StandingsPage() {
                 </button>
               ))}
             </div>
-          </div>
-
-          {/* Season Notice */}
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 mb-6 sm:mb-8 text-center">
-            <p className="text-amber-800 font-medium text-sm sm:text-base">
-              The 2026 season begins in February
-            </p>
-            <p className="text-amber-600 text-xs sm:text-sm mt-1">
-              Standings will be updated after each round of fixtures
-            </p>
           </div>
 
           {/* Competition Sections */}

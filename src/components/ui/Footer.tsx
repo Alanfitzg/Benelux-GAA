@@ -106,14 +106,6 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/cookies"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Cookie Settings
-                </Link>
-              </li>
-              <li>
-                <Link
                   href="/host-terms"
                   className="text-gray-400 hover:text-white transition-colors"
                 >

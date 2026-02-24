@@ -172,20 +172,6 @@ export default function PrivacyPolicy() {
                   </p>
                 </div>
               </div>
-
-              <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                <p className="text-blue-800 text-sm">
-                  <strong>Manage Your Preferences:</strong> You can update your
-                  cookie settings at any time by visiting our{" "}
-                  <a
-                    href="/cookies"
-                    className="text-blue-600 hover:underline font-medium"
-                  >
-                    Cookie Settings page
-                  </a>
-                  .
-                </p>
-              </div>
             </section>
 
             {/* Legal Basis */}

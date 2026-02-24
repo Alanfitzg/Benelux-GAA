@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
@@ -506,39 +507,17 @@ export default function RollOfHonorPage() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col relative">
-      {/* Textured Gradient Background */}
-      <div
-        className="fixed inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse at 30% 0%, rgba(43, 158, 179, 0.08) 0%, transparent 50%),
-            radial-gradient(ellipse at 70% 30%, rgba(26, 58, 74, 0.06) 0%, transparent 40%),
-            radial-gradient(ellipse at 20% 70%, rgba(43, 158, 179, 0.04) 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 90%, rgba(26, 58, 74, 0.05) 0%, transparent 40%),
-            linear-gradient(180deg, rgba(241, 245, 249, 1) 0%, rgba(226, 232, 240, 1) 100%)
-          `,
-        }}
-      />
-      {/* Subtle noise texture overlay */}
-      <div
-        className="fixed inset-0 pointer-events-none opacity-[0.02]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-
+    <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Roll of Honor" />
 
-      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28 relative z-10">
-        <div className="max-w-3xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-6 sm:mb-8">
+      <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-8">
             <Trophy
-              size={32}
-              className="mx-auto text-[#2B9EB3] mb-2 sm:mb-3 sm:w-10 sm:h-10"
+              size={36}
+              className="mx-auto text-[#2B9EB3] mb-3 sm:w-11 sm:h-11"
             />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-2">
               <EditableText
                 pageKey="roll-of-honor"
                 contentKey="title"
@@ -556,17 +535,119 @@ export default function RollOfHonorPage() {
             </p>
           </div>
 
+          {/* Notable Records */}
+          <div className="grid sm:grid-cols-2 gap-4 mb-10">
+            <div className="flex items-center gap-4 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5">
+              <Image
+                src="/club-crests/benelux-brussels.png"
+                alt="Brussels GAA"
+                width={72}
+                height={72}
+                className="object-contain w-[72px] h-[72px] flex-shrink-0"
+                unoptimized
+              />
+              <div>
+                <div className="text-3xl sm:text-4xl font-bold text-[#2B9EB3]">
+                  13
+                </div>
+                <div className="text-sm font-semibold text-gray-900 leading-snug">
+                  Most Dominant Team in European History
+                </div>
+                <div className="text-xs text-gray-600 mt-0.5">
+                  Belgium/Brussels LGFA
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5">
+              <Image
+                src="/club-crests/benelux-amsterdam-gac.png"
+                alt="Amsterdam GAC"
+                width={72}
+                height={72}
+                className="object-contain w-[72px] h-[72px] flex-shrink-0"
+                unoptimized
+              />
+              <div>
+                <div className="text-3xl sm:text-4xl font-bold text-[#2B9EB3]">
+                  7
+                </div>
+                <div className="text-sm font-semibold text-gray-900 leading-snug">
+                  Consecutive Men&apos;s Football 15s Titles
+                </div>
+                <div className="text-xs text-gray-600 mt-0.5">
+                  Amsterdam GAC (2017-2025)
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5">
+              <Image
+                src="/club-crests/benelux-luxembourg.png"
+                alt="Luxembourg GAA"
+                width={72}
+                height={72}
+                className="object-contain w-[72px] h-[72px] flex-shrink-0"
+                unoptimized
+              />
+              <div>
+                <div className="text-3xl sm:text-4xl font-bold text-[#2B9EB3]">
+                  5
+                </div>
+                <div className="text-sm font-semibold text-gray-900 leading-snug">
+                  Men&apos;s Football 11s Titles
+                </div>
+                <div className="text-xs text-gray-600 mt-0.5">
+                  Luxembourg GAA (2007-2019)
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-xl border border-gray-100 bg-gray-50 p-4 sm:p-5">
+              <div className="flex items-center gap-1 flex-shrink-0">
+                <Image
+                  src="/club-crests/benelux-luxembourg.png"
+                  alt="Luxembourg GAA"
+                  width={52}
+                  height={52}
+                  className="object-contain w-[52px] h-[52px]"
+                  unoptimized
+                />
+                <Image
+                  src="/club-crests/benelux-den-haag.png"
+                  alt="Den Haag GAA"
+                  width={52}
+                  height={52}
+                  className="object-contain w-[52px] h-[52px]"
+                  unoptimized
+                />
+              </div>
+              <div>
+                <div className="text-3xl sm:text-4xl font-bold text-[#2B9EB3]">
+                  2007
+                </div>
+                <div className="text-sm font-semibold text-gray-900 leading-snug">
+                  First Men&apos;s Football Championship
+                </div>
+                <div className="text-xs text-gray-600 mt-0.5">
+                  Luxembourg v Hague
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-3xl mx-auto px-4 pt-8 sm:pt-10">
           {/* Sport & Size Selectors */}
           <div className="mb-6 sm:mb-8">
-            <div className="flex justify-center gap-3">
-              {/* Sport Category Dropdown */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <div className="relative">
                 <select
                   value={selectedSport}
                   onChange={(e) =>
                     setSelectedSport(e.target.value as SportCategory)
                   }
-                  className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[160px]"
+                  className="appearance-none bg-white border border-gray-200 rounded-xl px-5 py-3 pr-10 text-sm font-semibold text-gray-900 shadow-sm hover:border-[#2B9EB3]/40 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[180px] transition-colors"
                 >
                   {(Object.keys(sportConfig) as SportCategory[]).map(
                     (sport) => (
@@ -576,7 +657,7 @@ export default function RollOfHonorPage() {
                     )
                   )}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
                   <svg
                     className="h-4 w-4"
                     fill="none"
@@ -593,12 +674,11 @@ export default function RollOfHonorPage() {
                 </div>
               </div>
 
-              {/* Team Size Dropdown */}
               <div className="relative">
                 <select
                   value={effectiveSize}
                   onChange={(e) => setSelectedSize(e.target.value as TeamSize)}
-                  className="appearance-none bg-white border border-gray-200 rounded-lg px-4 py-2.5 pr-10 text-sm font-medium text-gray-900 shadow-sm hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[100px]"
+                  className="appearance-none bg-white border border-gray-200 rounded-xl px-5 py-3 pr-10 text-sm font-semibold text-gray-900 shadow-sm hover:border-[#2B9EB3]/40 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3] focus:border-transparent cursor-pointer min-w-[120px] transition-colors"
                 >
                   {availableSizes.map((size) => (
                     <option key={size} value={size}>
@@ -606,7 +686,7 @@ export default function RollOfHonorPage() {
                     </option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-400">
                   <svg
                     className="h-4 w-4"
                     fill="none"
@@ -622,37 +702,31 @@ export default function RollOfHonorPage() {
                   </svg>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Championship Count */}
-          <div className="text-center mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-2 bg-[#2B9EB3]/10 text-[#1a3a4a] px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">
-              <Trophy
-                size={16}
-                className="text-[#2B9EB3] sm:w-[18px] sm:h-[18px]"
-              />
-              <span className="font-semibold text-sm sm:text-base">
-                {championshipCount} Championships
-              </span>
+              <div className="inline-flex items-center gap-2 bg-[#2B9EB3]/10 text-[#1a3a4a] px-4 py-3 rounded-xl">
+                <Trophy size={16} className="text-[#2B9EB3]" />
+                <span className="font-bold text-sm">
+                  {championshipCount} Championships
+                </span>
+              </div>
             </div>
           </div>
 
           {/* Records Table */}
-          <div className="bg-gray-50 rounded-xl overflow-hidden overflow-x-auto">
+          <div className="bg-white rounded-xl overflow-hidden overflow-x-auto shadow-sm border border-gray-100">
             <table className="w-full min-w-[320px]">
               <thead>
                 <tr className="bg-[#1a3a4a] text-white text-xs sm:text-sm">
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold w-14 sm:w-20">
+                  <th className="px-3 sm:px-5 py-3 sm:py-3.5 text-left font-semibold w-16 sm:w-20">
                     Year
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
+                  <th className="px-3 sm:px-5 py-3 sm:py-3.5 text-left font-semibold">
                     Competition
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold">
+                  <th className="px-3 sm:px-5 py-3 sm:py-3.5 text-left font-semibold">
                     Winner
                   </th>
-                  <th className="px-2 sm:px-4 py-2 sm:py-3 text-left font-semibold hidden sm:table-cell">
+                  <th className="px-3 sm:px-5 py-3 sm:py-3.5 text-left font-semibold hidden sm:table-cell">
                     Runner-up
                   </th>
                 </tr>
@@ -666,17 +740,17 @@ export default function RollOfHonorPage() {
                     return (
                       <tr
                         key={`${year}-${record.competition}-${recordIdx}`}
-                        className={`border-b border-gray-200 ${yearIdx % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+                        className={`border-b border-gray-100 transition-colors hover:bg-[#2B9EB3]/[0.03] ${yearIdx % 2 === 0 ? "bg-white" : "bg-gray-50/50"}`}
                       >
                         {isFirstOfYear && (
                           <td
                             rowSpan={rowCount}
-                            className="px-2 sm:px-4 py-2 sm:py-3 font-bold text-gray-900 align-top border-r border-gray-200 text-sm sm:text-base"
+                            className="px-3 sm:px-5 py-2.5 sm:py-3 font-bold text-[#1a3a4a] align-top border-r border-gray-100 text-sm sm:text-base"
                           >
                             {year}
                           </td>
                         )}
-                        <td className="px-2 sm:px-4 py-2 sm:py-3">
+                        <td className="px-3 sm:px-5 py-2.5 sm:py-3">
                           {record.notPlayed ? (
                             <span className="text-gray-400 italic text-xs sm:text-sm">
                               Not played (COVID-19)
@@ -686,36 +760,36 @@ export default function RollOfHonorPage() {
                               className={`text-xs sm:text-sm font-medium ${
                                 record.competition === "Championship"
                                   ? "text-[#1a3a4a]"
-                                  : "text-gray-500"
+                                  : "text-gray-400"
                               }`}
                             >
                               {record.competition}
                             </span>
                           )}
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3">
+                        <td className="px-3 sm:px-5 py-2.5 sm:py-3">
                           {!record.notPlayed && record.winner && (
-                            <div className="flex items-center gap-1 sm:gap-2">
+                            <div className="flex items-center gap-1.5 sm:gap-2">
                               {record.competition === "Championship" && (
                                 <Trophy
-                                  size={12}
-                                  className="text-yellow-500 flex-shrink-0 sm:w-[14px] sm:h-[14px]"
+                                  size={13}
+                                  className="text-yellow-500 flex-shrink-0 sm:w-[15px] sm:h-[15px]"
                                 />
                               )}
                               <span
-                                className={`font-medium text-xs sm:text-sm ${record.competition === "Championship" ? "text-gray-900" : "text-gray-700"}`}
+                                className={`font-semibold text-xs sm:text-sm ${record.competition === "Championship" ? "text-gray-900" : "text-gray-600"}`}
                               >
                                 {record.winner}
                               </span>
                             </div>
                           )}
                         </td>
-                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-gray-500 text-xs sm:text-sm hidden sm:table-cell">
+                        <td className="px-3 sm:px-5 py-2.5 sm:py-3 text-gray-400 text-xs sm:text-sm hidden sm:table-cell">
                           {!record.notPlayed && record.runnerUp && (
                             <div className="flex items-center gap-2">
                               <Medal
-                                size={12}
-                                className="text-gray-400 flex-shrink-0"
+                                size={13}
+                                className="text-gray-300 flex-shrink-0"
                               />
                               <span>{record.runnerUp}</span>
                             </div>
@@ -730,87 +804,25 @@ export default function RollOfHonorPage() {
           </div>
 
           {/* Legend */}
-          <div className="mt-4 sm:mt-6 flex flex-wrap gap-3 sm:gap-4 justify-center text-xs sm:text-sm text-gray-500">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <Trophy
-                size={12}
-                className="text-yellow-500 sm:w-[14px] sm:h-[14px]"
-              />
-              <span>Championship (Top tier)</span>
+          <div className="mt-5 sm:mt-6 flex flex-wrap gap-4 sm:gap-6 justify-center text-xs sm:text-sm text-gray-400">
+            <div className="flex items-center gap-1.5">
+              <Trophy size={12} className="text-yellow-500" />
+              <span>Championship</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-gray-400">Shield = 2nd tier</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-gray-300 inline-block" />
+              <span>Shield (2nd tier)</span>
             </div>
-            <div className="flex items-center gap-1">
-              <span className="text-gray-400">Plate = 3rd tier</span>
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-gray-200 inline-block" />
+              <span>Plate (3rd tier)</span>
             </div>
           </div>
 
           {/* Notes */}
-          <div className="text-center text-xs text-gray-400 mt-4 space-y-1">
-            <p>* Names with &quot;/&quot; denote joint winners or runners-up</p>
-            <p>* Brussels (previously Belgium GAA)</p>
-          </div>
-
-          {/* Notable Records */}
-          <div className="mt-10 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] rounded-xl p-6 text-white">
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-              <Trophy size={20} className="text-yellow-400" />
-              Notable Records
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {/* Belgium/Brussels Ladies Dominance */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">
-                  13
-                </div>
-                <div className="text-sm font-semibold mb-1">
-                  Ladies Football Championships
-                </div>
-                <div className="text-xs text-white/70">
-                  Belgium/Brussels Ladies (2011-2019, 2022-2025) - The most
-                  dominant team in Benelux GAA history
-                </div>
-              </div>
-
-              {/* Amsterdam 15s Streak */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">7</div>
-                <div className="text-sm font-semibold mb-1">
-                  Men&apos;s 15s Championships in a Row
-                </div>
-                <div className="text-xs text-white/70">
-                  Amsterdam (2017-2025, excl. COVID) - Undefeated in the
-                  15-a-side code
-                </div>
-              </div>
-
-              {/* Luxembourg Men's 11s */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">5</div>
-                <div className="text-sm font-semibold mb-1">
-                  Men&apos;s 11s Championships
-                </div>
-                <div className="text-xs text-white/70">
-                  Luxembourg (2007, 2009, 2017-2019) - Most titles in the
-                  flagship 11-a-side code
-                </div>
-              </div>
-
-              {/* Longest Running Competition */}
-              <div className="bg-white/10 rounded-lg p-4">
-                <div className="text-3xl font-bold text-yellow-400 mb-1">
-                  2007
-                </div>
-                <div className="text-sm font-semibold mb-1">
-                  First Benelux Championship
-                </div>
-                <div className="text-xs text-white/70">
-                  Luxembourg defeated Hague in the inaugural Men&apos;s Football
-                  final
-                </div>
-              </div>
-            </div>
+          <div className="text-center text-xs text-gray-400 mt-3 space-y-0.5">
+            <p>Names with &quot;/&quot; denote joint winners or runners-up</p>
+            <p>Brussels (previously Belgium GAA)</p>
           </div>
         </div>
       </main>

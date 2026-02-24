@@ -67,15 +67,14 @@ interface EventData {
 }
 
 const events2026: EventData[] = [
-  // March 14 - Benelux Regional Football Championships R.1 (tbc - clashes with Cologne invitational)
+  // March 14 - Benelux Breagh Championship R.1 (tbc - clashes with Cologne invitational)
   {
-    title: "2026 Benelux Regional Football Championships (11s) R.1",
+    title: "2026 Benelux Breagh Championship (11s) R.1",
     eventType: "Tournament",
     ...LOCATIONS.maastricht, // Using Maastricht as placeholder - tbc
     startDate: new Date("2026-03-14"),
     endDate: new Date("2026-03-14"),
-    description:
-      "Round 1 of the 2026 Benelux Regional Football Championships. Host TBC.",
+    description: "Round 1 of the 2026 Benelux Breagh Championship. Host TBC.",
     acceptedTeamTypes: ["Mens Gaelic Football", "LGFA"],
     visibility: "PRIVATE",
     clubId: null, // tbc
@@ -96,15 +95,14 @@ const events2026: EventData[] = [
     cost: null,
   },
 
-  // April 11 - Benelux Regional Football Championships R.2 (tbc - clashes with German Cup)
+  // April 11 - Benelux Breagh Championship R.2 (tbc - clashes with German Cup)
   {
-    title: "2026 Benelux Regional Football Championships (11s) R.2",
+    title: "2026 Benelux Breagh Championship (11s) R.2",
     eventType: "Tournament",
     ...LOCATIONS.maastricht, // Using Maastricht as placeholder - tbc
     startDate: new Date("2026-04-11"),
     endDate: new Date("2026-04-11"),
-    description:
-      "Round 2 of the 2026 Benelux Regional Football Championships. Host TBC.",
+    description: "Round 2 of the 2026 Benelux Breagh Championship. Host TBC.",
     acceptedTeamTypes: ["Mens Gaelic Football", "LGFA"],
     visibility: "PRIVATE",
     clubId: null, // tbc
@@ -156,15 +154,14 @@ const events2026: EventData[] = [
     cost: null,
   },
 
-  // May 16 - Benelux Regional Football Championships R.3 (tbc)
+  // May 16 - Benelux Breagh Championship R.3 (tbc)
   {
-    title: "2026 Benelux Regional Football Championships (11s) R.3",
+    title: "2026 Benelux Breagh Championship (11s) R.3",
     eventType: "Tournament",
     ...LOCATIONS.maastricht, // Using Maastricht as placeholder - tbc
     startDate: new Date("2026-05-16"),
     endDate: new Date("2026-05-16"),
-    description:
-      "Round 3 of the 2026 Benelux Regional Football Championships. Host TBC.",
+    description: "Round 3 of the 2026 Benelux Breagh Championship. Host TBC.",
     acceptedTeamTypes: ["Mens Gaelic Football", "LGFA"],
     visibility: "PRIVATE",
     clubId: null, // tbc
@@ -335,15 +332,14 @@ const events2026: EventData[] = [
     cost: null,
   },
 
-  // Sept 26 - Benelux Regional Football Championships (11s) (tbc)
+  // Sept 26 - Benelux Breagh Championship (11s) (tbc)
   {
-    title: "2026 Benelux Regional Football Championships (11s) R.4",
+    title: "2026 Benelux Breagh Championship (11s) R.4",
     eventType: "Tournament",
     ...LOCATIONS.maastricht, // placeholder
     startDate: new Date("2026-09-26"),
     endDate: new Date("2026-09-26"),
-    description:
-      "Round 4 of the 2026 Benelux Regional Football Championships. Host TBC.",
+    description: "Round 4 of the 2026 Benelux Breagh Championship. Host TBC.",
     acceptedTeamTypes: ["Mens Gaelic Football", "LGFA"],
     visibility: "PRIVATE",
     clubId: null, // tbc

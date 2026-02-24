@@ -72,7 +72,7 @@ export const fixtures2026: Fixture[] = [
   {
     id: "4",
     date: "2026-03-21",
-    competition: "Benelux Regional Football Championships (11s)",
+    competition: "Benelux Breagh Championship (11s)",
     code: "Football",
     venue: "Maastricht",
     round: "Round 1",
@@ -95,7 +95,7 @@ export const fixtures2026: Fixture[] = [
   {
     id: "7",
     date: "2026-04-18",
-    competition: "Benelux Regional Football Championships (11s)",
+    competition: "Benelux Breagh Championship (11s)",
     code: "Football",
     venue: "TBC",
     round: "Round 2",
@@ -128,7 +128,7 @@ export const fixtures2026: Fixture[] = [
   {
     id: "11",
     date: "2026-05-16",
-    competition: "Benelux Regional Football Championships (11s)",
+    competition: "Benelux Breagh Championship (11s)",
     code: "Football",
     venue: "TBC",
     round: "Round 3",
@@ -205,7 +205,7 @@ export const fixtures2026: Fixture[] = [
   {
     id: "20",
     date: "2026-08-22",
-    competition: "Benelux 15s Football Championships",
+    competition: "Benelux Breagh 15s Football Finals",
     code: "15s",
     venue: "Maastricht",
     notes: "Finals",
@@ -213,7 +213,7 @@ export const fixtures2026: Fixture[] = [
   {
     id: "21",
     date: "2026-08-29",
-    competition: "Benelux 15s Camogie & Hurling Championships",
+    competition: "Benelux Breagh 15s Camogie & Hurling Finals",
     code: "15s",
     venue: "Maastricht",
     notes: "Finals",
@@ -237,7 +237,7 @@ export const fixtures2026: Fixture[] = [
   {
     id: "24",
     date: "2026-09-26",
-    competition: "Benelux Regional Football Championships (11s)",
+    competition: "Benelux Breagh Championship (11s)",
     code: "Football",
     venue: "Eindhoven",
     round: "Round 4",
@@ -273,8 +273,18 @@ export function getUpcomingFixtures(count: number = 3): Fixture[] {
   return fixtures2026.filter((f) => f.date >= today).slice(0, count);
 }
 
+export const competitionSponsors: Record<
+  string,
+  { name: string; logo: string }
+> = {
+  "Benelux Breagh Championship (11s)": {
+    name: "Breagh",
+    logo: "/sponsors/breagh.jpg",
+  },
+};
+
 export const competitionColors: Record<string, string> = {
-  "Benelux Regional Football Championships (11s)": "border-l-[#2B9EB3]",
+  "Benelux Breagh Championship (11s)": "border-l-[#2B9EB3]",
   "Benelux Regional Camogie & Hurling Championships (7s/9s)":
     "border-l-red-500",
   "Benelux 15s Football Championships": "border-l-[#1a3a4a]",

@@ -4,8 +4,9 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
+import SponsorBanner from "../components/SponsorBanner";
 import Image from "next/image";
-import { Calendar, MapPin, Clock, AlertCircle } from "lucide-react";
+import { Calendar, MapPin, Clock } from "lucide-react";
 import { fixtures2026, venueToClub, competitionColors } from "../data/fixtures";
 import type { Fixture } from "../data/fixtures";
 
@@ -62,14 +63,17 @@ export default function FixturesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       <Header currentPage="Fixtures" />
 
       <main className="flex-1 pt-20 pb-8 sm:pt-24 sm:pb-16 md:pt-28">
         <div className="max-w-4xl mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-6 sm:mb-10">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mb-3 sm:mb-4">
+          {/* Header + Sponsor */}
+          <div className="text-center mb-8 sm:mb-12">
+            <p className="text-[#2B9EB3] text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] mb-2">
+              Benelux GAA
+            </p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-[#1a3a4a] mb-2 sm:mb-3 tracking-tight">
               <EditableText
                 pageKey="fixtures"
                 contentKey="title"
@@ -77,35 +81,23 @@ export default function FixturesPage() {
                 maxLength={40}
               />
             </h1>
-            <p className="text-slate-600 text-base sm:text-lg max-w-2xl mx-auto">
+            <p className="text-slate-500 text-sm sm:text-base max-w-xl mx-auto mb-6 sm:mb-8">
               <EditableText
                 pageKey="fixtures"
                 contentKey="subtitle"
-                defaultValue="Complete schedule of Benelux GAA fixtures, tournaments, and competitions."
+                defaultValue="Complete schedule of fixtures, tournaments, and competitions."
                 maxLength={120}
               />
             </p>
-          </div>
-
-          {/* TBC Notice */}
-          <div className="bg-red-50 border border-red-200 rounded-xl p-3 sm:p-4 mb-6 sm:mb-8 flex items-start gap-2 sm:gap-3 shadow-md">
-            <AlertCircle
-              className="text-red-500 flex-shrink-0 mt-0.5"
-              size={18}
-            />
-            <div>
-              <p className="text-red-800 font-semibold text-sm sm:text-base">
-                Some fixtures are still to be confirmed
-              </p>
-              <p className="text-red-600 text-xs sm:text-sm">
-                Events marked with a red indicator have venues or dates that are
-                TBC (to be confirmed).
-              </p>
-            </div>
+            <div className="w-12 h-px bg-slate-200 mx-auto mb-5 sm:mb-6" />
+            <SponsorBanner />
           </div>
 
           {/* Filters */}
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-8 sm:mb-10 bg-slate-50 rounded-2xl border border-slate-100 p-4 sm:p-6">
+            <p className="text-[10px] sm:text-xs text-slate-400 uppercase tracking-[0.15em] font-semibold mb-3 sm:mb-4">
+              Filter Fixtures
+            </p>
             <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
                 <label className="block text-xs sm:text-sm text-slate-500 mb-2 font-medium">

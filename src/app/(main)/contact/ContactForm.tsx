@@ -106,10 +106,10 @@ export default function ContactForm() {
           required
         >
           <option value="general">General Inquiry</option>
-          <option value="club">Club Registration</option>
-          <option value="event">Event Submission</option>
-          <option value="technical">Technical Support</option>
-          <option value="partnership">Partnership Opportunity</option>
+          <option value="club">Club Information</option>
+          <option value="fixtures">Fixtures &amp; Results</option>
+          <option value="registration">Player Registration</option>
+          <option value="media">Media Inquiry</option>
           <option value="feedback">Feedback</option>
         </select>
       </div>
@@ -241,7 +241,7 @@ export default function ContactForm() {
             <span className="text-red-600">❌</span>
             <p className="text-red-800 font-medium">
               Sorry, there was an error sending your message. Please try again
-              or email us directly at alan@gaelictrips.com.
+              or email us directly at secretary.benelux.europe@gaa.ie.
             </p>
           </div>
         </motion.div>

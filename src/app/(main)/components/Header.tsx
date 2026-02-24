@@ -51,7 +51,7 @@ function NavItem({
           className={`flex items-center gap-1 px-3.5 py-2 text-sm font-medium tracking-wide transition-all duration-300 ${
             currentPage === link.name
               ? "text-[#2B9EB3]"
-              : "text-white/75 hover:text-white"
+              : "text-white/90 hover:text-white"
           }`}
           onMouseEnter={() => setResourcesOpen(true)}
           onMouseLeave={() => setResourcesOpen(false)}
@@ -84,7 +84,7 @@ function NavItem({
       className={`relative px-3.5 py-2 text-sm font-medium tracking-wide transition-all duration-300 group/link ${
         currentPage === link.name
           ? "text-[#2B9EB3]"
-          : "text-white/60 hover:text-white"
+          : "text-white/90 hover:text-white"
       }`}
     >
       <span className="relative z-10">{link.name}</span>

@@ -240,6 +240,24 @@ export default function ClubsPage() {
                 ? "Loading..."
                 : `${filteredClubs.length} clubs in the Benelux region & affiliates`}
             </p>
+            <a
+              href="https://breagh.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 mt-2"
+            >
+              <span className="text-white/50 text-xs uppercase tracking-[0.15em] font-medium">
+                Supported by
+              </span>
+              <Image
+                src="/sponsors/breagh-white.png"
+                alt="Breagh Recruitment"
+                width={160}
+                height={50}
+                className="object-contain h-7 sm:h-8 w-auto opacity-80 hover:opacity-100 transition-opacity"
+                unoptimized
+              />
+            </a>
           </div>
 
           {loading && (
