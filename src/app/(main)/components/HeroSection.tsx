@@ -54,7 +54,7 @@ export default function HeroSection() {
               </div>
               <div className="text-center border-l border-white/30">
                 <div className="text-xl md:text-3xl font-bold text-white drop-shadow-md [text-shadow:_0_1px_6px_rgb(0_0_0_/_70%)]">
-                  1,085+
+                  1,200+
                 </div>
                 <div className="text-[#4ecde6] text-[10px] md:text-xs uppercase tracking-wider font-semibold">
                   Members
