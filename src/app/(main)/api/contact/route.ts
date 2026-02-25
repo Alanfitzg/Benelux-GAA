@@ -23,16 +23,20 @@ async function contactHandler(request: NextRequest) {
     );
   }
 
-  // Save to database
-  await prisma.contactSubmission.create({
-    data: {
-      name: validatedData.name,
-      email: validatedData.email,
-      subject: validatedData.subject,
-      message: validatedData.message,
-      status: "NEW",
-    },
-  });
+  // Save to database (non-blocking — email is the critical path)
+  try {
+    await prisma.contactSubmission.create({
+      data: {
+        name: validatedData.name,
+        email: validatedData.email,
+        subject: validatedData.subject,
+        message: validatedData.message,
+        status: "NEW",
+      },
+    });
+  } catch (dbError) {
+    console.error("Failed to save contact submission to DB:", dbError);
+  }
 
   // Send email notification to Benelux GAA secretary
   const html = `
