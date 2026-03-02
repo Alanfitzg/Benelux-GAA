@@ -21,6 +21,11 @@ const baseNavLinks = [
       { name: "Referee Resources", href: "/resources/referee" },
       { name: "Registration & Foireann", href: "/resources/transfers" },
       { name: "Kids", href: "/resources/kids" },
+      {
+        name: "Job Search",
+        href: "https://breaghrecruitment.com/jobs",
+        external: true,
+      },
     ],
   },
   { name: "Contact", href: "/contact" },
@@ -29,7 +34,7 @@ const baseNavLinks = [
 interface NavLink {
   name: string;
   href: string;
-  dropdown?: { name: string; href: string }[];
+  dropdown?: { name: string; href: string; external?: boolean }[];
 }
 
 function NavItem({
@@ -64,15 +69,27 @@ function NavItem({
           onMouseEnter={() => setResourcesOpen(true)}
           onMouseLeave={() => setResourcesOpen(false)}
         >
-          {link.dropdown.map((sub) => (
-            <Link
-              key={sub.name}
-              href={sub.href}
-              className="block px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-[#2B9EB3]/15 first:rounded-t-lg last:rounded-b-lg transition-colors"
-            >
-              {sub.name}
-            </Link>
-          ))}
+          {link.dropdown.map((sub) =>
+            sub.external ? (
+              <a
+                key={sub.name}
+                href={sub.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-[#2B9EB3]/15 first:rounded-t-lg last:rounded-b-lg transition-colors"
+              >
+                {sub.name}
+              </a>
+            ) : (
+              <Link
+                key={sub.name}
+                href={sub.href}
+                className="block px-4 py-2.5 text-sm text-white/70 hover:text-white hover:bg-[#2B9EB3]/15 first:rounded-t-lg last:rounded-b-lg transition-colors"
+              >
+                {sub.name}
+              </Link>
+            )
+          )}
         </div>
       </div>
     );
@@ -252,16 +269,29 @@ export default function Header({ currentPage }: HeaderProps) {
                     </button>
                     {resourcesOpen && (
                       <div className="pl-4 border-b border-[#2B9EB3]/20">
-                        {link.dropdown.map((sub) => (
-                          <Link
-                            key={sub.name}
-                            href={sub.href}
-                            className="block py-3 text-lg text-white/70 hover:text-[#2B9EB3] transition-colors"
-                            onClick={() => setMobileMenuOpen(false)}
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
+                        {link.dropdown.map((sub) =>
+                          sub.external ? (
+                            <a
+                              key={sub.name}
+                              href={sub.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="block py-3 text-lg text-white/70 hover:text-[#2B9EB3] transition-colors"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {sub.name}
+                            </a>
+                          ) : (
+                            <Link
+                              key={sub.name}
+                              href={sub.href}
+                              className="block py-3 text-lg text-white/70 hover:text-[#2B9EB3] transition-colors"
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {sub.name}
+                            </Link>
+                          )
+                        )}
                       </div>
                     )}
                   </>
