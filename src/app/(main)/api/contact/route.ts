@@ -70,7 +70,7 @@ async function contactHandler(request: NextRequest) {
   `;
 
   await sendEmail({
-    to: "alan@gaelictrips.com",
+    to: "secretary.benelux.europe@gaa.ie",
     subject: `[Benelux GAA Contact] ${validatedData.subject}`,
     html,
     text: `New contact form submission from beneluxgaa.com\n\nName: ${validatedData.name}\nEmail: ${validatedData.email}\nSubject: ${validatedData.subject}\n\nMessage:\n${validatedData.message}`,
