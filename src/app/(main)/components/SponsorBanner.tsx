@@ -35,7 +35,7 @@ export default function SponsorBanner() {
         Official Regional Sponsor
       </p>
       <a
-        href="https://breagh.com"
+        href="https://breaghrecruitment.com"
         target="_blank"
         rel="noopener noreferrer"
         className={`block transition-all duration-700 delay-200 ${

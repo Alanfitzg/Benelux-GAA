@@ -45,7 +45,7 @@ export default function SponsorSection() {
 
           <div className="flex flex-col items-center gap-2 md:flex-row md:justify-center md:gap-16">
             <a
-              href="https://breagh.com"
+              href="https://breaghrecruitment.com"
               target="_blank"
               rel="noopener noreferrer"
               className={`block transition-all duration-700 delay-200 ${
@@ -76,7 +76,7 @@ export default function SponsorSection() {
                 support Gaelic Games across the Benelux region.
               </p>
               <a
-                href="https://breagh.com"
+                href="https://breaghrecruitment.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-[#2B9EB3] font-semibold text-lg hover:text-[#1a3a4a] transition-colors group"

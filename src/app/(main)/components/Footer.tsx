@@ -89,7 +89,7 @@ export default function Footer() {
             </p>
             <div className="flex justify-center sm:justify-start mb-4">
               <a
-                href="https://breagh.com"
+                href="https://breaghrecruitment.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
