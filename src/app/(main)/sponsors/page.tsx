@@ -65,23 +65,15 @@ export default function SponsorsPage() {
                     support Gaelic Games across the Benelux region, helping our
                     community grow and thrive.
                   </p>
-                  <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-                    <a
-                      href="https://breaghrecruitment.com/jobs"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#1a3a4a] rounded-lg font-semibold hover:bg-white/90 transition-colors"
-                    >
-                      View Jobs
-                      <ExternalLink size={18} />
-                    </a>
-                    <a
-                      href="/sponsors/breagh"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white border border-white/30 rounded-lg font-semibold hover:bg-white/20 transition-colors"
-                    >
-                      Learn More
-                    </a>
-                  </div>
+                  <a
+                    href="https://breaghrecruitment.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#1a3a4a] rounded-lg font-semibold hover:bg-white/90 transition-colors"
+                  >
+                    Visit Breagh
+                    <ExternalLink size={18} />
+                  </a>
                 </div>
               </div>
             </div>
