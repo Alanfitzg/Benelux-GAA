@@ -23,6 +23,7 @@ import {
   Star,
   FileText,
   Search,
+  Upload,
 } from "lucide-react";
 
 interface NewsArticle {
@@ -63,9 +64,14 @@ export default function NewsManager() {
     Omit<NewsArticle, "id"> & { id?: string }
   >(defaultArticle);
   const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
-  const [imageTab, setImageTab] = useState<"url" | "gallery">("gallery");
+  const [imageTab, setImageTab] = useState<"upload" | "url" | "gallery">(
+    "upload"
+  );
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [gallerySearch, setGallerySearch] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [dragOver, setDragOver] = useState(false);
 
   useEffect(() => {
     fetchArticles();
@@ -185,6 +191,38 @@ export default function NewsManager() {
         newText +
         currentArticle.content.substring(end);
       setCurrentArticle({ ...currentArticle, content: newContent });
+    }
+  }
+
+  async function uploadImage(file: File) {
+    setUploading(true);
+    setUploadError("");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/benelux-news/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setUploadError(data.error || "Upload failed");
+        return;
+      }
+      setCurrentArticle({ ...currentArticle, imageUrl: data.url });
+    } catch {
+      setUploadError("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function handleImageDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setDragOver(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      uploadImage(file);
     }
   }
 
@@ -551,31 +589,79 @@ export default function NewsManager() {
                 )}
 
                 <div className="flex rounded-lg border border-gray-200 overflow-hidden mb-3">
-                  <button
-                    type="button"
-                    onClick={() => setImageTab("gallery")}
-                    className={`flex-1 text-xs py-1.5 font-medium transition-colors ${
-                      imageTab === "gallery"
-                        ? "bg-[#1a3a4a] text-white"
-                        : "bg-gray-50 text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    Gallery
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setImageTab("url")}
-                    className={`flex-1 text-xs py-1.5 font-medium transition-colors ${
-                      imageTab === "url"
-                        ? "bg-[#1a3a4a] text-white"
-                        : "bg-gray-50 text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    URL
-                  </button>
+                  {(["upload", "gallery", "url"] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      type="button"
+                      onClick={() => setImageTab(tab)}
+                      className={`flex-1 text-xs py-1.5 font-medium transition-colors ${
+                        imageTab === tab
+                          ? "bg-[#1a3a4a] text-white"
+                          : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+                      }`}
+                    >
+                      {tab === "upload"
+                        ? "Upload"
+                        : tab === "gallery"
+                          ? "Gallery"
+                          : "URL"}
+                    </button>
+                  ))}
                 </div>
 
-                {imageTab === "url" ? (
+                {imageTab === "upload" && (
+                  <div>
+                    <div
+                      onDrop={handleImageDrop}
+                      onDragOver={(e) => {
+                        e.preventDefault();
+                        setDragOver(true);
+                      }}
+                      onDragLeave={() => setDragOver(false)}
+                      onClick={() =>
+                        document.getElementById("news-image-input")?.click()
+                      }
+                      className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-colors ${
+                        dragOver
+                          ? "border-[#2B9EB3] bg-[#2B9EB3]/5"
+                          : "border-gray-300 hover:border-gray-400"
+                      }`}
+                    >
+                      {uploading ? (
+                        <Loader2
+                          size={24}
+                          className="animate-spin text-[#2B9EB3] mb-2"
+                        />
+                      ) : (
+                        <Upload size={24} className="text-gray-400 mb-2" />
+                      )}
+                      <p className="text-sm text-gray-500 text-center">
+                        {uploading
+                          ? "Uploading..."
+                          : "Click or drag an image here"}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        PNG, JPG, GIF up to 4MB
+                      </p>
+                    </div>
+                    <input
+                      id="news-image-input"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) uploadImage(file);
+                        e.target.value = "";
+                      }}
+                    />
+                    {uploadError && (
+                      <p className="text-xs text-red-500 mt-2">{uploadError}</p>
+                    )}
+                  </div>
+                )}
+
+                {imageTab === "url" && (
                   <div>
                     <input
                       type="text"
@@ -593,7 +679,9 @@ export default function NewsManager() {
                       Enter image path or external URL
                     </p>
                   </div>
-                ) : (
+                )}
+
+                {imageTab === "gallery" && (
                   <div>
                     <div className="relative mb-2">
                       <Search
