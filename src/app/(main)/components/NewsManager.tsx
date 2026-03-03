@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Newspaper,
   Plus,
@@ -21,6 +22,7 @@ import {
   Loader2,
   Star,
   FileText,
+  Search,
 } from "lucide-react";
 
 interface NewsArticle {
@@ -61,9 +63,16 @@ export default function NewsManager() {
     Omit<NewsArticle, "id"> & { id?: string }
   >(defaultArticle);
   const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
+  const [imageTab, setImageTab] = useState<"url" | "gallery">("gallery");
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [gallerySearch, setGallerySearch] = useState("");
 
   useEffect(() => {
     fetchArticles();
+    fetch("/api/benelux-news/images")
+      .then((res) => res.json())
+      .then((data) => setGalleryImages(data.images || []))
+      .catch(() => {});
   }, []);
 
   async function fetchArticles() {
@@ -517,21 +526,134 @@ export default function NewsManager() {
                   <ImageIcon size={16} />
                   Featured Image
                 </h4>
-                <input
-                  type="text"
-                  value={currentArticle.imageUrl}
-                  onChange={(e) =>
-                    setCurrentArticle({
-                      ...currentArticle,
-                      imageUrl: e.target.value,
-                    })
-                  }
-                  placeholder="/images/article-image.jpg"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
-                />
-                <p className="text-xs text-gray-400 mt-2">
-                  Enter image path or URL
-                </p>
+
+                {currentArticle.imageUrl && (
+                  <div className="relative mb-3 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                    <div className="relative h-32 flex items-center justify-center p-2">
+                      <Image
+                        src={currentArticle.imageUrl}
+                        alt="Featured"
+                        fill
+                        className="object-contain p-2"
+                        unoptimized
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setCurrentArticle({ ...currentArticle, imageUrl: "" })
+                      }
+                      className="absolute top-1.5 right-1.5 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                    >
+                      <X size={12} />
+                    </button>
+                  </div>
+                )}
+
+                <div className="flex rounded-lg border border-gray-200 overflow-hidden mb-3">
+                  <button
+                    type="button"
+                    onClick={() => setImageTab("gallery")}
+                    className={`flex-1 text-xs py-1.5 font-medium transition-colors ${
+                      imageTab === "gallery"
+                        ? "bg-[#1a3a4a] text-white"
+                        : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    Gallery
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setImageTab("url")}
+                    className={`flex-1 text-xs py-1.5 font-medium transition-colors ${
+                      imageTab === "url"
+                        ? "bg-[#1a3a4a] text-white"
+                        : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+                    }`}
+                  >
+                    URL
+                  </button>
+                </div>
+
+                {imageTab === "url" ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={currentArticle.imageUrl}
+                      onChange={(e) =>
+                        setCurrentArticle({
+                          ...currentArticle,
+                          imageUrl: e.target.value,
+                        })
+                      }
+                      placeholder="/club-crests/example.png"
+                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                    />
+                    <p className="text-xs text-gray-400 mt-1.5">
+                      Enter image path or external URL
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="relative mb-2">
+                      <Search
+                        size={14}
+                        className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400"
+                      />
+                      <input
+                        type="text"
+                        value={gallerySearch}
+                        onChange={(e) => setGallerySearch(e.target.value)}
+                        placeholder="Search crests..."
+                        className="w-full pl-8 pr-3 py-1.5 border border-gray-200 rounded-lg text-sm"
+                      />
+                    </div>
+                    <div className="grid grid-cols-4 gap-1.5 max-h-48 overflow-y-auto rounded-lg border border-gray-100 p-1.5 bg-gray-50">
+                      {galleryImages
+                        .filter((img) =>
+                          img
+                            .toLowerCase()
+                            .includes(gallerySearch.toLowerCase())
+                        )
+                        .map((img) => (
+                          <button
+                            key={img}
+                            type="button"
+                            onClick={() =>
+                              setCurrentArticle({
+                                ...currentArticle,
+                                imageUrl: img,
+                              })
+                            }
+                            className={`relative aspect-square rounded border-2 overflow-hidden transition-all hover:border-[#2B9EB3] ${
+                              currentArticle.imageUrl === img
+                                ? "border-[#2B9EB3] ring-1 ring-[#2B9EB3]"
+                                : "border-transparent"
+                            }`}
+                            title={img
+                              .split("/")
+                              .pop()
+                              ?.replace(/\.\w+$/, "")}
+                          >
+                            <Image
+                              src={img}
+                              alt=""
+                              fill
+                              className="object-contain p-1"
+                              unoptimized
+                            />
+                          </button>
+                        ))}
+                      {galleryImages.filter((img) =>
+                        img.toLowerCase().includes(gallerySearch.toLowerCase())
+                      ).length === 0 && (
+                        <p className="col-span-4 text-xs text-gray-400 text-center py-4">
+                          No images found
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
