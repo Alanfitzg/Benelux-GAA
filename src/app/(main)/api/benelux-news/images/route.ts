@@ -1,31 +1,26 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 
 export async function GET() {
-  const images: string[] = [];
-
-  const dirs = [
-    { dir: "public/club-crests", prefix: "/club-crests", filter: /^benelux-/i },
-    { dir: "public/images", prefix: "/images", filter: null },
+  const images = [
+    "/club-crests/benelux-aachen-gaels.png",
+    "/club-crests/benelux-amsterdam-gac.png",
+    "/club-crests/benelux-brussels.png",
+    "/club-crests/benelux-cologne-celts.png",
+    "/club-crests/benelux-darmstadt.png",
+    "/club-crests/benelux-den-haag.png",
+    "/club-crests/benelux-dusseldorf.png",
+    "/club-crests/benelux-earls-of-leuven.png",
+    "/club-crests/benelux-ec-brussels.png",
+    "/club-crests/benelux-eindhoven-shamrocks.png",
+    "/club-crests/benelux-frankfurt.png",
+    "/club-crests/benelux-groningen-gaels.png",
+    "/club-crests/benelux-hamburg-gaa.png",
+    "/club-crests/benelux-luxembourg.png",
+    "/club-crests/benelux-maastricht-gaels.png",
+    "/club-crests/benelux-nijmegen-gfc.png",
+    "/images/Benelux Crest white background.png",
+    "/images/gge-crest.png",
   ];
-
-  for (const { dir, prefix, filter } of dirs) {
-    const fullPath = path.join(process.cwd(), dir);
-    if (!fs.existsSync(fullPath)) continue;
-
-    const files = fs.readdirSync(fullPath);
-    for (const file of files) {
-      if (!/\.(png|jpg|jpeg|gif|svg|webp)$/i.test(file)) continue;
-      if (filter && !filter.test(file)) continue;
-      const stat = fs.statSync(path.join(fullPath, file));
-      if (stat.isFile()) {
-        images.push(`${prefix}/${file}`);
-      }
-    }
-  }
-
-  images.sort((a, b) => a.localeCompare(b));
 
   return NextResponse.json({ images });
 }
