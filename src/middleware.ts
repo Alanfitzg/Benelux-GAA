@@ -2,11 +2,19 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
+  const host = request.headers.get("host") || "";
+
+  // Redirect non-www to www for beneluxgaa.com (prevents POST redirect issues)
+  if (host === "beneluxgaa.com") {
+    const url = request.nextUrl.clone();
+    url.host = "www.beneluxgaa.com";
+    url.protocol = "https";
+    return NextResponse.redirect(url, 308);
+  }
+
   // Clone the request headers
   const requestHeaders = new Headers(request.headers);
 
-  // Get the host from the request
-  const host = request.headers.get("host") || "";
   // GGE Social domain routing is handled by next.config.ts rewrites
 
   // List of allowed domains
