@@ -48,7 +48,7 @@ export default function PoweredByPage() {
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          subject: `PlayAway Inquiry from ${formData.clubName || formData.name}`,
+          subject: `Benelux GAA Inquiry from ${formData.clubName || formData.name}`,
           message: messageWithClub,
         }),
       });
@@ -85,7 +85,7 @@ export default function PoweredByPage() {
           <div className="mb-6 md:mb-10">
             <Image
               src="/logo.png"
-              alt="PlayAway"
+              alt="Benelux GAA"
               width={120}
               height={120}
               className="mx-auto w-20 h-20 md:w-[120px] md:h-[120px]"
@@ -99,7 +99,7 @@ export default function PoweredByPage() {
           </h1>
 
           <p className="text-base md:text-lg text-gray-300 mb-3 md:mb-4 leading-relaxed px-2">
-            PlayAway is a dedicated technology service provider helping
+            Benelux GAA is a dedicated technology service provider helping
             international sports clubs connect, grow, and thrive.
           </p>
 
@@ -279,7 +279,7 @@ export default function PoweredByPage() {
       <footer className="py-6 px-4 border-t border-gray-800">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} PlayAway. All rights reserved.
+            &copy; {new Date().getFullYear()} Benelux GAA. All rights reserved.
           </p>
         </div>
       </footer>

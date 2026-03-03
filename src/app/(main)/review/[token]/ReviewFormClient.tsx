@@ -214,13 +214,13 @@ export function ReviewFormClient({ token }: ReviewFormClientProps) {
         <div className="bg-gradient-to-r from-primary to-primary/80 p-6 text-white">
           <div className="flex items-center gap-3 mb-4">
             <Image
-              src="/images/playaway-logo.png"
-              alt="PlayAway"
+              src="/images/Benelux Crest white background.png"
+              alt="Benelux GAA"
               width={40}
               height={40}
               className="rounded-lg"
             />
-            <span className="font-semibold text-lg">PlayAway</span>
+            <span className="font-semibold text-lg">Benelux GAA</span>
           </div>
           <h1 className="text-2xl font-bold mb-2">Share Your Experience</h1>
           <p className="opacity-90">

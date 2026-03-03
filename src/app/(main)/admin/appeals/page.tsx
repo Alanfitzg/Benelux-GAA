@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { AppealsDashboard } from "./AppealsDashboard";
 
 export const metadata: Metadata = {
-  title: "Event Appeals | Admin | PlayAway",
+  title: "Event Appeals | Admin | Benelux GAA",
   description: "Review and resolve event rejection appeals",
 };
 

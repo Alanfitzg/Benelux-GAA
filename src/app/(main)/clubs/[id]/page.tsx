@@ -67,9 +67,9 @@ export async function generateMetadata({
         "camogie",
       ].filter(Boolean),
       openGraph: {
-        title: `${title} | PlayAway`,
+        title: `${title} | Benelux GAA`,
         description,
-        url: `https://playaway.vercel.app/clubs/${id}`,
+        url: `https://www.beneluxgaa.com/clubs/${id}`,
         type: "website",
         images: club.imageUrl
           ? [
@@ -83,18 +83,18 @@ export async function generateMetadata({
           : [],
       },
       twitter: {
-        title: `${title} | PlayAway`,
+        title: `${title} | Benelux GAA`,
         description,
         images: club.imageUrl ? [club.imageUrl] : [],
       },
       alternates: {
-        canonical: `https://playaway.vercel.app/clubs/${id}`,
+        canonical: `https://www.beneluxgaa.com/clubs/${id}`,
       },
     };
   } catch (error) {
     console.error("Error generating club metadata:", error);
     return {
-      title: "GAA Club | PlayAway",
+      title: "GAA Club | Benelux GAA",
       description: "Discover GAA clubs worldwide.",
     };
   }

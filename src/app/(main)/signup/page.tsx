@@ -223,7 +223,7 @@ export default function SignUp() {
               router.push(redirectPath);
             } else {
               // Redirect to home with welcome message
-              toast.success("Welcome to PlayAway!");
+              toast.success("Welcome to Benelux GAA!");
               router.push("/?welcome=true");
             }
             router.refresh();

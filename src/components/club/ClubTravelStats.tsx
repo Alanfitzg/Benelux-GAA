@@ -94,7 +94,7 @@ export default function ClubTravelStats({
                 <p>
                   Track your club&apos;s international adventures! These stats
                   update automatically when you register for tournaments through
-                  PlayAway.
+                  Benelux GAA.
                 </p>
                 <div className="absolute -top-1.5 left-2 w-3 h-3 bg-gray-900 rotate-45" />
               </div>

@@ -42,7 +42,7 @@ export function generateEventStructuredData(event: Event) {
         }
       : {
           "@type": "Organization",
-          name: "PlayAway",
+          name: "Benelux GAA",
         },
     eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
     eventStatus: "https://schema.org/EventScheduled",
@@ -80,15 +80,15 @@ export const organizationStructuredData = {
 export const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  name: "PlayAway",
+  name: "Benelux GAA",
   description: "Discover Gaelic Athletic Clubs & Tournaments Worldwide",
-  url: "https://play-away.vercel.app",
+  url: "https://www.beneluxgaa.com",
   potentialAction: {
     "@type": "SearchAction",
     target: {
       "@type": "EntryPoint",
       urlTemplate:
-        "https://play-away.vercel.app/events?search={search_term_string}",
+        "https://www.beneluxgaa.com/events?search={search_term_string}",
     },
     "query-input": "required name=search_term_string",
   },

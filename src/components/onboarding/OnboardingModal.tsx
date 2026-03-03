@@ -122,7 +122,7 @@ export default function OnboardingModal({
                   The Profile Builder
                 </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  {currentStep === 1 && "What brings you to PlayAway?"}
+                  {currentStep === 1 && "What brings you to Benelux GAA?"}
                   {currentStep === 2 && "Your competitive level"}
                   {currentStep === 3 && "Optional extras"}
                   {currentStep === 4 && "All set!"}

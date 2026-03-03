@@ -248,11 +248,11 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate email content
-    const baseUrl = process.env.NEXTAUTH_URL || "https://playaway.ie";
+    const baseUrl = process.env.NEXTAUTH_URL || "https://www.beneluxgaa.com";
     const emailData = generateBroadcastEmail({
       subject: subject.trim(),
       message: message.trim(),
-      senderName: session.user.name || "PlayAway Team",
+      senderName: session.user.name || "Benelux GAA",
       baseUrl,
     });
 

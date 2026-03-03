@@ -39,7 +39,7 @@ export function EventRejectedEmail({
             color: "#ffffff",
           }}
         >
-          PlayAway
+          Benelux GAA
         </h1>
         <p
           style={{
@@ -209,7 +209,7 @@ export function EventRejectedEmail({
           </p>
 
           <a
-            href={`https://playaway.ie/club-admin/events/${eventId}/edit`}
+            href={`https://www.beneluxgaa.com/club-admin/events/${eventId}/edit`}
             style={{
               display: "inline-block",
               backgroundColor: "#264673",
@@ -266,7 +266,7 @@ export function EventRejectedEmail({
             fontWeight: "500",
           }}
         >
-          The PlayAway Team
+          The Benelux GAA Team
         </p>
         <p
           style={{
@@ -275,7 +275,7 @@ export function EventRejectedEmail({
             margin: "0",
           }}
         >
-          © 2025 PlayAway · Connecting GAA Communities Worldwide
+          © 2025 Benelux GAA · Connecting GAA Communities Worldwide
         </p>
       </div>
     </div>

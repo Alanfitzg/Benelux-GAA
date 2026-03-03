@@ -45,8 +45,8 @@ export default function FeatureTogglesPage() {
             <p>
               Feature toggles (also known as feature flags) allow you to{" "}
               <strong>enable or disable functionality</strong> across the
-              PlayAway platform without deploying new code. This is useful for
-              testing new features with select users before a full rollout.
+              Benelux GAA platform without deploying new code. This is useful
+              for testing new features with select users before a full rollout.
             </p>
             <p>
               Toggle states are stored in your browser&apos;s local storage, so

@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { FinancialsClient } from "./FinancialsClient";
 
 export const metadata: Metadata = {
-  title: "Financials | Club Admin | PlayAway",
+  title: "Financials | Club Admin | Benelux GAA",
   description:
     "Track your earnings, potential revenue, and manage bank details for payouts",
 };

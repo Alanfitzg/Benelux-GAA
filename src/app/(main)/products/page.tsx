@@ -19,8 +19,8 @@ export default function ProductsPage() {
               How Your Club Earns Money
             </h1>
             <p className="text-lg text-blue-100">
-              A complete guide to understanding PlayAway&apos;s products and how
-              your club profits from hosting.
+              A complete guide to understanding Benelux GAA&apos;s products and
+              how your club profits from hosting.
             </p>
           </div>
         </div>
@@ -43,7 +43,7 @@ export default function ProductsPage() {
                 on their own.
               </p>
               <p className="text-gray-700 mb-4">
-                <strong>PlayAway absorbs this risk.</strong> Gaelic Trips Ltd
+                <strong>Benelux GAA absorbs this risk.</strong> Gaelic Trips Ltd
                 holds the necessary licences and insurance, allowing European
                 clubs to participate in the tourism opportunity without bearing
                 the legal burden. For the first time, European clubs can be the
@@ -110,8 +110,8 @@ export default function ProductsPage() {
               What We Sell
             </h2>
             <p className="text-gray-600 mb-6">
-              PlayAway sells two products. They serve different purposes and are
-              used in different situations.
+              Benelux GAA sells two products. They serve different purposes and
+              are used in different situations.
             </p>
 
             <div className="grid md:grid-cols-2 gap-4">
@@ -275,7 +275,7 @@ export default function ProductsPage() {
                 The Day-Pass is your hospitality offering. The purpose is to
                 ensure all your costs as a host are covered. You decide what to
                 include and set the price accordingly. All Day-Passes are
-                reviewed by PlayAway staff before going live.
+                reviewed by Benelux GAA staff before going live.
               </p>
 
               <div className="bg-amber-50 rounded-lg p-4 mb-6">
@@ -690,7 +690,7 @@ export default function ProductsPage() {
                 <div className="flex-1 bg-white border-2 border-blue-400 rounded-xl p-4 text-center">
                   <div className="text-3xl font-bold text-blue-600">€2.50</div>
                   <div className="text-sm font-medium text-blue-800">
-                    PlayAway
+                    Benelux GAA
                   </div>
                   <div className="text-xs text-blue-600">platform revenue</div>
                 </div>

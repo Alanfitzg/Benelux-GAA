@@ -328,7 +328,7 @@ export default function TestimonialsDashboardWidget({
               Published Reviews from Host Clubs
             </h3>
             <p className="text-xs text-gray-500 mb-3">
-              Reviews are managed by PlayAway. Contact support if you have
+              Reviews are managed by Benelux GAA. Contact support if you have
               concerns about any review.
             </p>
             {approvedTestimonials.length > 0 ? (

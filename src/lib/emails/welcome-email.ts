@@ -35,9 +35,9 @@ export async function sendWelcomeEmail({
     );
 
     const data = await resend.emails.send({
-      from: "PlayAway <welcome@playaway.ie>",
+      from: "Benelux GAA <welcome@www.beneluxgaa.com>",
       to: [to],
-      subject: `Cead mile Failte ${userName} - Welcome to PlayAway! 🇮🇪`,
+      subject: `Cead mile Failte ${userName} - Welcome to Benelux GAA! 🇮🇪`,
       html: emailHtml,
       headers: {
         "X-Entity-Ref-ID": new Date().getTime().toString(),

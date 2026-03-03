@@ -4,7 +4,7 @@ import { getServerSession } from "@/lib/auth-helpers";
 import { ConflictsDashboard } from "./ConflictsDashboard";
 
 export const metadata: Metadata = {
-  title: "Conflict Resolution | Admin | PlayAway",
+  title: "Conflict Resolution | Admin | Benelux GAA",
   description: "Review and resolve event disputes",
 };
 

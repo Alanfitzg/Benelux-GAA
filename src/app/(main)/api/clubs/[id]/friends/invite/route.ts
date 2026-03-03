@@ -109,7 +109,7 @@ export async function POST(
       substitutions: Record<string, string>;
     }> = [];
 
-    const baseUrl = process.env.NEXTAUTH_URL || "https://playaway.ie";
+    const baseUrl = process.env.NEXTAUTH_URL || "https://www.beneluxgaa.com";
 
     for (const friendClub of friendClubs) {
       for (const admin of friendClub.admins) {

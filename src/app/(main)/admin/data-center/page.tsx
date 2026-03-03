@@ -456,7 +456,7 @@ export default function DataCenterPage() {
             </div>
             <div className="text-left">
               <h1 className="text-lg md:text-2xl font-bold text-white">
-                PlayAway Intelligence Hub
+                Benelux GAA Intelligence Hub
               </h1>
               <p className="text-xs md:text-sm text-white/60">
                 Data Center &amp; Analytics
@@ -483,7 +483,7 @@ export default function DataCenterPage() {
           <div className="mt-4 mx-auto max-w-2xl bg-amber-500/10 border border-amber-500/20 rounded-lg px-4 py-3">
             <p className="text-xs text-amber-200/90">
               <strong className="text-amber-300">Note:</strong> All reports are
-              under development and compare against the PlayAway platform
+              under development and compare against the Benelux GAA platform
               database only — not the full GAA demographics database. Figures
               will be refined as the platform grows.
             </p>
@@ -1052,7 +1052,7 @@ function MarketCoverageReport({ data }: { data: Record<string, unknown> }) {
         </p>
         <p className="text-sm text-amber-700">
           {summary?.untappedPercentage || 0}% of the market has not yet engaged
-          with PlayAway
+          with Benelux GAA
         </p>
       </div>
 

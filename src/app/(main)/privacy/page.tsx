@@ -24,8 +24,8 @@ export default function PrivacyPolicy() {
             </h1>
             <p className="text-lg text-gray-600">Last updated: {currentDate}</p>
             <p className="text-gray-600 mt-2">
-              This Privacy Policy describes how Gaelic Trips Ltd collects, uses,
-              and protects your personal information.
+              This Privacy Policy describes how Benelux GAA collects, uses, and
+              protects your personal information.
             </p>
           </div>
 
@@ -34,10 +34,10 @@ export default function PrivacyPolicy() {
             {/* Introduction */}
             <section className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
               <p className="text-gray-700 leading-relaxed">
-                <strong>Gaelic Trips Ltd</strong> is committed to protecting
-                your privacy and ensuring your personal data is handled in
-                compliance with the General Data Protection Regulation (GDPR)
-                and Irish Data Protection Acts.
+                <strong>Benelux GAA</strong> is committed to protecting your
+                privacy and ensuring your personal data is handled in compliance
+                with the General Data Protection Regulation (GDPR) and Irish
+                Data Protection Acts.
               </p>
             </section>
 
@@ -428,23 +428,23 @@ export default function PrivacyPolicy() {
                 <p>
                   <strong>Email:</strong>{" "}
                   <a
-                    href="mailto:privacy@gaelictrips.com"
+                    href="mailto:secretary.benelux.europe@gaa.ie"
                     className="text-primary font-medium hover:underline"
                   >
-                    privacy@gaelictrips.com
+                    secretary.benelux.europe@gaa.ie
                   </a>
                 </p>
                 <p>
                   <strong>Data Protection Officer:</strong>{" "}
                   <a
-                    href="mailto:dpo@gaelictrips.com"
+                    href="mailto:secretary.benelux.europe@gaa.ie"
                     className="text-primary font-medium hover:underline"
                   >
-                    dpo@gaelictrips.com
+                    secretary.benelux.europe@gaa.ie
                   </a>
                 </p>
                 <p>
-                  <strong>Company:</strong> Gaelic Trips Ltd, Ireland
+                  <strong>Company:</strong> Benelux GAA, Ireland
                 </p>
               </div>
             </section>

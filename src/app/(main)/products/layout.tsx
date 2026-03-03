@@ -1,9 +1,9 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Products | PlayAway",
+  title: "Products | Benelux GAA",
   description:
-    "Learn about PlayAway's two product types: Team Ticket for tournaments and Player Day-Pass for individual team visits.",
+    "Learn about Benelux GAA's two product types: Team Ticket for tournaments and Player Day-Pass for individual team visits.",
 };
 
 export default function ProductsLayout({

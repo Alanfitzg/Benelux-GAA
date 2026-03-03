@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Host Terms & Conditions | PlayAway",
+  title: "Host Terms & Conditions | Benelux GAA",
   description:
-    "Terms and conditions for hosting tournaments and events on PlayAway. Understand platform fees, host responsibilities, and payout terms.",
+    "Terms and conditions for hosting tournaments and events on Benelux GAA. Understand platform fees, host responsibilities, and payout terms.",
 };
 
 export default function HostTermsPage() {
@@ -18,7 +18,7 @@ export default function HostTermsPage() {
               Host Terms & Conditions
             </h1>
             <p className="text-lg text-white/90">
-              Everything you need to know about hosting events on PlayAway
+              Everything you need to know about hosting events on Benelux GAA
             </p>
           </div>
         </div>
@@ -72,9 +72,10 @@ export default function HostTermsPage() {
               </div>
               <div className="p-6 space-y-4">
                 <p className="text-gray-700">
-                  PlayAway adds a platform fee of <strong>€5 per person</strong>{" "}
-                  to every Day-Pass registration. This fee is split 50/50
-                  between PlayAway and your club as profit.
+                  Benelux GAA adds a platform fee of{" "}
+                  <strong>€5 per person</strong> to every Day-Pass registration.
+                  This fee is split 50/50 between Benelux GAA and your club as
+                  profit.
                 </p>
 
                 <div className="bg-gray-50 rounded-lg p-4">
@@ -117,7 +118,7 @@ export default function HostTermsPage() {
                         €2.50
                       </div>
                       <div className="text-sm text-gray-600">
-                        Retained by PlayAway
+                        Retained by Benelux GAA
                       </div>
                     </div>
                   </div>
@@ -285,7 +286,7 @@ export default function HostTermsPage() {
               </div>
               <div className="p-6 space-y-4">
                 <p className="text-gray-700">
-                  As a host on PlayAway, you are responsible for:
+                  As a host on Benelux GAA, you are responsible for:
                 </p>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
@@ -503,10 +504,10 @@ export default function HostTermsPage() {
                     If You Cancel Your Event
                   </h4>
                   <p className="text-gray-700">
-                    If you need to cancel your event, you must notify PlayAway
-                    immediately. All registered attendees will receive a full
-                    refund including the platform fee. Repeated cancellations
-                    may affect your ability to host future events.
+                    If you need to cancel your event, you must notify Benelux
+                    GAA immediately. All registered attendees will receive a
+                    full refund including the platform fee. Repeated
+                    cancellations may affect your ability to host future events.
                   </p>
                 </div>
 
@@ -572,7 +573,7 @@ export default function HostTermsPage() {
                     Dispute Resolution
                   </h4>
                   <p className="text-sm text-blue-700">
-                    PlayAway acts as an intermediary in all disputes. We will
+                    Benelux GAA acts as an intermediary in all disputes. We will
                     review evidence from both parties and make a fair
                     determination. Our decision on profit release and refunds is
                     final.
@@ -590,8 +591,9 @@ export default function HostTermsPage() {
               </div>
               <div className="p-6 space-y-4">
                 <p className="text-gray-700">
-                  All events must be approved by PlayAway before they are listed
-                  publicly. This ensures quality and protects our community.
+                  All events must be approved by Benelux GAA before they are
+                  listed publicly. This ensures quality and protects our
+                  community.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -639,7 +641,7 @@ export default function HostTermsPage() {
               </div>
               <div className="p-6 space-y-4">
                 <p className="text-gray-700">
-                  PlayAway is a platform that connects hosts with travelling
+                  Benelux GAA is a platform that connects hosts with travelling
                   teams. We do not organise events directly and are not liable
                   for:
                 </p>
@@ -727,7 +729,7 @@ export default function HostTermsPage() {
 
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">
-                    What You CAN List on PlayAway
+                    What You CAN List on Benelux GAA
                   </h4>
                   <ul className="space-y-2">
                     <li className="flex items-start gap-3">
@@ -789,7 +791,7 @@ export default function HostTermsPage() {
 
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">
-                    What You CANNOT List on PlayAway
+                    What You CANNOT List on Benelux GAA
                   </h4>
                   <ul className="space-y-2">
                     <li className="flex items-start gap-3">
@@ -885,9 +887,10 @@ export default function HostTermsPage() {
                 </div>
 
                 <p className="text-sm text-gray-600">
-                  PlayAway will reject event submissions that appear to bundle
-                  travel services. If you wish to offer package holidays, you
-                  must obtain appropriate licensing and insurance independently.
+                  Benelux GAA will reject event submissions that appear to
+                  bundle travel services. If you wish to offer package holidays,
+                  you must obtain appropriate licensing and insurance
+                  independently.
                 </p>
               </div>
             </section>
@@ -919,7 +922,7 @@ export default function HostTermsPage() {
               <div className="p-6">
                 <p className="text-gray-700 mb-4">
                   If you have any questions about these terms or hosting on
-                  PlayAway, please get in touch.
+                  Benelux GAA, please get in touch.
                 </p>
                 <Link
                   href="/contact"

@@ -94,7 +94,7 @@ const ProfessionalHeader = () => {
               >
                 <Image
                   src="/logo.png"
-                  alt="PlayAway Logo"
+                  alt="Benelux GAA"
                   width={56}
                   height={56}
                   className="w-14 h-14 object-contain"
@@ -109,7 +109,7 @@ const ProfessionalHeader = () => {
                 }`}
                 whileHover={{ scale: 1.02 }}
               >
-                PlayAway
+                Benelux GAA
               </motion.span>
               <span
                 className={`text-xs opacity-75 transition-colors duration-300 ${

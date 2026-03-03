@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import { DemandInsightsClient } from "./DemandInsightsClient";
 
 export const metadata: Metadata = {
-  title: "Demand Insights | Club Admin | PlayAway",
+  title: "Demand Insights | Club Admin | Benelux GAA",
   description:
     "Understand market demand and make informed decisions about hosting events",
 };

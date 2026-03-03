@@ -54,7 +54,7 @@ export default function OnboardingComplete({
       >
         <h3 className="text-2xl font-bold text-gray-900">Perfect!</h3>
         <p className="text-gray-600 mt-2">
-          We&apos;ve got everything we need to personalize your PlayAway
+          We&apos;ve got everything we need to personalize your Benelux GAA
           experience.
         </p>
       </motion.div>

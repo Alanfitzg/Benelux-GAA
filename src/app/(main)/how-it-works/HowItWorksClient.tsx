@@ -106,7 +106,7 @@ export default function HowItWorksClient() {
             onClick={() => scrollToSection("why-playaway")}
             className="px-4 py-2 text-sm font-medium rounded-full bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors shadow-sm"
           >
-            Why PlayAway
+            Why Benelux GAA
           </button>
         </div>
 
@@ -436,11 +436,11 @@ export default function HowItWorksClient() {
             </div>
           </section>
 
-          {/* Why PlayAway */}
+          {/* Why Benelux GAA */}
           <section id="why-playaway" className="scroll-mt-24">
             <div className="bg-gradient-to-br from-primary/5 to-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-8 text-center">
-                Why Teams Love PlayAway
+                Why Teams Love Benelux GAA
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-6 bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-lg transition-shadow">
@@ -550,7 +550,7 @@ export default function HowItWorksClient() {
                     Create Club Account & Get Verified
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                    Register your club on PlayAway and get verified as a club
+                    Register your club on Benelux GAA and get verified as a club
                     admin to start hosting tournaments.
                   </p>
                 </div>
@@ -563,7 +563,7 @@ export default function HowItWorksClient() {
                 <ul className="space-y-2 text-gray-600 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
-                    Create a PlayAway account and register your club
+                    Create a Benelux GAA account and register your club
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary mt-0.5">•</span>
@@ -705,7 +705,7 @@ export default function HowItWorksClient() {
                   </h3>
                   <p className="text-gray-600 text-sm md:text-base leading-relaxed">
                     Set up your tournament details, pricing, and availability on
-                    the PlayAway platform.
+                    the Benelux GAA platform.
                   </p>
                 </div>
               </div>
@@ -805,11 +805,11 @@ export default function HowItWorksClient() {
             </div>
           </section>
 
-          {/* Why Host with PlayAway */}
+          {/* Why Host with Benelux GAA */}
           <section id="why-host" className="scroll-mt-24">
             <div className="bg-gradient-to-br from-primary/5 to-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-md">
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-8 text-center">
-                Why Clubs Love Hosting with PlayAway
+                Why Clubs Love Hosting with Benelux GAA
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-6 bg-white rounded-xl border border-gray-100 shadow-md hover:shadow-lg transition-shadow">
@@ -891,7 +891,7 @@ export default function HowItWorksClient() {
                 </svg>
               </div>
               <h1 className="text-3xl md:text-4xl font-bold">
-                How PlayAway Works
+                How Benelux GAA Works
               </h1>
             </div>
             {currentView !== "initial" && (
@@ -935,7 +935,7 @@ export default function HowItWorksClient() {
           >
             <div className="max-w-3xl mx-auto space-y-4 text-gray-700 text-center">
               <p className="text-base md:text-lg leading-relaxed">
-                PlayAway simplifies the travel process for GAA teams while
+                Benelux GAA simplifies the travel process for GAA teams while
                 protecting European clubs who work hard to host events with very
                 limited resources.
               </p>

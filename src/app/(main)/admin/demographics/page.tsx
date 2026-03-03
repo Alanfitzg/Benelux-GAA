@@ -287,17 +287,18 @@ export default function DemographicsPage() {
                 </span>
                 <strong className="text-white/90">
                   {" "}
-                  This is external reference data only—it is not PlayAway data.
+                  This is external reference data only—it is not Benelux GAA
+                  data.
                 </strong>{" "}
                 <span className="hidden md:inline">
-                  PlayAway&apos;s own club and user statistics are shown
+                  Benelux GAA&apos;s own club and user statistics are shown
                   separately in the comparison section below and do not yet
                   match the GAA&apos;s total figures. The GAA report covers the
-                  entire Irish GAA ecosystem, while PlayAway is growing its
+                  entire Irish GAA ecosystem, while Benelux GAA is growing its
                   platform reach within this larger landscape.
                 </span>
                 <span className="md:hidden">
-                  PlayAway&apos;s own statistics are shown separately below.
+                  Benelux GAA&apos;s own statistics are shown separately below.
                 </span>
               </p>
             </div>
@@ -368,7 +369,7 @@ export default function DemographicsPage() {
 
         <div className="bg-gradient-to-r from-emerald-500/20 to-teal-500/20 border border-emerald-500/30 rounded-lg md:rounded-xl p-3 md:p-6 mb-6 md:mb-8">
           <h2 className="text-sm md:text-lg font-semibold text-white mb-0.5 md:mb-1">
-            PlayAway Platform Data (Our Data)
+            Benelux GAA Platform Data (Our Data)
           </h2>
           <p className="text-xs md:text-sm text-white/60 mb-3 md:mb-4">
             Live statistics compared against GAA report totals
@@ -396,7 +397,7 @@ export default function DemographicsPage() {
               </div>
               <div className="text-[10px] md:text-xs text-emerald-400 mt-0.5 md:mt-1">
                 {playawayStats.totalActiveClubs > 0
-                  ? `${((playawayStats.verifiedClubs / playawayStats.totalActiveClubs) * 100).toFixed(1)}% of PlayAway`
+                  ? `${((playawayStats.verifiedClubs / playawayStats.totalActiveClubs) * 100).toFixed(1)}% of Benelux GAA`
                   : "N/A"}
               </div>
             </div>

@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { ClubReviewsClient } from "./ClubReviewsClient";
 
 export const metadata: Metadata = {
-  title: "Club Reviews | PlayAway",
+  title: "Club Reviews | Benelux GAA",
   description: "View reviews received for your club",
 };
 

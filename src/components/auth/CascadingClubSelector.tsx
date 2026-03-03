@@ -765,7 +765,7 @@ export default function CascadingClubSelector({
         {isClubMember === false && (
           <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
             <p className="text-sm text-blue-800">
-              No problem! You can still join PlayAway as an individual member
+              No problem! You can still join Benelux GAA as an individual member
               and connect with GAA communities worldwide.
             </p>
           </div>

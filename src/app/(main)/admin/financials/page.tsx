@@ -134,7 +134,7 @@ export default function AdminFinancialsPage() {
                   Financial Command Center
                 </h1>
                 <p className="text-sm sm:text-base text-white/60">
-                  PlayAway Business Overview
+                  Benelux GAA Business Overview
                 </p>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function AdminFinancialsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <p className="text-emerald-100 text-sm font-medium mb-1">
-                PlayAway Net Revenue
+                Benelux GAA Net Revenue
               </p>
               <p className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
                 {data ? formatCurrency(data.playAwayNetRevenue) : "€0.00"}
@@ -215,7 +215,9 @@ export default function AdminFinancialsPage() {
                   <p className="font-medium text-gray-900">
                     Platform Commission
                   </p>
-                  <p className="text-sm text-gray-500">PlayAway&apos;s cut</p>
+                  <p className="text-sm text-gray-500">
+                    Benelux GAA&apos;s cut
+                  </p>
                 </div>
                 <p className="text-xl font-bold text-emerald-600">
                   {data ? formatCurrency(data.platformCommission) : "€0.00"}

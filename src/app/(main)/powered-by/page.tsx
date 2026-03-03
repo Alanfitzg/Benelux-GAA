@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Mail, Copy, Check } from "lucide-react";
 
-const EMAIL = "alan@gaelictrips.com";
+const EMAIL = "secretary.benelux.europe@gaa.ie";
 
 export default function PoweredByPage() {
   const [showEmail, setShowEmail] = useState(false);
@@ -36,7 +36,7 @@ export default function PoweredByPage() {
           <div className="mb-6 md:mb-10">
             <Image
               src="/logo.png"
-              alt="PlayAway"
+              alt="Benelux GAA"
               width={120}
               height={120}
               className="mx-auto w-20 h-20 md:w-[120px] md:h-[120px]"
@@ -50,7 +50,7 @@ export default function PoweredByPage() {
           </h1>
 
           <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-3 md:mb-4 leading-relaxed px-2">
-            PlayAway is a dedicated technology service provider helping
+            Benelux GAA is a dedicated technology service provider helping
             international sports clubs connect, grow, and thrive.
           </p>
 
@@ -76,14 +76,14 @@ export default function PoweredByPage() {
                 Drop us an email and we&apos;ll get back to you
               </p>
               <a
-                href={`mailto:${EMAIL}?subject=PlayAway%20Inquiry`}
+                href={`mailto:${EMAIL}?subject=Benelux GAA%20Inquiry`}
                 className="text-[#2B9EB3] text-lg md:text-xl font-semibold hover:text-white transition-colors break-all"
               >
                 {EMAIL}
               </a>
               <div className="mt-4 flex items-center justify-center gap-3">
                 <a
-                  href={`mailto:${EMAIL}?subject=PlayAway%20Inquiry`}
+                  href={`mailto:${EMAIL}?subject=Benelux GAA%20Inquiry`}
                   className="inline-flex items-center gap-2 bg-[#2B9EB3] text-white px-5 py-2.5 rounded-lg font-medium hover:bg-[#238a9c] transition-colors text-sm"
                 >
                   <Mail size={16} />
@@ -116,7 +116,7 @@ export default function PoweredByPage() {
       <footer className="py-6 px-4 border-t border-gray-800">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} PlayAway. All rights reserved.
+            &copy; {new Date().getFullYear()} Benelux GAA. All rights reserved.
           </p>
         </div>
       </footer>

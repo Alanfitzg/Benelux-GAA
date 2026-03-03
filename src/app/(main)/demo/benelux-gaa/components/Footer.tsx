@@ -133,7 +133,7 @@ export default function Footer() {
                 href="/powered-by"
                 className="text-[#2B9EB3] hover:text-white transition-colors font-medium"
               >
-                PlayAway
+                Benelux GAA
               </InternalLink>
             </span>
             <span className="hidden sm:inline text-gray-700">•</span>

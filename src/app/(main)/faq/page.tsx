@@ -10,24 +10,24 @@ export default function FAQPage() {
       title: "General Questions",
       questions: [
         {
-          question: "What is PlayAway?",
+          question: "What is Benelux GAA?",
           answer:
-            "PlayAway is a global platform connecting GAA clubs worldwide for tournaments, training camps, and cultural exchanges. We enable clubs to list events, connect with travelling teams, and manage bookings securely. With over 2,400 clubs across 60+ countries, PlayAway is the go-to destination for GAA travel experiences.",
+            "Benelux GAA is a global platform connecting GAA clubs worldwide for tournaments, training camps, and cultural exchanges. We enable clubs to list events, connect with travelling teams, and manage bookings securely. With over 2,400 clubs across 60+ countries, Benelux GAA is the go-to destination for GAA travel experiences.",
         },
         {
-          question: "Is PlayAway officially affiliated with the GAA?",
+          question: "Is Benelux GAA officially affiliated with the GAA?",
           answer:
-            "No. PlayAway is an independent company that provides services for Gaelic Athletics teams and groups. We are not officially affiliated with the GAA, LGFA, or Camogie Association, but we serve their communities worldwide.",
+            "No. Benelux GAA is an independent company that provides services for Gaelic Athletics teams and groups. We are not officially affiliated with the GAA, LGFA, or Camogie Association, but we serve their communities worldwide.",
         },
         {
-          question: "Is PlayAway a travel agent or a tour operator?",
+          question: "Is Benelux GAA a travel agent or a tour operator?",
           answer:
-            "No. PlayAway is a marketplace platform, similar to Airbnb or Eventbrite, facilitating direct connections between host clubs and visiting teams. We do not book flights, accommodation, or transport on behalf of users.",
+            "No. Benelux GAA is a marketplace platform, similar to Airbnb or Eventbrite, facilitating direct connections between host clubs and visiting teams. We do not book flights, accommodation, or transport on behalf of users.",
         },
         {
-          question: "What sports does PlayAway support?",
+          question: "What sports does Benelux GAA support?",
           answer:
-            "PlayAway supports all Gaelic games including Hurling, Gaelic Football, Ladies Gaelic Football (LGFA), Camogie, and Gaelic4Mothers&Others (G4MO). Events can be filtered by sport type to find the perfect match for your team.",
+            "Benelux GAA supports all Gaelic games including Hurling, Gaelic Football, Ladies Gaelic Football (LGFA), Camogie, and Gaelic4Mothers&Others (G4MO). Events can be filtered by sport type to find the perfect match for your team.",
         },
       ],
     },
@@ -53,7 +53,7 @@ export default function FAQPage() {
         {
           question: "What is the Profile Builder?",
           answer:
-            "The Profile Builder is our onboarding questionnaire that helps us understand your background and interests. It covers your playing experience, preferred sports, age groups, and what you're looking for on PlayAway. This information helps match you with suitable events and clubs.",
+            "The Profile Builder is our onboarding questionnaire that helps us understand your background and interests. It covers your playing experience, preferred sports, age groups, and what you're looking for on Benelux GAA. This information helps match you with suitable events and clubs.",
         },
       ],
     },
@@ -62,9 +62,9 @@ export default function FAQPage() {
       title: "For Clubs (Hosts)",
       questions: [
         {
-          question: "Why should clubs list their tournaments on PlayAway?",
+          question: "Why should clubs list their tournaments on Benelux GAA?",
           answer:
-            "Listing on PlayAway provides access to a global network of GAA clubs and players. You'll receive secure upfront payments, reducing financial risk from cancellations. Our platform handles booking management, letting you focus on delivering great events.",
+            "Listing on Benelux GAA provides access to a global network of GAA clubs and players. You'll receive secure upfront payments, reducing financial risk from cancellations. Our platform handles booking management, letting you focus on delivering great events.",
         },
         {
           question: "Can clubs control their event pricing?",
@@ -72,14 +72,14 @@ export default function FAQPage() {
             "Yes. Clubs have full control over their event pricing. You set your Day Pass prices and package inclusions to remain competitive and appealing to visiting teams.",
         },
         {
-          question: "What can clubs list on PlayAway?",
+          question: "What can clubs list on Benelux GAA?",
           answer:
             "Clubs can list GAA tournaments, day passes, training sessions, and cultural exchange experiences. Note: Due to travel regulations, clubs cannot bundle flights, accommodation, or passenger transport into day passes.",
         },
         {
-          question: "How much does it cost for clubs to use PlayAway?",
+          question: "How much does it cost for clubs to use Benelux GAA?",
           answer:
-            "Creating an account and listing events is free. PlayAway charges a small platform fee on successful bookings. Note: Specific fees are subject to change - contact us for current pricing details.",
+            "Creating an account and listing events is free. Benelux GAA charges a small platform fee on successful bookings. Note: Specific fees are subject to change - contact us for current pricing details.",
         },
         {
           question: "How do I become a verified club?",
@@ -89,7 +89,7 @@ export default function FAQPage() {
         {
           question: "Can clubs outside Europe list events?",
           answer:
-            "Absolutely! PlayAway is a global platform. Clubs from North America, Asia, Australasia, the Middle East, and beyond are welcome to list events and host visiting teams.",
+            "Absolutely! Benelux GAA is a global platform. Clubs from North America, Asia, Australasia, the Middle East, and beyond are welcome to list events and host visiting teams.",
         },
       ],
     },
@@ -98,7 +98,7 @@ export default function FAQPage() {
       title: "For Travellers (Teams and Players)",
       questions: [
         {
-          question: "How do teams book events on PlayAway?",
+          question: "How do teams book events on Benelux GAA?",
           answer:
             "Browse events on the platform, select one that suits your team, and register through our secure booking system. You'll receive confirmation and full event details. This replaces informal arrangements and ensures transparency for everyone.",
         },
@@ -126,7 +126,7 @@ export default function FAQPage() {
         {
           question: "What types of events are available?",
           answer:
-            "PlayAway hosts a variety of events including competitive tournaments, friendly blitzes, training camps, cultural exchanges, and social GAA experiences. Events range from single-day tournaments to multi-day festivals.",
+            "Benelux GAA hosts a variety of events including competitive tournaments, friendly blitzes, training camps, cultural exchanges, and social GAA experiences. Events range from single-day tournaments to multi-day festivals.",
         },
         {
           question: "How do I know what's included in an event?",
@@ -147,7 +147,7 @@ export default function FAQPage() {
         {
           question: "How does payment work?",
           answer:
-            "Payments are processed securely through our platform. Funds are collected upfront to ensure host clubs have confirmed bookings before events. PlayAway retains a small platform fee, with the remainder transferred to host clubs.",
+            "Payments are processed securely through our platform. Funds are collected upfront to ensure host clubs have confirmed bookings before events. Benelux GAA retains a small platform fee, with the remainder transferred to host clubs.",
         },
         {
           question: "Are there hidden costs?",
@@ -171,9 +171,9 @@ export default function FAQPage() {
       title: "Legal and Regulatory",
       questions: [
         {
-          question: "Is PlayAway compliant with travel regulations?",
+          question: "Is Benelux GAA compliant with travel regulations?",
           answer:
-            "Yes. PlayAway operates in alignment with EU Package Travel Directive standards. Our platform primarily facilitates Linked Travel Arrangements (LTAs), ensuring regulatory compliance without placing licensing burdens on clubs.",
+            "Yes. Benelux GAA operates in alignment with EU Package Travel Directive standards. Our platform primarily facilitates Linked Travel Arrangements (LTAs), ensuring regulatory compliance without placing licensing burdens on clubs.",
         },
         {
           question: "What are Linked Travel Arrangements (LTAs)?",
@@ -183,7 +183,7 @@ export default function FAQPage() {
         {
           question: "What obligations do host clubs have?",
           answer:
-            "Host clubs are responsible for accurately describing their events and delivering what's advertised. PlayAway's structure minimises regulatory burden on clubs - we handle the major platform responsibilities.",
+            "Host clubs are responsible for accurately describing their events and delivering what's advertised. Benelux GAA's structure minimises regulatory burden on clubs - we handle the major platform responsibilities.",
         },
       ],
     },
@@ -192,9 +192,9 @@ export default function FAQPage() {
       title: "Security and Data",
       questions: [
         {
-          question: "How does PlayAway handle my data?",
+          question: "How does Benelux GAA handle my data?",
           answer:
-            "PlayAway manages user data in compliance with GDPR and applicable privacy regulations. We only collect data necessary to provide our services, and we never sell personal information to third parties. See our Privacy Policy for full details.",
+            "Benelux GAA manages user data in compliance with GDPR and applicable privacy regulations. We only collect data necessary to provide our services, and we never sell personal information to third parties. See our Privacy Policy for full details.",
         },
         {
           question: "Is my payment information secure?",
@@ -208,7 +208,7 @@ export default function FAQPage() {
       title: "Help and Support",
       questions: [
         {
-          question: "How do I contact PlayAway support?",
+          question: "How do I contact Benelux GAA support?",
           answer:
             "You can reach us through the Contact page on our website. We aim to respond to all enquiries within 48 hours.",
         },
@@ -241,7 +241,7 @@ export default function FAQPage() {
               Frequently Asked Questions
             </h1>
             <p className="text-lg md:text-xl text-emerald-100">
-              Everything you need to know about PlayAway
+              Everything you need to know about Benelux GAA
             </p>
           </motion.div>
         </div>

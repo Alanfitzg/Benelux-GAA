@@ -541,7 +541,7 @@ export default function YouthEventDetailPage({
               />
               <span className="text-white font-semibold">GGE Youth Events</span>
             </div>
-            <p className="text-white/60 text-sm">Powered by PlayAway</p>
+            <p className="text-white/60 text-sm">Powered by Benelux GAA</p>
           </div>
         </div>
       </div>

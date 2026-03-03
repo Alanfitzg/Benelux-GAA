@@ -133,7 +133,7 @@ export function ggeTeamRegistrationConfirmation({
                 Gaelic Games Europe - Recreational Games 2026
               </p>
               <p style="color: #f5c842; margin: 10px 0 0 0; font-size: 12px;">
-                Powered by PlayAway
+                Powered by Benelux GAA
               </p>
             </td>
           </tr>
@@ -281,7 +281,7 @@ export function ggeHostApplicationConfirmation({
                 Gaelic Games Europe - Recreational Games 2026
               </p>
               <p style="color: #f5c842; margin: 10px 0 0 0; font-size: 12px;">
-                Powered by PlayAway
+                Powered by Benelux GAA
               </p>
             </td>
           </tr>

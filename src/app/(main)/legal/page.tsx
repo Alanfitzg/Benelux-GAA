@@ -17,9 +17,9 @@ export default function LegalCompliance() {
               Legal Compliance
             </h1>
             <p className="text-lg text-gray-600">
-              Gaelic Trips Ltd operates with full awareness and respect for the
-              legal frameworks that govern travel services and consumer
-              protection across Europe.
+              Benelux GAA operates with full awareness and respect for the legal
+              frameworks that govern travel services and consumer protection
+              across Europe.
             </p>
           </div>
 
@@ -182,9 +182,9 @@ export default function LegalCompliance() {
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                  Gaelic Trips Ltd provides the booking infrastructure and
-                  retains a portion of platform fees for administrative and
-                  legal coverage.
+                  Benelux GAA provides the booking infrastructure and retains a
+                  portion of platform fees for administrative and legal
+                  coverage.
                 </li>
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
@@ -209,10 +209,10 @@ export default function LegalCompliance() {
               <p className="text-gray-700 leading-relaxed">
                 If you have legal questions about our services, please contact:{" "}
                 <a
-                  href="mailto:legal@gaelictrips.com"
+                  href="mailto:secretary.benelux.europe@gaa.ie"
                   className="text-primary font-medium hover:underline"
                 >
-                  legal@gaelictrips.com
+                  secretary.benelux.europe@gaa.ie
                 </a>
               </p>
             </section>

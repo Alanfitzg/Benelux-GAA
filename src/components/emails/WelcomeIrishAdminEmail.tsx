@@ -35,7 +35,7 @@ export function WelcomeIrishAdminEmail({
             color: "#ffffff",
           }}
         >
-          PlayAway
+          Benelux GAA
         </h1>
         <p
           style={{
@@ -301,7 +301,7 @@ export function WelcomeIrishAdminEmail({
             <li style={{ marginBottom: "8px" }}>
               Browse tournaments on the{" "}
               <a
-                href="https://playaway.ie/events"
+                href="https://www.beneluxgaa.com/events"
                 style={{ color: "#264673", fontWeight: "600" }}
               >
                 Events page
@@ -320,7 +320,7 @@ export function WelcomeIrishAdminEmail({
         {/* Primary CTA */}
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
           <a
-            href="https://playaway.ie/events"
+            href="https://www.beneluxgaa.com/events"
             style={{
               display: "inline-block",
               backgroundColor: "#ffffff",
@@ -338,7 +338,7 @@ export function WelcomeIrishAdminEmail({
           </a>
           <br />
           <a
-            href="https://playaway.ie/club-admin"
+            href="https://www.beneluxgaa.com/club-admin"
             style={{
               display: "inline-block",
               color: "#ffffff",
@@ -393,7 +393,7 @@ export function WelcomeIrishAdminEmail({
             fontWeight: "500",
           }}
         >
-          The PlayAway Team
+          The Benelux GAA Team
         </p>
         <p
           style={{
@@ -402,7 +402,7 @@ export function WelcomeIrishAdminEmail({
             margin: "0",
           }}
         >
-          © 2025 PlayAway · Connecting GAA Communities Worldwide
+          © 2025 Benelux GAA · Connecting GAA Communities Worldwide
         </p>
       </div>
     </div>

@@ -717,8 +717,8 @@ export default function RomeAdminPage() {
                       <span className="font-medium">Setup in progress</span>
                     </div>
                     <p className="text-purple-600 text-xs mt-2">
-                      PlayAway is setting up your Instagram connection. You may
-                      be contacted to authorize the connection.
+                      Benelux GAA is setting up your Instagram connection. You
+                      may be contacted to authorize the connection.
                     </p>
                   </div>
                 ) : instagramRequest?.status === "PENDING" ? (
@@ -728,15 +728,15 @@ export default function RomeAdminPage() {
                       <span className="font-medium">Request pending</span>
                     </div>
                     <p className="text-purple-600 text-xs mt-2">
-                      Your request has been submitted. PlayAway will process it
-                      soon.
+                      Your request has been submitted. Benelux GAA will process
+                      it soon.
                     </p>
                   </div>
                 ) : instagramRequest?.status === "REJECTED" ? (
                   <div className="mt-2">
                     <p className="text-purple-700 text-sm">
                       Your previous request could not be processed. Please
-                      contact PlayAway directly for assistance.
+                      contact Benelux GAA directly for assistance.
                     </p>
                   </div>
                 ) : (
@@ -747,7 +747,7 @@ export default function RomeAdminPage() {
                     </p>
                     <ol className="text-purple-700 text-sm mt-2 list-decimal list-inside space-y-1">
                       <li>Click &quot;Request Connection&quot; below</li>
-                      <li>PlayAway will send you an authorization link</li>
+                      <li>Benelux GAA will send you an authorization link</li>
                       <li>Log into Instagram and authorize the connection</li>
                     </ol>
                     <button
@@ -768,7 +768,7 @@ export default function RomeAdminPage() {
                     {instagramRequestSuccess && (
                       <p className="text-green-600 text-sm mt-2 flex items-center gap-1">
                         <Check size={16} />
-                        Request submitted! PlayAway will be in touch.
+                        Request submitted! Benelux GAA will be in touch.
                       </p>
                     )}
                     <p className="text-purple-600 text-xs mt-2">
@@ -802,7 +802,7 @@ export default function RomeAdminPage() {
 
             <p className="text-gray-600 text-sm mb-4">
               Add an email address to grant admin access to this site. The user
-              must have a PlayAway account with this email.
+              must have a Benelux GAA account with this email.
             </p>
 
             <form onSubmit={handleAddAdmin} className="space-y-4">

@@ -130,7 +130,7 @@ export function generateNewUserNotificationEmail(
     </head>
     <body>
       <div class="header">
-        <div class="logo">🏐 PlayAway</div>
+        <div class="logo">🏐 Benelux GAA</div>
         <h1>New User Registration</h1>
         <p style="margin: 10px 0 0 0; opacity: 0.9;">A new user has registered and needs approval</p>
       </div>
@@ -138,7 +138,7 @@ export function generateNewUserNotificationEmail(
       <div class="content">
         <p>Hello Admin,</p>
         
-        <p>A new user has just registered on the PlayAway platform and is awaiting approval.</p>
+        <p>A new user has just registered on the Benelux GAA platform and is awaiting approval.</p>
         
         <div class="user-info">
           <h3>👤 User Details</h3>
@@ -190,8 +190,8 @@ export function generateNewUserNotificationEmail(
       </div>
       
       <div class="footer">
-        <div class="logo">PlayAway</div>
-        <p>Connecting GAA communities worldwide</p>
+        <div class="logo">Benelux GAA</div>
+        <p>Benelux Gaelic Games Community</p>
         <p style="margin-top: 15px; font-size: 12px;">
           This is an automated notification. Please do not reply to this email.
         </p>
@@ -201,7 +201,7 @@ export function generateNewUserNotificationEmail(
   `;
 
   const text = `
-New User Registration - PlayAway
+New User Registration - Benelux GAA
 
 A new user has registered and needs approval:
 
@@ -216,7 +216,7 @@ Please review this registration in the Admin Panel: ${data.adminPanelUrl}/users
 The user will receive an email notification once you approve or reject their account.
 
 ---
-PlayAway - Connecting GAA communities worldwide
+Benelux GAA - Benelux Gaelic Games Community
 This is an automated notification.
   `;
 
@@ -240,8 +240,8 @@ export function generateUserApprovalNotificationEmail(
   text: string;
 } {
   const subject = data.approved
-    ? `✅ Welcome to PlayAway! Your account has been approved`
-    : `❌ PlayAway Account Application Update`;
+    ? `✅ Welcome to Benelux GAA! Your account has been approved`
+    : `❌ Benelux GAA Account Application Update`;
 
   const html = data.approved
     ? `
@@ -297,14 +297,14 @@ export function generateUserApprovalNotificationEmail(
     </head>
     <body>
       <div class="header">
-        <h1>🎉 Welcome to PlayAway!</h1>
+        <h1>🎉 Welcome to Benelux GAA!</h1>
         <p>Your account has been approved</p>
       </div>
       
       <div class="content">
         <p>Hello ${data.userName},</p>
         
-        <p>Great news! Your PlayAway account has been approved and you can now access all platform features.</p>
+        <p>Great news! Your Benelux GAA account has been approved and you can now access all platform features.</p>
         
         <p>You can now:</p>
         <ul>
@@ -318,11 +318,11 @@ export function generateUserApprovalNotificationEmail(
           <a href="${data.loginUrl}" class="btn">🚀 Start Exploring</a>
         </div>
         
-        <p>Welcome to the PlayAway community!</p>
+        <p>Welcome to the Benelux GAA community!</p>
       </div>
       
       <div class="footer">
-        <p>PlayAway - Connecting GAA communities worldwide</p>
+        <p>Benelux GAA - Benelux Gaelic Games Community</p>
       </div>
     </body>
     </html>
@@ -345,22 +345,22 @@ export function generateUserApprovalNotificationEmail(
       </div>
       <div class="content">
         <p>Hello ${data.userName},</p>
-        <p>Thank you for your interest in PlayAway. After reviewing your application, we are unable to approve your account at this time.</p>
+        <p>Thank you for your interest in Benelux GAA. After reviewing your application, we are unable to approve your account at this time.</p>
         <p>If you believe this is an error or have questions, please contact our support team.</p>
       </div>
       <div class="footer">
-        <p>PlayAway - Connecting GAA communities worldwide</p>
+        <p>Benelux GAA - Benelux Gaelic Games Community</p>
       </div>
     </body>
     </html>
   `;
 
   const text = data.approved
-    ? `Welcome to PlayAway!
+    ? `Welcome to Benelux GAA!
 
 Hello ${data.userName},
 
-Great news! Your PlayAway account has been approved and you can now access all platform features.
+Great news! Your Benelux GAA account has been approved and you can now access all platform features.
 
 You can now:
 - Browse GAA clubs and tournaments
@@ -370,16 +370,16 @@ You can now:
 
 Start exploring: ${data.loginUrl}
 
-Welcome to the PlayAway community!`
+Welcome to the Benelux GAA community!`
     : `Account Application Update
 
 Hello ${data.userName},
 
-Thank you for your interest in PlayAway. After reviewing your application, we are unable to approve your account at this time.
+Thank you for your interest in Benelux GAA. After reviewing your application, we are unable to approve your account at this time.
 
 If you believe this is an error or have questions, please contact our support team.
 
-PlayAway - Connecting GAA communities worldwide`;
+Benelux GAA - Benelux Gaelic Games Community`;
 
   return { subject, html, text };
 }
@@ -400,7 +400,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   html: string;
   text: string;
 } {
-  const subject = `Welcome to PlayAway, ${data.userName}!`;
+  const subject = `Welcome to Benelux GAA, ${data.userName}!`;
   const baseUrl = data.baseUrl || data.loginUrl.replace(/\/login$/, "");
 
   const html = `
@@ -409,7 +409,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
     <head>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Welcome to PlayAway</title>
+      <title>Welcome to Benelux GAA</title>
     </head>
     <body style="margin: 0; padding: 0; background-color: #1a3352; font-family: Arial, sans-serif;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color: #1a3352;">
@@ -420,8 +420,8 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
               <!-- Header -->
               <tr>
                 <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
-                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">PlayAway</h1>
-                  <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Your passport to Gaelic Games worldwide</p>
+                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">Benelux GAA</h1>
+                  <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Benelux Gaelic Games Community</p>
                 </td>
               </tr>
 
@@ -488,7 +488,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
                     <tr>
                       <td align="center" style="padding-bottom: 24px;">
                         <p style="margin: 0 0 16px 0; font-size: 15px; color: rgba(255,255,255,0.9); font-weight: 500;">Are you a coach, committee member, or trip organiser?</p>
-                        <p style="margin: 0 0 16px 0; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6;">Discover how PlayAway can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.</p>
+                        <p style="margin: 0 0 16px 0; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.6;">Discover how Benelux GAA can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.</p>
                         <a href="${baseUrl}/how-it-works" style="display: inline-block; background-color: transparent; color: #ffffff; padding: 14px 32px; font-size: 14px; font-weight: 600; text-decoration: none; border-radius: 6px; border: 2px solid rgba(255,255,255,0.5);">See How It Works</a>
                       </td>
                     </tr>
@@ -514,17 +514,17 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
                   <table role="presentation" cellspacing="0" cellpadding="0" style="margin: 0 auto 20px auto;">
                     <tr>
                       <td style="padding: 0 8px;">
-                        <a href="https://instagram.com/playaway.ie" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
+                        <a href="https://instagram.com/www.beneluxgaa.com" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
                           <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram" width="18" height="18" style="vertical-align: middle;" />
                         </a>
                       </td>
                       <td style="padding: 0 8px;">
-                        <a href="https://facebook.com/playaway.ie" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
+                        <a href="https://facebook.com/www.beneluxgaa.com" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
                           <img src="https://cdn-icons-png.flaticon.com/512/174/174848.png" alt="Facebook" width="18" height="18" style="vertical-align: middle;" />
                         </a>
                       </td>
                       <td style="padding: 0 8px;">
-                        <a href="https://twitter.com/playaway_ie" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
+                        <a href="https://twitter.com/BeneluxGAA" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; text-decoration: none;">
                           <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" width="18" height="18" style="vertical-align: middle;" />
                         </a>
                       </td>
@@ -532,8 +532,8 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
                   </table>
 
                   <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">Slán go fóill,</p>
-                  <p style="margin: 0 0 16px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">The PlayAway Team</p>
-                  <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.5);">© 2025 PlayAway · Connecting GAA Communities Worldwide</p>
+                  <p style="margin: 0 0 16px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">The Benelux GAA Team</p>
+                  <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.5);">© 2025 Benelux GAA · Benelux Gaelic Games Community</p>
                 </td>
               </tr>
 
@@ -545,7 +545,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
     </html>
   `;
 
-  const text = `Welcome to PlayAway, ${data.userName}!
+  const text = `Welcome to Benelux GAA, ${data.userName}!
 
 Céad Míle Fáilte
 
@@ -559,20 +559,20 @@ Add your trip preferences so we can recommend the perfect tournaments and destin
 Add trip preferences: ${baseUrl}/profile
 
 Are you a coach, committee member, or trip organiser?
-Discover how PlayAway can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.
+Discover how Benelux GAA can help you plan tournaments, find host clubs, and organise unforgettable GAA trips abroad.
 See how it works: ${baseUrl}/how-it-works
 
 Questions? Just reply to this email — we're here to help.
 
 Follow us:
-Instagram: https://instagram.com/playaway.ie
-Facebook: https://facebook.com/playaway.ie
-Twitter: https://twitter.com/playaway_ie
+Instagram: https://instagram.com/www.beneluxgaa.com
+Facebook: https://facebook.com/www.beneluxgaa.com
+Twitter: https://twitter.com/BeneluxGAA
 
 Slán go fóill,
-The PlayAway Team
+The Benelux GAA Team
 
-© 2025 PlayAway · Connecting GAA Communities Worldwide
+© 2025 Benelux GAA · Benelux Gaelic Games Community
   `;
 
   return { subject, html, text };
@@ -670,7 +670,7 @@ View event: ${data.event.eventUrl}
               <!-- Header -->
               <tr>
                 <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
-                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">PlayAway</h1>
+                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">Benelux GAA</h1>
                   <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Club Network Invitation</p>
                 </td>
               </tr>
@@ -718,10 +718,10 @@ View event: ${data.event.eventUrl}
               <!-- Footer -->
               <tr>
                 <td style="background-color: #1a3352; padding: 30px; text-align: center; border-radius: 0 0 12px 12px;">
-                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">PlayAway</p>
-                  <p style="margin: 0 0 16px 0; font-size: 12px; color: rgba(255,255,255,0.6);">Connecting GAA Communities Worldwide</p>
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">Benelux GAA</p>
+                  <p style="margin: 0 0 16px 0; font-size: 12px; color: rgba(255,255,255,0.6);">Benelux Gaelic Games Community</p>
                   <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.4);">
-                    This invitation was sent via PlayAway from ${data.senderClubName}.
+                    This invitation was sent via Benelux GAA from ${data.senderClubName}.
                   </p>
                 </td>
               </tr>
@@ -752,8 +752,8 @@ ${eventTextSection}
 Browse all events: ${data.baseUrl}/events
 
 ---
-PlayAway - Connecting GAA Communities Worldwide
-This invitation was sent via PlayAway from ${data.senderClubName}.
+Benelux GAA - Benelux Gaelic Games Community
+This invitation was sent via Benelux GAA from ${data.senderClubName}.
   `;
 
   return { subject, html, text };
@@ -789,7 +789,7 @@ export function generateBroadcastEmail(data: BroadcastEmailData): {
               <!-- Header -->
               <tr>
                 <td style="background: linear-gradient(135deg, #264673 0%, #1a3352 100%); padding: 40px 30px 30px 30px; text-align: center; border-radius: 12px 12px 0 0;">
-                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">PlayAway</h1>
+                  <h1 style="margin: 0 0 8px 0; font-size: 32px; font-weight: 700; color: #ffffff; letter-spacing: -0.5px;">Benelux GAA</h1>
                   <p style="margin: 0; font-size: 14px; color: rgba(255,255,255,0.8); letter-spacing: 1px;">Platform Announcement</p>
                 </td>
               </tr>
@@ -813,7 +813,7 @@ export function generateBroadcastEmail(data: BroadcastEmailData): {
                       <td style="background-color: rgba(255,255,255,0.95); border-radius: 8px; padding: 24px;">
                         <p style="margin: 0 0 16px 0; font-size: 14px; color: #666;">Hello {{recipientName}},</p>
                         <div style="font-size: 15px; line-height: 1.7; color: #333; white-space: pre-wrap;">${data.message.replace(/\n/g, "<br>")}</div>
-                        <p style="margin: 24px 0 0 0; font-size: 14px; color: #666;">Best regards,<br><strong>${data.senderName}</strong><br>The PlayAway Team</p>
+                        <p style="margin: 24px 0 0 0; font-size: 14px; color: #666;">Best regards,<br><strong>${data.senderName}</strong><br>The Benelux GAA Team</p>
                       </td>
                     </tr>
                   </table>
@@ -833,10 +833,10 @@ export function generateBroadcastEmail(data: BroadcastEmailData): {
               <!-- Footer -->
               <tr>
                 <td style="background-color: #1a3352; padding: 30px; text-align: center; border-radius: 0 0 12px 12px;">
-                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">PlayAway</p>
-                  <p style="margin: 0 0 16px 0; font-size: 12px; color: rgba(255,255,255,0.6);">Connecting GAA Communities Worldwide</p>
+                  <p style="margin: 0 0 8px 0; font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 500;">Benelux GAA</p>
+                  <p style="margin: 0 0 16px 0; font-size: 12px; color: rgba(255,255,255,0.6);">Benelux Gaelic Games Community</p>
                   <p style="margin: 0; font-size: 11px; color: rgba(255,255,255,0.4);">
-                    You received this message because you are a club administrator on PlayAway.
+                    You received this message because you are a club administrator on Benelux GAA.
                   </p>
                 </td>
               </tr>
@@ -858,13 +858,13 @@ ${data.message}
 
 Best regards,
 ${data.senderName}
-The PlayAway Team
+The Benelux GAA Team
 
 Explore events: ${data.baseUrl}/events
 
 ---
-PlayAway - Connecting GAA Communities Worldwide
-You received this message because you are a club administrator on PlayAway.
+Benelux GAA - Benelux Gaelic Games Community
+You received this message because you are a club administrator on Benelux GAA.
   `;
 
   return { subject: data.subject, html, text };

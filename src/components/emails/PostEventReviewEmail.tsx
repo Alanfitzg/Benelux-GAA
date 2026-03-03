@@ -47,7 +47,7 @@ export function PostEventReviewEmail({
             color: "#ffffff",
           }}
         >
-          PlayAway
+          Benelux GAA
         </h1>
         <p
           style={{
@@ -244,7 +244,7 @@ export function PostEventReviewEmail({
             fontWeight: "500",
           }}
         >
-          The PlayAway Team
+          The Benelux GAA Team
         </p>
         <p
           style={{
@@ -253,7 +253,7 @@ export function PostEventReviewEmail({
             margin: "0",
           }}
         >
-          © 2025 PlayAway · Connecting GAA Communities Worldwide
+          © 2025 Benelux GAA · Connecting GAA Communities Worldwide
         </p>
       </div>
     </div>

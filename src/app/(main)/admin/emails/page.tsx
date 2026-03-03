@@ -253,7 +253,7 @@ const USER_JOURNEYS: UserJourney[] = [
         id: "user-welcome",
         name: "Welcome Email",
         shortName: "Welcome",
-        description: "Welcome to PlayAway with getting started guide",
+        description: "Welcome to Benelux GAA with getting started guide",
         trigger: "User signup",
         status: "pending",
       },

@@ -452,7 +452,7 @@ export default function SimpleClubSelector({
                 <div>
                   <p className="text-xs font-medium text-blue-900">Perfect!</p>
                   <p className="text-xs text-blue-700 mt-0.5">
-                    You can still join PlayAway as an individual and connect
+                    You can still join Benelux GAA as an individual and connect
                     with GAA communities worldwide.
                   </p>
                 </div>

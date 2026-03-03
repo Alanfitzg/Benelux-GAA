@@ -31,8 +31,8 @@ export function WelcomeEmail({
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://playaway.ie/logo.png"
-          alt="PlayAway"
+          src="https://www.beneluxgaa.com/logo.png"
+          alt="Benelux GAA"
           style={{
             width: "180px",
             height: "auto",
@@ -142,7 +142,7 @@ export function WelcomeEmail({
         {/* Primary CTA Button */}
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
           <a
-            href="https://playaway.ie/events"
+            href="https://www.beneluxgaa.com/events"
             style={{
               display: "inline-block",
               backgroundColor: "#ffffff",
@@ -192,7 +192,7 @@ export function WelcomeEmail({
             tournaments and destinations for you.
           </p>
           <a
-            href="https://playaway.ie/profile"
+            href="https://www.beneluxgaa.com/profile"
             style={{
               display: "inline-block",
               backgroundColor: "transparent",
@@ -238,7 +238,7 @@ export function WelcomeEmail({
               lineHeight: "1.6",
             }}
           >
-            Discover how PlayAway can help you plan tournaments, find host
+            Discover how Benelux GAA can help you plan tournaments, find host
             clubs, and organise unforgettable GAA trips abroad.
           </p>
           <p
@@ -255,7 +255,7 @@ export function WelcomeEmail({
             page.
           </p>
           <a
-            href="https://playaway.ie/how-it-works"
+            href="https://www.beneluxgaa.com/how-it-works"
             style={{
               display: "inline-block",
               backgroundColor: "transparent",
@@ -298,7 +298,7 @@ export function WelcomeEmail({
         {/* Social Icons */}
         <div style={{ marginBottom: "20px" }}>
           <a
-            href="https://instagram.com/playaway.ie"
+            href="https://instagram.com/www.beneluxgaa.com"
             style={{
               display: "inline-block",
               width: "36px",
@@ -321,7 +321,7 @@ export function WelcomeEmail({
             />
           </a>
           <a
-            href="https://facebook.com/playaway.ie"
+            href="https://facebook.com/www.beneluxgaa.com"
             style={{
               display: "inline-block",
               width: "36px",
@@ -344,7 +344,7 @@ export function WelcomeEmail({
             />
           </a>
           <a
-            href="https://twitter.com/playaway_ie"
+            href="https://twitter.com/beneluxgaa_ie"
             style={{
               display: "inline-block",
               width: "36px",
@@ -386,7 +386,7 @@ export function WelcomeEmail({
             fontWeight: "500",
           }}
         >
-          The PlayAway Team
+          The Benelux GAA Team
         </p>
         <p
           style={{
@@ -395,7 +395,7 @@ export function WelcomeEmail({
             margin: "0",
           }}
         >
-          © 2025 PlayAway · Connecting GAA Communities Worldwide
+          © 2025 Benelux GAA · Connecting GAA Communities Worldwide
         </p>
       </div>
     </div>

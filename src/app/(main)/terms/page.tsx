@@ -25,8 +25,8 @@ export default function TermsAndConditions() {
               Effective Date: {currentDate}
             </p>
             <p className="text-gray-600 mt-2">
-              Welcome to GaelicTrips.com. By accessing or using this website,
-              you agree to comply with and be bound by the following Terms and
+              Welcome to Benelux GAA. By accessing or using this website, you
+              agree to comply with and be bound by the following Terms and
               Conditions.
             </p>
           </div>
@@ -37,9 +37,9 @@ export default function TermsAndConditions() {
             <section className="bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg p-6">
               <p className="text-gray-700 leading-relaxed">
                 This website is owned and operated by{" "}
-                <strong>Gaelic Trips Ltd</strong>, a company registered in
-                Ireland. If you do not agree with any part of these terms,
-                please do not use our website.
+                <strong>Benelux GAA</strong>, a company registered in Ireland.
+                If you do not agree with any part of these terms, please do not
+                use our website.
               </p>
             </section>
 
@@ -54,7 +54,7 @@ export default function TermsAndConditions() {
                     &ldquo;Gaelic Trips&rdquo;, &ldquo;we&rdquo;,
                     &ldquo;us&rdquo;, or &ldquo;our&rdquo;
                   </strong>{" "}
-                  refers to Gaelic Trips Ltd.
+                  refers to Benelux GAA.
                 </p>
                 <p>
                   <strong>
@@ -174,8 +174,8 @@ export default function TermsAndConditions() {
                 <li className="flex items-start">
                   <span className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></span>
                   <span>
-                    <strong>Gaelic Trips Ltd</strong> acts as a facilitator and
-                    not a direct service provider, unless explicitly stated.
+                    <strong>Benelux GAA</strong> acts as a facilitator and not a
+                    direct service provider, unless explicitly stated.
                   </span>
                 </li>
               </ul>
@@ -219,7 +219,7 @@ export default function TermsAndConditions() {
               </h2>
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-4">
                 <p className="text-gray-700 leading-relaxed font-medium">
-                  Gaelic Trips Ltd is not liable for:
+                  Benelux GAA is not liable for:
                 </p>
               </div>
               <ul className="space-y-2 text-gray-700 mb-4">
@@ -248,8 +248,8 @@ export default function TermsAndConditions() {
                 8. Intellectual Property
               </h2>
               <p className="text-gray-700 leading-relaxed">
-                All content on GaelicTrips.com is the property of Gaelic Trips
-                Ltd or its licensors. You may not reproduce, republish, or
+                All content on Benelux GAA is the property of Gaelic Trips Ltd
+                or its licensors. You may not reproduce, republish, or
                 distribute any content without permission.
               </p>
             </section>
@@ -304,10 +304,10 @@ export default function TermsAndConditions() {
                 If you have any questions about these Terms and Conditions,
                 please contact us at:{" "}
                 <a
-                  href="mailto:legal@gaelictrips.com"
+                  href="mailto:secretary.benelux.europe@gaa.ie"
                   className="text-primary font-medium hover:underline"
                 >
-                  legal@gaelictrips.com
+                  secretary.benelux.europe@gaa.ie
                 </a>
               </p>
             </section>

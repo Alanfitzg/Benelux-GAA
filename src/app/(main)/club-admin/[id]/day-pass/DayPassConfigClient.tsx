@@ -105,7 +105,7 @@ export default function DayPassConfigClient({
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [showProhibitedDetails, setShowProhibitedDetails] = useState(false);
-  const [showPlayAwayEarnings, setShowPlayAwayEarnings] = useState(false);
+  const [showPlatformEarnings, setShowPlatformEarnings] = useState(false);
   const [showPlatformFeeInfo, setShowPlatformFeeInfo] = useState(false);
 
   const handleToggleInclusion = (id: string) => {
@@ -452,15 +452,15 @@ export default function DayPassConfigClient({
 
               <button
                 type="button"
-                onClick={() => setShowPlayAwayEarnings(!showPlayAwayEarnings)}
+                onClick={() => setShowPlatformEarnings(!showPlatformEarnings)}
                 className="mt-4 w-full text-sm text-emerald-700 hover:text-emerald-800 font-medium bg-white border border-emerald-200 hover:border-emerald-300 rounded-lg px-4 py-3 text-left transition-all hover:shadow-sm"
               >
-                {showPlayAwayEarnings
-                  ? "↑ Hide PlayAway earnings"
-                  : "Would you like to see how much PlayAway makes from your Day-Pass? →"}
+                {showPlatformEarnings
+                  ? "↑ Hide Benelux GAA earnings"
+                  : "Would you like to see how much Benelux GAA makes from your Day-Pass? →"}
               </button>
 
-              {showPlayAwayEarnings && (
+              {showPlatformEarnings && (
                 <div className="mt-3 bg-white border border-emerald-200 rounded-lg p-4">
                   <h4 className="text-sm font-semibold text-gray-900 mb-3">
                     Earnings Comparison (25 players)
@@ -506,11 +506,11 @@ export default function DayPassConfigClient({
                             </div>
                           </div>
 
-                          {/* PlayAway */}
+                          {/* Benelux GAA */}
                           <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                             <div className="flex items-center justify-between mb-1">
                               <span className="text-xs text-gray-600 font-medium">
-                                PlayAway Earns
+                                Benelux GAA Earns
                               </span>
                               <span className="text-xs font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">
                                 {playAwayPercent}%
@@ -526,7 +526,7 @@ export default function DayPassConfigClient({
                         </div>
 
                         <p className="text-xs text-gray-500">
-                          PlayAway&apos;s share (from platform fee) covers
+                          Benelux GAA&apos;s share (from platform fee) covers
                           payment processing, platform maintenance, customer
                           support, and marketing to bring teams to your club.
                         </p>
@@ -648,9 +648,9 @@ export default function DayPassConfigClient({
           {/* Footer Note */}
           <div className="mt-8 text-center">
             <p className="text-xs text-gray-500">
-              All Day-Pass configurations are reviewed by PlayAway staff before
-              going live. Changes may take up to 24 hours to reflect on your
-              public profile.
+              All Day-Pass configurations are reviewed by Benelux GAA staff
+              before going live. Changes may take up to 24 hours to reflect on
+              your public profile.
             </p>
           </div>
         </div>

@@ -13,4 +13,4 @@ Allow: /how-it-works
 Allow: /contact
 
 # Sitemap
-Sitemap: https://play-away.vercel.app/sitemap.xml
+Sitemap: https://www.beneluxgaa.com/sitemap.xml

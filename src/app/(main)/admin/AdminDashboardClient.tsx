@@ -97,7 +97,7 @@ export default function AdminDashboardClient({
             </div>
             <div>
               <h1 className="text-lg md:text-2xl font-bold text-white">
-                PlayAway Command Centre
+                Benelux GAA Command Centre
               </h1>
               <p className="text-xs md:text-sm text-white/60">
                 Admin Dashboard
@@ -190,7 +190,7 @@ export default function AdminDashboardClient({
                   Master Calendar
                 </h2>
                 <p className="text-gray-600 text-xs md:text-base mt-0.5 md:mt-1">
-                  Central hub for all PlayAway calendars
+                  Central hub for all Benelux GAA calendars
                 </p>
               </div>
             </div>
@@ -529,7 +529,7 @@ export default function AdminDashboardClient({
                   GAA Demographics
                 </h2>
                 <p className="text-white/80 text-xs md:text-base mt-0.5 md:mt-1">
-                  Ireland demographic data & PlayAway comparison
+                  Ireland demographic data & Benelux GAA comparison
                 </p>
               </div>
             </div>

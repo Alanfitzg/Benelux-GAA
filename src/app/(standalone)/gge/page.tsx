@@ -211,10 +211,10 @@ export default function GGELandingPage() {
               {/*              <p className="mt-1">
                 Powered by{" "}
                 <a
-                  href="https://www.playawaygaa.com"
+                  href="https://www.beneluxgaa.com"
                   className="text-[#f5c842] hover:underline"
                 >
-                  PlayAway
+                  Benelux GAA
                 </a>
               </p>*/}
             </div>

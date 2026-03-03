@@ -4,7 +4,7 @@ import { getServerSession } from "@/lib/auth-helpers";
 import { ConflictDetailClient } from "./ConflictDetailClient";
 
 export const metadata: Metadata = {
-  title: "Conflict Details | Admin | PlayAway",
+  title: "Conflict Details | Admin | Benelux GAA",
   description: "Review conflict details and resolve dispute",
 };
 

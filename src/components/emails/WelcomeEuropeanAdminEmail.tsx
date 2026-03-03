@@ -35,7 +35,7 @@ export function WelcomeEuropeanAdminEmail({
             color: "#ffffff",
           }}
         >
-          PlayAway
+          Benelux GAA
         </h1>
         <p
           style={{
@@ -106,7 +106,7 @@ export function WelcomeEuropeanAdminEmail({
             }}
           >
             You can now create events, host visiting teams, and earn revenue for
-            your club through the PlayAway platform.
+            your club through the Benelux GAA platform.
           </p>
         </div>
 
@@ -307,7 +307,7 @@ export function WelcomeEuropeanAdminEmail({
               <strong style={{ color: "#1a3352" }}>
                 Verification Required:
               </strong>{" "}
-              All events will be reviewed by PlayAway staff before going live
+              All events will be reviewed by Benelux GAA staff before going live
             </li>
             <li>
               <strong style={{ color: "#1a3352" }}>Terms Agreement:</strong> You
@@ -343,7 +343,7 @@ export function WelcomeEuropeanAdminEmail({
 
           {/* Document Links - Stacked layout for better mobile */}
           <a
-            href="https://playaway.ie/products"
+            href="https://www.beneluxgaa.com/products"
             style={{
               display: "block",
               backgroundColor: "#ffffff",
@@ -401,7 +401,7 @@ export function WelcomeEuropeanAdminEmail({
           </a>
 
           <a
-            href="https://playaway.ie/host-terms"
+            href="https://www.beneluxgaa.com/host-terms"
             style={{
               display: "block",
               backgroundColor: "#ffffff",
@@ -459,7 +459,7 @@ export function WelcomeEuropeanAdminEmail({
           </a>
 
           <a
-            href="https://playaway.ie/platform-rules"
+            href="https://www.beneluxgaa.com/platform-rules"
             style={{
               display: "block",
               backgroundColor: "#ffffff",
@@ -519,7 +519,7 @@ export function WelcomeEuropeanAdminEmail({
         {/* Primary CTA */}
         <div style={{ textAlign: "center", marginBottom: "24px" }}>
           <a
-            href="https://playaway.ie/club-admin"
+            href="https://www.beneluxgaa.com/club-admin"
             style={{
               display: "inline-block",
               backgroundColor: "#ffffff",
@@ -577,7 +577,7 @@ export function WelcomeEuropeanAdminEmail({
             fontWeight: "500",
           }}
         >
-          The PlayAway Team
+          The Benelux GAA Team
         </p>
         <p
           style={{
@@ -586,7 +586,7 @@ export function WelcomeEuropeanAdminEmail({
             margin: "0",
           }}
         >
-          © 2025 PlayAway · Connecting GAA Communities Worldwide
+          © 2025 Benelux GAA · Connecting GAA Communities Worldwide
         </p>
       </div>
     </div>

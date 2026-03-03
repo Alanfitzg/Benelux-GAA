@@ -18,7 +18,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">PlayAway</h3>
+            <h3 className="text-lg font-semibold">Benelux GAA</h3>
             <p className="text-gray-400 text-sm leading-relaxed">
               Connecting GAA clubs and tournaments worldwide. Making Gaelic
               games more accessible and sustainable globally.

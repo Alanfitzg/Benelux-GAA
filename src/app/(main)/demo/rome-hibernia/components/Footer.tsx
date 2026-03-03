@@ -159,7 +159,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Powered by PlayAway */}
+      {/* Powered by Benelux GAA */}
       <div className="border-t border-gray-800 py-4">
         <div className="max-w-7xl mx-auto px-4 flex items-center justify-center gap-4">
           <p className="text-gray-500 text-sm">
@@ -168,7 +168,7 @@ export default function Footer() {
               href="/powered-by"
               className="text-[#c41e3a] hover:text-white transition-colors font-medium"
             >
-              PlayAway
+              Benelux GAA
             </InternalLink>
           </p>
           <span className="hidden sm:inline text-gray-700">•</span>

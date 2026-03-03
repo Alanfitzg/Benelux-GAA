@@ -70,7 +70,7 @@ export default async function CalendarManagementPage() {
                   Calendar Command Centre
                 </h1>
                 <p className="text-sm sm:text-lg text-gray-300 mt-1 sm:mt-2">
-                  The central hub for all PlayAway calendars
+                  The central hub for all Benelux GAA calendars
                 </p>
               </div>
             </div>

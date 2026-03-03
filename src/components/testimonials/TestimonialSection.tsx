@@ -31,8 +31,8 @@ export default function TestimonialSection({
       : `Hosting ${clubName} was a pleasure. Their sportsmanship and enthusiasm made for a memorable tournament weekend.`,
     user: {
       id: "placeholder",
-      name: isMainlandEurope ? "PlayAway Traveller" : "European Host Club",
-      username: "playaway",
+      name: isMainlandEurope ? "Benelux GAA Traveller" : "European Host Club",
+      username: "beneluxgaa",
     },
     submittedAt: new Date().toISOString(),
   };

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { ReviewFormClient } from "./ReviewFormClient";
 
 export const metadata: Metadata = {
-  title: "Share Your Experience | PlayAway",
+  title: "Share Your Experience | Benelux GAA",
   description: "Share your feedback about your recent event experience",
 };
 

@@ -25,7 +25,7 @@ export const metadata: Metadata = {
     "Irish sports calendar",
   ],
   openGraph: {
-    title: "Gaelic Tournaments & Events | PlayAway",
+    title: "Gaelic Tournaments & Events | Benelux GAA",
     description:
       "Discover Gaelic Athletic Association tournaments and events worldwide. Find competitions and join the global GAA community.",
     url: "https://play-away.vercel.app/events",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     canonical: "https://play-away.vercel.app/events",
   },
   twitter: {
-    title: "Gaelic Tournaments & Events | PlayAway",
+    title: "Gaelic Tournaments & Events | Benelux GAA",
     description:
       "Discover Gaelic Athletic Association tournaments and events worldwide.",
   },
@@ -179,7 +179,7 @@ export default async function EventsPage() {
             }
           : {
               "@type": "Organization",
-              name: "PlayAway",
+              name: "Benelux GAA",
             },
         eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
         eventStatus: "https://schema.org/EventScheduled",

@@ -23,7 +23,7 @@ export async function sendEuropeanAdminWelcomeEmail({
 
     const success = await sendEmail({
       to,
-      subject: `Welcome Club Admin! You're now hosting on PlayAway 🎉`,
+      subject: `Welcome Club Admin! You're now hosting on Benelux GAA 🎉`,
       html: emailHtml,
     });
 

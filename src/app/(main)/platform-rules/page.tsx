@@ -2,9 +2,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Platform Rules & Laws | PlayAway",
+  title: "Platform Rules & Laws | Benelux GAA",
   description:
-    "Legal requirements, EU regulations, and compliance guidelines for hosting on PlayAway.",
+    "Legal requirements, EU regulations, and compliance guidelines for hosting on Benelux GAA.",
 };
 
 export default function PlatformRulesPage() {
@@ -19,7 +19,7 @@ export default function PlatformRulesPage() {
             </h1>
             <p className="text-xl text-blue-100">
               Legal requirements and compliance guidelines for hosting on
-              PlayAway.
+              Benelux GAA.
             </p>
           </div>
         </div>
@@ -53,7 +53,7 @@ export default function PlatformRulesPage() {
             </p>
             <p className="text-sm text-gray-500 mb-8">
               In the meantime, please review our Host Terms for key information
-              about hosting on PlayAway.
+              about hosting on Benelux GAA.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link

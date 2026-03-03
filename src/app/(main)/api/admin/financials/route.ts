@@ -177,7 +177,7 @@ export async function GET() {
     const hostPayouts = allPayments._sum.hostEarnings || 0;
     const platformFeeShareToHosts = allPayments._sum.platformFeeShare || 0;
 
-    // PlayAway net revenue = platform commission - fee share given back to hosts
+    // Benelux GAA net revenue = platform commission - fee share given back to hosts
     const playAwayNetRevenue = platformCommission - platformFeeShareToHosts;
 
     // Stripe fees (approx 1.4% + €0.25 per transaction for EU cards, using 2% average)

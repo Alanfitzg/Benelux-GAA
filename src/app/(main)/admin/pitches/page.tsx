@@ -186,7 +186,7 @@ export default function AdminPitchesPage() {
           </h3>
           <div className="text-xs sm:text-sm text-gray-600 space-y-1 sm:space-y-2">
             <p>
-              Every event on PlayAway must be linked to a{" "}
+              Every event on Benelux GAA must be linked to a{" "}
               <strong>verifiable location</strong> with accurate GPS
               coordinates. This ensures travelling teams can find venues easily
               and builds trust in our platform.
