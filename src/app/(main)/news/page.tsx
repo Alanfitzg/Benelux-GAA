@@ -89,17 +89,15 @@ export default function NewsPage() {
               {featuredArticle && (
                 <article className="mb-12 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                   <div className="grid md:grid-cols-2">
-                    <div className="relative h-64 md:h-auto min-h-[280px] bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] overflow-hidden">
+                    <div className="relative h-64 md:h-auto min-h-[280px] bg-gray-200 overflow-hidden">
                       {featuredArticle.imageUrl ? (
-                        <Image
+                        <img
                           src={featuredArticle.imageUrl}
                           alt={featuredArticle.title}
-                          fill
-                          className="object-cover"
-                          unoptimized
+                          className="absolute inset-0 w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3]">
                           <div className="text-white text-center">
                             <div className="w-24 h-24 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                               <span className="text-4xl">📰</span>
@@ -157,14 +155,12 @@ export default function NewsPage() {
                     href={`/news/${article.id}`}
                     className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100 block"
                   >
-                    <div className="h-36 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+                    <div className="h-36 sm:h-48 bg-gray-200 relative overflow-hidden">
                       {article.imageUrl ? (
-                        <Image
+                        <img
                           src={article.imageUrl}
                           alt={article.title}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          unoptimized
+                          className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
                         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a3a4a]/10 to-[#2B9EB3]/10">

@@ -494,20 +494,15 @@ export default function HomeContent() {
               {/* Featured Article - Large */}
               {latestNews[0] && (
                 <article className="md:row-span-2 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100">
-                  <div className="relative h-48 md:h-64 bg-gradient-to-br from-[#1a3a4a] via-[#1a3a4a] to-[#2B9EB3] flex items-center justify-center">
+                  <div className="relative h-48 md:h-64 bg-gray-200 overflow-hidden">
                     {latestNews[0].imageUrl ? (
-                      <div className="bg-white rounded-2xl p-4 md:p-6 shadow-lg">
-                        <Image
-                          src={latestNews[0].imageUrl}
-                          alt={latestNews[0].title}
-                          width={120}
-                          height={120}
-                          className="w-20 h-20 md:w-28 md:h-28 object-contain"
-                          unoptimized
-                        />
-                      </div>
+                      <img
+                        src={latestNews[0].imageUrl}
+                        alt={latestNews[0].title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
                     ) : (
-                      <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center">
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] flex items-center justify-center">
                         <span className="text-3xl">📰</span>
                       </div>
                     )}

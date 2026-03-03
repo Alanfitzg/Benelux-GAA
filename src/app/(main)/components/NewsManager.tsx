@@ -72,6 +72,12 @@ export default function NewsManager() {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [dragOver, setDragOver] = useState(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [mediaTab, setMediaTab] = useState<"upload" | "url" | "gallery">(
+    "upload"
+  );
+  const [mediaUploading, setMediaUploading] = useState(false);
+  const [mediaUrl, setMediaUrl] = useState("");
 
   useEffect(() => {
     fetchArticles();
@@ -223,6 +229,43 @@ export default function NewsManager() {
     const file = e.dataTransfer.files?.[0];
     if (file && file.type.startsWith("image/")) {
       uploadImage(file);
+    }
+  }
+
+  function insertMedia(url: string) {
+    const textarea = document.getElementById(
+      "content-editor"
+    ) as HTMLTextAreaElement;
+    const pos = textarea?.selectionStart ?? currentArticle.content.length;
+    const before = currentArticle.content.substring(0, pos);
+    const after = currentArticle.content.substring(pos);
+    const pad = before.length > 0 && !before.endsWith("\n") ? "\n" : "";
+    const markdown = `${pad}![image](${url})\n`;
+    setCurrentArticle({
+      ...currentArticle,
+      content: before + markdown + after,
+    });
+    setShowMediaPicker(false);
+    setMediaUrl("");
+  }
+
+  async function uploadInlineImage(file: File) {
+    setMediaUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/benelux-news/upload", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      if (res.ok) {
+        insertMedia(data.url);
+      }
+    } catch {
+      // upload failed silently
+    } finally {
+      setMediaUploading(false);
     }
   }
 
@@ -381,11 +424,142 @@ export default function NewsManager() {
                     >
                       <LinkIcon size={16} />
                     </button>
+                    <div className="w-px h-6 bg-gray-300 mx-1" />
+                    <button
+                      type="button"
+                      onClick={() => setShowMediaPicker(!showMediaPicker)}
+                      className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded text-sm font-medium transition-colors ${
+                        showMediaPicker
+                          ? "bg-[#2B9EB3] text-white"
+                          : "hover:bg-gray-200 text-gray-600"
+                      }`}
+                      title="Add Media"
+                    >
+                      <ImageIcon size={14} />
+                      <span className="hidden sm:inline text-xs">
+                        Add Media
+                      </span>
+                    </button>
                     <div className="flex-1" />
                     <span className="text-xs text-gray-400">
                       Markdown supported
                     </span>
                   </div>
+                  {showMediaPicker && (
+                    <div className="border-b border-gray-200 bg-gray-50 p-4">
+                      <div className="flex rounded-lg border border-gray-200 overflow-hidden mb-3 max-w-xs">
+                        {(["upload", "gallery", "url"] as const).map((tab) => (
+                          <button
+                            key={tab}
+                            type="button"
+                            onClick={() => setMediaTab(tab)}
+                            className={`flex-1 text-xs py-1.5 font-medium transition-colors ${
+                              mediaTab === tab
+                                ? "bg-[#1a3a4a] text-white"
+                                : "bg-white text-gray-600 hover:bg-gray-100"
+                            }`}
+                          >
+                            {tab === "upload"
+                              ? "Upload"
+                              : tab === "gallery"
+                                ? "Gallery"
+                                : "URL"}
+                          </button>
+                        ))}
+                      </div>
+
+                      {mediaTab === "upload" && (
+                        <div
+                          onClick={() =>
+                            document
+                              .getElementById("inline-media-input")
+                              ?.click()
+                          }
+                          className="border-2 border-dashed border-gray-300 hover:border-[#2B9EB3] rounded-lg p-4 flex items-center gap-3 cursor-pointer transition-colors"
+                        >
+                          {mediaUploading ? (
+                            <Loader2
+                              size={20}
+                              className="animate-spin text-[#2B9EB3]"
+                            />
+                          ) : (
+                            <Upload size={20} className="text-gray-400" />
+                          )}
+                          <div>
+                            <p className="text-sm text-gray-600">
+                              {mediaUploading
+                                ? "Uploading..."
+                                : "Click to upload an image"}
+                            </p>
+                            <p className="text-xs text-gray-400">
+                              PNG, JPG, GIF up to 10MB
+                            </p>
+                          </div>
+                          <input
+                            id="inline-media-input"
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) uploadInlineImage(file);
+                              e.target.value = "";
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {mediaTab === "gallery" && (
+                        <div className="grid grid-cols-6 sm:grid-cols-8 gap-1.5 max-h-36 overflow-y-auto rounded-lg border border-gray-100 p-1.5 bg-white">
+                          {galleryImages.map((img) => (
+                            <button
+                              key={img}
+                              type="button"
+                              onClick={() => insertMedia(img)}
+                              className="relative aspect-square rounded border-2 border-transparent overflow-hidden transition-all hover:border-[#2B9EB3]"
+                              title={img
+                                .split("/")
+                                .pop()
+                                ?.replace(/\.\w+$/, "")}
+                            >
+                              <Image
+                                src={img}
+                                alt=""
+                                fill
+                                className="object-contain p-0.5"
+                                unoptimized
+                              />
+                            </button>
+                          ))}
+                        </div>
+                      )}
+
+                      {mediaTab === "url" && (
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={mediaUrl}
+                            onChange={(e) => setMediaUrl(e.target.value)}
+                            placeholder="Paste image URL..."
+                            className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" && mediaUrl) {
+                                insertMedia(mediaUrl);
+                              }
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => mediaUrl && insertMedia(mediaUrl)}
+                            disabled={!mediaUrl}
+                            className="px-4 py-2 bg-[#2B9EB3] text-white rounded-lg text-sm font-medium hover:bg-[#249DAD] transition-colors disabled:opacity-50"
+                          >
+                            Insert
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
                   <textarea
                     id="content-editor"
                     value={currentArticle.content}
