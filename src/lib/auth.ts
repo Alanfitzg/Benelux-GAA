@@ -48,8 +48,8 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/signin",
-    error: "/signin",
+    signIn: "/login",
+    error: "/login",
   },
   providers: [
     Google({
