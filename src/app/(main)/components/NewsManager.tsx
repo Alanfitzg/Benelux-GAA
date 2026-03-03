@@ -641,7 +641,7 @@ export default function NewsManager() {
                           : "Click or drag an image here"}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
-                        PNG, JPG, GIF up to 4MB
+                        PNG, JPG, GIF up to 10MB
                       </p>
                     </div>
                     <input

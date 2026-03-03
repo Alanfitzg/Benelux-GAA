@@ -22,9 +22,9 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (file.size > 4 * 1024 * 1024) {
+  if (file.size > 10 * 1024 * 1024) {
     return NextResponse.json(
-      { error: "Image must be under 4MB" },
+      { error: "Image must be under 10MB" },
       { status: 400 }
     );
   }
