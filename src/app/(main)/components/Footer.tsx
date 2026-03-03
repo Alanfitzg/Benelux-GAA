@@ -81,7 +81,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#0d1f28] text-white">
       <div className="max-w-7xl mx-auto px-4 py-10 sm:py-14">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 gap-8">
           {/* Sponsor & About */}
           <div className="text-center sm:text-left">
             <p className="text-[#2B9EB3] text-[10px] uppercase tracking-[0.15em] font-bold mb-3">
@@ -106,55 +106,6 @@ export default function Footer() {
             <p className="text-gray-500 text-sm leading-relaxed">
               Proud sponsors of all Benelux GAA regional competitions.
             </p>
-          </div>
-
-          {/* Quick Links */}
-          <div className="text-center sm:text-left">
-            <h4 className="font-semibold text-[#2B9EB3] mb-4 uppercase text-sm tracking-wider">
-              Quick Links
-            </h4>
-            <ul className="space-y-2">
-              <li>
-                <InternalLink
-                  href="/fixtures"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Fixtures
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/standings"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Standings
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/roll-of-honor"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Roll of Honor
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/timeline"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  Timeline
-                </InternalLink>
-              </li>
-              <li>
-                <InternalLink
-                  href="/faq"
-                  className="text-gray-400 text-sm hover:text-white transition-colors"
-                >
-                  What are Gaelic Games?
-                </InternalLink>
-              </li>
-            </ul>
           </div>
 
           {/* Contact & Social */}
