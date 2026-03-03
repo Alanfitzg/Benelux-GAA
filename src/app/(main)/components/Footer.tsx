@@ -214,7 +214,7 @@ export default function Footer() {
             </p>
             <span className="hidden sm:inline text-gray-700">•</span>
             <InternalLink
-              href="/admin"
+              href="/login"
               className="hidden sm:inline text-gray-600 hover:text-gray-400 text-sm transition-colors"
             >
               Admin
