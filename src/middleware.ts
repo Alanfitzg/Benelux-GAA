@@ -21,7 +21,8 @@ export function middleware(request: NextRequest) {
     "www.gge-social.com",
     "gge-socials.com",
     "www.gge-socials.com",
-    // Add your Vercel preview URLs if needed
+    "beneluxgaa.com",
+    "www.beneluxgaa.com",
   ];
 
   // Set the NEXTAUTH_URL dynamically based on the current domain
