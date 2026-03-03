@@ -77,7 +77,7 @@ export default function RegisterClubPage() {
   useEffect(() => {
     if (status === "loading") return; // Still loading
     if (!session) {
-      router.push("/signin?callbackUrl=/clubs/register");
+      router.push("/login?callbackUrl=/clubs/register");
     }
   }, [session, status, router]);
 
@@ -121,7 +121,7 @@ export default function RegisterClubPage() {
             authenticity and reduces fraud.
           </p>
           <Link
-            href="/signin?callbackUrl=/clubs/register"
+            href="/login?callbackUrl=/clubs/register"
             className="inline-block bg-primary text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-dark transition-colors"
           >
             Sign In to Continue

@@ -210,7 +210,7 @@ export default function SignUp() {
             toast.error(
               "Account created but auto sign-in failed. Please sign in manually."
             );
-            router.push("/signin?registered=true");
+            router.push("/login?registered=true");
           } else {
             // Sign in successful - check for redirect path or go home with welcome
             const redirectPath =
@@ -234,7 +234,7 @@ export default function SignUp() {
           toast.error(
             "Account created but auto sign-in failed. Please sign in manually."
           );
-          router.push("/signin?registered=true");
+          router.push("/login?registered=true");
         }
       }
     } catch {

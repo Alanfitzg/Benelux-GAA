@@ -16,7 +16,7 @@ export default function AuthGateButtons({ clubId }: AuthGateButtonsProps) {
 
   const handleSignIn = () => {
     sessionStorage.setItem("redirectAfterSignIn", `/clubs/${clubId}`);
-    router.push("/signin");
+    router.push("/login");
   };
 
   return (

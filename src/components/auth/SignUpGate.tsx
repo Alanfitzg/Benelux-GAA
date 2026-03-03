@@ -61,7 +61,7 @@ export default function SignUpGate({
             </Link>
 
             <Link
-              href="/signin"
+              href="/login"
               className="w-full inline-flex items-center justify-center gap-2 border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2.5 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors text-sm sm:text-base"
             >
               Already have an account? Sign In

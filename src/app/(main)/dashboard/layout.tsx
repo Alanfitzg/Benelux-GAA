@@ -9,7 +9,7 @@ export default async function DashboardLayout({
   const session = await getServerSession();
 
   if (!session?.user) {
-    redirect("/signin");
+    redirect("/login");
   }
 
   // Allow access to dashboard for all authenticated users

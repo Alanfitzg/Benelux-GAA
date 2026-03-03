@@ -19,7 +19,7 @@ export default async function ClubReviewsPage({
   const session = await getServerSession();
 
   if (!session?.user) {
-    redirect("/signin");
+    redirect("/login");
   }
 
   const { id: clubId } = await params;

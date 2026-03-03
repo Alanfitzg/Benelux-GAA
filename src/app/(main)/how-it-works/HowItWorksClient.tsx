@@ -993,7 +993,7 @@ export default function HowItWorksClient() {
 
                 <div className="flex flex-col gap-3">
                   <button
-                    onClick={() => router.push("/signin")}
+                    onClick={() => router.push("/login")}
                     className="w-full bg-primary hover:bg-primary/90 text-white py-3 px-6 rounded-xl font-semibold transition-colors"
                   >
                     Log in as Admin

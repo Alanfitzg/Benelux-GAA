@@ -112,7 +112,7 @@ export default function EventReportPage({
     if (status === "loading") return;
 
     if (!session) {
-      router.push("/signin");
+      router.push("/login");
       return;
     }
 

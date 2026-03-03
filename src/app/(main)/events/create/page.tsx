@@ -68,7 +68,7 @@ export default function CreateEvent() {
     if (status === "loading") return; // Still loading
 
     if (!session) {
-      router.push("/signin");
+      router.push("/login");
     }
   }, [session, status, router]);
 

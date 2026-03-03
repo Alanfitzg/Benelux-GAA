@@ -14,7 +14,7 @@ export default async function ClubInquiriesPage({
   const { id } = await params;
 
   if (!session?.user) {
-    redirect("/signin");
+    redirect("/login");
   }
 
   // Check if user is authorized to view this club's admin page

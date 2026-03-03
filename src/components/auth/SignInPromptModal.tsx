@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, LogIn, UserPlus, Calendar } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from "framer-motion";
+import { X, LogIn, UserPlus, Calendar } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface SignInPromptModalProps {
   isOpen: boolean;
@@ -14,13 +14,13 @@ interface SignInPromptModalProps {
   onSignIn?: () => void;
 }
 
-export default function SignInPromptModal({ 
-  isOpen, 
-  onClose, 
-  clubName, 
+export default function SignInPromptModal({
+  isOpen,
+  onClose,
+  clubName,
   action = "express interest",
   onSignUp,
-  onSignIn
+  onSignIn,
 }: SignInPromptModalProps) {
   const router = useRouter();
 
@@ -29,12 +29,12 @@ export default function SignInPromptModal({
       onSignUp();
     } else {
       // Fallback to default behavior
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const currentPath = window.location.pathname;
         const redirectPath = `${currentPath}?showInterest=true`;
-        sessionStorage.setItem('redirectAfterSignIn', redirectPath);
+        sessionStorage.setItem("redirectAfterSignIn", redirectPath);
       }
-      router.push('/signup');
+      router.push("/signup");
     }
   };
 
@@ -43,12 +43,12 @@ export default function SignInPromptModal({
       onSignIn();
     } else {
       // Fallback to default behavior
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         const currentPath = window.location.pathname;
         const redirectPath = `${currentPath}?showInterest=true`;
-        sessionStorage.setItem('redirectAfterSignIn', redirectPath);
+        sessionStorage.setItem("redirectAfterSignIn", redirectPath);
       }
-      router.push('/signin');
+      router.push("/login");
     }
   };
 
@@ -84,10 +84,12 @@ export default function SignInPromptModal({
 
             <div className="text-center mb-6">
               <p className="text-gray-600 mb-2">
-                To {action} in <strong>{clubName}</strong>, you&apos;ll need an account.
+                To {action} in <strong>{clubName}</strong>, you&apos;ll need an
+                account.
               </p>
               <p className="text-sm text-gray-500">
-                Join thousands of GAA teams organizing tournaments across Europe!
+                Join thousands of GAA teams organizing tournaments across
+                Europe!
               </p>
             </div>
 
@@ -99,7 +101,7 @@ export default function SignInPromptModal({
                 <UserPlus className="w-4 h-4" />
                 Create Free Account
               </button>
-              
+
               <button
                 onClick={handleSignIn}
                 className="w-full flex items-center justify-center gap-2 border border-gray-300 text-gray-700 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium"
@@ -119,12 +121,15 @@ export default function SignInPromptModal({
 
             <div className="mt-4 text-center">
               <p className="text-xs text-gray-400">
-                By continuing, you agree to our{' '}
+                By continuing, you agree to our{" "}
                 <Link href="/terms" className="text-green-600 hover:underline">
                   Terms
-                </Link>{' '}
-                and{' '}
-                <Link href="/privacy" className="text-green-600 hover:underline">
+                </Link>{" "}
+                and{" "}
+                <Link
+                  href="/privacy"
+                  className="text-green-600 hover:underline"
+                >
                   Privacy Policy
                 </Link>
               </p>

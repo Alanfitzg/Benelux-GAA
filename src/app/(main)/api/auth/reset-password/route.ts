@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
         <p>Hi ${resetToken.user.name || resetToken.user.username},</p>
         <p>Your password has been successfully reset. You can now sign in with your new password.</p>
         <div style="text-align: center; margin: 30px 0;">
-          <a href="${process.env.NEXTAUTH_URL}/signin" style="background-color: #0066cc; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
+          <a href="${process.env.NEXTAUTH_URL}/login" style="background-color: #0066cc; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;">
             Sign In
           </a>
         </div>
@@ -90,7 +90,7 @@ Hi ${resetToken.user.name || resetToken.user.username},
 
 Your password has been successfully reset. You can now sign in with your new password.
 
-Sign in at: ${process.env.NEXTAUTH_URL}/signin
+Sign in at: ${process.env.NEXTAUTH_URL}/login
 
 If you didn't make this change, please contact support immediately.
 

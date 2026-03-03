@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
             a few minutes.
           </p>
           <Link
-            href="/signin"
+            href="/login"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200"
           >
             Back to Sign In
@@ -196,7 +196,7 @@ export default function ForgotPasswordPage() {
 
           <div className="text-center">
             <Link
-              href="/signin"
+              href="/login"
               className="text-sm font-medium text-primary hover:text-primary-dark transition-colors"
             >
               ← Back to Sign In

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 interface UseSignInPromptOptions {
   redirectPath?: string;
@@ -24,22 +24,24 @@ export function useSignInPrompt(options: UseSignInPromptOptions = {}) {
 
   const handleSignUp = () => {
     // Store redirect path for after registration
-    if (typeof window !== 'undefined') {
-      const redirectPath = options.redirectPath || `${window.location.pathname}?showInterest=true`;
-      sessionStorage.setItem('redirectAfterSignIn', redirectPath);
+    if (typeof window !== "undefined") {
+      const redirectPath =
+        options.redirectPath || `${window.location.pathname}?showInterest=true`;
+      sessionStorage.setItem("redirectAfterSignIn", redirectPath);
     }
     setShowSignInPrompt(false);
-    router.push('/signup');
+    router.push("/signup");
   };
 
   const handleSignIn = () => {
     // Store redirect path for after sign in
-    if (typeof window !== 'undefined') {
-      const redirectPath = options.redirectPath || `${window.location.pathname}?showInterest=true`;
-      sessionStorage.setItem('redirectAfterSignIn', redirectPath);
+    if (typeof window !== "undefined") {
+      const redirectPath =
+        options.redirectPath || `${window.location.pathname}?showInterest=true`;
+      sessionStorage.setItem("redirectAfterSignIn", redirectPath);
     }
     setShowSignInPrompt(false);
-    router.push('/signin');
+    router.push("/login");
   };
 
   const closeSignInPrompt = () => {
@@ -53,6 +55,6 @@ export function useSignInPrompt(options: UseSignInPromptOptions = {}) {
     handleSignUp,
     handleSignIn,
     closeSignInPrompt,
-    action: options.action || 'continue',
+    action: options.action || "continue",
   };
 }

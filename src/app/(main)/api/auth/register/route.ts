@@ -3,6 +3,7 @@ import { createUser, getUserByEmail, getUserByUsername } from "@/lib/user";
 import { UserRegistrationSchema } from "@/lib/validation/schemas";
 import { ConflictError, withErrorHandler } from "@/lib/error-handlers";
 import { validateBody } from "@/lib/validation/middleware";
+import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { sendEmail } from "@/lib/email";
 import { generateWelcomeEmail } from "@/lib/email-templates";
 import { AccountStatus } from "@prisma/client";
@@ -110,7 +111,7 @@ async function sendWelcomeEmail(
 ) {
   try {
     const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
-    const loginUrl = `${baseUrl}/signin`;
+    const loginUrl = `${baseUrl}/login`;
 
     // Fetch club information if user has a club
     let clubInfo = null;
@@ -187,4 +188,7 @@ async function sendWelcomeEmail(
 }
 
 // Apply error handling wrapper
-export const POST = withErrorHandler(registrationHandler);
+export const POST = withRateLimit(
+  RATE_LIMITS.REGISTRATION,
+  withErrorHandler(registrationHandler)
+);

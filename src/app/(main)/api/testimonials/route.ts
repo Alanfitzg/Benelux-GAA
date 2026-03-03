@@ -10,6 +10,7 @@ const createTestimonialSchema = z.object({
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession();
     const { searchParams } = new URL(request.url);
     const clubId = searchParams.get("clubId");
     const status = searchParams.get("status");
@@ -18,8 +19,15 @@ export async function GET(request: NextRequest) {
     const where: Record<string, string> = {};
 
     if (clubId) where.clubId = clubId;
-    if (status) where.status = status;
     if (userId) where.userId = userId;
+
+    // Non-admin users can only see approved testimonials
+    const isAdmin = session?.user?.role === "SUPER_ADMIN";
+    if (status && isAdmin) {
+      where.status = status;
+    } else if (!isAdmin) {
+      where.status = "APPROVED";
+    }
 
     const testimonials = await prisma.testimonial.findMany({
       where,

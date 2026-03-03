@@ -401,7 +401,7 @@ export function generateWelcomeEmail(data: WelcomeEmailData): {
   text: string;
 } {
   const subject = `Welcome to PlayAway, ${data.userName}!`;
-  const baseUrl = data.baseUrl || data.loginUrl.replace(/\/signin$/, "");
+  const baseUrl = data.baseUrl || data.loginUrl.replace(/\/login$/, "");
 
   const html = `
     <!DOCTYPE html>

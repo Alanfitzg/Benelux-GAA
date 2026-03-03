@@ -13,7 +13,7 @@ export default async function AppealsPage() {
   const session = await getServerSession();
 
   if (!session?.user) {
-    redirect("/signin");
+    redirect("/login");
   }
 
   if (session.user.role !== "SUPER_ADMIN") {

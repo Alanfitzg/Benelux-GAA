@@ -14,7 +14,7 @@ export default async function ClubTestimonialsPage({
   const session = await getServerSession();
 
   if (!session?.user?.id) {
-    redirect("/signin");
+    redirect("/login");
   }
 
   const club = await prisma.club.findUnique({

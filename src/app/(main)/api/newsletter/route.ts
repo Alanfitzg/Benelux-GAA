@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { requireSuperAdmin } from "@/lib/auth-helpers";
 import type { Prisma } from "@prisma/client";
 
 interface Subscriber {
@@ -63,6 +64,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET() {
+  const session = await requireSuperAdmin();
+  if (session instanceof NextResponse) return session;
+
   try {
     const data = await prisma.siteData.findUnique({
       where: { key: "newsletter_subscribers" },

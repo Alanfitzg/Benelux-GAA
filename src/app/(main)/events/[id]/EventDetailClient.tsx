@@ -149,7 +149,7 @@ function KeyInfoCard({
               Create Free Account
             </a>
             <a
-              href="/signin"
+              href="/login"
               className="w-full border-2 border-green-600 text-green-600 hover:bg-green-50 font-semibold py-2 rounded-lg text-center block transition text-sm"
             >
               Already have an account? Sign In
@@ -891,7 +891,7 @@ export default function EventDetailClient({ eventId }: { eventId: string }) {
                             Create Free Account
                           </a>
                           <a
-                            href="/signin"
+                            href="/login"
                             className="w-full inline-flex items-center justify-center gap-2 border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold py-3 px-6 rounded-lg transition-colors"
                           >
                             Already have an account? Sign In

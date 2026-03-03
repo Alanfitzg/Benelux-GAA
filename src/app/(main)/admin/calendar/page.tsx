@@ -7,7 +7,7 @@ export default async function CalendarManagementPage() {
   const session = await getServerSession();
 
   if (!session?.user) {
-    redirect("/auth/signin");
+    redirect("/login");
   }
 
   if (session.user.role !== "SUPER_ADMIN") {

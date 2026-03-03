@@ -124,7 +124,6 @@ export async function PATCH(request: Request) {
     }
 
     const body = await request.json();
-    console.log("PATCH request data:", JSON.stringify(body, null, 2));
 
     // Check if preferences exist
     const existingPreferences = await prisma.userPreferences.findUnique({
@@ -141,10 +140,29 @@ export async function PATCH(request: Request) {
       );
     }
 
+    // Whitelist allowed fields to prevent mass assignment
+    const allowedFields = [
+      "motivations",
+      "competitiveLevels",
+      "preferredCities",
+      "preferredCountries",
+      "preferredClubs",
+      "activities",
+      "budgetRange",
+      "maxFlightTime",
+      "preferredMonths",
+      "onboardingCompleted",
+      "onboardingSkipped",
+    ];
+    const sanitizedData: Record<string, unknown> = {};
+    for (const key of allowedFields) {
+      if (key in body) sanitizedData[key] = body[key];
+    }
+
     const preferences = await prisma.userPreferences.update({
       where: { userId: session.user.id },
       data: {
-        ...body,
+        ...sanitizedData,
         updatedAt: new Date(),
       },
     });

@@ -395,7 +395,7 @@ const ProfessionalHeader = () => {
               ) : (
                 <>
                   <Link
-                    href="/signin"
+                    href="/login"
                     className={`px-4 py-2 rounded-xl font-medium text-sm transition-all duration-300 ${
                       scrolled
                         ? "text-gray-700 hover:text-primary hover:bg-primary/10"
@@ -723,7 +723,7 @@ const ProfessionalHeader = () => {
                   ) : (
                     <>
                       <Link
-                        href="/signin"
+                        href="/login"
                         onClick={() => setMobileMenuOpen(false)}
                         className={`block px-4 py-3 rounded-xl transition-all duration-300 ${
                           scrolled

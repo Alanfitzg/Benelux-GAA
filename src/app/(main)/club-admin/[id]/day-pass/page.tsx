@@ -12,7 +12,7 @@ export default async function DayPassConfigPage({ params }: PageProps) {
   const { id: clubId } = await params;
 
   if (!session?.user) {
-    redirect("/signin");
+    redirect("/login");
   }
 
   // Check if user is admin of this club or super admin
