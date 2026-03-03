@@ -32,6 +32,7 @@ declare module "next-auth" {
 }
 
 export const authOptions = {
+  trustHost: true,
   session: {
     strategy: "jwt" as const,
     maxAge: 30 * 24 * 60 * 60, // 30 days default
@@ -43,7 +44,7 @@ export const authOptions = {
         httpOnly: true,
         sameSite: "lax" as const,
         path: "/",
-        secure: false, // Set to false for localhost development
+        secure: process.env.NODE_ENV === "production",
       },
     },
   },
