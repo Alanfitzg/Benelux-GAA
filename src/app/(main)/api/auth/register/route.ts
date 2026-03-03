@@ -75,10 +75,7 @@ async function registrationHandler(request: NextRequest) {
     accountStatus
   );
 
-  // Send welcome email to the new user (all users are approved)
-  sendWelcomeEmail({ ...user, clubId: clubId || null }, true).catch((error) => {
-    console.error("Failed to send welcome email:", error);
-  });
+  // Welcome email disabled — not used on Benelux site
 
   return NextResponse.json(
     {
