@@ -104,7 +104,7 @@ export default function FixturesPage() {
               </h1>
             </div>
             <a
-              href="https://breagh.com"
+              href="https://breaghrecruitment.com"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 sm:gap-3 group shrink-0"

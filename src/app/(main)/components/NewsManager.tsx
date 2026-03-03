@@ -13,14 +13,12 @@ import {
   Calendar,
   User,
   Clock,
-  Tag,
   Image as ImageIcon,
   Bold,
   Italic,
   List,
   Link as LinkIcon,
   Loader2,
-  ChevronDown,
   Star,
   FileText,
 } from "lucide-react";
@@ -39,16 +37,6 @@ interface NewsArticle {
   featured: boolean;
   status: "published" | "draft";
 }
-
-const categories = [
-  "Benelux News",
-  "Results",
-  "Club News",
-  "Development",
-  "Youth",
-  "Championships",
-  "Announcements",
-];
 
 const defaultArticle: Omit<NewsArticle, "id"> = {
   title: "",
@@ -72,7 +60,6 @@ export default function NewsManager() {
   const [currentArticle, setCurrentArticle] = useState<
     Omit<NewsArticle, "id"> & { id?: string }
   >(defaultArticle);
-  const [tagInput, setTagInput] = useState("");
   const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
 
   useEffect(() => {
@@ -149,23 +136,6 @@ export default function NewsManager() {
   function createNewArticle() {
     setCurrentArticle(defaultArticle);
     setIsEditing(true);
-  }
-
-  function addTag() {
-    if (tagInput.trim() && !currentArticle.tags.includes(tagInput.trim())) {
-      setCurrentArticle({
-        ...currentArticle,
-        tags: [...currentArticle.tags, tagInput.trim()],
-      });
-      setTagInput("");
-    }
-  }
-
-  function removeTag(tag: string) {
-    setCurrentArticle({
-      ...currentArticle,
-      tags: currentArticle.tags.filter((t) => t !== tag),
-    });
   }
 
   function formatToolbar(command: string) {
@@ -494,74 +464,6 @@ export default function NewsManager() {
                     <span className="text-sm">Featured Article</span>
                     <Star size={14} className="text-amber-500" />
                   </label>
-                </div>
-              </div>
-
-              {/* Category */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <ChevronDown size={16} />
-                  Category
-                </h4>
-                <select
-                  value={currentArticle.category}
-                  onChange={(e) =>
-                    setCurrentArticle({
-                      ...currentArticle,
-                      category: e.target.value,
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
-                >
-                  {categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Tags */}
-              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                  <Tag size={16} />
-                  Tags
-                </h4>
-                <div className="flex gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={tagInput}
-                    onChange={(e) => setTagInput(e.target.value)}
-                    onKeyDown={(e) =>
-                      e.key === "Enter" && (e.preventDefault(), addTag())
-                    }
-                    placeholder="Add tag..."
-                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm"
-                  />
-                  <button
-                    type="button"
-                    onClick={addTag}
-                    className="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition-colors"
-                  >
-                    <Plus size={16} />
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {currentArticle.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center gap-1 px-2 py-1 bg-[#2B9EB3]/10 text-[#2B9EB3] rounded text-xs"
-                    >
-                      {tag}
-                      <button
-                        type="button"
-                        onClick={() => removeTag(tag)}
-                        className="hover:text-red-500"
-                      >
-                        <X size={12} />
-                      </button>
-                    </span>
-                  ))}
                 </div>
               </div>
 

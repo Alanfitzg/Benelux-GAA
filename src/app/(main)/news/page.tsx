@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
 import { Calendar, Clock, User, ChevronRight, Loader2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface NewsArticle {
   id: string;
@@ -136,13 +137,13 @@ export default function NewsPage() {
                           {featuredArticle.readTime} min read
                         </span>
                       </div>
-                      <button
-                        type="button"
+                      <Link
+                        href={`/news/${featuredArticle.id}`}
                         className="inline-flex items-center gap-2 px-6 py-3 bg-[#1a3a4a] text-white rounded-lg font-semibold hover:bg-[#0d2530] transition-colors w-fit"
                       >
                         Read Article
                         <ChevronRight size={18} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </article>
@@ -151,9 +152,10 @@ export default function NewsPage() {
               {/* Article Grid */}
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {regularArticles.map((article) => (
-                  <article
+                  <Link
                     key={article.id}
-                    className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100"
+                    href={`/news/${article.id}`}
+                    className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100 block"
                   >
                     <div className="h-36 sm:h-48 bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
                       {article.imageUrl ? (
@@ -203,7 +205,7 @@ export default function NewsPage() {
                         </span>
                       </div>
                     </div>
-                  </article>
+                  </Link>
                 ))}
               </div>
 
@@ -213,18 +215,6 @@ export default function NewsPage() {
                     <span className="text-2xl">📭</span>
                   </div>
                   <p className="text-gray-500">No articles found.</p>
-                </div>
-              )}
-
-              {/* Load More */}
-              {articles.length > 0 && (
-                <div className="text-center mt-10">
-                  <button
-                    type="button"
-                    className="px-8 py-3 border-2 border-[#1a3a4a] text-[#1a3a4a] rounded-lg font-semibold hover:bg-[#1a3a4a] hover:text-white transition-colors"
-                  >
-                    Load More Articles
-                  </button>
                 </div>
               )}
             </>
