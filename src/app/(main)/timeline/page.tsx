@@ -1001,6 +1001,59 @@ export default function TimelinePage() {
             </div>
           )}
 
+          {/* Gift Shop Banner */}
+          <a
+            href="https://www.mckeeversports.com/collections/gaelic-games-europe"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-10 sm:mt-16 block group"
+          >
+            <div className="relative bg-[#1a3a4a] rounded-xl overflow-hidden">
+              <div
+                className="absolute inset-0 opacity-10"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                }}
+              />
+              <div className="relative flex items-center gap-6 p-6 sm:p-8">
+                <div className="flex-shrink-0 bg-white/10 rounded-lg p-3 backdrop-blur-sm group-hover:bg-white/20 transition-colors">
+                  <img
+                    src="/images/gge-jersey.png"
+                    alt="GGE Jersey"
+                    className="h-24 sm:h-28 object-contain group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white/60 text-xs sm:text-sm font-medium uppercase tracking-wider mb-1">
+                    Before you leave the museum...
+                  </p>
+                  <h3 className="text-white text-lg sm:text-xl font-bold mb-1">
+                    Visit the Gift Shop
+                  </h3>
+                  <p className="text-white/70 text-sm hidden sm:block">
+                    Official Gaelic Games Europe gear by McKeever Sports
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 text-white/90 text-sm font-medium mt-2 group-hover:gap-3 transition-all">
+                    Shop now
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </a>
+
           {/* Sources Note */}
           <div className="mt-8 text-center text-xs text-gray-500">
             <p>

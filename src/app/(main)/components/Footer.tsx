@@ -179,7 +179,7 @@ export default function Footer() {
                 href={org.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:opacity-70 transition-opacity"
+                className="bg-white/90 hover:bg-white rounded-full p-2 transition-colors"
                 title={org.name}
               >
                 <Image
@@ -187,7 +187,7 @@ export default function Footer() {
                   alt={org.name}
                   width={60}
                   height={60}
-                  className="object-contain h-8 sm:h-10 w-auto brightness-0 invert opacity-60 hover:opacity-100 transition-opacity"
+                  className="object-contain h-6 sm:h-7 w-auto"
                   unoptimized
                 />
               </a>
