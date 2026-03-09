@@ -41,6 +41,73 @@ interface NewsArticle {
   status: "published" | "draft";
 }
 
+const MAX_UPLOAD_SIZE = 4 * 1024 * 1024; // 4MB (Vercel Hobby limit)
+const MAX_IMAGE_DIMENSION = 2048;
+
+function compressImage(file: File): Promise<File> {
+  return new Promise((resolve, reject) => {
+    if (file.size <= MAX_UPLOAD_SIZE) {
+      resolve(file);
+      return;
+    }
+
+    const img = new window.Image();
+    const canvas = document.createElement("canvas");
+    const url = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+
+      let { width, height } = img;
+      if (width > MAX_IMAGE_DIMENSION || height > MAX_IMAGE_DIMENSION) {
+        const ratio = Math.min(
+          MAX_IMAGE_DIMENSION / width,
+          MAX_IMAGE_DIMENSION / height
+        );
+        width = Math.round(width * ratio);
+        height = Math.round(height * ratio);
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(img, 0, 0, width, height);
+
+      let quality = 0.85;
+      const tryCompress = () => {
+        canvas.toBlob(
+          (blob) => {
+            if (!blob) {
+              reject(new Error("Compression failed"));
+              return;
+            }
+            if (blob.size > MAX_UPLOAD_SIZE && quality > 0.3) {
+              quality -= 0.1;
+              tryCompress();
+              return;
+            }
+            const compressed = new File([blob], file.name, {
+              type: "image/jpeg",
+              lastModified: Date.now(),
+            });
+            resolve(compressed);
+          },
+          "image/jpeg",
+          quality
+        );
+      };
+      tryCompress();
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Failed to load image"));
+    };
+
+    img.src = url;
+  });
+}
+
 const defaultArticle: Omit<NewsArticle, "id"> = {
   title: "",
   excerpt: "",
@@ -204,8 +271,9 @@ export default function NewsManager() {
     setUploading(true);
     setUploadError("");
     try {
+      const compressed = await compressImage(file);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       const res = await fetch("/api/benelux-news/upload", {
         method: "POST",
         body: formData,
@@ -252,8 +320,9 @@ export default function NewsManager() {
   async function uploadInlineImage(file: File) {
     setMediaUploading(true);
     try {
+      const compressed = await compressImage(file);
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", compressed);
       const res = await fetch("/api/benelux-news/upload", {
         method: "POST",
         body: formData,
@@ -492,7 +561,7 @@ export default function NewsManager() {
                                 : "Click to upload an image"}
                             </p>
                             <p className="text-xs text-gray-400">
-                              PNG, JPG, GIF up to 10MB
+                              PNG, JPG, GIF — auto-compressed
                             </p>
                           </div>
                           <input
@@ -815,7 +884,7 @@ export default function NewsManager() {
                           : "Click or drag an image here"}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
-                        PNG, JPG, GIF up to 10MB
+                        PNG, JPG, GIF — auto-compressed
                       </p>
                     </div>
                     <input

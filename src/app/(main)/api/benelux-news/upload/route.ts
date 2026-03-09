@@ -22,16 +22,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (file.size > 10 * 1024 * 1024) {
-    return NextResponse.json(
-      { error: "Image must be under 10MB" },
-      { status: 400 }
-    );
+  try {
+    const blob = await put(`news/${Date.now()}-${file.name}`, file, {
+      access: "public",
+    });
+
+    return NextResponse.json({ url: blob.url });
+  } catch (error) {
+    console.error("Blob upload error:", error);
+    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
-
-  const blob = await put(`news/${Date.now()}-${file.name}`, file, {
-    access: "public",
-  });
-
-  return NextResponse.json({ url: blob.url });
 }
