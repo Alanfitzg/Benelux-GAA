@@ -38,6 +38,18 @@ function formatDate(dateStr: string): string {
   });
 }
 
+function extractYouTubeId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+    /^([a-zA-Z0-9_-]{11})$/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+}
+
 function renderMarkdown(text: string) {
   const lines = text.split("\n");
   const elements: React.ReactNode[] = [];
@@ -47,6 +59,28 @@ function renderMarkdown(text: string) {
     const line = lines[i];
 
     if (line.trim() === "") {
+      i++;
+      continue;
+    }
+
+    const bareYtId = extractYouTubeId(line.trim());
+    if (bareYtId) {
+      elements.push(
+        <figure key={i} className="my-8">
+          <div
+            className="relative w-full rounded-xl overflow-hidden"
+            style={{ paddingBottom: "56.25%" }}
+          >
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${bareYtId}`}
+              title="YouTube video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        </figure>
+      );
       i++;
       continue;
     }
@@ -69,20 +103,45 @@ function renderMarkdown(text: string) {
 
     const imgMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (imgMatch) {
-      elements.push(
-        <figure key={i} className="my-8">
-          <img
-            src={imgMatch[2]}
-            alt={imgMatch[1] || ""}
-            className="w-full rounded-xl"
-          />
-          {imgMatch[1] && imgMatch[1] !== "image" && (
-            <figcaption className="text-center text-sm text-gray-400 mt-2">
-              {imgMatch[1]}
-            </figcaption>
-          )}
-        </figure>
-      );
+      const ytId = extractYouTubeId(imgMatch[2]);
+      if (ytId) {
+        elements.push(
+          <figure key={i} className="my-8">
+            <div
+              className="relative w-full rounded-xl overflow-hidden"
+              style={{ paddingBottom: "56.25%" }}
+            >
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+                title={imgMatch[1] || "YouTube video"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+            {imgMatch[1] && imgMatch[1] !== "image" && (
+              <figcaption className="text-center text-sm text-gray-400 mt-2">
+                {imgMatch[1]}
+              </figcaption>
+            )}
+          </figure>
+        );
+      } else {
+        elements.push(
+          <figure key={i} className="my-8">
+            <img
+              src={imgMatch[2]}
+              alt={imgMatch[1] || ""}
+              className="w-full rounded-xl"
+            />
+            {imgMatch[1] && imgMatch[1] !== "image" && (
+              <figcaption className="text-center text-sm text-gray-400 mt-2">
+                {imgMatch[1]}
+              </figcaption>
+            )}
+          </figure>
+        );
+      }
       i++;
       continue;
     }

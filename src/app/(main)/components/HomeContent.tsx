@@ -9,7 +9,6 @@ import ImageCarousel from "./ImageCarousel";
 import ClubsCarousel from "./ClubsCarousel";
 import MuseumPreview from "./MuseumPreview";
 import HeroSection from "./HeroSection";
-import FeaturedArticle from "./FeaturedArticle";
 import SponsorSection from "./SponsorSection";
 import AffiliationsBanner from "./AffiliationsBanner";
 import { Calendar, Clock, ChevronRight } from "lucide-react";
@@ -99,8 +98,143 @@ export default function HomeContent() {
       {/* Affiliations */}
       <AffiliationsBanner />
 
-      {/* Featured Article */}
-      <FeaturedArticle />
+      {/* Latest News */}
+      <section className="py-12 md:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-8 md:mb-10">
+            <div className="text-center sm:text-left mb-2 sm:mb-0">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                <EditableText
+                  pageKey="home"
+                  contentKey="news_title"
+                  defaultValue="Latest News"
+                  maxLength={30}
+                />
+              </h2>
+              <p className="text-gray-500 text-sm mt-1">
+                Stories from across the Benelux GAA region
+              </p>
+            </div>
+            <InternalLink
+              href="/news"
+              className="text-[#2B9EB3] font-semibold hover:text-[#1a3a4a] transition-colors hidden sm:inline"
+            >
+              View all news →
+            </InternalLink>
+          </div>
+
+          {newsLoading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="w-8 h-8 border-2 border-[#2B9EB3] border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : latestNews.length > 0 ? (
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Featured Article - Large */}
+              {latestNews[0] && (
+                <article className="md:row-span-2 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100">
+                  <div className="relative h-48 md:h-64 bg-gray-200 overflow-hidden">
+                    {latestNews[0].imageUrl ? (
+                      <img
+                        src={latestNews[0].imageUrl}
+                        alt={latestNews[0].title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] flex items-center justify-center">
+                        <span className="text-3xl">📰</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 md:p-8">
+                    <div className="flex items-center gap-3 text-gray-400 text-xs mb-2 md:mb-3">
+                      <span className="flex items-center gap-1">
+                        <Calendar size={12} />
+                        {formatNewsDate(latestNews[0].date)}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Clock size={12} />
+                        {latestNews[0].readTime} min read
+                      </span>
+                    </div>
+                    <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-2 md:mb-3 group-hover:text-[#2B9EB3] transition-colors leading-tight">
+                      {latestNews[0].title}
+                    </h3>
+                    <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-3">
+                      {latestNews[0].excerpt}
+                    </p>
+                    <InternalLink
+                      href="/news"
+                      className="inline-flex items-center gap-2 text-[#2B9EB3] font-semibold text-sm hover:text-[#1a3a4a] transition-colors group/link"
+                    >
+                      Read more
+                      <ChevronRight
+                        size={16}
+                        className="group-hover/link:translate-x-1 transition-transform"
+                      />
+                    </InternalLink>
+                  </div>
+                </article>
+              )}
+
+              {/* Secondary Articles - Compact */}
+              <div className="space-y-4">
+                {latestNews.slice(1, 4).map((article) => (
+                  <article
+                    key={article.id}
+                    className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-100"
+                  >
+                    <div className="flex">
+                      <div className="w-24 md:w-32 flex-shrink-0 bg-gradient-to-br from-[#1a3a4a]/10 to-[#2B9EB3]/10 flex items-center justify-center relative">
+                        {article.imageUrl ? (
+                          <Image
+                            src={article.imageUrl}
+                            alt={article.title}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        ) : (
+                          <span className="text-2xl opacity-50">📰</span>
+                        )}
+                      </div>
+                      <div className="p-4 flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-gray-400 text-[10px] flex items-center gap-1">
+                            <Calendar size={10} />
+                            {formatNewsDate(article.date)
+                              .split(" ")
+                              .slice(0, 2)
+                              .join(" ")}
+                          </span>
+                        </div>
+                        <h4 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-[#2B9EB3] transition-colors line-clamp-2">
+                          {article.title}
+                        </h4>
+                        <p className="text-gray-500 text-xs mt-1 line-clamp-1 hidden md:block">
+                          {article.excerpt}
+                        </p>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-12 text-gray-500">
+              No news articles available.
+            </div>
+          )}
+
+          <div className="text-center mt-6 sm:hidden">
+            <InternalLink
+              href="/news"
+              className="text-[#2B9EB3] font-semibold hover:text-[#1a3a4a] transition-colors"
+            >
+              View all news →
+            </InternalLink>
+          </div>
+        </div>
+      </section>
 
       {/* What are Gaelic Games Section */}
       <section className="py-8 md:py-16 bg-gray-50">
@@ -459,144 +593,6 @@ export default function HomeContent() {
 
       {/* Museum Preview */}
       <MuseumPreview />
-
-      {/* Latest News */}
-      <section className="py-12 md:py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col sm:flex-row items-center sm:justify-between mb-8 md:mb-10">
-            <div className="text-center sm:text-left mb-2 sm:mb-0">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-                <EditableText
-                  pageKey="home"
-                  contentKey="news_title"
-                  defaultValue="Latest News"
-                  maxLength={30}
-                />
-              </h2>
-              <p className="text-gray-500 text-sm mt-1">
-                Stories from across the Benelux GAA region
-              </p>
-            </div>
-            <InternalLink
-              href="/news"
-              className="text-[#2B9EB3] font-semibold hover:text-[#1a3a4a] transition-colors hidden sm:inline"
-            >
-              View all news →
-            </InternalLink>
-          </div>
-
-          {newsLoading ? (
-            <div className="flex items-center justify-center py-12">
-              <div className="w-8 h-8 border-2 border-[#2B9EB3] border-t-transparent rounded-full animate-spin" />
-            </div>
-          ) : latestNews.length > 0 ? (
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Featured Article - Large */}
-              {latestNews[0] && (
-                <article className="md:row-span-2 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100">
-                  <div className="relative h-48 md:h-64 bg-gray-200 overflow-hidden">
-                    {latestNews[0].imageUrl ? (
-                      <img
-                        src={latestNews[0].imageUrl}
-                        alt={latestNews[0].title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#1a3a4a] to-[#2B9EB3] flex items-center justify-center">
-                        <span className="text-3xl">📰</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-4 md:p-8">
-                    <div className="flex items-center gap-3 text-gray-400 text-xs mb-2 md:mb-3">
-                      <span className="flex items-center gap-1">
-                        <Calendar size={12} />
-                        {formatNewsDate(latestNews[0].date)}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Clock size={12} />
-                        {latestNews[0].readTime} min read
-                      </span>
-                    </div>
-                    <h3 className="text-lg md:text-2xl font-bold text-gray-900 mb-2 md:mb-3 group-hover:text-[#2B9EB3] transition-colors leading-tight">
-                      {latestNews[0].title}
-                    </h3>
-                    <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-3">
-                      {latestNews[0].excerpt}
-                    </p>
-                    <InternalLink
-                      href="/news"
-                      className="inline-flex items-center gap-2 text-[#2B9EB3] font-semibold text-sm hover:text-[#1a3a4a] transition-colors group/link"
-                    >
-                      Read more
-                      <ChevronRight
-                        size={16}
-                        className="group-hover/link:translate-x-1 transition-transform"
-                      />
-                    </InternalLink>
-                  </div>
-                </article>
-              )}
-
-              {/* Secondary Articles - Compact */}
-              <div className="space-y-4">
-                {latestNews.slice(1, 4).map((article) => (
-                  <article
-                    key={article.id}
-                    className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-100"
-                  >
-                    <div className="flex">
-                      <div className="w-24 md:w-32 flex-shrink-0 bg-gradient-to-br from-[#1a3a4a]/10 to-[#2B9EB3]/10 flex items-center justify-center relative">
-                        {article.imageUrl ? (
-                          <Image
-                            src={article.imageUrl}
-                            alt={article.title}
-                            fill
-                            className="object-cover"
-                            unoptimized
-                          />
-                        ) : (
-                          <span className="text-2xl opacity-50">📰</span>
-                        )}
-                      </div>
-                      <div className="p-4 flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="text-gray-400 text-[10px] flex items-center gap-1">
-                            <Calendar size={10} />
-                            {formatNewsDate(article.date)
-                              .split(" ")
-                              .slice(0, 2)
-                              .join(" ")}
-                          </span>
-                        </div>
-                        <h4 className="font-bold text-gray-900 text-sm leading-snug group-hover:text-[#2B9EB3] transition-colors line-clamp-2">
-                          {article.title}
-                        </h4>
-                        <p className="text-gray-500 text-xs mt-1 line-clamp-1 hidden md:block">
-                          {article.excerpt}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="text-center py-12 text-gray-500">
-              No news articles available.
-            </div>
-          )}
-
-          <div className="text-center mt-6 sm:hidden">
-            <InternalLink
-              href="/news"
-              className="text-[#2B9EB3] font-semibold hover:text-[#1a3a4a] transition-colors"
-            >
-              View all news →
-            </InternalLink>
-          </div>
-        </div>
-      </section>
 
       {/* Sponsorship & Newsletter Section */}
       <section className="py-10 md:py-20 bg-[#1a3a4a]">
