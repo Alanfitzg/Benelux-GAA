@@ -140,6 +140,7 @@ export default function NewsManager() {
   const [uploadError, setUploadError] = useState("");
   const [dragOver, setDragOver] = useState(false);
   const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [mediaTab, setMediaTab] = useState<"upload" | "url" | "gallery">(
     "upload"
   );
@@ -265,6 +266,26 @@ export default function NewsManager() {
         currentArticle.content.substring(end);
       setCurrentArticle({ ...currentArticle, content: newContent });
     }
+  }
+
+  function insertEmoji(emoji: string) {
+    const textarea = document.getElementById(
+      "content-editor"
+    ) as HTMLTextAreaElement;
+    if (!textarea) return;
+    const pos = textarea.selectionStart;
+    const before = currentArticle.content.substring(0, pos);
+    const after = currentArticle.content.substring(pos);
+    setCurrentArticle({
+      ...currentArticle,
+      content: before + emoji + after,
+    });
+    setShowEmojiPicker(false);
+    setTimeout(() => {
+      textarea.focus();
+      const newPos = pos + emoji.length;
+      textarea.setSelectionRange(newPos, newPos);
+    }, 0);
   }
 
   async function uploadImage(file: File) {
@@ -496,7 +517,10 @@ export default function NewsManager() {
                     <div className="w-px h-6 bg-gray-300 mx-1" />
                     <button
                       type="button"
-                      onClick={() => setShowMediaPicker(!showMediaPicker)}
+                      onClick={() => {
+                        setShowMediaPicker(!showMediaPicker);
+                        setShowEmojiPicker(false);
+                      }}
                       className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded text-sm font-medium transition-colors ${
                         showMediaPicker
                           ? "bg-[#2B9EB3] text-white"
@@ -509,6 +533,113 @@ export default function NewsManager() {
                         Add Media
                       </span>
                     </button>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowEmojiPicker(!showEmojiPicker);
+                          setShowMediaPicker(false);
+                        }}
+                        className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded text-sm font-medium transition-colors ${
+                          showEmojiPicker
+                            ? "bg-[#2B9EB3] text-white"
+                            : "hover:bg-gray-200 text-gray-600"
+                        }`}
+                        title="Insert Emoji"
+                      >
+                        <span className="text-base leading-none">😀</span>
+                        <span className="hidden sm:inline text-xs">Emoji</span>
+                      </button>
+                      {showEmojiPicker && (
+                        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50 w-72">
+                          {[
+                            {
+                              label: "Places & Events",
+                              emojis: [
+                                "📍",
+                                "🏟️",
+                                "📅",
+                                "🗓️",
+                                "📢",
+                                "🎉",
+                                "🎊",
+                                "🏁",
+                              ],
+                            },
+                            {
+                              label: "Sports",
+                              emojis: [
+                                "⚽",
+                                "🏆",
+                                "🥇",
+                                "🥈",
+                                "🥉",
+                                "🏅",
+                                "🤝",
+                                "💪",
+                              ],
+                            },
+                            {
+                              label: "People & Reactions",
+                              emojis: [
+                                "👏",
+                                "🙌",
+                                "🔥",
+                                "⭐",
+                                "❤️",
+                                "💚",
+                                "👀",
+                                "✊",
+                              ],
+                            },
+                            {
+                              label: "Symbols",
+                              emojis: [
+                                "✅",
+                                "❌",
+                                "⚠️",
+                                "ℹ️",
+                                "➡️",
+                                "⬆️",
+                                "🔗",
+                                "📸",
+                              ],
+                            },
+                            {
+                              label: "Flags",
+                              emojis: [
+                                "🇮🇪",
+                                "🇳🇱",
+                                "🇧🇪",
+                                "🇱🇺",
+                                "🇫🇷",
+                                "🇩🇪",
+                                "🇬🇧",
+                                "🇪🇺",
+                              ],
+                            },
+                          ].map((group) => (
+                            <div key={group.label} className="mb-2 last:mb-0">
+                              <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mb-1">
+                                {group.label}
+                              </p>
+                              <div className="flex flex-wrap gap-1">
+                                {group.emojis.map((emoji) => (
+                                  <button
+                                    key={emoji}
+                                    type="button"
+                                    onClick={() => insertEmoji(emoji)}
+                                    className="w-8 h-8 flex items-center justify-center text-lg hover:bg-gray-100 rounded transition-colors"
+                                  >
+                                    {emoji}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                     <div className="flex-1" />
                     <span className="text-xs text-gray-400">
                       Markdown supported
