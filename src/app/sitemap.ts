@@ -37,6 +37,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     },
     {
+      url: `${baseUrl}/news`,
+      lastModified: new Date(),
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/contact`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
@@ -74,7 +80,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-    return [...staticPages, ...eventPages, ...clubPages];
+    const newsRecord = await prisma.siteData.findUnique({
+      where: { key: "news" },
+    });
+    const newsArticles =
+      (newsRecord?.data as unknown as Array<{
+        id: string;
+        date: string;
+        status: string;
+      }>) || [];
+    const newsPages = newsArticles
+      .filter((a) => a.status === "published")
+      .map((article) => ({
+        url: `${baseUrl}/news/${article.id}`,
+        lastModified: new Date(article.date),
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      }));
+
+    return [...staticPages, ...eventPages, ...clubPages, ...newsPages];
   } catch (error) {
     console.error("Error generating sitemap:", error);
     // Return static pages if database query fails

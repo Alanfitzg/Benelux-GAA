@@ -38,7 +38,8 @@ interface NewsArticle {
   tags: string[];
   imageUrl: string;
   featured: boolean;
-  status: "published" | "draft";
+  status: "published" | "draft" | "scheduled";
+  scheduledDate?: string;
 }
 
 const MAX_UPLOAD_SIZE = 4 * 1024 * 1024; // 4MB (Vercel Hobby limit)
@@ -130,7 +131,9 @@ export default function NewsManager() {
   const [currentArticle, setCurrentArticle] = useState<
     Omit<NewsArticle, "id"> & { id?: string }
   >(defaultArticle);
-  const [filter, setFilter] = useState<"all" | "published" | "draft">("all");
+  const [filter, setFilter] = useState<
+    "all" | "published" | "draft" | "scheduled"
+  >("all");
   const [imageTab, setImageTab] = useState<"upload" | "url" | "gallery">(
     "upload"
   );
@@ -215,6 +218,11 @@ export default function NewsManager() {
     } catch (error) {
       console.error("Failed to toggle status:", error);
     }
+  }
+
+  function calculateReadTime(text: string): number {
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    return Math.max(1, Math.round(words / 200));
   }
 
   function editArticle(article: NewsArticle) {
@@ -405,7 +413,12 @@ export default function NewsManager() {
             <button
               type="button"
               onClick={saveArticle}
-              disabled={saving || !currentArticle.title}
+              disabled={
+                saving ||
+                !currentArticle.title ||
+                (currentArticle.status === "scheduled" &&
+                  !currentArticle.scheduledDate)
+              }
               className="flex items-center gap-2 px-5 py-2 bg-white text-[#1a3a4a] rounded-lg font-medium hover:bg-white/90 transition-colors disabled:opacity-50"
             >
               {saving ? (
@@ -415,7 +428,9 @@ export default function NewsManager() {
               )}
               {currentArticle.status === "published"
                 ? "Save Changes"
-                : "Save as Draft"}
+                : currentArticle.status === "scheduled"
+                  ? "Schedule"
+                  : "Save as Draft"}
             </button>
             <button
               type="button"
@@ -763,12 +778,14 @@ export default function NewsManager() {
                   <textarea
                     id="content-editor"
                     value={currentArticle.content}
-                    onChange={(e) =>
+                    onChange={(e) => {
+                      const content = e.target.value;
                       setCurrentArticle({
                         ...currentArticle,
-                        content: e.target.value,
-                      })
-                    }
+                        content,
+                        readTime: calculateReadTime(content),
+                      });
+                    }}
                     placeholder="Write your article content here... Use Markdown for formatting."
                     rows={12}
                     className="w-full px-4 py-3 focus:outline-none resize-none font-mono text-sm"
@@ -810,10 +827,34 @@ export default function NewsManager() {
                       Publish Now
                     </button>
                   )}
+                  {currentArticle.status === "scheduled" && (
+                    <button
+                      type="button"
+                      onClick={saveArticle}
+                      disabled={
+                        saving ||
+                        !currentArticle.title ||
+                        !currentArticle.scheduledDate
+                      }
+                      className="flex items-center gap-2 px-6 py-2.5 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 transition-colors disabled:opacity-50"
+                    >
+                      {saving ? (
+                        <Loader2 size={16} className="animate-spin" />
+                      ) : (
+                        <Clock size={16} />
+                      )}
+                      Schedule Article
+                    </button>
+                  )}
                   <button
                     type="button"
                     onClick={saveArticle}
-                    disabled={saving || !currentArticle.title}
+                    disabled={
+                      saving ||
+                      !currentArticle.title ||
+                      (currentArticle.status === "scheduled" &&
+                        !currentArticle.scheduledDate)
+                    }
                     className="flex items-center gap-2 px-6 py-2.5 bg-[#2B9EB3] text-white rounded-lg font-medium hover:bg-[#249DAD] transition-colors disabled:opacity-50"
                   >
                     {saving ? (
@@ -842,34 +883,79 @@ export default function NewsManager() {
                     </label>
                     <select
                       value={currentArticle.status}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const newStatus = e.target.value as
+                          | "published"
+                          | "draft"
+                          | "scheduled";
                         setCurrentArticle({
                           ...currentArticle,
-                          status: e.target.value as "published" | "draft",
-                        })
-                      }
+                          status: newStatus,
+                          scheduledDate:
+                            newStatus === "scheduled"
+                              ? currentArticle.scheduledDate || ""
+                              : undefined,
+                        });
+                      }}
                       className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
                     >
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>
+                      <option value="scheduled">Scheduled</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-xs text-gray-500 mb-1">
-                      Date
-                    </label>
-                    <input
-                      type="date"
-                      value={currentArticle.date}
-                      onChange={(e) =>
-                        setCurrentArticle({
-                          ...currentArticle,
-                          date: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
-                    />
-                  </div>
+                  {currentArticle.status === "scheduled" && (
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">
+                        Publish Date & Time
+                      </label>
+                      <input
+                        type="datetime-local"
+                        value={currentArticle.scheduledDate || ""}
+                        onChange={(e) =>
+                          setCurrentArticle({
+                            ...currentArticle,
+                            scheduledDate: e.target.value,
+                          })
+                        }
+                        min={new Date().toISOString().slice(0, 16)}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                      />
+                      {currentArticle.scheduledDate && (
+                        <p className="text-xs text-[#2B9EB3] mt-1">
+                          Will publish on{" "}
+                          {new Date(
+                            currentArticle.scheduledDate
+                          ).toLocaleString("en-GB", {
+                            weekday: "short",
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </p>
+                      )}
+                    </div>
+                  )}
+                  {currentArticle.status !== "scheduled" && (
+                    <div>
+                      <label className="block text-xs text-gray-500 mb-1">
+                        Date
+                      </label>
+                      <input
+                        type="date"
+                        value={currentArticle.date}
+                        onChange={(e) =>
+                          setCurrentArticle({
+                            ...currentArticle,
+                            date: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                      />
+                    </div>
+                  )}
                   <label className="flex items-center gap-2 cursor-pointer">
                     <input
                       type="checkbox"
@@ -916,18 +1002,23 @@ export default function NewsManager() {
                     <label className="block text-xs text-gray-500 mb-1">
                       Read Time (minutes)
                     </label>
-                    <input
-                      type="number"
-                      min="1"
-                      value={currentArticle.readTime}
-                      onChange={(e) =>
-                        setCurrentArticle({
-                          ...currentArticle,
-                          readTime: parseInt(e.target.value) || 1,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
-                    />
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        min="1"
+                        value={currentArticle.readTime}
+                        onChange={(e) =>
+                          setCurrentArticle({
+                            ...currentArticle,
+                            readTime: parseInt(e.target.value) || 1,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                      />
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Auto-calculated from content
+                    </p>
                   </div>
                 </div>
               </div>
@@ -1157,7 +1248,7 @@ export default function NewsManager() {
       <div className="p-4">
         {/* Filter Tabs */}
         <div className="flex items-center gap-2 mb-4">
-          {(["all", "published", "draft"] as const).map((f) => (
+          {(["all", "published", "draft", "scheduled"] as const).map((f) => (
             <button
               key={f}
               type="button"
@@ -1252,11 +1343,27 @@ export default function NewsManager() {
                       className={`px-2 py-0.5 rounded text-xs font-medium ${
                         article.status === "published"
                           ? "bg-green-100 text-green-700"
-                          : "bg-amber-100 text-amber-700"
+                          : article.status === "scheduled"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-amber-100 text-amber-700"
                       }`}
                     >
                       {article.status}
                     </span>
+                    {article.status === "scheduled" &&
+                      article.scheduledDate && (
+                        <span className="text-xs text-blue-500">
+                          {new Date(article.scheduledDate).toLocaleDateString(
+                            "en-GB",
+                            {
+                              day: "numeric",
+                              month: "short",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
+                        </span>
+                      )}
                   </div>
                 </div>
 

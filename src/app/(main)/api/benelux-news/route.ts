@@ -15,7 +15,8 @@ export interface NewsArticle {
   tags: string[];
   imageUrl: string;
   featured: boolean;
-  status: "published" | "draft";
+  status: "published" | "draft" | "scheduled";
+  scheduledDate?: string;
 }
 
 function generateId(): string {
@@ -44,6 +45,23 @@ export async function GET(request: Request) {
   const status = searchParams.get("status") || "published";
 
   const articles = await getArticles();
+  const now = new Date();
+  let needsSave = false;
+  for (const article of articles) {
+    if (
+      article.status === "scheduled" &&
+      article.scheduledDate &&
+      new Date(article.scheduledDate) <= now
+    ) {
+      article.status = "published";
+      article.date = article.scheduledDate.split("T")[0];
+      delete article.scheduledDate;
+      needsSave = true;
+    }
+  }
+  if (needsSave) {
+    await saveArticles(articles);
+  }
 
   if (id) {
     const article = articles.find((a) => a.id === id);
@@ -100,6 +118,7 @@ async function postHandler(request: NextRequest) {
       imageUrl: body.imageUrl || "",
       featured: body.featured || false,
       status: body.status || "draft",
+      ...(body.scheduledDate ? { scheduledDate: body.scheduledDate } : {}),
     };
 
     await saveArticles([newArticle, ...articles]);
@@ -152,6 +171,13 @@ async function putHandler(request: NextRequest) {
       imageUrl: body.imageUrl ?? articles[index].imageUrl,
       featured: body.featured ?? articles[index].featured,
       status: body.status ?? articles[index].status,
+      ...(body.scheduledDate !== undefined
+        ? body.scheduledDate
+          ? { scheduledDate: body.scheduledDate }
+          : {}
+        : articles[index].scheduledDate
+          ? { scheduledDate: articles[index].scheduledDate }
+          : {}),
     };
 
     articles[index] = updatedArticle;
