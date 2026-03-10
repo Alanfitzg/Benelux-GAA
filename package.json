@@ -37,6 +37,7 @@
     "@next/third-parties": "^15.5.11",
     "@prisma/client": "^6.9.0",
     "@radix-ui/react-slot": "^1.2.3",
+    "@vercel/analytics": "^1.6.1",
     "@vercel/blob": "^2.0.1",
     "bcryptjs": "^3.0.2",
     "class-variance-authority": "^0.7.1",
