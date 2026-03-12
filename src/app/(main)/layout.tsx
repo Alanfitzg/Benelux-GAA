@@ -10,6 +10,7 @@ import {
 } from "@/components/StructuredData";
 import { ErrorLoggerInitializer } from "@/components/ErrorLoggerInitializer";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { Analytics } from "@vercel/analytics/react";
 import { Toaster } from "react-hot-toast";
 
 export default function MainLayout({
@@ -22,6 +23,7 @@ export default function MainLayout({
       <StructuredData data={organizationStructuredData} />
       <StructuredData data={websiteStructuredData} />
       <GoogleAnalytics />
+      <Analytics />
       <ErrorBoundary>
         <ErrorNotificationProvider>
           <AuthSessionProvider>
