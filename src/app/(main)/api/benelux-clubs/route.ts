@@ -1,6 +1,25 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+const CREST_MAP: Record<string, string> = {
+  "Aachen Gaels": "/club-crests/benelux-aachen-gaels.png",
+  "Amsterdam GAC": "/club-crests/benelux-amsterdam-gac.png",
+  "An Craobh Rua": "/club-crests/benelux-brussels.png",
+  "CLG Den Haag": "/club-crests/benelux-den-haag.png",
+  "Cologne Celtics": "/club-crests/benelux-cologne-celts.png",
+  "Darmstadt GAA": "/club-crests/benelux-darmstadt.png",
+  "Dusseldorf GFC": "/club-crests/benelux-dusseldorf.png",
+  "Earls of Leuven": "/club-crests/benelux-earls-of-leuven.png",
+  "EC Brussels Youth": "/club-crests/benelux-ec-brussels.png",
+  "Eindhoven Shamrocks GAA": "/club-crests/benelux-eindhoven-shamrocks.png",
+  "Eintracht Frankfurt GAA": "/club-crests/benelux-frankfurt.png",
+  "Gaelic Sports Club Luxembourg": "/club-crests/benelux-luxembourg.png",
+  "Groningen Gaels": "/club-crests/benelux-groningen-gaels.png",
+  "Hamburg GAA": "/club-crests/benelux-hamburg-gaa.png",
+  "Maastricht Gaels": "/club-crests/benelux-maastricht-gaels.png",
+  "Nijmegen GFC": "/club-crests/benelux-nijmegen-gfc.png",
+};
+
 export async function GET() {
   try {
     const clubs = await prisma.club.findMany({
@@ -84,6 +103,7 @@ export async function GET() {
 
       return {
         ...club,
+        imageUrl: CREST_MAP[club.name] || club.imageUrl,
         country,
         countryCode,
       };
