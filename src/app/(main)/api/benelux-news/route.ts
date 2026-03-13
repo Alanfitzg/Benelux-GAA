@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { withRateLimit, RATE_LIMITS } from "@/lib/rate-limit";
 import { prisma } from "@/lib/prisma";
+import { withSiteDataGuard } from "@/lib/site-data-guard";
 
 export interface NewsArticle {
   id: string;
@@ -24,16 +25,20 @@ function generateId(): string {
 }
 
 async function getArticles(): Promise<NewsArticle[]> {
-  const record = await prisma.siteData.findUnique({ where: { key: "news" } });
-  if (!record?.data) return [];
-  return record.data as unknown as NewsArticle[];
+  return withSiteDataGuard(async () => {
+    const record = await prisma.siteData.findUnique({ where: { key: "news" } });
+    if (!record?.data) return [];
+    return record.data as unknown as NewsArticle[];
+  });
 }
 
 async function saveArticles(articles: NewsArticle[]): Promise<void> {
-  await prisma.siteData.upsert({
-    where: { key: "news" },
-    update: { data: articles as unknown as object },
-    create: { key: "news", data: articles as unknown as object },
+  await withSiteDataGuard(async () => {
+    await prisma.siteData.upsert({
+      where: { key: "news" },
+      update: { data: articles as unknown as object },
+      create: { key: "news", data: articles as unknown as object },
+    });
   });
 }
 
