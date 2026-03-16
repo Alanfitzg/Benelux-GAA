@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, Instagram, Facebook, MapPin } from "lucide-react";
+import { Mail, Instagram, Facebook } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -53,13 +53,6 @@ export default function ContactPage() {
               <p className="text-sm text-gray-500 mt-2">
                 Official Benelux GAA Secretary
               </p>
-            </div>
-
-            <div className="flex items-center justify-center gap-2 text-gray-500">
-              <MapPin className="w-4 h-4" />
-              <span>
-                Belgium, Netherlands &amp; Luxembourg — Part of GAA Europe
-              </span>
             </div>
 
             <hr className="border-gray-200" />
