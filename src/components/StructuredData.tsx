@@ -66,9 +66,8 @@ export const organizationStructuredData = {
   url: "https://beneluxgaa.com",
   foundingDate: "1999",
   sameAs: [
-    "https://www.facebook.com/BeneluxGAA/",
-    "https://www.instagram.com/beneluxgaa/",
-    "https://twitter.com/BeneluxGAA",
+    "https://www.facebook.com/GAAbenelux/",
+    "https://www.instagram.com/beneluxgaa_/",
   ],
   contactPoint: {
     "@type": "ContactPoint",

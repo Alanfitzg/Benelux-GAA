@@ -23,10 +23,10 @@ interface SocialLinks {
 }
 
 const defaultSocialLinks: SocialLinks = {
-  instagram: "https://www.instagram.com/beneluxgaa/",
-  facebook: "https://www.facebook.com/BeneluxGAA/",
+  instagram: "https://www.instagram.com/beneluxgaa_/",
+  facebook: "https://www.facebook.com/GAAbenelux/",
   youtube: "",
-  twitter: "https://twitter.com/BeneluxGAA",
+  twitter: "",
 };
 
 export default function Footer() {
