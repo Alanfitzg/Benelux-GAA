@@ -200,10 +200,10 @@ function inlineFormat(text: string): React.ReactNode {
       );
     }
     if (part.startsWith("**") && part.endsWith("**")) {
-      return <strong key={i}>{part.slice(2, -2)}</strong>;
+      return <strong key={i}>{inlineFormat(part.slice(2, -2))}</strong>;
     }
     if (part.startsWith("*") && part.endsWith("*")) {
-      return <em key={i}>{part.slice(1, -1)}</em>;
+      return <em key={i}>{inlineFormat(part.slice(1, -1))}</em>;
     }
     const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     if (linkMatch) {
@@ -292,7 +292,7 @@ export default function ArticleContent() {
               <div className="flex flex-col lg:flex-row gap-8 mt-4">
                 {/* Main Article */}
                 <article className="flex-1 min-w-0">
-                  <div className="bg-white rounded-2xl shadow-sm overflow-hidden">
+                  <div className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
                     {article.imageUrl && (
                       <img
                         src={article.imageUrl}
