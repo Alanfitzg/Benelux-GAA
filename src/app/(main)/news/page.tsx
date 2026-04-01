@@ -21,6 +21,59 @@ interface NewsArticle {
   featured: boolean;
 }
 
+const TAG_STYLES: Record<string, { bg: string; text: string; icon: string }> = {
+  "New Club": {
+    bg: "bg-emerald-500/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "🌱",
+  },
+  Featured: {
+    bg: "bg-amber-500/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "⭐",
+  },
+  "Hurling & Camogie": {
+    bg: "bg-orange-500/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "🏑",
+  },
+  GAA: {
+    bg: "bg-[#1a3a4a]/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "🏐",
+  },
+  LGFA: {
+    bg: "bg-rose-500/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "🏐",
+  },
+  Youth: {
+    bg: "bg-sky-500/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "⚡",
+  },
+  Misc: {
+    bg: "bg-slate-500/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "📋",
+  },
+  Championship: {
+    bg: "bg-[#2B9EB3]/90 backdrop-blur-sm",
+    text: "text-white",
+    icon: "🏅",
+  },
+};
+
+const DEFAULT_TAG_STYLE = {
+  bg: "bg-gray-700/80 backdrop-blur-sm",
+  text: "text-white",
+  icon: "📌",
+};
+
+function getTagStyle(tag: string) {
+  return TAG_STYLES[tag] || DEFAULT_TAG_STYLE;
+}
+
 function formatDate(dateStr: string): string {
   const date = new Date(dateStr);
   return date.toLocaleDateString("en-GB", {
@@ -33,16 +86,19 @@ function formatDate(dateStr: string): string {
 export default function NewsPage() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function fetchNews() {
       setLoading(true);
+      setError(false);
       try {
         const res = await fetch("/api/benelux-news");
         const data = await res.json();
         setArticles(data);
-      } catch (error) {
-        console.error("Failed to fetch news:", error);
+      } catch (err) {
+        console.error("Failed to fetch news:", err);
+        setError(true);
       } finally {
         setLoading(false);
       }
@@ -51,7 +107,7 @@ export default function NewsPage() {
   }, []);
 
   const featuredArticle = articles.find((a) => a.featured);
-  const regularArticles = articles.filter((a) => !a.featured);
+  const regularArticles = articles.filter((a) => a !== featuredArticle);
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -114,6 +170,22 @@ export default function NewsPage() {
                         <span className="inline-block px-3 py-1 bg-[#2B9EB3] text-white text-xs font-semibold rounded-full">
                           Featured
                         </span>
+                        {featuredArticle.tags
+                          .filter((t) => t !== "Featured")
+                          .map((tag) => {
+                            const style = getTagStyle(tag);
+                            return (
+                              <span
+                                key={tag}
+                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold ${style.bg} ${style.text}`}
+                              >
+                                <span className="text-xs leading-none">
+                                  {style.icon}
+                                </span>
+                                {tag}
+                              </span>
+                            );
+                          })}
                       </div>
                       <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight">
                         {featuredArticle.title}
@@ -167,11 +239,24 @@ export default function NewsPage() {
                           <span className="text-4xl opacity-50">📰</span>
                         </div>
                       )}
-                      {article.tags.includes("Featured") && (
-                        <div className="absolute top-4 left-4">
-                          <span className="px-3 py-1 bg-amber-500 text-white text-xs font-medium rounded-full shadow-sm">
-                            Featured
-                          </span>
+                      {article.tags.length > 0 && (
+                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/40 to-transparent">
+                          <div className="flex flex-wrap gap-1.5">
+                            {article.tags.map((tag) => {
+                              const style = getTagStyle(tag);
+                              return (
+                                <span
+                                  key={tag}
+                                  className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide shadow-lg ${style.bg} ${style.text}`}
+                                >
+                                  <span className="text-xs leading-none">
+                                    {style.icon}
+                                  </span>
+                                  {tag}
+                                </span>
+                              );
+                            })}
+                          </div>
                         </div>
                       )}
                     </div>
@@ -208,9 +293,15 @@ export default function NewsPage() {
               {articles.length === 0 && (
                 <div className="text-center py-12">
                   <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">📭</span>
+                    <Loader2
+                      className={`w-8 h-8 text-[#2B9EB3] mx-auto ${error ? "" : "animate-spin"}`}
+                    />
                   </div>
-                  <p className="text-gray-500">No articles found.</p>
+                  <p className="text-gray-500">
+                    {error
+                      ? "Articles are temporarily unavailable. Please refresh the page."
+                      : "Loading articles..."}
+                  </p>
                 </div>
               )}
             </>

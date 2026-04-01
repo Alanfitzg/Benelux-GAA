@@ -109,6 +109,200 @@ function compressImage(file: File): Promise<File> {
   });
 }
 
+function extractYouTubeId(url: string): string | null {
+  const patterns = [
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+    /^([a-zA-Z0-9_-]{11})$/,
+  ];
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) return match[1];
+  }
+  return null;
+}
+
+function previewInlineFormat(text: string): React.ReactNode {
+  const parts = text.split(
+    /(!\[[^\]]*\]\([^)]+\)|\*\*[^*]+\*\*|\*[^*]+\*|\[[^\]]+\]\([^)]+\))/g
+  );
+  return parts.map((part, i) => {
+    const inlineImg = part.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (inlineImg) {
+      return (
+        <img
+          key={i}
+          src={inlineImg[2]}
+          alt={inlineImg[1] || ""}
+          className="inline-block max-h-64 rounded-lg my-1"
+        />
+      );
+    }
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={i}>{previewInlineFormat(part.slice(2, -2))}</strong>;
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return <em key={i}>{previewInlineFormat(part.slice(1, -1))}</em>;
+    }
+    const linkMatch = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (linkMatch) {
+      return (
+        <a
+          key={i}
+          href={linkMatch[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#2B9EB3] hover:underline font-medium"
+        >
+          {linkMatch[1]}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
+function renderPreviewMarkdown(text: string) {
+  const lines = text.split("\n");
+  const elements: React.ReactNode[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+
+    if (line.trim() === "") {
+      i++;
+      continue;
+    }
+
+    const bareYtId = extractYouTubeId(line.trim());
+    if (bareYtId) {
+      elements.push(
+        <figure key={i} className="my-8">
+          <div
+            className="relative w-full rounded-xl overflow-hidden"
+            style={{ paddingBottom: "56.25%" }}
+          >
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${bareYtId}`}
+              title="YouTube video"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+        </figure>
+      );
+      i++;
+      continue;
+    }
+
+    if (line.trim().startsWith("- ")) {
+      const items: string[] = [];
+      while (i < lines.length && lines[i].trim().startsWith("- ")) {
+        items.push(lines[i].trim().slice(2));
+        i++;
+      }
+      elements.push(
+        <ul key={i} className="list-disc pl-6 space-y-1.5 my-4 text-gray-700">
+          {items.map((item, idx) => (
+            <li key={idx}>{previewInlineFormat(item)}</li>
+          ))}
+        </ul>
+      );
+      continue;
+    }
+
+    const imgMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imgMatch) {
+      const ytId = extractYouTubeId(imgMatch[2]);
+      if (ytId) {
+        elements.push(
+          <figure key={i} className="my-8">
+            <div
+              className="relative w-full rounded-xl overflow-hidden"
+              style={{ paddingBottom: "56.25%" }}
+            >
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${ytId}`}
+                title={imgMatch[1] || "YouTube video"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full"
+              />
+            </div>
+            {imgMatch[1] && imgMatch[1] !== "image" && (
+              <figcaption className="text-center text-sm text-gray-400 mt-2">
+                {imgMatch[1]}
+              </figcaption>
+            )}
+          </figure>
+        );
+      } else {
+        elements.push(
+          <figure key={i} className="my-8">
+            <img
+              src={imgMatch[2]}
+              alt={imgMatch[1] || ""}
+              className="w-full rounded-xl"
+            />
+            {imgMatch[1] && imgMatch[1] !== "image" && (
+              <figcaption className="text-center text-sm text-gray-400 mt-2">
+                {imgMatch[1]}
+              </figcaption>
+            )}
+          </figure>
+        );
+      }
+      i++;
+      continue;
+    }
+
+    if (line.startsWith("# ")) {
+      elements.push(
+        <h2
+          key={i}
+          className="text-2xl font-bold text-[#1a3a4a] mt-8 mb-3 leading-tight"
+        >
+          {previewInlineFormat(line.slice(2))}
+        </h2>
+      );
+      i++;
+      continue;
+    }
+
+    if (line.startsWith("## ")) {
+      elements.push(
+        <h3
+          key={i}
+          className="text-xl font-bold text-[#1a3a4a] mt-6 mb-2 leading-tight"
+        >
+          {previewInlineFormat(line.slice(3))}
+        </h3>
+      );
+      i++;
+      continue;
+    }
+
+    elements.push(
+      <p key={i} className="text-gray-700 leading-[1.8] my-4 text-[16px]">
+        {previewInlineFormat(line)}
+      </p>
+    );
+    i++;
+  }
+
+  return elements;
+}
+
+function formatPreviewDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
+
 const defaultArticle: Omit<NewsArticle, "id"> = {
   title: "",
   excerpt: "",
@@ -149,6 +343,7 @@ export default function NewsManager() {
   );
   const [mediaUploading, setMediaUploading] = useState(false);
   const [mediaUrl, setMediaUrl] = useState("");
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     fetchArticles();
@@ -412,6 +607,14 @@ export default function NewsManager() {
           <div className="flex items-center gap-3">
             <button
               type="button"
+              onClick={() => setShowPreview(true)}
+              className="flex items-center gap-2 px-5 py-2 bg-white/10 text-white border border-white/20 rounded-lg font-medium hover:bg-white/20 transition-colors"
+            >
+              <Eye size={16} />
+              Preview
+            </button>
+            <button
+              type="button"
               onClick={saveArticle}
               disabled={
                 saving ||
@@ -445,6 +648,103 @@ export default function NewsManager() {
             </button>
           </div>
         </div>
+
+        {showPreview && (
+          <div className="fixed inset-0 z-[60] bg-gray-50 overflow-auto">
+            <div className="sticky top-0 z-10 bg-gradient-to-r from-[#1a3a4a] to-[#2B9EB3] px-6 py-4 flex items-center justify-between shadow-lg">
+              <div className="flex items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => setShowPreview(false)}
+                  className="flex items-center gap-2 px-3 py-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-white"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                  </svg>
+                  <span className="font-medium">Back to Editor</span>
+                </button>
+                <div className="h-8 w-px bg-white/20" />
+                <div>
+                  <h3 className="text-lg font-semibold text-white">
+                    Article Preview
+                  </h3>
+                  <p className="text-white/70 text-sm">
+                    This is how your article will appear to readers
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPreview(false)}
+                className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                title="Close preview"
+              >
+                <X size={24} className="text-white" />
+              </button>
+            </div>
+
+            <div className="max-w-4xl mx-auto px-4 py-8">
+              <article className="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden">
+                {currentArticle.imageUrl && (
+                  <img
+                    src={currentArticle.imageUrl}
+                    alt={currentArticle.title}
+                    className="w-full h-auto max-h-[480px] object-cover"
+                  />
+                )}
+
+                <div className="p-6 sm:p-8 md:p-10">
+                  {currentArticle.featured && (
+                    <span className="inline-block px-3 py-1 bg-[#2B9EB3] text-white text-xs font-semibold rounded-full mb-4">
+                      Featured
+                    </span>
+                  )}
+
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#1a3a4a] leading-tight mb-5">
+                    {currentArticle.title || "Untitled Article"}
+                  </h1>
+
+                  <div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 pb-6 border-b border-gray-100 mb-8">
+                    {currentArticle.author && (
+                      <span className="flex items-center gap-1.5">
+                        <User size={14} />
+                        {currentArticle.author}
+                      </span>
+                    )}
+                    <span className="flex items-center gap-1.5">
+                      <Calendar size={14} />
+                      {formatPreviewDate(currentArticle.date)}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={14} />
+                      {currentArticle.readTime} min read
+                    </span>
+                  </div>
+
+                  <div className="max-w-none">
+                    {currentArticle.content ? (
+                      renderPreviewMarkdown(currentArticle.content)
+                    ) : (
+                      <p className="text-gray-400 italic">
+                        No content yet. Start writing in the editor.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        )}
 
         <div className="max-w-7xl mx-auto p-6">
           <div className="grid lg:grid-cols-3 gap-6">
