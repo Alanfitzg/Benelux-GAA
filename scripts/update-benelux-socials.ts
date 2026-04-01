@@ -2,182 +2,130 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Only includes links that were verified with high confidence
-const clubUpdates: Record<
-  string,
+const clubSocialUpdates: {
+  name: string;
+  facebook: string | null;
+  instagram: string;
+  twitter: string | null;
+}[] = [
   {
-    website?: string;
-    facebook?: string;
-    instagram?: string;
-    twitter?: string;
-    tiktok?: string;
-    foundedYear?: number;
-  }
-> = {
-  "Amsterdam GAC": {
-    website: "https://amsterdamgac.nl/",
-    facebook: "https://www.facebook.com/amsterdamGAC/",
+    name: "Aachen Gaels",
+    facebook: "https://www.facebook.com/AachenGaels",
+    instagram: "https://www.instagram.com/aachengaels/",
+    twitter: null,
+  },
+  {
+    name: "Amsterdam GAC",
+    facebook: "https://www.facebook.com/AmsterdamGAC",
     instagram: "https://www.instagram.com/amsterdamgac/",
-    twitter: "https://twitter.com/AmsterdamGAC",
-    foundedYear: 2003,
+    twitter: "https://x.com/AmsterdamGAC",
   },
-  "An Craobh Rua": {
-    website: "https://brussels-gaa.com/",
-    facebook: "https://www.facebook.com/BrusselsCraobhRua",
-    instagram: "https://www.instagram.com/brussels_gaa/",
+  {
+    name: "An Craobh Rua",
+    facebook: "https://www.facebook.com/brusselscraobhrua",
+    instagram: "https://www.instagram.com/belgiumgaa/",
     twitter: "https://x.com/BelgiumGAA",
-    foundedYear: 2003,
   },
-  "CLG Den Haag": {
-    website: "https://denhaaggaa.com/",
-    facebook: "https://www.facebook.com/DenHaagGaa/",
+  {
+    name: "CLG Den Haag",
+    facebook: "https://www.facebook.com/DenHaagGAA",
     instagram: "https://www.instagram.com/denhaaggaa/",
-    twitter: "https://twitter.com/denhaaggaa",
-    foundedYear: 1974,
+    twitter: "https://x.com/denhaaggaa",
   },
-  "Cologne Celtics": {
-    website: "https://cologneceltics.com/",
-    facebook: "https://www.facebook.com/CologneCeltics/",
+  {
+    name: "Cologne Celtics",
+    facebook: "https://www.facebook.com/CologneGAA",
     instagram: "https://www.instagram.com/cologneceltics/",
-    twitter: "https://twitter.com/cologneceltics",
-    foundedYear: 2012,
+    twitter: "https://x.com/cologneceltics",
   },
-  "Darmstadt GAA": {
-    website: "https://darmstadtgaa.de/",
+  {
+    name: "Darmstadt GAA",
     facebook: "https://www.facebook.com/DarmstadtGAA",
     instagram: "https://www.instagram.com/darmstadtgaa/",
-    foundedYear: 2015,
+    twitter: "https://x.com/darmstadtgaa",
   },
-  "Dusseldorf GFC": {
-    facebook: "https://www.facebook.com/DuesseldorfGAA/",
+  {
+    name: "Dusseldorf GFC",
+    facebook: "https://www.facebook.com/Dusseldorf_Gaelic",
     instagram: "https://www.instagram.com/duesseldorf_gaa/",
-    foundedYear: 1992,
+    twitter: "https://x.com/duesseldorfgaa",
   },
-  "Earls of Leuven": {
-    website: "https://www.leuvengaa.com/",
-    facebook: "https://www.facebook.com/LeuvenEarls/",
+  {
+    name: "Earls of Leuven",
+    facebook: "https://www.facebook.com/LeuvenEarls",
     instagram: "https://www.instagram.com/leuvengaa/",
-    twitter: "https://twitter.com/leuvenearls",
-    foundedYear: 2015,
+    twitter: "https://x.com/LeuvenEarls",
   },
-  "EC Brussels Youth": {
-    website: "https://www.playgaa.be/",
-    foundedYear: 1980,
-  },
-  "Eindhoven Shamrocks GAA": {
-    website: "https://www.eindhovengaa.nl/",
-    facebook: "https://www.facebook.com/EindhovenShamrocks/",
+  {
+    name: "Eindhoven Shamrocks GAA",
+    facebook: "https://www.facebook.com/EindhovenShamrocks",
     instagram: "https://www.instagram.com/eindhovengaa/",
-    twitter: "https://twitter.com/eindhoven_shams",
-    foundedYear: 2013,
+    twitter: "https://x.com/EindhovenShams",
   },
-  "Groningen Gaels": {
+  {
+    name: "Eintracht Frankfurt GAA",
+    facebook: "https://www.facebook.com/FrankfurtGAA",
+    instagram: "https://www.instagram.com/frankfurtgaa/",
+    twitter: "https://x.com/FrankfurtGAA",
+  },
+  {
+    name: "Gaelic Sports Club Luxembourg",
+    facebook: "https://www.facebook.com/LuxembourgGAA",
+    instagram: "https://www.instagram.com/luxgaa/",
+    twitter: "https://x.com/LuxembourgGAA",
+  },
+  {
+    name: "Groningen Gaels",
+    facebook: "https://www.facebook.com/GroningenGaels",
     instagram: "https://www.instagram.com/groningengaels/",
-    foundedYear: 2018,
+    twitter: "https://x.com/groningengaels",
   },
-  "Hamburg GAA": {
-    website: "https://hamburggaa.de/",
-    facebook: "https://www.facebook.com/HamburgGAA/",
+  {
+    name: "Hamburg GAA",
+    facebook: "https://www.facebook.com/HamburgGAA",
     instagram: "https://www.instagram.com/hamburggaa/",
-    twitter: "https://twitter.com/HamburgGAA",
-    foundedYear: 2015,
+    twitter: "https://x.com/HamburgGAA",
   },
-  "Luxembourg GAA": {
-    website: "https://luxgaa.lu/",
-    instagram: "https://www.instagram.com/luxgaa/",
-    twitter: "https://twitter.com/luxembourggaa",
-    foundedYear: 1978,
-  },
-  "Gaelic Sports Club Luxembourg": {
-    website: "https://luxgaa.lu/",
-    instagram: "https://www.instagram.com/luxgaa/",
-    twitter: "https://twitter.com/luxembourggaa",
-    foundedYear: 1978,
-  },
-  "Maastricht Gaels": {
-    website: "https://maastrichtgaels.nl/",
+  {
+    name: "Maastricht Gaels",
+    facebook: "https://www.facebook.com/MaastrichtGaels",
     instagram: "https://www.instagram.com/maastrichtgaels/",
-    twitter: "https://twitter.com/MaastrichtGaels",
-    foundedYear: 2004,
+    twitter: "https://x.com/maastrichtgaels",
   },
-  "Nijmegen GFC": {
-    website: "https://www.nijmegengaa.com/",
-    facebook: "https://www.facebook.com/NijmegenGFC/",
+  {
+    name: "Nijmegen GFC",
+    facebook: "https://www.facebook.com/NijmegenGaelic",
     instagram: "https://www.instagram.com/nijmegengfc/",
-    foundedYear: 2021,
+    twitter: "https://x.com/nijmegengfc",
   },
-  "Aachen Gaels": {
-    foundedYear: 2025,
-  },
-};
+];
 
 async function main() {
-  console.log(
-    "Updating Benelux club social media links and founded years...\n"
-  );
+  console.log("Updating Benelux club social links from PDF...\n");
 
-  for (const [clubName, data] of Object.entries(clubUpdates)) {
-    try {
-      const club = await prisma.club.findFirst({
-        where: { name: { equals: clubName, mode: "insensitive" } },
-        select: {
-          id: true,
-          name: true,
-          website: true,
-          facebook: true,
-          instagram: true,
-          twitter: true,
-          foundedYear: true,
-        },
-      });
+  for (const club of clubSocialUpdates) {
+    const result = await prisma.club.updateMany({
+      where: { name: club.name },
+      data: {
+        facebook: club.facebook,
+        instagram: club.instagram,
+        twitter: club.twitter,
+      },
+    });
 
-      if (!club) {
-        console.log(`  ❌ Club not found: ${clubName}`);
-        continue;
-      }
-
-      const updateData: Record<string, string | number> = {};
-
-      // Only update fields that are provided and currently empty/null
-      if (data.website && !club.website) updateData.website = data.website;
-      if (data.facebook && !club.facebook) updateData.facebook = data.facebook;
-      if (data.instagram && !club.instagram)
-        updateData.instagram = data.instagram;
-      if (data.twitter && !club.twitter) updateData.twitter = data.twitter;
-      if (data.foundedYear && !club.foundedYear)
-        updateData.foundedYear = data.foundedYear;
-
-      // Also update if existing values are placeholder "#"
-      if (data.website && club.website === "#")
-        updateData.website = data.website;
-      if (data.facebook && club.facebook === "#")
-        updateData.facebook = data.facebook;
-      if (data.instagram && club.instagram === "#")
-        updateData.instagram = data.instagram;
-      if (data.twitter && club.twitter === "#")
-        updateData.twitter = data.twitter;
-
-      if (Object.keys(updateData).length === 0) {
-        console.log(`  ✓ ${club.name} - already up to date`);
-        continue;
-      }
-
-      await prisma.club.update({
-        where: { id: club.id },
-        data: updateData,
-      });
-
-      console.log(
-        `  ✅ ${club.name} - updated: ${Object.keys(updateData).join(", ")}`
-      );
-    } catch (error) {
-      console.error(`  ❌ Error updating ${clubName}:`, error);
+    if (result.count > 0) {
+      console.log(`  ${club.name}: updated`);
+    } else {
+      console.log(`  ${club.name}: NOT FOUND`);
     }
   }
 
   console.log("\nDone!");
+  await prisma.$disconnect();
 }
 
-main()
-  .catch(console.error)
-  .finally(() => prisma.$disconnect());
+main().catch((err) => {
+  console.error("Error:", err);
+  prisma.$disconnect();
+  process.exit(1);
+});
