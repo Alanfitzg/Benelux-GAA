@@ -101,6 +101,25 @@ function renderMarkdown(text: string) {
       continue;
     }
 
+    if (/^\d+\.\s/.test(line.trim())) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s/, ""));
+        i++;
+      }
+      elements.push(
+        <ol
+          key={i}
+          className="list-decimal pl-6 space-y-1.5 my-4 text-gray-700"
+        >
+          {items.map((item, idx) => (
+            <li key={idx}>{inlineFormat(item)}</li>
+          ))}
+        </ol>
+      );
+      continue;
+    }
+
     const imgMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (imgMatch) {
       const ytId = extractYouTubeId(imgMatch[2]);

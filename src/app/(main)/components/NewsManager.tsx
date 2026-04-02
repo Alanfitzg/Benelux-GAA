@@ -18,6 +18,7 @@ import {
   Bold,
   Italic,
   List,
+  ListOrdered,
   Link as LinkIcon,
   Loader2,
   Star,
@@ -208,6 +209,25 @@ function renderPreviewMarkdown(text: string) {
             <li key={idx}>{previewInlineFormat(item)}</li>
           ))}
         </ul>
+      );
+      continue;
+    }
+
+    if (/^\d+\.\s/.test(line.trim())) {
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+        items.push(lines[i].trim().replace(/^\d+\.\s/, ""));
+        i++;
+      }
+      elements.push(
+        <ol
+          key={i}
+          className="list-decimal pl-6 space-y-1.5 my-4 text-gray-700"
+        >
+          {items.map((item, idx) => (
+            <li key={idx}>{previewInlineFormat(item)}</li>
+          ))}
+        </ol>
       );
       continue;
     }
@@ -452,6 +472,12 @@ export default function NewsManager() {
         newText = selectedText
           .split("\n")
           .map((line) => `- ${line}`)
+          .join("\n");
+        break;
+      case "numbered-list":
+        newText = selectedText
+          .split("\n")
+          .map((line, i) => `${i + 1}. ${line}`)
           .join("\n");
         break;
       case "link":
@@ -820,6 +846,14 @@ export default function NewsManager() {
                       title="Bullet List"
                     >
                       <List size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => formatToolbar("numbered-list")}
+                      className="p-2 hover:bg-gray-200 rounded transition-colors"
+                      title="Numbered List"
+                    >
+                      <ListOrdered size={16} />
                     </button>
                     <button
                       type="button"
@@ -1272,6 +1306,77 @@ export default function NewsManager() {
                     <Star size={14} className="text-amber-500" />
                   </label>
                 </div>
+              </div>
+
+              {/* Tags */}
+              <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z" />
+                    <line x1="7" y1="7" x2="7.01" y2="7" />
+                  </svg>
+                  Tags
+                </h4>
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {[
+                    { label: "GAA", icon: "🏐", color: "bg-[#1a3a4a]" },
+                    { label: "LGFA", icon: "🏐", color: "bg-rose-500" },
+                    {
+                      label: "Hurling & Camogie",
+                      icon: "🏑",
+                      color: "bg-orange-500",
+                    },
+                    {
+                      label: "Championship",
+                      icon: "🏅",
+                      color: "bg-[#2B9EB3]",
+                    },
+                    { label: "Youth", icon: "⚡", color: "bg-sky-500" },
+                    { label: "New Club", icon: "🌱", color: "bg-emerald-500" },
+                    { label: "Misc", icon: "📋", color: "bg-slate-500" },
+                  ].map((tag) => {
+                    const isActive = currentArticle.tags.includes(tag.label);
+                    return (
+                      <button
+                        key={tag.label}
+                        type="button"
+                        onClick={() =>
+                          setCurrentArticle({
+                            ...currentArticle,
+                            tags: isActive
+                              ? currentArticle.tags.filter(
+                                  (t) => t !== tag.label
+                                )
+                              : [...currentArticle.tags, tag.label],
+                          })
+                        }
+                        className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                          isActive
+                            ? `${tag.color} text-white shadow-md`
+                            : "bg-gray-100 text-gray-500 hover:bg-gray-200"
+                        }`}
+                      >
+                        <span className="text-xs leading-none">{tag.icon}</span>
+                        {tag.label}
+                      </button>
+                    );
+                  })}
+                </div>
+                {currentArticle.tags.length > 0 && (
+                  <p className="text-xs text-gray-400">
+                    {currentArticle.tags.length} tag
+                    {currentArticle.tags.length !== 1 ? "s" : ""} selected
+                  </p>
+                )}
               </div>
 
               {/* Author & Read Time */}
