@@ -45,6 +45,10 @@ export const venueToClub: Record<string, { name: string; crest: string }> = {
     name: "Amsterdam GAA",
     crest: "/club-crests/benelux-amsterdam-gac.png",
   },
+  Frankfurt: {
+    name: "Eintracht Frankfurt GAA",
+    crest: "/club-crests/benelux-frankfurt.png",
+  },
 };
 
 export const fixtures2026: Fixture[] = [
@@ -97,9 +101,8 @@ export const fixtures2026: Fixture[] = [
     date: "2026-04-18",
     competition: "Benelux Breagh Championship (11s)",
     code: "Football",
-    venue: "TBC",
+    venue: "Frankfurt",
     round: "Round 2",
-    tbc: true,
   },
   {
     id: "8",

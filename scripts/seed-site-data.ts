@@ -52,9 +52,8 @@ const fixtures = [
     date: "2026-04-18",
     competition: "Benelux Breagh Championship (11s)",
     code: "Football",
-    venue: "TBC",
+    venue: "Frankfurt",
     round: "Round 2",
-    tbc: true,
   },
   {
     id: "8",
