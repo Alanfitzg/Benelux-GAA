@@ -8,6 +8,8 @@ import EditableText from "../components/EditableText";
 import { Trophy, Medal, ChevronDown, ChevronUp, Calendar } from "lucide-react";
 import BreaghMensChampionship from "./BreaghMensChampionship";
 import BreaghLadiesChampionship from "./BreaghLadiesChampionship";
+import BreaghHurlingChampionship from "./BreaghHurlingChampionship";
+import BreaghCamogieChampionship from "./BreaghCamogieChampionship";
 
 interface CompetitionSection {
   id: string;
@@ -235,12 +237,23 @@ export default function StandingsPage() {
       .catch(() => {});
   }, []);
 
-  const visibleSections = sections.filter((s) => s.id !== "football-11s");
+  const visibleSections = sections.filter(
+    (s) => s.id !== "football-11s" && s.id !== "camogie-hurling-79s"
+  );
   const filteredSections = visibleSections.filter(
     (s) => s.id === selectedCompetition
   );
   const showMensChampionship = selectedCompetition === "mens-championship";
   const showLadiesChampionship = selectedCompetition === "lgfa-championship";
+  const showHurlingChampionship =
+    selectedCompetition === "hurling-championship";
+  const showCamogieChampionship =
+    selectedCompetition === "camogie-championship";
+  const showChampionship =
+    showMensChampionship ||
+    showLadiesChampionship ||
+    showHurlingChampionship ||
+    showCamogieChampionship;
 
   return (
     <div className="min-h-screen bg-[#f0f2f5] flex flex-col">
@@ -304,7 +317,7 @@ export default function StandingsPage() {
         <div className="max-w-5xl mx-auto px-4">
           {/* Competition Filter - overlapping hero */}
           <div className="mb-6 sm:mb-8 bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 p-3 sm:p-5">
-            <div className="flex gap-2 sm:flex-wrap sm:gap-2">
+            <div className="flex gap-2 sm:flex-wrap">
               <button
                 type="button"
                 onClick={() => setSelectedCompetition("mens-championship")}
@@ -335,6 +348,8 @@ export default function StandingsPage() {
               {/* Mobile: native dropdown to save space */}
               <select
                 value={
+                  selectedCompetition === "hurling-championship" ||
+                  selectedCompetition === "camogie-championship" ||
                   visibleSections.some((s) => s.id === selectedCompetition)
                     ? selectedCompetition
                     : ""
@@ -347,6 +362,12 @@ export default function StandingsPage() {
                 <option value="" disabled>
                   Select a competition…
                 </option>
+                <option value="hurling-championship">
+                  Hurling Championship (9s)
+                </option>
+                <option value="camogie-championship">
+                  Camogie Championship (7s)
+                </option>
                 {visibleSections.map((section) => (
                   <option key={section.id} value={section.id}>
                     {section.shortName}
@@ -355,6 +376,28 @@ export default function StandingsPage() {
               </select>
               {/* Desktop: inline pills */}
               <div className="hidden sm:flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setSelectedCompetition("hurling-championship")}
+                  className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                    selectedCompetition === "hurling-championship"
+                      ? "bg-amber-600 text-white shadow-sm"
+                      : "bg-gray-50 text-gray-500 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  Hurling Championship
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedCompetition("camogie-championship")}
+                  className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
+                    selectedCompetition === "camogie-championship"
+                      ? "bg-purple-600 text-white shadow-sm"
+                      : "bg-gray-50 text-gray-500 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  Camogie Championship
+                </button>
                 {visibleSections.map((section) => (
                   <button
                     key={section.id}
@@ -373,7 +416,7 @@ export default function StandingsPage() {
             </div>
           </div>
 
-          {(showMensChampionship || showLadiesChampionship) && (
+          {showChampionship && (
             <p className="text-center text-[11px] sm:text-xs text-gray-500 italic mb-5 sm:mb-6 px-4">
               <span className="sm:hidden">
                 Data by{" "}
@@ -393,10 +436,11 @@ export default function StandingsPage() {
 
           {showMensChampionship && <BreaghMensChampionship />}
           {showLadiesChampionship && <BreaghLadiesChampionship />}
+          {showHurlingChampionship && <BreaghHurlingChampionship />}
+          {showCamogieChampionship && <BreaghCamogieChampionship />}
 
           {/* Competition Sections */}
-          {!showMensChampionship &&
-            !showLadiesChampionship &&
+          {!showChampionship &&
             filteredSections.map((section) => (
               <CompetitionSectionComponent key={section.id} section={section} />
             ))}
