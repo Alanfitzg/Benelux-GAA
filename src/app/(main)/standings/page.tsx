@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
@@ -255,26 +256,46 @@ export default function StandingsPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B9EB3]/10 via-transparent to-black/20" />
         <div className="max-w-5xl mx-auto px-4 relative z-10">
-          <div>
-            <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
-              Benelux GAA
-            </p>
-            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-              <EditableText
-                pageKey="standings"
-                contentKey="title"
-                defaultValue="League Standings"
-                maxLength={30}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
+            <div>
+              <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
+                Benelux GAA
+              </p>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+                <EditableText
+                  pageKey="standings"
+                  contentKey="title"
+                  defaultValue="League Standings"
+                  maxLength={30}
+                />
+              </h1>
+              <p className="text-white/40 text-xs sm:text-sm mt-1 hidden sm:block">
+                <EditableText
+                  pageKey="standings"
+                  contentKey="subtitle"
+                  defaultValue="Current Benelux GAA league tables for the 2026 season."
+                  maxLength={100}
+                />
+              </p>
+            </div>
+            <a
+              href="https://breaghrecruitment.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:flex items-center gap-3 group shrink-0"
+            >
+              <span className="text-white/30 text-[10px] uppercase tracking-[0.15em] font-medium">
+                Sponsored by
+              </span>
+              <Image
+                src="/sponsors/breagh-white.png"
+                alt="Breagh Recruitment"
+                width={160}
+                height={50}
+                className="object-contain h-7 w-auto opacity-80 group-hover:opacity-100 transition-opacity"
+                unoptimized
               />
-            </h1>
-            <p className="text-white/40 text-xs sm:text-sm mt-1 hidden sm:block">
-              <EditableText
-                pageKey="standings"
-                contentKey="subtitle"
-                defaultValue="Current Benelux GAA league tables for the 2026 season."
-                maxLength={100}
-              />
-            </p>
+            </a>
           </div>
         </div>
       </div>
