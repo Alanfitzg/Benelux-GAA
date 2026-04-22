@@ -126,6 +126,12 @@ async function postHandler(request: NextRequest) {
       ...(body.scheduledDate ? { scheduledDate: body.scheduledDate } : {}),
     };
 
+    if (newArticle.featured) {
+      for (const a of articles) {
+        a.featured = false;
+      }
+    }
+
     await saveArticles([newArticle, ...articles]);
 
     return NextResponse.json(newArticle, { status: 201 });
