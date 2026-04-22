@@ -225,6 +225,7 @@ export default function StandingsPage() {
     useState<CompetitionSection[]>(defaultSections);
   const [selectedCompetition, setSelectedCompetition] =
     useState<string>("mens-championship");
+  const [showOtherComps, setShowOtherComps] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("/api/admin/site-data?key=standings")
@@ -270,8 +271,8 @@ export default function StandingsPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B9EB3]/10 via-transparent to-black/20" />
         <div className="max-w-5xl mx-auto px-4 relative z-10">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
-            <div>
-              <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
+            <div className="text-center sm:text-left">
+              <p className="hidden sm:block text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
                 Benelux GAA
               </p>
               <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
@@ -342,39 +343,57 @@ export default function StandingsPage() {
               </button>
             </div>
             <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
-              <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
+              {/* Mobile: tap-to-expand dropdown */}
+              <div className="sm:hidden">
+                <button
+                  type="button"
+                  onClick={() => setShowOtherComps((v) => !v)}
+                  className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors"
+                  aria-expanded={showOtherComps}
+                >
+                  <span>See other competitions</span>
+                  {showOtherComps ? (
+                    <ChevronUp size={16} className="text-gray-500" />
+                  ) : (
+                    <ChevronDown size={16} className="text-gray-500" />
+                  )}
+                </button>
+                {showOtherComps && (
+                  <select
+                    value={
+                      selectedCompetition === "hurling-championship" ||
+                      selectedCompetition === "camogie-championship" ||
+                      visibleSections.some((s) => s.id === selectedCompetition)
+                        ? selectedCompetition
+                        : ""
+                    }
+                    onChange={(e) => {
+                      if (e.target.value)
+                        setSelectedCompetition(e.target.value);
+                    }}
+                    className="mt-2 w-full px-3 py-2 rounded-lg text-sm border border-gray-200 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3]/40 focus:border-[#2B9EB3]"
+                  >
+                    <option value="" disabled>
+                      Select a competition…
+                    </option>
+                    <option value="hurling-championship">
+                      Hurling Championship (9s)
+                    </option>
+                    <option value="camogie-championship">
+                      Camogie Championship (7s)
+                    </option>
+                    {visibleSections.map((section) => (
+                      <option key={section.id} value={section.id}>
+                        {section.shortName}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+              {/* Desktop: label + inline pills */}
+              <p className="hidden sm:block text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
                 Other Competitions
               </p>
-              {/* Mobile: native dropdown to save space */}
-              <select
-                value={
-                  selectedCompetition === "hurling-championship" ||
-                  selectedCompetition === "camogie-championship" ||
-                  visibleSections.some((s) => s.id === selectedCompetition)
-                    ? selectedCompetition
-                    : ""
-                }
-                onChange={(e) => {
-                  if (e.target.value) setSelectedCompetition(e.target.value);
-                }}
-                className="sm:hidden w-full px-3 py-2 rounded-lg text-sm border border-gray-200 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3]/40 focus:border-[#2B9EB3]"
-              >
-                <option value="" disabled>
-                  Select a competition…
-                </option>
-                <option value="hurling-championship">
-                  Hurling Championship (9s)
-                </option>
-                <option value="camogie-championship">
-                  Camogie Championship (7s)
-                </option>
-                {visibleSections.map((section) => (
-                  <option key={section.id} value={section.id}>
-                    {section.shortName}
-                  </option>
-                ))}
-              </select>
-              {/* Desktop: inline pills */}
               <div className="hidden sm:flex flex-wrap gap-1.5">
                 <button
                   type="button"
