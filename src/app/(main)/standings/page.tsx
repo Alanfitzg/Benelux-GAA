@@ -304,11 +304,11 @@ export default function StandingsPage() {
         <div className="max-w-5xl mx-auto px-4">
           {/* Competition Filter - overlapping hero */}
           <div className="mb-6 sm:mb-8 bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-100 p-3 sm:p-5">
-            <div className="flex flex-wrap gap-1.5 sm:gap-2">
+            <div className="flex gap-2 sm:flex-wrap sm:gap-2">
               <button
                 type="button"
                 onClick={() => setSelectedCompetition("mens-championship")}
-                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-bold tracking-tight transition-all border-2 ${
+                className={`flex-1 sm:flex-initial px-2 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-base font-bold tracking-tight transition-all border-2 text-center ${
                   selectedCompetition === "mens-championship"
                     ? "bg-[#1a3a4a] text-white border-[#1a3a4a] shadow-lg"
                     : "bg-white text-[#1a3a4a] border-[#1a3a4a]/30 hover:border-[#1a3a4a] hover:shadow-md"
@@ -319,7 +319,7 @@ export default function StandingsPage() {
               <button
                 type="button"
                 onClick={() => setSelectedCompetition("lgfa-championship")}
-                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-bold tracking-tight transition-all border-2 ${
+                className={`flex-1 sm:flex-initial px-2 sm:px-5 py-2 sm:py-2.5 rounded-lg text-xs sm:text-base font-bold tracking-tight transition-all border-2 text-center ${
                   selectedCompetition === "lgfa-championship"
                     ? "bg-[#1a3a4a] text-white border-[#1a3a4a] shadow-lg"
                     : "bg-white text-[#1a3a4a] border-[#1a3a4a]/30 hover:border-[#1a3a4a] hover:shadow-md"
@@ -332,13 +332,35 @@ export default function StandingsPage() {
               <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
                 Other Competitions
               </p>
-              <div className="flex flex-wrap gap-1 sm:gap-1.5">
+              {/* Mobile: native dropdown to save space */}
+              <select
+                value={
+                  visibleSections.some((s) => s.id === selectedCompetition)
+                    ? selectedCompetition
+                    : ""
+                }
+                onChange={(e) => {
+                  if (e.target.value) setSelectedCompetition(e.target.value);
+                }}
+                className="sm:hidden w-full px-3 py-2 rounded-lg text-sm border border-gray-200 bg-gray-50 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#2B9EB3]/40 focus:border-[#2B9EB3]"
+              >
+                <option value="" disabled>
+                  Select a competition…
+                </option>
+                {visibleSections.map((section) => (
+                  <option key={section.id} value={section.id}>
+                    {section.shortName}
+                  </option>
+                ))}
+              </select>
+              {/* Desktop: inline pills */}
+              <div className="hidden sm:flex flex-wrap gap-1.5">
                 {visibleSections.map((section) => (
                   <button
                     key={section.id}
                     type="button"
                     onClick={() => setSelectedCompetition(section.id)}
-                    className={`px-2 sm:px-2.5 py-1 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium transition-all ${
+                    className={`px-2.5 py-1 rounded-full text-xs font-medium transition-all ${
                       selectedCompetition === section.id
                         ? `${section.bgColor} text-white shadow-sm`
                         : "bg-gray-50 text-gray-500 hover:bg-gray-100 border border-gray-200"
@@ -353,11 +375,19 @@ export default function StandingsPage() {
 
           {(showMensChampionship || showLadiesChampionship) && (
             <p className="text-center text-[11px] sm:text-xs text-gray-500 italic mb-5 sm:mb-6 px-4">
-              Data was recorded and provided by the{" "}
-              <span className="font-semibold not-italic text-[#1a3a4a]">
-                PitchPerfect
-              </span>{" "}
-              results and fixtures app
+              <span className="sm:hidden">
+                Data by{" "}
+                <span className="font-semibold not-italic text-[#1a3a4a]">
+                  PitchPerfect
+                </span>
+              </span>
+              <span className="hidden sm:inline">
+                Data was recorded and provided by the{" "}
+                <span className="font-semibold not-italic text-[#1a3a4a]">
+                  PitchPerfect
+                </span>{" "}
+                results and fixtures app
+              </span>
             </p>
           )}
 
