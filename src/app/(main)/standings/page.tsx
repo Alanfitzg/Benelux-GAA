@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import EditableText from "../components/EditableText";
 import { Trophy, Medal, ChevronDown, ChevronUp, Calendar } from "lucide-react";
+import BreaghMensChampionship from "./BreaghMensChampionship";
+import BreaghLadiesChampionship from "./BreaghLadiesChampionship";
 
 interface CompetitionSection {
   id: string;
@@ -219,7 +220,8 @@ const defaultSections = competitionSections;
 export default function StandingsPage() {
   const [sections, setSections] =
     useState<CompetitionSection[]>(defaultSections);
-  const [selectedCompetition, setSelectedCompetition] = useState<string>("all");
+  const [selectedCompetition, setSelectedCompetition] =
+    useState<string>("mens-championship");
 
   useEffect(() => {
     fetch("/api/admin/site-data?key=standings")
@@ -232,17 +234,19 @@ export default function StandingsPage() {
       .catch(() => {});
   }, []);
 
-  const filteredSections =
-    selectedCompetition === "all"
-      ? sections
-      : sections.filter((s) => s.id === selectedCompetition);
+  const visibleSections = sections.filter((s) => s.id !== "football-11s");
+  const filteredSections = visibleSections.filter(
+    (s) => s.id === selectedCompetition
+  );
+  const showMensChampionship = selectedCompetition === "mens-championship";
+  const showLadiesChampionship = selectedCompetition === "lgfa-championship";
 
   return (
     <div className="min-h-screen bg-[#f0f2f5] flex flex-col">
       <Header currentPage="Standings" />
 
       {/* Hero Banner */}
-      <div className="bg-[#1a3a4a] pt-16 sm:pt-20 md:pt-24 pb-10 sm:pb-14 relative overflow-hidden">
+      <div className="bg-[#1a3a4a] pt-6 sm:pt-20 md:pt-24 pb-8 sm:pb-14 relative overflow-hidden">
         <div
           className="absolute inset-0 opacity-[0.06]"
           style={{
@@ -251,46 +255,26 @@ export default function StandingsPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#2B9EB3]/10 via-transparent to-black/20" />
         <div className="max-w-5xl mx-auto px-4 relative z-10">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 sm:gap-6">
-            <div>
-              <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
-                Benelux GAA
-              </p>
-              <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-                <EditableText
-                  pageKey="standings"
-                  contentKey="title"
-                  defaultValue="League Standings"
-                  maxLength={30}
-                />
-              </h1>
-              <p className="text-white/40 text-xs sm:text-sm mt-1 hidden sm:block">
-                <EditableText
-                  pageKey="standings"
-                  contentKey="subtitle"
-                  defaultValue="Current Benelux GAA league tables for the 2026 season."
-                  maxLength={100}
-                />
-              </p>
-            </div>
-            <a
-              href="https://breaghrecruitment.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 sm:gap-3 group shrink-0"
-            >
-              <span className="text-white/30 text-[8px] sm:text-[10px] uppercase tracking-[0.15em] font-medium">
-                Sponsored by
-              </span>
-              <Image
-                src="/sponsors/breagh-white.png"
-                alt="Breagh Recruitment"
-                width={160}
-                height={50}
-                className="object-contain h-5 sm:h-7 w-auto opacity-80 group-hover:opacity-100 transition-opacity"
-                unoptimized
+          <div>
+            <p className="text-[#2B9EB3] text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] mb-1 sm:mb-2">
+              Benelux GAA
+            </p>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight">
+              <EditableText
+                pageKey="standings"
+                contentKey="title"
+                defaultValue="League Standings"
+                maxLength={30}
               />
-            </a>
+            </h1>
+            <p className="text-white/40 text-xs sm:text-sm mt-1 hidden sm:block">
+              <EditableText
+                pageKey="standings"
+                contentKey="subtitle"
+                defaultValue="Current Benelux GAA league tables for the 2026 season."
+                maxLength={100}
+              />
+            </p>
           </div>
         </div>
       </div>
@@ -302,36 +286,69 @@ export default function StandingsPage() {
             <div className="flex flex-wrap gap-1.5 sm:gap-2">
               <button
                 type="button"
-                onClick={() => setSelectedCompetition("all")}
-                className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                  selectedCompetition === "all"
-                    ? "bg-[#1a3a4a] text-white shadow-md"
-                    : "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"
+                onClick={() => setSelectedCompetition("mens-championship")}
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-bold tracking-tight transition-all border-2 ${
+                  selectedCompetition === "mens-championship"
+                    ? "bg-[#1a3a4a] text-white border-[#1a3a4a] shadow-lg"
+                    : "bg-white text-[#1a3a4a] border-[#1a3a4a]/30 hover:border-[#1a3a4a] hover:shadow-md"
                 }`}
               >
-                All Competitions
+                GAA Championship
               </button>
-              {sections.map((section) => (
-                <button
-                  key={section.id}
-                  type="button"
-                  onClick={() => setSelectedCompetition(section.id)}
-                  className={`px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                    selectedCompetition === section.id
-                      ? `${section.bgColor} text-white shadow-md`
-                      : "bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200"
-                  }`}
-                >
-                  {section.shortName}
-                </button>
-              ))}
+              <button
+                type="button"
+                onClick={() => setSelectedCompetition("lgfa-championship")}
+                className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg text-sm sm:text-base font-bold tracking-tight transition-all border-2 ${
+                  selectedCompetition === "lgfa-championship"
+                    ? "bg-[#1a3a4a] text-white border-[#1a3a4a] shadow-lg"
+                    : "bg-white text-[#1a3a4a] border-[#1a3a4a]/30 hover:border-[#1a3a4a] hover:shadow-md"
+                }`}
+              >
+                LGFA Championship
+              </button>
+            </div>
+            <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
+              <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 mb-2">
+                Other Competitions
+              </p>
+              <div className="flex flex-wrap gap-1 sm:gap-1.5">
+                {visibleSections.map((section) => (
+                  <button
+                    key={section.id}
+                    type="button"
+                    onClick={() => setSelectedCompetition(section.id)}
+                    className={`px-2 sm:px-2.5 py-1 sm:py-1 rounded-full text-[10px] sm:text-xs font-medium transition-all ${
+                      selectedCompetition === section.id
+                        ? `${section.bgColor} text-white shadow-sm`
+                        : "bg-gray-50 text-gray-500 hover:bg-gray-100 border border-gray-200"
+                    }`}
+                  >
+                    {section.shortName}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
+          {(showMensChampionship || showLadiesChampionship) && (
+            <p className="text-center text-[11px] sm:text-xs text-gray-500 italic mb-5 sm:mb-6 px-4">
+              Data was recorded and provided by the{" "}
+              <span className="font-semibold not-italic text-[#1a3a4a]">
+                PitchPerfect
+              </span>{" "}
+              results and fixtures app
+            </p>
+          )}
+
+          {showMensChampionship && <BreaghMensChampionship />}
+          {showLadiesChampionship && <BreaghLadiesChampionship />}
+
           {/* Competition Sections */}
-          {filteredSections.map((section) => (
-            <CompetitionSectionComponent key={section.id} section={section} />
-          ))}
+          {!showMensChampionship &&
+            !showLadiesChampionship &&
+            filteredSections.map((section) => (
+              <CompetitionSectionComponent key={section.id} section={section} />
+            ))}
 
           {/* Legend */}
           <div className="bg-white rounded-xl p-4 sm:p-6 shadow-sm mt-6 sm:mt-8">
