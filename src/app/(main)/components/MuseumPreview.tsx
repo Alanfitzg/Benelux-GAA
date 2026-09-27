@@ -18,12 +18,6 @@ const highlights = [
     category: "milestone" as const,
   },
   {
-    year: 2008,
-    title: "First Book Published",
-    snippet: '"More than a Sporting Experience" chronicles Luxembourg GAA',
-    category: "milestone" as const,
-  },
-  {
     year: 2022,
     title: "Amsterdam Makes Hurling History",
     snippet: "First team to represent Europe in the All-Ireland Championship",
@@ -33,6 +27,12 @@ const highlights = [
     year: 2025,
     title: "First European Club Wins Leinster Title",
     snippet: "Amsterdam GAC defeats Longford Slashers in a historic final",
+    category: "championship" as const,
+  },
+  {
+    year: 2026,
+    title: "Luxembourg & Brussels Crowned Champions",
+    snippet: "A record 984 players contest the first Breagh Benelux 11s season",
     category: "championship" as const,
   },
 ];

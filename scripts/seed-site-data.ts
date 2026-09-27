@@ -81,12 +81,11 @@ const fixtures = [
   },
   {
     id: "11",
-    date: "2026-05-16",
+    date: "2026-05-30",
     competition: "Benelux Breagh Championship (11s)",
     code: "Football",
-    venue: "TBC",
+    venue: "Luxembourg",
     round: "Round 3",
-    tbc: true,
   },
   {
     id: "12",
@@ -250,8 +249,8 @@ const standings = [
     bgColor: "bg-indigo-600",
     borderColor: "border-indigo-600",
     subtitle: "Pool stage followed by knockout rounds",
-    status: "upcoming",
-    nextFixture: "QFs/SFs - May 30, 2026 (Maastricht)",
+    status: "complete",
+    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
     pools: [
       {
         name: "Pool A",
@@ -289,8 +288,8 @@ const standings = [
     bgColor: "bg-amber-700",
     borderColor: "border-amber-700",
     subtitle: "Round robin format - Finals in August",
-    status: "upcoming",
-    nextFixture: "Semi-finals - July 4, 2026 (Maastricht)",
+    status: "complete",
+    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
     teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam/Maastricht"],
   },
   {
@@ -612,6 +611,40 @@ const timeline = [
     sourceName: "Breagh Recruiting",
     imageUrl: "/sponsors/breagh-blue.png",
     featured: true,
+  },
+  {
+    year: 2026,
+    month: "March",
+    title: "Brussels Complete First-Ever Benelux Small Ball Double",
+    description:
+      "Brussels Craobh Rua win both the Regional Camogie (7s) and Hurling (9s) Championships on the same day in The Hague, beating Eindhoven in the camogie final and Amsterdam in the hurling final. No club had previously won both Benelux small ball titles in a single season.",
+    category: "championship",
+    sourceUrl: "/news/mnfthwoltg73s0gv99c",
+    sourceName: "Benelux GAA News",
+    clubCrests: ["/club-crests/benelux-brussels.png"],
+  },
+  {
+    year: 2026,
+    month: "August",
+    title: "Amsterdam Retain Both 15s Titles",
+    description:
+      "Amsterdam GAC defeat Luxembourg in both the 15s Football and 15s Hurling finals in Maastricht, extending their run to eight consecutive Men's 15s Football Championships stretching back to 2017.",
+    category: "championship",
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
+  },
+  {
+    year: 2026,
+    month: "September",
+    title: "Luxembourg and Brussels Crowned 2026 Benelux Champions",
+    description:
+      "The first Breagh-sponsored Benelux 11s season closes in Eindhoven. GSC Luxembourg 'A' win the Men's Championship and Brussels Craobh Rua 'A' the Ladies Championship, with a record 984 players taking part across four rounds.",
+    category: "championship",
+    sourceUrl: "/roll-of-honor",
+    sourceName: "Roll of Honour",
+    clubCrests: [
+      "/club-crests/benelux-luxembourg.png",
+      "/club-crests/benelux-brussels.png",
+    ],
   },
 ];
 

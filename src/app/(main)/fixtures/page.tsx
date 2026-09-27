@@ -275,16 +275,18 @@ export default function FixturesPage() {
           ))}
 
           {/* Summer Break Notice */}
-          {selectedCode === "all" && selectedCompetition === "all" && (
-            <div className="mb-6 sm:mb-8 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60 rounded-xl p-3 sm:p-4 text-center">
-              <p className="text-amber-800 font-semibold text-sm sm:text-base">
-                Summer Break: 18 July - 15 August 2026
-              </p>
-              <p className="text-amber-600/80 text-xs sm:text-sm">
-                No fixtures scheduled during this period
-              </p>
-            </div>
-          )}
+          {selectedCode === "all" &&
+            selectedCompetition === "all" &&
+            new Date() < new Date("2026-08-15") && (
+              <div className="mb-6 sm:mb-8 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60 rounded-xl p-3 sm:p-4 text-center">
+                <p className="text-amber-800 font-semibold text-sm sm:text-base">
+                  Summer Break: 18 July - 15 August 2026
+                </p>
+                <p className="text-amber-600/80 text-xs sm:text-sm">
+                  No fixtures scheduled during this period
+                </p>
+              </div>
+            )}
 
           {filteredFixtures.length === 0 && (
             <div className="text-center py-12 sm:py-16 bg-white rounded-2xl shadow-sm">

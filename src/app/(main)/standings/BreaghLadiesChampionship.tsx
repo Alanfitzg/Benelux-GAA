@@ -26,101 +26,125 @@ const teams: TeamRow[] = [
     rank: 1,
     name: "Brussels A",
     crest: "/club-crests/benelux-brussels.png",
-    rounds: [25, 25, null, null],
-    total: 50,
+    rounds: [25, 25, 25, 20],
+    total: 95,
     tier: "CUP",
   },
   {
     rank: 2,
-    name: "Eindhoven A",
-    crest: "/club-crests/benelux-eindhoven-shamrocks.png",
-    rounds: [20, 14.5, null, null],
-    total: 35,
+    name: "Luxembourg A",
+    crest: "/club-crests/benelux-luxembourg.png",
+    rounds: [14.5, 20, 20, 11],
+    total: 65.5,
     tier: "CUP",
   },
   {
     rank: 3,
-    name: "Luxembourg A",
-    crest: "/club-crests/benelux-luxembourg.png",
-    rounds: [14.5, 20, null, null],
-    total: 34.5,
+    name: "Eindhoven A",
+    crest: "/club-crests/benelux-eindhoven-shamrocks.png",
+    rounds: [20, 14.5, 10.7, 16],
+    total: 61.2,
     tier: "CUP",
   },
   {
     rank: 4,
-    name: "Maastricht/Nijmegen",
-    crest: "/club-crests/benelux-maastricht-gaels.png",
-    rounds: [11, 5.9, null, null],
-    total: 17,
+    name: "Groningen",
+    crest: "/club-crests/benelux-groningen-gaels.png",
+    rounds: [14.5, null, null, 25],
+    total: 39.5,
     tier: "CUP",
   },
   {
     rank: 5,
-    name: "Leuven",
-    crest: "/club-crests/benelux-earls-of-leuven.png",
-    rounds: [10, 5.3, null, null],
-    total: 15,
+    name: "Maastricht/Nijmegen",
+    crest: "/club-crests/benelux-maastricht-gaels.png",
+    rounds: [11, 5.9, 6.6, 7.5],
+    total: 31,
     tier: "SHIELD",
   },
   {
     rank: 6,
-    name: "Frankfurt",
-    crest: "/club-crests/benelux-frankfurt.png",
-    rounds: [0, 14.5, null, null],
-    total: 15,
+    name: "Leuven",
+    crest: "/club-crests/benelux-earls-of-leuven.png",
+    rounds: [10, 5.3, 10, 2.6],
+    total: 27.9,
     tier: "SHIELD",
   },
   {
     rank: 7,
-    name: "Groningen",
-    crest: "/club-crests/benelux-groningen-gaels.png",
-    rounds: [14.5, null, null, null],
-    total: 14.5,
+    name: "Amsterdam A",
+    crest: "/club-crests/benelux-amsterdam-gac.png",
+    rounds: [9, null, 13, null],
+    total: 22,
     tier: "SHIELD",
   },
   {
     rank: 8,
-    name: "Amsterdam A",
-    crest: "/club-crests/benelux-amsterdam-gac.png",
-    rounds: [9, null, null, null],
-    total: 9,
+    name: "Frankfurt",
+    crest: "/club-crests/benelux-frankfurt.png",
+    rounds: [0, 14.5, null, null],
+    total: 14.5,
     tier: "SHIELD",
   },
   {
     rank: 9,
-    name: "Aachen",
-    crest: "/club-crests/benelux-aachen-gaels.png",
-    rounds: [0, 0, null, null],
-    total: 0,
+    name: "Dusseldorf",
+    crest: "/club-crests/benelux-dusseldorf.png",
+    rounds: [null, null, 4.7, 2.4],
+    total: 7.1,
     tier: "PLATE",
   },
   {
     rank: 10,
-    name: "Cologne",
-    crest: "/club-crests/benelux-cologne-celts.png",
-    rounds: [0, null, null, null],
-    total: 0,
+    name: "Hamburg",
+    crest: "/club-crests/benelux-hamburg-gaa.png",
+    rounds: [null, 0, 5.3, 0],
+    total: 5.3,
     tier: "PLATE",
   },
   {
     rank: 11,
-    name: "Hague",
-    crest: "/club-crests/benelux-den-haag.png",
-    rounds: [0, 0, null, null],
-    total: 0,
+    name: "Luxembourg C",
+    crest: "/club-crests/benelux-luxembourg.png",
+    rounds: [null, null, 3.7, null],
+    total: 3.7,
     tier: "PLATE",
   },
   {
     rank: 12,
-    name: "Hamburg",
-    crest: "/club-crests/benelux-hamburg-gaa.png",
-    rounds: [null, 0, null, null],
+    name: "Hague",
+    crest: "/club-crests/benelux-den-haag.png",
+    rounds: [0, 0, 0, 3],
+    total: 3,
+    tier: "PLATE",
+  },
+  {
+    rank: 13,
+    name: "Luxembourg B",
+    crest: "/club-crests/benelux-luxembourg.png",
+    rounds: [null, null, 2, null],
+    total: 2,
+    tier: "PLATE",
+  },
+  {
+    rank: 14,
+    name: "Aachen",
+    crest: "/club-crests/benelux-aachen-gaels.png",
+    rounds: [0, 0, 0, 0],
+    total: 0,
+    tier: "PLATE",
+  },
+  {
+    rank: 14,
+    name: "Cologne",
+    crest: "/club-crests/benelux-cologne-celts.png",
+    rounds: [0, null, 0, 0],
     total: 0,
     tier: "PLATE",
   },
 ];
 
-const lastPlayedRoundIndex = 1;
+const lastPlayedRoundIndex = 3;
 
 const tierStyles: Record<Tier, { bar: string; label: string; row: string }> = {
   CUP: {
@@ -141,9 +165,9 @@ const tierStyles: Record<Tier, { bar: string; label: string; row: string }> = {
 };
 
 const tierDescriptions: Record<Tier, string> = {
-  CUP: "Cup contenders — top 4",
-  SHIELD: "Shield tier — 5th to 8th",
-  PLATE: "Plate tier — 9th and below",
+  CUP: "Champions: Brussels A · Runners-up: Luxembourg A",
+  SHIELD: "Winners: Maastricht/Nijmegen · Runners-up: Leuven",
+  PLATE: "Winners: Dusseldorf · Runners-up: Hamburg",
 };
 
 function formatPoints(pts: number | null): string {
@@ -240,8 +264,8 @@ export default function BreaghLadiesChampionship() {
               2026 LGFA Championship
             </h2>
             <p className="text-white/60 text-[10px] sm:text-sm mt-0.5 sm:mt-1">
-              After R{lastPlayedRoundIndex + 1} · {lastPlayedRoundIndex + 1} of{" "}
-              {rounds.length} rounds played
+              Final standings · {lastPlayedRoundIndex + 1} of {rounds.length}{" "}
+              rounds played
             </p>
           </div>
           <a

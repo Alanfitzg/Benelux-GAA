@@ -21,8 +21,26 @@ interface HonorRecord {
   notPlayed?: boolean;
 }
 
-// Men's Football 11s Records (2007-2025)
+// Men's Football 11s Records (2007-2026)
 const mensFootball11sRecords: HonorRecord[] = [
+  {
+    year: 2026,
+    competition: "Championship",
+    winner: "Luxembourg A",
+    runnerUp: "Amsterdam",
+  },
+  {
+    year: 2026,
+    competition: "Shield",
+    winner: "Leuven A",
+    runnerUp: "Maastricht/Nijmegen",
+  },
+  {
+    year: 2026,
+    competition: "Plate",
+    winner: "Brussels B",
+    runnerUp: "Groningen A",
+  },
   {
     year: 2025,
     competition: "Championship",
@@ -199,6 +217,12 @@ const mensFootball11sRecords: HonorRecord[] = [
 
 const mensFootball15sRecords: HonorRecord[] = [
   {
+    year: 2026,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
     year: 2025,
     competition: "Championship",
     winner: "Amsterdam",
@@ -336,6 +360,24 @@ const ladiesFootball9s2022Records: HonorRecord[] = [
 
 const ladiesFootball11sRecords: HonorRecord[] = [
   {
+    year: 2026,
+    competition: "Championship",
+    winner: "Brussels A",
+    runnerUp: "Luxembourg A",
+  },
+  {
+    year: 2026,
+    competition: "Shield",
+    winner: "Maastricht/Nijmegen",
+    runnerUp: "Leuven",
+  },
+  {
+    year: 2026,
+    competition: "Plate",
+    winner: "Dusseldorf",
+    runnerUp: "Hamburg",
+  },
+  {
     year: 2025,
     competition: "Championship",
     winner: "Brussels A",
@@ -368,6 +410,12 @@ const ladiesFootball15sRecords: HonorRecord[] = [
 
 const hurling9sRecords: HonorRecord[] = [
   {
+    year: 2026,
+    competition: "Championship",
+    winner: "Brussels",
+    runnerUp: "Amsterdam",
+  },
+  {
     year: 2025,
     competition: "Championship",
     winner: "Amsterdam",
@@ -385,15 +433,21 @@ const hurling9sRecords: HonorRecord[] = [
     winner: "Luxembourg",
     runnerUp: "Amsterdam/Maastricht",
   },
-  {
-    year: 2022,
-    competition: "Championship",
-    winner: "Luxembourg",
-    runnerUp: "Amsterdam/Maastricht",
-  },
 ];
 
 const hurling15sRecords: HonorRecord[] = [
+  {
+    year: 2026,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
+  {
+    year: 2025,
+    competition: "Championship",
+    winner: "Amsterdam",
+    runnerUp: "Luxembourg",
+  },
   {
     year: 2024,
     competition: "Championship",
@@ -404,7 +458,7 @@ const hurling15sRecords: HonorRecord[] = [
 
 const camogie9sRecords: HonorRecord[] = [
   {
-    year: 2022,
+    year: 2023,
     competition: "Championship",
     winner: "Belgium",
     runnerUp: "Luxembourg/Hague",
@@ -412,6 +466,12 @@ const camogie9sRecords: HonorRecord[] = [
 ];
 
 const camogie7sRecords: HonorRecord[] = [
+  {
+    year: 2026,
+    competition: "Championship",
+    winner: "Brussels",
+    runnerUp: "Eindhoven",
+  },
   {
     year: 2025,
     competition: "Championship",
@@ -474,8 +534,8 @@ interface FactCard {
 const factCards: FactCard[] = [
   {
     id: 0,
-    teaser: "Which club has won 13 Ladies Football titles across all formats?",
-    stat: "13",
+    teaser: "Which club has won 14 Ladies Football titles across all formats?",
+    stat: "14",
     title: "Most Dominant Team in European History",
     subtitle: "Belgium/Brussels LGFA",
     images: [
@@ -489,10 +549,10 @@ const factCards: FactCard[] = [
   {
     id: 1,
     teaser:
-      "Which club holds 7 consecutive Men\u2019s Football 15s Championships?",
-    stat: "7",
+      "Which club holds 8 consecutive Men\u2019s Football 15s Championships?",
+    stat: "8",
     title: "Consecutive Men\u2019s Football 15s Titles",
-    subtitle: "Amsterdam GAC (2017-2025)",
+    subtitle: "Amsterdam GAC (2017-2026)",
     images: [
       {
         src: "/club-crests/benelux-amsterdam-gac.png",
@@ -503,11 +563,10 @@ const factCards: FactCard[] = [
   },
   {
     id: 2,
-    teaser:
-      "Which club dominated the early era with 5 Men\u2019s Football 11s titles?",
-    stat: "5",
+    teaser: "Which club holds a record 7 Men\u2019s Football 11s titles?",
+    stat: "7",
     title: "Men\u2019s Football 11s Titles",
-    subtitle: "Luxembourg GAA (2007-2019)",
+    subtitle: "Luxembourg GAA (2007-2026)",
     images: [
       {
         src: "/club-crests/benelux-luxembourg.png",

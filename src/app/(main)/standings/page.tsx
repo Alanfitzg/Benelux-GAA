@@ -21,6 +21,7 @@ interface CompetitionSection {
   subtitle: string;
   status: "upcoming" | "in_progress" | "complete";
   nextFixture?: string;
+  result?: { winner: string; runnerUp: string };
   pools?: { name: string; teams: string[] }[];
   teams?: string[];
 }
@@ -53,8 +54,8 @@ const competitionSections: CompetitionSection[] = [
     bgColor: "bg-indigo-600",
     borderColor: "border-indigo-600",
     subtitle: "Pool stage followed by knockout rounds",
-    status: "upcoming",
-    nextFixture: "QFs/SFs - May 30, 2026 (Maastricht)",
+    status: "complete",
+    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
     pools: [
       {
         name: "Pool A",
@@ -92,8 +93,8 @@ const competitionSections: CompetitionSection[] = [
     bgColor: "bg-amber-700",
     borderColor: "border-amber-700",
     subtitle: "Round robin format - Finals in August",
-    status: "upcoming",
-    nextFixture: "Semi-finals - July 4, 2026 (Maastricht)",
+    status: "complete",
+    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
     teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam/Maastricht"],
   },
   {
@@ -144,7 +145,24 @@ function CompetitionSectionComponent({
 
       {isExpanded && (
         <div className="bg-white p-3 sm:p-5">
-          {section.nextFixture && (
+          {section.result && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-5 flex items-start sm:items-center gap-2 sm:gap-3">
+              <Trophy
+                size={16}
+                className="text-yellow-600 flex-shrink-0 mt-0.5 sm:mt-0 sm:w-5 sm:h-5"
+              />
+              <div className="text-xs sm:text-sm">
+                <span className="font-semibold text-yellow-900">
+                  2026 Champions: {section.result.winner}
+                </span>
+                <span className="text-yellow-800 ml-1 sm:ml-2">
+                  · Runners-up: {section.result.runnerUp}
+                </span>
+              </div>
+            </div>
+          )}
+
+          {section.nextFixture && !section.result && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-5 flex items-start sm:items-center gap-2 sm:gap-3">
               <Calendar
                 size={16}
@@ -210,7 +228,9 @@ function CompetitionSectionComponent({
           ) : null}
 
           <div className="mt-3 sm:mt-4 text-center text-gray-400 text-xs sm:text-sm">
-            Standings will be updated as the season progresses
+            {section.status === "complete"
+              ? "Competition complete"
+              : "Standings will be updated as the season progresses"}
           </div>
         </div>
       )}
@@ -287,7 +307,7 @@ export default function StandingsPage() {
                 <EditableText
                   pageKey="standings"
                   contentKey="subtitle"
-                  defaultValue="Current Benelux GAA league tables for the 2026 season."
+                  defaultValue="Final Benelux GAA tables for the 2026 season."
                   maxLength={100}
                 />
               </p>

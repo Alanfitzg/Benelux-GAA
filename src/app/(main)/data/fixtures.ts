@@ -130,12 +130,11 @@ export const fixtures2026: Fixture[] = [
   },
   {
     id: "11",
-    date: "2026-05-16",
+    date: "2026-05-30",
     competition: "Benelux Breagh Championship (11s)",
     code: "Football",
-    venue: "TBC",
+    venue: "Luxembourg",
     round: "Round 3",
-    tbc: true,
   },
   {
     id: "12",

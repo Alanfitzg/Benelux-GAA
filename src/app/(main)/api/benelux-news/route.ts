@@ -191,6 +191,12 @@ async function putHandler(request: NextRequest) {
           : {}),
     };
 
+    if (updatedArticle.featured && !articles[index].featured) {
+      for (const a of articles) {
+        a.featured = false;
+      }
+    }
+
     articles[index] = updatedArticle;
     await saveArticles(articles);
 
