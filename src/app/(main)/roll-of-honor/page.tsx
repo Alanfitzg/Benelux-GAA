@@ -401,6 +401,12 @@ const ladiesFootball11sRecords: HonorRecord[] = [
 
 const ladiesFootball15sRecords: HonorRecord[] = [
   {
+    year: 2026,
+    competition: "Championship",
+    winner: "Brussels",
+    runnerUp: "",
+  },
+  {
     year: 2024,
     competition: "Championship",
     winner: "Belgium/Groningen",
@@ -534,8 +540,8 @@ interface FactCard {
 const factCards: FactCard[] = [
   {
     id: 0,
-    teaser: "Which club has won 14 Ladies Football titles across all formats?",
-    stat: "14",
+    teaser: "Which club has won 15 Ladies Football titles across all formats?",
+    stat: "15",
     title: "Most Dominant Team in European History",
     subtitle: "Belgium/Brussels LGFA",
     images: [

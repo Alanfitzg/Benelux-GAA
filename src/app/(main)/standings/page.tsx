@@ -21,7 +21,7 @@ interface CompetitionSection {
   subtitle: string;
   status: "upcoming" | "in_progress" | "complete";
   nextFixture?: string;
-  result?: { winner: string; runnerUp: string };
+  result?: { label?: string; winner: string; runnerUp?: string }[];
   pools?: { name: string; teams: string[] }[];
   teams?: string[];
 }
@@ -55,7 +55,10 @@ const competitionSections: CompetitionSection[] = [
     borderColor: "border-indigo-600",
     subtitle: "Pool stage followed by knockout rounds",
     status: "complete",
-    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+    result: [
+      { label: "Men's", winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+      { label: "Ladies", winner: "Brussels GAA" },
+    ],
     pools: [
       {
         name: "Pool A",
@@ -94,7 +97,7 @@ const competitionSections: CompetitionSection[] = [
     borderColor: "border-amber-700",
     subtitle: "Round robin format - Finals in August",
     status: "complete",
-    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+    result: [{ winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" }],
     teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam/Maastricht"],
   },
   {
@@ -145,19 +148,25 @@ function CompetitionSectionComponent({
 
       {isExpanded && (
         <div className="bg-white p-3 sm:p-5">
-          {section.result && (
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-5 flex items-start sm:items-center gap-2 sm:gap-3">
+          {section.result && section.result.length > 0 && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-5 flex items-start gap-2 sm:gap-3">
               <Trophy
                 size={16}
-                className="text-yellow-600 flex-shrink-0 mt-0.5 sm:mt-0 sm:w-5 sm:h-5"
+                className="text-yellow-600 flex-shrink-0 mt-0.5 sm:w-5 sm:h-5"
               />
-              <div className="text-xs sm:text-sm">
-                <span className="font-semibold text-yellow-900">
-                  2026 Champions: {section.result.winner}
-                </span>
-                <span className="text-yellow-800 ml-1 sm:ml-2">
-                  · Runners-up: {section.result.runnerUp}
-                </span>
+              <div className="text-xs sm:text-sm space-y-1">
+                {section.result.map((r) => (
+                  <div key={`${r.label ?? ""}-${r.winner}`}>
+                    <span className="font-semibold text-yellow-900">
+                      {r.label ? `${r.label} ` : ""}2026 Champions: {r.winner}
+                    </span>
+                    {r.runnerUp && (
+                      <span className="text-yellow-800 ml-1 sm:ml-2">
+                        · Runners-up: {r.runnerUp}
+                      </span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           )}

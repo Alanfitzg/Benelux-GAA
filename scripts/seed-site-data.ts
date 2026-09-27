@@ -250,7 +250,10 @@ const standings = [
     borderColor: "border-indigo-600",
     subtitle: "Pool stage followed by knockout rounds",
     status: "complete",
-    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+    result: [
+      { label: "Men's", winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+      { label: "Ladies", winner: "Brussels GAA" },
+    ],
     pools: [
       {
         name: "Pool A",
@@ -289,7 +292,7 @@ const standings = [
     borderColor: "border-amber-700",
     subtitle: "Round robin format - Finals in August",
     status: "complete",
-    result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+    result: [{ winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" }],
     teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam/Maastricht"],
   },
   {

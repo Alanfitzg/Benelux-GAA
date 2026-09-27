@@ -121,15 +121,22 @@ async function main() {
       : f
   );
 
+  const results15s: Record<
+    string,
+    { label?: string; winner: string; runnerUp?: string }[]
+  > = {
+    "football-15s": [
+      { label: "Men's", winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
+      { label: "Ladies", winner: "Brussels GAA" },
+    ],
+    "hurling-15s": [{ winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" }],
+  };
   const standings = (current.standings as Record<string, unknown>[]).map(
     (s) => {
-      if (s.id !== "football-15s" && s.id !== "hurling-15s") return s;
+      const result = results15s[s.id as string];
+      if (!result) return s;
       const { nextFixture: _nf, ...rest } = s;
-      return {
-        ...rest,
-        status: "complete",
-        result: { winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" },
-      };
+      return { ...rest, status: "complete", result };
     }
   );
 
