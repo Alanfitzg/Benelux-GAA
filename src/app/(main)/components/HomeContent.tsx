@@ -132,7 +132,7 @@ export default function HomeContent() {
               {/* Featured Article - Large */}
               {latestNews[0] && (
                 <article className="md:row-span-2 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100">
-                  <div className="relative h-48 md:h-64 bg-gray-200 overflow-hidden">
+                  <div className="relative aspect-video bg-gray-200 overflow-hidden">
                     {latestNews[0].imageUrl ? (
                       <img
                         src={latestNews[0].imageUrl}

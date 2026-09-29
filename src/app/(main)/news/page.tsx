@@ -145,7 +145,7 @@ export default function NewsPage() {
               {featuredArticle && (
                 <article className="mb-12 bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                   <div className="grid md:grid-cols-2">
-                    <div className="relative h-64 md:h-auto min-h-[280px] bg-gray-200 overflow-hidden">
+                    <div className="relative aspect-video md:aspect-auto md:h-auto md:min-h-[280px] bg-gray-200 overflow-hidden">
                       {featuredArticle.imageUrl ? (
                         <img
                           src={featuredArticle.imageUrl}
@@ -227,7 +227,7 @@ export default function NewsPage() {
                     href={`/news/${article.id}`}
                     className="bg-white rounded-xl overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-100 block"
                   >
-                    <div className="h-36 sm:h-48 bg-gray-200 relative overflow-hidden">
+                    <div className="aspect-video sm:aspect-auto sm:h-48 bg-gray-200 relative overflow-hidden">
                       {article.imageUrl ? (
                         <img
                           src={article.imageUrl}
