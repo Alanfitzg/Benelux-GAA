@@ -5,6 +5,9 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import InstagramEmbed, {
+  extractInstagramPermalink,
+} from "../../components/InstagramEmbed";
 import {
   Calendar,
   Clock,
@@ -59,6 +62,15 @@ function renderMarkdown(text: string) {
     const line = lines[i];
 
     if (line.trim() === "") {
+      i++;
+      continue;
+    }
+
+    const bareInstagram = /^https?:\/\/\S+$/.test(line.trim())
+      ? extractInstagramPermalink(line.trim())
+      : null;
+    if (bareInstagram) {
+      elements.push(<InstagramEmbed key={i} permalink={bareInstagram} />);
       i++;
       continue;
     }
@@ -122,6 +134,19 @@ function renderMarkdown(text: string) {
 
     const imgMatch = line.trim().match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
     if (imgMatch) {
+      const instagramPermalink = extractInstagramPermalink(imgMatch[2]);
+      if (instagramPermalink) {
+        elements.push(
+          <InstagramEmbed
+            key={i}
+            permalink={instagramPermalink}
+            caption={imgMatch[1]}
+          />
+        );
+        i++;
+        continue;
+      }
+
       const ytId = extractYouTubeId(imgMatch[2]);
       if (ytId) {
         elements.push(
