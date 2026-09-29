@@ -31,7 +31,7 @@ async function main() {
       subRegion: "Germany",
       imageUrl: "/club-crests/benelux-mainz-gaa.png",
       sportsSupported: ["Hurling", "Camogie"],
-      foundedYear: 2010,
+      foundedYear: 2026,
       status: "APPROVED",
       isMainlandEurope: true,
       dataSource: "MANUAL_2026_09",
