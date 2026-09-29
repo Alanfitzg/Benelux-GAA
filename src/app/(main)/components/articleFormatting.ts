@@ -16,3 +16,7 @@ export function extractBoldHeading(line: string): string | null {
   if (inner.length > 100 || inner.endsWith(".")) return null;
   return inner;
 }
+
+export function isYouTubeShort(url: string): boolean {
+  return /youtube\.com\/shorts\//.test(url);
+}

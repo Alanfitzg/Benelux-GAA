@@ -13,6 +13,7 @@ import {
   SECTION_HEADING_CLASS,
   SUB_HEADING_CLASS,
   extractBoldHeading,
+  isYouTubeShort,
 } from "../../components/articleFormatting";
 import {
   Calendar,
@@ -86,8 +87,14 @@ function renderMarkdown(text: string) {
       elements.push(
         <figure key={i} className="my-8">
           <div
-            className="relative w-full rounded-xl overflow-hidden"
-            style={{ paddingBottom: "56.25%" }}
+            className={
+              isYouTubeShort(line)
+                ? "relative w-full max-w-[340px] mx-auto aspect-[9/16] rounded-xl overflow-hidden"
+                : "relative w-full rounded-xl overflow-hidden"
+            }
+            style={
+              isYouTubeShort(line) ? undefined : { paddingBottom: "56.25%" }
+            }
           >
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${bareYtId}`}
@@ -158,8 +165,16 @@ function renderMarkdown(text: string) {
         elements.push(
           <figure key={i} className="my-8">
             <div
-              className="relative w-full rounded-xl overflow-hidden"
-              style={{ paddingBottom: "56.25%" }}
+              className={
+                isYouTubeShort(imgMatch[2])
+                  ? "relative w-full max-w-[340px] mx-auto aspect-[9/16] rounded-xl overflow-hidden"
+                  : "relative w-full rounded-xl overflow-hidden"
+              }
+              style={
+                isYouTubeShort(imgMatch[2])
+                  ? undefined
+                  : { paddingBottom: "56.25%" }
+              }
             >
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${ytId}`}
