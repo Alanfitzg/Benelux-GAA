@@ -17,6 +17,7 @@ const CREST_MAP: Record<string, string> = {
   "Groningen Gaels": "/club-crests/benelux-groningen-gaels.png",
   "Hamburg GAA": "/club-crests/benelux-hamburg-gaa.png",
   "Maastricht Gaels": "/club-crests/benelux-maastricht-gaels.png",
+  "Mainz GAA": "/club-crests/benelux-mainz-gaa.png",
   "Nijmegen GFC": "/club-crests/benelux-nijmegen-gfc.png",
 };
 
@@ -37,6 +38,7 @@ export async function GET() {
           { location: { contains: "Darmstadt", mode: "insensitive" } },
           { location: { contains: "Hamburg", mode: "insensitive" } },
           { location: { contains: "Frankfurt", mode: "insensitive" } },
+          { location: { contains: "Mainz", mode: "insensitive" } },
         ],
       },
       select: {
