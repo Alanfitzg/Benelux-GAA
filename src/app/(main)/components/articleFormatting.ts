@@ -5,6 +5,9 @@ export const MAJOR_HEADING_CLASS = `${HEADING_BASE} text-2xl sm:text-3xl mt-12 m
 
 export const SECTION_HEADING_CLASS = `${HEADING_BASE} text-[22px] sm:text-2xl mt-10 mb-3`;
 
+export const SUB_HEADING_CLASS =
+  "font-bold text-[#2B9EB3] leading-snug text-lg sm:text-xl mt-7 mb-2";
+
 export function extractBoldHeading(line: string): string | null {
   const match = line.trim().match(/^\*\*(.+)\*\*$/);
   if (!match) return null;

@@ -6,6 +6,7 @@ import InstagramEmbed, { extractInstagramPermalink } from "./InstagramEmbed";
 import {
   MAJOR_HEADING_CLASS,
   SECTION_HEADING_CLASS,
+  SUB_HEADING_CLASS,
   extractBoldHeading,
 } from "./articleFormatting";
 import {
@@ -23,7 +24,9 @@ import {
   Image as ImageIcon,
   Bold,
   Italic,
-  Heading,
+  Heading1,
+  Heading2,
+  Heading3,
   List,
   ListOrdered,
   Link as LinkIcon,
@@ -326,6 +329,16 @@ function renderPreviewMarkdown(text: string) {
       continue;
     }
 
+    if (line.startsWith("### ")) {
+      elements.push(
+        <h3 key={i} className={SUB_HEADING_CLASS}>
+          {previewInlineFormat(line.slice(4))}
+        </h3>
+      );
+      i++;
+      continue;
+    }
+
     const boldHeading = extractBoldHeading(line);
     if (boldHeading) {
       elements.push(
@@ -502,12 +515,32 @@ export default function NewsManager() {
       case "italic":
         newText = `*${selectedText}*`;
         break;
-      case "heading": {
-        const atLineStart =
-          start === 0 || currentArticle.content[start - 1] === "\n";
-        const text = selectedText.replace(/^\*\*|\*\*$/g, "").trim();
-        newText = `${atLineStart ? "" : "\n\n"}## ${text || "Section heading"}`;
-        break;
+      case "heading-1":
+      case "heading-2":
+      case "heading-3": {
+        const prefix = "#".repeat(Number(command.slice(-1))) + " ";
+        const content = currentArticle.content;
+        const lineStart = content.lastIndexOf("\n", start - 1) + 1;
+        const nextBreak = content.indexOf("\n", start);
+        const lineEnd = nextBreak === -1 ? content.length : nextBreak;
+        const line = content.substring(lineStart, lineEnd);
+        const text = line
+          .replace(/^#{1,3}\s+/, "")
+          .trim()
+          .replace(/^\*\*(.+)\*\*$/, "$1")
+          .trim();
+        const alreadyApplied = line.startsWith(prefix);
+        const replacement = alreadyApplied
+          ? text
+          : prefix + (text || "Heading");
+        setCurrentArticle({
+          ...currentArticle,
+          content:
+            content.substring(0, lineStart) +
+            replacement +
+            content.substring(lineEnd),
+        });
+        return;
       }
       case "list":
         newText = selectedText
@@ -879,13 +912,30 @@ export default function NewsManager() {
                     >
                       <Italic size={16} />
                     </button>
+                    <div className="w-px h-6 bg-gray-300 mx-1" />
                     <button
                       type="button"
-                      onClick={() => formatToolbar("heading")}
+                      onClick={() => formatToolbar("heading-1")}
                       className="p-2 hover:bg-gray-200 rounded transition-colors"
-                      title="Section Heading"
+                      title="Heading 1 (largest)"
                     >
-                      <Heading size={16} />
+                      <Heading1 size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => formatToolbar("heading-2")}
+                      className="p-2 hover:bg-gray-200 rounded transition-colors"
+                      title="Heading 2 (section)"
+                    >
+                      <Heading2 size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => formatToolbar("heading-3")}
+                      className="p-2 hover:bg-gray-200 rounded transition-colors"
+                      title="Heading 3 (sub-section)"
+                    >
+                      <Heading3 size={16} />
                     </button>
                     <div className="w-px h-6 bg-gray-300 mx-1" />
                     <button

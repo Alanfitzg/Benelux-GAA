@@ -11,6 +11,7 @@ import InstagramEmbed, {
 import {
   MAJOR_HEADING_CLASS,
   SECTION_HEADING_CLASS,
+  SUB_HEADING_CLASS,
   extractBoldHeading,
 } from "../../components/articleFormatting";
 import {
@@ -210,6 +211,16 @@ function renderMarkdown(text: string) {
         <h2 key={i} className={SECTION_HEADING_CLASS}>
           {inlineFormat(line.slice(3))}
         </h2>
+      );
+      i++;
+      continue;
+    }
+
+    if (line.startsWith("### ")) {
+      elements.push(
+        <h3 key={i} className={SUB_HEADING_CLASS}>
+          {inlineFormat(line.slice(4))}
+        </h3>
       );
       i++;
       continue;
