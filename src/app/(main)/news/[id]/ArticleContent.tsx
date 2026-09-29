@@ -9,6 +9,11 @@ import InstagramEmbed, {
   extractInstagramPermalink,
 } from "../../components/InstagramEmbed";
 import {
+  MAJOR_HEADING_CLASS,
+  SECTION_HEADING_CLASS,
+  extractBoldHeading,
+} from "../../components/articleFormatting";
+import {
   Calendar,
   Clock,
   User,
@@ -192,10 +197,7 @@ function renderMarkdown(text: string) {
 
     if (line.startsWith("# ")) {
       elements.push(
-        <h2
-          key={i}
-          className="text-2xl font-bold text-[#1a3a4a] mt-8 mb-3 leading-tight"
-        >
+        <h2 key={i} className={MAJOR_HEADING_CLASS}>
           {inlineFormat(line.slice(2))}
         </h2>
       );
@@ -205,12 +207,20 @@ function renderMarkdown(text: string) {
 
     if (line.startsWith("## ")) {
       elements.push(
-        <h3
-          key={i}
-          className="text-xl font-bold text-[#1a3a4a] mt-6 mb-2 leading-tight"
-        >
+        <h2 key={i} className={SECTION_HEADING_CLASS}>
           {inlineFormat(line.slice(3))}
-        </h3>
+        </h2>
+      );
+      i++;
+      continue;
+    }
+
+    const boldHeading = extractBoldHeading(line);
+    if (boldHeading) {
+      elements.push(
+        <h2 key={i} className={SECTION_HEADING_CLASS}>
+          {inlineFormat(boldHeading)}
+        </h2>
       );
       i++;
       continue;

@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import InstagramEmbed, { extractInstagramPermalink } from "./InstagramEmbed";
 import {
+  MAJOR_HEADING_CLASS,
+  SECTION_HEADING_CLASS,
+  extractBoldHeading,
+} from "./articleFormatting";
+import {
   Newspaper,
   Plus,
   Edit2,
@@ -18,6 +23,7 @@ import {
   Image as ImageIcon,
   Bold,
   Italic,
+  Heading,
   List,
   ListOrdered,
   Link as LinkIcon,
@@ -302,10 +308,7 @@ function renderPreviewMarkdown(text: string) {
 
     if (line.startsWith("# ")) {
       elements.push(
-        <h2
-          key={i}
-          className="text-2xl font-bold text-[#1a3a4a] mt-8 mb-3 leading-tight"
-        >
+        <h2 key={i} className={MAJOR_HEADING_CLASS}>
           {previewInlineFormat(line.slice(2))}
         </h2>
       );
@@ -315,12 +318,20 @@ function renderPreviewMarkdown(text: string) {
 
     if (line.startsWith("## ")) {
       elements.push(
-        <h3
-          key={i}
-          className="text-xl font-bold text-[#1a3a4a] mt-6 mb-2 leading-tight"
-        >
+        <h2 key={i} className={SECTION_HEADING_CLASS}>
           {previewInlineFormat(line.slice(3))}
-        </h3>
+        </h2>
+      );
+      i++;
+      continue;
+    }
+
+    const boldHeading = extractBoldHeading(line);
+    if (boldHeading) {
+      elements.push(
+        <h2 key={i} className={SECTION_HEADING_CLASS}>
+          {previewInlineFormat(boldHeading)}
+        </h2>
       );
       i++;
       continue;
@@ -491,6 +502,13 @@ export default function NewsManager() {
       case "italic":
         newText = `*${selectedText}*`;
         break;
+      case "heading": {
+        const atLineStart =
+          start === 0 || currentArticle.content[start - 1] === "\n";
+        const text = selectedText.replace(/^\*\*|\*\*$/g, "").trim();
+        newText = `${atLineStart ? "" : "\n\n"}## ${text || "Section heading"}`;
+        break;
+      }
       case "list":
         newText = selectedText
           .split("\n")
@@ -860,6 +878,14 @@ export default function NewsManager() {
                       title="Italic"
                     >
                       <Italic size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => formatToolbar("heading")}
+                      className="p-2 hover:bg-gray-200 rounded transition-colors"
+                      title="Section Heading"
+                    >
+                      <Heading size={16} />
                     </button>
                     <div className="w-px h-6 bg-gray-300 mx-1" />
                     <button
