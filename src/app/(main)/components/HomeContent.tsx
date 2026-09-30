@@ -131,7 +131,10 @@ export default function HomeContent() {
             <div className="grid md:grid-cols-2 gap-6">
               {/* Featured Article - Large */}
               {latestNews[0] && (
-                <article className="md:row-span-2 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100">
+                <InternalLink
+                  href={`/news/${latestNews[0].id}`}
+                  className="md:row-span-2 block bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100"
+                >
                   <div className="relative aspect-video bg-gray-200 overflow-hidden">
                     {latestNews[0].imageUrl ? (
                       <img
@@ -162,26 +165,24 @@ export default function HomeContent() {
                     <p className="text-gray-600 text-sm md:text-base leading-relaxed mb-3 md:mb-4 line-clamp-2 md:line-clamp-3">
                       {latestNews[0].excerpt}
                     </p>
-                    <InternalLink
-                      href="/news"
-                      className="inline-flex items-center gap-2 text-[#2B9EB3] font-semibold text-sm hover:text-[#1a3a4a] transition-colors group/link"
-                    >
+                    <span className="inline-flex items-center gap-2 text-[#2B9EB3] font-semibold text-sm group-hover:text-[#1a3a4a] transition-colors">
                       Read more
                       <ChevronRight
                         size={16}
-                        className="group-hover/link:translate-x-1 transition-transform"
+                        className="group-hover:translate-x-1 transition-transform"
                       />
-                    </InternalLink>
+                    </span>
                   </div>
-                </article>
+                </InternalLink>
               )}
 
               {/* Secondary Articles - Compact */}
               <div className="space-y-4">
                 {latestNews.slice(1, 4).map((article) => (
-                  <article
+                  <InternalLink
                     key={article.id}
-                    className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-100"
+                    href={`/news/${article.id}`}
+                    className="block bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group border border-gray-100"
                   >
                     <div className="flex">
                       <div className="w-24 md:w-32 flex-shrink-0 bg-gradient-to-br from-[#1a3a4a]/10 to-[#2B9EB3]/10 flex items-center justify-center relative">
@@ -215,7 +216,7 @@ export default function HomeContent() {
                         </p>
                       </div>
                     </div>
-                  </article>
+                  </InternalLink>
                 ))}
               </div>
             </div>
