@@ -98,19 +98,7 @@ const competitionSections: CompetitionSection[] = [
     subtitle: "Round robin format - Finals in August",
     status: "complete",
     result: [{ winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" }],
-    teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam/Maastricht"],
-  },
-  {
-    id: "camogie-15s",
-    name: "15s Camogie & Hurling Championships",
-    shortName: "Camogie 15s",
-    color: "text-purple-700",
-    bgColor: "bg-purple-600",
-    borderColor: "border-purple-600",
-    subtitle: "Round robin format - Finals in August",
-    status: "upcoming",
-    nextFixture: "Finals - August 29, 2026 (Maastricht)",
-    teams: ["Belgium", "Amsterdam GAA", "Luxembourg/Hague"],
+    teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam GAA"],
   },
 ];
 
@@ -268,7 +256,10 @@ export default function StandingsPage() {
   }, []);
 
   const visibleSections = sections.filter(
-    (s) => s.id !== "football-11s" && s.id !== "camogie-hurling-79s"
+    (s) =>
+      s.id !== "football-11s" &&
+      s.id !== "camogie-hurling-79s" &&
+      s.id !== "camogie-15s"
   );
   const filteredSections = visibleSections.filter(
     (s) => s.id === selectedCompetition
@@ -529,9 +520,7 @@ export default function StandingsPage() {
               <div className="flex items-start gap-2 sm:gap-3">
                 <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-purple-600 rounded mt-0.5 sm:mt-1 flex-shrink-0" />
                 <div>
-                  <span className="font-medium text-gray-800">
-                    15s Camogie & Hurling
-                  </span>
+                  <span className="font-medium text-gray-800">15s Hurling</span>
                   <p>Round robin with finals in August</p>
                 </div>
               </div>

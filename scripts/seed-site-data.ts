@@ -293,19 +293,7 @@ const standings = [
     subtitle: "Round robin format - Finals in August",
     status: "complete",
     result: [{ winner: "Amsterdam GAA", runnerUp: "Luxembourg GAA" }],
-    teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam/Maastricht"],
-  },
-  {
-    id: "camogie-15s",
-    name: "15s Camogie & Hurling Championships",
-    shortName: "Camogie 15s",
-    color: "text-purple-700",
-    bgColor: "bg-purple-600",
-    borderColor: "border-purple-600",
-    subtitle: "Round robin format - Finals in August",
-    status: "upcoming",
-    nextFixture: "Finals - August 29, 2026 (Maastricht)",
-    teams: ["Belgium", "Amsterdam GAA", "Luxembourg/Hague"],
+    teams: ["Brussels GAA", "Luxembourg GAA", "Amsterdam GAA"],
   },
 ];
 
@@ -345,9 +333,9 @@ const timeline = [
   },
   {
     year: 1978,
-    title: "Luxembourg GAA Founded - Europe's Oldest",
+    title: "Luxembourg GAA Founded",
     description:
-      "Gaelic Sports Club Luxembourg is formally established, becoming the oldest GAA club on the European mainland. Founded when Irish people moved to the Grand Duchy to work in European institutions.",
+      "Gaelic Sports Club Luxembourg is formally established, one of the earliest GAA clubs on the European mainland. Founded when Irish people moved to the Grand Duchy to work in European institutions.",
     category: "founding",
     sourceUrl: "https://en.wikipedia.org/wiki/Gaelic_Sports_Club_Luxembourg",
     sourceName: "Wikipedia",
@@ -401,8 +389,7 @@ const timeline = [
     description:
       "Tony Bass establishes the Maastricht Gaels club in the Netherlands, later becoming a key figure in European GAA development.",
     category: "founding",
-    sourceUrl:
-      "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
+    sourceUrl: "https://www.gaa.ie/article/a-thriving-club-and-a-european-hub",
     sourceName: "GAA.ie",
     clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
@@ -418,7 +405,7 @@ const timeline = [
     year: 2008,
     title: "First Book on Gaelic Games in Europe",
     description:
-      'Cathal mac Daibhi publishes "More than a Sporting Experience - the First Thirty Years of Gaelic Games in Luxembourg", a 144-page account commemorating the 30th anniversary of Gaelic Sports Club Luxembourg.',
+      'Eoghan Ó hAnnracháin and Cathal Davey publish "More than a Sporting Experience: 30 Years of Gaelic Games in Luxembourg", a 144-page account commemorating the 30th anniversary of Gaelic Sports Club Luxembourg.',
     category: "milestone",
     sourceUrl:
       "https://ladiesgaelic.ie/more-than-a-sporting-experience-the-first-thirty-years-of-gaelic-games-in-luxembourg/",
@@ -534,7 +521,7 @@ const timeline = [
       "Tony Bass is honored with a GAA President's Award for his tireless work as GGE chairperson, secretary, development officer, and representing Europe on the GAA Central Council.",
     category: "award",
     sourceUrl:
-      "https://www.gaa.ie/article/gaelic-games-europe-is-open-for-business",
+      "https://www.gaa.ie/article/gradaim-an-uachtarain-2021-winners-announced",
     sourceName: "GAA.ie",
     clubCrests: ["/club-crests/benelux-maastricht-gaels.png"],
   },
