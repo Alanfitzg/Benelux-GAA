@@ -51,3 +51,6 @@ download-results.json
 /scripts/extract-*.ts
 /backups/*
 !/backups/news/
+
+# Claude Code per-machine permissions
+.claude/settings.json
