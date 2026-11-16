@@ -358,10 +358,31 @@ const timelineEvents: TimelineEvent[] = [
   {
     year: 2026,
     month: "August",
-    title: "Amsterdam Retain Both 15s Titles",
+    title: "Amsterdam Win Eighth Straight 15s Football Title",
     description:
-      "Amsterdam GAC defeat Luxembourg in both the 15s Football and 15s Hurling finals in Maastricht, extending their run to eight consecutive Men's 15s Football Championships stretching back to 2017.",
+      "Amsterdam GAC defeat Luxembourg in the Benelux 15s Football final in Maastricht, extending their run of Men's 15s Football Championships to eight in a row stretching back to 2017.",
     category: "championship",
+    clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
+  },
+  {
+    year: 2026,
+    month: "September",
+    title: "Brussels Ladies Crowned European 15s Champions",
+    description:
+      "Brussels Craobh Rua win the European Ladies Football 15s Championship in Rennes, France, beating Paris/Bordeaux in the semi-final and Barcelona Gaels 4-10 to 0-7 in the final. It is the club's first European 15s title since 2023.",
+    category: "championship",
+    clubCrests: ["/club-crests/benelux-brussels.png"],
+  },
+  {
+    year: 2026,
+    month: "September",
+    title: "Amsterdam Retain European Hurling Title",
+    description:
+      "Amsterdam GAC beat GSC Luxembourg 1-26 to 3-5 in the European Hurling 15s final at Sportpark West in Maastricht, a fifth consecutive European 15s hurling title for the club.",
+    category: "championship",
+    sourceUrl:
+      "https://maastrichtgaels.nl/amsterdam-retain-european-hurling-15s-title-in-maastricht/",
+    sourceName: "Maastricht Gaels",
     clubCrests: ["/club-crests/benelux-amsterdam-gac.png"],
   },
   {
