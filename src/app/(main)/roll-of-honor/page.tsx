@@ -404,7 +404,7 @@ const ladiesFootball15sRecords: HonorRecord[] = [
     year: 2026,
     competition: "Championship",
     winner: "Brussels",
-    runnerUp: "",
+    runnerUp: "Barcelona Gaels",
   },
   {
     year: 2024,
